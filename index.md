@@ -1,22 +1,42 @@
-# Qiulin 的笔记主页
+# Qiulin's Homepage
 
-This Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science. 
+<div style="text-align: right;">
+  <label for="lang">🌐 Language:</label>
+  <select id="lang" onchange="location = this.value;">
+    <option value="/">English</option>
+    <option value="/zh/">中文</option>
+  </select>
+</div>
 
-My interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Dev.
+This Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science.  
 
-数学上
+My interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Development. 
 
-For the Math part (more of interest than career) I love to read 
-
-I post notes on my personal website, the majority of which are written in Chinese.
+I also love Math, more of interest more than career. I like Analysis and Differential Geometry. So far I have read *Real Analysis: Modern Techniques and Their Applications* by Folland for measure theory and *Intro to Topological Manifolds* by John Lee for topology, etc. Currently I am reading *Probability: Theory and Examples* by Durret for measure-based probability theory, and *Intro to Smooth Manifolds* by John Lee for differential topology. I plan to finish them in this year and next year I will learn some stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.
 
 
 
-欢迎来到我的个人网页。
+## EECS Subjects
 
-- [数学分析](math/analysis/index.md)
-- [机器学习](notes/ai/ml/index.md)
-- [操作系统](os/index.md)
-- [计算机图形学](graphics/index.md)
+- [C++ Programming Notes](./notes/cpp/index.md)
+- [Data Structures and Algorithms](./notes/dsa/index.md)
+- [Machine Learning & Deep Learning](./notes/ml/index.md)
+- [Nonlinear Optimization](./notes/opt/index.md)
+- Computer Vision
+- NLP
+- Computer Graphics
+- Unity & Game Development
 
-> 还在施工中，先放几个入口。
+
+
+## Math Subjects
+
+- [Multivariate Mathematical Analysis (following *Analysis on Manifolds*)](./notes/analysis/index.md)
+- [Matrix Theory (Numerical Linear Algebra)](./notes/linear-algebra/index.md)
+- [Basic Topology (following *Intro to Topological Manifolds*)](./notes/topology/index.md)
+- [Measure Theory (following *Real Analysis* by Folland)](./notes/measure/index.md)
+
+
+
+🚧 Work in progress. More notes coming soon.
+
