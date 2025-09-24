@@ -24,6 +24,9 @@
     
       <link rel="stylesheet" href="assets/stylesheets/main.e53b48f4.min.css">
       
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -51,7 +54,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -102,6 +112,32 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -629,13 +665,13 @@
 <p>This Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science.  </p>
 <p>My career interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Development. </p>
 <p>I am also a MATH fan out fo interest. I love analysis and differential geometry. So far I have read <em>Real Analysis: Modern Techniques and Their Applications</em> by Folland for measure theory and <em>Intro to Topological Manifolds</em> by John Lee for topology, etc. Currently I am reading <em>Probability: Theory and Examples</em> by Durret for measure-based probability theory, and <em>Intro to Smooth Manifolds</em> by John Lee for differential topology. I plan to finish them in this year and next year I will learn some Fourier analysis, stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.</p>
-<p><strong>Notice: This personal website is under construction, so below are all empty links.</strong> </p>
 <h1 id="game-projects">Game Projects</h1>
+<h2 id="eecs-494">EECS 494</h2>
 <h3 id="recreation-of-zelda-1986-dungen-level-1">Recreation of Zelda 1986, Dungen Level 1</h3>
-<p>This is my replica of the OG game Zelda 1986, coauthered with James Tian: https://saddysamoyed.itch.io/zelda1986-level1. The game is hosted on <a href="https://www.spriters-resource.com/">itch.io</a> and you can play it online, or use the download link on the game page.</p>
+<p>This is my replica of the OG game Zelda 1986, coauthered with James Tian: <a href="https://saddysamoyed.itch.io/zelda1986-level1">Zelda 1986 Game</a>, as the project 1 of EECS 494. The game is hosted on <a href="https://www.spriters-resource.com/">itch.io</a> and you can play it online, or use the download link on the game page.</p>
 <p>The game is produced by Unity and C#. I implemented the enemy AI system, health system, room control system, bomb and boomerang weapons; I also designed our custom feature: shadow, and made most of the animations.</p>
 <p>Animations are made out of open-source images found on <a href="https://www.spriters-resource.com/">Open Sprite Resource</a>. Some art resources like background music in our custom levels are made by Suno AI, and some complex sprites are generated by diffusion models.</p>
-<p><img src="assets/Screenshot 2025-09-24 at 08.42.31.png" alt="Screenshot 2025-09-24 at 08.42.31" style="zoom: 33%;" /></p>
+<p><img src="assets/Screenshot 2025-09-24 at 09.12.18.png" alt="Screenshot 2025-09-24 at 09.12.18" style="zoom:25%;" /></p>
 <h1 id="notes">Notes</h1>
 <p><strong>Notice: This personal website is under construction, so below are all empty links.</strong> </p>
 <h2 id="notes-on-eecs-subjects">notes on EECS subjects</h2>

@@ -2,7 +2,18 @@ site_name: "Qiulin's Homepage"
 site_url: "https://SaddySamoyed.github.io/"
 
 theme:
-  name: material   # 或 mkdocs 默认主题
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
 
 nav:
   - Home: index.md
