@@ -1,4 +1,6 @@
 site_name: "Qiulin's Homepage"
+site_url: "https://SaddySamoyed.github.io/"
+
 theme:
   name: material   # 或 mkdocs 默认主题
 
