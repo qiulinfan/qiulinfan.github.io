@@ -697,23 +697,24 @@
         
       </main>
       
-        <footer class="md-footer">
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-  
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
-  
-</div>
-      
-    </div>
-  </div>
-</footer>
+        <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("lang");
+    if (!langSelect) return;
+
+    // 设置默认选中
+    if (window.location.pathname.startsWith("/zh")) {
+      langSelect.value = "https://qiulinfan.github.io/zh/";
+    } else {
+      langSelect.value = "https://qiulinfan.github.io/";
+    }
+
+    // 切换时强制跳转
+    langSelect.addEventListener("change", function () {
+      window.location.replace(this.value);
+    });
+  });
+</script>
       
     </div>
     <div class="md-dialog" data-md-component="dialog">

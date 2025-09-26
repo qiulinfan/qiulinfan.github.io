@@ -1,0 +1,18 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const langSelect = document.getElementById("lang");
+    if (!langSelect) return;
+
+    // 设置默认选中
+    if (window.location.pathname.startsWith("/zh")) {
+      langSelect.value = "https://qiulinfan.github.io/zh/";
+    } else {
+      langSelect.value = "https://qiulinfan.github.io/";
+    }
+
+    // 切换时强制跳转
+    langSelect.addEventListener("change", function () {
+      window.location.replace(this.value);
+    });
+  });
+</script>

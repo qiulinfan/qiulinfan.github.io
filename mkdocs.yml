@@ -20,6 +20,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.top
+  custom_dir: overrides
 
 nav:
     - Home: index.md
