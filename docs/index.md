@@ -46,6 +46,6 @@ AI and Optimization:
 
 
 ## notes on Math subjects
-- [Measure Theory (following *Real Analysis* by Folland)](./notes/measure/index.md)
+- [Measure Theory (following *Real Analysis* by Folland)](https://qiulinfan.github.io/realanalysis/index.html)
 
 
