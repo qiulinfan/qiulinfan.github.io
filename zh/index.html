@@ -649,15 +649,21 @@
 <h1 id="qiulins-homepage">Qiulin's Homepage</h1>
 <div style="text-align: right; margin-top: 10px;">
   <label for="lang">🌐 Language:</label>
-  <select id="lang" onchange="location = this.value;">
-    <option value="https://qiulinfan.github.io/">English</option>
-    <option value="https://qiulinfan.github.io/zh/">中文</option>
+  <select id="lang" onchange="window.location.href=this.value;">
+    <option value="https://qiulinfan.github.io/" 
+      {{ 'selected' if page.url.startswith('index') else '' }}>English</option>
+    <option value="https://qiulinfan.github.io/zh/" 
+      {{ 'selected' if page.url.startswith('zh/') else '' }}>中文</option>
   </select>
 </div>
 
+
 <p>这里是 Qiulin from University of Michigan, majoring in Math&amp;CS.
+  
 喜欢 computer vision, computer graphics, game&amp;game engine dev.
+
 也喜欢分析学, 拓扑学和微分几何.
+
 会在这个网站发布一些笔记, 求佬勿喷.</p>
 <h2 id="projects">游戏 projects</h2>
 <h3 id="zelda-1986-dungen-level-1">Zelda 1986, Dungen Level 1 复刻</h3>
