@@ -8,9 +8,12 @@
   </select>
 </div>
 
-这里是 Qiulin from University of Michigan, majoring in Math&CS.
+这里是 Qiulin from University of Michigan, 主修 Math&CS.
+
 喜欢 computer vision, computer graphics, game&game engine dev.
+
 也喜欢分析学, 拓扑学和微分几何.
+
 会在这个网站发布一些笔记, 求佬勿喷.
 
 ## 游戏 projects
