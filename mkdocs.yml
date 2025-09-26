@@ -18,8 +18,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   features:
-    - navigation.tabs
-    - navigation.top
+    - navigation.sections   # 按分组显示，不会在左边再生成一个单独的 Home
   custom_dir: overrides
 
 nav:
