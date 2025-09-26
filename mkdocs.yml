@@ -18,7 +18,8 @@ theme:
     text: Roboto
     code: Roboto Mono
   features:
-    - navigation.top
+    - navigation.top   # 把导航移到顶部
+    - navigation.tabs  # 顶部标签形式（可选）
   custom_dir: overrides
 
 nav:
