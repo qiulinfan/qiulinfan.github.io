@@ -7,9 +7,9 @@
     <option value="https://qiulinfan.github.io/zh/">中文</option>
   </select>
 </div>
-<div style="float:right; width:200px; margin:10px; text-align:center;">
+<div style="float:right; width:200px; text-align:center;">
   <img src="./assets/%E5%8D%81%E9%A6%99.jpg" alt="十香" width="200" align="left">
-  <span style="font-size:0.8em; color:gray;">
+  <p style="font-size:0.8em; color:gray; margin:4px 0;">
   My favorite animation character Tohka. Image credit: <a href="https://www.pixiv.net/artworks/74140599">Bison倉鼠</a>
   </span>
 </div>This is Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science. 

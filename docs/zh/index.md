@@ -23,7 +23,19 @@
   });
 </script>
 
-这里是 Qiulin, from University of Michigan, 主修 Math&CS.
+<div style="text-align: right; margin-top: 10px;">
+  <label for="lang">🌐 Language:</label>
+  <select id="lang" onchange="location = this.value;">
+    <option value="https://qiulinfan.github.io/">English</option>
+    <option value="https://qiulinfan.github.io/zh/">中文</option>
+  </select>
+</div>
+<div style="float:right; width:150px; text-align:center;">
+  <img src="./assets/%E5%8D%81%E9%A6%99.jpg" alt="十香" width="200" align="left">
+  <p style="font-size:0.8em; color:gray; margin:4px 0;">
+  十香. Image credit: <a href="https://www.pixiv.net/artworks/74140599">Bison倉鼠</a>
+  </span>
+</div>这里是 Qiulin, from University of Michigan, 主修应数和 CS. 十香厨 & 露琪亚厨.
 
 喜欢 computer graphics, game&game engine dev.
 
