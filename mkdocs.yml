@@ -16,18 +16,15 @@ theme:
         name: Switch to dark mode
 
 nav:
-  - Home: index.md
-  - EECS Subjects:
-      - C++ Programming: notes/cpp/index.md
-      - Data Structures and Algorithms: notes/dsa/index.md
-      - Machine Learning & Deep Learning: notes/ml/index.md
-      - Nonlinear Optimization: notes/opt/index.md
-      - Computer Vision: notes/cv/index.md
-      - NLP: notes/nlp/index.md
-      - Computer Graphics: notes/graphics/index.md
-      - Unity & Game Development: notes/unity/index.md
-  - Math Subjects:
-      - Multivariate Analysis: notes/analysis/index.md
-      - Matrix Theory: notes/linear-algebra/index.md
-      - Basic Topology: notes/topology/index.md
-      - Measure Theory: notes/measure/index.md
+  - Home: index.md 
+  - Projects: 
+      - Game Projects: https://qiulinfan.github.io/games/index.html
+  - EECS notes:
+      - C++ Programming: https://qiulinfan.github.io/cpp-notes/index.html
+      - Data Structures and Algorithms: https://qiulinfan.github.io/dsa/index.html
+      - Machine Learning & Deep Learning: https://qiulinfan.github.io/ml/index.html
+      - Computer Vision: https://qiulinfan.github.io/cv/index.html
+      - NLP: https://qiulinfan.github.io/nlp/index.html
+      - Unity Game Dev: https://qiulinfan.github.io/unity/index.html
+  - Math notes:
+      - Measure Theory: https://qiulinfan.github.io/measure/index.html

@@ -1,22 +1,21 @@
 # Qiulin's Homepage
 
-<div style="text-align: right;">
+<div style="text-align: right; margin-top: 10px;">
   <label for="lang">🌐 Language:</label>
   <select id="lang" onchange="location = this.value;">
-    <option value="/">English</option>
-    <option value="/zh/">中文</option>
+    <option value="https://qiulinfan.github.io/">English</option>
+    <option value="https://qiulinfan.github.io/zh/">中文</option>
   </select>
 </div>
+
 
 This Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science.  
 
 My career interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Development. 
 
-I am also a MATH fan out fo interest. I love analysis and differential geometry. So far I have read *Real Analysis: Modern Techniques and Their Applications* by Folland for measure theory and *Intro to Topological Manifolds* by John Lee for topology, etc. Currently I am reading *Probability: Theory and Examples* by Durret for measure-based probability theory, and *Intro to Smooth Manifolds* by John Lee for differential topology. I plan to finish them in this year and next year I will learn some Fourier analysis, stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.
+I am also a MATH fan out of interest. I love analysis and differential geometry. So far I have read *Real Analysis: Modern Techniques and Their Applications* by Folland for measure theory and *Intro to Topological Manifolds* by John Lee for topology, etc. Currently I am reading *Probability: Theory and Examples* by Durret for measure-based probability theory, and *Intro to Smooth Manifolds* by John Lee for differential topology. I plan to finish them in this year and next year I will learn some Fourier analysis, stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.
 
-# Game Projects
-
-## EECS 494
+## Game Projects
 
 ### Recreation of Zelda 1986, Dungen Level 1
 
@@ -30,40 +29,23 @@ Animations are made out of open-source spritesheets found on [Open Sprite Resour
 
 
 
-# Notes
-
-**Notice: This personal website is under construction, so below are all empty links.** 
-
 ## notes on EECS subjects
 
 Programming and Computer Systems
 
-- [C++ Programming](./notes/cpp/index.md)
-- [Data Structures and Algorithms](./notes/dsa/index.md)
-- Operating Systems
+- [C++ Programming](https://qiulinfan.github.io/cpp/index.html)
+- [Data Structures and Algorithms](https://qiulinfan.github.io/dsa/index.html)
 
 AI and Optimization: 
 
-- [Machine Learning & Deep Learning](./notes/ml/index.md)
-- [Nonlinear Optimization](./notes/opt/index.md)
-- [Computer Vision](./notes/opt/index.md)
-- [Nature Language Processing](./notes/nlp/index.md)
-
-Computer Graphics, Game Engine and Game Dev:
-
-- Computer Graphics
-- Unity & Game Development
-
-🚧 Work in progress. 
-
+- [Machine Learning & Deep Learning](https://qiulinfan.github.io/ml/index.html)
+- [Nonlinear Optimization](https://qiulinfan.github.io/opt/index.html)
+- [Computer Vision](https://qiulinfan.github.io/cv/index.html)
+- [Nature Language Processing](https://qiulinfan.github.io/nlp/index.html)
+- [Unity Game Dev](https://qiulinfan.github.io/gamedev/index.html)
 
 
 ## notes on Math subjects
-
-- [Multivariate Mathematical Analysis (following *Analysis on Manifolds*)](./notes/analysis/index.md)
-- [Matrix Theory (Numerical Linear Algebra)](./notes/linear-algebra/index.md)
-- [Basic Topology (following *Intro to Topological Manifolds*)](./notes/topology/index.md)
 - [Measure Theory (following *Real Analysis* by Folland)](./notes/measure/index.md)
 
-🚧 Work in progress. 
 
