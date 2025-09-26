@@ -646,35 +646,19 @@
 
 
 
+<h1 id="qiulins-homepage">Qiulin's Homepage</h1>
 <div style="text-align: right; margin-top: 10px;">
   <label for="lang">🌐 Language:</label>
-  <select id="lang">
+  <select id="lang" onchange="location = this.value;">
     <option value="https://qiulinfan.github.io/">English</option>
     <option value="https://qiulinfan.github.io/zh/">中文</option>
   </select>
 </div>
 
-<script>
-  const langSelect = document.getElementById("lang");
-  // 根据 URL 设置默认选中项
-  if (window.location.pathname.startsWith("/zh")) {
-    langSelect.value = "https://qiulinfan.github.io/zh/";
-  } else {
-    langSelect.value = "https://qiulinfan.github.io/";
-  }
-  // 绑定切换事件
-  langSelect.addEventListener("change", function() {
-    window.location.href = this.value;
-  });
-</script>
-
-<p>这里是 Qiulin from University of Michigan, majoring in Math&amp;CS.
-  
-喜欢 computer vision, computer graphics, game&amp;game engine dev.
-
-也喜欢分析学, 拓扑学和微分几何.
-
-会在这个网站发布一些笔记, 求佬勿喷.</p>
+<p>这里是 Qiulin from University of Michigan, 主修 Math&amp;CS.</p>
+<p>喜欢 computer vision, computer graphics, game&amp;game engine dev.</p>
+<p>也喜欢分析学, 拓扑学和微分几何.</p>
+<p>会在这个网站发布一些笔记, 求佬勿喷.</p>
 <h2 id="projects">游戏 projects</h2>
 <h3 id="zelda-1986-dungen-level-1">Zelda 1986, Dungen Level 1 复刻</h3>
 <p>EECS 494 的 p1. web play 链接在这里: <a href="https://saddysamoyed.itch.io/zelda1986-level1">Zelda 1986 Game</a>, 由 <a href="https://itch.io/">itch.io</a> host.
