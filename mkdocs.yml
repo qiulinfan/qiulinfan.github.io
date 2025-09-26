@@ -18,11 +18,10 @@ theme:
     text: Roboto
     code: Roboto Mono
   features:
-    - navigation.sections   # 按分组显示，不会在左边再生成一个单独的 Home
+    - navigation.top
   custom_dir: overrides
 
 nav:
-    - Home: index.md
     - Projects:
         - Game Projects: https://qiulinfan.github.io/games/index.html
     - EECS notes:
