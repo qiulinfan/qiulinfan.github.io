@@ -646,17 +646,27 @@
 
 
 
-<h1 id="qiulins-homepage">Qiulin's Homepage</h1>
 <div style="text-align: right; margin-top: 10px;">
   <label for="lang">🌐 Language:</label>
-  <select id="lang" onchange="window.location.href=this.value;">
-    <option value="https://qiulinfan.github.io/" 
-      {{ 'selected' if page.url.startswith('index') else '' }}>English</option>
-    <option value="https://qiulinfan.github.io/zh/" 
-      {{ 'selected' if page.url.startswith('zh/') else '' }}>中文</option>
+  <select id="lang">
+    <option value="https://qiulinfan.github.io/">English</option>
+    <option value="https://qiulinfan.github.io/zh/">中文</option>
   </select>
 </div>
 
+<script>
+  const langSelect = document.getElementById("lang");
+  // 根据 URL 设置默认选中项
+  if (window.location.pathname.startsWith("/zh")) {
+    langSelect.value = "https://qiulinfan.github.io/zh/";
+  } else {
+    langSelect.value = "https://qiulinfan.github.io/";
+  }
+  // 绑定切换事件
+  langSelect.addEventListener("change", function() {
+    window.location.href = this.value;
+  });
+</script>
 
 <p>这里是 Qiulin from University of Michigan, majoring in Math&amp;CS.
   
