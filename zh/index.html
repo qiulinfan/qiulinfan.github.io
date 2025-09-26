@@ -655,6 +655,20 @@
   </select>
 </div>
 
+<script>
+  const langSelect = document.getElementById("lang");
+  // 根据 URL 来决定默认选中
+  if (window.location.pathname.startsWith("/zh")) {
+    langSelect.value = "https://qiulinfan.github.io/zh/";
+  } else {
+    langSelect.value = "https://qiulinfan.github.io/";
+  }
+  // 切换时跳转
+  langSelect.addEventListener("change", function() {
+    window.location.href = this.value;
+  });
+</script>
+
 <p>这里是 Qiulin from University of Michigan, 主修 Math&amp;CS.</p>
 <p>喜欢 computer vision, computer graphics, game&amp;game engine dev.</p>
 <p>也喜欢分析学, 拓扑学和微分几何.</p>
