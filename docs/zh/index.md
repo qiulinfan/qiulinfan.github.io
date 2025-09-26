@@ -23,7 +23,7 @@
   });
 </script>
 
-这里是 Qiulin from University of Michigan, 主修 Math&CS.
+这里是 Qiulin, from University of Michigan, 主修 Math&CS.
 
 喜欢 computer graphics, game&game engine dev.
 
@@ -34,8 +34,7 @@
 ## 游戏 projects
 
 ### Zelda 1986, Dungen Level 1 复刻
-EECS 494 的 p1. web play 链接在这里: [Zelda 1986 Game](https://saddysamoyed.itch.io/zelda1986-level1), 由 [itch.io](https://itch.io/) host.
-<img src="assets/Screenshot 2025-09-24 at 09.12.18.png" alt="Screenshot 2025-09-24 at 09.12.18" style="zoom:25%;" />
+web play 链接在这里: [Zelda 1986 Game](https://saddysamoyed.itch.io/zelda1986-level1), host 于 [itch.io](https://itch.io/) .<img src="assets/Screenshot 2025-09-24 at 09.12.18.png" alt="Screenshot 2025-09-24 at 09.12.18" style="zoom:25%;" />
 
 
 
@@ -57,5 +56,4 @@ AI and Optimization:
 
 ## 数学笔记
 - [测度论 (following *Real Analysis* by Folland)](https://qiulinfan.github.io/math-597-measure_theory-notes/index.html)
-
 

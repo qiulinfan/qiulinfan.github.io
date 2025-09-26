@@ -7,13 +7,18 @@
     <option value="https://qiulinfan.github.io/zh/">中文</option>
   </select>
 </div>
+<div style="float:right; width:200px; margin:10px; text-align:center;">
+  <img src="./assets/%E5%8D%81%E9%A6%99.jpg" alt="十香" width="200" align="left">
+  <span style="font-size:0.8em; color:gray;">
+  My favorite animation character Tohka. Image credit: <a href="https://www.pixiv.net/artworks/74140599">Bison倉鼠</a>
+  </span>
+</div>This is Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science. 
+
+My career interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Development.
+
+I am also a Math fan out of interest. I love analysis and differential geometry. So far I have read *Real Analysis: Modern Techniques and Their Applications* by Folland for measure theory and *Intro to Topological Manifolds* by John Lee for topology, etc. Currently I am reading *Probability: Theory and Examples* by Durret for measure-based probability theory, and *Intro to Smooth Manifolds* by John Lee for differential topology. I plan to finish them in this year and next year I will learn some Fourier analysis, stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.
 
 
-This Qiulin, senior undergrad from University of Michigan, dual majoring in Mathematics and Computer Science.  
-
-My career interest mainly lies in Computer Vision, Computer Graphics, Game DeV and Game Engine Development. 
-
-I am also a MATH fan out of interest. I love analysis and differential geometry. So far I have read *Real Analysis: Modern Techniques and Their Applications* by Folland for measure theory and *Intro to Topological Manifolds* by John Lee for topology, etc. Currently I am reading *Probability: Theory and Examples* by Durret for measure-based probability theory, and *Intro to Smooth Manifolds* by John Lee for differential topology. I plan to finish them in this year and next year I will learn some Fourier analysis, stochastic differential equations and Riemannian geometry. I post notes on my personal website, the majority of which are written in Chinese.
 
 ## Game Projects
 
@@ -47,5 +52,4 @@ AI and Optimization:
 
 ## notes on Math subjects
 - [Measure Theory (following *Real Analysis* by Folland)](https://qiulinfan.github.io/math-597-measure_theory-notes/index.html)
-
 
