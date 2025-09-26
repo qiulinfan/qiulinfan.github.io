@@ -25,7 +25,7 @@
 
 这里是 Qiulin from University of Michigan, 主修 Math&CS.
 
-喜欢 computer vision, computer graphics, game&game engine dev.
+喜欢 computer graphics, game&game engine dev.
 
 也喜欢分析学, 拓扑学和微分几何.
 
@@ -56,6 +56,6 @@ AI and Optimization:
 
 
 ## 数学笔记
-- [测度论 (following *Real Analysis* by Folland)](https://qiulinfan.github.io/realanalysis/index.html)
+- [测度论 (following *Real Analysis* by Folland)](https://qiulinfan.github.io/math-597-measure_theory-notes/index.html)
 
 
