@@ -38,6 +38,15 @@
 
 ## 游戏 projects
 
+### Village Rim
+
+我们的最新 2D 冒险游戏: [Village Rim](https://saddysamoyed.itch.io/village-rim).
+
+一个约 20 分钟（或更长）的 2D 冒险游戏，与 Gigi Pan, James Tian, Emma Zhang, 和 Yulong Huang 共同创作。
+
+游戏托管在 itch.io 上，你可以从游戏页面下载。请按照教程中的说明操作，希望你喜欢这个游戏！
+
+
 ### Zelda 1986, Dungen Level 1 复刻
 web play 链接在这里: [Zelda 1986 Game](https://saddysamoyed.itch.io/zelda1986-level1), host 于 [itch.io](https://itch.io/) .<img src="assets/Screenshot 2025-09-24 at 09.12.18.png" alt="Screenshot 2025-09-24 at 09.12.18" style="zoom:25%;" />
 
