@@ -49,7 +49,7 @@ Animations are made out of open-source spritesheets found on [Open Sprite Resour
 Link for my first personal game, a tiny single-player FPS game: [Colorables](https://saddysamoyed.itch.io/colorables).
 
 <div style="float:right; width:220px; text-align:center;">
-  <img src="assets/villageRIM.png" alt="game" width="200" align="left">
+  <img src="assets/seal.png" alt="game" width="200" align="left">
   <p style="font-size:0.8em; color:gray; margin:20px 0;">
 </div>
 
@@ -67,12 +67,13 @@ And it is not only you: enemies and objects also have colors, with whom you can 
 Check this link for our latest 2D adventure game: [Village Rim](https://saddysamoyed.itch.io/village-rim).
 
 A ~20-minute (or maybe longer) 2D adventure game coauthored with Gigi Pan, James Tian, Emma Zhang, and Yulong Huang.
-<div style="float:right; width:220px; text-align:center;">
-  <img src="assets/seal.png" alt="game" width="200" align="right">
+<div style="float:left; width:220px; text-align:center;">
+  <img src="assets/villageRIM.png" alt="game" width="200" align="left">
   <p style="font-size:0.8em; color:gray; margin:20px 0;">
 </div>
 
-The game is hosted on itch.io and you can download it from the game page. Follow the instructions from the tutorial, and hope you enjoy the game!
+I am fully responsible for the enemy and combat system of the game, including design and implementation of the actions, animations and additional tilesets of player and all enmeies. During the first few weeks I was using FSM but later for richer interactions, I adjusted them using behavior trees. And I made the spawning system supportive of both systems. I am the designer of each level of the game.
+
 
 
 
@@ -83,15 +84,13 @@ Programming and Computer Systems
 - [C++ Programming](https://qiulinfan.github.io/cpp/index.html)
 - [Data Structures and Algorithms](https://qiulinfan.github.io/dsa/index.html)
 - [Operating Systems](https://qiulinfan.github.io/os/index.html)
-- [Computer Networks](https://qiulinfan.github.io/network/index.html)
+
 
 AI and Optimization: 
-
 - [Machine Learning & Deep Learning](https://qiulinfan.github.io/ml/index.html)
 - [Nonlinear Optimization](https://qiulinfan.github.io/opt/index.html)
 - [Computer Vision](https://qiulinfan.github.io/cv/index.html)
 - [Nature Language Processing](https://qiulinfan.github.io/nlp/index.html)
-- [Unity Game Dev](https://qiulinfan.github.io/gamedev/index.html)
 
 
 ## notes on Math subjects
