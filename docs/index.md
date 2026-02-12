@@ -94,5 +94,5 @@ AI and Optimization:
 
 
 ## notes on Math subjects
-- [Measure Theory (following *Real Analysis* by Folland)](https://qiulinfan.github.io/math-597-measure_theory-notes/index.html)
+- [Measure Theory (following *Real Analysis* by Folland)](https://qiulinfan.github.io/mathnotes-measure_theory/index.html)
 
