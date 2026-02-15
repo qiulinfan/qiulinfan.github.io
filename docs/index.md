@@ -30,7 +30,7 @@ All games are hosted on [itch.io](https://itch.io/) and you can play it online, 
 
 
 ### Recreation of Zelda 1986, Dungen Level 1
-Check this link for my replica of the OG game Zelda 1986, coauthered with James Tian: [Zelda 1986 Game](https://saddysamoyed.itch.io/zelda1986-level1).
+Check this link for my replica of the OG game Zelda 1986, coauthered with James Tian: [Zelda 1986 Game](https://bluesamoyed.itch.io/zelda1986-level1).
 
 <div style="float:left; width:220px; text-align:center;">
   <img src="assets/Screenshot 2025-09-29 at 09.46.12.png" alt="game" width="200" align="left">
@@ -46,7 +46,7 @@ Animations are made out of open-source spritesheets found on [Open Sprite Resour
 
 ### Colorable, my first personal game.
 
-Link for my first personal game, a tiny single-player FPS game: [Colorables](https://saddysamoyed.itch.io/colorables).
+Link for my first personal game, a tiny single-player FPS game: [Colorables](https://bluesamoyed.itch.io/colorables).
 
 <div style="float:right; width:220px; text-align:center;">
   <img src="assets/seal.png" alt="game" width="200" align="left">
@@ -64,7 +64,7 @@ And it is not only you: enemies and objects also have colors, with whom you can 
 
 ### Village Rim
 
-Check this link for our latest 2D adventure game: [Village Rim](https://saddysamoyed.itch.io/village-rim).
+Check this link for our latest 2D adventure game: [Village Rim](https://bluesamoyed.itch.io/village-rim).
 
 A ~20-minute (or maybe longer) 2D adventure game coauthored with Gigi Pan, James Tian, Emma Zhang, and Yulong Huang.
 <div style="float:left; width:220px; text-align:center;">
@@ -81,8 +81,8 @@ I am fully responsible for the enemy and combat system of the game, including de
 
 Programming and Computer Systems
 
-- [C++ Programming](https://qiulinfan.github.io/cpp/index.html)
-- [Data Structures and Algorithms](https://qiulinfan.github.io/dsa/index.html)
+- [C++ Programming](https://qiulinfan.github.io/csnotes-cpp_prog/index.html)
+- [Data Structures and Algorithms](https://qiulinfan.github.io/data_structure-algorithms/index.html)
 - [Operating Systems](https://qiulinfan.github.io/os/index.html)
 
 
@@ -95,4 +95,4 @@ AI and Optimization:
 
 ## notes on Math subjects
 - [Measure Theory (following *Real Analysis* by Folland)](https://qiulinfan.github.io/mathnotes-measure_theory/index.html)
-
+- [Probability Theory](https://qiulinfan.github.io/mathnotes-probability/index.html)
