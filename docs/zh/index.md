@@ -27,28 +27,40 @@
   <img src="./assets/%E5%8D%81%E9%A6%99.jpg" alt="十香" width="200" align="left">
   <p style="font-size:0.8em; color:gray; margin:4px 0;">
   十香. Image credit: <a href="https://www.pixiv.net/artworks/74140599">Bison倉鼠</a>
-  </span>
-</div>这里是 Qiulin, from University of Michigan, 主修应数和 CS. 十香厨 & 露琪亚厨.
+  </p>
+</div>
+
+这里是 Qiulin, from University of Michigan, 主修应数和 CS. 十香厨 & 露琪亚厨.
 
 喜欢 computer graphics, game&game engine dev.
 
 也喜欢分析学, 拓扑学和微分几何.
 
 会在这个网站发布一些笔记, 求佬勿喷.
+## Projects
 
-## 游戏 projects
+### Game Projects
+[查看项目页](game-projects.md)
 
-### Village Rim
+<div style="display:flex; gap:16px; flex-wrap:wrap; margin:12px 0 20px 0;">
+  <a href="game-projects/" style="display:block;">
+    <img src="assets/villageRIM.png" alt="Village Rim" width="200">
+  </a>
+  <a href="game-projects/" style="display:block;">
+    <img src="assets/Screenshot 2025-09-29 at 09.46.12.png" alt="Zelda 1986 recreation" width="200">
+  </a>
+  <a href="game-projects/" style="display:block;">
+    <img src="assets/seal.png" alt="Colorable" width="200">
+  </a>
+</div>
 
-我们的最新 2D 冒险游戏: [Village Rim](https://saddysamoyed.itch.io/village-rim).
+### PocketEngine
+[Project page](https://qiulinfan.github.io/pocketEngine/) | [Repository](https://github.com/qiulinfan/pocketEngine)
 
-一个约 20 分钟（或更长）的 2D 冒险游戏，与 Gigi Pan, James Tian, Emma Zhang, 和 Yulong Huang 共同创作。
+PocketEngine 是一个基于 C++17、SDL2、Lua、Box2D、Dear ImGui 和 JSON scene assets 的 2D engine / editor.
 
-游戏托管在 itch.io 上，你可以从游戏页面下载。请按照教程中的说明操作，希望你喜欢这个游戏！
-
-
-### Zelda 1986, Dungen Level 1 复刻
-web play 链接在这里: [Zelda 1986 Game](https://saddysamoyed.itch.io/zelda1986-level1), host 于 [itch.io](https://itch.io/) .<img src="assets/Screenshot 2025-09-24 at 09.12.18.png" alt="Screenshot 2025-09-24 at 09.12.18" style="zoom:25%;" />
+## Research Projects
+- [graphNL2SQL](https://github.com/qiulinfan/graphNL2SQL): 微调小型 LLM (3-8B) 以图增强的 schema 表示实现强大的自然语言到 SQL 生成性能. 
 
 
 
@@ -70,4 +82,3 @@ AI and Optimization:
 
 ## 数学笔记
 - [测度论 (following *Real Analysis* by Folland)](https://qiulinfan.github.io/math-597-measure_theory-notes/index.html)
-

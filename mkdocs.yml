@@ -23,7 +23,10 @@ theme:
 
 nav:
     - Projects:
-        - Game Projects: https://qiulinfan.github.io/games/index.html
+        - PocketEngine: https://qiulinfan.github.io/pocketEngine/
+        - Game Projects: game-projects.md
+        - Research Projects:
+            - graphNL2SQL: https://github.com/qiulinfan/graphNL2SQL
     - EECS notes:
         - C++ Programming: https://qiulinfan.github.io/cpp-notes/index.html
         - Data Structures and Algorithms: https://qiulinfan.github.io/dsa/index.html
