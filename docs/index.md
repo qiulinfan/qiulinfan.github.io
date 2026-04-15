@@ -45,6 +45,15 @@ I post study notes on GitHub, and some of them are published as GitHub Pages her
 
 PocketEngine is a 2d game engine written in C++17, hosting a *Lua* runtime for component scripting, on top of *SDL2* for windowing and input, *Box2D* for physics, *Dear ImGui* for editor UI, and *RapidJson* for scene assets and actor templates.
 
+<div style="max-width:420px; margin:12px 0 0 0;">
+  <a href="https://qiulinfan.github.io/pocketEngine/">
+    <img
+      src="https://qiulinfan.github.io/pocketEngine/show.gif"
+      alt="PocketEngine editor preview"
+      style="width:100%; height:auto; display:block;">
+  </a>
+</div>
+
 The editor includes a docked Sceneview, embedded runtime Viewport, Project browser, Hierarchy, Inspector, and live playmode mutation workflow.
 
 Demonstration videos:
@@ -58,18 +67,6 @@ Demonstration videos:
     style="width:100%; aspect-ratio:16 / 9; height:auto; border:0;">
   </iframe>
 </div>
-
-Preview:
-
-<div style="max-width:420px; margin:12px 0 0 0;">
-  <a href="https://qiulinfan.github.io/pocketEngine/">
-    <img
-      src="https://qiulinfan.github.io/pocketEngine/show.gif"
-      alt="PocketEngine editor preview"
-      style="width:100%; height:auto; display:block;">
-  </a>
-</div>
-
 
 ## Research
 - [graphNL2SQL](https://github.com/qiulinfan/graphNL2SQL): Graph-Enhanced Schema Modeling for Natural Language to SQL Generation. Fine-tuning small LLMs (3-8B) to achieve strong NL2SQL performance using graph-based schema representations.
