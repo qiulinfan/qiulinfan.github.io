@@ -59,6 +59,17 @@
 
 PocketEngine 是一个基于 C++17、SDL2、Lua、Box2D、Dear ImGui 和 JSON scene assets 的 2D engine / editor.
 
+<div style="max-width:420px; margin:12px 0 0 0;">
+  <a href="https://qiulinfan.github.io/pocketEngine/">
+    <img
+      src="https://qiulinfan.github.io/pocketEngine/show.gif"
+      alt="PocketEngine editor preview"
+      style="width:100%; height:auto; display:block;">
+  </a>
+</div>
+
+编辑器包含一个 docked Sceneview, embedded runtime Viewport, Project browser, Hierarchy, Inspector, 和 live playmode mutation workflow.
+
 ## Research Projects
 - [graphNL2SQL](https://github.com/qiulinfan/graphNL2SQL): 微调小型 LLM (3-8B) 以图增强的 schema 表示实现强大的自然语言到 SQL 生成性能. 
 
