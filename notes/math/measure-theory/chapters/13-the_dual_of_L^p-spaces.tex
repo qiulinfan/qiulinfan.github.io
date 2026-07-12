@@ -1,0 +1,191 @@
+\chapter{the dual of $L^p$ spaces}
+\section{the dual of $L^p$-I [Fol 6.2]}
+对应: Folland 5.1, 6.2.\\
+(原本这是在 lec 25 的位置讲的, 但是当时由于没有 Radon-Nikodym Thm, 没有足够的工具去完成 \[
+(L^p)^* = L^q
+\]
+的证明 (差了一个 proof surjectivity of the isometry $g \to \ell_g$).  因而我把它放在这里, 衔接下面几个 lectures, 完成 6.2 这一节.\\
+我们首先练习一个 example of Hölder's ineq 来回忆一下:\\
+recall Hölder's ineq: for $1\leq p,q\leq\infty,\; \frac{1}{p}+\frac{1}{q} = 1\implies$ \[
+||fg||_1 \leq ||f||_p ||g||_q
+\]
+\begin{example}
+Prove:\[
+    f \in L^3 ([-1,1],m)\implies \int_{-1}^1 \frac{|f(x)|}{\sqrt{|x|}} \,dx < \infty
+    \]
+\begin{proof}
+    Apply Hölder's: 既然 $f\in L^3$, 那么我们就拉满, take $p=3$, correspondingly $ q=3/2$:\begin{align}
+        \int_{-1}^1 \frac{|f(x)|}{\sqrt{|x|}} \,dx   &\leq \bigg(\int_{-1}^1 |f(x)|^3\, dx\bigg)^\frac{1}{3} \bigg(\int_{-1}^1  \frac{1}{|x|^{\frac{3}{4}}} \,dx    \bigg)^\frac{2}{3}
+    \end{align} both integrals evaluate $<\infty$
+\end{proof}
+\end{example}
+
+\subsection{intro to dual space}
+这里只讨论 $\mathbb{K} := \mathbb{R}$ or $\mathbb{C}$.\\
+recall, 对于一个 $\mathbb{K}$-vector space $V$, 一个 linear functional of $V$ 就是一个 linear function \[
+f:V \to \mathbb{K}
+\]
+对于作为 NVS 的 $V$, 我们还可以定义一个 linear functional 的 boundedness. 
+\begin{definition}{bounded linear functional }
+ Let $V$ be a $\mathbb{K}$-NVS, $f:V \to \mathbb{K}$ be a linear functional.\\
+ 我们称 $f$ bounded, if exist $C>0$ s.t. \[
+|f(v)| \leq C||v||,\quad \forall \,v \in V
+\]
+\end{definition}
+\begin{remark}
+注意, \textbf{linear functional 的 boundedness 和它作为函数的 boundedness 是不一样的概念.}\\
+作为函数的 boundedness 表示函数值的有界性, 而\textbf{作为  linear map 的 boundedness (此处) 表示它的作用效果的 boundedness, 不会把一个 vector 放大太多倍.}
+\end{remark}
+
+\begin{proposition}{linear functional bounded $\iff$ ctn at $0$}
+    if $f:V\to \mathbb{K}$ is a linear functional, TFAE:
+    \begin{itemize}
+        \item $f$ bounded
+        \item $f$ continuous
+        \item $f$ continuous at $0\in V$
+    \end{itemize}
+\end{proposition}
+\begin{proof}
+    (ii) to (iii): trivial.\\
+    (i) to (ii): 假设 $f$ bounded, 那么可以 pick $C$ s.t. $|f(v)| \leq C||v||$.\\
+    Pick $v_0\in V, \epsilon > 0$. Set $\delta := \frac{\epsilon}{C}$. Then
+\[
+    ||v-v_0|| <\delta \implies |f(v)-f(v_0)| = |f(v-v_0)| \leq C||v-v_0|| < \epsilon
+    \]
+   从而 ctn.\\
+    (iii) to (i): $\exists \delta > 0$ s.t. $||v|| \leq \delta\implies |f(v)|\leq 1$.\\
+    于是 $\forall v \in V\setminus \{0\}$, 都有 \[
+    |f(v)| =   \frac{\big|f(v \cdot \frac{\delta}{||v||} ) \big| }{\frac{\delta}{||v||}}   \leq \frac{\delta}{||v||}
+    \] taking $C =\frac{1}{\delta}$, 得到 boundedness.
+\end{proof}
+\begin{remark}
+    这个 proposition 看起来很神奇, 把一个整体性质和局部性质等价了, 但是我们知道 linear map 就是局部决定整体的, by its def.\\
+ recall in 395: 实际上这个性质应该对所有的 linear map 都成立, 不只是 linear functionals. \\
+ 通常我们认为 linear map 总是 ctn 的, 但是其实它 ctn iff bounded, unbounded 的时候就不 ctn.\\
+ 以及: \textbf{linear map between finite dim spaces 总是 bounded 的, 从而总是 ctn 的}. 不过这里我们要讨论的就是 infinite dim spaces. 比如 $L^p$.
+\end{remark}
+
+
+\begin{definition}{dual space}
+If $V$ is a NVS, 我们定义它的 \textbf{dual space} as: \[
+    V^* := \{\text{bounded linear functionals }\; f: V \to \mathbb{K}  \}
+    \]
+\end{definition}
+
+
+
+\begin{definition}{norm of dual space: 即 \textbf{dual norm}}
+    Given $f \in V^*$, set \[
+    ||f||_* : = \sup_{v\in V\setminus \{0\}} \frac{|f(v)|}{||v||} = \sup_{||v||=1} |f(v)|
+    \]
+  where $\| v\|$ 表示的是 $V$ 上使用的 norm. 这个 norm 被称为 dual norm.
+    \end{definition}
+        这个形式是我们在各种地方见过非常多次的\textbf{ }operator norm, 只不过这里, 指定一个 NVS, 对于其 dual space 上的 linear functional, 它是固定的, 不需要指定 $v$ 和 $f(v)$使用哪个 norm, 因为 $f(v)$ 就是标量, 而 $v$ from 原  NVS, 已经指定好 norm. 
+\begin{remark}
+    从定义中我们可知, 对于任意的 $v\in V$, $f\in V^*$, 都有: \[
+    |f(v)| \leq \|f \|_*|v|
+    \]
+\end{remark}
+        
+\subsection{$V^*$ being a Banach space}
+\begin{theorem}{dual space is always Banach}
+对于\textbf{任意的 NVS }$V$: $V^*$ 都是一个 Banach space. (not assuming $V$ Banach).
+\end{theorem}
+\begin{proof}
+First we can confirm $V^*$ is a VS, 因为它由 linear functions of the same size 组成. \\
+\textbf{Claim 1: $V^*$ 是一个 NVS.}\\
+因为任取 $v\in V,\lambda\in\mathbb{K}$ 都有 $|f(\lambda v)| = |\lambda|\cdot |f(v)|$, 从而
+\[
+f \in V^* ,\lambda \in \mathbb{K}        \implies ||\lambda f||_* = |\lambda| \cdot ||f||_*
+\]以及 \[
+f,g\in V^*, v\in V \implies |(f+g) (v)| = |f(v) + g(v)|  \leq |f(v)| + |g(v)|
+\]因而
+\[
+f,g\in V^* \implies \|f+g\|_* \leq \|f\|_* + \|g\|_*
+\]
+下面我们 verify $V^*$ Banach.\\
+\textbf{Claim 2: 一个 Cauchy seq in $V^*$ 一定 pointwise converge to some $f$.}\\
+    Pick $(f_n)_1^\infty$, 一个 Cauchy seq in $V^*$. Let $\epsilon < 0$, 存在 $N$ 使得对于任意 $m,n \geq N$ 都有 \( \| f_n - f_m \|_* < \epsilon\), 我们简写为: \[ \|f_n - f_m\|_*  \to 0   \]
+因而对于任意 $v\in V$,  we have \[
+    |f_n(v) - f_m(v) | \leq \|f_n - f_m\|_*  ||v|| \to 0
+    \]
+并且我们知道\textbf{ $\mathbb{K}$ 是 complete 的}, 因而 $f_n(v)$ converges in $\mathbb{K}$ to some element, declared to be $f(v)$.\\
+即 \textbf{\(f_n \to f \) pointwisely}:\[
+    \lim _{n\to \infty} f_n (v )  = f(v)
+    \]
+(这是自然的, 因为如果 linear function $f-g$ 的 operator norm 是 $0$, 那么说明它们毫无差别, 否则一定有某个地方 $f,g$ 的 image 不一样, 使得这个 norm 不是 $0$.)\\
+\textbf{Claim 3: $f$ 是 linear 的, 并且 bounded (从而 ctn), 即 $f\in V^*$. }\\
+linearity: 由于每个 \(f_n\) 都是 linear 的, \[
+      f_n(x + \alpha y) = f_n(x) + \alpha f_n(y)
+      \]
+因而 \[
+      f(x + \alpha y) 
+      = \lim_{n\to\infty} f_n(x+\alpha y) 
+      = \lim_{n\to\infty}\bigl(f_n(x) + \alpha f_n(y)\bigr)
+      = \lim_{n\to\infty}f_n(x) + \alpha \lim_{n\to\infty}f_n(y)
+      = f(x) + \alpha f(y)\]
+    因此 \(f\) 是线性的.\\
+\textbf{ (Note: 这里证明了 linear map 的 pointwise 极限一定也是 linear map.)}\\
+Boundedness: 
+Note a standard fact from metric spaces: \textbf{every Cauchy sequence is bounded.}\\
+因而 $f_n$ 是一个 bounded seq, 即存在 \(M>0\) such that \(\|f_n\| \le M\) for all \(n\). Then   \[
+   |f(x)| = \big|\lim_{n\to\infty} f_n(x)\big|
+            \le \lim_{n\to\infty} |f_n(x)|
+            \le \lim_{n\to\infty} \|f_n\|_* \|x\|
+            \le  M\,\|x\|
+   \]
+   Hence \(f\) is bounded (continuous), and \(\|f\|_* \le M\).
+\textbf{Claim 4: $   \|f_n - f\|_*  \to 0$, proving $V^*$ 是 Banach 的.}
+WTS:   \[
+   \|f_n - f\| 
+   = \sup_{\|x\|=1} |(f_n - f)(x) | \to 0
+   \]
+//TO BE DONE.
+\end{proof}
+Actually 这个 Theorem 有更 general 的形式: 
+
+\begin{theorem}
+对于任意 nvm $V$ 和 Banach $W$, \( \mathcal{L}(V,W)\) 一定是 Banach 的.
+\end{theorem}
+Proof 见 Folland 5.4.
+
+
+\subsection{$(L^p)^* = L^q$, $\frac{1}{p} + \frac{1}{q} = 1$ }
+
+\begin{theorem}{对于互为 conjugate exponent 的 $p,q$, $L^p$ 是 $L^q$ 的 dual space}
+    For $1 < p,q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$, we have: \[
+(L^p)^* = L^q
+\]
+In particular the Hilbert space: \[
+(L^2)^*  = L^2
+\]
+
+\end{theorem}
+
+\begin{proof}
+    Define map \begin{align}
+        L^q &\to (L^p)^* \\
+        g &\mapsto \varnothing_g
+    \end{align}
+    where $$\varnothing_g(f) := \int fg,\quad f \in L^p $$
+    It is well-defined by Hölder: \[
+    f\in L^p, g\in L^q \implies fg \in L^1 
+    \]
+    and \[
+    ||fg||_1 = \int |fg| \leq  ||f||_p ||g||_q
+    \]
+    Easy: \[
+    \varnothing_g (f_1 + f_2) = \varnothing_g (f_1) + \varnothing_g(f_2)
+    \]
+    Also \[
+    |\varnothing_g(f)| =\bigg|\int fg\bigg| \leq \int |fg| \leq ||f||_p\cdot  ||g||_q
+    \]
+    Thus \[
+    \varnothing_g \in (L^p)^*\
+    \]
+\end{proof}
+
+
+
+\section{the dual of $L^p$-II [Fol 6.2]}
+\section{the dual of $L^p$-III [Fol 6.2, finished]}

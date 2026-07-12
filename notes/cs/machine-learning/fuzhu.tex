@@ -1,0 +1,322 @@
+\documentclass[lang=cn,11pt]{elegantbook}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{CSE 545: Machine Learning}
+\subtitle{25 Win, instructed by Honglak Lee}
+
+\begin{document}
+\frontmatter
+\tableofcontents
+\mainmatter
+
+
+我们想要做一个 model with paramters $\theta$, maximizing the log-likelihood of the observed data:
+$$
+\theta_{ml} : =   \arg \max_{\theta} \log p(X \mid\theta ) 
+$$
+这就是普通的 MLE.
+
+而 latent variable 的 idea 是: modeling with a latent variable, 可以使得模型具有更强的表达能力 (表示复杂结构) 以及有时候优化会更加简单.
+当我们 model with latent variable $Z$ 的时候, 我们 by Bayesian formula, 等同于 minimize: 
+$$
+\log p(X \mid\theta )  = \log  p(X, Z |\theta )   \, \log (Z  |  \theta)
+$$
+
+但是, 如果我们并不知道 latent variable 呢?
+$$
+\log p(X \mid\theta ) = \log  \int  p(X, Z |\theta ) \, dZ
+$$
+Speicially, $Z$ 是 discrete variable 的情况下: \[
+\log p(X \mid\theta ) =  \log   \sum_Z p(X, Z |\theta ) 
+\]
+这个做法称为 $Z$ 的 \textbf{marginalization}. 不得不进行 marginalization 使得想要优化这个式子变得困难 (因为 log 里套了积分/求和)
+
+
+
+
+
+
+
+
+
+\section{hw5 PCA}
+
+Here's your LaTeX with all instances of `\mathbf` removed:
+
+---
+
+We assume that the data is zero-centered, i.e.,  
+\[
+\overline{x} = \frac{1}{N} \sum_{n=1}^N x^{(n)} = 0
+\]
+Since we are projecting each data point \(x^{(n)} \in \mathbb{R}^D\) onto a \(K\)-dimensional subspace spanned by orthonormal basis vectors \(u_1, \dots, u_K\). The projection of \(x^{(n)}\) is:
+
+\[
+\widetilde{x}^{(n)} = UU^\top x^{(n)}
+\]
+Then the reconstruction error for each data point is:
+
+\[
+\|x^{(n)} - UU^\top x^{(n)}\|^2
+\]
+
+So the total average reconstruction error (distortion) is:
+
+\[
+\mathcal{J} = \frac{1}{N} \sum_{n=1}^N \left\|x^{(n)} - UU^\top x^{(n)}\right\|^2
+\]
+
+Define the data matrix \(X = [x^{(1)}, \dots, x^{(N)}] \in \mathbb{R}^{D \times N}\). Then by def of Frobenius norm we have:  
+\[
+\mathcal{J} = \frac{1}{N} \|X - UU^T X\|_F^2
+\]
+Using the identity:  
+\[
+\|A\|_F^2 = \text{tr}(A^T A)
+\]
+We have:  
+\[
+\mathcal{J} = \frac{1}{N} \text{tr} \left[ (X - UU^T X)^\top (X - UU^T X) \right]
+\]
+Let’s denote \(P := UU^T\) as the \textbf{projection matrix}. Then:
+\begin{align}
+    \mathcal{J} &=  \frac{1}{N} \text{tr} \bigg[ \big((I - P) X\big)^T  (I - P)  X\bigg]  \\
+   &=  \frac{1}{N} \text{tr} \left[X^T  (I - P)^T  (I - P) X\right]
+\end{align}
+Note that (as the property of projection matrix) we have:  
+\[
+P^T = (UU^T)^T =  UU^T =  P \quad \text{and}\quad P^2 = (UU^T UU^T) = UU^T = P
+\]
+Thus we also have: 
+$$
+(I - P)^T = I^T - P^T  = I-P
+$$
+so 
+$$
+ (I - P)^T  (I - P)  = I - 2P + P^2 = I - P
+$$
+This simplifies $\mathcal{J}$ to 
+\begin{align*}
+    \mathcal{J} = \frac{1}{N} \text{tr} \left[X^T  (I - P) X\right] &= \frac{1}{N} \text{tr} \left[X^TX - X^T P X\right] \\
+    & =  \frac{1}{N} \bigg( \text{tr} (X^TX)  - \text{tr}(X^T P X) \bigg)   \quad 
+    \text{by linearity of trace}\\
+    & = \frac{1}{N} \bigg( \text{tr} (X^TX)  - \text{tr}(X^T UU^T X) \bigg) \\
+    & = \frac{1}{N} \bigg( \text{tr} (X^TX)  - \text{tr}(U^T XX^T U) \bigg) \quad \text{since tr}(AB) = \text{tr}(BA)
+    \end{align*}
+Define the data covariance matrix: \[
+S : =\frac{1}{N} \sum_{n=1}^N\left({x}^{(n)}-\overline{{x}}\right)\left({x}^{(n)}-\overline{{x}}\right)^T = \frac{1}{N}XX^T \quad \text{(since data is zero-centered)}
+\]Then since $\text{tr}(X^TX) = \text{tr}(XX^T) $, we have: \[
+\mathcal{J} =   \text{tr} (S)  - \text{tr}(U^T S U) 
+\]
+Now, trace of a symmetric matrix equals the sum of its eigenvalues, so denoting $\lambda_1 \geq \cdots \geq \lambda_D$ as the eigenvalues of $S$, we have $\text{tr} (S) = \sum_{i=1}^D \lambda_i$; and we know that $\text{tr}(U^T S U)  =\sum_{i=1}^K \mathbf{u}_i^TS \mathbf{u}_i $, thus we simplify $\mathcal{J}$ to be:
+\[
+ \mathcal{J} = \sum_{i=1}^D \lambda_i - \sum_{i=1}^K \mathbf{u}_i^T  S \mathbf{u}_i 
+\]
+To minimize \(\mathcal{J}\) is to maximize \(\sum_{i=1}^K \mathbf{u}_i^T S \mathbf{u}_i\) over \(\{\mathbf{u}_i\}\). 
+Now we use the fact (from spectral theorem) that, the optimal solution $\mathbf{u}_i$ 's to maximize \(\sum_{i=1}^K \mathbf{u}_i^T S \mathbf{u}_i\) is to pick the top-$K$ eigenvectors of $S$. 
+This finishes the proof that: \[
+\mathcal{J}_{\min} = \sum_{i=1}^D \lambda_i - \sum_{i=1}^K \lambda_i = \sum_{k=K+1}^D \lambda_k 
+\]
+
+---
+
+### ✅ **Summary of Results**
+
+- We showed that:
+  \[
+  \mathcal{J} = \sum_{i=1}^D \lambda_i - \sum_{i=1}^K \mathbf{u}_i^\top \mathbf{S} \mathbf{u}_i
+  \]
+  (**Equation 10**)
+
+- The minimum reconstruction error is:
+  \[
+  \min_{\mathbf{U} \in \mathcal{U}} \mathcal{J} = \sum_{k=K+1}^D \lambda_k
+  \]
+  (**Equation 11**)
+
+- The optimal \(\mathbf{u}_i\)'s are the **top \(K\) eigenvectors** of \(\mathbf{S}\) corresponding to the largest eigenvalues.
+
+---
+
+Let me know if you want a visual or geometric interpretation of this result (e.g. projections and ellipsoids), or help with part (b) on eigenfaces!
+
+Thus \[
+\arg \max_{\mathbf{u}_1,\cdots ,\mathbf{u}_K} \mathcal{J} = \{ \}
+\]
+
+
+
+
+\section{hw5 EM GDA}
+
+Proof:
+
+The objective is:
+$$
+\mathcal{J}=\sum_{i=1}^l \log p\left(\mathbf{x}^{(i)}, y^{(i)}\right)+\lambda \sum_{i=l+1}^{l+u} \log \sum_{j \in\{0,1\}} p\left(\mathbf{x}^{(i)}, y^{(i)}=j\right)
+$$
+We define a distribution over the latent variable $y^{(i)}(l+1 \leq i \leq l+u)$ as:
+$$
+q_i\left(y^{(i)}=j\right)=Q_{i j}, \quad j \in\{0,1\}, \quad \text { where } \sum_{j=0}^1 Q_{i j}=1
+$$
+Since $\log$ is a concave function, $-\log$ is convex. Then by Jensen's ineq we have: $$- \log \mathbb{E}[X] \leq \mathbb{E}[-\log X]$$
+Writing the second term into expectation form, we have:
+\begin{align*}
+    \log \sum_{j \in\{0,1\}} p\left(\mathbf{x}^{(i)}, y^{(i)} =j\right)&=\log \sum_{j \in\{0,1\}} Q_{i j} \cdot \frac{p\left(\mathbf{x}^{(i)}, y^{(i)}=j\right)}{Q_{i j}}\\
+    & =   \log \sum_{j \in\{0,1\}} {q( y^{(i)})}   \cdot \frac{p\left(\mathbf{x}^{(i)}, y^{(i)}=j\right)}{q( y^{(i)})}           \\
+    & = \log \mathbb{E}_{y^{(i)}\sim q} \bigg[\frac{p(\mathbf{x},y)}{q(y)}\bigg ]  \\
+    & =    -\bigg(-\log \mathbb{E}_{y^{(i)}\sim q} \bigg[\frac{p(\mathbf{x},y)}{q(y)}\bigg ]     \bigg)   
+\end{align*} Since by Jensen's ineq we have: \[
+-\log \mathbb{E}_{y^{(i)}\sim q} \bigg[\frac{p(\mathbf{x},y)}{q(y)}\bigg ]     \leq \mathbb{E}_{y^{(i)}\sim q}\bigg[-\log \frac{p(\mathbf{x},y)}{q(y)} \bigg]
+\]
+Then reversing it by adding a negative sign: \[
+ -\bigg(-\log \mathbb{E}_{y^{(i)}\sim q} \bigg[\frac{p(\mathbf{x},y)}{q(y)}\bigg ]     \bigg)      \geq  - \mathbb{E}_{y^{(i)}\sim q} \bigg[-\log \frac{p(\mathbf{x},y)}{q(y)} \bigg]  = \mathbb{E}_{y^{(i)}\sim q} \bigg[\log \frac{p(\mathbf{x},y)}{q(y)} \bigg]
+\]
+Thus \begin{align*}
+        \log \sum_{j \in\{0,1\}} p\left(\mathbf{x}^{(i)}, y^{(i)} =j\right) & \geq  \mathbb{E}_{y\sim q(y)} \bigg[\log\frac{p(\mathbf{x},y)}{q(y)}\bigg ]         \\
+    &=  \sum_{j \in\{0,1\}} Q_{i j} \log \frac{p\left(\mathbf{x}^{(i)}, y^{(i)}=j\right)}{Q_{i j}}
+\end{align*}
+Since this holds for each $l+1 \leq i \leq l+u$, we have:
+\[
+\mathcal{J} \geq \sum_{i=1}^l \log p\left(\mathbf{x}^{(i)}, y^{(i)}\right)+\lambda \sum_{i=l+1}^{l+u}\sum_{j \in\{0,1\}} Q_{i j} \log \frac{p\left(\mathbf{x}^{(i)}, y^{(i)}=j\right)}{Q_{i j}}
+\]
+We define \[
+\mathcal{L}(\mu, \Sigma, \phi) := \sum_{i=1}^l \log p(x^{(i)}, y^{(i)}) + \lambda \sum_{i=l+1}^{l+u} \sum_{j \in \{0,1\}} Q_{ij} \log \frac{p(x^{(i)}, y^{(i)} = j)}{Q_{ij}} 
+\]
+Then we establish the lower bound: \[
+\mathcal{J} \geq \mathcal{L}(\mu, \Sigma, \phi) 
+\]
+
+
+
+\subsection{$\mu_k$}
+M step:
+For M step we want:
+\[
+\theta^{new} : = \operatorname{argmax}_\theta \mathcal{L}(q, \theta)
+\]
+For the parameter ${\mu}_k$, $k=0,1$, we check both the labelled and unlabelled part of variational lower bound $\mathcal{L}$.
+The labelled part: $ \sum_{i=1}^l \log p(x^{(i)}, y^{(i)}) $, where for each $i$, 
+\[
+p\left(\mathbf{x}^{(i)}, y^{(i)}\right)=\prod_{j \in\{0,1\}}\left[\frac{\phi_j}{(2 \pi)^{\frac{M}{2}}\left|{\Sigma}_j\right|^{\frac{1}{2}}} \exp \left(-\frac{1}{2}\left(\mathbf{x}^{(i)}-{\mu}_j\right)^{\top} {\Sigma}_j^{-1}\left(\mathbf{x}^{(i)}-{\mu}_j\right)\right)\right]^{\mathbb{I}\left[y^{(i)}=j\right]}	
+\]
+Thus ${\mu}_k$ contributes to $\mathcal{L}$ only when $y^{(i)}=k$. And thus the contribution is:
+\begin{align*}
+   & \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \log  \phi_j\,\mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right) \\&= \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \log  \mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right) + \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \log  \phi_j\
+\end{align*}
+And $\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \log  $ does not depend on $\mu_k$ also, so the contribution is:
+
+
+
+The unlabeled part: $\lambda \sum_{i=l+1}^{l+u} \sum_{j \in \{0,1\}} Q_{ij} \log \frac{p(x^{(i)}, y^{(i)} = j)}{Q_{ij}} $. Thus for this part, the contribution of ${\mu}_k$ to $\mathcal{L} $ is: 
+\begin{align*}
+    \lambda \sum_{i=l+1}^{l+u} Q_{i k}  \log   \frac{p(x^{(i)}, y^{(i)} =k)}{Q_{ik}} & =  \lambda \sum_{i=l+1}^{l+u} Q_{i k}  \log   \frac{\phi_k\, \mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right)  }{Q_{ik}}\\
+    &= \lambda \sum_{i=l+1}^{l+u} Q_{i k}  \bigg(\log  {\mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right)} + \log \phi_k   -  \log {Q_{ik}}  \bigg) 
+\end{align*}
+
+But since for the M-step we fix the distribution of the latent variable, $Q_{ik}$ is constant, so the contribution is: \[
+\lambda \sum_{i=l+1}^{l+u} Q_{i k}  \log  {\mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right)}
+\]
+So the total contribution of ${\mu}_k$ to $\mathcal{L}$ is: $$
+\mathcal{L}_{{\mu}_k} :=  \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \log \mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right)+\lambda \sum_{i=l+1}^{l+u} Q_{i k} \log \mathcal{N}\left(\mathbf{x}^{(i)} ; {\mu}_k, {\Sigma}_k\right)
+$$
+Now we optimize this w.r.t. ${\mu}_k$. Taking the gradient of the above w.r.t. ${\mu}_k$, knowing:
+$$
+\log \mathcal{N}\left(\mathbf{x} ; {\mu}_k, {\Sigma}_k\right)=-\frac{1}{2}\left(\mathbf{x}-{\mu}_k\right)^{\top} {\Sigma}_k^{-1}\left(\mathbf{x}-{\mu}_k\right)+\mathrm{const}
+$$
+Taking gradient: $$
+\nabla_{{\mu}_k} \log \mathcal{N}\left(\mathbf{x} ; {\mu}_k, {\Sigma}_k\right)={\Sigma}_k^{-1}\left(\mathbf{x}-{\mu}_k\right)
+$$
+So setting derivative of total contribution to zero:
+$$
+\mathcal{L}_{{\mu}_k} := 0 \implies\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] {\Sigma}_k^{-1}\left(\mathbf{x}^{(i)}-{\mu}_k\right)+\lambda \sum_{i=l+1}^{l+u} Q_{i k} {\Sigma}_k^{-1}\left(\mathbf{x}^{(i)}-{\mu}_k\right)=0
+$$
+Multiplying ${\Sigma}_k$ on the left we get: 
+\begin{align*}
+    \sum_{i=1}^l \mathbb{I}\left[y^{(i)} =k\right]\left(\mathbf{x}^{(i)}-{\mu}_k\right)+\lambda \sum_{i=l+1}^{l+u} Q_{i k}\left(\mathbf{x}^{(i)}-{\mu}_k\right) & =0 \\
+\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \mathbf{x}^{(i)}+\lambda \sum_{i=l+1}^{l+u} Q_{i k} \mathbf{x}^{(i)} &=\left(\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i k}\right) {\mu}_k 
+\end{align*}
+Then we get the optimal ${\mu}_k $ to update:
+$$
+{\mu}_k =\frac{\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right] \mathbf{x}^{(i)}+\lambda \sum_{i=l+1}^{l+u} Q_{i k} \mathbf{x}^{(i)}}{\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i k}}$$
+
+Intuition of what $\mu_k$ looks like intermes of $x^{(i)}$'s and pseudo-counts: $\mu_k$ here is the weighted average of  $\mathbf{x}^{(i)}$ that are in the class $k$, where for the labelled part, real counts is applied ($\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right]$, "how many data points is in class $k$) and for the unlabelled part, pseudo-counts is applied ($\sum_{i=l+1}^{l+u} Q_{i k}$, "how many data points are expected to be in class $k$ by prob modeling).
+And we use hyperparameter $\lambda $ to control whether labeled and unlabeld data is more important in this learning.
+If we only look at the labelled part, the $\mu_k$ is same as that we are doing GDA. If we only look at the unlabelled part, the $\mu_k$ is same as that we are doing GMM. 
+
+
+
+
+
+
+\subsection{$\phi$}
+
+Only the prior term $p(y)$ in the joint probability $p(\mathbf{x}, y)=p(y) p(\mathbf{x} \mid y)$ depends on $\phi$. So, we isolate those parts of $\mathcal{L}$ :
+
+Labeled part:
+
+$$
+\sum_{i=1}^l \log p\left(\mathbf{x}^{(i)}, y^{(i)}\right) \ni \sum_{i=1}^l \log \phi^{\mathbb{I}\left[y^{(i)}=1\right]}(1-\phi)^{\mathbb{I}\left[y^{(i)}=0\right]}
+$$
+
+
+This gives:
+
+$$
+\sum_{i=1}^l\left(\mathbb{I}\left[y^{(i)}=1\right] \log \phi+\mathbb{I}\left[y^{(i)}=0\right] \log (1-\phi)\right)
+$$
+
+
+Unlabeled part:
+From part (a), this contributes:
+
+$$
+\lambda \sum_{i=l+1}^{l+u} \sum_{j \in\{0,1\}} Q_{i j} \log \phi_j=\lambda \sum_{i=l+1}^{l+u}\left(Q_{i 1} \log \phi+Q_{i 0} \log (1-\phi)\right)
+$$
+
+\begin{align*}
+    \mathcal{L} &=\sum_{i=1}^l \log p(x^{(i)}, y^{(i)}) + \lambda \sum_{i=l+1}^{l+u} \sum_{j \in \{0,1\}} Q_{ij} \log \frac{p(x^{(i)}, y^{(i)} = j)}{Q_{ij}} \\
+    &= \sum_{i=1}^l \bigg( \log \frac{\phi_{y(i)}}{(2 \pi)^{\frac{M}{2}}\left|{\Sigma}_j\right|^{\frac{1}{2}}} - \frac{1}{2}\left(\mathbf{x}^{(i)}-{\mu}_j\right)^{\top} {\Sigma}_j^{-1}\left(\mathbf{x}^{(i)}-{\mu}_j\right) \bigg)  + \lambda \sum_{i=l + 1}^{l+u} \bigg[   Q_{i1} \log \phi + Q_{i0} \log (1-\phi) \bigg]\\
+      &= \sum_{i=1}^l \bigg( \log  \phi_{y(i)} - \log {(2 \pi)^{\frac{M}{2}}\left|{\Sigma}_j\right|^{\frac{1}{2}}} - \frac{1}{2}\left(\mathbf{x}^{(i)}-{\mu}_j\right)^{\top} {\Sigma}_j^{-1}\left(\mathbf{x}^{(i)}-{\mu}_j\right) \bigg)  + \lambda \sum_{i=l + 1}^{l+u} \bigg[   Q_{i1} \log \phi + Q_{i0} \log (1-\phi) \bigg]
+\end{align*}
+Removing the terms that $\phi$ does not depend on, i.e. $- \log {(2 \pi)^{\frac{M}{2}}\left| {\Sigma}_j\right|^{\frac{1}{2}}} - \frac{1}{2}\left(\mathbf{x}^{(i)}-{\mu}_j\right)^{\top} {\Sigma}_j^{-1}\left(\mathbf{x}^{(i)}-{\mu}_j\right) $ for each $i$, then we get the total contribution of $\phi$ to $\mathcal{L}$ is:
+\begin{align*}
+  \mathcal{L}_\phi & : = \sum_{i=1}^l \log  \phi_{y(i)}   + \lambda \sum_{i=l + 1}^{l+u} \bigg[   Q_{i1} \log \phi + Q_{i0} \log (1-\phi) \bigg] \\
+    & = \sum_{i=1}^l\left(\mathbb{I}\left[y^{(i)}=1\right] \log \phi+\mathbb{I}\left[y^{(i)}=0\right] \log (1-\phi)\right)+\lambda \sum_{i=l+1}^{l+u}\left(Q_{i 1} \log \phi+Q_{i 0} \log (1-\phi)\right) \\
+    & = \bigg( \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=1\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i 1}\bigg) \log \phi+  \bigg( \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=0\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i 0}\bigg)  \log (1-\phi)
+\end{align*}
+We set: \[
+A: =  \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=1\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i 1},\quad B := \sum_{i=1}^l \mathbb{I}\left[y^{(i)}=0\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i 0}
+\]
+To maximize $\mathcal{L}_\phi$ over $\phi$, we set $\nabla_{\phi} \mathcal{L}_{\phi} := 0$, get:
+\begin{align*}
+\nabla_{\phi} \mathcal{L}_{\phi} =\frac{A}{\phi}-\frac{B}{1-\phi} &= 0\\
+A(1-\phi) &=B \phi \\
+A & =A \phi+B \\
+  \phi&=\frac{A}{A+B}
+\end{align*}
+Then we get the optimal $\mu_k$ to update: \[ \phi= \frac{\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=1\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i 1}}{l+\lambda u}
+\]
+
+\textbf{Intuition of what $\phi$ looks like in termes of $x^{(i)}$'s and pseudo-counts:}
+$\phi$, the estimated prior probability of class 1, is estimated to be the fraction of examples out of all labeled and unlabeled points that are believed to be in class 1, and priority of labeled and unlabeled in the model is controlled by $\lambda$.
+Labeled examples contribute hard counts (via $\mathbb{I}\left[y^{(i)}=1\right]$ ), while unlabeled examples contribute soft counts via $Q_{i 1}$.
+The denominator is the total number of effective examples, including both labeled and scaled unlabeled.
+
+
+By similar reasoning we can get:
+\[
+{\Sigma}_k=\frac{\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right]\left(\mathbf{x}^{(i)}-{\mu}_k\right)\left(\mathbf{x}^{(i)}-{\mu}_k\right)^{\top}+\lambda \sum_{i=l+1}^{l+u} Q_{i k}\left(\mathbf{x}^{(i)}-{\mu}_k\right)\left(\mathbf{x}^{(i)}-{\mu}_k\right)^{\top}}{\sum_{i=1}^l \mathbb{I}\left[y^{(i)}=k\right]+\lambda \sum_{i=l+1}^{l+u} Q_{i k}}
+\]
+
+
+Intuition of what $\Sigma_k$ looks like in termes of $x^{(i)}$'s and pseudo-counts: 
+${\Sigma}_k$ is esimated by the (not strictly) data covariance matrix of sample data points in class $k$. 
+For labeled examples, it literarily sample from data points that are belong to class $k$; for unlabeled examples, it takes $\sum_{i=l+1}^{l+u} Q_{i k}$ through probability modeling as pseudo-counts. The denominator is the total effective counts (hard and pseudo, importance weighted by $\lambda$ between labelled and unlablled) of class $k$, ensuring it's a proper average. Then the whole matrix can be viewed as data covariance matrix (but not strictly, since it has pseudo counts).

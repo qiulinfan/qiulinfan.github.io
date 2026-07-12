@@ -1,0 +1,301 @@
+:root {
+  --structure: #3c71b7;
+  --main: #00a652;
+  --second: #ff8618;
+  --third: #00aef7;
+  --wine: #800000;
+  --paper: #ffffff;
+  --ink: #202124;
+  --muted: #68707a;
+  --rule: #d9e0e8;
+  --def-bg: #f2fbf5;
+  --thm-bg: #fff7ee;
+  --prop-bg: #eefbff;
+  --intro-bg: #eef5ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color: var(--ink);
+  background: #f5f7fa;
+  font-family: "Times New Roman", SimSun, "Noto Serif", serif;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: var(--wine);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.site {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.toc {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 28px 24px;
+  border-right: 1px solid var(--rule);
+  background: #fbfcfe;
+  overflow: auto;
+}
+
+.toc-title {
+  margin: 0 0 18px;
+  color: var(--structure);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.toc li {
+  margin: 0.35rem 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.toc a {
+  color: #344256;
+}
+
+.page {
+  width: min(980px, calc(100vw - 320px));
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px rgba(35, 50, 72, 0.04);
+}
+
+.doc-header {
+  text-align: center;
+  border-bottom: 2px solid var(--second);
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+}
+
+.doc-header h1 {
+  margin: 0;
+  color: var(--structure);
+  font-size: 2.35rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  margin: 18px 0 0;
+  color: #6b6f77;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.meta {
+  margin: 16px 0 0;
+  color: #828891;
+  font-size: 0.95rem;
+}
+
+h2,
+h3,
+h4 {
+  color: var(--structure);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin: 34px 0 16px;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
+h3 {
+  margin: 30px 0 10px;
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+
+h4 {
+  margin: 22px 0 8px;
+  font-size: 1.22rem;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0.65rem 0;
+}
+
+.intro {
+  margin: 18px 0 28px;
+}
+
+.intro-label {
+  display: inline-block;
+  padding: 3px 14px;
+  color: #fff;
+  background: var(--structure);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.intro-body {
+  border: 1px solid var(--structure);
+  background: var(--intro-bg);
+  padding: 14px 18px;
+}
+
+.intro-body ul {
+  margin: 0;
+  padding-left: 1.35rem;
+}
+
+.intro-body li::marker {
+  color: var(--structure);
+}
+
+.env {
+  margin: 18px 0 20px;
+}
+
+.env-label {
+  display: inline-block;
+  min-width: 8.5rem;
+  padding: 2px 12px;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.env-body {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  margin-top: 0;
+  padding: 14px 18px 12px;
+}
+
+.env-mark {
+  display: block;
+  margin-top: 8px;
+  text-align: right;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.definition {
+  color: var(--main);
+}
+
+.definition .env-label {
+  background: var(--main);
+}
+
+.definition .env-body {
+  background: var(--def-bg);
+}
+
+.theorem {
+  color: var(--second);
+}
+
+.theorem .env-label {
+  background: var(--second);
+}
+
+.theorem .env-body {
+  background: var(--thm-bg);
+}
+
+.proposition {
+  color: var(--third);
+}
+
+.proposition .env-label {
+  background: var(--third);
+}
+
+.proposition .env-body {
+  background: var(--prop-bg);
+}
+
+.env-body > * {
+  color: var(--ink);
+}
+
+.inline-env {
+  margin: 0.85rem 0;
+}
+
+.inline-label {
+  color: var(--main);
+  font-weight: 700;
+}
+
+.proof .inline-label,
+.remark .inline-label {
+  color: var(--second);
+}
+
+.solution .inline-label {
+  color: var(--main);
+}
+
+.exercise .inline-label {
+  color: var(--main);
+}
+
+.math-display {
+  overflow-x: auto;
+  margin: 0.7rem 0;
+  text-align: center;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 860px) {
+  .site {
+    display: block;
+  }
+
+  .toc {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .page {
+    width: 100%;
+    padding: 32px 20px 56px;
+  }
+
+  .doc-header h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    text-align: left;
+    font-size: 1.55rem;
+  }
+}

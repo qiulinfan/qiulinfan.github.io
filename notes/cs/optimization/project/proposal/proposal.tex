@@ -1,0 +1,88 @@
+% Source: http://tex.stackexchange.com/a/150903/23931
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\renewcommand{\headrulewidth}{1.5pt}
+%\usepackage{tgschola} % or any other font package you like
+\usepackage{times}
+\usepackage{titlesec}
+\titlespacing*{\section}
+{0pt}{0.5ex}{0.7ex}
+%\renewcommand{\familydefault}{\rmdefault}
+\usepackage{lastpage}
+\usepackage{color}
+\bibliographystyle{ieee}
+\usepackage[backend=biber,style=numeric]{biblatex} 
+\addbibresource{reference.bib} 
+\usepackage{graphicx}
+
+\input{qq_defs}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{%
+  \footnotesize
+  \fontsize{12}{12}
+  \large \soptitle\hspace{1cm}
+  \institution \hspace{1.2cm}
+  \yourname \hspace{1.2cm}
+  \youremail
+  }
+\fancyfoot[C]{\thepage}
+
+\newcommand{\institution}{Project Proposal}
+\newcommand{\soptitle}{EECS 559}
+\newcommand{\yourname}{Qiulin Fan}
+%\newcommand{\yourweb}{https://www.abcd.com/}
+\newcommand{\youremail}{rynnefan@umich.edu}
+
+\newcommand{\statement}[1]{\par\medskip
+  \underline{\textcolor{blue}{\textbf{#1:}}}\space
+}
+
+
+\begin{document}
+\begin{center}
+    {\LARGE \textbf{Paper Review: A Geometric Analysis of Neural Collapse with Unconstrained Features\cite{zhu2021geometricanalysisneuralcollapse} }} \\
+    \vspace{1.5em} % 调整间距
+    {\large Qiulin Fan} \\
+\end{center}
+
+
+\section{Motivation}
+Deep neural networks have achieved remarkable success across various tasks, yet many aspects of their training dynamics remain poorly understood. A striking phenomenon observed during the terminal phase of training, termed \emph{Neural Collapse} (NC) is in
+
+—reveals that the last-layer features converge to their respective class means, and these means, together with the corresponding classifiers, form a Simplex Equiangular Tight Frame (ETF). This discovery not only deepens our understanding of the geometry underlying deep network representations but also suggests potential avenues for improving network design, such as fixing the final classifier and reducing feature dimensions to decrease computational cost without sacrificing performance.
+
+\section{Supporting Materials}
+The core material for this review is the paper “A Geometric Analysis of Neural Collapse with Unconstrained Features” (Zhu et al., 2021). The paper provides a rigorous theoretical framework by employing an unconstrained feature model to study the loss landscape of the regularized cross-entropy loss. It demonstrates that the global optima correspond exactly to the NC phenomenon while establishing that all non-global critical points are strict saddles. Empirical validations on datasets like MNIST and CIFAR-10 using architectures such as ResNet18 further corroborate the theoretical insights, showing that NC emerges regardless of the optimization algorithm used (e.g., SGD, Adam, LBFGS). Additional supporting literature on optimization landscapes, implicit bias in deep learning, and related empirical studies will also be reviewed to provide a comprehensive context.
+
+\section{Plans}
+This project proposal outlines a paper review and critical analysis of the Neural Collapse phenomenon with the following steps:
+
+\textbf{Literature Review:}
+
+Summarize the key theoretical and experimental results from Zhu et al. (2021), highlighting the proof that global minimizers correspond to Simplex ETFs and that all other critical points are strict saddles.
+Contextualize these findings within the broader landscape of research on deep network optimization and implicit regularization.
+\textbf{Critical Analysis:}
+
+Evaluate the assumptions underlying the unconstrained feature model and discuss its applicability to practical, overparameterized networks.
+Analyze how the NC phenomenon relates to network generalization and robustness, noting any discrepancies between training dynamics and test performance.
+\textbf{Implications and Extensions:}
+
+Explore potential applications of NC insights in network design, such as fixing the last-layer classifier or reducing feature dimensionality.
+Identify open questions and propose future research directions, including extending the analysis to earlier layers of the network and investigating the impact on adversarial robustness.
+\textbf{Drafting the Review:}
+
+Compile the review findings into a concise, one-page proposal (this document) followed by a comprehensive analysis that synthesizes theoretical insights with experimental evidence.
+Outline experimental setups for potential follow-up studies that leverage NC to enhance network efficiency.
+Through this project, we aim to deliver a clear, critical review of the Neural Collapse phenomenon that not only elucidates its theoretical foundations but also highlights its practical implications and future research potential.
+
+
+
+
+
+\printbibliography
+\end{document}

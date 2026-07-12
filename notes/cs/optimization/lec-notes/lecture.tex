@@ -1,0 +1,209 @@
+\documentclass[lang=cn,11pt]{elegantbook}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{pdfpages}
+
+\title{ECE 559: Optimization methods in SIPML}
+\subtitle{25 Win, instructed by Qing Qu}
+
+\begin{document}
+\frontmatter
+\tableofcontents
+\mainmatter
+
+\chapter{introduction}
+
+
+
+
+
+\chapter{optimization problems overview}
+
+
+
+我们需要 sparse recovery 的原因: 我们有一个 measurement matrix $A$, 比如说: $A$ 是一个 compression, $x$ 是一个原始的 high dim data, 我们用 $A$ 来压缩 $x$ 成为一个 dimension lower 的 $y$; 或者说, 我们想要把 $x$ denoise.
+
+
+
+
+
+\begin{definition}{local minimizer, global minimizer}
+    对于 $f: C \rar \bR$ where $C$ denotes the constrian set, 
+    我们称 $x_*$ 为一个 \textbf{local minimizer of $f$ over $C$}, if for some \textbf{open ball} (with respect to our norm) s.t.
+    $$
+    f(x_*) \leq f(x) \;\; \forall x \in B_\epsilon(x_*) := \{z \in C : ||z-x_*|| \leq \epsilon  \}
+    $$
+    我们称 $x_*$ 为一个 global minimizer of $f$ over $C$, if 
+    $$
+    f(x_*) \leq f(x) \;\; \forall x\in C
+    $$
+\end{definition}
+
+\begin{theorem}
+\textbf{if $f$ is convex, then all local minima are global minima.}
+\end{theorem}
+\textbf{Convex function 的 most important property: All local minima are global minima.}
+\begin{proof}
+ In hw 1.
+\end{proof}
+
+
+
+\begin{theorem}{任意 $L_p$ norm 都是 convex function}
+    任意 $L_p$ norm 都是 convex function
+\end{theorem}
+\begin{proof}
+    Directly follows from triangle ineq and homogeneity.
+\end{proof}
+
+
+
+
+
+
+
+\section{smooth/nonsmooth problems}
+
+The ridge regression problem:
+
+\[
+\min_{x\in \bR^n} f(x) = \frac{1}{2} ||y - Ax||_2^2 + \lambda ||x||_2^2
+\]
+这是一个 smooth problem, for sure. 
+
+The Lasso 
+
+
+$L_1$ norm 并不是 differentiable 的, 而 $L_2$ norm 则是 differentiable 的.     
+
+
+
+本课程的核心问题就是两类:
+
+1. nonsmooth convex problem
+2. smooth nonconvex problem
+本课程前半段会 focus on 前者, 后半段会 focus on 后者.
+
+
+
+
+
+
+
+
+
+
+
+\chapter{basic tools}
+\section{elements of matrix analysis}
+
+\begin{example}
+Matrix completion: 我们得到了一个 matrix 的一些 entries, 但是另一些 entries 是 empty 的. 比如用户给一个 set 中的电影打分, 其中每个用户肯定没有看完全部的电影.
+\pic[0.3]{assets/lec3(1).png}
+
+
+
+\begin{definition}{positive (semi)definite}
+我们称一个 symmetric matrix $A \in \bR^{n\times n}$ 是 positive definite (p.d.) 的, if 
+$$x^T Ax >0   \;\; \forall x\in \bR^n$$  写作 $$
+A \succ 0 
+$$
+
+稍弱一些, 称它是 positive semidefinite (p.s.d.) 的, if
+$$
+x^T A x \geq 0 \;\; \forall x\in\bR^n
+$$写作 
+$$
+A \succeq 0
+$$
+
+\end{definition}
+
+\end{example}
+
+
+
+\section{optimal condtions}
+\subsection{optimal conditions for unconstrained problems}
+\begin{theorem}{general optimal conditions for unconstraint problems}
+
+    if $f $ is $C^1$, then a necessary condition for $f(x_*)$ being a local minimizer is $$\nabla f(x_*) = 0$$.
+     if $f $ is $C^2$, then a necessary condition for $f(x_*)$ being a local minimizer is 
+     $$
+     \nabla f(x_*) = 0, \nabla ^2f(x_*) \succeq 0
+     $$
+
+     If $f$ is $C^2$, then a \textbf{sufficient condition} for $f(x_*)$ being a local minimizer is 
+     $$
+     \nabla f(x_*) = 0, \nabla ^2f(x_*) \succ 0
+     $$
+     
+\end{theorem}
+
+
+\begin{theorem}{global optimality of \textbf{convex functions} for unconstraint problems}
+    if $f: \mathbb{R}^n \rightarrow \mathbb{R}$ is convex, then a local minimizer is a global minimizer; also, if $f$ is strictly convex, then the global minimizer is unique.\\
+    Also, $x_*$is a global minimizer \textbf{iff} $$
+    0 \in \partial f(x_*)
+    $$
+. Also, if $f$ is $C^1$, then $\nabla f(x_*) = 0 \implies$ $x_*$ is a global minimizer.
+    
+\end{theorem}
+
+
+
+
+\subsection{optimal conditions for constrained problems}
+
+\begin{definition}{constrained problem}
+    \[
+    \min_x f(x) ,
+    \]
+    \[s.t. r_i(x) =0, h_j  \leq 0\]
+    $\forall 1 \leq i \leq p,1\leq j \leq q$.
+
+\end{definition}
+
+
+
+
+
+\section{rate of convergence}
+
+After designing (a few) optimization algorithms, we need to know which one has the optimal complexity. And a critical part of complexity is the \textbf{rate of convergence.}
+
+Solving an optimization problem via iteration methods produce a sequence of points
+$$
+x_0, x_1, x_2, \cdots
+$$
+starting from initial point $x_0$.
+
+
+Usually we cannot obtain an optimal sol (e.g. gradient descent), and we can define some precision value $\epsilon$.
+
+$$
+complexity  = \text{cost per iteration} \times \#iterations
+$$
+
+The convergence rate 可以被 measured by:
+\begin{enumerate}
+    \item distance to a minimizer: (通常其实不知道)$$|| x_k - x_* || \leq \epsilon$$
+    \item sub-optimality in objective function: $$||f( x_k) -f (x_*) || \leq \epsilon$$
+    \item gradient: $$ || \nabla f(x_k)     || \leq \epsilon$$
+\end{enumerate}
+
+\begin{definition}{rate of convergence}
+We say the $Q$-convergence is of order $p (\geq 1)$ and with factor $\gamma$, if 
+    
+\end{definition}
+
+
+
+
+
+
+
+\end{document}

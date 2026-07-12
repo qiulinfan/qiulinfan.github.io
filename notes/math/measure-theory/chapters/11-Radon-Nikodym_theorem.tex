@@ -1,0 +1,443 @@
+\chapter{Radon-Nikodym theorem}
+\section{Radon-Nikodym Theorem [Fol 3.2]}
+以下是两个 instructive 的 questions:\\
+Question 1: Given 三个 s.m. on 
+\[
+   \mu =   m +  \sum_{j=1}^\infty c_j \delta_{x_j} + \mu_{Cantor}
+    \]
+on $(\mathbb{R},\mathcal{B}(\mathbb{R}))$, 我们可否从 $\mu$ 中 recover 其中一个 measure, without 另外两个 measure?  
+\[
+ \mu_{Cantor} = (?) \mu
+\]
+
+
+Question 2: 给定一个任意的 p.m. $\mu$, 以及一个任意的 s.m. $\nu$ on $(X,\mathcal{A})$, \\
+如何判断是否存在一个 $f \in L^1 (\mu)$, 使得 \[
+\nu(E) = \int_E f \, d\mu
+\]
+以及, 如果存在, 如何找到这样的一个 $f$? 
+
+
+
+\subsection{ absolutely continuous: $\nu \ll \mu$}
+\begin{definition}{a s.m. absolutely continuous w.r.t. a p.m.}
+    给定 p.m. $\mu$ 和 s.m. $\nu$ on $(X,\mathcal{A})$, 我们称 $\nu$ is absolutely continuous w.r.t. $\mu$, 如果 \[
+ \forall E\in \mathcal{A},\quad    \mu(E) = 0\implies \nu(E) = 0
+    \]
+    即: $\nu$ 的 null sets 包含了 $\mu$ 的所有 null sets. ($\nu$ 拥有比 $\mu$ 严格更多的 null sets)\\
+    写作 \[
+    \nu \ll \mu
+    \]
+\end{definition}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/ch3-pics-absctn.png}
+    \caption{mutually singular and absolutely continuous}
+    \label{mutually singular and absolutely continuous}
+\end{figure}
+\textbf{$\nu \bot  \mu$ 表示的是 $\nu$ 和 $\mu$ 出现变化的区域完全不同}, 而 \textbf{$\nu \ll \mu$ 表示的是 $\nu$ 出现变化的区域完全包括在 $\mu$ 出现变化的区域里 }(因为 $\mu$ 不变化的区域被包括在 $\nu$ 不变化的区域里).
+ 
+\begin{example}
+    $f \in L^1 (\mu)$, $\nu(E) : = \int_E f \, d\mu$, 由积分定义出的 s.m., 总是满足 \[
+    \nu \ll \mu
+    \]
+\end{example}
+\begin{example}\[
+    \nu_1 : = m,\quad \nu_2 := \sum_{j=1}^\infty c_j \delta_{x_j},\quad \nu_3 : = \mu_{Cantor}
+    \]
+    这三个 measure 有 \[
+    \nu_i \not \ll \nu_j \quad \forall i\not = j
+    \]
+    它们是 mutually singular 的. 对于其中任意两个 $\nu_i,\nu_j$, 本身已经存在一个划分使得 $\nu_i$ 在 $E$ 上是 null 的而 $\nu_j$ 在 $E^c$ 上是 null 的. 那么如果 $\nu_i \ll \nu_j$, 则说明 $\nu_i$ 在 $E^c$ 上也是 null 的, 那么 $\nu_i$ 在整个 $X$ 上都是 null 的, 说明 $\nu_i$ 是一个 trivial measure.\\
+    显然, 这里三个 measure 都不是 trivial measure, 因而它们之间没有 abs ctn 的关系.
+\end{example}
+
+\begin{proposition}{absolutely continuous 的性质}
+\begin{itemize}
+    \item \[ |\nu | \ll \mu \iff  \nu ^+ \ll \mu \text{ and } \nu^- \ll \mu  \](容易证明)
+    \item \[  \nu \perp \mu \text{ and } \nu \ll \mu \implies \nu = 0  \](刚才已经证明)
+\end{itemize}    
+\end{proposition}
+我们可以把 absolutely ctn 的概念从一个 s.m. wrt 一个 p.m. 扩展到一个 s.m. wrt 一个 s.m., by taking 后面这个 s.m. 的 total variation measure: \[
+\text{say } \nu \ll \mu, \text{ if }  \nu \ll |\mu|
+\]
+但是 Folland 表示我们之后并不需要用到这个更 general 的定义. 所以不用在意它.
+
+\subsection{$\nu \ll \mu$ 的等价条件}
+question: 为什么这个定义要叫做 absolutely continuous, 它和 continuous 这个词到底有什么关系. 下面这个 theorem 说明了这一点.
+\begin{theorem}{why it is called "absolutely continuous"}
+    令 $\nu$ 为一个 \textbf{finite s.m.}, $\mu$ 为一个 \textbf{p.m.} on $(X,\mathcal{A})$.\\
+    Claim: \[\nu \ll \mu \iff \forall \, \epsilon>0,\, \exists  \, \delta > 0 \;\text{s.t.}  \;|\nu(E)| <\epsilon  \text{ whenever } \mu(E)< \delta  \]
+\end{theorem}
+\begin{remark}
+类比: $f(x)$ is \textbf{uniform ctn function} of $x$: 对于任意 $\epsilon$ 都存在 $\delta$ 使得 $|f(y) - f(x)| < \epsilon$ whenever $|x-y| < \delta$.\\
+而 finite s.m. 的 absolutely ctn  $\nu \ll \mu$ 也是一个连续性表达: 我们以 measure $\mu$ 作为集合大小的度量基准, \textbf{对于任意集合, 对其进行很小的调整改变其 $\mu$-大小 (比如去掉/并上一个 $\mu$-小集合), $\nu$ 的值的改变相对于这个 $\mu$-大小调整是连续的. (可以更改这个$\mu$-大小调整尺度, 使得 $\nu$ 的值的改变任意小)}\\
+我们经过思考可以发现, 这和我们之前说的 \textbf{"$\nu \ll \mu$ 表示的是 $\nu$ 出现变化的区域完全包括在 $\mu$ 出现变化的区域里" 是一致的}, 因为这即说明对于 finite $\nu$ 受到 $\mu$ 的可控制性 (不存在失控的区域): 既然只有在 $\mu$ 的 variation 区域才出现 variation, 那么取它们相对 variation 的最大比例, 那么总是可以通过 $\mu$, 把 $\nu$ 的 variation 控制在这个 variation 比例之上.
+\end{remark} 
+\begin{proof}
+    (i) to (ii): 我们使用反证, 利用 \textbf{limsup}.\\
+    Assume (i), 并 suppose for contradiction that (ii) 不成立.\\
+    那么存在 $\epsilon > 0$ s.t. 对于任意 $n \in \mathbb{N}$, 都存在一个 seq $E_n \in \mathcal{A}$ s.t. $\mu(E_n) \leq \frac{1}{2^n}$, $\nu(E_n) \geq \epsilon$ for each $n$.\\
+    Set  \[
+    E :  = \limsup_n E_n  = \bigcap_{n=1}^\infty \bigcup_{k=n}^\infty E_k
+    \]
+    我们标记后面的每个集合为: \[
+    F_n: = \bigcup_{k=n}^\infty E_k
+    \]
+    于是 \[
+    \mu(F_n) \leq \sum_{k=n}^\infty \frac{1}{2^k} = \frac{1}{2^{n}}
+    \]
+    从而得到, \[
+    \mu(E) = 0
+    \]
+    而由于 $\nu(F_n) \geq \epsilon$ for each $n$, we have \[
+    \nu(E) \geq \epsilon
+    \]这与 $\nu \ll \mu$ contradict. 从而得证: $\nu \ll \mu \implies \delta$-$\epsilon$ argument.\\
+    而 $\delta$-$\epsilon$ argument $\implies$ $\nu \ll \mu$ 是 trivial 的.
+\end{proof}
+
+
+\subsection{RN derivative and RN Thm}
+\subsection{RN derivative: (if exist) express how $\nu$ can be induced from $\mu$  }
+\begin{definition}{Radon-Nikodym derivative}
+    对于 \(\begin{cases}
+        \text{p.m. } \mu\\
+        \text{s.m. } \nu
+    \end{cases} \) on $(X,\mathcal{A})$, 如果存在一个 $\mathcal{A}$-measurable $f$, 使得 $\nu$ 为 the \textbf{signed measure $\nu$ induced by $\mu$ and $f$:}  \[
+    \nu(E) = \int_E f\, d\mu,\quad \forall E \in \mathcal{A}
+    \]
+    则称 \textbf{$f$ is the Radon-Nikodym Derivative of $\nu$ w.r.t. $\mu$.} 写作 \[
+    f = \frac{d\nu}{d\mu}
+    \]或者  \[
+    d\nu = f d\mu
+    \]
+\end{definition}
+Radon-Nikodym derivative $f$ 刻画的是\textbf{在每一点 $x\in X$ 上, signed 测度 $\nu$ 相对于测度 $\mu$ 的变化速率.}\\
+We sometimes call $\nu$ \textbf{the signed measure $f \, d\mu$.}\\
+\begin{example}
+ 取 LS measure $\mu_F$ on $(\mathbb{R},\mathcal{B}(\mathbb{R}))$, with $F = e^{2x}$.\\
+ 那么: \[
+ \mu_F ((a,b)) = e^{2b}-  e^{2a} = \int_a^b 2e^{2x} \, dx
+ \]
+ 我们可以 check: \[
+ \mu_F (E) =  \int_E 2e^{2x} \, dx,\quad \forall E \in \mathcal{B}(\mathbb{R})
+ \]
+ 因而 \[
+ \frac{d\mu_F}{dm} = 2e^{2x} = F'(x)
+ \]
+\end{example}
+
+\begin{proposition}
+    任取 measure $\mu$, 以及 extended $\mu$-integrable function $f$, 那么the \textbf{signed measure $\nu$ induced by $\mu$ and $f$} 即 \(\nu (E) : = \int_E f\, d\mu\) 一定有: \[    \nu \ll \mu    \]
+\end{proposition}
+\begin{proof}
+    trivial.
+\end{proof}
+
+
+
+Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym Theorem 正是这个问题的答案.
+\subsection{RN Thm: $\sigma$-finite $\nu \ll \mu \iff $ 存在 RN derivative }
+\begin{theorem}{Radon-Nikodym Theorem}
+    对于 \textbf{$\sigma$-finite} \(\begin{cases}
+        \text{p.m. } \mu\\
+        \text{s.m. } \nu
+    \end{cases} \) on $(X,\mathcal{A})$, \[
+    \nu \ll \mu \iff \exists  \text{ ext. } \mu \text{-intble }f = \frac{d\nu}{d\mu}
+    \]
+    并且这个 RN derivative \textbf{$f$ 是 \textbf{unique 的, in $\mu$-a.e. sense.} }(即在 $\mu$ 的一个 null set 之外唯一).
+\end{theorem}
+Radon Nikodym Theorem 表示, 对于 $\sigma$-finite 的 $\nu$ 和 $\mu$, RN derivative 存在(并且一定唯一)当且仅当 $\nu \ll \mu$. 即对于任意两个 abs ctn 的 measure, 只要它们 $\sigma $-finite, 就可以用一个具体的函数 $f$ 来表达它们之间的关系.\\
+
+
+要证明 RN Theorem, 我们还需要一些 Lemma.
+
+\begin{lemma}
+    如果 $\nu,\mu$ 都是 \textbf{finite positive} measure on $(X,\mathcal{A})$ 并且 $\mu \not \bot \nu$, 那么一定存在 $\epsilon > 0$ 以及 $E\in \mathcal{A}$ with $\mu(E) > 0$ s.t. \[
+    \nu \geq \epsilon \mu\quad \text{on }E 
+    \]
+\end{lemma}
+\begin{proof}
+We look at $\nu - \frac{1}{n}\mu$ for each $n \in \mathbb{N}$. 它们都是 finite signed measure for sure.\\
+考虑 Hahn decomposition $P_n \sqcup N_n$ for each $n$. 并 set: \[
+P : = \bigcup_n P_n,\quad N : = \bigcap_n N_n = P^c
+\]
+于是: $N$ 对于任意 $n$, 都是 $\nu - \frac{1}{n}\mu$ 的 negative set.\\
+这说明: \[
+\forall n,\,\, 0 \leq \nu(N) \leq  \frac{1}{n} \mu(N)
+\]
+因而一定有: \[
+\nu(N) = 0
+\]
+(这是显然的, 因为 $N$ intersect 了所有的 $\nu - \frac{1}{n}\mu$ 的负集, 在 $n$ 大的时候这个 diff measure 基本等于 $\nu$, 而 $\nu$ 本身是 positive 的, 那么显然 $\nu(N) = 0$.)\\
+Case 1: 如果 $\mu(P) = 0$, 那么 $\mu \bot \nu$.\\
+Case 2: Otherwise then 存在某个 $\mu(P_n) > 0$, 说明 $P_n$ 是  $\nu - \frac{1}{n} \mu$ 的 positive set, 因而在 $P_n$ 上, $\nu \geq \frac{1}{n} \mu$.
+\end{proof}
+这个 Lemma 表明, 对于两个 positive measures, 它们要么 mutually singular, 要么一定存在某个 nontrivial 的集合上, 一个能够以一定比例 bound 另外一个. \\
+这是因为, 只要这两个 positive measures 不是 mutually singular 的 (说明它们有共同的存在变化的区域), 那么 note that positive measure 随着集合增大一定是增大的, 因而直觉上肯定存在某个子集, 使得其上, 它们其中一个能够以一定比例 bound 另外一个.\\
+
+现在我们证明 RN Thm:
+\begin{proof}
+    \textbf{of RN Thm:}\\
+    \textbf{Step 1: 首先确认 uniqueness, if exist.}\\
+    首先我们 assume $\nu,\mu$ 都是 finite p.m.\\
+    我们先 verity \textbf{uniqueness}: 假设 $$d \nu = f_1 \,d \mu = f_2 \, d\mu,\quad f_i \text{ ext. }\mu \text{-intble} $$
+    那么令 $g:  = f_1 - f_2$, 有\[
+    \int_E g \, d\mu = 0\quad \forall E \in \mathcal{A}
+    \]所以 $g = 0 $ a.e.\\
+    This shows the uniqueness.\\
+   然后我们 verity \textbf{existence}: \\
+   我们考虑 \[
+   \mathcal{F} : = \bigg\{ f \in L^+(\mu) : \int_E f\, d\mu \leq \nu(E),\;\forall    E \in \mathcal{A} \bigg\}
+   \]
+  We can define partial order on $\mathcal{F}$: 称 $f_1 \leq f_2$ if $f_1(x) \geq f_2(x)$ for a.e. $x$.\\
+  显然 $f = 0$ 是 $\mathcal{F}$ 中最小的元素.
+Idea: 我们想要得到 $\mathcal{F}$ 中最大的元素 $f_{max}$, 看看是否能取到总是有 \[
+   \int _E f_{max} d\mu = \nu(E)
+   \]\textbf{Step 2: Claim} $f_1, f_2 \in \mathcal{F} \implies f:=\max\{f_1, f_2 \} \in \mathcal{F}$\\
+Proof of Claim: for fixed $f_1,f_2$, 考虑 $A: = \{ f_1 > f_2 \}$. 任取 $E \in \mathcal{A}$, 有: \[
+\int_E f\, d\mu = \int_{E \cap A} f_1\, d \mu  + \int_{E \cap A^c}  f_2 \, d\mu \leq \nu(E\cap A) + \nu(E\cap A^c) = \nu(E)
+\]
+Claim proved.\\
+\textbf{Step 3: 构造出 potential RN derivative: 最大的元素 $f \in \mathcal{F}$ }
+现在我们 set \[
+a: = \sup \bigg\{ \int f\, d\mu \mid f\in \mathcal{F} \bigg\}
+\]
+显然有: $$1\leq a \leq \nu(X)$$ pick $g_n \in \mathcal{F}$ s.t. $\int g_n \, d\mu \nearrow a$, 并且 set\[
+f_n : = \max \{ g_1,\cdots, g_n\}
+\]for each $n$.\\
+显然有: \[
+f_n \leq f_{n+1},\quad \int f_n \, d\mu \nearrow a
+\] 并且根据我们的 claim, 所有 $f_n \in \mathcal{F}$.\\
+根据可测函数的性质, \[
+\exists f : = \lim_n f_n \in L^+(\mu), \text{ and } \in L^1(\mu) \text{ (since } \mu \text{ finite)}
+\]并且根据 MCT, \[
+\int f \, d\mu = \lim_{n\to \infty} \int f_n \, d\mu = a
+\]
+并且, 对于任意 $E$ measurable, 根据 MCT 也有 \[
+\int_E f \, d\mu = \lim_{n\to \infty} \int_E f_n \, d\mu \leq \nu(E)
+\]我们 set: \[
+\nu'(E) : = \int_E f\, d\mu
+\]
+\textbf{Step 4: 证明 $\nu' = \nu$.}\\
+Proof: 首先我们知道 by def $\nu' \leq \nu$. \\
+Set: \[
+\tilde{\nu} : = \nu - \nu' \geq 0
+\]By our assumption $\nu \ll\mu$, 从而也有  $\tilde{\nu} \ll \mu $.\\
+因而只需要证明 $\tilde{\nu} \bot \mu$, 就可以得到 $\tilde{\nu} = 0$, 从而证明出 $\nu' = \nu$.\\
+这个时候 Lemma 就起了作用: \\
+Suppose for contradictin that $\tilde{\nu} \not \bot \mu$, 那么 by lemma, 由于 $\tilde{\nu}$ 是一个 finite positive measure, $\mu$ 也是一个 finite positive measure, 则存在 $\epsilon >0$ 和 nontrivial measurable $E$, 使得 $\tilde{\nu} \geq \epsilon \mu$ on $E$.\\
+于是: \[
+g: = f + \epsilon \chi_E \in \mathcal{F}
+\]
+而 $\int  f \,d\mu = a$, 因而 \[
+\int g \, d\mu > a
+\]这和 $g \in \mathcal{F}$ 冲突 (否则它的积分一定小于等于 $a$).\\
+\textbf{从而, $\mu,\nu$ 是 finite p.m. 的情况得证.}\\
+\textbf{Step 5: 推广至 $\nu$ finite s.m., $\mu$ finite p.m. 的情况.}\\
+直接 Apply Step 1 to $\nu^+,\nu^-$ 即得证.\\
+\textbf{Step 6: 推广至 $\nu,\mu$ $\sigma$-finite 的情况.}\\
+ Proof: By $\sigma$-finite 的定义, 我们可以 decompose \[
+ X = \bigsqcup_{n=1}^\infty X_n
+ \]
+ 那么 by finite case, $\nu |_{X_n}$, $\mu|_{X_n}$ is finite for each $n$.\\
+ 因而 \[
+f_n : =  \frac{d(\nu |_{X_n})}{d(\mu |_{X_n})}  \,\, \exists\quad  \text{ for each } n
+ \]
+ 于是, take \[
+ f: = \sum_{n=1}^\infty \mathbf{1}_{X_n} f_n
+ \]即可得证. \\
+\textbf{Note: 这里的 $f$ 是 ext $\mu$-intble 的, 即: $f^+, f^-$ 至少有一个是 ext $\mu$-intble 的. 这 follows from $\nu$ 作为一个 signed measure 的定义: $\nu$ 至多 admit $+\infty,-\infty$ 中的一个.\\
+ Specially, 如果 $\nu$ 是一个 positive measure, 那么 $f$ 一定也是非负的, 从而 $f^- = 0$.}
+\end{proof}
+
+\begin{remark}
+    在 RN Thm 的 proof 中, 我们的大体思路就是: 首先, 肯定要 reduce to 我们熟悉的 finite positive measure 的情况; 其次, 我们使用一个 trick: 取一个能够逐步逼近 RN derivative $\frac{d\nu}{d\mu}$ 的空间\[
+   \mathcal{F} : = \bigg\{ f \in L^+(\mu) : \int_E f\, d\mu \leq \nu(E),\;\forall    E \in \mathcal{A} \bigg\}
+   \]并猜想其最大的元素就是 $\frac{d\nu}{d\mu}$, 然后证明它们确实相等, by proving 它们的差是一个 zero measure.
+\end{remark}
+
+下一个 lecture: 我们将 upgrade RN Thm to 一个更加 general 的 version: Lebesgue Radon Nikodym Thm.
+
+
+\section{Lebesgue-Radon-Nikodym Theorem [Fol 3.2, finished; 3.3, finished]}
+recall Radon-Nikodym Theorem: \[
+\begin{cases}
+    \mu \; \sigma\text{-finite p.m.} \\
+     \nu \; \sigma\text{-finite s.m.} \\
+     \nu \ll \mu
+\end{cases}\implies \begin{cases}
+    \exists !\; \text{extended } \mu\text{-integrable}\; f: X\to \mathbb{R}\\
+    d\nu = f d\mu
+\end{cases}
+\]
+我们称 $f$ 为 Radon-Nikodym Derivative:\[
+\nu(E) = \int_E f \; d\mu
+\]
+
+
+\begin{example}
+Application: conditional expectation.\\
+\[
+(X,\mathcal{A},\mu)  := \bigg([0,1), \mathcal{B}([0,1)), m\bigg)
+\]
+$f:[0,1) \to \mathbb{R}$ Borel measurable.\\
+Define: \[
+B: = \{\varnothing, [0,\frac{1}{2}), [\frac{1}{2},1),X  \}
+\]
+$f$ 并非一定是 $B$-measurable 的. 
+
+\end{example}
+
+
+
+\subsection{LRNT: 任意 $\sigma$-finite $\nu,\mu$, 可将 $\nu$ 拆解成 $\lambda \bot \mu$ 和 $\rho \ll \mu$}
+\begin{theorem}{Lebesgue-Radon-Nikodym Theorem}
+    如果 $\begin{cases}
+    \mu \; \sigma\text{-finite p.m.} \\
+     \nu \; \sigma\text{-finite s.m.} 
+\end{cases}$ on $(X,\mathcal{A})$, 那么存在唯一的 decomposition \[
+\nu = \lambda + \rho 
+\]where $\lambda, \rho$ 是 $\sigma$-finite 的 signed measure s.t. $\begin{cases}
+    \lambda \bot \mu \\
+    \rho \ll \mu
+\end{cases}$.\\
+(于是, by RNT, 存在 $\mu$-unique 的 extended $\mu$-integrable $f:X\to \mathbb{R}$ s.t. \(d \rho = f \,d\mu\) ).
+\end{theorem}
+
+
+
+
+
+
+
+Sktech of proof of LRN theorem: 
+Assume for simplicity that $\mu,\nu$ 是 finite p.m.\\
+Like last time, look at \[
+\mathcal{F} : =  \{f\in L^+ : \int_E f\, d\mu \leq \nu(E) \;\; \forall E\in\mathcal{A}  \} / \sim
+\]
+Saw: $\mathcal{F} $ 有 max element $f$.\\
+Define $\rho$ by $d \rho = f \, d \mu$.\\
+Set: \[
+\lambda : = \nu - \rho
+\]
+Want: $\lambda \bot \mu$.\\
+Prove by contradiction: 如果 $\lambda \not \bot \mu$, 那么Lemma 2 告诉我们: 存在 $\epsilon > 0$ 和 positive measure 的 $E \in \mathcal{A}$ 使得: \[
+\lambda \geq \epsilon \mu
+\]
+on $E$.\\
+Set \[
+g: = f + \epsilon\chi_E 
+\]
+则 \[
+\int_F g \, d\mu = \int_{F \cap E} (f + \epsilon)\, d\mu \, + \, \int_{F \cap E^c} f \, d\mu
+ \]
+因而 \begin{align*}
+    \rho (F \cap E)  + \epsilon \mu (F \cap E) + \rho (F \cap E^c) &= \rho(F) + \epsilon \mu(F \cap E) \\
+    &\leq \nu(F) - \epsilon \mu(F)  + \epsilon \mu (F\cap E) \\
+    &\leq \nu(F)
+\end{align*} 
+因而 $g \in \mathcal{F}$ 且 $g > f$.\\
+从而得证 $\lambda \bot \mu$. 从而 existence proved.\\
+Uniqueness part: Suppose we have \[
+\nu = \lambda_1 + \rho_1 = \lambda_2 + \rho_2
+\]
+where $\lambda_i \bot \mu$, $\rho_i \ll \mu$.
+那么 \[
+\lambda_1  - \lambda_2 =  \rho_2 - \rho_1
+\]
+我们知道, $\lambda_1  - \lambda_2 $ 和 $ \rho_2 - \rho_1$ 也是 signed measures. 并且, 
+\[
+(\lambda_1  - \lambda_2) \bot \mu ,\quad ( \rho_2 - \rho_1) \ll \mu 
+\]
+By Lemma 1: \[
+\lambda_1  - \lambda_2 =  \rho_2 - \rho_1 = 0
+\]
+
+
+
+
+
+Properties of the RN derivative:
+(P91 in Folland)
+\[
+\frac{d(\nu_1 + \nu_2)}{d \mu} = \frac{d \nu_1}{d\mu} + \frac{d\nu_2}{d \mu}
+\]
+\[
+\nu \ll \mu ,\mu \ll \mu \implies \frac{d\nu}{d\mu} \frac{d\mu}{d\nu}  = 1
+\]
+$\mu$-a.e. = $\nu$-a.e.
+
+
+
+
+
+
+\subsection{complex measure 以及 complex version of LRNT}
+
+\begin{definition}{complex measure}
+    一个 complex measure on a measurable space $(X,\mathcal{A})$ 是一个 map $\nu: \mathcal{A} \to \mathbb{C}$ satisfying $\nu(\varnothing) = 0$ 以及 ctbl disjoint additivity.
+\end{definition}
+
+
+
+\begin{example}
+    simple complex measures:
+
+$X = \{1,2,\cdots, n \}$
+$\nu$ p/s/c measure on $X$.\\
+
+
+Since \( X = \{1,2,\dots,n\} \), a complex measure \( \nu \) is just a function  
+\[
+\nu_0: X \to \mathbb{C}, \quad \text{i.e., } \nu_0 = (\nu_1, \dots, \nu_n) \in \mathbb{C}^n.
+\]而 \[
+\nu (E) = \sum_{x\in E} \nu_0(x)
+\]
+
+$\nu$ positive: $ \in \mathbb{R}_+^n$
+$\nu$ signed: $ \in \mathbb{R}^n$
+
+
+
+For discrete spaces, the total variation measure is defined pointwise:
+
+\[
+|\nu|(i) := |\nu_i|, \quad \text{for each } i = 1,\dots,n.
+\]
+
+So the total variation measure \( |\nu| \) is just the vector of magnitudes:
+\[
+|\nu| = (|\nu_1|, |\nu_2|, \dots, |\nu_n|).
+\]
+
+What is \( \frac{d\nu}{d|\nu|} \)?
+
+Since this is a finite discrete setting, the Radon-Nikodym derivative is computed **pointwise**:
+\[
+\left( \frac{d\nu}{d|\nu|} \right)(i) = 
+\begin{cases}
+\frac{\nu_i}{|\nu_i|} & \text{if } \nu_i \neq 0, \\
+0 & \text{if } \nu_i = 0.
+\end{cases}
+\]
+
+So the result is a function \( f : X \to \mathbb{C} \), given by:
+
+\[
+f(i) = 
+\begin{cases}
+\frac{\nu_i}{|\nu_i|} & \text{if } \nu_i \neq 0, \\
+0 & \text{if } \nu_i = 0.
+\end{cases}
+\]
+
+\[
+f := \frac{d\nu}{d|\nu|} = \left( \frac{\nu_1}{|\nu_1|}, \frac{\nu_2}{|\nu_2|}, \dots, \frac{\nu_n}{|\nu_n|} \right),
+\quad \text{with the convention } \frac{0}{0} := 0.
+\]
+
+This derivative is a function that lives on the unit circle in \( \mathbb{C} \) (except at zero), and it satisfies:
+\[
+|f(i)| = 1 \quad \text{whenever } \nu_i \neq 0.
+\]\end{example}

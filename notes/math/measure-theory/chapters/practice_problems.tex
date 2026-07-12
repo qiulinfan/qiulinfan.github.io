@@ -1,0 +1,382 @@
+\documentclass[lang=cn,11pt]{elegantbook}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\title{Final Practice Problems}
+
+\begin{document}
+\frontmatter
+\mainmatter
+
+
+\section{Use FTC and Tonelli for series}
+Let $g_k, k=1,2, \ldots$, be a sequence of functions that are absolutely continuous on the interval $[a, b]$. Suppose that there is a $c \in[a, b]$, such that the series $\sum_{k=1}^{\infty} g_k(c)$ is convergent, and
+
+$$
+\sum_{k=1}^{\infty} \int_a^b\left|g_k^{\prime}(x)\right| d x<\infty
+$$
+
+(a) Show that $\sum_{k=1}^{\infty} g_k(x)$ is convergent for all $x \in[a, b]$.
+(b) Let $f(x)=\sum_{k=1}^{\infty} g_k(x)$. Show that $f$ is absolutely continuous on $[a, b]$ and
+
+$$
+f^{\prime}(x)=\sum_{k=1}^{\infty} g_k^{\prime}(x) \quad \text { for almost every } \in[a, b]
+$$
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+\section{Use FTC and Holder}
+Let $f:[0,1] \rightarrow R$ be absolutely continuous, satisfy $f(0)=0$ and $f^{\prime} \in L^2([0,1])$. Show that
+
+$$
+\lim _{x \rightarrow 0+} x^{-1 / 2} f(x)
+$$
+exists and determine the value of this limit.
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+\section{Use density of compactly supported continuous functions in a suitable space}
+
+Let $f$ be a real Lebesgue measurable function on the interval $[0,1]$ such that $\|f\|_{\infty}<\infty$. Show that for any $\varepsilon, \delta>0$, there is a continuous function $g$ on $[0,1]$ such that $m\{x \in[0,1]:|f(x)-g(x)|>\varepsilon\}<\delta$.
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{Use one of the convergence theorems}
+Let A be a sequence of measurable subsets of $[0,1]$ such that $\inf m\left(A_n\right)>0$, where $m$ stands for the Lebesgue measure.
+(a) Prove that there exists $x \in[0,1]$ which belongs to infinitely many of the sets $A_n$.
+(b) Does there necessarily exist a point which belongs to any of the sets $A_n$, except finitely many? \newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+
+
+
+\section{How can we recover E from its indicator function}
+Let $E \subset \mathbb{R}^1$. Show that the characteristic function $\chi_E(x)$ is the limit of a sequence of continuous functions if and only if $E$ is both $F_\sigma$ and $G_\delta$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{be an artisan}
+Let $f:[0,1] \rightarrow \mathbb{R}$ be a positive function of bounded variation.
+(a) Show that if $\inf (f)>0$, then the function $g(x)=1 / f(x)$ is also of bounded variation on $[0,1]$.
+(b) Give an example of a positive function $f:[0,1] \rightarrow \mathbb{R}$ of bounded variation such that $g(x)=1 / f(x)$ is integrable but not of bounded variation.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{Use a suitable theorem allowing you to differentiate $\exp (g)$ under the integral sign}
+Let $f$ be a real Lebesgue measurable function on the interval $[0,1]$ such that $\|f\|_{\infty}<\infty$. For $\alpha \in \mathbb{R}$ define a function $g(\alpha)$ by
+
+$$
+g(\alpha)=\log \left[\int_0^1 \exp [\alpha f(x)] d x\right]
+$$\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+(a) Prove that the function $g(\cdot)$ is twice continuously differentiable and that $g^{\prime \prime}(\alpha) \geq 0$ for all $\alpha \in \mathbb{R}$, i.e. the function $g(\cdot)$ is convex.
+(b) Prove that if $f$ is a non-constant function, i.e. $m\{x \in[0,1]:|f(x)-c| \neq 0\}>0$ for all constants $c \in \mathbb{R}$, then $g^{\prime \prime}(\alpha)>0, \alpha \in \mathbb{R}$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+\section{Use DCT}
+Let \[
+f \in L_1([0,1], d x)
+\]
+Find: $$
+\lim _{n \rightarrow \infty} \frac{1}{n} \int_0^1 \log \left(1+e^{n f(x)}\right) d x
+$$\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+\section{Use Egoroff and Hölder}
+Let $\left\{f_n\right\}$ be a sequence of functions in $L^p\left(\mathbb{R}^n\right), 1<p<\infty$, which converge almost everywhere to a function $f \in L^p\left(\mathbb{R}^n\right)$, and suppose that there is a constant $M$ such that $\left\|f_n\right\|_p \leq M$ for all $n$. Show that for every $g \in L^q\left(\mathbb{R}^n\right), q$ the conjugate of $p$, $$
+\int f g=\lim _{n \rightarrow \infty} \int f_n g
+$$
+Is the statement true for $p=1$ ?
+(Hint: you may want to use Egorov's Theorem.)\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{Read up on HL}
+Let $f(\cdot)$ be a locally integrable function on $\mathbb{R}^n$ and $M f$ the corresponding Hardy-Littlewood maximal function
+
+$$
+M f(x)=\sup _{R>0} \frac{1}{|B(x, R)|} \int_{B(x, R)}|f(y)| d y, \quad x \in \mathbb{R}^n
+$$
+
+where $B(x, R)$ denotes the ball centered at $x$ with radius $R$.
+a) Show that if $f$ is integrable on $\mathbb{R}^n$ then $\sup _{\lambda>0} \lambda m\left\{x \in \mathbb{R}^n:|f(x)|>\lambda\right\}<\infty$.
+b) Let $f$ be the function
+
+$$
+f(x)= \begin{cases}1 & \text { if }|x|<1 \\ 0 & \text { if }|x| \geq 1\end{cases}
+$$
+Show that $M f$ is not integrable on $\mathbb{R}^n$, but $\sup _{\lambda>0} \lambda m\left\{x \in \mathbb{R}^n: M f(x)>\lambda\right\}<$ $\infty$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+\section{Use density of such functions g somewhere, and then Hölder.}
+Fix $1<p<\infty$. Let $f \in L^p(E)$, where $E$ is a measurable subset of $\mathbb{R}^d$. Assume that
+
+$$
+\int_E f(x) g(x) d x=0
+$$
+
+for all compactly supported continuous functions $g: \mathbb{R}^d \rightarrow \mathbb{R}$. Is $f(x)=0$ for almost every $x$ in $E$ ? If your answer is positive, prove it. Otherwise, given a counterexample.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+\section{Fubini and Tonelli}
+Suppose that $f(x), x>0$, is a real valued Lebesgue measurable square integrable function.
+(a) Prove that for any $\alpha>0$, the inequality $2|f(z)||f(y)| \leq \alpha f(z)^2+f(y)^2 / \alpha$ holds for all $z, y, \alpha>0$.
+(b) Express the double integral
+
+$$
+\int_0^{\infty} \int_0^{\infty} \frac{|f(z)||f(y)|}{y+z} d z d y
+$$
+
+as an integral over the region $\{0<z<y<\infty\}$.
+(c) Show using your work from (a) and (b) that $|f(z)||f(y)| /(y+z), y, z>0$, is integrable and
+
+$$
+\int_0^{\infty} \int_0^{\infty} \frac{|f(z)||f(y)|}{y+z} d z d y \leq 4 \int_0^{\infty} f(x)^2 d x
+$$
+
+
+Hint: Use the inequality in (a) with $\alpha=(z / y)^{1 / 2}$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+
+
+
+\section{Try a very nice function f first}
+Let $\left\{f_n(x)\right\}$ be a sequence of continuous, strictly positive functions on $\mathbb{R}$ which converges uniformly to the function $f(x)$. Suppose that all the functions $\left\{f_n\right\}, f$ are integrable. Is
+
+$$
+\lim _{n \rightarrow \infty} \int f_n(x) d x=\int f(x) d x
+$$
+Justify your answer.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+\section{Use Lebesgue. Can you get the same equality for more sets E?}
+
+Let $f \in L_1([0,1], d x)$ be a function such that $\int_E f(x) d x=0$ for any measurable set $E \subset[0,1]$ of Lebesgue measure .99. Prove that $f=0$ a.e.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+\section{Lebesgue}
+Let $f \in L^2(I)$, for any finite interval $I \subset \mathbb{R}$. Assume that
+
+$$
+\int_{-a}^a|t||f(x+t)| d t \geq \frac{2}{\sqrt{3}} a^2
+$$
+
+for all $a>0$ and $x \in \mathbb{R}$. Show that $|f(x)| \geq 1$ for a.e. $x \in \mathbb{R}$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{Integration can be a trick to prove that a nonnegative function can't be identically zero.}
+Let $f$ and $g$ be nonnegative functions in $L^1(\mathbb{R})$. Suppose that each function is positive on some set of positive measure. (However, there need not be a single set of positive measure where both functions are positive.) Prove that the convolution
+$$
+h(x)=\int_{-\infty}^{\infty} f(x-t) g(t) d t
+$$
+is positive on some set of positive measure.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+
+\section{Check what happens on some set $\{f<c\}$ with $c<||f||_\infty$
+}
+Let $E$ be a measurable subset of $\mathbb{R}$ such that $m(E)<\infty$. Let $f \in L^{\infty}(E)$ with $\|f\|_{\infty}>0$. Show that $$
+\lim _{n \rightarrow \infty} \frac{\|f\|_{n+1}^{n+1}}{\|f\|_n^n}=\|f\|_{\infty}
+$$
+Here $\|f\|_n:=\|f\|_{L^n(E)},\|f\|_{n+1}:=\|f\|_{L^{n+1}(E)}$.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+
+
+\section{Use distribution functions}
+Let $f: \mathbb{R} \rightarrow \mathbb{R}$ be a measurable function which has the property that
+$$
+m(|f|>\alpha) \leq \frac{1}{1+\alpha^3} \quad \text { for } \alpha>0
+$$
+(a) Show that $|f|^p$ is integrable for $p<3$.
+(b) Give an example of a function satisfying the above for which $|f|^3$ is not integrable.\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+
+
+\end{document}

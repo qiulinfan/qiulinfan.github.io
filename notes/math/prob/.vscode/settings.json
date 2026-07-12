@@ -1,0 +1,48 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk_lua",
+      "command": "latexmk",
+      "args": [
+        "-lualatex",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-file-line-error",
+        "-outdir=build",
+        "%DOC%"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (lualatex)",
+      "tools": [
+        "latexmk_lua"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "latexmk (lualatex)",
+  "latex-workshop.latex.outDir": "build",
+  "latex-workshop.latex.auxDir": "build",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+  "latex-workshop.synctex.afterBuild.enabled": false,
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
+  "latex-workshop.latex.autoBuild.interval": 1500,
+  "latex-workshop.latex.autoClean.run": "never",
+  "latex-workshop.view.pdf.refresh.viewer": "auto",
+  "latex-workshop.view.pdf.reload.transition": "none",
+  "files.autoSave": "off",
+  "files.autoSaveDelay": 1200,
+  "[latex]": {
+    "editor.wordBasedSuggestions": "off",
+    "editor.wordBasedSuggestionsMode": "off",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    }
+  },
+  "latex-workshop.message.error.show": false,
+  "latex-workshop.message.warning.show": false
+}

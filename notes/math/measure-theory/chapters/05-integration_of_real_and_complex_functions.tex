@@ -1,0 +1,807 @@
+\chapter{integration of real and complex functions}
+\section{integration of real and complex functions-I [Fol 2.3]}
+
+我们目前只定义了 non-negative $\overline{\mathbb{R}}$-valued measurable function 的积分, 而我们想要完整地定义: $\overline{\mathbb{R}}$-valued measurable function 的积分 $\int f \in \extR$, 以及 $\mathbb{C}$-valued  measurable function 的积分 $\int f \in \mathbb{C}$.
+
+recall: 对于任意 $\extR$-valued $f$, \[f = f^+ - f^-\]
+
+\textbf{因而我们希望 define:}\[ \int f = \int f^+ -\int f^-\]
+但是其中有一个 undefined 的问题: 我们要避免 $\infty - \infty$ 这一类的问题. 因而我们无法对所有的可测函数进行积分, 而是定义 "integrable" 的可测函数.
+
+\begin{lemma}
+    \[
+    \begin{cases}
+        \int f^+ < \infty \\
+        \int f^- < \infty
+    \end{cases} \Longleftrightarrow \int|f| < \infty
+    \]
+\end{lemma}
+\begin{proof}
+    trivial.
+\end{proof}
+ 正负部分都可控, 肯定是当且仅当绝对值函数可控.
+
+ 我们接下来将定义可积函数的空间是: 所有绝对值积分非无穷的函数. (怎么和预期不一样...这样的话这个空间在积分运算下的值域就是 $\mathbb{R}$ 而不是 $\extR$ 了. 我期待的是为了避免无穷之间相减的 undefined behavior 只需要正负部分有一个积分非无穷就行了. 但是我们要求的是都不是无穷.  不过既然这么定义了肯定有其道理.)
+
+
+
+
+\subsection{$\tilde{L}(X, \mu, \mathbb{C})$ and $L^1(X, \mu, \mathbb{C}$)}
+\begin{definition}{real-valued integrable function}
+Given measure space $(X,\mathcal{M},\mu)$,  \textbf{measurable $f : X \rightarrow \extR$ 被称为 integrable} 的, 如果它满足 \[ \int |f| < \infty\] 并定义其 integral 为: \[\int f = \int f^+ - \int f^-\]
+\end{definition}
+\begin{definition}{complex-valued integrable function}
+    Further, 我们定义 \textbf{measurable $f:X \rightarrow \mathbb{C}$ 是 integrable 的}, 如果它同样满足: \[\int |f| < \infty\]
+\textbf{注意到这个条件等价于 \(\re f, \im f\) integrable, 因为}
+\[|f| \leq |\re f| + |\im f| \leq 2|f|\]
+我们定义其 integral 为: \[\int f = \int \re f+ i \int \im f\]
+\end{definition}
+\begin{remark}
+    所以说,\textbf{ 实值函数的积分要计算两个, 复值函数的积分要计算四个}. (好麻烦.)
+\end{remark}
+
+
+\begin{proposition}
+    所有的 real-valued integrable functions 构成一个 $\mathbb{R}$-vector space, 并且 integral 是一个 linear functional on it.
+    
+    所有的 complex-valued integrable functions 构成一个 $\mathbb{C}$-vector space, 并且 integral 是一个 linear functional on it.
+\end{proposition}
+\begin{proof}
+    trivial.
+\end{proof}
+下面我们可以定义这个 vector space 并在上面进行一定研究. 此处为一个 temporary 的记号:
+    
+\begin{definition}{$\tilde{L}(X, \mu, \mathbb{R})$ 以及$\tilde{L}(X, \mu, \mathbb{C})$ space}
+给定 measure space $(X, \mathcal{M},\mu)$
+    我们定义 \[\tilde{L}(X,\mu, \mathbb{R}) := \{  \text{all (extended) real-valued integrable functions on } X\} \] 以及 \[\tilde{L}(X, \mu, \mathbb{C}) := \{  \text{all complex-valued integrable functions on } X\} \]
+\end{definition}
+\begin{remark}
+    这基本接近我们最终的可积空间的定义了. 只需要再 quotient 掉所有的 a.e. 相等的函数就可以. 在此之间, 我们首先在这临时的空间上证明一些结论.
+
+   \textbf{ 我们基本不使用 \(\tilde{L}(X,\mu, \mathbb{R})\), 因为它是 \(\tilde{L}(X,\mu, \mathbb{C})\) 的 subspace, 而且大部分结论基本都在更 general 的 \(\tilde{L}(X,\mu, \mathbb{C})\) 上成立.}
+\end{remark}
+\begin{remark}
+    这个 $\mathbb{C}$-vector space 的 dimension 是多少呢: \\
+    如果 $X$ 是一个 finite set, 那么 \(\tilde{L}(X,\mu, \mathbb{C})\)  的 dimension 是 $|X|$, 因为 $e_i : x_j \mapsto \delta_{ij}$ 是一个 basis; 同样的, 如果 $X$ countable, 那么 \(\tilde{L}(X,\mu, \mathbb{C})\) 的 dimension 也是 countably infinite 的; 如果 $X$ uncountable, 那么 \(\tilde{L}(X,\mu, \mathbb{C})\) 的 dimension 也是 uncountable 的.\\
+    比如, \(\tilde{L}(\mathbb{R}^n,\mu, \mathbb{C})\) 的 dimension 就是 uncountable 的.
+\end{remark}
+
+\begin{proposition}
+    \(\tilde{L}(X, \mu, \mathbb{C})\) 上, $f\mapsto \int f$ 为一个 linear functional.
+\end{proposition}
+因为积分是 linear 的, as we have proved.
+
+
+\begin{proposition}
+$$f \in \tilde{L}(X,\mu, \mathbb{C}) \implies |\int f| \leq \int |f|$$
+\end{proposition}
+\begin{proof}
+    For real-valued case, $$ \Big| \int f  \Big| =\Big|\int f^+ - \int f^- \Big|  \leq \Big|\int f^+\Big| +  \Big|  \int f^- \Big|  = \int f^+  + \int f^- = \int |f|$$
+For complex-valued case,
+Set $$\alpha = \frac{\int f}{|\int f|}$$
+    于是有 $\alpha \in \mathbb{C}$ 且 $|\alpha| = 1$. \textbf{Note: 一个绝对值为 1 的 complex number 的倒数是它的 conjuate.} \\
+   因而:
+   $$
+  \Big|\int f \Big| = \overline{\alpha} \int f = \int \overline{ \alpha } f  \in \mathbb{ R}
+   $$
+   从而 $$ \Big| \int f \Big|  = \int \overline{\alpha} f = \int \re (\overline{\alpha } f) \leq \int |\re (\overline{\alpha} f)  | \leq \int |\overline{\alpha} f| = \int |f|$$
+\end{proof}
+
+
+
+\begin{definition}{integratal restricted to a measurable set}
+    if $f \in \tilde{L}(X, \mu, \mathbb{C})$, $E \in \mathcal{A}$ ($\mu$ 的 $\sigma$-algebra), 我们 define: $$\int_E f   \, d \mu := \int f  \chi_E \, d \mu$$\end{definition}
+\begin{remark}
+    容易验证, restricted to a measurable set 的积分也是 linear 且 monotone 的.
+\end{remark}
+
+
+
+\begin{proposition}{可积函数几乎处处相等的等价条件}
+    if $f,g \in \tilde{L}(X, \mu, \mathbb{C})$, 则 TFAE: 
+    \begin{itemize}
+        \item $f=g $ a.e.
+        \item $\int |f-g| = 0$
+        \item $\int _E f = \int _E g$ for all $E \in \mathcal{A}$
+    \end{itemize}
+\end{proposition}
+\begin{proof}
+    $(i) \Longleftrightarrow (ii) $: by last time proposition.\\
+    $(ii) \implies (iii)$: 因为 $$
+    \Bigg|\int_E f - \int _E g  \Bigg|  = \Bigg| \int (f-g_)\chi_E  \Bigg| \leq \int |f-g| \chi_E \leq \int|f-g| = 0
+    $$
+    $(iii) \implies (ii)$: 令 $u := \Re (f-g)$, $v := \Im (f-g)$, 则 $$
+    \int |f-g| = \int u^+ + \int u^- + i\int v^+ + i\int v^-
+    $$
+\textbf{这四个积分都是正值. }容易发现如果 $u^+$ 在一个 positive measure set $E$ 上非 0, 那么 $\int_E u^+ > 0$ , 那么 $\int |f-g| > 0$. (其他三个积分同理.)
+\end{proof}
+\begin{remark}
+    $\int |f-g| = 0$ 是一个比 $\int f-g = 0$ 更强的条件. $\int f-g = 0$ 可以是非零集有交错并且正负抵消, 而 $\int |f-g| = 0$ 则表示 a.e. 相等.
+    \end{remark}
+
+
+
+\begin{remark}
+    有这个定理得:\textbf{ 我们可以 integrate $f:X\rightarrow \mathbb{C}$ a.e. defined}.\\
+    即: $$
+    f: E^c \rightarrow \mathbb{C}\quad , \quad \mu(E) = 0
+    $$
+    其中的一种情况是: $$
+    f: X \rightarrow \overline{\mathbb{R}} \quad s.t. \quad |f| < \infty  \;\;\ a.e.
+    $$
+\end{remark}
+
+并且我们发现, a.e. 相等的两个可积函数 $f,g \in \tilde{L}(X, \mu, \mathbb{C})$ 在任意可测集上的积分都相等. 于是这两个函数在 $\tilde{L}(X, \mu, \mathbb{C})$ 中的表现是相等的. 因而我们可以把 a.e. 相等的这种关系 quotient 掉, 简化这个空间:
+
+
+\begin{definition}{$L^1(\mu)$ space}
+    我们定义 $L^1(X, \mu, \mathbb{C})$, 或简称为 $L^1(\mu)$, 为:$$
+    \tilde{L}(X, \mu, \mathbb{C}) / \sim 
+    $$
+其中 $\sim$ 表示一个 equivalent class: $f\sim g$ if $f=g$ a.e. (等价于 $\int |f-g| = 0$)
+ \end{definition}
+$L^1(\mu)$ 中的每个函数之间彼此至少都在一个正测度集上相互不同. 这减去了分析上考虑几乎处处相等的集合的顾虑, 对于处处相等的函数, 我们认为它们在 $L^1(\mu)$ 上直接相等. 并且, 我们有: $$
+f \mapsto \int f
+$$
+在 $L^1(\mu)$ 上是一个 well-defined function.
+
+
+
+
+\subsection{DCT}
+
+
+\begin{lemma}
+    令 $(f_n)$ 为 a seq of \textbf{a.e. defined measurable functions} on $X$., s.t. \[
+    f(x) := \lim_{n\to \infty} f_n(x) 
+    \] \textbf{exists a.e.}\\
+    Claim: \textbf{$f$ is measurable.}
+\end{lemma}
+\begin{remark}
+    Measurability is well preserved by taking limit, 并且更改一个零测集上函数的 definedness 不会改变这个 behavior. (这是一个很宽的条件了)
+\end{remark}
+
+
+
+\begin{theorem}{dominated convergence theorem}
+    \label{DCT}
+    Let $(f_n)$ be a seq of functions in $L^1(\mu)$, s.t. \begin{itemize}
+        \item $f_n \rightarrow f $ a.e.
+        \item 存在 $g \in L^1(\mu)$ s.t. $|f_n| \leq g $ a.e. for all $n$. 
+    \end{itemize}
+    Claim: $f \in L^1(\mu)$ 并且 \[
+    \int f = \lim_n \int f_n
+    \]
+\end{theorem}
+\begin{proof}
+    首先由于 $f_n \to f$ a.e.,  by lemma 可以得到 $f$ 是 measurable 的.\\
+    并且 $$|f_n| \leq |g| \text{ a.e. } \implies  |f| \leq |g| \text{ 
+a.e.}$$ 于是 \[\int |f| \leq \int |g| < \infty \] 即 $f \in L^1$. (从而 $|f|$ 至多在一个 measure zero set 上无穷).\\
+并且 $ g(x) \pm f_n(x) \geq 0 $ a.e. 这一点很重要, 因为从而我们可以对 $g+f_n$, $g-f_n$ 使用 Fatou's Lemma: 
+\begin{align}
+    \int g + \int f = \int (g+f) &= \int (g + \lim_{n\to\infty} f_n) \\
+    &= \int \lim_{n\to\infty} (g+f_n) \\
+    &  \overset{\text{by Fatou}}{\leq }  \liminf_n \int (g+f_n) \\
+    &= \int g + \liminf_n \int f_n
+\end{align}从而 (由于 $\int g < \infty$)\[
+\int f \leq \liminf_n \int f_n
+\]
+以及 similarly get: \[
+\int g - \int f \overset{\text{by Fatou}}{\leq } \liminf_n \int (g-f_n) = \int g - \limsup_n \int f_n
+\]
+从而: \[
+\int f  \geq \limsup_n \int f_n
+\]
+(这里注意, negate 一个 numerical seq 后 liminf 变 limsup. 由此可见 Fatou'e Lemma 其实是很强大的, 只需要对 $\int g + \int f$ 和 $\int  g - \int f$ 各用一次就可以得到: )\[
+\int f = \lim_{n\to \infty } \int f_n
+\]
+\end{proof}
+
+\begin{remark}
+DCT 是 MCT 在 $L^1$ 上的推广. MCT 只作用于非负的可测函数, 并且要求序列递增. 而 DCT 则作用于更加广泛的情况.\\
+
+DCT 增加的要求是存在一个 $L^1$ 的 (a.e.) bound function, 以及极限 a.e. 存在于 extened $\mathbb{R}$. 这两个要求都是合理的, 一个控制了函数的上下浮动程度, 一个控制了序列的收敛性.\\
+
+而进一步, 我们可以把 "存在 $g \in L^1$ s.t. $|f_n| \leq |g| $ a.e. for all $n$." 这一 条件放宽到 : 存在一个 seq $(g_n)$ 以及 $g$ in $L^1$, 使得 \begin{itemize}
+        \item $|f_n| \leq g_n$
+        \item  $g_n \to g$ a.e.
+        \item $\int g_n \to \int g$
+    \end{itemize}
+Proof 在 hw 5.
+\end{remark}
+
+\begin{example}
+    Suppose $u:[0,1] \to [0,1]$ is Lebesgue measurable. \\
+    考虑这一 seq of function: $( u^n)$.\\
+    容易发现 $u^n \rightarrow \chi_{\{u = 1\}}$ p.w.
+    我们可以用 $g = 1$ 作为 bound function. 从而得到: \[
+\int f=    \lim_{n\to\infty} \int f_n = \int_{\{u=1\}}1 = m(\{\mu =1 \})
+    \]
+\end{example}
+
+
+\begin{example}
+    compute \[
+    I = \lim_{n\to \infty} \int_{[0,1]} \frac{1 + n x^2}{(1+ x^2)^n}
+    \]
+令 $f_n(x) : = \frac{1 + n x^2}{(1+ x^2)^n}$, 有: $f_n(x) \to 0$ as $n\to \infty$ for $x \in (0,1]$;\\
+并且考虑 $g=1$, 作为 bound.\\
+因而有 $I = 0$
+\end{example}
+
+
+
+
+
+
+
+
+
+\section{integration of real and complex functions-II [Fol 2.3]}
+\subsection{corollaries of DCT}
+以下为 DCT 的 corollaries:
+
+\subsection{Fubini for series and integral}
+\begin{corollary}{Fubini for series and integral}
+对于 $L^1(\mu)$ 中的 sequence $(f_n)$,  如果 $\sum_{n=1}^\infty \int |f_n| < \infty$, 则 $$\sum_{n=1}^\infty f_n   \overset{a.e.}{\to}  F\in L^1(\mu) \;\;$$ 并且 \[  \int \sum_{n=1}^\infty f_n 
+ =    \int F = \sum_{n=1}^\infty \int f_n\]
+\end{corollary}
+\begin{proof}
+Recall \textbf{Tonelli for sum and integrals}: 对于 $\{f_n\}_{n\in\mathbb{N}}$ in $L^+(\mu)$, 有:
+$$
+\int \sum_{n=1}^\infty f_n = \sum_{n=1}^\infty \int f_n
+$$
+(又是经典 Fubini 补充 Tonelli) 这个定理是 Tonelli for sum and integrals 在 $L^1$ 上的推广.\\
+我们 set \[
+F_n : = \sum_{i=1}^n f_j\quad G:= \sum_{n=1}^\infty  |f_n|
+\]
+By Tonelli for sum and integrals, 有: \[
+\int G = \int \sum_{n=1}^\infty  |f_n| =  \sum_{n=1}^\infty \int  |f_n| 
+\]
+由条件知道, $\int G < \infty$, 因而 $G \in L^1(\mu)$.
+所以 $G$ 可以作为 $F_n $ 的 DCT bound: \[
+\int |F| \leq \int G = \sum_{n=1}^\infty \int  |f_n| 
+\] 因而 by DCT:: \[
+\int F = \lim_{n\to \infty } \sum_{i=1}^n \int f_i =  \sum_{n=1}^\infty \int f_n
+\]
+\end{proof}
+\begin{remark}
+    Fubini's for sum and integrals : 对于一个 seq of 可积函数, \textbf{如果它们的绝对积分和收敛, 那么它们的 infinite sum 函数也是可积的}, 并且可以交换积分和极限次序. \\
+    其实显然. 因为绝对积分和肯定 by tri ineq 是大于等于和的积分的, 绝对积分和能作为一个 bound function.
+\end{remark}
+
+
+\subsection{a function that is measurable in one var and ctn/diffble in another}
+
+\begin{corollary}
+  令 $(X,\mathcal{A}, \mu)$ be a measure space.\\
+  如果 $f: X \times [a,b] \to \mathbb{C}$ 满足 $f(\cdot, t) \in L^1(\mu)$ for all $t \in [a,b]$, 令 \[
+F(t) := \int f(x,t) \; d\mu(x)
+  \] 则有:
+  \begin{enumerate}
+      \item 如果 $t \mapsto f(x,t) $  对于任意 $x$ 都连续, 并且存在一个 $g \in L^1(\mu)$ 使得 $|f(t,x)| \leq g(x)$ for all $t,x$, 那么 \textbf{$F$ 也是 ctn 的.}
+      \item 如果 $\frac{\partial f}{\partial t} (x,t)$ 对于任意 $x,t$ 都存在, 并且存在一个 $g \in L^1(\mu)$ 使得 $|\frac{\partial f}{\partial t} (x,t)| \leq g(x)$ for all $t,x$, 那么 \textbf{$F$ 是 differentiable 的}, 并且 $$F'(t) = \int \frac{\partial f}{\partial t} (x,t) \; d\mu(x)$$
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+    这一证明并不困难.\\
+    For part(1), STS: $t_n \to t \implies F(t_n) \to F(t)$\\
+    Apply DCT with $f_n(x) = f(x,t_n)$, $f(x) = f(x,t)$.\\
+    For part(2), Suppose $t_n \to t$.\\
+    Apply DCT to \[
+    h_n(x) := \frac{f(x,t_n) - f(x,t)}{t_n - t}
+    \]
+    由可导得连续得 $x \mapsto \frac{\partial f}{\partial t}(x,t)$ measurable.\\
+    并且 \textbf{by MVT, }\[
+    |h_n(x)| \leq \sup_{t \in [a,b]} \Big| \frac{\partial f}{\partial t} (x,t) \Big| \leq g(x)
+    \]
+    从而我们也用 $g$ bound 住了 $h_n(x)$. \textbf{Apply DCT: }\[
+  F'(t) = \lim_{n\to \infty}  \frac{F(t_n) - F(t)}{t_n -t}  =  \lim_{n\to \infty} \int \frac{f(x, t_n) - f(x,t)}{t_n - t} = \lim_{n\to \infty} \int h_n  = \int \frac{\partial f}{\partial t} (x,t) \; d\mu(x)
+    \]
+\end{proof}
+\begin{remark}
+    由 DCT, 我们不仅可以交换积分和求极限的次序, 还可以在足够的条件下交换多变量的求导和积分的次序. 这一点是值得注意的, 因为 \textbf{DCT 描述的 sequential behavior 可以应用到证明函数 continuous 和 derivative 存在}, 使用 sequential definition. \\
+    如: 如果一个多变量函数对于 $x$ 是 measurable 的, 并且满足对于 $t$ 的 partial derivative 处处符合 DCT 条件. 那么我们可以\textbf{调换它对于 $x$ 积分和对于 $t$ 求导的顺序}.\\
+    看起来很雾但是我们看一个例子 (此为一个反例):
+\end{remark}
+
+\begin{example}
+是否有: \[
+    \frac{\partial}{\partial t} \int_{\mathbb{R}_{> 0}} e^{-tx} \; dm(x)  \overset{???}{=} \int_{\mathbb{R}_{> 0}} -x e^{-tx} \; dm(x)   = -\frac{1}{t^2} 
+    \]
+Here \[
+f(t,x) = e^{-tx}, \quad t>0, x>0
+\] 因而 \[
+\bigg| \frac{\partial}{\partial t} f(t,x) \bigg|=  xe^{-tx}, \quad t> 0 , x> 0
+\]
+尝试找到它的 dominating $g(x)$: 这个函数在 $t \to 0$ 处的上极限是 $g(x,t) = x$, 但是这个 $g$ 却不是一个 $L^1$ 函数 (在半轴上积分为 $\infty$). 从而它不可以这么交换积分和求导顺序. 但是如果把 $t$ 的范围限制在 $t \geq a \in \mathbb{R}_+$ 而不是 $t>0$, 我们就可以交换这个积分和求导顺序, 因为此时可以设定 \[
+g(x,t)  = xe^{-ax}
+\]
+\end{example}
+
+
+
+
+\subsection{$L^1$ as a Banach space}
+\begin{theorem}{$L^1(\mu)$ 以 integral w.r.t. $\mu$ 作为 norm 是一个 normed VS}  在 $L^1(\mu)$ 上, 我们 set \[
+||f||  := \int |f|
+\]
+    则 $(L^1(\mu), ||\cdot||)$ 为一个 \textbf{normed $\mathbb{C}$-vector space. 即, 这是一个 well-defined norm.}
+\end{theorem}
+\begin{proof}
+    recall norm 的定义, 需要符合: \begin{itemize}
+        \item Homogeneity: \[
+        ||af|| = |a|\cdot ||f||
+        \]
+        \item triangle ineq: \[
+        ||f+g|| \leq ||f|| + ||g||
+        \]
+        \item nonnegativity: \[
+        ||f|| \geq 0,\quad = \text{ iff  } f=0 \in L^1 \text{ (i.e. } f(x) = 0 \text{ a.e.)}
+        \]
+    \end{itemize}
+前两条是积分的 linearity 的下位推论. 后一条 by def.
+\end{proof}
+
+\begin{corollary}{$(L^1(\mu), ||\cdot||)$ 是一个 Banach space}
+    $(L^1(\mu), ||\cdot||)$ 的 induced metric space 是 complete 的. 即, every Cauchy seq converges.\\
+    (\textbf{从而这是一个 Banach space}. )
+\end{corollary}
+\begin{proof}
+    取一个 Cauchy seq $(f_n) $ in $L^1$.\\
+这里有一个值得 recall 的 proposition: \begin{proposition}
+在一个 metric space 中, 一个 Cauchy seq converges 当且仅当它存在一个 convergent 的 subsequence.
+\end{proposition}
+证明很简单. 对于任意的 $\epsilon$, 可以取 $\max(N,M)$, 其中 N 为使得这个子序列所有元素距离 $x_* < \epsilon / 2$ 的下标，M 为使得主序列所有元素两两之间距离 $< \epsilon / 2$ 的下标. \\
+因而我们\textbf{只需要证明存在一个 subseq $(f_{n_j}) $ s.t. $f_{n_j} \overset{j\to \infty}{\longrightarrow} f \in L^1$ 即可.}\\
+已知 Cauchy, WTS: $f_n$ 收敛且极限在 $L^1$ 中. 我们直觉: 用 Cachy 条件构造 $1/\epsilon^2$ argument. \\
+我们 pick 子下标 $(n_j)_{j\in \mathbb{N}}$ 使得对于每个 $j$ 都有 \[
+m,n \geq n_j \implies       ||f_m - f_n||_1 \leq \frac{1}{2^j}
+\]
+并 set \[
+g_j := f_{n_j} - f_{n_{j-1}}, \quad g_1 = f_{n_1}
+\]则有 \[
+\sum_{j=1}^\infty \int |g_j| \leq 1 < \infty
+\]
+从而 \textbf{by Fubini's Thm for series and seqs,} 存在: 
+\[
+f: = \lim_{j \to \infty} \sum_{i=1}^j g_j = \lim_{j \to \infty} f_{n_j}  \in L^1 \;\; \exists a.e.
+\]
+同时有 \[
+\int |f - f_{n_j} | \leq \sum_{j+1}^\infty  \int |g_j|  \leq \frac{1}{2^j} \overset{j\to \infty}{\longrightarrow} 0
+\]
+\end{proof}
+\begin{remark}
+这里就发现了 Fubini for series and seq 的用处: 把求和与积分的换序从有限推广到无限求和上, 以绝对积分和有限为条件. 因而, \textbf{绝对积分和有限的 seq 是性质强大的. }\\
+而我们可以运用这一点来发掘 function seq 的性质, 比如这里\textbf{把一个 function seq 通过构造前后项差的方式, induce 出一个绝对积分和有限的 seq, 从而用这个 seq 的积分和反向证明原 seq 的性质}.
+\end{remark}
+
+
+
+\subsection{density of simple function of $L^1(\mu)$}
+
+\begin{theorem}{density of simple functions in $L^1(\mu)$}
+  令 $(X, \mathcal{A}, \mu)$ 为一个 measure space,  令 $f \in L^1(\mu)$, \\
+    对于任意 $\epsilon > 0$, 都存在 simple $\phi: X \rightarrow \mathbb{C}$ in $L^1(\mu)$, 使得 \[
+    \int |f - \phi| 
+< \epsilon
+    \]
+\end{theorem}
+\begin{proof}
+    这是显然的, by 积分的定义. 我么首先把 $f$ divide 为 \[
+    f = u +iv, \quad u = u^+ - u^-,\quad v = v^+ - v^-
+    \]
+    而后对这四个非负函数 $u^+,u^-, v^+, v^-$分别使用 simple function seq approximation, 再使用 DCT:
+    \[
+   \int \lim \phi_n =     \int u^+ =  \lim \int \phi_n
+    \]
+    比方说 $(\phi_n)$ 为从下逼近 $u^+$ 的 simple function seq, 那么 $u^+$ 是它的 dominating function, 同时也是极限. 那么对于任意的 $\epsilon > 0$ 都存在一个 $n$ 使得  \[
+||u^+ - \phi_n||_1 \leq  \int u^+ -    \int \phi_n  < \epsilon
+    \]
+\end{proof}
+
+
+尤其是这一特殊情况: 
+\subsection{density of step functions in $L^1(m)$ }
+\begin{theorem}{LS measure space 的 $L^1$ space 上的 density of step functions}
+考虑 $(\mathbb{R}, \mathcal{L}, m_s)$ where $m_s$ 为一个 Lebesgue-Stieljes measure on $\mathbb{R}$, let $f \in L^1 (\mu)$,\\
+对于任意 $\epsilon >0$, 都存在 step function $\phi = \sum_{j=1}^N c_j \chi_{I_j}$, 使得 \[
+\int (f-\phi) < \epsilon
+\] where each $I_j$ 都是 open intervals.
+\end{theorem}
+\begin{proof}
+和 general case 相似. 利用 the fact that 任意一个 Lebesgue mble function 都可以用 step function 来 approximate.
+\end{proof}
+
+
+
+
+
+
+
+
+
+\section{integration of real and complex functions-III [Fol 2.3, finished]}
+\subsection{another dense subspace of $L^1(m_s)$: $C_c (\mathbb{R})$}
+
+上一节课我们知道了: 所有的 simple functions 在 $L^1(\mu)$ 中构成了一个 dense subspace. 尤其是特殊情况: 对于 $(\mathbb{R}, \mathcal{L}, m_s)$, \textbf{所有的 step functions 构成了一个 dense subspace of $L^1(m_s)$. }
+
+今天我们先介绍另一个特殊情况 $(\mathbb{R}, \mathcal{L}, m_s)$ 的 $L^1(m_s)$ 的 \textbf{另一个 dense subspace: 所有的 cpt supported continuous function. }
+
+也就是说, \textbf{任意的 Lebesgue intble function 都可以用 ctn function with compact supp 来近似. } 一个可积函数可以是 supp 非常怪异的以及非常 unctn 的, 但是却可以用 ctn and cpt supp functions 来逼近, in $L^1$ sense. 当然这是一种弱逼近. 函数可以差异很大.
+
+\begin{definition}{$C_c (X)$}
+令 $X$ be a metric space, 我们定义:
+\[
+C_c(X) := \{\text{all ctn functions }f:X \to \mathbb{C}  \text{ with cpt supp}  \}
+\]
+\end{definition}
+
+\begin{theorem}{$C_c(X) \subset L^1(\mu)$ 是一个 dense linear subspace}
+$C_c(\mathbb{R}) \subset L^1(\mu_m)$ 为一个 dense linear subspace.
+\end{theorem}
+\begin{proof}
+对于 $f \in L^1(m_s)$, let $\epsilon > 0$.我们首先 pick 一个 step function 来approximate $f$:   \[
+\phi = \sum_{j=1}^n c_j \chi_{I_j} , \quad  s.t. ||f-\phi||_1 < \frac{\epsilon}{2}
+\]
+空出来的 $\frac{\epsilon}{2}$, 我们使用 ctn and cpt supp function $f_j$对每个 $\chi_{I_j}$ 进行逼近, by:
+ \pic[0.6]{assets/ch2-pics-image-20250219092808932.png}
+从而 $||\sum_j f_j  - \phi|| < \frac{\epsilon}{2}$, 因此 $||\sum_j f_j  - f|| < \frac{\epsilon}{2}$ by tri ineq. 得证.
+\end{proof}
+
+
+
+
+
+
+\subsection{Riemann v.s. Lebesgue integral}
+我们已经完成了一个任意的 measure space 上的 Lebesgue 积分的定义, 以及可积空间的定义.\\
+Recall: Riemann integral 是对于 $\mathbb{R}^n \rightarrow \mathbb{R}$ 的函数定义的, 经典定义为 $\mathbb{R} \to \mathbb{R}$ 的函数.\\
+现在我们比较对于 $\mathbb{R} \to \mathbb{R}$ 的函数的 Riemann 和 Lebesgue 积分. 我们将会得出结论: \textbf{Riemann 积分是 Lebesgue 积分的特殊情况, 即, Riemann 可积的函数一定也 Lebesgue 可积, 并且积分值相同}. (对于 $\mathbb{R}^n \rightarrow \mathbb{ R}$ 的函数也一样, 之后将展开.)\\
+
+Recall Riemann integral 的定义: \begin{definition}
+    对于 $f: [a,b] \rightarrow \mathbb{R}$ bdd, 一个 \textbf{partition} $\mathcal{P} = \{t_j\}_{j=0}^n$ on $[a,b]$ 满足 \[
+    a = t_0 < t_1 < \cdots < t_n = b
+    \]
+Define: \[
+S_{\mathcal{P}}(f) : = \sum_{j=1}^n \sup _{[t_{j-1}, t_j]}  f(t_j - t_{j-1})
+\]\[
+s_{\mathcal{P}}(f) : = \sum_{j=1}^n \inf _{[t_{j-1}, t_j]}  f(t_j - t_{j-1})
+\]
+Define over all possible partition on $[a,b]$: \textbf{lower integral} and \textbf{upper integral}\[
+\overline{I}(f) : = \inf_\mathcal{P \text{ partition}} S_{\mathcal{P}}(f)
+\]\[
+\underline{I}(f) : = \sup_\mathcal{P \text{ partition}} s_{\mathcal{P}}(f)
+\]
+注意到, 对于任意的 $f$, 总是有 \[
+\underline{I}(f) \leq \overline{I}(f)
+\]
+我们称 $f$ 是 \textbf{Riemann integrable} 的, if \[
+\underline{I}(f) = \overline{I}(f) := I(f)
+\]
+这个 $I(f)$ 称为 $f$ 在 $[a,b]$ 上的 Riemann integral. 
+\end{definition}
+
+
+\subsection{Riemann intble $\implies$ Lebesgue intble  }
+\begin{theorem}{Riemann integral 是 Lebesgue integral 的特殊情况}
+\[  f \text{ Riemann integrable} \implies\begin{cases}
+        f \in L^1([a,b], \mathcal{L}. m) \\
+        I(f) = \int_{[a,b]} f \; dm
+    \end{cases} \]
+\end{theorem}
+\begin{proof}
+    for (a): 对于给定 partition $\mathcal{P}$, 我们 set: \[
+    G_\mathcal{P} : = \sum_j M_j  \chi_{[t_{j-1},t_j]} , \quad     g_\mathcal{P} : = \sum_j m_j  \chi_{[t_{j-1},t_j]} 
+    \]
+    从而有: \[
+    S_\mathcal{P}(f) = \int G_\mathcal{P} \; dm , \quad s_\mathcal{P}(f) = \int g_\mathcal{P} \; dm
+    \]
+    我们知道, refinement 能增加 $s_\mathcal{P}$, 减小 $S_\mathcal{P}$ 从而增加逼近精度, 这一点在 Lebesgue integral 中更加明显: \begin{align}
+ \mathcal{P } \subset \mathcal{P}' &\implies g_\mathcal{P} \leq g_\mathcal{P'} \leq f \leq G_{\mathcal{P}'} \leq  G_\mathcal{P}         \\
+ & \implies s_\mathcal{P} \leq s_{\mathcal{P}'} \leq I(f) \leq S_\mathcal{P'} \leq S_\mathcal{P}
+    \end{align}
+由于$f$ Riem integrable, \textbf{存在一个 seq of partitions $(\mathcal{P}_n)$ 使得 $\mathcal{P_n}\subset \mathcal{P}_{n+1}$, $||\mathcal{P}|| \to 0$ (mesh), 并且} \[
+s_{\mathcal{P_n}}, S_{\mathcal{P_n}} \overset{n \to \infty}{\longrightarrow}  I(f)
+\]
+因而 settiing \[
+g : = \lim_{n\to \infty} g_{\mathcal{P}_n} 
+\] 为一个 increasing limit; \[
+G : = \lim_{n\to \infty} G_{\mathcal{P}_n} 
+\] 为一个 decreasing limit; 由 mble seq 的 limit behvior 得 $g,G \in L^1(m)$ 且 $g \leq f \leq G$
+并且 by DCT: \[
+\int g \; dm = \lim_n \int g_{\mathcal{P}_n} = I(f) 
+\]\[
+\int G \; dm = \lim_n \int G_{\mathcal{P}_n} = I(f) 
+\]
+从而 \[
+g \leq f \leq G , \quad \text{and }  \int (G-g) \; dm = 0
+\]因而 \[ g =G \;\; a.e.  \;\;(\implies = f \;\; a.e.)
+\]
+因而 \[
+I(f)  = \int f  \; dm
+\]
+(由于  $m$ complete, $f$ 是 Lebesgue mble 的.)
+\end{proof}
+\begin{remark}
+    整体 intuitive. 对定义域的切分是对值域的切分的特殊情况. 
+\end{remark}
+
+
+
+\subsection{Lebesgue's criterion for Riemann integrability}
+
+\begin{theorem}{Lebesgue's characterization of Riemann integrability}
+     定义 \[
+    D_f = \{ x \text{ where } f \text{ is not ctn at}   \}
+    \]
+    则有 \[
+    f \text{ Riemann intble } \Longleftrightarrow m(D_f) = 0 \]
+\end{theorem}
+\begin{proof}
+    在 395 中已经证明一次. 这里再回顾一次.\\
+    Backward direction: trivial. \\
+    Forward direction: assume $   f \text{ Riemann intble }$. \\
+    对于 $f:[a,b] \to \mathbb{R}$,  我们 define: \[
+    H(x)  := \lim_{\delta \to 0} \sup_{|y-x| \leq \delta} f(y), \quad h(x) := \lim_{\delta \to 0} \inf_{|y-x| \leq \delta} f(y)
+     \]
+    即 $f$ 在 $x$ 处的上下极限. 从而: \[
+    f \text{ ctn at } x \Longleftrightarrow  \lim_{y \to x} f(y) = f(x)  \Longleftrightarrow H(x) = h(x)
+    \]因而要证明 $m(D_f) = 0$, STS: $H(x) = h(x)$ a.e.\\
+To prove this: 见 395.
+\end{proof}
+
+
+
+
+
+
+
+
+\section{modes of convergence [Fol 2.4, finished]}
+\subsection{convergence family}
+对于 $f_n,f:X \rightarrow \mathbb{C}$, 我们目前有 4 种不同的 convergence.\\
+2 \textbf{general ones}:
+\begin{itemize}
+    \item \textbf{pointwise convergence}: 字面意思. 
+    \item \textbf{uniform convergence} (on a subset): 对于任意 error bound $\epsilon$, 存在同一个序号 $N$ 可以 $\epsilon$-bound 住这个集合里所有的 $x$ 的函数值和 limit 函数值的 error. 
+\end{itemize}
+2 \textbf{in a measure space}:
+\begin{itemize}
+    \item \textbf{a.e. convergence}: ptwise convergence for a.e. $x$, 即 outside a null $E$.
+    \item \textbf{convergence in $L^1$}: $\int |f_n -f| \rightarrow 0$
+\end{itemize}
+
+我们 recall trivial relation: \[
+\text{uni. conv} \implies \text{ptwise. conv} \implies \text{conv. a.e.}
+\]
+但是我们不清楚 $L^1$-convergence 和它们之间的关系.\\
+我们看以下的 examples: 
+
+\subsection{examples showing a.e. ptwise conv 和 $L^1$ conv 不能互推 }
+\begin{example}
+    on $(\mathbb{R}, \mathfrak{L}, m)$, 以下 $(f_n)$:
+    \begin{itemize}
+        \item \textbf{escape to width }$$f_n = \frac{1}{n} \chi_{(0,n)}$$
+        $f_n \rightarrow 0$\textbf{ uniformly 但 $\not\rightarrow 0$ in $L^1$}
+
+        \item \textbf{escape to hat}: $$f_n = \chi_{(n,n+1)}$$
+        $f_n \rightarrow 0$ \textbf{ptwisely} 但并不 uniformly, 并且\textbf{ $\not\rightarrow 0$ in $L^1$}
+
+        \item \textbf{escape to height}: $$f_n = n \chi_{[0,\frac{1}{n})}$$
+        $f_n \rightarrow 0$ \textbf{a.e., 但是并不 ptwisely,} 当然也并不 uniformly, 并且$\not\rightarrow 0$ in $L^1$
+        
+        \item \textbf{typewriter}: 我们把区间$[0,1]$划分成$2^k$个等长子区间, 对于 $1\leq n \leq 2^k$ 令 $f_{k,n}(x)$  交替取 1, 其他取 0. 
+\[
+f_{n,k}(x) = \begin{cases}
+1, & x \in \left[\frac{n-1}{2^k}, \frac{n}{2^k}\right] \\
+0, & \text{otherwise}
+\end{cases}
+\]
+即, for given $k$, \( f_n \) is the indicator function of the \( n \)-th dyadic interval. \[
+   \| f_{n,k} \|_1  = \frac{1}{2^k} \to 0
+   \] 因而 $ f_{n,k} \rightarrow 0$ in $L^1$, 但是 $\forall x\in[0,1]$, $ f_{n,k}(x)\not\rightarrow 0$ ptwisely. (也不 a.e.)
+(这个例子, 在推广至 $L^p$ 空间的时候, 也有 $ \| f_{n,k} \|_p \rightarrow 0$, 也可以说明 \textbf{$L^p$ convergence 并不能推导 a.e. convergence, 除了 $L^\infty$ 的例外}.)
+    \end{itemize}
+\end{example}
+
+在这些例子中, 我们发现, $L^1$-convergence 和 uniform, ptwise, a.e. 这三个 modes of covergence 都互不推导. 对于 uniform convergence 和 ptwise convergence, 这是很合理的, 因为可以函数越来越宽和扁使得积分不变但是却 uni conv; 也可以函数积分收敛但是在一个零测集上反复跳跃.\\
+
+并且我们进一步发现, 就算是 a.e. 收敛, 也和 $L^1$ 收敛没有互推关系. 比如 ex (3), 这个函数只在 $0$ 处不收敛至 0, 但是整体的积分却是 const 1. \\
+我们 recall: 两个函数 a.e. 相等, 等价于它们的 $L^1$ distance 为 0. 但是\textbf{它们作为函数列极限行为, 并不相干}.\\ 
+
+关于 $L^1$-convergence 和 uniform, ptwise, a.e. convergence 的关系我们已经讨论完了. \\
+接下来我们将关于 $L^1$-convergence 这一条线, 引入一些新的 convergence modes, 在更大的 convergence family 中讨论这些 convergence 的关系. 
+
+\subsection{3 new modes of convergence: fast $L^1$-conv, conv measure and subseq a.e. conv}
+\begin{definition}{fast $L^1$-convergence, convergence in measure, subseq a.e. convergence}
+
+对于  $f_n,f:X \rightarrow \mathbb{C}$, 我们定义以下三种 convergence:
+\begin{itemize}
+    \item \textbf{fast $L^1$-convergence}: if  \[
+    \sum_{n=1}^\infty \int |f_n - f| < \infty    
+    \]
+    \item \textbf{convergence in measure}: if \[
+    \mu(x : |f_n(x) - f(x)| > \epsilon) \overset{n\to \infty}{\longrightarrow} 0
+    \]
+    \item \textbf{subseq a.e. convergence}: if 存在一个 subseq $(f_{n_j})$ 使得 \[
+    f_{n_j} \overset{j\to \infty}{\longrightarrow} f \;\;\; a.e.
+    \]
+\end{itemize}
+\end{definition}
+显然, \textbf{fast $L^1$-convergence $\implies $ $L^1$-convergence;}\\
+我们接下来将说明, \textbf{fast $L^1$-convergence 也 $\implies$ a.e. convergence} (于是它同时作为 a.e. convergence 和 $L^1$-convergence 的上位收敛, 作为这两条线路的上位交汇.)\\
+而我们也将说明:  \textbf{$L^1$-convergence 和 a.e. convergence 都 $\implies$ subseq a.e. convergence, 作为这两条线路的下位交汇.}\\
+以及, $L^1$-convergence $\implies$ convergence in measure.\\\\
+
+\begin{remark}
+    对于 convergence in measure, 还有一个可提及的定义是 \textbf{Cachy in measure}: 对于任意 $\epsilon>0$,  \[
+    \mu(x : |f_n(x) - f_m(x)| > \epsilon) \overset{n,m\to \infty}{\longrightarrow} 0
+    \]
+    我们可以证明 (Folland 2.30)\[\text{Cauchy in measure} \implies \text{convergent in measure}\]
+    但是反向并不成立. examples 中,\textbf{ escape to width, escape to hat 以及 typewritter 是 convergent to $0$ in measure 的, 但不 Cauchy in measure; }\\
+    这里和我们在 metric space 上 distance function 的定义中的 "convergent" 和 "Cauchy" 是不同的, \textbf{在 以 distance 为收敛条件的意义上, convergent 是比 Cauchy 更强的性质.} 
+\end{remark}
+
+以下的标记将在之后几个定理的证明中用到:
+我们现在 define:
+\[B_{n,k} := \{  x\in X  :  | f_n(x) -f(x)| \leq \frac{1}{k}   \}\]
+这个集合表示\textbf{对第 $n$th term, error 控制在 $\frac{1}{k}$ 以内的点.}\\
+从而我们可以用交并的形式来表示 ptwise 收敛点的集合:
+\[
+\{ x \mid f_n(x) \rightarrow f(x)\} = \bigcap_{k=1}^\infty \bigcup_{N=1}^\infty \bigcap_{n \geq N} B_{n,k}
+\]
+Recall Chebyshev:
+\[
+g \in L^1 \implies \mu(\{ |g| \geq c\}) \leq \frac{1}{c} \int |g|
+\]
+
+
+\begin{proposition}{\textbf{fast $L^1$-conv $\implies$ a.e. conv.}}
+\[
+\sum_{j=1}^\infty \int  |f_n-f| < \infty \implies f_n\rightarrow f \;a.e.
+\]
+\end{proposition}
+
+\begin{proof}
+我们取\[
+\{ x \mid f_n(x) \rightarrow f(x) \}= \bigcap_{k=1}^\infty \bigcup_{N=1}^\infty \bigcap_{n \geq N} B_{n,k}\] 的 complement
+\[E := \bigcup_{k=1}^\infty \bigcap_{N=1}^\infty \bigcup_{n \geq N} B_{n,k}^c = \{f_n \not\rightarrow f\}\]\textbf{By Cheb, for each $n,k$ we have:}\[ \mu(B_{n,k}^c)  \leq k \int |f_n-f|\]
+因而由 fast $L^1$-convergence 的条件可得 \[ \forall k \forall N ,\quad  \mu(\bigcup_{n\geq N} B_{n,k}^c) \leq k \sum_{n=N}^\infty \int |f_n-f|  \quad  (\rightarrow 0 \text{ as $N\rightarrow \infty$})\]因而 by ctn from above, \[ \mu (\bigcap_{N=1}^\infty\bigcup_{n\geq N} B_{n,k}^c)  =0\]
+因而
+\[\mu(E) = 0\]
+\end{proof}
+\begin{remark}
+    我们知道, $L^1$-convergence 和 a.e. convergence 互不能推, 因为这一个是逐点的性质, 一个是整体的性质. 但是 $L^1$-convergence 作为一个整体的性质又不够强大 (它允许用函数的纵深来换取宽度, 从而在收敛的情况下保持积分不变.). 然而, fast $L^1$-convergence 则是一个足够强大的整体性质. 因而它可以 imply a.e. convergence. 
+\end{remark}
+
+
+
+
+\begin{corollary}{$L^1$-convergence ($\implies$conv. in measure) $\implies$ subseq a.e. conv. }
+    if $f_n \rightarrow f$ in $L^1$, then there exists subseq $(f_{n_j})_{j\in \mathbb{N}}$ s.t. $f_{n_j} \rightarrow f$ a.e. \\
+    (即 \textbf{$L^1$ convergence implies subseq a.e. convergence})
+\end{corollary}
+\begin{proof}
+    注意: \textbf{对于 $L^1$-convergent 的 seq, 我们可以 pick 出一个 fast $L^1$-convergent 的 subseq.}\\
+    Pick $(n_j)_{j\in\mathbb{N}}$ s.t. 
+    \[
+    \int |f_{n_j} - f| \leq \frac{1}{j^n}
+    \]
+    Then \[
+    \sum_{j=1}^\infty \int |f_{n_j}-f| < \infty
+    \]
+    由刚才的 prop 得, $f_{n_j}\rightarrow f$ a.e.
+\end{proof}
+  \begin{comment}
+\begin{remark}
+这里直接证明了 $L^1$-convergence $\implies$ subseq a.e. conv, 而我们也可以\textbf{在中间加上 conv. in measure }这一过渡.\\
+我们可以通过\[ \mu(B_{n,k}^c)  \leq k \int |f_n-f|\] 的关系, 加上 $L^1$-convergence 对这个积分的控制, 简单得到 \textbf{$L^1$ convergent implies convergent in measure}.\\
+至于 convergent in measure 证明 subseq a.e. conv, 这一部分在 Folland 2.30. \textbf{Convergent in measure implies Cauchy in measure, and Cauchy in measure implies subseq a.e. conv.} (这个证明看起来还挺麻烦的.)
+  
+    我们取一个 subseq $(g_j) := (f_{n_j})$, 其满足 \[
+    \mu( E_j := \{x: |g_j(x)- g_{j+1} (x) | \geq \frac{1}{2^j}\}) \leq \frac{1}{2^j} 
+    \]
+
+\end{remark}
+\end{comment}
+
+
+
+
+\subsection{a.u. conv.(并非 uni. conv. a.e.) 和 Egoroff's Theorem}
+\begin{definition}
+    我们称 $f_n\rightarrow f$ almost uniformly (a.u.), 如果 $\forall \varepsilon > 0$, 都存在 $E \subseteq A$ s.t. $\mu(E) < \varepsilon$ 并且 $f_n \rightarrow f$ uniformly on $E^C$
+\end{definition}
+\begin{remark}
+    和 a.e. convergence 的定义不同, \textbf{a.u. convergence 并不能保证在一个零测集外都 uniform convergence, 但是它仍然 imply a.e. convergence.}\\
+    也有更强的一种 convergence: \textbf{uniform convergence a.e.}, 表示在一个零测集外都 uniform convergence, 其强度在 uni. conv. 和 a.u. conv. 中间. 但在这里, 对于我们即将介绍的 Egoroff's Theorem 而言不需要这么强的 convergence. \\
+    我们将在 $L^p$ space 的部分讨论 uniform convergence a.e. 这个 convergence mode, 并表示它等价于 $L^\infty$ convergence.
+\end{remark}
+
+
+\begin{theorem}{Egoroff's Theorem}
+\label{Egoroff's Theorem}
+如果 $\mu$ 是个 finite measure ($\mu(X) < \infty$), 那么 
+\[
+f_n \rightarrow f \;\;a.e. \;\; \Longleftrightarrow f_n \rightarrow f \;\; a.u.
+\]
+\end{theorem}
+\begin{proof}
+    a.u. $\implies$ a.e.: DIY (显然)\\
+    a.e. $\implies$ a.u.: Fix $\varepsilon > 0$, 我们有 \[
+    f_n \rightarrow f \;\; a.e. \;\; \Longleftrightarrow \;\; \mu( \bigcup_{k=1}^\infty \bigcap_{N=1}^\infty \bigcup_{n \geq N} B_{n,k}^c)  = 0
+    \]
+    因而 \[
+    \forall k, \;\; \mu( \bigcup_{k=1}^\infty \bigcap_{N=1}^\infty \bigcup_{n \geq N} B_{n,k}^c) =0 
+    \]
+    By Ctn from Above: \[
+    \forall k,\;\;  \lim_{N\rightarrow \infty} \mu(\bigcup_{n\geq N} B_{n,k}) = 0
+    \]
+    Then: \[
+    \forall k,\;\; \exists N_k \;\;s.t. \;\;  \mu(\bigcup_{n\geq N} B_{n,k}) < \frac{\varepsilon}{2^k}
+    \]
+    Set\[
+    E:= \bigcup_{K=1}^\infty \bigcup_{n\geq N_k} B_{n,k}^c
+    \]
+    Then we have: \[
+    \begin{cases}
+        \mu(E) < \sum_{1}^\infty \frac{\varepsilon}{2^k} = \varepsilon \\
+        f_n \rightarrow f \;\;\text{unif. on } E^c = \bigcap_{k=1}^\infty \bigcap_{n\geq N_k} B_{n,k}
+    \end{cases}
+    \]
+\end{proof}
+\begin{remark}
+    在 Prob Theory 中很有用, 因为 prob space 是 finite measure space.
+\end{remark}
+
+\begin{example}
+   $\mu = \infty$ 时的反例: 考虑 escape to hat function $f_n := \chi_{(n,n+1)}$ on $(\mathbb{R}, \mathfrak{L},m)$.\\
+    $f_n \rightarrow 0$ a.e. 但是并不 a.u., 因为 $\mu(X) = \infty$.
+\end{example}
+
+
+
+
+\begin{theorem}{Lusin's Theorem}
+\label{Lusin's Theorem}
+    If $f: [a,b] \rightarrow \mathbb{C}$ 是 Leb. mble 的, 那么 $\forall \varepsilon > 0$, 都存在 compact $K \subseteq [a,b]$ s.t. $m(K^c) < \varepsilon$ 并且 $f|_K$ ctn.
+\end{theorem}
+\begin{proof}
+这里我们 restrict $(\mathbb{R}, \mathfrak{L},m)$ to $[a,b]$, 得到这个 subspace 是一个 finite ($=b-a$) 的 measure space. 
+我们知道 $C_c([a,b]) \subseteq L^1(m)$ 是 dense subset.\\
+First assume $f$ bounded, then $f\in L^1(m)$, $\int|f| < \infty$.\\
+Then: \[\exists (f_n)  \subseteq C_c ([a,b])  \;\;s.t. \;\; f_n\rightarrow f \text{ in } L^1 \]
+Pass to subseq: $(f_{n_j})\rightarrow f$ a.e.\\
+Then by \textbf{Egorov}: \[
+\exists F \subseteq [a,b] \text{ mble } s.t. \;\; \mu(F) < \frac{\varepsilon}{2}
+\]
+并且 $(f_{n_j})\rightarrow f$ uniformly on $F^c$.\\
+By inner regu: 存在 $K \subseteq [a,b] $ cpt s.t. $K \subseteq F^c$ 并且 $m(F^c \setminus K ) < \frac{\varepsilon}{2}$, \textbf{从而 $m(K^c) < \varepsilon$ 并且 $f_n$ conv unif. on $K$, so $f$ ctn on $K$.}
+\end{proof}
+\begin{remark}
+    这个定理的证明中展示了 subseq a.e. convergence 的用处. \\
+    我们可以从一个 $L^1$-convergent 的 seq 中 "蒸馏" 出一个 a.e. convergent 的 subseq, conv to 同一个函数. \\
+    并且如果把空间限制在 measure finite 的 subset 上, 还能获取到一个 a.u. convergent 的 seq.\\ 
+    a.u. convergent 的作用很大, 比如可以保留函数在一个比较大的空间上的 ctn 性质.\\
+    因而 \textbf{subseq convergent 的性质可以 as good as convergent, a.u. 的性质可以 as good as uniform.}
+\end{remark}
+
+
+\subsection{summary: convergence mode relations}
+\pic[0.85]{assets/ch2-pics-image-20250225185214948.png}
+一条线是函数值方面的收敛, 一条线是测度和积分方面的收敛,  第一次交汇是 fast $L^1$ conv, 汇聚在 subseq a.e. conv. \\
+\textbf{subseq a.e. conv. 是最弱的 convergence, 这里所有的 convergence 都可以推到它.}\\
+这里可能还有其他的 convergence 关系. 但是我们不关心. 因为不太会用到它们的关系.
+\begin{remark}
+    那我们不禁想要问: 如果没有 fast $L^1$ convergence, 但是还是想 show $L^1$ convergence, 怎么办呢? 这个常用的 convergence 难道只能从定义来证明吗?\\
+有以下两个方法:
+\begin{itemize}
+    \item DCT. DCT 就是专门为了证明 $L^1$ convergence 定制的.\\
+    DCT 表明: \[
+  f_n\to f  \; \text{a.e.} + \text{ dominating function } \implies f_n \to f \; \text{in } L^1
+    \]
+    \item 如果作为底的 measure space 是 finite measure 的, 那么 uniform conv. a.e. (which is equiv to $L^\infty$ conv.) 可以推出 $L^1$ convergence. (以及任意的 $L^p$ convergence).
+
+\end{itemize}
+\end{remark}

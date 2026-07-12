@@ -1,0 +1,674 @@
+\chapter{measurable functions and integration on $L^+(\mu)$}
+\section{measurable function [Fol 2.1]}
+\subsection{general measurable function}
+\begin{definition}{$(\mathcal{M}, \cN)$-measurable function}
+Let $(X,\mathcal{M})$, $(Y,\cN)$ be measurable spaces, 如果 $f: X \rar Y$ 满足: $$B \in \cN \implies f^{-1}(B) \in \mathcal{M}$$, 则称 $f$ 为一个 $(\mathcal{M}, \cN)$-measurable function.
+\end{definition}
+从一个 measurable space 到另一个 measurable space 的 function 被称为 measurable 的条件是: 被映射到可测集的集合只能是可测集.
+
+这个定义和 topological space 上 continuous 的定义: 被映射到开集的只能是开集, 形式是完全一样的. 并且我们知道, topological space 和 measure space 也有很多相似之处. 因而连续性和可测性有一定的关系.
+
+函数的可测性的定义是 with respect to 它们所在可测空间选定的 $\sigma$-algebra 的, 就像 topologica spaces 之间函数的连续性的定义是 with respect to 它们所在的 topological spaces 选定的 topology.
+
+这两个定义都表示的是: 性质不好的集合不会被映射到性质良好的集合. (但是性质良好的集合有可能被映射到性质不好的集合.)
+
+
+\begin{proposition}{composition preserves measurability}
+    如果 $f$ 是 $(\mathcal{A},\mathcal{B})$-measurable 的, $g$ 是 $(\mathcal{B}, \mathcal{C})$-measurable 的, 那么 $g \circ f$ 是 $(\mathcal{A}, \mathcal{C})$-measurable 的.
+\end{proposition}
+\begin{proof}
+    Trivial.
+\end{proof}
+
+\begin{lemma}
+    Let $(X,\mathcal{M})$, $(Y,\cN)$ be measurable spaces, 如果 $\cN = <\varepsilon>$ for some $\varepsilon \sub Y$, 那么 
+\begin{center}
+    $f: X \rar Y$  $(\mathcal{M},\cN)$-measurable  $\Longleftrightarrow$ $f^{-1}(E) \in \mathcal{M}  \quad \forall E \sub \varepsilon$
+\end{center}
+
+\end{lemma}
+\begin{proof}
+foward direction: trivial.\\
+backward direction: Let
+$$
+D: = \{ E \sub Y \mid f^{-1}(E) \in \mathcal{M}\}
+$$
+容易证明: $D \supseteq \varepsilon$, 并且 $D$ 是一个 $\sigma$-algebra.\\
+因而 $D \supseteq <\varepsilon> = \cN$
+\end{proof}
+\begin{remark}
+    如果我们知道 $\cN$ 是由某个子集生成出来的, 那么对于映射到这个 measurable space 的函数, 只要保证这个子集中的每个集合的 preimage 都是可测集就可以了, 可以 reduce 判断 $f$ measurable 的条件.
+
+    同样类比 topological space, 如果 $Y$ 的 topology 存在一个 basis, 那么判断 $f: X\rar Y$ 连续, 只需要判断这个 basis 的 preimage 都是 open 的就好了.
+\end{remark}
+
+\begin{proposition}
+对于 topological space $X,Y$, let $f:X\rar Y$
+\begin{center}
+    $f$ continuous $\implies$$f$ 是 $(\mathcal{B}(X),\mathcal{B}(Y))$ measurable 的.
+\end{center}
+\end{proposition}
+\begin{remark}
+    topological spaces 之间, 连续函数一定是在它们的 Borel algebra 之间 measurable 的.
+\end{remark}
+
+
+
+
+\subsection{real and complex-valued measurable function}
+\begin{definition}{(real-valued) measurable functions}
+Let $(X,\mathcal{A})$ be a measurable space, 
+对于 $f: X \rightarrow \overline{\mathbb{R}}$ 如果它是 $(\mathcal{A}, \mathcal{B}(\overline{\mathbb{R}}))$-measurable 的, 我们直接简称它是 $\mathcal{A}$-measurable 的, 或者简称为 measurable 的.
+
+\end{definition}
+\begin{remark}
+    实际上, 使用无穷作为值, 就是把\textbf{原本不在定义域上的无穷跳跃点放到了定义域上}, 些情况下, 仅仅是一种方便的记号，但它们通常不会被视为真正的值.
+    
+    但是等价地, 我们为了便利一般都会使用 extended real number system 来进行分析, 把这些无穷间断当作无穷的值来进行分析. 
+    
+    这样做法的合理性是, 对于\textbf{零测集大小多个这样的无穷间断点}, 在 Lebesgue 积分体系下这一行为\textbf{并不会影响函数的 integrability 以及 integral 的值}, 因而我们可以这么做. 这一点之后并不会造成困扰, 因为我们在之后定义可积空间时, 会避开有超过零测集大小多个无穷间断点的函数, 以及无法定义的行为.
+
+    我们容易验证:
+    $$
+    \mathcal{B}(  \overline{\mathbb{R}}) = \{  E \subseteq \overline{\mathbb{R}}  \mid  E\cap \mathbb{R} \in \mathcal{B}(\mathbb{R})   \}
+    $$
+    
+    以及, $   \mathcal{B}(  \overline{\mathbb{R}}) $ 的 generating set 可以是所有的 $(a, \infty]$ 集合或者 $[-\infty, a)$ 集合\textbf{.} 所以\textbf{一个 map to $\overline{\mathbb{R}}$ 的函数是可测的, 当且仅当任意 $ (a, \infty]$ 的 preimage 都可测}.\\
+    \end{remark}
+
+
+\begin{definition}{(complex-valued) measurable functions}
+    如果 $f: X \rightarrow \mathbb{C}$ 满足: $\re f, \im f$ 都是 (real-valued) $X$-measurable 的, 那么也称 $f$ 是 $X$-measurable 的, 或者直接说是 measurable 的.
+\end{definition}
+\begin{remark}
+    任意 complex function $f$ 都可以写为
+$$
+    f = \re f + i \im f
+    $$
+    这个定义其实等价于 $f$ 是 $(\mathcal{M}, \mathcal{B}(\mathbb{C}))$-measurable 的, 因为这个 statment 等价于 $\re f$, $\im f$ 都是 (real-valued) $X$-measuable 的, 这是因为 $$\borel(\mathbb{C}) \equiv \borel(\mathbb{R}^2) = \borel(\mathbb{R}) \otimes \borel(\mathbb{R})$$
+\end{remark}
+
+
+
+
+\begin{definition}{Lebesgue measurable functions, Borel measurable functions}
+Naturally, 如果 $f: \mathbb{R} \rightarrow \mathbb{C}$ 是一个 $\mathfrak{L}$-measurable 的函数, 那么我们称 $f$ 是 \textbf{Lebesgue measurable} 的.
+
+同样地, 如果它是一个 $\mathcal{B}(\mathbb{R})$-measurable 的函数, 称 $f$ 是 \textbf{Borel measurable} 的. 
+\end{definition}
+
+
+\begin{proposition}
+    在任何 $\mathcal{M}$-measurable function $f$ 前 compose 一个 Borel measurable 的 function, 结果仍然是 $\mathcal{M}$-measurable 的, follows from composition preserves measurability.
+\end{proposition}
+\begin{proof}
+    Follows from def.
+\end{proof}
+\begin{example}
+    $f^2$, $-3f$, $\frac{1}{|f|}$ ($f\not= 0$) 都仍然是 $\mathcal{M}$-measuble 的.
+\end{example}
+
+
+
+\subsection{arithmetic and sequential preservation of measurable functions}
+\begin{proposition}{addition and multiplication 保留 measuability}
+    如果 $f,g$ 是 $\mathcal{M}$-measurable function, 那么 $f+g, fg$ 也是.
+\end{proposition}
+\begin{proof}
+Suffices to assume $f,g$ is (extended) real-valued. Complex case follows trivially.
+
+Suppose $f,g$ 是 $\mathcal{M}$-measurable 的, 我们想要证明: $f+g$ 是 $\mathcal{M}$-measurable 的, suffices to show: $(f+g)^{-1}(a,\infty] \in \mathcal{M}$ for any $a\in \mathbb{R}$.
+
+我们 notice:
+\begin{equation}
+    \{x\in X \mid f(x) + g(x) > a  \} = \bigcup_{r \in \mathbb{Q}} \{  x \mid f(x) > r \} \cap \{  x \mid g(x) > a-r \}
+\end{equation}
+于是 finishes the proof.
+
+对于 $fg$, 我们发现有 
+$$
+fg = \frac{1}{2}((f+g)^2 - f^2 - g^2)
+$$
+于是也 finishes the proof, following 前一个 proposition.
+\end{proof}
+
+\begin{lemma}{sequential behavior of real-valued measurable function}
+如果 $\{ f_n :X\rightarrow   \overline{\mathbb{R}}\}_{n\in\mathbb{N}}$ 是一个 seq of $\mathcal{M}$-measurable functions, 那么
+\begin{itemize}
+    \item $$g_1(x) : = \sup_j f_j(x)$$
+    \item $$g_2(x) : = \inf_j f_j(x)$$
+    \item $$g_3(x) : = \limsup_{j \rightarrow \infty} f_j(x)$$
+    \item $$g_4(x) : = \liminf_{j \rightarrow \infty} f_j(x)$$
+\end{itemize}
+都是 $\mathcal{M}$-measurable 的.
+\end{lemma}
+\begin{proof}
+ \[
+g_1(x) = \sup_{j \in \mathbb{N}} f_j(x).
+\]
+由上确界的定义：
+\[
+g_1(x) > a \iff \exists j \in \mathbb{N}, \text{ such that } f_j(x) > a.
+\]
+因此，
+\[
+\{ x \mid g_1(x) > a \} = \bigcup_{j \in \mathbb{N}} \{ x \mid f_j(x) > a \}.
+\]
+因而:
+$$
+g_1 ^{-1}((a,\infty]) = \bigcup_1^\infty f_j ^{-1} ((a,\infty])
+$$
+
+由于 \( f_j \) 可测，集合 \( \{ x \mid f_j(x) > a \} \) 是 \(\mathcal{M}\)-measurable ，而可测集合的可数并仍然是可测的，因此 \( g_1 \) 可测。
+
+inf: dually.
+
+limsup: 等于 inf of sup ($k\geq n$)
+
+liminf: 等于 sup of inf  ($k\geq n$)
+\end{proof}
+\begin{remark}
+    从这个 proof 里笔者发现了这个惊人的事情。居然有
+  $$
+(sup_{j} f_j) ^{-1}((a,\infty]) = \bigcup_1^\infty f_j ^{-1} ((a,\infty])
+$$
+但是仔细想想也是合理的. 因为 function seq 的 sup 函数能够 map 到的值大的元素肯定比其中任何一个 function $f_n$ 更多. 并且其中存在一个 limit 关系.
+
+以及得出了一个很重要的结论: \textbf{可测函数的 seq 的各种极限仍然是可测函数.}
+\end{remark}
+
+
+\begin{corollary}
+    如果 $\{ f_n :X\rightarrow   \overline{\mathbb{R}}\}_{n\in\mathbb{N}}$ 是一个 seq of $\mathcal{M}$-measurable functions, 且在任意 $x$ 处极限都存在, 那么
+$$
+f(x) := \lim_{j\rightarrow \infty} f_j(x)
+$$
+是 $\mathcal{M}$-measurable 的.
+\end{corollary}
+\begin{proof}
+    directly follows from lemma. 因为 $x$ 处极限如果存在, 那么 $\sup_f f_j (x)  = \inf_j f_j(x) $
+\end{proof}
+
+
+
+
+
+\begin{corollary}
+    $f,g$ $\mathcal{M}$-measurable $\implies$ $\max(f,g), \min(f,g)$$\mathcal{M}$- measurable 
+\end{corollary}
+\begin{proof}
+    two element sequence, 剩余的用空集, 于是 follows form above.
+\end{proof}
+
+
+
+\begin{remark}
+    于是我们知道, 当我们把 $f$ 拆分成 $f^+ := \max(f,0)$, $f^- := \max(-f,0)$, 我们有 
+
+    \begin{center}
+ \textbf{ $f$ $\mathcal{M}$-measurable $\implies$ $f^+, f^-$ $\mathcal{M}$-measurable}
+    \end{center}
+
+并且由于 $f = f^+ - f^-$, 反向也成立. 并且 $|f| = f^+ + f^-$, 因而有:
+\begin{center}
+     \textbf{ $f$ $\mathcal{M}$-measurable $\Longleftrightarrow$ $f^+, f^-$ $\mathcal{M}$-measurable} \textbf{$\Longleftrightarrow$ $|f|$ $\mathcal{M}$-measurable}
+\end{center}
+\end{remark}
+
+
+
+
+
+
+
+\section{simple function and integration of nonnegative functions [Fol 2.1, finished; 2.2]}
+
+\subsection{indicator and simple function}
+\begin{definition}{characteristic (indicator) function}
+    Given $E \subseteq X$, 我们定义:
+    $$
+    \chi_E(x) := \begin{cases}
+        1 \quad,x\in E\\
+        0 \quad, x\not \in E
+    \end{cases}
+    $$
+\end{definition}
+
+\begin{lemma}
+如果 $(X,\mathcal{M})$ 是一个 measurable space, 那么一个 indicator function
+\begin{center}
+   \textbf{ $\chi_E$ on $X$ 是 measurable 的 $\Longleftrightarrow$ $E \in  \mathcal{M}$}
+\end{center}
+\end{lemma}
+indicator function measurable 当且仅当它 indicate 的集合是 measurable 的.
+
+
+
+
+
+
+
+\begin{definition}{simple function}
+    一个 simple function on measurable space $(X,\mathcal{A})$ 是一个 $\mathcal{A}$-measurable function $\phi:X \rightarrow \mathbb{C}$, taking only finitely many values.
+
+即: $\phi(X) = \{c_1,\cdots, c_k\}$
+\end{definition}
+
+\begin{proposition}{使用 \textbf{a sum of indicator functions of measurable sets} 来定义 simple function}
+对于 simple function $\phi:X \rightarrow \mathbb{C}$ s.t. $\phi(X) =\{ c_1,\cdots,c_n\} $, 我们也可以定义它为:  $$
+    \phi(x) = \sum_{j=1}^n c_j \chi_{E_j}
+    $$
+其中, $E_j  =  \phi^{-1}(\{c_j\})$.
+我们称之为: the \textbf{standard representation of simple $\phi$.}
+\end{proposition}
+这是因为, 单点集在 $\mathcal{B}(\mathbb{C})$ 上是 measurable 的, \textbf{由于 $\phi$ measurable, 我们得到 $E_j \in \mathcal{M}$.}
+\begin{remark}
+    对于 simple function $$
+    \phi(x) = \sum_{j=1}^n c_j \chi_{E_j}
+    $$ 一定有 $$
+    \bigsqcup_{j=1}^n E_j = X
+    $$其中通常有一个 $E_j$ 上 $\phi$ 的值是 0.
+\end{remark}
+
+
+
+\begin{lemma}
+    如果 $\phi, \psi: X \rightarrow \mathbb{C}$ 是 simple functions, 那么 
+    \begin{itemize}
+        \item  $\phi + \psi$
+        \item $\phi \psi$
+        \item $|\phi|$
+        \item $k\phi$ $\forall k \in \mathbb{C}$
+    \end{itemize}
+都是 simple functions.
+
+特别地, 如果  $\phi, \psi: X \rightarrow  \mathbb{R}$, 那么 $
+\max(\phi,\psi), \min(\phi,\psi)
+$ 也是 simple functions.
+\end{lemma}
+\begin{proof}
+    trivial.
+\end{proof}
+
+
+
+
+\subsection{measurable function is a limit of simple functions}
+\begin{theorem}{approximating a nonneg measurable function by simple function}
+\label{approximating a nonneg measurable function by simple function}
+    任意的 measurable $f:X \rightarrow [0,\infty]$ 都是 \textbf{pointwise limit} of an \textbf{increasing sequence of simple functions} $\{\phi_n:X\rightarrow [0,\infty]\}_{n\in\mathbb{N}}$.
+\end{theorem}
+\begin{proof}
+    这个构造看起来有点复杂但是其实非常直观.
+
+    对于 $n\in \mathbb{N}$, 我们都 index $0 \leq k \leq 2^{2n}-1$
+
+    然后对每个 $k$ 取:
+    $$
+    E_n^k := f^{-1}((\frac{k}{2^n},\frac{k+1}{2^{n+1}}])
+    $$
+    以及:
+    $$
+    F_n := f^{-1}((2^n,\infty])
+    $$
+
+    即, 我们把 $(0,2^n]$ 这一部分值域切成了 $2^{2n}$ 份, 再把 $(2^n,\infty]$ 这一部分值域单独列成一份.
+    
+    这 $2^{2n} +1$ 份值域的切片, 我们对每一份所对应的 function graph, 都取它对应的 Preimage 上的 indicator function 乘以 $\frac{k}{2^n}$, 这段值域的最小值的 constant 函数, 于是一定会得到一个 well approximation:
+
+$$
+\phi_n := \sum_{k=0}^{2^{2n}-1} k\frac{k}{2^n} \chi_{E_n^k} + 2^n \chi_{F_n}
+$$
+易得, $$\phi_n \leq \phi_{n+1} \leq f$$
+for all $n$. 并且\textbf{在 $X \setminus F_n = \{ x\mid f(x) \leq 2^n  \}$ 上我们有}:
+
+$$
+0 \leq f-\phi_n \leq \frac{1}{2^n}
+$$
+
+    
+    随着 $n$ 增大, 最终这个近似会覆盖整个 image, (除非具有非零测数量的无穷间断点, 那样的话最后结果也是无穷), 并且值域的划分越来越精细, 最后会得到: 
+    \begin{itemize}
+        \item \textbf{$\phi_n \rightarrow f$ pointwisely}
+        \item \textbf{在 $f$ bounded 的定义域 $\{x \mid f(x) <\infty\}$ 上, $\phi_n \rightarrow f$ uniformly.}
+    \end{itemize}
+
+    \pic[0.6]{assets/ch2-pics-simple.png}    
+\end{proof}
+\begin{remark}
+我们在构造 simple function 的时候这样用到 measurability:
+这里的每个 $\phi_n$ 是 simple function, 是由于 $f$ measurable, 以至于每个 \textbf{$E_n^k, F_n$ 作为 interval 的 preimage, 都是 measurable sets. } 
+\end{remark}
+
+\begin{corollary}{approximating a complex-valued measurable function by simple function}
+对于任意的 measurable $f:X\rightarrow \mathbb{C}$, 都存在 a seq of simple functions $$0 \leq |\phi_1| \leq |\phi_2| \leq \cdots \leq |f|$$ 使得 
+\begin{itemize}
+    \item \textbf{$\phi_n \rightarrow f$ pointwisely}
+    \item \textbf{$\phi_n \rightarrow f$ uniformly on $\{ x \mid |f(x)| < \infty\}$}
+\end{itemize}
+\end{corollary}
+
+\begin{proof}
+    我们可以把 $f$ 拆为 $\im f, \re f$, 然后再把它们分别拆为 $\im f^+ - \im f^-$, 以及 $\re f^+ - \re f^-$. 得到四个 real-valued nonng functions.
+\end{proof}
+
+
+
+
+\subsection{integration of non-neg functions}
+
+\begin{definition}{$L^+$ space and integration on it}
+给定一个 measure space $(X, \mathcal{M},\mu)$
+    我们定义: $$
+    L^+(\mu)  := \{  \textbf{measurable functions }  f: X \rightarrow [0,\infty]   \} $$
+对于所有的 \textbf{simple functions $\phi = \sum_{j=1}^n a_j \chi_{E_j} \in L^+(\mu)$}, 即所有非负的 simple functions, 我们定义\textbf{ the integral of $\phi$ with respect to $\mu$} by:
+$$\int \phi d \mu  \;(= \int_X   \phi d\mu  ) := \sum_{i=1}^n a_j \mu(E_j)$$
+对于任意的 $f \in L^+(\mu)$, 我们定义 \textbf{the integral of $f$ with respect to $\mu$ }by: 
+$$ \int f d \mu \;(= \int_X  fd\mu ) := \sup \{   \int \phi d\mu \mid 0\leq \phi \leq f, \phi  \text{ simple} \}$$
+\end{definition}
+
+\begin{remark}
+因而对于 general 的非负可测函数, 我们通过 \ref{approximating a nonneg measurable function by simple function} 得知, 我们可以用 simple function 来近似它. 从而, 我们使用 simple function 的积分的极限来定义 general measurable function 的积分.
+
+而 simple function 的积分, 即等于它下方的面积. 因而我们发现, 这个积分的定义和 $\mathbb{R}^n \rightarrow \mathbb{R}$ 上 Rieamnn 积分有很大的相似之处, 不同在于一个竖切定义域一个横切值域.
+
+之后我们也会证明, 在 $\mathbb{R}^n \rightarrow \mathbb{R}$ 上, 所有 Riemann 可积的函数也 Lebesgue 可积, 并且得到的结果相同.
+
+这一积分的定义是对 Riemann 积分的推广.
+\end{remark}
+
+\begin{remark}
+    measure theory 中的积分理论是把从 $\mathbb{R}^n$ 出发的函数 推广到了从抽象的测度空间出发的函数; 而还有其他的积分理论, 比如微分形式上的积分则是把实值函数的积分推广到了 oriented smooth manifolds 上, 不仅可以积分 scalars 还可以积分向量场. 这些积分理论的共同点是对 $\mathbb{R}^n\rightarrow \mathbb{R}$ 上的函数的积分是 coincide 的.
+
+笔者感觉积分理论就是在一个抽象空间上，通过一个抽象的密度函数(被积函数) 以及体积指标(measure function), 得到一个抽象质量。由于这个理念本身是从 $\mathbb{R}^n$ 上 generalize 的，因而各种不同的积分理论在 $\mathbb{R}^n$ 上的积分总是 coincide 的
+\end{remark}
+
+
+
+\begin{definition}{integration on a subset}
+    对非负 \textbf{simple functions $\phi = \sum_{j=1}^n a_j \chi_{E_j} \in L^+(\mu)$}, 我们定义 \textbf{the integral of $\phi$ on $A\in \mathcal{M}$ with respect to $\mu$} by:
+$$
+\int_A \phi \;d\mu  := \int \phi \chi_A \; d\mu
+$$
+对于 general 的 $f \in L^+(\mu)$, 我们也从而定义:
+$$ \int_A  fd\mu  := \sup \{   \int_A \phi d\mu \mid 0\leq \phi \leq f, \phi  \text{ simple} \}$$
+\end{definition}
+\begin{remark}
+$$
+\int_A \phi \;d\mu  := \int \phi \chi_A \; d\mu = \sum_j a_j \chi_{A \cap E_j}
+$$
+\end{remark}
+
+
+
+
+\begin{proposition}{integral of simple functions 的性质}
+Let $\phi, \psi$ be simple functions in $L^+(\mu)$, 有:
+\begin{itemize}
+    \item \textbf{homogeneity:} 对于任意非负 $c$, 有 $\int c\phi = c\int \phi$
+    \item \textbf{linearity:} $\int (\phi + \psi) = \int \phi + \int \psi$
+    \item \textbf{monotonicity:} $\phi \leq \psi \implies \int \phi \leq \int \psi$
+    \item \textbf{induced measure}: $A \mapsto \int_A \phi \; d\mu$ 是一个 $\mathcal{M}$ 上的 measure.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+   \textbf{ homogeneity}  trivial .
+
+  \textbf{  linearity:} Let  $$
+    \phi = \sum_{i=1}^n a_i \chi_{E_i} \quad , \psi = \sum_{j=1}^n b_j \chi_{F_j}
+    $$ 则有: $$
+    E_j = \bigsqcup _k (E_j \cap F_k)\quad , F_k = \bigsqcup_j (E_j \cap F_k) $$ for each $j,k$. 从而有 $$ \int \phi + \int \psi = \sum_{j,k} (a_j + b_k) \mu(E_j \cap F_k)  $$
+
+    \textbf{Monotonicity}: trivial.
+
+    induced measure: 只需要证明 countable additivity, 于是我们让 $A$ be the union of a disjoint seq in $\mathcal{M}, 有:  $$$  \int_A  \phi = \sum_j a_j \mu(A \cap E_j) = \sum_{j,k}  a_j \mu(A_k \cap E_j)    = \sum_k \int_{A_k} \phi$$
+\end{proof}
+\begin{remark}
+    本身, 我们已经基于一个 measure 作为 "体积密度", 来定义一个 simple function 按照这个体积密度得到的积分, 而它在每个可测集上的积分又可以定义另一个 measure; 
+    
+    这个 measure 表示 "某个集合和 $E_1, \cdots, E_n$ 的交集在这个体积密度以及 simple function 放缩下有多大".
+\end{remark}
+
+
+
+那么对于 general 的 $f\in L^+(\mu)$, 有刚才的四条性质成立吗? \textbf{显然, monotonicity 和 homogeinity 是成立的}, 但是我们会发现, 很难证明
+$$
+\int f \; d\mu + \int g \;d\mu = \int(f+g) \;d \mu
+$$
+$\leq $ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这个方向, 我们需要下面这个重要定理:
+
+
+
+
+\subsection{MCT}
+\begin{theorem}{monotone convergence theorem}
+\label{MCT}
+Let $\{f_n\}_{n\in\mathbb{N}}$ be a seq in $L^+(\mu)$, 并且有 $f_n \leq f_{n+1}$ for each $n$. \\
+我们 define:$$f := \lim_n f_n \; \; (= \sup_n f_n)$$, 则一定有 $$\int f = \lim_{n\rightarrow \infty } \int f_n$$
+ \end{theorem}
+\begin{proof}
+首先 Note 几个事情: 
+1. 这个极限函数 \textbf{$f$ 是 well-defined 的} (可能 $\infty$), by \textbf{numerical sequence 的 monotone bounded convergence theorem}. 
+
+2. 同样地, 由于 $\int f_n \leq \int f_{n+1} \leq \int f$, 这个 \textbf{$\lim \int f_n$ 也是存在的}.
+
+3. 并且, $f$ 也是一个可测函数, 因为 by 上个 lecture 的定理: \textbf{可测函数序列的极限也是可测函数.}
+
+现在进行证明: 
+By monotonicity of integral, $$\lim \int f_n \leq \int f$$ 
+
+是 natural 的. 因而只需要证明另一方向.
+
+By def, $\int f = \sup \{ \int \phi \mid \phi \leq f\}$ where $\phi $ is simple.
+因而 it \textbf{suffices to show: 对于任意 simple $\phi \leq f$, 都有 $\lim \int f_n \geq \int \phi$.}
+
+我们 fix 一个 $0 \leq \phi \leq f$. WTS: $$\lim_n \int f_n \geq \int \phi$$
+
+要证明 $\lim \int f_n \geq \int \phi$, 我们再把它转化成证明: $$\forall \alpha \in (0,1)\;\;\lim_n \int f_n \geq \alpha \int \phi$$
+我们取 $$ E_n := \{x \mid f_n(x) \geq \alpha \phi  \} = f^{-1} ([\alpha \phi,\infty]) \in \mathcal{M}$$
+
+容易发现, $E_n \subseteq E_{n+1}$ for each $n$. 并且 Claim: $\bigcup_n E_n = X$.  (这就是为什么要做取 $\alpha$ 这个意义不明的行为) 这是因为 $\alpha < 1$, 并且 $f_n$ converge pointwisely to $f$, by measurable function 的 limit behavior.  \textbf{而由于 simple function $\phi$ 是 bounded 的, 从而 $f_n$ 会 uniformly 向上接近(以至于超过) $\phi$. 取 $\alpha$ 是为了保证, 一定存在一个 $n$ 使得 $E_n = X$ }
+
+于是我们有:
+$$
+\int f_n \geq \int f_n \chi_{E_n}  \geq \int \alpha \phi \chi_{E_n} = \alpha \int_{E_n} \phi
+$$
+
+我们此处又可以用到一条冷门的性质: \textbf{由于 $E \mapsto \int_E \phi$ 是一个 measure on $(X,\mathcal{A})$, by continuous from below, 有:}
+$$
+\lim_n \int_{E_n} \phi  = \int \phi
+$$
+从而有$$\lim_n \int f_n \geq \alpha \int \phi$$ finishing the proof.
+\end{proof}
+\begin{remark}
+    这是一个非常重要的定理. 它表示了\textbf{非负可测函数的极限的积分等于积分的极限, 可以把取极限和积分这两个操作进行换序.}
+\end{remark}
+
+以下为一个应用 MCT 得到的结论.
+
+\begin{example}
+    取 $$(\mathbb{N}, \mathcal{P}(\mathbb{N}), \mu_{counting})$$
+    于是$$L^+(\mu) = \{f:\mathbb{N}\rightarrow [0,\infty]  \}$$
+    是所有的从自然数到 reals 的函数. (因为我们取了 power set 作为 $\sigma$-algebra)
+
+   \noindent  注意到任何一个这样的函数都可以被 $$\phi_n :=  \sum_{j=1}^n f(j) \mu(\{j\}) =  \sum_{j=1}^n f(j)   $$ 来逼近. 从而 $$
+    \int f = \sum_{j=1}^\infty f(j)  \in [0,\infty]
+    $$ 
+如果取一个从下逼近 $f$ 的可测函数序列 $\{f_n\}_{n\in\mathbb{N}}$, 那么 by MCT, 我们总有:
+$$
+\sum_1^\infty f_n (j) \nearrow \sum_1^\infty f (j) 
+$$
+\end{example}
+
+
+\subsection{(countable) linearity of integral}
+\begin{corollary}
+$$f,g \in L^+(\mu) \quad \Longrightarrow \quad \int(f+g) = \int f + \int g$$
+\end{corollary}
+\begin{proof}
+使用 approximation by simple functions 以及 MCT.
+取 $$\phi_n \nearrow f, \quad \psi_n \nearrow g$$, 从而 $$\phi_n + \psi_n \nearrow f+g$$, 从而我们有 $$ \int (f+g)  \overset{MCT}{=}  \lim_{n} \int (\phi_n + \psi_n)$$
+从而由 simple function 的 Linearity 得到:$$ \int (f+g) = \lim_n\int \phi_n + \lim_n \int \psi_n$$
+并且由于 $$ \int \phi_n \nearrow \int f, \int \psi_n \nearrow \int g$$
+我们得到:
+$$
+\int (f+g) \geq \int f + \int g
+$$
+另一方向 trivial.
+\end{proof}
+
+
+\begin{remark}
+    由此可见, \begin{center}
+\textbf{$f\mapsto \int f$ 是 $\mathbb{R}$-linear 的映射.}
+    \end{center}
+\end{remark}
+
+\subsection{Tonelli for sum and integrals}
+\begin{corollary}{Tonelli for sum and integrals}
+\label{Tonelli for sum and integrals}
+for $\{f_i\}_{i\in\mathbb{N}}$ in $L^+(\mu)$, 有:
+$$
+\int \sum_{i=1}^\infty f_i = \sum_{i=1}^\infty \int f_i
+$$
+\end{corollary}\begin{proof}
+Apply MCT to 
+$$
+g_n = \sum_{i=1}^n f_i
+$$ 可得证.
+\end{proof}
+\begin{remark}
+    这是 linearity of integral 的 countable version.\\
+    由此可见 MCT 的用处很大.
+\end{remark}
+
+
+
+
+
+
+
+
+\section{properties of integration on $L^+(\mu)$ [Fol 2.2, finished]}
+\subsection{Fatou's Lemma}
+\begin{theorem}{Fatou's Lemma}
+    \label{Fatou's Lemma}
+ 令 $(f_n)$ be a seq of functions in $L^+(\mu)$, then $$ \liminf_n \int f_n \geq \int \liminf_n f_n$$
+\end{theorem}
+
+\begin{proof}
+    Set \[g_n := \inf_{m \geq n }     f_n   \]于是 \[g_n \nearrow \liminf_n f_n\]
+于是\textbf{ by MCT}, we have: \[  \lim_n \int g_n =  \int \lim_n g_n =      \int \liminf_n f_n  \]
+By def, 我们有 $g_n \leq f_n \;\;\forall n$, 于是 by monotonicity, $\int g_n \leq \int f_n$. 因而 \[  \liminf_n \int f_n \geq \liminf_n \int g_n  = \lim_n \int g_n = \int \liminf_n f_n   \]
+\end{proof}
+\begin{remark}
+    对于 increasing 的从而有 limit 的可测 $(f_n)$, 我们可以使用 MCT.
+
+    但是对于任意的可测 $(f_n)$, 我们无法使用 MCT, 不过有弱化的版本 Fatou's Lemma. 它表示\textbf{下极限的积分 小于等于 积分的下极限}.
+
+    这是一个符合直觉的事情, 因为取函数的 pointwise 极限是一个很容易极端的事情. 
+    
+    积分的极限是一个 numerical seq 的极限, 比较 robust. 而函数的逐点极限是一个比较不稳定的事情, \textbf{在对函数逐点极限的过程中, 它的 "质量" 会存在一个比较大的损失, 因为其中可能包含了 uncountably many 个点的函数值的逐点极限的累积, 而积分的极限只是单个点的逐点极限. 因而大小关系很显然. }
+\end{remark}
+
+
+\begin{example}
+    取 $(\mathbb{R},\mathfrak{L}, m)$, 考虑 $L^+(m)$ 上的函数, 即非负 Lebesgue 可测函数.
+
+    下面有几个非常经典的 Fatou's Lemma 的例子:
+
+\noindent 1. \textbf{escape to hat}: \[f_n = \chi_{(n,n+1)}\]
+$f_n$ 在 $\mathbb{R}$ 上平移
+
+   \noindent 2. \textbf{escape to width}: \[f_n = \frac{1}{n}  \chi_{(0,n)}\]
+    $f_n$逐渐变得平坦
+    
+ \noindent   3. \textbf{escape to height}: \[ f_n = n \chi_{(0,\frac{1}{n})}\]
+$f_n$ 逐渐变成一根针.
+
+这三个例子中都有 $f_n \rightarrow 0$ pointwisely. 因而 $$\int \lim f_n = 0$$, 而 $$\lim \int f_n = 1$$, 因为对于所有 $f_n$ 都有 $\int f_n = 1$
+\end{example}
+
+
+\subsection{Chebyshev's inequality with corollaries}
+
+\begin{lemma}{Chebyshev's inequality}
+\label{Chebyshev's inequality}
+对于 measure space $(X,\mathcal{M}, \mu)$, 如果 $f \in L^+(\mu)$ 并且 $c > 0$, 那么
+\[
+\mu\{ f \geq c\}  \leq \frac{1}{c} \int f
+\]
+\end{lemma}\begin{proof}
+  Let $E := \mu\{f \geq c\}$
+    \[
+    \int f \geq \int f \chi_{E} \geq \int c \chi_E = c \int \chi_E = c\mu(E)
+    \]
+\end{proof}
+\begin{remark}
+    一个可测集的测度, 就等于 constant 1 在它上面的积分, by definition.
+
+    这是一个简单而常用的结论.
+\end{remark}
+
+
+
+
+
+
+
+
+\begin{proposition}{非负函数积分为 0 等价于几乎处处为 0}
+    令 $f \in L^+(\mu)$, 有:
+    \begin{center}
+        $\displaystyle \int f = 0$ $\Longleftrightarrow$ $f = 0$ a.e. (即只在一个零测集上非 0)
+    \end{center}
+\end{proposition}
+\begin{proof}
+    forward direction: directly follows from Chebyshev: set $A_n := \{f \geq \frac{1}{n}\}$, 对于任意 $n$ 都有 $\mu(A_n) \leq n\int f = 0$. 从而 by ctn from below, $>0$ 处构成零测集.
+    
+    backward direction: 对于 simple function, trivial by 积分的定义; 对于 general $f$, 通过 limit 得到 (它下方的所有 simple functions 也 a.e. 为 0 从而积分为 0).
+\end{proof}
+
+
+
+
+
+
+\begin{corollary}{几乎处处相等的非负函数积分相等}
+Let $f,g \in L^+(\mu)$ 且 $f = g$ a.e., 则有  \[ \int f = \int g\]
+\end{corollary}
+\begin{proof}
+    Set $D : = \{ x \mid f(x) \not = g(x)\}$, 则 $\mu(D) = 0$ by def
+    \[
+    \int f = \int_{D} f + \int_{D^c} f = 0 + \int_{D^c} g = \int g
+    \]
+\end{proof}
+
+
+
+
+
+\begin{corollary}{liminf version of MCT}suppose $(f_n)_{n\in\mathbb{N}} $ 是一个 seq of functions in $L^+(\mu)$, 且 $f_n \rightarrow f \in L^+(\mu)$, 则:
+$$
+\liminf_n \int f_n \geq \int f
+$$
+\end{corollary}
+\begin{proof}
+    这是一个条件稍微弱化的 MCT: 把 $f_n\nearrow f$ 的条件改成了 $f_n \rightarrow f$ a.e., 得到的结论也稍弱化.\\
+   \textbf{ modify $f_n$ and $f$ on a null set} (thus without chaning the integral) 后, follows directly from \textbf{Fatou's lemma}, 
+\end{proof}
+
+
+\begin{theorem}{积分收敛 $\implies$ 发散点集零测, 以及 support $\sigma$-finite}
+    如果 $f\in L^+(\mu)$ 且 $|\int f| < \infty$, 则有: \[   \mu( \{x\in X \mid f(x) = \infty\} ) = 0\] 并且 \[ \{ x \mid f(x) > 0  \}\] is \textbf{$\sigma$-finite}
+\end{theorem}
+
+\begin{proof}
+    直接 follows from Chebyshev. 取 \[ A_t := \{ x \mid f(x) \geq t\}\] for $t > 0 $.
+
+于是: \[ \{x\in X \mid f(x) = \infty\}  = \bigcap_{n=1}^\infty A_n  \]
+By Chebyshev, each $A_n$ 都有: $\mu(A_n) \leq \frac{1}{n} \int t$, 从而 by continuous from above 可得这个交集的 measure 为 0.
+
+又有:\[ \{x\in X \mid f(x) >0 \} = \bigcup_{n=1}^\infty A_{\frac{1}{n}} \]
+其中, each set has measure $\leq n\int f \leq \infty$. By def, 这个集合 $\sigma$-finite.
+\end{proof}

@@ -1,0 +1,1144 @@
+\documentclass[lang=cn,11pt]{elegantbook}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{esint}%
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+
+
+\title{Math 395: Honor Analysis I}
+\subtitle{Covering Anlysis on Manifold 2-5, instructed by Alex Wright}
+\author{Qiulin Fan}
+\date{2024 Fall}
+
+\extrainfo{Notice that the note contain chunks of Chinese languages. I feel sorry if you could not read it cuz of that.}
+
+\logo{assets/M.jpg}
+\cover{assets/M.jpg}
+
+% modify the color in the middle of titlepage
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\chapter{Review of topology in $\mathbb{R}^n$}
+
+
+\section{Compactness in $\mathbb{R}^n$}
+\subsection{Finite Intersecion property and Heine-Borel}
+\begin{theorem}
+    \textbf{cpt 集的任意闭子集都继承 cpt 性.}
+\end{theorem}
+
+\begin{theorem}{Finite Intersecion property} \label{Finite Intersecion property}
+   任意一堆(even unctbl个) cpt 集，只要知道它们中\textbf{任意有限个的交集都不是空的，那么它们整体的交集也不是空的. }
+\end{theorem}
+
+
+\begin{theorem}
+    \textbf{Metric space 中，cpt 和 seq cpt 是等价的.}
+    （但是一般的 topological space 中，并不等价且无蕴含关系）
+    review: sequential compact 就是这个集合中的任意序列一定存在收敛子序列，并且收敛至这个集合中的一点.
+\end{theorem}
+
+\begin{theorem}{Nested Box property} \label{Nested Box property}
+    这是 $\mathbb{R}^n$ 的一个性质。意思是 $\mathbb{R}^n$ 中的任意 nested 的闭区间的序列，$\cap_{i=1} ^\infty [a_i, b_i]$ 一定是非空的. (可能是一点，也可能是一个闭区间.) 
+\end{theorem}
+
+\begin{theorem}{Heine-Borel} \label{Heine-Borel}
+    textbf{$\mathbb{R}^n$ 中，closed + bdd 等价于 cpt (等价于 seq cpt).} \\
+（但是这个性质非常局限，因为它甚至不能推广至 metric space. 它在普遍的 metric space 中并不成立.）
+\end{theorem}
+
+一个重要例子：
+\subsection{$l^{\infty}(\mathbb{N})$}
+
+\begin{definition}{$l^{\infty}(\mathbb{N})$} \label{linfinity}
+    所有 bouded sequence in $\mathbb{R}$ 构成的空间，其中 $\mathbb{N}$ 的意思是 index on自然数集，也可以取其他 countable 的集合来作为 index: $l^{\infty}(X)$ .
+\end{definition}
+
+
+这个空间采取\textbf{ $\sup$ norm metric：$d((x_n), (y_n)) = \sup_{n} |x_n - y_n| $. 也就是这两个 sequence 逐项差的 sup.}
+
+这个 metric space 中的单位球是 closed 且 bounded 的(显然).  
+
+BTW: 这个 $l^{\infty}(\mathbb{N})$ 空间也是一个 infinite dimension 的 vector space，我们在 LADR 中已经学过. 并且，我们可以给他赋范，也就是 sup norm 的由来：\textbf{$||x_n||_{\infty} = sup_{n}|x_n|$}，而它的 metric 其实是它的 sup norm induce 出来的. 这个 sup norm 其实就是这个序列和零序列之间的 sup norm metric. 
+
+\textbf{并且，在 sup norm 下作为一个 normed vector space，它是一个 Banach space。
+（hw1: 任意的 normed vector space 在 $d =  ||x-y||$ 下都是一个 metric space. 如果这个 norm 使得它是 complete metric space，那么就称之为一个 Banach space.）}
+
+然而，这个单位球并不是 cpt 的。我们知道，metric space 中 seq cpt 等价于 cpt. 所以我们可以构造一个序列 in $B_1(0)$: 考虑 $((1,0,0,\cdots), (0,1,0,\cdots),(0,0,1,\cdots),\cdots)$ ，其中每个序列的第 $n$ 项是 1 其他都是 0. 很显然这个序列并没有收敛子序列，因为其中每一项和其他之间 $d_{\infty}$ 都是1. 所以它并不 cpt.
+
+
+\section{Totally-Compactness and Completeness}
+\subsection{cpt. = complte + ttlbdd.}
+我们知道在 $\mathbb{R}^n$ 里面，cpt = seq cpt = closed + bounded.
+但是\textbf{在一般的 metric space 里面，虽然还是有 cpt = seq cpt，却不等价于有界闭了。}
+
+不过我们仍然希望把 cptness 这个 topology 的概念转换成更加直观的概念以服务于 analysis 的目的。Fortunately 这是可行的：我们现在定义
+
+\begin{definition}{Totally Bounded} \label{ttlbdd}
+    任取 $\epsilon > 0$，我们都可以用 finitely many 个 $\epsilon$-ball 来 cover 这个集合，则称它是 Totally Bounded 的.
+\end{definition}
+
+\begin{definition}{Complete (或称 Cauchy-complete)} \label{cplt}
+    即这个集合中的任意 Cauchy sequence 都收敛（至这个集合里的某个点）
+    \\Rmk: 我们知道 \textbf{metric space 的任意子集也是 metric space}，by induced metric.
+\end{definition}
+
+\begin{remark}
+complete 即这个集合里任意 Cauchy 序列都收敛于它自己的某个点，ttl bounded 即对于任意半径都可以用有限个这样半径的球来覆盖这个集合.
+\end{remark}
+
+
+
+现在我们证明这个重要定理：
+\begin{theorem}
+    \textbf{任意 metric space 中，cpt = seq cpt = complete + ttl bounded}
+\end{theorem}
+
+\subsection{Lebesgue Covering Thm}
+为了证明这个东西我们需要一个 Lemma，其实这个 Lemma 叫做 \textbf{Lebesgue Covering Thm}:  
+\begin{lemma}{Lebesgue Covering Thm} \label{lbg covering thm}
+    对于 cpt 的 $E$ ，取任意一个 open cover $\{U_{\alpha}\}$，都存在一个 $\epsilon > 0$ 使得对于 $E$ 中的任何一点 $p$，$B_{\epsilon}(p)$ 都被包含在某个 $U_{\alpha}$ 中.
+\end{lemma}
+\proof 这个定理其实非常直观。因为 compact 一定有 finite subcover. 既然是 finite 的，那么任意一个 cover set 和集合或其他 cover set 边缘擦边的地方一定是有限的。既然 $E$ 是 compact 的那么一定是 complete 的那么当然也是 closed 的，于是取这些 finite 个擦边的地方里面最擦边的地方作为 $\epsilon$ 就可以了.
+
+\begin{remark}
+    显然，metric space 中 \textbf{complete 蕴含 closed，ttl bdd 蕴含 bdd}，而特别地， $\mathbb{R}^n$ 中的任意集合，closed 等价于 complete，ttl bdd 等价于 bdd.
+\end{remark}
+
+\begin{theorem}
+    \textbf{complete 的 metric space 的任意 closed subset 一定也是 complete 的}. 显然.
+\end{theorem}
+complete 的 metric space 的任意 closed subset（我们知道 metric space 的任意子集也是 metric space，by induced metric.）一定也是 complete 的. 显然.
+
+\begin{remark}
+    我们在 lec 1 中讲到  $l^{\infty}(\mathbb{N})$ 中的单位球是 closed + bdd 但是不 compact. 由于这是一个 Banach space 它也是 complete 的，by 3；不过它的问题出在并不是 ttl bdd 的.
+\end{remark}
+
+
+\chapter{Differentiation}
+\section{Differentiation on $\mathbb{R}^n$}
+\subsection{Continuity in MS}
+\begin{remark}
+    continuity 的定义: \textbf{open set 的 preimage 只能是 open set；等价于 closed set 的 preimage 只能是 closed set}
+\end{remark}
+
+
+\begin{theorem}
+任意\textbf{ topological space 之间的连续映射} $ f:X \rightarrow Y$，\textbf{compact set 的 image 一定 compact}.
+\end{theorem}
+
+\begin{theorem}
+任意 \textbf{topological space 之间的连续映}射 $f:X \rightarrow Y$，如果 \textbf{X compact，那么这个映射是 uniformly ctn 的}.（逆命题不成立）
+\end{theorem}
+
+\begin{definition}
+    \textbf{$l_p$ norm on vector spaces:}\\
+$$||v||_p = (\sum_{i = 1}^n |v_i|^p)^{1\over p}$$
+\end{definition}
+
+\begin{theorem}
+    在\textbf{有限维 real vector space} （真包含 $\mathbb{R}^n$）中，\textbf{任意 $l_p$ norm 都等价}（无限维则不等).\\
+    具体即：
+    \begin{enumerate}
+        \item 对于任意 $p_1, p_2$，都存在 $C_1, C_2$ 使得对于所有 $v\in V$:
+        $$
+        C_1||v||_{p_1} \leq ||v||_{p_2} \leq C_2||v||_{p_1}
+        $$
+        \item 任意 $l_p$ norm (通过差 norm 作为 metric) 定义出的\textbf{有限维 topological vector space 都是等价的}，于是它们在 continuity, differentiability 以及 convergence 等等概念上的形式都是一样的.
+    \end{enumerate}
+\end{theorem}
+
+\subsection{Derivative}
+\noindent 阐明了这件事情之后我们看欧式空间之间 differentiability 的定义：一个 $f: U \subset \mathbb{R}^n \rightarrow \mathbb{R}^m$ 在某个点 $x_0$ 上 diffble 的定义就是 \textbf{在 $x_0$ 上可以被某个 $Hom(\mathbb{R}^n, \mathbb{R}^m)$ 上的某个 Linear map 一阶近似，并且这个近似在 x 点附近 converge by norm（误差的下降速度 $>>$ 邻域的收缩速度）}
+即：
+\begin{definition}{Derivative} \label{derivartive}
+    $$
+    Df(x_0) \in \mathbb{R}^{m \times n} \text{ is the matrix } A \text{ such that } \lim_{||h|| \rightarrow 0} \frac{||f(x_0 + t) - f(x_0) - Ah||}{||h||} = 0
+    $$
+    注意这里的 $Df$ operator 是一个函数:
+    $$
+    Df : E \rightarrow Hom(R^n, R^m)
+    $$
+\end{definition}
+
+我们可以由原函数和 derivative induce 出一个 remainder 函数，来表示在某点处 derivative 的 linear approximation 的误差程度随微小量 $h$ 变化的变化. 
+
+\begin{definition}
+我们定义 remainder function: (用来做分析时使用)
+\begin{align}
+    r_{x_0} : \mathbb{R}^n &  \rightarrow \mathbb{R}^m \\
+    h & \mapsto f(x_0 + h) - f(x_0) - Df(x_0) \cdot h
+\end{align}
+\end{definition}
+
+\noindent 对于任意的 $x_0$，总是有 $||\frac{r_{x_0}(h)}{h}|| \rightarrow 0$ as $h \rightarrow 0$，因而 $r(h)$ 是 $o(h)$ 的.
+
+\begin{theorem}{$\mathbb{R}^n \rightarrow \mathbb{R}^m$ is similar to $\mathbb{R}^n \rightarrow \mathbb{R}$} \label{$f$ ctn/diff iff $f_i$ ctn/diffble for all $i$}
+    For $$f: \mathbb{R}^n \rightarrow \mathbb{R}^m = \begin{pmatrix}
+        f_1 \\ f_2 \\ \vdots \\ f_m
+    \end{pmatrix}
+    $$ we always have
+    $f$ ctn/diff iff $f_i$ ctn/diffble for all $i$
+\end{theorem}
+意思是在证明可导/连续时我们总是可以只考虑 $m=1$ 的情况. 这件事非常有用.
+
+\section{Directional Derivative}
+\begin{definition}
+    固定一个 $u \in \mathbb{R}^n$，define 
+    \begin{align}
+        D_u f(X_0) : \mathbb{R}^n & \rightarrow \mathbb{R}^m\\
+        x & \mapsto \lim_{t\rightarrow 0, t\in \mathbb{R}} \frac{f(x + tu) - f(x)}{t}
+    \end{align}
+
+        Notice that:
+        $$
+        D_u f(x_0) = \frac{d}{dt}\bigg| _{t=0} f(x_0 + tu)
+        $$
+\end{definition}
+
+
+\begin{proposition}{Intuition of Directional Derivative}
+我们发现，实际上 $D_v f$ 和 $f$ 是来自同一个 function space $\mathcal{F}(\mathbb{R}^n, \mathbb{R}^m)$ 的.\\
+实际上，$D_v f$ 描述的对于每个 $x \in dom(f)$，在点 $x$ 处 $f$ 在 $v$ 这个方向上的变化率. 这里 $f$ 才是变量，$v$ 是固定的。\\
+$D_v f$ 对每个(存在该 directional derivative)的 $x \in dom(f)$ 都给出了一个 $\mathbb{R}^m$ 数值，对应 $f(x)$ 的值给出了 $f$ 在方向 $v$ 上的变化率 $D_v f(x)$. 所以整个 $D_v f$ 就是 $f$ 对应的一个变化率函数.
+\end{proposition}
+
+\begin{remark}
+    $\mathbb{R}^n$ 是一个 vector space. 我们自然想到，如果知道每个 $e_i$ 方向上 $f$ 对应的变化率函数 $D_{e_i} f$，那么就知道了整体 $f$ 在各个方向上的变化率函数. 我们对这个函数投一个点 $x = c_1 e_1 + \cdots + c_n e_n \in dom(f)$:
+    $$
+    Df(x_0)(x) = \sum_{i=1}^n c_i D_{e_i} f(x_0) 
+    $$
+    就可以得到这点上 $Df(x_0)$ 的作用.
+\end{remark}
+
+\noindent 我们有一个专门的称呼来指代 $D_{e_i} f$
+\begin{definition}{partial derivative} \label{partial derivative}
+    我们使用 $\frac{\partial }{ \partial x_i} f$ 来表示 $D_{e_i} f$
+\end{definition}
+
+接着刚才的 remark，我们发现
+\begin{theorem}
+    如果 $f $ 在 $x_0 \in dom(f) $ 处 diffble，那么它在 $x_0$ 处的 derivative 为：
+    \begin{align}
+        Df(x_0) 
+        & = \begin{pmatrix}
+        \frac{\partial f_1}{\partial x_1} (x_0)& \frac{\partial f_1}{\partial x_2}(x_0) & \cdots & \frac{\partial f_1}{\partial x_n}(x_0) \\
+        \frac{\partial f_2}{\partial x_1} (x_0)& \frac{\partial f_2}{\partial x_2}(x_0) & \cdots & \frac{\partial f_2}{\partial x_n}(x_0) \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{\partial f_m}{\partial x_1}(x_0) & \frac{\partial f_m}{\partial x_2} (x_0)& \cdots & \frac{\partial f_m}{\partial x_n}(x_0)
+        \end{pmatrix}
+    \end{align}
+
+    其中每一列就是 $D_{e_i} f(x_0) = \frac{\partial}{\partial x_i} f(x_0)$. 因而对于每个输入 $ c \in \mathbb{R}^n$，我们得到的输出都是 $\sum_{i=1}^n c_i \frac{\partial}{\partial x_i} f(x_0) \in \mathbb{R}^m$.\\
+    
+    \begin{align}
+        Df(x_0) (c)
+        & = \begin{pmatrix}
+        \sum_{i=1}^n c_i \frac{\partial}{\partial x_i} f_1(c) \\
+        \sum_{i=1}^n c_i \frac{\partial}{\partial x_i} f_2(c) \\
+        \vdots  \\
+        \sum_{i=1}^n c_i \frac{\partial}{\partial x_i} f_n(c)
+        \end{pmatrix}
+    \end{align}
+我们称这个 matrix 为 $f$ 的 \textbf{Jacobian matrix at $x_0$}
+\end{theorem}
+
+\begin{remark}
+    $$
+        Df: A \subset \mathbb{R}^n \rightarrow \text{Hom}(\mathbb{R}^n, \mathbb{R}^m) 
+    $$
+    $$
+        x \mapsto 
+        \begin{pmatrix}
+        \frac{\partial f_1}{\partial x_1} (x)& \frac{\partial f_1}{\partial x_2}(x) & \cdots & \frac{\partial f_1}{\partial x_n}(x) \\
+        \frac{\partial f_2}{\partial x_1} (x)& \frac{\partial f_2}{\partial x_2}(x) & \cdots & \frac{\partial f_2}{\partial x_n}(x) \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{\partial f_m}{\partial x_1}(x) & \frac{\partial f_m}{\partial x_2} (x)& \cdots & \frac{\partial f_m}{\partial x_n}(x)
+        \end{pmatrix}
+    $$
+    \textbf{显然，如果在 $A$ 上每个 partial derivative 都是 continuous 的，那么这个 $Df$ 也是 continuous 的（if we define norm on $\text{Hom}(\mathbb{R}^n, \mathbb{R}^m) $}
+\end{remark}
+
+\begin{definition}{higher-order partial derivatives}
+    我们知道 $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ 的任意 partial derivative ${\partial \over \partial x_i} f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ 仍然是一个 $\mathbb{R}^n \rightarrow \mathbb{R}^m$ 的函数. 我们再对这个函数求 $e_j$ 方向上的 partial derivatve，可以得到另一个 ${\partial^2 \over \partial x_j \partial x_i} f: \mathbb{R}^n \rightarrow \mathbb{R}^m$.\\
+    recursively define: 
+    $$
+    {\partial^d \over \partial x_{k_d}\partial x_{k_{d-1}}\cdots \partial x_{k_1}} = \frac{\partial }{\partial x_{k_d}}[{\partial^{d-1} \over \partial x_{k_{d-1}}\partial x_{k_{d-2}}\cdots \partial x_{k_1}}]
+    $$
+    为一个 $d^\text{th}$-oder 的 partial derivative of $f$
+\end{definition}
+\begin{remark}
+    只有 partial derivative 是有多阶的，而 derivative $D$ 也急速hi全导数是没有多阶的，因为它本身就是一个 linear map. 因为 $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ 的任意阶段偏导数也是 $\mathbb{R}^n \rightarrow \mathbb{R}^m$ 的，但是全导数是一个从元素到线性变换的函数.\\
+    我们平时使用的单变量real-valued函数的高阶导数是 partial derivative 的特殊情况，这是在 $\mathbb{R} \rightarrow \mathbb{R}$ 上的函数只有一个变量，全导数和偏导数是同一个函数.
+\end{remark}
+
+\section{$C^r$ class}
+\begin{definition}{$C^r$ class}
+    如果在 $A \subset \text{dom}(f)$ 上， $f$ 的所有 $r^\text{th}$-order partial derivatives 都 \textbf{exist 并且 ctn}，则称 $f \in C^r(A)$.
+    \\如果对于任意 $r \in \mathbb{N}$ 都有 $f \in C^r(A)$，则称 $f \in C^{\infty}$
+\end{definition}
+
+
+\begin{remark}
+    $f \in C^{r+1}(A) \Leftrightarrow $ all partials of $f$ are in $C^r(A)$
+\end{remark}
+
+
+
+    如果 f 在点 $x$ 附近 being $C^1$: $f$ 在点 $x$ 附近，每个 $e_i$ 切向量上的变化率函数都是连续的. 所以我们有一种直觉：$f$ 在这个点上是可以被一个 linear map 近似的.
+
+\begin{theorem}{Sufficient condition for $f$ differentiable at some point}
+    如果 $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ 在点 $x_0$ 附近是 $C^1$ 的，那么它在 $x_0$ 上是 differentiable 的 (即 $Df(x_0)$ exists.\\
+    (Note: 此时在 $x_0$ 附近 $Df: A \subset \mathbb{R}^n \rightarrow \text{Hom}(\mathbb{R}^n, \mathbb{R}^m) $ 也是 continuous 的.)
+\end{theorem}
+\begin{proof}
+见L05.
+\end{proof}
+
+\begin{remark}
+    因而如果 $f \in C^1(dom(f))$, $f$ 就是 differentiable 的函数.
+\end{remark}
+
+
+\begin{theorem}{Mixed partials}
+    If $f$ is $C^2$ 则任取 $x \in \text{dom}(f)$，$f$ 在 $x$ 处的任意 $2^\text{nd}$-order partial 可以更换次序. 即:
+    $$
+    {\partial^2 \over \partial x_{j_1} \partial x_{j_2}}f(x_0) = {\partial^2 \over \partial x_{j_2} \partial x_{j_1}} f(x)
+    $$
+\end{theorem}
+\begin{proof}
+    见 L06.\\
+    对于这种 multivariable 的关于 diffbility/ ctnity 的证明，我们总是应该想到把它先等价为 $\mathbb{R}^n \rightarrow \mathbb{R}$，然后再对 $n$ 个变量进行逐个处理，运用 single variable analysis 的各种 mean value theorem 来处理.
+\end{proof}
+
+
+\begin{corollary}{Mixed partials}\label{Mixed partials}
+    自然可以得到：如果 $f \in C^r(A)$，那么 $f$ 的任意 $r$ 阶及以下阶 partial derivative 都可以换序. 即: $\forall m \leq r$ 以及 $\forall \pi \in S_m$:
+    $$
+     {\partial^m \over \partial x_{k_1}\partial x_{k_{2}}\cdots \partial x_{k_m}} = {\partial^m \over \partial x_{k_{\pi(1)}}\partial x_{k_{\pi(2)}}\cdots \partial x_{k_{\pi(m)}}}
+    $$
+    因而如果 $f\in C^\infty (A)$ 那么所有的 partial derivative 都可以换序.
+\end{corollary}
+
+
+\section{Chain Rule, Product Rule and Taylor's theorem}
+\begin{definition}{multi-index notation} \label{multi-index}
+一个 multi-index 是一个 $n-$tuple，其中每个 entry 都是一个 non-neg integer.\\
+我们使用以下四个 notation 来进行简写:\\
+$$
+|\alpha| = \sum_{j = 1}^n \alpha_j
+$$
+$$
+\alpha! = \prod_{i = 1}^n (\alpha_j !)
+$$
+$$
+x^{\alpha} = {x_1}^{\alpha_1}{x_2}^{\alpha_2} \cdots {x_n}^{\alpha_n}
+$$
+$$
+\partial ^ \alpha f ={\partial^{|\alpha|} \over (\partial {x_1})^{\alpha_1} (\partial {x_2})^{\alpha_2} \cdots (\partial {x_n})^{\alpha^n}} f  
+$$
+\end{definition}
+这个 notation 的引入会使得很多定理的表述简洁很多.
+\begin{example}
+$$
+\partial ^{(2,1)} f = \frac{\partial^3}{\partial x_1 \partial x_2 \partial x_3 } f
+$$
+$$
+(3,3,0)! = 3!3!0! = 36
+$$
+\end{example}
+
+
+\subsection{Chain Rule}
+\noindent Recall chain rule in single variable analysis:
+$$f: A \subset \mathbb{R} \rightarrow B \subset \mathbb{R} \;\; \text{, } g: B \rightarrow \mathbb{R} 
+$$
+with A, B open; $f$ is diffble at some point $x$ and $g$ is diffble at $f(x)$.\\
+Then we have: 
+$$
+\frac{d}{dx} (g \circ f) (x) = g'(f(x)) f'(x)
+$$
+
+现在我们有 multi 的版本:
+\begin{theorem}
+    如果 $$f: A \subset \mathbb{R}^n \rightarrow B \subset \mathbb{R}^m \;\; \text{, } g: B \rightarrow \mathbb{R}^p 
+$$
+with A, B open; $f$ is diffble at some point $x$ and $g$ is diffble at $f(x)$.\\
+Then we have:
+$$
+D (g \circ f) (x) =Dg(f(x))\, Df(x)
+$$
+\end{theorem}
+和 single varable 的表述基本一模一样.
+\begin{proof}
+    见 L07. 证明思路即取 $f,g, g\circ f$ 的 remainder function 并发现在 $R_f, R_g$ 趋向 0 时 $R_{g\circ f}$ 也趋向 0.
+\end{proof}
+
+\subsection{Multinomial Theorem}
+\begin{theorem}{Multinomial Thm} \label{Multinomial Thm}
+$\forall (x_1, x_2, \cdots, x_n) \in \mathbb{R}^n$ 以及任意 $k \in \mathbb{Z}_{\geq 0}$ we have:
+$$
+{(x_1 + \cdots + x_n)}^k  = \sum_{|\alpha| = k} \frac{k!}{\alpha !} x^\alpha 
+$$
+\end{theorem}
+这是一个 combinatorics 的 proposition. 
+\begin{proof}
+    (Informal proof, but sufficient to show it.)\\
+    ${(x_1 + \cdots + x_n)}^k$ 每项就是每次在 $\{x_1, x_2, \cdots, x_n\}$ 中取一个元素，取 $k$ 次得到，一共有 $\sum_{|\alpha| = k} \frac{k!}{\alpha !} = k!$ 个项，每一项都是一个 $x^\alpha$ where  $|\alpha| = k$.\\
+    每个 $x^\alpha$ 会被取到重复次，这个重复的数量为 ${k! \over \alpha !}$\\
+     因为 $k! \over \alpha !$ 就是把一个 size 为 $k$ 的 set 分成 size 分别是 $\alpha_1, \cdots, \alpha_n$ 的子集的方法.\\
+     推导: 
+$$
+\# =  C^k_{\alpha_1} \times  C^{k-\alpha_1}_{\alpha_2}  \times C^{k-\alpha_1 - \alpha_2}_{\alpha_3} \times\cdots \times C^{k - \sum_{i=1}^{n-1} \alpha _i}_{\alpha_n} = {k! \over \alpha_1! \alpha_2 ! \cdots \alpha_n !}
+$$
+    （对于 for example:  $\alpha = \{1,0,2,2,0\}$ 即 $x_1 {x_3}^2 {x_4}^2$ 这一项，会被取到 ${k! \over \alpha !} = \frac{5!}{2!2!}$ 次. 这个次数等于$ 5 \times C^4_2 \times C^2_2 $ ）
+    \\ formal 的证明即 by induction，使用 binomial thm 即可.
+\end{proof}
+
+\subsection{Product Rule}
+
+\begin{lemma}{在 $\mathbb{R} \rightarrow \mathbb{R}$ 上的函数的 product rule}
+令 $f_1, \cdots f_m: \mathbb{R} \rightarrow \mathbb{R}$
+
+$$
+\frac{d^k {(f_1,\cdots f_m)}}{dx^k} = \sum_{|\alpha| = k} \frac{k!}{\alpha !} (\frac{d^{\alpha_1} f_1}{dx^{\alpha_1}}) \cdots (\frac{d^{\alpha_m} f_m}{dx^{\alpha_m}})
+$$
+
+\end{lemma}
+
+\begin{note}
+    特别地，$$
+    \frac{d^k}{dx^k} (fg) = \sum_{a+b = k} \frac{k!}{a!b!} (\frac{d^a}{dx^a}f) (\frac{d^b}{dx^b} g)
+    $$
+    这个式子也等价于 $$
+    \sum_{a = 0}^k \frac{k!}{a!(k-a)!} (\frac{d^a}{dx^a}f) (\frac{d^{k-a}}{dx^{k-a}} g)
+    $$
+\end{note}
+
+\begin{proof}
+    见 HW5 G. \\
+\end{proof}
+
+\begin{theorem}{product rule} \label{product rule}
+$\forall \alpha \in \mathbb{Z}_{\geq 0}^n$，$f,g: \mathbb{R}^n \rightarrow \mathbb{R}$, 如果 $f,g \in C^{|\alpha|} (\mathbb{R}^n)$, then：
+$$
+\partial^{\alpha} (fg) = \sum_{\beta + \gamma = \alpha} \frac{\alpha !}{\beta ! \gamma !} (\partial ^ \beta f) (\partial ^ \gamma g)
+$$
+\end{theorem}
+\begin{proof}
+    由 lemma 由归纳得到，见 L08.
+\end{proof}
+\begin{note}
+    实际上这里 f,g 是 $\mathbb{R}^n \rightarrow \mathbb{R}$ 的函数并不是重要的，重要的是 $\alpha$ 和几个变量有关系。如果 $f,g:\mathbb{R}^{100} \rightarrow \mathbb{R} $，$\alpha \in \mathbb{Z}_{\geq 0} ^{100}$ 但是只有一个 entry 不是 0，那么我们可以看作 $\alpha \in \mathbb{Z}_{\geq 0}^1$，使用 $\mathbb{Z}_{\geq 0}^1$ 上的 Product rule.
+\end{note}
+
+
+\begin{lemma}{Taylor Thm in $\mathbb{R}$}
+如果 $f: I \subseteq \mathbb{R} \rightarrow \mathbb{R} \in C^k(I)$，并且 f 是 $(k+1)$ - diffble 的.\\
+(即，$f$ 几乎是 $C^{k+1}$ 的，但是并不需要 k+1 阶导数也连续，条件更宽)\\
+任取 $a \in I$，我们定义 \textbf{the $k^\text{th}$ Taylor polynomial centered at $a$}:
+$$
+T_{a,k}(x) = f(a) + \sum_{j=1}^k \frac{f^{(j)}(a)}{j!} (x-a)^j
+$$
+Then: 这个 $T_{a,k}(x)$ 是 \textbf{best $k^\text{th}$-order polynomial approximation centered at $a$}: $$
+f(x) - T_{a,k}(x) =  R_{a,k} (x) = \frac{f^{(k+1)}(c_x)}{(k+1)!} (x-a)^{k+1} = o(|x-a|^k)
+$$
+Note: 这里的 remainder 和 a,k 都有关系. 是：
+对于每个 $x \in I$，$c_x \in [a,x]$ 是由 Cauchy MVT 决定的一个中间值.
+\end{lemma}
+
+\begin{remark}
+   但是这仍然并不能说明如果 $f \in C^{\infty}(I)$，就一定有 $f(x) = T_{a, \infty}(x), \forall x,a \in I$. \\
+   Note:  $C^\omega (\mathbb{R}) \subset C^\infty(\mathbb{R}).$\\
+    一个光滑函数 $f$ 在 $I$ 上解析的条件是在 $I$ 上这个余项函数是处处收敛到 0 的.
+    具体: $
+    \forall \text{compact } K \subseteq I, \; \exists m \in \mathbb{R} \text { s.t. } $
+    $$
+    \bigg |\frac{d^j}{dx^j} f(x) \bigg | \leq m^{k+1} j! 
+    $$
+    for all $x \in K$ and for all order $j$.
+\end{remark}
+
+\begin{proof}
+    具体见 L08.\\
+    思路：Recall that Rolle MVT $\rightarrow$ Lagrange MVT $\rightarrow$ Cauchy's MVT\\
+    我们使用 Cauchy's MVT apply to 余项来证明 Taylor's Thm.
+\end{proof}
+
+
+\begin{theorem}{Taylor's Thm}\label{Taylor's Thm}
+    
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+\section{Inverse function Theorem}
+\begin{theorem}{Inverse function Theorem} \label{IFT}
+    如果 $f: A \subseteq \mathbb{R}^n \rightarrow \mathbb{R}^m$ 是 $C^r$ 
+ ($r \geq 1$)的，对于任意 $x_0 \in A$ s.t. $\det{Df(x_0)} \not= 0$，我们都有：
+    \begin{enumerate}
+        \item 存在某个 $x_0$ 的 nbh $U$ 以及 $f(x_0)$ 的 nbh $V$ 使得 $f(U) = V$ 且 $f|_U : U \rightarrow V$ 是 bijective 的. (即 $f$ 在 $x_0$ 附近是 \textbf{locally bijective }的).
+        \item $f|_U$ 的 inverse function $g: V \rightarrow U$ 也是 $C^r$ 的，并且对于 $U$ 中任意 $x$，都有 $Dg(f(x)) = (Df(x))^{-1}$ \\ 
+        (这是显然的，因为 $I_n = D (g \circ f) (x) = Dg(f(x))Df(x)$)
+    \end{enumerate}
+\end{theorem}
+\begin{remark}
+    比较直观。我们知道如果 $f \in C^1(A)$，意味着 Jacobian matrix 中每一项都是连续的函数，那么\textbf{整个 $Df: \mathbb{R}^n \rightarrow \mathbb{R}^{n \times n}$ 在 $x_0$ 附近也是连续的}；并且由于 \textbf{$\det :\mathbb{R}^{n \times n} \rightarrow \mathbb{R}$ determinant 函数是连续的}，我们知道整个 $Df$ 在 $x_0$ \textbf{locally 都是 non-sigular 的}. \\\\
+    我们可以类比 single variable 情况下：如果 $C_1$ 的函数 $f$ 的导函数 $f'$ 在某处不是 0，那么在这一块地方附近 $f$ 都 monotonic. 这是因为 $f'$ 连续，所以这附近 $f'$ 都非 0 且同向.\\\\
+    IFT 告诉我们的是：这个性质可以推广到多元函数，by: 单元函数导数值不为 0 扩展到多元函数导数的 det 不为0.\\
+    并且 IFT 还多告诉我们的一件事情是: 这个 local inverse function 会保留 $C^r$ 的性质.\\
+\end{remark}
+
+\begin{lemma}
+    对于任意的 matrix $C \in \mathbb{R}^{m \times n}$，并任取 $v \in \mathbb{R}^n$，我们都有:
+    $$
+    |Cx| \leq ||C|| \cdot |x|
+    $$
+    并且： 
+    $$
+||C||\leq nm \max_{1 \leq i \leq m, 1\leq j \leq n} |C_{ij}|
+$$
+where we take the sup norm of a linear map:
+$$
+||C|| = \sup_{x \in \mathbb{R}^n, |x| = 1} |Cx|
+$$
+\end{lemma}
+
+
+\begin{lemma}
+    如果 $f: A \rightarrow \mathbb{R}^n$ 是 $C^1$ 的，且 $Df(a)$ non-singular，即 $\det(Df(a)) \not = 0$，那么存在某个 $a$ 的 nbh $B_{\delta} (a)$ 使得对于任意 $x,y \in B_{\delta}(a)$，都有：
+    $$
+    |f(x_0) - f(x_1)| \geq \alpha |x_0 - x_1|
+    $$
+\end{lemma}
+\begin{note}
+ \textbf{这是一个比 locally injective 更强的条件.}
+\end{note}
+
+
+
+
+
+
+
+\section{Implicit Function Thm}
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Integration}
+\section{Riemann Integrability over a box}
+
+
+
+\section{Lebesgue's Characterization of Riemann integrable functions over a box}
+
+
+
+
+\section{Fubini's Thm}
+\begin{theorem}{Fubini's Thm}\label{Fubini's Thm}
+    Conditions:\\
+    (1) Let $Q = A \times B$, 其中 $A \subseteq \bR^k$, $B \subseteq \bR^l$ 都是 boxes.\\
+    (2) Let $f: Q \rightarrow \bR$ be bounded.\\
+    
+    Statement: \\
+    If $f$ Riem intable over $Q$, 那么 
+    $$
+    \ul{I}: x \mapsto \underline{\int_B} f(x,y) dy
+    $$
+    以及 
+    $$
+    \ol{I}:  x \mapsto \overline{\int_B} f(x,y) dy
+    $$
+    都是 \textbf{Riem intble over A} 的，并且有 
+
+    $$
+    \int_Q f = \int_A \underline{\int_B} f(x,y) \,dy \,dx = \int_A \overline{\int_B} f(x,y) \,dy \,dx
+    $$
+    
+\end{theorem}
+\begin{proof}
+    一个 partition $P$ 一定可以分为 $P = (P_A, P_B)$, 它的每个 subbox $R = R_A \times R_B$.\\
+    对于一个 $R$, 任取 $x_0 \in R_A$, 我们都有 $$m_R(f) \leq m_{R_B} f(x_0, \cdot)$$\\
+    Summing over all $R_B \in P_B$, 我们有: 任取 $x_0 \in R_A$, 
+    $$
+    \sum_{R_B \in P_B} m_{R_A \times R_B} (f) v(R_B) \leq \sum_{R_B \in P_B} m_{R_B}(f(x_0, \cdot)) v(R_B) = L(f(x,\cdot), P_B) \leq I(x)
+    $$
+    Taking the inf over all possible $x_0$,
+    $$
+     \sum_{R_B \in P_B} m_{R_A \times R_B} f v(R_B) \leq m_{R_A}(\ul{I})
+    $$
+    而后 sum over all possible $R_A$, 得到:
+    $$
+    L(f,P) \leq L(\ul{I}, P_A)
+    $$
+    于是我们可以把 $L(\ul{I}, P_A), U(\ul{I}, P_A) $ bound 在 $L(f,P), U(f,P)$ 之间. Have four similar arguments. This gives the result.
+\end{proof}
+
+
+
+\subsection{Corollaries}
+
+\begin{corollary}{Corollary 1}
+    Conditions:和 Fubini Thm 相同\\
+    Statement:\\
+    $\int_B f(x,y) dy \;$  exists a.e. on $A$.
+\end{corollary}
+\begin{remark}
+    即 $m (\{ x |  y \mapsto f(x,y) \text{ not intble over B} \}) = 0$ 
+\end{remark}
+
+
+
+\begin{corollary}{Corollary 2}{Natural Corollary}
+Conditions: $Q \subseteq \bR ^ n$ 是一个 box.
+
+Statement: 如果 $f: Q \rightarrow \bR$ ctn, 那么
+$$
+\int_Q f = \int^{b_1}_{a_1} \int^{b_2}_{a_2} \cdots \int^{b_n}_{a_n} f \; d x_n \cdots d x_1
+$$
+\end{corollary}
+
+\begin{proof}
+    平凡推论. ctn 函数, 不论 $Q$ 如何分维度 boxes, 都是 intble 的. 所以 by induction 可以一个一个维度积分.
+\end{proof}
+
+
+
+
+
+
+\section{Riemann Integrability over bounded sets}
+
+\begin{definition}{integral over bounded sets}
+    Conditions:\\
+    (1) $S \sub \bR^n$ bdd, \\
+    (2) $f: S \rightarrow \bR$ bdd\\
+    Define: 
+    $$
+    f_S (x) = \begin{cases}
+        f(x) \; \text{, if } x \in S \\
+        0 \; \text{, else}
+    \end{cases}
+   $$
+   Now we define \textbf{the integral of $f$ over $S$}: 
+   $$
+   \int_S f(x) dx = \int_Q f_S (x) dx
+   $$
+   p.t that $\int_Q f_S (x) dx$ exists.
+\end{definition}
+\begin{remark}
+    我们把 integral 推广到任意 bounded set 上, 通过取一个 $S$ 的 covering box, 并取一个辅助函数, 在 $S$ 上面是 $f$, 在 $S$ 外面是 $0$.\\
+    我们容易提出这一问题: 这个定义成立的前提是, 我们必须确定, 取不同的 covering boxes 得到的这个新函数的积分都是相同的. 下面这个 Lemma 表明了这一点. 
+\end{remark}
+
+\subsection{well-definedness of Riem integral over bdd set}
+\begin{lemma}{The reason why our def of integral over bounded sets is fine:}
+    Conditions:\\
+    (1) $Q, Q' \sub \bR^n$ bdd.\\
+    (2) $f: \bR^n \rar \bR$ supported only on $Q \intsec Q'$.\\
+    Statement:\\
+    (1) $f$ intble over $Q$ $\eq$ $f$ intble over $Q'$ \\
+    并且 (2)
+    $$
+    \int_Q f = \int_{Q'} f 
+    $$
+\end{lemma}
+\begin{proof}
+    It suffices to prove it for $Q \sub Q'$. 因而只要证明了这一 case, 我们对于 $Q \not \sub Q'$ 的 case 也可以选取 $Q''$ s.t. $Q, Q' \sub Q$, 得到 $\int_Q f = \int_{Q''}f$, $\int_{Q'} f = \int_{Q''} f$.\\
+    因而易证. partition 也可以通过包含构造. 多出的分割点无所谓, 因为在上面 m(f) 都是 0.
+\end{proof}
+
+
+\subsection{properties of Riem integral over bdd sets}
+\begin{theorem}{properties of Riem integral over bdd sets}
+    Conditions:\\
+    (1) $S \sub \bR^n$ be bdd.\\
+    (2) $f,g: S\rar \bR$ intble.\\
+    Statement:
+    \begin{enumerate}
+        \item \textbf{Linearity of integral and intbility}: 
+        $\forall c \in \bR$, $f + cg$ is also intble, 并且 
+        $$ \int_S (f + cg) = \int_S f + c \int_S g$$
+        \item 
+        $M,m: S \rar \BR $ defined by 
+        $$
+        M: x \mapsto \max{(f(x), g(x))}
+        $$
+        $$
+        m: x \mapsto \min{(f(x), g(x))}
+        $$
+        也是 intble 的.
+
+        \item 
+        $$f \leq g \; \forall x \implies \int_S f \leq \int_S g$$
+
+        \item 
+        $|f|$ 也是 intble 的, 并且 
+        $$
+        |\int_S f | \leq \int_S |f|
+        $$
+
+        \item \textbf{Monotonicity}: Let $T sub S$. If $f$ nonneg 且在 $T$ 上也 intble. Then:
+        $$
+        \int_T f \leq \int_S f
+        $$
+
+        \item \textbf{Additivity}: 
+        $f$ intble on $S_1, S_2$ $\implies$ $f$ intble on $S_1 \union S_2$, $S_1 \intsec S_2$.\\
+        并且有:
+        $$
+        \int_{S_1 \union S_2} = \int_{S_1} f + \int_{S_2} f - \int_{S_1 \intsec S_2} f
+        $$
+
+        \item 对于 \textbf{bdd 且 disjoint} $S_1, \cdots, S_m$, 有:
+        $$
+        \int_{\union_n S_n} f = \sum_n \int_{S_n} f
+        $$
+    \end{enumerate}
+    
+\end{theorem}
+
+
+\subsection{Riem intble on bdd set 的等价条件}
+\begin{remark}
+    我们知道, $f$ intble on $S$ 的条件其实即存在一个 $Q \supset S$ 使得 $m(D_{f_S}) = 0$.\\
+    我们可以把它等价为更加直接的条件:
+\end{remark}
+
+\begin{theorem}{Characterization of Riem Intbility on bdd sets}\label{Characterization of Riem Intbility on bdd sets}
+    Conditions:\\
+    (1) $S \sub \bR^n$ be bdd.\\
+    (2) $f,g: S\rar \bR$ intble.\\
+    Define:\\
+    (1) $D_f = \{x \in S | f \text{ not ctn at } x\}$\\
+    (2) $E = \{ x_0 \in \partial S  | \displaystyle \lim_{x \rar x_0} f(x) \not = 0 \}$
+    \\Then:
+    $$
+    f \text{ Riem intble } \displaystyle\eq m(D_f) = m(E) = 0
+    $$
+\end{theorem}
+\begin{remark}
+    不需要证明. 实际上, 取一个 covering box, 创造出来的新函数的不连续点集比起原来的不连续点集合, 多出来的点的就是这里的 $E$.
+    $$
+    D_{f_S} \backslash D_f = E
+    $$
+\end{remark}
+
+
+
+\subsection{Jordan measure 和 integral 的关系}
+\begin{theorem}{Jordan measurable 对于 integrability 的意义} \label{equivalent conditions for Jordan-mesurability}
+    Condition: $S \sub \BR^n $ is bdd.\\
+    Statement: TFAE.
+    \begin{enumerate}
+        \item $S$ is Jordan measurable.
+        \item const function $f = 1$ 在 $S$ 上 Riem intble.
+        \item  $m(\partial S) = 0$
+        \item  $\ol{m_J}(\partial S) = 0 $
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    1,3,4 等价 by IBL, 显然.\\
+    证明 2, 3 等价: 考虑 indicator function of S, on 一个任意的包含 S 的 box.
+\end{proof}
+
+\begin{remark}
+Define: 
+$$
+\chi_S (x) = \begin{cases}
+    1 \; , x \in S \\
+    0 \; , x \not\in S
+\end{cases}
+$$
+注意到
+$$
+D_{\chi_S} = \partial S
+$$
+\end{remark}
+
+
+\begin{corollary}{To compute Jordan measure}
+    $S$ Jordan measurable $\implies$ 
+    $$
+    m_J (S) = \int_S 1 
+    $$
+\end{corollary}
+
+
+
+\begin{corollary}
+    $S$ is Jordan measurable $\eq$ all ctn function from $S \rar \bR$ are Riem intble on $S$.
+\end{corollary}
+
+
+
+
+\section{Extended Integrals}
+\begin{definition}{All Jordan measurable sets on $\bR$}
+    记录一些 notations.\\
+    $$
+    \cJ = \{ \text{all Jordan measurable sets on } \bR^n \}
+    $$
+    $$
+    \cJ_c = \{ \text{all Jordan measurable compact sets on } \bR^n \}
+    $$
+\end{definition}
+
+
+\begin{definition}{negative and positive parts of a function}
+    $$
+    f_+ (x) = \max(f(x), 0)
+    $$
+    $$
+    f_- (x) = \max(-f(x), 0)
+    $$
+\end{definition}
+
+\begin{note}
+    $f_+, f_-$ are all non-negative.\\
+    并且有
+    $$
+    f = f_+ - f_-
+    $$
+    $$
+    |f| = f_+ + f_-
+    $$
+\end{note}
+
+
+\begin{remark}
+    如果 $f$ ctn, 那么一定有 $f_+, f_-$ 也 ctn.
+\end{remark}
+
+
+\begin{definition}{extended integral}
+    Condition:\\
+    (1) $A \sub \BR^d$ open.\\
+    (2) $f:A\rar \bR $ ctn.\\
+    Define: the extended integral of $f$ over $A$:
+    Case 1, for non-neg $f$:
+    $$
+    \int_A f = \sup_{D \sub A, D\in \cJ_c} \int_D f
+    $$
+    Case 2, for normal $f$:
+    $$
+    \int_A f = \int_A f_+ + \int_A f_-
+    $$
+\end{definition}
+\begin{remark}
+    extended integral 的理念: 对于任意一个 open set 上的 real-valued 函数, 我们把它的积分定义为这个 open set 包含的所有 compact J-measurable 子集上的函数积分的上确界.\\\\
+    这个 extended def 主要服务于定义域 unbounded 的函数. 我们的 ordinary integral 只 define 在了 bounded set 上, 而我们现在把它扩展到某些 bounded set 上.\\
+    我们施加的额外条件是这个函数连续. 所以现在我们对任何 $\BR^n \rar \bR$ 的连续函数都可以尝试求其 extended integral 是否存在.\\\\
+    而注意到两个问题:\\
+    (1) 这个定义对于 bounded set 上的连续函数也成立. 因而对于 bounded set 上的连续函数, 我们现在有两个积分定义, $ord \int_A f$ 和 $ext \int_A f$. \textbf{我们需要 justify 这两个定义对于这样的函数是等价的.}\\
+    (2) 这个 extended integral 不仅 extend 了积分定义 from bounded set to unbounded set, 并且也扩展了 integrability. 即: \textbf{有些函数可以不是 Riemann integrable 的, 但是 extended integral 却存在.}
+\end{remark}
+
+\begin{example}
+    下面是一个不 Riemann integrable 但是却存在 extended integral 的函数.
+    考虑 $A$ bdd, open, not J-measurable(rectifiable).\\
+    于是 by \ref{equivalent conditions for Jordan-mesurability}, 我们知道 $f(x) = 1, x\in A$ 是 not Riem intble 的.\\
+    但是, by def of extended integral, 它却存在 extended integral.
+\end{example}
+
+\paragraph*{}现在我们 justify 这两个定义对于这样的函数是等价的. 关键在于: 任何 bounded open set 都可以用 compact elementary set 来无限逼近.
+
+\begin{lemma}{open set can be approximated by cpt set}
+    任意 open $A \in \bR^n$, 都有 a seq of compact elementary sets $(C_i)$ s.t. 
+    $$
+    C_i \sub C_{i+1}^{\circ} \forall i
+    $$
+    并且
+    $$
+    A = \bigunion_{i=1}^\infty C_i
+    $$
+\end{lemma}
+
+\begin{remark}
+    我们在 IBL 还有过另外一个 statement: 一个 open set in $\bR^n$ 都是一个 ctbl union of almost disjoint boxes. 这两个 statement 都给出了用 ctbl collection of cpt sets/ boxes 来分解 open set 的方法.
+\end{remark}
+
+\begin{proof}
+    
+\end{proof}
+
+
+
+
+
+
+\chapter{Change of Variable Thm}
+\begin{theorem}{Change of Variable}
+Conditons:\\
+(1) $A,B \sub \bR^n$ open.\\
+(2) $g:A \rar B$ 是 $C^1$ diffeomorphism.\\
+(3) $f:B \rar \bR$ ctn.\\
+
+Statement:
+$f$ 在 $B$ 上 Riem intble 当且仅当 $f(g(x))  |\det Dg(x)) |$ 在 $A$ 上 Riem intble.\\
+并且有:
+$$
+\int_A f(g(x)) |\det (Dg(x))| dx = \int_B f
+$$
+    
+\end{theorem}
+\pic[0.4]{assets/change.png}
+\begin{remark}
+    当 $g$ 是一个微分同胚时, $f$ 在 $g(A)$ 上的积分就等于 $|det(Dg)| f\circ g $ 在 $A$ 上的积分.\\
+    我们记得 determinant of a matrix 在 $\bR^n$ 上的集合意义是在 apply 这个 linear trans 后, unit cube 扩张的倍数.\\
+\end{remark}
+
+
+
+
+\section{$C^1$ fucntion maps meas 0 set to meas 0 set}
+\begin{theorem}{$C^1$ map 把零测集映射至零测集}
+Conditions:\\
+(1) $A \sub \bR^n$ open\\
+(2) $g: A \rar \bR^n$ 是 $C^1$ 的\\
+Statement:\\
+$\forall E\sub A $ s.t. $m(E)= 0$, 都有 $m(g(E)) = 0$ 
+\end{theorem}
+\begin{proof}
+\textbf{Claim 1}: 对于一个零测集, 任取 $\epsilon, \delta$, 都可以用 ctbl 个 width 小于等于 $\delta$ 的 cubes 来 cover 它, 并使得 cubes 的总体积 $< \epsilon$.\\
+这个 statement 显然. 注意这里我们使用的是 cube 而不是 box, 也就是边长相同的 box. 这是一个 trivial corollary of 零测集的定义.\\
+\textbf{Claim 2}:任意 closed cube $C$ 在 $C^1$ map 下的 image, 可以用一个边长是它的 $n\sup_{x \in C} ||Dg(x)||$ cube 来 cover. 这个 Claim 容易证明.\\
+现在: WTS $g(E) = 0$.\\
+回忆:\\
+(1) ctbl 个零测集的测度和也是零测集.\\
+(2) 我们可以用 a seq of containing cpt sets $\{C_k \}$ 来获得一个 open set.\\
+令 $E_k := E \intsec C_k$, 我们有$E = \union E_k$.\\
+因而 it suffices to show $m(g(E_k)) = 0$.\\
+\textbf{Claim 3}: 每个 $E_k = C_k \intsec E$, 其 $g(E_k)$ 的 measure 都是 0\\
+\textbf{Claim 3.1}: 对于每一个 $C_k$, 都存在 $\delta > 0$, 使得 $C_k$ 的 $\delta-$nbh 被包含在 $C_{k+1} ^ {\circ}$ 中. (这是一个关于每个 $C_k$ 和其 $C_{k+1}$ 之间的空隙的厚度的命题. 既然 $C_K \sub C_{k+1} ^ {\circ}$ 那么它们之间的距离存在一定厚度,)\\
+\textbf{Collect things together:}
+\begin{enumerate}
+    \item 由于 $E$ 零测, 每个 $E_k$ 都是零测的. By Step 1, 我们可以用 ctbl 个 width $\leq \delta$ 的 cubes 来 cover $C_k$ 使得总体积 $< \frac{\epsilon}{(nM)^n}$. 
+    \item 并且 by Claim 3.1, 这个 cover $\{D_i\}$是 within $C_{k+1} $ 的. 
+    \item by claim 2, 我们可以 bound 每个 $D_i$ 的 image by 边长小于等于 $nM$ width($D_i$) 的 box, 于是所有 $D_i$ 的 image 的 volume sum bounded by $(nM)^n \epsilon /(nM)^n = \epsilon$. 于是 $m(g(E_k)) = 0$.
+\end{enumerate}
+\end{proof}
+
+\begin{remark}
+我觉得这里比较 insightful 的证明手段, 除去通过 operator norm 来 bound image 的大小之外, 还有就是 $C_k$ 的 cover by $\delta$-width cubes 是 within $C_{k+1}$ 的这一点. \\
+我们有时候觉得 Euclidean metric 是一个很麻烦的东西, 因为它无法推断每个维度的信息. 有时候需要在每个维度上都分别去 bound 一个东西: 就比如这里, 我们需要 bound 的是一整个 open cover of $C_k$, 使得这个 cover within $C_{k+1}$.\\
+这个时候我们可以混用 sup metric. 这里我们把 boxes 的 cover 转化为了 cubes 的 cover, 就是为了 bound 住这个 cover, 因为 cube 的每个维度都相同. 这里 Claim 3.1 先证明了一个 sup metric 的命题, 然后利用它来 bound 住 cube 的范围, 让 cube 不会出 $C_{k+1}$ 的边界: \textbf{by supmetric, 每一个维度都留了 $\delta$ 的空隙}. 从而它 bound 住一整个 cover 的 union. 
+\end{remark}
+
+
+
+
+
+\begin{corollary}{从小维度到大维度的 diffble map 的 image 零测}
+    对于 $C^1$ 的 $f: A \sub \bR^b \rar \bR^m $($A$ open), 如果 $m > n$ (小维度映射到大维度), 那么一定有 
+    $$
+    m(f(A)) = 0
+    $$
+\end{corollary}
+\begin{proof}
+    考虑
+    \begin{align}
+        g: A \times \bR^{m-n} \sub \bR^m &\rar bR^m\\
+        (a,b) & \mapsto f(a)
+    \end{align}
+    于是 $f(A) = g(A \times \{0\}$.
+\end{proof}
+\begin{remark}
+    如果 $f$ 不是 $C^1$ 的而是仅仅只是连续，则不成立. 考虑 space-filling curve.\\
+\end{remark}
+
+
+\section{diffeomorphism preserves boundary and interior AND J-measurability}
+\begin{theorem}{diffeomorphism preserves boundary and interior 以及 J-meas}
+Conditions:\\
+(1) $A,B \sub \bR^n$ open\\
+(2) $g: A \rar B$ 是 diffeo\\
+(3) $D \sub A$ cpt.\\
+Statement:\\
+(1) 
+$$
+g(D^{\circ}) = (g(D))^{\circ}
+$$
+$$
+g(\partial D) = \partial(g(D))
+$$
+(2) 并且如果 $D$ J-meas, 则有 $g(D)$ J-meas.
+\end{theorem}
+\begin{remark}
+    J-meas 的 set 的 boundary 的 L-meas 是 0, 但是 L-meas 的 set 的 boundary 的 L-meas 不一定.\\
+    比如 $\bQ$ 是 L-measurable 的, 但是它的 boundary 是整个 $\bR$.\\
+    这是因为 J-meas 是一个太过于严格的性质. 你必须用 elementary set 来逼近它. 
+\end{remark}
+
+
+\section{decompose diffeo into finite primitive diffeos}
+
+\begin{definition}{primitive map}
+对于 $A, B \in \bR^n$, 如
+    如果 $h:A \sub\bR^n \rar B \sub\bR^n$ 中, 有任何一个 subfunction $h_i(x) = x$, 即 preserves the $i$-th coord, 则称这个 function 为一个 primitive map
+\end{definition}
+
+
+\begin{lemma}{linear/affine map can be decomposed into finite prmitives}
+任何 linear map 以及 translation 都可以被 decompose into finite primitives.
+\end{lemma}
+\begin{proof}
+    Linear map 可以分解为 elementary matrices.
+    \pic[0.6]{assets/compose.jpg}
+    \pic[0.6]{assets/compose2.jpg}
+    至于 translation 则显然.
+\end{proof}
+\begin{remark}
+    所以任意一个 affine linear map 都可以分解成 primitives.
+\end{remark}
+
+
+\begin{theorem}{Any Diffeomprphism can be decomposed into finite primitive diffeomorphisms}
+Conditions:\\
+(1) $A, B$ open in $\bR^n$.\\
+(2) $g:A \rar B$ 为一个 diffeomorphism.\\
+Statements:\\
+对于任意 $a \in A$, 都存在 open nbh $U_0 \sub A$ of $a$, 以及 a finite seq. of \textbf{primitive diffeomorphisms}
+$$
+u_0 \xrar{h_1} u_1 \xrar{h_2} \cdots \xrar{h_k} u_k \sub B
+$$
+s.t. 
+$$
+h_k \circ h_{k-1} \circ \cdots \circ u_k  = g |_{u_0}
+$$
+\end{theorem}
+\begin{proof}
+    我们首先 prove $a = 0, g(a) = a, Dg(a) = 0$ 时的特殊情况.\\
+    这一情况下, 定义:
+    $$
+    h (x) = (g_1(x), \cdots, g_{n-1}(x), x_n)
+    $$
+    $$
+    k(y) = (y_1, \cdots, y_n, g_n(h^{-1}(y))
+    $$
+    使用两次 IFT 得到 $g$ 在 $a$ 附近等于 $k \circ h$
+    \pic[0.6]{assets/diff.jpeg}
+
+    For general case $g$: 我们发现, 总是可以通过 translate, apply $g$, 再 apply $ (Dg(a))^{-1}$ 的方式获得一个新的 map, 使得它满足 special case.\\
+    新 map 可分解, linear map 可分解, translate 可分解. 于是整个都可以分解.
+\end{proof}
+
+
+
+
+\section{Partition of Unity}
+
+\begin{lemma}{构造 supported only on a box 的光滑函数}
+    对于任意 box $B \sub \bR^n$, 都存在 $C^{\infty}$ 的 non-neg 函数 $\phi: \bR^n \rar \bR$ 使得 $\supp(\phi) = Q^{\circ}$
+\end{lemma}
+\begin{proof}
+    构造:
+    令
+    $$
+    f(x) = 
+    \begin{cases}
+    \exp(\frac{-1}{x}) \; , x >0 \\
+    0 \; , x \leq 0
+    \end{cases}
+    $$
+    再 define:
+    $$
+    g(x) = f(x)f(1-x)
+    $$
+    注意到这里的 $g$ 是一个仅在 $(0,1)$ 上 supported 的函数.\\
+    通过放缩与多维度叠加, 就可以得到对任意 box 的构造:
+    对于 $Q = [a_1, b_1] \times \cdots \times [a_n, b_n]$ we define
+    $$
+    \phi(x) := \prod_{i = 1}^n g(\frac{x_1 - a_i}{b_i - a_i})
+    $$
+    \pic[0.5]{assets/smooth.png}
+\end{proof}
+
+
+
+
+\begin{lemma}{Cube Partition Lemma}
+Let $\sA$ be a collection of open sets in $\bR^n$. Let $A  = \union_{S \in \sA} S$.\\
+There exists a seq of closed boxes(actually cubes) $Q_1, Q_2, \cdots, $ s.t.
+\begin{enumerate}
+    \item $A \sub \union_{i} Q_i ^{\circ}$
+    \item Each $Q_i$ is containted in some element of $\sA$ (因而, 实际上 $A  = \union_{i} Q_i ^{\circ}$)
+    \item \textbf{(Local Finiteness)} Every point of $A$ has some nbh that only intersects finitely many $Q_i$
+\end{enumerate}
+\end{lemma}
+\begin{remark}
+这个 theorem 又是另一个用 ctbl 个 closed boxs 来得到一个 open set 的 statement. Recall 我们已经有:\\
+(1) open set 可以分解成 ctbl 个 almost disjoint closed boxes 的 union.\\
+(2) 可以用 a seq. of cpt sets 来逼近一个 open set.\\
+现在我们有第三个 statement:\\
+(3) 即便是 unctbl 个 open sets 的 union(仍然是 open 的), 我们也可以找到一个 ctbl decomposition of closed cubes, 使得其中每个元素都完全包含在一个 open element 里; 并且 closed cubes 之间的排布不会太过紧密 (任意点都至多只 locally intersect 有限个 closed cubes.)\\
+\end{remark}
+
+\begin{proof}
+    首先 take 我们的 seq of containing cpt sets of $A$, 写作 $\{D_i\}$.\\
+    我们这次做一件我想做很久了的事情: 我们 take:
+    $$
+    B_i = D_i - D_{i-1}^{\circ}
+    $$ for each $D_i$. (对于 $i\leq 0$ 取 $D_i$ 是空集.)\\
+    于是把相互包含的 cpt sets $\{D_i\}$ 分解成了 almost disjoint 的 cpt sets $\{B_i\}$. \\
+    我们 recall 上次的证明: 对于每一个 $C_k$, 都存在 $\delta > 0$, 使得 $C_k$ 的 $\delta-$nbh 被包含在 $C_{k+1} ^ {\circ}$ 中. (这是一个关于每个 $C_k$ 和其 $C_{k+1}$ 之间的空隙的厚度的命题. 既然 $C_K \sub C_{k+1} ^ {\circ}$ 那么它们之间的距离存在一定厚度)\\
+    因而 $B_i$ 和 $D_{i-2}$ 之间有一定距离.\
+    对于 $B_i$ 中的每个 $x$ 我们都可以选取一个 centered at $x$ 的 closed cube, 并且使它包含在 $\sA$ 的某个元素中, 且 disjoint from $D_{i-2}$.\\
+    通过取 finite subcover, 我们于是把 $B_i$ 用 finite 个 closed cubes contained in $A$ 给 cover 上了.\\
+    这是 natural 的使用 ctbl 个 closed box(cube this time) 来 得到 open set 的方法.\\
+    并且, 这个 \textbf{disjointness of each $B_i$ and $D_{i-2}$ gives local finiteness:} 对于任意一个 $x\in A$, $x \in D_i ^{\circ}$ for some $D_i$. 根据我们的构造: $D_i$ 至多只会 intersec cubes in $C_1, \cdots, C_{i+1}$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Multilinear Algebra}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,48 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editor and temporary files
+.vscode/
+!notes/math/**/.vscode/
+!notes/math/**/.vscode/**
+*~
+*.swp
+*.swo
+*.tmp
+*.temp
+*.bak
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Crash dumps
+core
+core.*
+*.core
+
+# Native build outputs and debug metadata
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+*.dSYM/
+
+# LaTeX intermediates
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
+# JavaScript dependencies
+node_modules/

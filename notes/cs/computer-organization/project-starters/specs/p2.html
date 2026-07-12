@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://eecs370.github.io/project_2_spec/ -->
+<html lang="en-US" data-theme-mode="light" style="--primer-spec-rouge-cm-color: #999988; --primer-spec-rouge-cm-font-style: italic; --primer-spec-rouge-cp-color: #999999; --primer-spec-rouge-cp-font-weight: bold; --primer-spec-rouge-c1-color: #999988; --primer-spec-rouge-c1-font-style: italic; --primer-spec-rouge-cs-color: #999999; --primer-spec-rouge-cs-font-weight: bold; --primer-spec-rouge-cs-font-style: italic; --primer-spec-rouge-cd-color: #999988; --primer-spec-rouge-cd-font-style: italic; --primer-spec-rouge-c-color: #999988; --primer-spec-rouge-c-font-style: italic; --primer-spec-rouge-err-color: #a61717; --primer-spec-rouge-err-background-color: #e3d2d2; --primer-spec-rouge-gd-color: #000000; --primer-spec-rouge-gd-background-color: #ffdddd; --primer-spec-rouge-ge-color: #000000; --primer-spec-rouge-ge-font-style: italic; --primer-spec-rouge-gr-color: #aa0000; --primer-spec-rouge-gh-color: #999999; --primer-spec-rouge-gi-color: #000000; --primer-spec-rouge-gi-background-color: #ddffdd; --primer-spec-rouge-go-color: #888888; --primer-spec-rouge-gp-color: #555555; --primer-spec-rouge-gs-font-weight: bold; --primer-spec-rouge-gu-color: #aaaaaa; --primer-spec-rouge-gt-color: #aa0000; --primer-spec-rouge-kc-color: #000000; --primer-spec-rouge-kc-font-weight: bold; --primer-spec-rouge-kd-color: #000000; --primer-spec-rouge-kd-font-weight: bold; --primer-spec-rouge-kn-color: #000000; --primer-spec-rouge-kn-font-weight: bold; --primer-spec-rouge-kp-color: #000000; --primer-spec-rouge-kp-font-weight: bold; --primer-spec-rouge-kr-color: #000000; --primer-spec-rouge-kr-font-weight: bold; --primer-spec-rouge-kt-color: #445588; --primer-spec-rouge-kt-font-weight: bold; --primer-spec-rouge-kv-color: #000000; --primer-spec-rouge-kv-font-weight: bold; --primer-spec-rouge-k-color: #000000; --primer-spec-rouge-k-font-weight: bold; --primer-spec-rouge-mf-color: #009999; --primer-spec-rouge-mh-color: #009999; --primer-spec-rouge-il-color: #009999; --primer-spec-rouge-mi-color: #009999; --primer-spec-rouge-mo-color: #009999; --primer-spec-rouge-mb-color: #009999; --primer-spec-rouge-mx-color: #009999; --primer-spec-rouge-m-color: #009999; --primer-spec-rouge-sb-color: #d14; --primer-spec-rouge-sc-color: #d14; --primer-spec-rouge-sd-color: #d14; --primer-spec-rouge-s2-color: #d14; --primer-spec-rouge-se-color: #d14; --primer-spec-rouge-sh-color: #d14; --primer-spec-rouge-si-color: #d14; --primer-spec-rouge-sx-color: #d14; --primer-spec-rouge-sr-color: #009926; --primer-spec-rouge-s1-color: #d14; --primer-spec-rouge-ss-color: #990073; --primer-spec-rouge-s-color: #d14; --primer-spec-rouge-na-color: #008080; --primer-spec-rouge-bp-color: #999999; --primer-spec-rouge-nb-color: #0086B3; --primer-spec-rouge-nc-color: #445588; --primer-spec-rouge-nc-font-weight: bold; --primer-spec-rouge-no-color: #008080; --primer-spec-rouge-nd-color: #3c5d5d; --primer-spec-rouge-nd-font-weight: bold; --primer-spec-rouge-ni-color: #800080; --primer-spec-rouge-ne-color: #990000; --primer-spec-rouge-ne-font-weight: bold; --primer-spec-rouge-nf-color: #990000; --primer-spec-rouge-nf-font-weight: bold; --primer-spec-rouge-nl-color: #990000; --primer-spec-rouge-nl-font-weight: bold; --primer-spec-rouge-nn-color: #555555; --primer-spec-rouge-nt-color: #000080; --primer-spec-rouge-nx-color: #000000; --primer-spec-rouge-vc-color: #008080; --primer-spec-rouge-vg-color: #008080; --primer-spec-rouge-vi-color: #008080; --primer-spec-rouge-nv-color: #008080; --primer-spec-rouge-ow-color: #000000; --primer-spec-rouge-ow-font-weight: bold; --primer-spec-rouge-o-color: #000000; --primer-spec-rouge-o-font-weight: bold; --primer-spec-rouge-w-color: #bbbbbb; --primer-spec-rouge-txt-background-color: #f8f8f8;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://eecs370.github.io/project_2_spec/">
+<meta property="og:url" content="https://eecs370.github.io/project_2_spec/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","url":"https://eecs370.github.io/project_2_spec/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="preload" href="./p2_files/all.css" as="style" crossorigin="anonymous" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr">
+        <style class="anchorjs"></style><link rel="stylesheet" href="./p2_files/primer-spec-base.css">
+
+        <!--ƒ
+            This page is formatted using Primer Spec.
+            Would you like to contribute to the theme?
+            Check out: https://github.com/eecs485staff/primer-spec
+        -->
+        <script>
+            window.PrimerSpecConfig = {
+                pdfPath: 'assets/primer-spec-pdf/index.pdf', // @managed by build-primer-spec-action
+                siteQualifiedBaseUrl: 'https://eecs370.github.io/project_2_spec/',
+                hideSidebarOnLoad: false,
+                disableSidebar: false,
+                defaultSubthemeName: 'default',
+                defaultSubthemeMode: 'system',
+                sitemapEnabled: false,
+                sitemapUrls: [],
+                sitemapLabel: undefined,
+                sitemapSiteTitle: '',
+                useLegacyCodeBlocks: false,
+                defaultCodeblockVariant: "enhanced",
+                disableJokes: false
+            };
+        </script>
+        <script src="./p2_files/primer_spec_plugin.min.js" crossorigin="anonymous" defer=""></script>
+        <style>
+            /**
+             * To make MathJax CHTML scroll like other large Primer Spec
+             * code-blocks, we need to set the `overflow` property on
+             * `mjx-container` elements.
+             */
+            mjx-container {
+                overflow: auto;
+                overflow-y: hidden;
+            }
+
+            /**
+             * On mobile (at least on iOS), the 0-line-height style from
+             * MathJax causes rendering issues with inline math. This style
+             * overrides the property. (Needed to add specificity to override.)
+             */
+             mjx-container[jax="CHTML"].MathJax {
+              line-height: inherit;
+            }
+        </style>
+        <script src="./p2_files/tex-chtml.js" id="MathJax-script" defer=""></script>
+    <link rel="stylesheet" href="./p2_files/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+    <body>
+        <div id="primer-spec-top"></div>
+        <div id="primer-spec-app-container" onclick="return true;"><header class="primer-spec-topbar position-fixed width-full top-0 left-0 py-2 no-print"><div class="primer-spec-float-right"><div class="primer-spec-topbar-button"><span class="primer-spec-hoverable "><a class="btn-link primer-spec-hoverable no-print tooltipped tooltipped-no-delay tooltipped-w" role="button" href="https://eecs370.github.io/project_2_spec/assets/primer-spec-pdf/index.pdf" aria-label="Download this page as a PDF file"><i class="fas fa-file-download"></i></a></span></div><div id="primer-spec-settings-toggle" class="primer-spec-topbar-button"><span class="primer-spec-hoverable "><button class="btn-link primer-spec-hoverable no-print" aria-label="Open settings pane"><i class="fas fa-cog"></i></button></span></div></div></header><main id="primer-spec-preact-main-content" class="container-lg px-3 my-5 markdown-body primer-spec-content-margin-extra">
+            
+
+            <h1 id="project-2-eecs-370-fall-2024">Project 2 EECS 370 (Fall 2024)<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#project-2-eecs-370-fall-2024" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Worth:</th>
+      <th>100 Points</th>
+      <th>Point Allocation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Assigned:</td>
+      <td>Thursday, September 19th</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Part 2A Due:</td>
+      <td>11:55 PM ET, Thursday, October 3rd</td>
+      <td>40 Points</td>
+    </tr>
+    <tr>
+      <td>Part 2L Due:</td>
+      <td>11:55 PM ET, Thursday, October 24th</td>
+      <td>60 Points</td>
+    </tr>
+    <tr>
+      <td>Part 2R Due:</td>
+      <td>11:55 PM ET, Thursday, October 24th</td>
+      <td>20 Points</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="0-starter-code">0. Starter Code<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#0-starter-code" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+<p>For Project 2A, the assembler, you have 2 choices: build off your project 1a assembler OR start with the <a href="https://eecs370.github.io/project_2_spec/starter_2a.tar.gz">starter code</a>, which will be updated after all project 1a submissions have been collected.
+For project 2L, the LC2K linker <a href="https://eecs370.github.io/project_2_spec/starter_2l.tar.gz">starter code</a> is meant to help you read in and parse object files. It is probably a good idea to break it up into different functions, but is a good place to get started.</p>
+
+<h1 id="1-purpose">1. Purpose<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#1-purpose" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>The purpose of this project is to help you understand the assembling and linking process, which we can utilize to create multi-file LC2K programs. In order to do this, we will first create a new assembler (P2A) which will take an assembly file as input and output an intermediate object file. Our linker (P2L) will take object file(s) as input and create the final machine code.</p>
+
+<p>In Project 1a, you wrote an assembler which took an LC2K assembly file as input and produced an executable file as output. This approach is fine if all the code needed is contained in one file, but what happens if we want to use other pieces of code? Libraries contain functions that make coding easier, and are often written in assembly and stored as object files. Splitting code into multiple files encourages modularity and organization. Multiple files are also important for large projects: if you modify one source file, you only need to recompile and reassemble that one and then link everything together, <em>greatly</em> reducing the total time to create an executable. Now that we have a better understanding of translation software, we can create a separate assembler and linker.</p>
+
+<p>Here is an example that will help explain the purpose of the linker:</p>
+
+<div id="count5-0-as-0" class="primer-spec-code-block"><div id="primer-spec-code-block-0" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="count5-0-as-0">count5_0.as<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#count5-0-as-0" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-0-LR1"><td id="primer-spec-code-block-0-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-0-LC1" class="primer-spec-code-block-line-code">        lw          0       1       five       ; $1 = 5</td></tr><tr id="primer-spec-code-block-0-LR2"><td id="primer-spec-code-block-0-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-0-LC2" class="primer-spec-code-block-line-code">        lw          0       4       SubAdr     ; Store address of SubAdr</td></tr><tr id="primer-spec-code-block-0-LR3"><td id="primer-spec-code-block-0-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-0-LC3" class="primer-spec-code-block-line-code">start   jalr        4       7                  ; Store return address and jump to SubAdr</td></tr><tr id="primer-spec-code-block-0-LR4"><td id="primer-spec-code-block-0-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-0-LC4" class="primer-spec-code-block-line-code">        beq         0       1       done       ; Finish if $1 == 0</td></tr><tr id="primer-spec-code-block-0-LR5"><td id="primer-spec-code-block-0-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-0-LC5" class="primer-spec-code-block-line-code">        beq         0       0       start      ; Otherwise continue (keep calling SubAdr).</td></tr><tr id="primer-spec-code-block-0-LR6"><td id="primer-spec-code-block-0-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-0-LC6" class="primer-spec-code-block-line-code">done    halt</td></tr><tr id="primer-spec-code-block-0-LR7"><td id="primer-spec-code-block-0-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-0-LC7" class="primer-spec-code-block-line-code">five    .fill       5</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<div id="count5-1-as-1" class="primer-spec-code-block"><div id="primer-spec-code-block-1" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="count5-1-as-1">count5_1.as<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#count5-1-as-1" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-1-LR1"><td id="primer-spec-code-block-1-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-1-LC1" class="primer-spec-code-block-line-code">subOne  lw          0       2       neg1       ; $2 = -1</td></tr><tr id="primer-spec-code-block-1-LR2"><td id="primer-spec-code-block-1-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-1-LC2" class="primer-spec-code-block-line-code">        add         1       2       1          ; $1 = $1 - 1</td></tr><tr id="primer-spec-code-block-1-LR3"><td id="primer-spec-code-block-1-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-1-LC3" class="primer-spec-code-block-line-code">        jalr        7       6                  ; Jump back to where we were called from (count5_0.as)</td></tr><tr id="primer-spec-code-block-1-LR4"><td id="primer-spec-code-block-1-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-1-LC4" class="primer-spec-code-block-line-code">neg1    .fill       -1</td></tr><tr id="primer-spec-code-block-1-LR5"><td id="primer-spec-code-block-1-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-1-LC5" class="primer-spec-code-block-line-code">SubAdr  .fill       subOne                     ; Define where our function definition starts</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>Here, we have two basic programs. <code class="language-plaintext highlighter-rouge">count5_0.as</code> loads <code class="language-plaintext highlighter-rouge">$1</code> with <code class="language-plaintext highlighter-rouge">5</code>. We then call the <code class="language-plaintext highlighter-rouge">subOne</code> function. We then decrement the value of <code class="language-plaintext highlighter-rouge">5</code> and return to <code class="language-plaintext highlighter-rouge">count5_0.as</code> until our result is <code class="language-plaintext highlighter-rouge">0</code>. Even though <code class="language-plaintext highlighter-rouge">count5_0.as</code> tries to call <code class="language-plaintext highlighter-rouge">count5_1.as</code> without knowing at assemble time where it is defined (since it is in a separate file), our program will still work.</p>
+
+<p>The linked result would look like this:</p>
+
+<p><em>Note: The linker will take in object files and produce a machine code file with the linking process. Assembly files are neither an input nor output. This is just an example of how linking would look visually.</em></p>
+
+<div id="count5-as-2" class="primer-spec-code-block"><div id="primer-spec-code-block-2" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="count5-as-2">count5.as<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#count5-as-2" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-2-LR1"><td id="primer-spec-code-block-2-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-2-LC1" class="primer-spec-code-block-line-code">        lw          0       1       five       ; $1 = 5</td></tr><tr id="primer-spec-code-block-2-LR2"><td id="primer-spec-code-block-2-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-2-LC2" class="primer-spec-code-block-line-code">        lw          0       4       SubAdr     ; Store address of SubAdr</td></tr><tr id="primer-spec-code-block-2-LR3"><td id="primer-spec-code-block-2-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-2-LC3" class="primer-spec-code-block-line-code">start   jalr        4       7                  ; Store return address and jump to SubAdr</td></tr><tr id="primer-spec-code-block-2-LR4"><td id="primer-spec-code-block-2-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-2-LC4" class="primer-spec-code-block-line-code">        beq         0       1       done       ; Finish if $1 == 0</td></tr><tr id="primer-spec-code-block-2-LR5"><td id="primer-spec-code-block-2-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-2-LC5" class="primer-spec-code-block-line-code">        beq         0       0       start      ; Otherwise continue (keep calling SubAdr).</td></tr><tr id="primer-spec-code-block-2-LR6"><td id="primer-spec-code-block-2-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-2-LC6" class="primer-spec-code-block-line-code">done    halt</td></tr><tr id="primer-spec-code-block-2-LR7"><td id="primer-spec-code-block-2-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-2-LC7" class="primer-spec-code-block-line-code">subOne  lw          0       2       neg1       ; $2 = -1</td></tr><tr id="primer-spec-code-block-2-LR8"><td id="primer-spec-code-block-2-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-2-LC8" class="primer-spec-code-block-line-code">        add         1       2       1          ; $1 = $1 - 1</td></tr><tr id="primer-spec-code-block-2-LR9"><td id="primer-spec-code-block-2-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-2-LC9" class="primer-spec-code-block-line-code">        jalr        7       6                  ; Jump back to where we were called from (count5_0.as)</td></tr><tr id="primer-spec-code-block-2-LR10"><td id="primer-spec-code-block-2-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-2-LC10" class="primer-spec-code-block-line-code">five    .fill       5</td></tr><tr id="primer-spec-code-block-2-LR11"><td id="primer-spec-code-block-2-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-2-LC11" class="primer-spec-code-block-line-code">neg1    .fill       -1</td></tr><tr id="primer-spec-code-block-2-LR12"><td id="primer-spec-code-block-2-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-2-LC12" class="primer-spec-code-block-line-code">SubAdr  .fill       subOne                     ; Define where our function definition starts</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<h1 id="2-problem">2. Problem<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#2-problem" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<div data-variant="legacy" class="language-plaintext highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code>[[assembly files]] -assembler--&gt; [[object files]] -linker--&gt; [executable]
+</code></pre></div></div>
+<p>This project has two parts. In the <a href="https://eecs370.github.io/project_2_spec/#3-assembler-40-points">first part</a>, you will create a program that assembles an assembly file into an object file. The P2A assembler is an extension of the P1A assembler. The key distinction for P2A is that instead of outputting a machine code (<code class="language-plaintext highlighter-rouge">mc</code>) file, you will output an object (<code class="language-plaintext highlighter-rouge">obj</code>) file which contains additional information to assist in the linking process: <strong>a header, a symbol table, and a relocation table</strong>. In the <a href="https://eecs370.github.io/project_2_spec/#4-linker-60-points">second part</a>, you will write a program to link object files into <strong>a single executable consisting of machine code</strong>, which your project 1 simulator will be able to run.</p>
+
+<h1 id="3-assembler-40-points">3. Assembler (40 points)<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#3-assembler-40-points" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>Your new assembler will take in a single assembly file (see <a href="https://eecs370.github.io/project_2_spec/#31-assembly-files">section 3.1</a>) as input and output a single object file (see <a href="https://eecs370.github.io/project_2_spec/#32-object-file-format">section 3.2</a>).</p>
+
+<p>So far we have created an assembler which can translate assembly language into machine code. However, let’s consider a basic program that prints “Hello World”:</p>
+
+<div id="hello-world-c-3" class="primer-spec-code-block"><div id="primer-spec-code-block-3" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="hello-world-c-3">helloWorld.c<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#hello-world-c-3" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-3-LR1"><td id="primer-spec-code-block-3-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-3-LC1" class="primer-spec-code-block-line-code">#include &lt;stdio.h&gt;</td></tr><tr id="primer-spec-code-block-3-LR2"><td id="primer-spec-code-block-3-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-3-LC2" class="primer-spec-code-block-line-code">
+</td></tr><tr id="primer-spec-code-block-3-LR3"><td id="primer-spec-code-block-3-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-3-LC3" class="primer-spec-code-block-line-code">int main(){</td></tr><tr id="primer-spec-code-block-3-LR4"><td id="primer-spec-code-block-3-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-3-LC4" class="primer-spec-code-block-line-code">        printf("Hello World");</td></tr><tr id="primer-spec-code-block-3-LR5"><td id="primer-spec-code-block-3-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-3-LC5" class="primer-spec-code-block-line-code">        return 0;</td></tr><tr id="primer-spec-code-block-3-LR6"><td id="primer-spec-code-block-3-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-3-LC6" class="primer-spec-code-block-line-code">}</td></tr><tr id="primer-spec-code-block-3-LR7"><td id="primer-spec-code-block-3-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-3-LC7" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>If we were to compile this into assembly, we would need to branch to the <code class="language-plaintext highlighter-rouge">printf()</code> function and execute the code at that memory location. This is great because we don’t need to rewrite <code class="language-plaintext highlighter-rouge">printf</code> every time we create a new project, we can just <code class="language-plaintext highlighter-rouge">#include &lt;stdio.h&gt;</code>. However, our current assembler can’t handle <em>undefined references</em>. To fix this, we are going to create an assembler that allows for external references (i.e. references to labels that are NOT defined in the file) and a program called the <code class="language-plaintext highlighter-rouge">linker</code> to resolve those undefined external references.</p>
+
+<h2 id="31-assembly-files">3.1. Assembly Files<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#31-assembly-files" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<h3 id="311-assembly-file-format">3.1.1 Assembly File Format<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#311-assembly-file-format" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Assembly language programs will be of the same format as those from Project 1, with a few extra restrictions.</p>
+
+<p>The first part of the assembly file must contain only assembly instructions. The second part should contain only <code class="language-plaintext highlighter-rouge">.fill</code> assembler directives. For example, suppose an assembly file is composed of M instructions and N <code class="language-plaintext highlighter-rouge">.fill</code>s. Lines 0 to (M-1) contain actual instructions, and lines M to (M+N-1) contain <code class="language-plaintext highlighter-rouge">.fill</code>s, with no mixing between them. We refer to all of our instructions as belonging to the <code class="language-plaintext highlighter-rouge">Text</code> section of our program. Moreover, everything that contains a .fill statement is considered to be in the <code class="language-plaintext highlighter-rouge">Data</code> section of our program. It is important that all of your test cases separate these two sections such that no <code class="language-plaintext highlighter-rouge">.fill</code> directives are in the <code class="language-plaintext highlighter-rouge">Text</code> section and no instructions are in the <code class="language-plaintext highlighter-rouge">Data</code> section. Below the data section is the <code class="language-plaintext highlighter-rouge">Stack</code>, which is initially empty; for an instruction to access the stack, e.g load a word from the stack, we will use the <a href="https://eecs370.github.io/project_2_spec/#43-stack-label">label <code class="language-plaintext highlighter-rouge">Stack</code></a> to denote the start of the stack section.</p>
+
+<h3 id="312-local-and-global-labels">3.1.2 Local and Global Labels<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#312-local-and-global-labels" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>LC2K files may now use global symbolic addresses, which means we must now distinguish between local and global labels. The scope of a local label is the file the label is defined in. (This is analagous to a variable or function with the <code class="language-plaintext highlighter-rouge">static</code> keyword in C. The scope of a local variable in C is at most a function.) The scope of a global label is all object files linked together (more on this in <a href="https://eecs370.github.io/project_2_spec/#4-linker-40-points">part 2l</a>). Because of this, different object files can use local labels with the same name and still be linked together. Local labels will start with a lowercase letter <code class="language-plaintext highlighter-rouge">[a, b , ... , z]</code> while global labels start with a capital letter <code class="language-plaintext highlighter-rouge">[A, B, ..., Z]</code>. This is unique to LC2K as a way to distinguish between local and global labels. For example, <code class="language-plaintext highlighter-rouge">staddr</code> is a local label whereas <code class="language-plaintext highlighter-rouge">Staddr</code> is a global label.</p>
+
+<p>Local symbolic addresses must be defined at assembly time. However, a global symbolic address can be undefined at assembly time. It is assumed that undefined global labels are defined in another file to be resolved at link time, so they should be temporarily resolved as address 0 in the text and data segments. Defined symbolic addresses should be resolved exactly as they were in Project 1. That is, it is entirely possible that a global label is defined and referenced in the same file; if this is the case, the label should be resolved just like a local label. The <code class="language-plaintext highlighter-rouge">Stack</code> label should be treated as an undefined global label for the purposes of the assembler.</p>
+
+<p>Just like P1A, you can assume assembly files max out at 65536 total instructions and data, although we’ll test you on much, much less than that. As suggested in the starter code, you may assume that no input LC2K file is more than 1000 lines.</p>
+
+<h3 id="313-lc2k-peculiarities-part-1">3.1.3 LC2K Peculiarities Part 1<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#313-lc2k-peculiarities-part-1" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Firstly, if a <code class="language-plaintext highlighter-rouge">beq</code> instruction contains a symbolic address, the label it refers to must be a locally defined label. This label can be either a local or global label. A <code class="language-plaintext highlighter-rouge">beq</code> should not branch to another file, and a programmer should use <code class="language-plaintext highlighter-rouge">jalr</code> in this case.</p>
+
+<p>Secondly, in LC2K, loading or storing to an absolute address no longer makes much sense. The locations of data and text within the final executable file will likely be different than in the original object file, leading to unintended execution. While this isn’t something we will enforce with error checking, it is recommended that labels are used when dealing with loads and stores. In reality, there are reasons to use absolute addressing: memory mapped IO for example (if you’re curious about this, take EECS 373 <strong>shameless plug</strong>) or cache analysis (see Project 4).  If you come across a label with a constant offset, assemble as in Project 1.</p>
+
+<p>Thirdly, local labels should not be included in the symbol table. However, a local symbolic address does need a relocation table entry as the address of the local label might change. These addresses can be fixed by calculating the new local label location during linking.</p>
+
+<h3 id="314-summary">3.1.4 Summary<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#314-summary" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>In summary, assembly file formatting rules are:</p>
+
+<ol>
+  <li>Do not mix instructions with directives (<code class="language-plaintext highlighter-rouge">.fill</code>s)</li>
+  <li>Instructions come first</li>
+  <li>Directives (<code class="language-plaintext highlighter-rouge">.fill</code>s) come second</li>
+  <li>Defined symbolic addresses (defined local and global labels) are resolved exactly as they were in the Project 1 assembler</li>
+  <li>Undefined global symbolic addresses are temporarily resolved as address 0</li>
+  <li>Local labels start with <code class="language-plaintext highlighter-rouge">a…z</code> and must be defined at assembly</li>
+  <li>Global labels start with <code class="language-plaintext highlighter-rouge">A…Z</code> and can be undefined at assembly</li>
+  <li>Branches cannot use undefined global symbolic addresses</li>
+</ol>
+
+<h2 id="32-object-file-format">3.2 Object File Format<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#32-object-file-format" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Object files will contain the following sections in the following order:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Header</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Text</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Data</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Symbol</code> table</li>
+  <li><code class="language-plaintext highlighter-rouge">Relocation</code> table</li>
+</ul>
+
+<p><em>** Refer to lecture, lab, and walkthrough for a detailed explanation of each section. **</em></p>
+
+<p><em>Table 1: Object file sections</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Section Name</th>
+      <th>Number of lines</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Header</code></td>
+      <td>Fixed: 1</td>
+      <td>The <code class="language-plaintext highlighter-rouge">Header</code> contains the size, in  lines, of the sections to follow. Sizes are listed in the following order, each separated by a space: <code class="language-plaintext highlighter-rouge">Text</code>, <code class="language-plaintext highlighter-rouge">Data</code>, <code class="language-plaintext highlighter-rouge">Symbol</code> table, <code class="language-plaintext highlighter-rouge">Relocation</code> table.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Text</code></td>
+      <td>Variable: <code class="language-plaintext highlighter-rouge">t</code> <br> <code class="language-plaintext highlighter-rouge">t</code> = # of instr.</td>
+      <td>Each line in the <code class="language-plaintext highlighter-rouge">Text</code> segment consists of a single machine code instruction, assembled in the same way as instructions in Project 1.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Data</code></td>
+      <td>Variable: <code class="language-plaintext highlighter-rouge">d</code> <br> <code class="language-plaintext highlighter-rouge">d</code> = # of .fills</td>
+      <td>The <code class="language-plaintext highlighter-rouge">Data</code> segment contains data stored by assembler directives, one word of data per line.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Symbol</code> table</td>
+      <td>Variable: <code class="language-plaintext highlighter-rouge">s</code> <br> <code class="language-plaintext highlighter-rouge">s</code> = # of locally-defined global labels + # of Unresolved global symbolic addresses</td>
+      <td>Each line in the <code class="language-plaintext highlighter-rouge">Symbol</code> table consists of a global label, one letter (T/D/U) corresponding to <code class="language-plaintext highlighter-rouge">Text</code>, <code class="language-plaintext highlighter-rouge">Data</code>, and <code class="language-plaintext highlighter-rouge">Undefined</code> respectively, and a line offset from the start of the T/D section (0 if the letter was ‘U’). Each value separated by a space, in that order. Each symbol should only appear once in the symbol table, even if it is used multiple Times. Entries can appear in any order.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Relocation</code></td>
+      <td>Variable: <code class="language-plaintext highlighter-rouge">r</code> <br> <code class="language-plaintext highlighter-rouge">r</code> = # of uses of symbolic addresses excluding <code class="language-plaintext highlighter-rouge">beq</code></td>
+      <td>Each line in the <code class="language-plaintext highlighter-rouge">Relocation</code> table consists of a line offset from the start of the T/D section (whichever section the symbol was used in), an opcode, and a label. Each separated by a space, in that order. Entries can appear in any order.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Consider the example:</p>
+<div id="count5-0-as-4" class="primer-spec-code-block"><div id="primer-spec-code-block-4" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="count5-0-as-4">count5_0.as<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#count5-0-as-4" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-4-LR1"><td id="primer-spec-code-block-4-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-4-LC1" class="primer-spec-code-block-line-code">        lw          0       1       five       ; $1 = 5</td></tr><tr id="primer-spec-code-block-4-LR2"><td id="primer-spec-code-block-4-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-4-LC2" class="primer-spec-code-block-line-code">        lw          0       4       SubAdr     ; Store address of SubAdr</td></tr><tr id="primer-spec-code-block-4-LR3"><td id="primer-spec-code-block-4-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-4-LC3" class="primer-spec-code-block-line-code">start   jalr        4       7                  ; Store return address and jump to SubAdr</td></tr><tr id="primer-spec-code-block-4-LR4"><td id="primer-spec-code-block-4-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-4-LC4" class="primer-spec-code-block-line-code">        beq         0       1       done       ; Finish if $1 == 0</td></tr><tr id="primer-spec-code-block-4-LR5"><td id="primer-spec-code-block-4-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-4-LC5" class="primer-spec-code-block-line-code">        beq         0       0       start      ; Otherwise continue (keep calling SubAdr).</td></tr><tr id="primer-spec-code-block-4-LR6"><td id="primer-spec-code-block-4-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-4-LC6" class="primer-spec-code-block-line-code">done    halt</td></tr><tr id="primer-spec-code-block-4-LR7"><td id="primer-spec-code-block-4-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-4-LC7" class="primer-spec-code-block-line-code">five    .fill       5</td></tr><tr id="primer-spec-code-block-4-LR8"><td id="primer-spec-code-block-4-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-4-LC8" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>The following symbol table is produced:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-5" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-5-LR1"><td id="primer-spec-code-block-5-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-5-LC1" class="primer-spec-code-block-line-code">SubAdr U O                                     ;</td></tr></tbody></table><!----></div></div></div>
+
+<p>SubAdr is added to the symbol table as it is a global label used as an argument</p>
+
+<p>The following relocation table is produced:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-6" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-6-LR1"><td id="primer-spec-code-block-6-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-6-LC1" class="primer-spec-code-block-line-code">0 lw five</td></tr><tr id="primer-spec-code-block-6-LR2"><td id="primer-spec-code-block-6-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-6-LC2" class="primer-spec-code-block-line-code">1 lw SubAdr</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">0 lw five</code> is added to the relocation table as the memory address of <code class="language-plaintext highlighter-rouge">five</code> will be changed during linking.
+<code class="language-plaintext highlighter-rouge">1 lw SubAdr</code> is added to the relocation table as the memory address of <code class="language-plaintext highlighter-rouge">SubAdr</code> will be determined during linking.</p>
+
+<p>Note: We don’t add <code class="language-plaintext highlighter-rouge">beq</code> instructions to the relocation table as those can only branch to text inside that same file and since <code class="language-plaintext highlighter-rouge">beq</code> is PC relative, no update is needed.</p>
+
+<h4 class="primer-spec-toc-ignore" id="important-formatting-notes">IMPORTANT FORMATTING NOTES:<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#important-formatting-notes" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+
+<ol>
+  <li>
+    <p>Assembly code in text should be assembled EXACTLY as it was for project 1. This means symbolic addresses are resolved the same, with the exception of undefined global symbolic addresses which are temporarily assembled as 0.</p>
+  </li>
+  <li>
+    <p>Offsets in the Symbol and Relocation Tables indicate the line offset of the label from the start of either the Text or the Data section (whichever section the label is defined in for the symbol table, and whichever section the instruction instruction or .fill appears in for the relocation table).</p>
+  </li>
+</ol>
+
+<p>For example, the symbol table entry <code class="language-plaintext highlighter-rouge">Foo D 0</code> indicates the label <code class="language-plaintext highlighter-rouge">Foo</code> is defined on the zeroth line in the Data section. The relocation table entry <code class="language-plaintext highlighter-rouge">4 lw Foo</code> indicates the symbolic address <code class="language-plaintext highlighter-rouge">Foo</code> is used on the fourth line (zero indexed) of the Text section by a <code class="language-plaintext highlighter-rouge">lw</code> instruction.</p>
+
+<h2 id="33-error-checking">3.3 Error Checking<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#33-error-checking" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Your assembler should catch the following errors in assembly files:</p>
+<ul>
+  <li>Use of undefined local symbolic addresses</li>
+  <li><code class="language-plaintext highlighter-rouge">beq</code> using an undefined symbolic address</li>
+  <li>Duplicate definition of labels</li>
+  <li><code class="language-plaintext highlighter-rouge">offsetFields</code> that don’t fit in 16 bits</li>
+  <li>Unrecognized opcodes</li>
+  <li>Illegal register operands (i.e. not an integer or not within <code class="language-plaintext highlighter-rouge">[0,7]</code>)</li>
+</ul>
+
+<p>Your assembler should <code class="language-plaintext highlighter-rouge">exit(1)</code> if it detects an error and <code class="language-plaintext highlighter-rouge">exit(0)</code> if it finishes without detecting any errors. Your assembler should NOT catch simulation time or link time errors, i.e. errors that would occur at the time the assembly-language program is linked or executed (e.g. branching to address -1, infinite loops, etc.).</p>
+
+<h2 id="34-assembly-example">3.4 Assembly example<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#34-assembly-example" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Please see <a href="https://eecs370.github.io/project_2_spec/#example-2a">section 9 example 2a</a>.</p>
+
+<h2 id="35-running-your-assembler">3.5 Running Your Assembler<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#35-running-your-assembler" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Write your program to take two command-line arguments. The first argument is the filename where the assembly-language program is stored, and the second argument is the filename where the output (the object file) will be written. For example, with a program name of <code class="language-plaintext highlighter-rouge">assembler</code>, an assembly-language program in <code class="language-plaintext highlighter-rouge">program.as</code>, the following would generate an object file <code class="language-plaintext highlighter-rouge">program.obj</code>:</p>
+
+<div data-variant="legacy" class="language-console highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code><span class="go">./assembler program.as program.obj
+</span></code></pre></div></div>
+
+<p>Note that the format for running the assembler must use command-line arguments for the file names (rather than standard input and standard output). Your program should store only object files in the format specified above. Any deviation from this format (e.g. extra spaces or empty lines) will render your object file ungradable. Any other output that you want the program to generate (e.g. debugging output) can be printed to standard output or standard error.</p>
+
+<h2 id="36-using-the-instructor-project-1a-solution">3.6 Using the Instructor Project 1a Solution<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#36-using-the-instructor-project-1a-solution" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>The instructor project 1a solution, released after the final student submission of 
+project 1a, is a compiled object file (<code class="language-plaintext highlighter-rouge">inst_p1a_obj.&lt;target&gt;.o</code>) of the
+C code solution from project 1a, with modifications. The instructor solution does
+not check for undefined labels of any type, and instead resolves them to 0. Otherwise,
+all machine code is correctly translated and all other project 1a error checks will 
+exit correctly. After downloading the starter code and renaming <code class="language-plaintext highlighter-rouge">starter_assembler.c</code> to
+<code class="language-plaintext highlighter-rouge">assembler.c</code>, you can compile <code class="language-plaintext highlighter-rouge">assembler.c</code> and link with <code class="language-plaintext highlighter-rouge">inst_p1a_obj.o</code> using 
+<code class="language-plaintext highlighter-rouge">gcc assembler.c inst_p1a_obj.o</code>, and run the executable on an LC2K assembly code file.</p>
+
+<p>If you choose to use the instructor object file, beware of the following particulars:
+First, this object file is only officially supported on CAEN systems since it was
+compiled on a CAEN system similar to the autograder servers. If you are not
+already in the habit of testing your projects on CAEN, it is recommended to follow
+<a href="https://eecs280staff.github.io/p1-stats/setup_caen">setup guide</a> from EECS 280.
+Also, this object file does not contain debug information so that instructors can protect
+the instructor project 1a solution. This means that debugging with a visual debugger or
+GDB will only show you what is happening in your <code class="language-plaintext highlighter-rouge">assembler.c</code>. It also does not
+print anything to stdout, so print debugging will not be as helpful as if you use your 
+project 1a code. Finally, if you choose to use the starter <code class="language-plaintext highlighter-rouge">Makefile</code>, make sure to change 
+the compilation dependecies in there to link with the instructor project 1a solution.</p>
+
+<h2 id="37-test-cases">3.7 Test Cases<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#37-test-cases" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>The test cases for the assembler part of this project will be short assembly-language programs that serve as input to an assembler. You will submit your suite of test cases together with your assembler, and we will grade your test suite according to how thoroughly it exercises an assembler. Each test case may be at most 50 lines long, and your test suite may contain up to 20 test cases. These limits are much larger than those needed for full credit. See <a href="https://eecs370.github.io/project_2_spec/#7-grading-auto-grading-and-formatting">section 7</a> for how your test suite will be graded.</p>
+
+<div class="primer-spec-callout info">
+  <p><strong>Hint</strong>: The example assembly-language program (Example 2a) in <a href="https://eecs370.github.io/project_2_spec/#9-sample-test-cases">section 9</a> is a good case to include in your test suite, though you’ll need to write more test cases to fully test your code and receive credit on the autograder.  Remember to create some test cases that test the ability of an assembler to check for the errors in <a href="https://eecs370.github.io/project_2_spec/#33-error-checking">section 3.3</a>.</p>
+</div>
+
+<h1 id="4-linker-60-points">4. Linker (60 points)<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#4-linker-60-points" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>Now that you’ve written an assembler to create object files, you need a way to link these files together. In this part of the project, you will write a linker to combine multiple object files into a single executable.
+This final executable can be run with the simulator from project 1.</p>
+
+<h2 id="41-lc2k-linker-description">4.1 LC2K linker description<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#41-lc2k-linker-description" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Your linker should be able to take an arbitrary number (between 1 and 6) of object files as input. It will concatenate all text and data segments within each object file, creating one unified executable. Segments should be combined in the order they appear as arguments. The combined text section should be placed before the combined data section. Then, for each object file, the linker iterates through their relocation table. For each relocation entry, the linker determines the location of the label in the combined file and fixes the reference. The final executable will be a machine code file.</p>
+
+<h2 id="42-what-about-main">4.2 What about <code class="language-plaintext highlighter-rouge">main()</code>?<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#42-what-about-main" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>You might be asking yourself, what will be executed first? Shouldn’t there be a <code class="language-plaintext highlighter-rouge">main()</code> function or label?</p>
+
+<p>To simplify the process of linking and simulating, LC2K code is executed starting at the first line in a machine code file (memory address 0). In order to specify what object file should execute first, ordering of the linker’s arguments is needed. <strong>This means that our <code class="language-plaintext highlighter-rouge">main</code> will be the first file provided to the linker.</strong></p>
+
+<div data-variant="legacy" class="language-console highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code><span class="go">./linker file_0.obj file_1.obj ... file_N.obj machine_code.mc
+</span></code></pre></div></div>
+<p>The single executable from the above command will be laid out according to the diagram below. This is assuming we are linking N files together, where file_0 is the first file passed into our linker and file_N is the last file passed into our linker.</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-7" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-7-LR1"><td id="primer-spec-code-block-7-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-7-LC1" class="primer-spec-code-block-line-code">_______ machine_code.mc __________</td></tr><tr id="primer-spec-code-block-7-LR2"><td id="primer-spec-code-block-7-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-7-LC2" class="primer-spec-code-block-line-code">        &lt;file_0.obj&gt; TEXT</td></tr><tr id="primer-spec-code-block-7-LR3"><td id="primer-spec-code-block-7-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-7-LC3" class="primer-spec-code-block-line-code">        &lt;file_1.obj&gt; TEXT</td></tr><tr id="primer-spec-code-block-7-LR4"><td id="primer-spec-code-block-7-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-7-LC4" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR5"><td id="primer-spec-code-block-7-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-7-LC5" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR6"><td id="primer-spec-code-block-7-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-7-LC6" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR7"><td id="primer-spec-code-block-7-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-7-LC7" class="primer-spec-code-block-line-code">        &lt;file_N.obj&gt; TEXT</td></tr><tr id="primer-spec-code-block-7-LR8"><td id="primer-spec-code-block-7-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-7-LC8" class="primer-spec-code-block-line-code">        &lt;file_0.obj&gt; DATA</td></tr><tr id="primer-spec-code-block-7-LR9"><td id="primer-spec-code-block-7-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-7-LC9" class="primer-spec-code-block-line-code">        &lt;file_1.obj&gt; DATA</td></tr><tr id="primer-spec-code-block-7-LR10"><td id="primer-spec-code-block-7-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-7-LC10" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR11"><td id="primer-spec-code-block-7-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-7-LC11" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR12"><td id="primer-spec-code-block-7-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-7-LC12" class="primer-spec-code-block-line-code">        .</td></tr><tr id="primer-spec-code-block-7-LR13"><td id="primer-spec-code-block-7-L13" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="13"></td><td id="primer-spec-code-block-7-LC13" class="primer-spec-code-block-line-code">        &lt;file_N.obj&gt; DATA</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>For more information on the linker’s command line arguments, please see <a href="https://eecs370.github.io/project_2_spec/#47-linker-example">section 4.7</a>. For more information on how linkers actually handle this, see <a href="https://eecs370.github.io/project_2_spec/#44-lc2k-peculiarities-part-2">section 4.4</a>.</p>
+
+<h2 id="43-stack-label">4.3 Stack Label<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#43-stack-label" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>As discussed in lecture, programs build up stack frames as they execute. The stack is important for storing data that can’t fit within a machine’s registers, such as a function’s local data. As seen in the below example, this is done in LC2K by using a global label <code class="language-plaintext highlighter-rouge">Stack</code>.</p>
+
+<p>Here is a small LC2K program that uses a subroutine call. It takes
+an argument in register 1 and calls a subroutine to compute the quantity <code class="language-plaintext highlighter-rouge">4*input</code>. Register 1 is used to pass input to the subroutine; register 3 is used by the subroutine to pass the result back. The current top-of-stack (first empty location) is given by <code class="language-plaintext highlighter-rouge">Stack</code> + the contents of register 5.</p>
+
+<div id="count5-0-as-line-highlighted-jumps-to-the-code-in-file-sub4n-as-8" class="primer-spec-code-block"><div id="primer-spec-code-block-8" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="count5-0-as-line-highlighted-jumps-to-the-code-in-file-sub4n-as-8">count5_0.as - Line highlighted jumps to the code in file sub4n.as<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#count5-0-as-line-highlighted-jumps-to-the-code-in-file-sub4n-as-8" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-8-LR1"><td id="primer-spec-code-block-8-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-8-LC1" class="primer-spec-code-block-line-code">        lw         0        1      input        $1 = memory[input]</td></tr><tr id="primer-spec-code-block-8-LR2"><td id="primer-spec-code-block-8-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-8-LC2" class="primer-spec-code-block-line-code">        lw         0        4      SubAdr       prepare to call sub4n. $4 = addr(sub4n)</td></tr><tr id="primer-spec-code-block-8-LR3"><td id="primer-spec-code-block-8-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-8-LC3" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">        jalr       4        7                   call sub4n; $7 = return address; $3 = answer</td></tr><tr id="primer-spec-code-block-8-LR4"><td id="primer-spec-code-block-8-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-8-LC4" class="primer-spec-code-block-line-code">        halt</td></tr><tr id="primer-spec-code-block-8-LR5"><td id="primer-spec-code-block-8-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-8-LC5" class="primer-spec-code-block-line-code">input   .fill      10</td></tr><tr id="primer-spec-code-block-8-LR6"><td id="primer-spec-code-block-8-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-8-LC6" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<div id="sub4n-as-lines-highlighted-are-addressing-the-stack-9" class="primer-spec-code-block"><div id="primer-spec-code-block-9" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="sub4n-as-lines-highlighted-are-addressing-the-stack-9">sub4n.as - Lines highlighted are addressing the stack<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#sub4n-as-lines-highlighted-are-addressing-the-stack-9" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-9-LR1"><td id="primer-spec-code-block-9-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-9-LC1" class="primer-spec-code-block-line-code">sub4n   lw          0       6       pos1        r6 = 1</td></tr><tr id="primer-spec-code-block-9-LR2"><td id="primer-spec-code-block-9-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-9-LC2" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">        sw          5       7       Stack       save return address on stack</td></tr><tr id="primer-spec-code-block-9-LR3"><td id="primer-spec-code-block-9-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-9-LC3" class="primer-spec-code-block-line-code">        add         5       6       5           increment stack pointer</td></tr><tr id="primer-spec-code-block-9-LR4"><td id="primer-spec-code-block-9-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-9-LC4" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">        sw          5       1       Stack       save input on stack</td></tr><tr id="primer-spec-code-block-9-LR5"><td id="primer-spec-code-block-9-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-9-LC5" class="primer-spec-code-block-line-code">        add         5       6       5           increment stack pointer</td></tr><tr id="primer-spec-code-block-9-LR6"><td id="primer-spec-code-block-9-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-9-LC6" class="primer-spec-code-block-line-code">        add         1       1       1           compute 2*input</td></tr><tr id="primer-spec-code-block-9-LR7"><td id="primer-spec-code-block-9-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-9-LC7" class="primer-spec-code-block-line-code">        add         1       1       3           compute 4*input into return value</td></tr><tr id="primer-spec-code-block-9-LR8"><td id="primer-spec-code-block-9-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-9-LC8" class="primer-spec-code-block-line-code">        lw          0       6       neg1        r6 = -1</td></tr><tr id="primer-spec-code-block-9-LR9"><td id="primer-spec-code-block-9-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-9-LC9" class="primer-spec-code-block-line-code">        add         5       6       5           decrement stack pointer</td></tr><tr id="primer-spec-code-block-9-LR10"><td id="primer-spec-code-block-9-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-9-LC10" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">        lw          5       1       Stack       recover original input</td></tr><tr id="primer-spec-code-block-9-LR11"><td id="primer-spec-code-block-9-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-9-LC11" class="primer-spec-code-block-line-code">        add         5       6       5           decrement stack pointer</td></tr><tr id="primer-spec-code-block-9-LR12"><td id="primer-spec-code-block-9-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-9-LC12" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">        lw          5       7       Stack       recover original return address</td></tr><tr id="primer-spec-code-block-9-LR13"><td id="primer-spec-code-block-9-L13" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="13"></td><td id="primer-spec-code-block-9-LC13" class="primer-spec-code-block-line-code">        jalr        7       4                   return.  r4 is not restored.</td></tr><tr id="primer-spec-code-block-9-LR14"><td id="primer-spec-code-block-9-L14" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="14"></td><td id="primer-spec-code-block-9-LC14" class="primer-spec-code-block-line-code">pos1    .fill       1</td></tr><tr id="primer-spec-code-block-9-LR15"><td id="primer-spec-code-block-9-L15" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="15"></td><td id="primer-spec-code-block-9-LC15" class="primer-spec-code-block-line-code">neg1    .fill       -1</td></tr><tr id="primer-spec-code-block-9-LR16"><td id="primer-spec-code-block-9-L16" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="16"></td><td id="primer-spec-code-block-9-LC16" class="primer-spec-code-block-line-code">SubAdr  .fill       sub4n                         contains the address of sub4n</td></tr><tr id="primer-spec-code-block-9-LR17"><td id="primer-spec-code-block-9-L17" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="17"></td><td id="primer-spec-code-block-9-LC17" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>In LC2K, the <code class="language-plaintext highlighter-rouge">Stack</code> label is a special label inserted by the linker that should not be defined by any object file, but it can be used as a symbolic address. The stack array starts at the implicit label <code class="language-plaintext highlighter-rouge">Stack</code> and extends to larger addresses, which is why the linker automatically resolves the <code class="language-plaintext highlighter-rouge">Stack</code> label beyond the text and data segments in the final executable. For example, if there are M instructions and N pieces of data in the final executable, the linker should resolve the symbolic address, <code class="language-plaintext highlighter-rouge">Stack</code>, as (M + N). This allows the stack to grow to higher addresses without affecting the instructions or data.</p>
+
+<h2 id="44-lc2k-peculiarities-part-2">4.4 LC2K Peculiarities Part 2<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#44-lc2k-peculiarities-part-2" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Programming languages often specify where to begin executing. In reality, a linker typically inserts an object file into the linking process. This inserted code appears first and jumps to a specified function (<code class="language-plaintext highlighter-rouge">main</code>) to begin executing the program, among doing other things. The LC2K method of ordering files during the linking process to indicate what to execute first is a simplification.</p>
+
+<p>LC2K also lacks an instruction that jumps to labels while saving the return address. Instead, <code class="language-plaintext highlighter-rouge">jalr</code> jumps to registers that hold function addresses (so the register is a function pointer). This means that a function can have a local label, yet still be accessible from other files, so long as the function pointer is global. Linking should still succeed in this case.</p>
+
+<p>Additionally, LC2K’s use of the <code class="language-plaintext highlighter-rouge">Stack</code> label doesn’t reflect how all assembly languages use the stack. ARMv7, for example, has special instructions such as <code class="language-plaintext highlighter-rouge">push</code> and <code class="language-plaintext highlighter-rouge">pop</code> that directly interface with the stack, providing a layer of abstraction to assembly programmers. The stack is typically allocated by an operating system that passes the stack pointer to an executing program.</p>
+
+<h2 id="45-error-checking">4.5 Error Checking<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#45-error-checking" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Your linker should catch the following errors:</p>
+
+<ul>
+  <li>Duplicate defined global labels</li>
+  <li>Undefined global labels</li>
+  <li><code class="language-plaintext highlighter-rouge">Stack</code> label defined by an object file</li>
+</ul>
+
+<p>Your linker can assume that any object file used as input is properly formatted.</p>
+
+<h2 id="46-tip---local-labels">4.6 Tip - Local Labels<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#46-tip---local-labels" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Fixing local symbolic addresses during linking can be tricky, since we don’t have symbol table entries associated with them. It might help to store certain data for each file read in: text size, data size, text starting location (in final mc), and data starting location (in final mc). By also storing which file each relocation table entry is in, you should have all the data needed to adjust each local symbolic address.</p>
+
+<p>Actually fixing a local symbolic address in the relocation involves several steps. First, identify which section of the file the label is in, either text or data. Second, parse the original symbolic address value from the instruction referenced by the relocation entry. Fix this value by adding an offset to the address, to account for the new location of the local label.</p>
+
+<h2 id="47-linker-example">4.7 Linker Example<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#47-linker-example" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>Please see <a href="https://eecs370.github.io/project_2_spec/#example-2l">section 9 example 2l</a>.</p>
+
+<h2 id="48-running-your-linker">4.8 Running Your Linker<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#48-running-your-linker" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Write your program to take N command-line arguments, where N &gt;= 2. The first argument is the object file to execute first, arguments 2 through N-1 are additional object files (these are not required), and the Nth argument is the filename where the machine code will be written. For example, with a program name of <code class="language-plaintext highlighter-rouge">linker</code> and an assembly-language program in <code class="language-plaintext highlighter-rouge">prog_1.obj</code> and <code class="language-plaintext highlighter-rouge">prog_2.obj</code>, the machine code file <code class="language-plaintext highlighter-rouge">prog.mc</code> will be generated with this command:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-10" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-10-LR1"><td id="primer-spec-code-block-10-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-10-LC1" class="primer-spec-code-block-line-code"><span class="go">./linker prog_1.obj prog_2.obj prog.mc</span></td></tr></tbody></table><!----></div></div></div>
+
+<p>Do note that you can expect your linker to be tested on linking more than two files together. If you want to test linking with more than two files, supply more than two object files as arguments.</p>
+
+<p data-variant="legacy">The number of object files your linker must be able to link together is between 1 and 6. If a program is self-contained within one object file, your linker should still be able to translate it into a machine code file. We will not test you on linking more than 6 object files.</p>
+
+<p>Note that the format for running the linker must use command-line arguments for file names (rather than standard input and standard output). Your program should store only machine code in the format specified above. Any deviation from this format (e.g. extra spaces or empty lines) will render your machine code file ungradable. Any other output that you want the program to generate (e.g. debugging output) can be printed to standard output or standard error.</p>
+
+<h2 id="49-test-cases">4.9 Test Cases<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#49-test-cases" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Test cases for the linker part of this project will be short, valid assembly-language programs that, after being assembled into object files, serve as input to a linker. You will submit a suite of test cases together with your linker, and we will grade your test suite according to how thoroughly it exercises an LC2K linker. Each test assembly file may be at most 50 lines long, and your test suite may contain up to 20 test cases. A test can contain no more than 6 assembly files to be linked together. These limits are much larger than needed for full credit. See <a href="https://eecs370.github.io/project_2_spec/#7-grading-auto-grading-and-formatting">Section 7</a> for how your test suite will be graded.</p>
+
+<p>A naming scheme is needed to specify what test assembly files should be linked together. A single “test” refers to a group of 1 or more assembly files to be linked together. The naming scheme is as follows.</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-11" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-11-LR1"><td id="primer-spec-code-block-11-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-11-LC1" class="primer-spec-code-block-line-code">&lt;test name&gt;_&lt;{0, …, N}&gt;.as</td></tr></tbody></table><!----></div></div></div>
+
+<p>All tests with the same <code class="language-plaintext highlighter-rouge">&lt;test name&gt;</code> will be assembled and linked together (do not include angled brackets or spaces in the test name). An underscore character, ‘_’, separates the test name and the assembly file’s number (do not include angled brackets or curly brackets in the number). Assembly files within the same test should be numbered starting at zero, with the zeroth assembly file being the first code to be executed.</p>
+
+<p>The following testcases:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-12" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-12-LR1"><td id="primer-spec-code-block-12-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-12-LC1" class="primer-spec-code-block-line-code">test_0.as test_1.as test_2.as anotherTest_0.as anotherTest_1.as</td></tr></tbody></table><!----></div></div></div>
+
+<p>Will be assembled and then linked by the autograder as follows:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-13" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-13-LR1"><td id="primer-spec-code-block-13-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-13-LC1" class="primer-spec-code-block-line-code"><span class="go">./linker test_0.obj test_1.obj test_2.obj test.mc</span></td></tr><tr id="primer-spec-code-block-13-LR2"><td id="primer-spec-code-block-13-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-13-LC2" class="primer-spec-code-block-line-code"><span class="go">./linker anotherTest_0.obj anotherTest_1.obj anotherTest.mc</span></td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy all commands"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<div class="primer-spec-callout danger">
+  <p>DO NOT use more than one underscore in your test case names. We will not grade your test case if you do. File names CANNOT have spaces in them, or any character besides letters, numbers, 1 underscore, and 1 period.</p>
+</div>
+
+<div class="primer-spec-callout info">
+  <p>Remember to create some test cases that test the ability of a linker to check for the errors in <a href="https://eecs370.github.io/project_2_spec/#45-error-checking">Section 4.5</a>.</p>
+</div>
+
+<h1 id="5-recursive-assembly-language-function-20-points">5. Recursive Assembly-Language Function (20 Points)<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#5-recursive-assembly-language-function-20-points" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>This is a group assignment. You can <strong>optionally</strong> work in groups of 2 people.</p>
+
+<h2 id="501-recursive-fibonacci-function">5.0.1 Recursive Fibonacci Function.<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#501-recursive-fibonacci-function" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Write an assembly-language function to recursively compute fibonacci(n), defined as:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-14" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-14-LR1"><td id="primer-spec-code-block-14-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-14-LC1" class="primer-spec-code-block-line-code">fibonacci(0) = 0</td></tr><tr id="primer-spec-code-block-14-LR2"><td id="primer-spec-code-block-14-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-14-LC2" class="primer-spec-code-block-line-code">fibonacci(1) = 1</td></tr><tr id="primer-spec-code-block-14-LR3"><td id="primer-spec-code-block-14-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-14-LC3" class="primer-spec-code-block-line-code">fibonacci(n) = fibonacci(n-1) + fibonacci(n-2);</td></tr><tr id="primer-spec-code-block-14-LR4"><td id="primer-spec-code-block-14-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-14-LC4" class="primer-spec-code-block-line-code">
+</td></tr><tr id="primer-spec-code-block-14-LR5"><td id="primer-spec-code-block-14-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-14-LC5" class="primer-spec-code-block-line-code">n &gt;= 2</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>Here’s a C function to do this; your assembly-language program may follow this logic closely.</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-15" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-15-LR1"><td id="primer-spec-code-block-15-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-15-LC1" class="primer-spec-code-block-line-code"><span class="kt">int</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span></td></tr><tr id="primer-spec-code-block-15-LR2"><td id="primer-spec-code-block-15-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-15-LC2" class="primer-spec-code-block-line-code"><span class="p">{</span></td></tr><tr id="primer-spec-code-block-15-LR3"><td id="primer-spec-code-block-15-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-15-LC3" class="primer-spec-code-block-line-code">    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">|</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span></td></tr><tr id="primer-spec-code-block-15-LR4"><td id="primer-spec-code-block-15-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-15-LC4" class="primer-spec-code-block-line-code">        <span class="k">return</span> <span class="n">n</span><span class="p">;</span></td></tr><tr id="primer-spec-code-block-15-LR5"><td id="primer-spec-code-block-15-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-15-LC5" class="primer-spec-code-block-line-code">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></td></tr><tr id="primer-spec-code-block-15-LR6"><td id="primer-spec-code-block-15-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-15-LC6" class="primer-spec-code-block-line-code">        <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span></td></tr><tr id="primer-spec-code-block-15-LR7"><td id="primer-spec-code-block-15-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-15-LC7" class="primer-spec-code-block-line-code">    <span class="p">}</span></td></tr><tr id="primer-spec-code-block-15-LR8"><td id="primer-spec-code-block-15-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-15-LC8" class="primer-spec-code-block-line-code"><span class="p">}</span></td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<p>Note that the definition of fibonacci(n) is recursive. Your assembly-language function must also use a recursive function call. That is, your function should call itself twice (to compute <code class="language-plaintext highlighter-rouge">fibonacci(n-1)</code> and <code class="language-plaintext highlighter-rouge">fibonacci(n-2)</code>) and add the results together. This isn’t the most efficient solution (e.g., <code class="language-plaintext highlighter-rouge">n &gt; 9</code> will take a LONG time), but using recursion will help you understand assembly-language procedure calls and stacks. Your program will be passed input <code class="language-plaintext highlighter-rouge">n</code> in register 1 . Your program should store the result in register 3, which acts as the function’s return value. Straightforward solutions are possible in about 40 lines. If your program is significantly longer than that, you are probably doing something wrong. Your solution must be no more than 80 lines. Your program must be reasonably efficient, i.e., it must execute at most 5000 instructions for <code class="language-plaintext highlighter-rouge">n=7</code> (this is several times slower than a good solution).</p>
+
+<p>Passing parameters to subroutines can be confusing in assembly language. It’s easiest if you make most registers callee-save so the caller can assume the subroutine leaves those registers unchanged. These callee-saved registers are typically pushed on the stack at the beginning of the subroutine and popped off the stack just before the subroutine returns.</p>
+
+<p>Not all registers can or should be callee-save, however. For example, one register will contain the subroutine’s return value. Also, the jalr instruction used to return from the subroutine will leave a register with a different value than it held when the subroutine was called.</p>
+
+<p>Here is a small LC-2K program that uses a subroutine call. It takes an argument in register 1 and calls a subroutine to compute the quantity <code class="language-plaintext highlighter-rouge">4*input</code>. Register 1 is used to pass input to the subroutine; register 3 is used by the subroutine to pass the result back. The current top-of-stack (first empty location) is given by <code class="language-plaintext highlighter-rouge">Stack</code> + register 5.</p>
+
+<p><code class="language-plaintext highlighter-rouge">main.as</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-16" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-16-LR1"><td id="primer-spec-code-block-16-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-16-LC1" class="primer-spec-code-block-line-code">        lw         0        1      input        r1 = memory[input]</td></tr><tr id="primer-spec-code-block-16-LR2"><td id="primer-spec-code-block-16-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-16-LC2" class="primer-spec-code-block-line-code">        lw         0        4      SubAdr       prepare to call sub4n. r4=addr(sub4n)</td></tr><tr id="primer-spec-code-block-16-LR3"><td id="primer-spec-code-block-16-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-16-LC3" class="primer-spec-code-block-line-code">        jalr       4        7                   call sub4n; r7=return address r3=answer  </td></tr><tr id="primer-spec-code-block-16-LR4"><td id="primer-spec-code-block-16-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-16-LC4" class="primer-spec-code-block-line-code">        halt</td></tr><tr id="primer-spec-code-block-16-LR5"><td id="primer-spec-code-block-16-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-16-LC5" class="primer-spec-code-block-line-code">input   .fill      10                        </td></tr><tr id="primer-spec-code-block-16-LR6"><td id="primer-spec-code-block-16-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-16-LC6" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<p><code class="language-plaintext highlighter-rouge">sub4n.as</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-17" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-17-LR1"><td id="primer-spec-code-block-17-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-17-LC1" class="primer-spec-code-block-line-code">sub4n   lw          0       6       pos1        r6 = 1</td></tr><tr id="primer-spec-code-block-17-LR2"><td id="primer-spec-code-block-17-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-17-LC2" class="primer-spec-code-block-line-code">        sw          5       7       Stack       save return address on stack</td></tr><tr id="primer-spec-code-block-17-LR3"><td id="primer-spec-code-block-17-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-17-LC3" class="primer-spec-code-block-line-code">        add         5       6       5           increment stack pointer</td></tr><tr id="primer-spec-code-block-17-LR4"><td id="primer-spec-code-block-17-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-17-LC4" class="primer-spec-code-block-line-code">        sw          5       1       Stack       save input on stack</td></tr><tr id="primer-spec-code-block-17-LR5"><td id="primer-spec-code-block-17-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-17-LC5" class="primer-spec-code-block-line-code">        add         5       6       5           increment stack pointer</td></tr><tr id="primer-spec-code-block-17-LR6"><td id="primer-spec-code-block-17-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-17-LC6" class="primer-spec-code-block-line-code">        add         1       1       1           compute 2*input</td></tr><tr id="primer-spec-code-block-17-LR7"><td id="primer-spec-code-block-17-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-17-LC7" class="primer-spec-code-block-line-code">        add         1       1       3           compute 4*input into return value</td></tr><tr id="primer-spec-code-block-17-LR8"><td id="primer-spec-code-block-17-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-17-LC8" class="primer-spec-code-block-line-code">        lw          0       6       neg1        r6 = -1</td></tr><tr id="primer-spec-code-block-17-LR9"><td id="primer-spec-code-block-17-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-17-LC9" class="primer-spec-code-block-line-code">        add         5       6       5           decrement stack pointer</td></tr><tr id="primer-spec-code-block-17-LR10"><td id="primer-spec-code-block-17-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-17-LC10" class="primer-spec-code-block-line-code">        lw          5       1       Stack       recover original input</td></tr><tr id="primer-spec-code-block-17-LR11"><td id="primer-spec-code-block-17-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-17-LC11" class="primer-spec-code-block-line-code">        add         5       6       5           decrement stack pointer</td></tr><tr id="primer-spec-code-block-17-LR12"><td id="primer-spec-code-block-17-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-17-LC12" class="primer-spec-code-block-line-code">        lw          5       7       Stack       recover original return address</td></tr><tr id="primer-spec-code-block-17-LR13"><td id="primer-spec-code-block-17-L13" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="13"></td><td id="primer-spec-code-block-17-LC13" class="primer-spec-code-block-line-code">        jalr        7       4                   return.  r4 is not restored.</td></tr><tr id="primer-spec-code-block-17-LR14"><td id="primer-spec-code-block-17-L14" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="14"></td><td id="primer-spec-code-block-17-LC14" class="primer-spec-code-block-line-code">pos1    .fill       1</td></tr><tr id="primer-spec-code-block-17-LR15"><td id="primer-spec-code-block-17-L15" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="15"></td><td id="primer-spec-code-block-17-LC15" class="primer-spec-code-block-line-code">neg1    .fill       -1</td></tr><tr id="primer-spec-code-block-17-LR16"><td id="primer-spec-code-block-17-L16" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="16"></td><td id="primer-spec-code-block-17-LC16" class="primer-spec-code-block-line-code">SubAdr  .fill       sub4n                         contains the address of sub4n</td></tr><tr id="primer-spec-code-block-17-LR17"><td id="primer-spec-code-block-17-L17" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="17"></td><td id="primer-spec-code-block-17-LC17" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>The stack array starts at the implicit label <code class="language-plaintext highlighter-rouge">Stack</code> and extends to larger addresses, which is why the linker inserts the <code class="language-plaintext highlighter-rouge">Stack</code> label as the last line in the final executable (see <a href="https://eecs370.github.io/project_2_spec/#43-stack-label">section 4.3</a> for more).</p>
+
+<p>The fibonacci function you submit must be an assembly file called <code class="language-plaintext highlighter-rouge">recursive.as</code>. Your function will be called by the following main function which will be included in your <code class="language-plaintext highlighter-rouge">recursive.as</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-18" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-18-LR1"><td id="primer-spec-code-block-18-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-18-LC1" class="primer-spec-code-block-line-code">        lw          0       1       n</td></tr><tr id="primer-spec-code-block-18-LR2"><td id="primer-spec-code-block-18-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-18-LC2" class="primer-spec-code-block-line-code">        lw          0       4       Faddr        load function address</td></tr><tr id="primer-spec-code-block-18-LR3"><td id="primer-spec-code-block-18-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-18-LC3" class="primer-spec-code-block-line-code">        jalr        4       7                    call function</td></tr><tr id="primer-spec-code-block-18-LR4"><td id="primer-spec-code-block-18-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-18-LC4" class="primer-spec-code-block-line-code">        halt</td></tr><tr id="primer-spec-code-block-18-LR5"><td id="primer-spec-code-block-18-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-18-LC5" class="primer-spec-code-block-line-code">        &lt;add your code here&gt;</td></tr><tr id="primer-spec-code-block-18-LR6"><td id="primer-spec-code-block-18-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-18-LC6" class="primer-spec-code-block-line-code">n       .fill       7</td></tr><tr id="primer-spec-code-block-18-LR7"><td id="primer-spec-code-block-18-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-18-LC7" class="primer-spec-code-block-line-code">        &lt;add your data here&gt;</td></tr><tr id="primer-spec-code-block-18-LR8"><td id="primer-spec-code-block-18-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-18-LC8" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>That means, we will assemble and link this file <strong><em>recursive.as</em></strong>.</p>
+
+<p>Your combination function must follow these guidelines:</p>
+<ol>
+  <li>Accept <code class="language-plaintext highlighter-rouge">n</code> as an argument passed in register 1</li>
+  <li>Store the starting line of your combination function by including the following line in data:
+    <div class="primer-spec-code-block"><div id="primer-spec-code-block-19" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-19-LR1"><td id="primer-spec-code-block-19-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-19-LC1" class="primer-spec-code-block-line-code">Faddr .fill &lt;label_at_start_of_function&gt;</td></tr></tbody></table><!----></div></div></div>
+    <p><code class="language-plaintext highlighter-rouge">&lt;start_of_function&gt;</code> is a label at the start of your function</p>
+  </li>
+  <li>Use recursion by building a stack frame for each function called</li>
+  <li>Return the result in register 3</li>
+  <li>Use register 7 as the return address</li>
+  <li>DO NOT use a global register</li>
+  <li>DO NOT use a global register (Seriously, we’ll detect it.)</li>
+</ol>
+
+<p>A global register is one that all recursive calls to a function use. We should be utilizing the stack to keep track of our computed values.</p>
+
+<p>Make sure your assembly-language function works when assembled and linked into machine code. Use the Project 2 assembler and linker and the Project 1 simulator, since that’s how we’ll test it. Programs that don’t work with the solution assembler / linker / simulator will <strong>receive a 0</strong>.</p>
+
+<h2 id="502-jalr">5.0.2 JALR<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#502-jalr" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Jalr, which means “Jump and Link Register” allows for us to create programs with function calls. Consider the following program written in C:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-20" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-20-LR1"><td id="primer-spec-code-block-20-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-20-LC1" class="primer-spec-code-block-line-code">int add(int x, int y){</td></tr><tr id="primer-spec-code-block-20-LR2"><td id="primer-spec-code-block-20-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-20-LC2" class="primer-spec-code-block-line-code">        return x + y;</td></tr><tr id="primer-spec-code-block-20-LR3"><td id="primer-spec-code-block-20-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-20-LC3" class="primer-spec-code-block-line-code">}</td></tr><tr id="primer-spec-code-block-20-LR4"><td id="primer-spec-code-block-20-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-20-LC4" class="primer-spec-code-block-line-code">
+</td></tr><tr id="primer-spec-code-block-20-LR5"><td id="primer-spec-code-block-20-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-20-LC5" class="primer-spec-code-block-line-code">int main(){</td></tr><tr id="primer-spec-code-block-20-LR6"><td id="primer-spec-code-block-20-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-20-LC6" class="primer-spec-code-block-line-code">        int value = add(5,2);</td></tr><tr id="primer-spec-code-block-20-LR7"><td id="primer-spec-code-block-20-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-20-LC7" class="primer-spec-code-block-line-code">        printf("The value is %d", value);</td></tr><tr id="primer-spec-code-block-20-LR8"><td id="primer-spec-code-block-20-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-20-LC8" class="primer-spec-code-block-line-code">        return 0;</td></tr><tr id="primer-spec-code-block-20-LR9"><td id="primer-spec-code-block-20-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-20-LC9" class="primer-spec-code-block-line-code">}</td></tr><tr id="primer-spec-code-block-20-LR10"><td id="primer-spec-code-block-20-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-20-LC10" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>If we were to assemble this down into LC-2K, when we are within ‘main’ and call the function ‘add’, we need to change our PC so that the next instruction we execute is within the ‘add’ function. Once we execute ‘return regA + regB’, we need to know what PC we are returning to; luckily, Jalr handles this for us.</p>
+
+<p>Jalr regA regB means:</p>
+<ol>
+  <li>Set the value of regB to our current PC + 1</li>
+  <li>set our current PC to the value of register A.</li>
+</ol>
+
+<p>In the example above, when we call the function add, we would first store our PC + 1 into regB (our “return address”) and set our current PC equal to the address where add is defined. Remember, we can load in the address of a label to regA to denote the start of a function. Once we are finished executing ‘add’ we will call Jalr again, but this time, we will ‘jump’ to the PC + 1 we stored in regB in the previous Jalr call; since we saved our return address, we can safely return to where we left off.</p>
+
+<h2 id="51-tips">5.1 Tips<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#51-tips" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>One difficult aspect of this program will be allocating variables in the 8 LC-2K registers. To make your job easier, here are the register assignments we used–some are enforced, others are not:</p>
+<div data-variant="legacy" class="language-plaintext highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code>r0  value 0
+r1  n input to function - ENFORCED
+r2  local variable for function
+r3  return value of function - ENFORCED
+r4  local variable for function
+r5  stack pointer
+r6  temporary value (can hold different values at different times, e.g., +1, -1, function address)
+r7  return address - ENFORCED
+</code></pre></div></div>
+<p>If you are struggling to write code for this project, draw out a tree diagram which shows all of the recursive calls your program will make.</p>
+<div id="lines-highlighted-contain-base-cases-either-where-n-0-or-n-1-21" class="primer-spec-code-block"><div id="primer-spec-code-block-21" class="Box mt-3 text-mono"><div class="Box-header py-2 pr-2 d-flex flex-shrink-0 flex-md-row flex-items-center primer-spec-code-block-header"><span class="flex-auto primer-spec-code-block-title" data-anchor-id="lines-highlighted-contain-base-cases-either-where-n-0-or-n-1-21">Lines highlighted contain base cases (either where n == 0 or n == 1)<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#lines-highlighted-contain-base-cases-either-where-n-0-or-n-1-21" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></span></div><div class="Box-body p-0 primer-spec-code-block-body primer-spec-code-block-header-present"><table class="highlight"><tbody><tr id="primer-spec-code-block-21-LR1"><td id="primer-spec-code-block-21-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-21-LC1" class="primer-spec-code-block-line-code">                                 F(3) </td></tr><tr id="primer-spec-code-block-21-LR2"><td id="primer-spec-code-block-21-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-21-LC2" class="primer-spec-code-block-line-code">                                /    \</td></tr><tr id="primer-spec-code-block-21-LR3"><td id="primer-spec-code-block-21-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-21-LC3" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">                              F(2)  F(1)</td></tr><tr id="primer-spec-code-block-21-LR4"><td id="primer-spec-code-block-21-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-21-LC4" class="primer-spec-code-block-line-code">                             /    \</td></tr><tr id="primer-spec-code-block-21-LR5"><td id="primer-spec-code-block-21-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-21-LC5" class="primer-spec-code-block-line-code primer-spec-code-block-highlighted">                           F(1)  F(0)</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<p>Consider what happens at each of the recursive calls: what values does each recursive call need to make progress?</p>
+
+<p>Debugging can be a bit tricky, but it is doable. First, let’s discuss the steps you’ll need to take to debug the project.</p>
+<div data-variant="legacy" class="language-plaintext highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code>1: Assemble the recursive.as file. 
+2: Link the object file into a machine code file.
+3: Simulate the program.
+</code></pre></div></div>
+<p>Note: you may need to edit your simulator to account for the ever growing stack (this will allow us to see variables on the stack). To do this, you can either add a constant to your memory size to have it print out more or can alter the logic in your simulator program.</p>
+
+<p>A simple way to do this is to add this code to your SW logic in P1S:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-22" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-22-LR1"><td id="primer-spec-code-block-22-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-22-LC1" class="primer-spec-code-block-line-code"><span class="c1">//if we are trying to store something on the stack</span></td></tr><tr id="primer-spec-code-block-22-LR2"><td id="primer-spec-code-block-22-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-22-LC2" class="primer-spec-code-block-line-code"><span class="k">if</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">numMemory</span> <span class="o">&lt;=</span> <span class="n">calculatedAddress</span><span class="p">)</span> <span class="p">{</span></td></tr><tr id="primer-spec-code-block-22-LR3"><td id="primer-spec-code-block-22-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-22-LC3" class="primer-spec-code-block-line-code">    <span class="c1">//expand our 'memorysize' so that printstate shows the stack</span></td></tr><tr id="primer-spec-code-block-22-LR4"><td id="primer-spec-code-block-22-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-22-LC4" class="primer-spec-code-block-line-code">	<span class="n">state</span><span class="p">.</span><span class="n">numMemory</span> <span class="o">=</span> <span class="n">calculatedAddress</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></td></tr><tr id="primer-spec-code-block-22-LR5"><td id="primer-spec-code-block-22-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-22-LC5" class="primer-spec-code-block-line-code"><span class="p">}</span></td></tr><tr id="primer-spec-code-block-22-LR6"><td id="primer-spec-code-block-22-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-22-LC6" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<p>This code will increase the amount of information that is output in <code class="language-plaintext highlighter-rouge">printstate</code>, which will now show variables on the stack. You will need to change the name for calculatedAddress to match your code.</p>
+
+<p>Remember, the stack begins below our data section, so <strong>pay special attention to the values on the stack when debugging</strong>.</p>
+
+<h1 id="6-compiling-the-project">6. Compiling the Project<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#6-compiling-the-project" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>Your code will be compiled with the GCC compiler using the C99 standard. The following bash command compiles <code class="language-plaintext highlighter-rouge">program.c</code> and writes the executable into program. You are allowed to use any standard C libraries which compile with the specified flags below.</p>
+
+<div data-variant="legacy" class="language-console highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code><span class="gp">gcc -std=c99 &lt;programName&gt;</span>.c <span class="nt">-o</span> &lt;programExecutableName&gt;
+</code></pre></div></div>
+
+<h1 id="7-grading-auto-grading-and-formatting">7. Grading, Auto-Grading, and Formatting<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#7-grading-auto-grading-and-formatting" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>We will grade primarily on functionality, including error handling, correct assembly, and comprehensiveness of the test suites.</p>
+
+<p>To help you validate your project, your submission will be graded automatically, and the result will be available on the autograder. You may then continue to work on the project and re-submit. To deter you from using the autograder as a debugger, you will receive feedback from the autograder only for the first <strong>THREE SUBMISSIONS</strong> for each project part on any given day. All subsequent submissions will be silently graded (this means the submission will be graded, but you will not have access to the grade nor the results of your submission). Your final score will be derived from your overall <em>best submission</em> to the autograder, including silent submissions.</p>
+
+<p>The feedback from the autograder will not be very illuminating; it won’t tell you where your problem is or give you the test programs. The purpose of the autograder is to let you know that you should keep working on your project (rather than thinking it’s perfect and ending up with a 0). The best way to debug your program is to generate your own test cases, figure out the correct answers, and compare your program’s output to the correct answer. This is also one of the best ways to learn the concepts in the project.</p>
+
+<p>The student suites of test cases will be graded according to how thoroughly they test both the assembler (for <a href="https://eecs370.github.io/project_2_spec/#3-assembler-40-points">part 2a</a>) and linker (for <a href="https://eecs370.github.io/project_2_spec/#4-linker-60-points">part 2l</a>). We will judge thoroughness of the test suites by how well they expose potential bugs. That is, the test suites are graded based on how many of the buggy assemblers / linkers were exposed by at least one test case. This is known as “mutation testing” in the research literature on automated testing.</p>
+
+<p>For the assembler test suite, the auto-grader will use each test case as input to a set of buggy assemblers. A test case exposes a buggy assembler by causing it to generate a different answer from a correct assembler.
+Your test suite is run on <strong>12</strong> buggy assemblers. To receive all Mutation Testing
+points  <strong>A total of 4 points</strong>, your test suite must expose at least <strong>10/12</strong> of the buggy assemblers.</p>
+
+<p>For the linker test suite, the auto-grader will first assemble the test files and use them as input to a set of buggy linkers. A test case exposes a buggy linker by causing it to generate a different answer from a correct linker. Test cases must use the naming scheme specified in <a href="https://eecs370.github.io/project_2_spec/#49-test-cases">section 4.9</a>.
+Your test suite is run on <strong>10</strong> buggy linkers. To receive all Mutation Testing
+points  <strong>A total of 7 points</strong>, your test suite must expose at least <strong>7/10</strong> of the buggy linkers.</p>
+
+<h1 id="8-turning-in-the-project">8. Turning in the Project<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#8-turning-in-the-project" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<p>Use <a href="https://autograder.io/">autograder.io</a> to submit your files.  You have been added as a student to the class, so you should see EECS 370 listed as a class.</p>
+
+<p>Here are the files you should submit for each project part:</p>
+<div data-variant="legacy" class="language-plaintext highlighter-rouge primer-spec-code-block-processed"><div class="highlight"><pre class="highlight"><code>1. assembler (part 2a)
+    a. C program for your assembler called "assembler.c"
+    b. Suite of test cases. (Each test case is an assembly-language program
+        in a separate file, ending in `.as`, `.s`, or `.lc2k`. Test case names should **only** 
+        include letters, numbers, underscores, and periods.)
+
+2. linker (part 2l)
+    a. C program for your linker called "linker.c"
+    b. Suite of test cases (each test case is a set of assembly-language programs
+        using the naming scheme specified in [section 4.9]).
+</code></pre></div></div>
+
+<h1 id="9-sample-test-cases">9. Sample Test Cases<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#9-sample-test-cases" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h1>
+
+<h3 id="example-2a">Example 2a<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#example-2a" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<p>Here is a multi-file assembly-language program that counts down from 5, stopping when it hits 0, and then halts:</p>
+
+<p><code class="language-plaintext highlighter-rouge">count5_0.as</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-23" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-23-LR1"><td id="primer-spec-code-block-23-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-23-LC1" class="primer-spec-code-block-line-code">        lw          0       1       five       ; $1 = 5</td></tr><tr id="primer-spec-code-block-23-LR2"><td id="primer-spec-code-block-23-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-23-LC2" class="primer-spec-code-block-line-code">        lw          0       4       SubAdr     ; Store address of SubAdr</td></tr><tr id="primer-spec-code-block-23-LR3"><td id="primer-spec-code-block-23-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-23-LC3" class="primer-spec-code-block-line-code">start   jalr        4       7                  ; Store return address and jump to SubAdr</td></tr><tr id="primer-spec-code-block-23-LR4"><td id="primer-spec-code-block-23-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-23-LC4" class="primer-spec-code-block-line-code">        beq         0       1       done       ; Finish if $1 == 0</td></tr><tr id="primer-spec-code-block-23-LR5"><td id="primer-spec-code-block-23-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-23-LC5" class="primer-spec-code-block-line-code">        beq         0       0       start      ; Otherwise continue (keep calling SubAdr).</td></tr><tr id="primer-spec-code-block-23-LR6"><td id="primer-spec-code-block-23-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-23-LC6" class="primer-spec-code-block-line-code">done    halt</td></tr><tr id="primer-spec-code-block-23-LR7"><td id="primer-spec-code-block-23-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-23-LC7" class="primer-spec-code-block-line-code">five    .fill       5</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">count5_1.as</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-24" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-24-LR1"><td id="primer-spec-code-block-24-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-24-LC1" class="primer-spec-code-block-line-code">subOne  lw          0       2       neg1       ; $2 = -1</td></tr><tr id="primer-spec-code-block-24-LR2"><td id="primer-spec-code-block-24-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-24-LC2" class="primer-spec-code-block-line-code">        add         1       2       1          ; $1 = $1 - 1</td></tr><tr id="primer-spec-code-block-24-LR3"><td id="primer-spec-code-block-24-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-24-LC3" class="primer-spec-code-block-line-code">        jalr        7       6                  ; Jump back to where we were called from (count5_0.as)</td></tr><tr id="primer-spec-code-block-24-LR4"><td id="primer-spec-code-block-24-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-24-LC4" class="primer-spec-code-block-line-code">neg1    .fill       -1</td></tr><tr id="primer-spec-code-block-24-LR5"><td id="primer-spec-code-block-24-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-24-LC5" class="primer-spec-code-block-line-code">SubAdr  .fill       subOne                     ; Define where our function definition starts</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>And here are the corresponding object files after running the following lines of code:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-25" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-25-LR1"><td id="primer-spec-code-block-25-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-25-LC1" class="primer-spec-code-block-line-code"><span class="go">./assembler count5_0.as count5_0.obj</span></td></tr><tr id="primer-spec-code-block-25-LR2"><td id="primer-spec-code-block-25-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-25-LC2" class="primer-spec-code-block-line-code"><span class="go">./assembler count5_1.as count5_1.obj</span></td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy all commands"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<div class="primer-spec-callout warning">
+  <p><strong>WARNING</strong>: Text within parentheses SHOULD NOT be included in your assembler’s or linker’s output. There also should not be any trailing spaces or tabs. This text is added here only to help students identify the different sections of the object files in these examples.</p>
+</div>
+
+<p><code class="language-plaintext highlighter-rouge">count5_0.obj</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-26" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-26-LR1"><td id="primer-spec-code-block-26-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-26-LC1" class="primer-spec-code-block-line-code">6 1 1 2                 (Header)</td></tr><tr id="primer-spec-code-block-26-LR2"><td id="primer-spec-code-block-26-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-26-LC2" class="primer-spec-code-block-line-code">0x00810006              (Text)</td></tr><tr id="primer-spec-code-block-26-LR3"><td id="primer-spec-code-block-26-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-26-LC3" class="primer-spec-code-block-line-code">0x00840000</td></tr><tr id="primer-spec-code-block-26-LR4"><td id="primer-spec-code-block-26-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-26-LC4" class="primer-spec-code-block-line-code">0x01670000</td></tr><tr id="primer-spec-code-block-26-LR5"><td id="primer-spec-code-block-26-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-26-LC5" class="primer-spec-code-block-line-code">0x01010001</td></tr><tr id="primer-spec-code-block-26-LR6"><td id="primer-spec-code-block-26-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-26-LC6" class="primer-spec-code-block-line-code">0x0100FFFD</td></tr><tr id="primer-spec-code-block-26-LR7"><td id="primer-spec-code-block-26-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-26-LC7" class="primer-spec-code-block-line-code">0x01800000</td></tr><tr id="primer-spec-code-block-26-LR8"><td id="primer-spec-code-block-26-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-26-LC8" class="primer-spec-code-block-line-code">0x00000005              (Data)</td></tr><tr id="primer-spec-code-block-26-LR9"><td id="primer-spec-code-block-26-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-26-LC9" class="primer-spec-code-block-line-code">SubAdr U 0              (Symbol Table)</td></tr><tr id="primer-spec-code-block-26-LR10"><td id="primer-spec-code-block-26-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-26-LC10" class="primer-spec-code-block-line-code">0 lw five               (Relocation Table)</td></tr><tr id="primer-spec-code-block-26-LR11"><td id="primer-spec-code-block-26-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-26-LC11" class="primer-spec-code-block-line-code">1 lw SubAdr</td></tr><tr id="primer-spec-code-block-26-LR12"><td id="primer-spec-code-block-26-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-26-LC12" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+<p><code class="language-plaintext highlighter-rouge">count5_1.obj</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-27" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-27-LR1"><td id="primer-spec-code-block-27-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-27-LC1" class="primer-spec-code-block-line-code">3 2 1 2                 (Header)</td></tr><tr id="primer-spec-code-block-27-LR2"><td id="primer-spec-code-block-27-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-27-LC2" class="primer-spec-code-block-line-code">0x00820003              (Text)</td></tr><tr id="primer-spec-code-block-27-LR3"><td id="primer-spec-code-block-27-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-27-LC3" class="primer-spec-code-block-line-code">0x000A0001</td></tr><tr id="primer-spec-code-block-27-LR4"><td id="primer-spec-code-block-27-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-27-LC4" class="primer-spec-code-block-line-code">0x017E0000</td></tr><tr id="primer-spec-code-block-27-LR5"><td id="primer-spec-code-block-27-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-27-LC5" class="primer-spec-code-block-line-code">0xFFFFFFFF              (Data)</td></tr><tr id="primer-spec-code-block-27-LR6"><td id="primer-spec-code-block-27-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-27-LC6" class="primer-spec-code-block-line-code">0x00000000</td></tr><tr id="primer-spec-code-block-27-LR7"><td id="primer-spec-code-block-27-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-27-LC7" class="primer-spec-code-block-line-code">SubAdr D 1              (Symbol Table)</td></tr><tr id="primer-spec-code-block-27-LR8"><td id="primer-spec-code-block-27-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-27-LC8" class="primer-spec-code-block-line-code">0 lw neg1               (Relocation Table)</td></tr><tr id="primer-spec-code-block-27-LR9"><td id="primer-spec-code-block-27-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-27-LC9" class="primer-spec-code-block-line-code">1 .fill subOne</td></tr><tr id="primer-spec-code-block-27-LR10"><td id="primer-spec-code-block-27-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-27-LC10" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<div class="primer-spec-callout warning">
+  <p><strong>WARNING</strong>: Be careful when copying and editing these examples!</p>
+</div>
+
+<h3 id="example-2l">Example 2l<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://eecs370.github.io/project_2_spec/#example-2l" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<p>This example uses the object files from example 2a. Here is the machine code produced after the linking process:</p>
+
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-28" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-28-LR1"><td id="primer-spec-code-block-28-L1" class="primer-spec-code-block-line-number" data-line-number="1"></td><td id="primer-spec-code-block-28-LC1" class="primer-spec-code-block-line-code"><span class="go">./linker count5_0.obj count5_1.obj count5.mc</span></td></tr></tbody></table><!----></div></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">count5.mc</code>:</p>
+<div class="primer-spec-code-block"><div id="primer-spec-code-block-29" class="Box mt-3 text-mono"><!----><div class="Box-body p-0 primer-spec-code-block-body"><table class="highlight"><tbody><tr id="primer-spec-code-block-29-LR1"><td id="primer-spec-code-block-29-L1" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="1"></td><td id="primer-spec-code-block-29-LC1" class="primer-spec-code-block-line-code">0x00810009          (count5_0.as TEXT)</td></tr><tr id="primer-spec-code-block-29-LR2"><td id="primer-spec-code-block-29-L2" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="2"></td><td id="primer-spec-code-block-29-LC2" class="primer-spec-code-block-line-code">0x0084000B</td></tr><tr id="primer-spec-code-block-29-LR3"><td id="primer-spec-code-block-29-L3" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="3"></td><td id="primer-spec-code-block-29-LC3" class="primer-spec-code-block-line-code">0x01670000</td></tr><tr id="primer-spec-code-block-29-LR4"><td id="primer-spec-code-block-29-L4" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="4"></td><td id="primer-spec-code-block-29-LC4" class="primer-spec-code-block-line-code">0x01010001</td></tr><tr id="primer-spec-code-block-29-LR5"><td id="primer-spec-code-block-29-L5" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="5"></td><td id="primer-spec-code-block-29-LC5" class="primer-spec-code-block-line-code">0x0100FFFD</td></tr><tr id="primer-spec-code-block-29-LR6"><td id="primer-spec-code-block-29-L6" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="6"></td><td id="primer-spec-code-block-29-LC6" class="primer-spec-code-block-line-code">0x01800000</td></tr><tr id="primer-spec-code-block-29-LR7"><td id="primer-spec-code-block-29-L7" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="7"></td><td id="primer-spec-code-block-29-LC7" class="primer-spec-code-block-line-code">0x0082000A          (count5_1.as TEXT)</td></tr><tr id="primer-spec-code-block-29-LR8"><td id="primer-spec-code-block-29-L8" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="8"></td><td id="primer-spec-code-block-29-LC8" class="primer-spec-code-block-line-code">0x000A0001</td></tr><tr id="primer-spec-code-block-29-LR9"><td id="primer-spec-code-block-29-L9" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="9"></td><td id="primer-spec-code-block-29-LC9" class="primer-spec-code-block-line-code">0x017E0000</td></tr><tr id="primer-spec-code-block-29-LR10"><td id="primer-spec-code-block-29-L10" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="10"></td><td id="primer-spec-code-block-29-LC10" class="primer-spec-code-block-line-code">0x00000005          (count5_0.as DATA)</td></tr><tr id="primer-spec-code-block-29-LR11"><td id="primer-spec-code-block-29-L11" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="11"></td><td id="primer-spec-code-block-29-LC11" class="primer-spec-code-block-line-code">0xFFFFFFFF          (count5_1.as DATA)</td></tr><tr id="primer-spec-code-block-29-LR12"><td id="primer-spec-code-block-29-L12" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="12"></td><td id="primer-spec-code-block-29-LC12" class="primer-spec-code-block-line-code">0x00000006</td></tr><tr id="primer-spec-code-block-29-LR13"><td id="primer-spec-code-block-29-L13" class="primer-spec-code-block-line-number primer-spec-code-block-line-numbers-shown" data-line-number="13"></td><td id="primer-spec-code-block-29-LC13" class="primer-spec-code-block-line-code">
+</td></tr></tbody></table><div class="primer-spec-zeroclipboard-container position-absolute top-0 right-0"><button type="button" class="btn-octicon no-print m-2 p-2 tooltipped tooltipped-no-delay tooltipped-n" tabindex="0" aria-label="Copy"><i class="far fa-copy"></i></button></div></div></div></div>
+
+<p>This code can be simulated using your project 1 simulator.</p>
+
+<div class="primer-spec-callout warning">
+  <p><strong>WARNING</strong>: Be careful when copying and editing these examples!</p>
+</div>
+
+
+            
+        </main><aside class="primer-spec-sidebar position-fixed top-0 py-5 no-print" aria-label="Contents Sidebar" tabindex="-1"><h2 class="primer-spec-toc-ignore" id="primer-spec-toc-contents">Contents<span class="primer-spec-hoverable primer-spec-hoverable-float-right"><button class="btn-link primer-spec-hoverable no-print" aria-label="Close navigation pane"><i class="fas fa-bars"></i></button></span></h2><br><div role="presentation"><nav class="primer-spec-toc" aria-label="Page contents"><div role="presentation"><ul class="primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#project-2-eecs-370-fall-2024">Project 2 EECS 370 (Fall 2024)</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#0-starter-code">0. Starter Code</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#1-purpose">1. Purpose</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#2-problem">2. Problem</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#3-assembler-40-points">3. Assembler (40 points)</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#31-assembly-files">3.1. Assembly Files</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#311-assembly-file-format">3.1.1 Assembly File Format</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#312-local-and-global-labels">3.1.2 Local and Global Labels</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#313-lc2k-peculiarities-part-1">3.1.3 LC2K Peculiarities Part 1</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#314-summary">3.1.4 Summary</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#32-object-file-format">3.2 Object File Format</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#33-error-checking">3.3 Error Checking</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#34-assembly-example">3.4 Assembly example</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#35-running-your-assembler">3.5 Running Your Assembler</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#36-using-the-instructor-project-1a-solution">3.6 Using the Instructor Project 1a Solution</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#37-test-cases">3.7 Test Cases</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#4-linker-60-points">4. Linker (60 points)</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#41-lc2k-linker-description">4.1 LC2K linker description</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#42-what-about-main">4.2 What about <code class="language-plaintext highlighter-rouge">main()</code>?</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#43-stack-label">4.3 Stack Label</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#44-lc2k-peculiarities-part-2">4.4 LC2K Peculiarities Part 2</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#45-error-checking">4.5 Error Checking</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#46-tip---local-labels">4.6 Tip - Local Labels</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#47-linker-example">4.7 Linker Example</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#48-running-your-linker">4.8 Running Your Linker</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#49-test-cases">4.9 Test Cases</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#5-recursive-assembly-language-function-20-points">5. Recursive Assembly-Language Function (20 Points)</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#501-recursive-fibonacci-function">5.0.1 Recursive Fibonacci Function.</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#502-jalr">5.0.2 JALR</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h2"><a href="https://eecs370.github.io/project_2_spec/#51-tips">5.1 Tips</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#6-compiling-the-project">6. Compiling the Project</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#7-grading-auto-grading-and-formatting">7. Grading, Auto-Grading, and Formatting</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#8-turning-in-the-project">8. Turning in the Project</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h1"><a href="https://eecs370.github.io/project_2_spec/#9-sample-test-cases">9. Sample Test Cases</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#example-2a">Example 2a</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li><li><div class="primer-spec-toc-item primer-spec-toc-h3"><a href="https://eecs370.github.io/project_2_spec/#example-2l">Example 2l</a></div><ul class="primer-spec-toc-section primer-spec-toc-list"></ul></li></ul></li></ul></div></nav></div></aside><div class="primer-spec-sidebar-resize-handle position-fixed top-0" tabindex="-1" aria-hidden="true"><style>.primer-spec-content-margin-extra {  margin-left: 296px}</style></div></div>
+
+         <!-- .container-lg -->
+
+        
+    
+
+</body></html>

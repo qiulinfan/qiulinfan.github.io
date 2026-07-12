@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Math 525</title>
+    <link rel="stylesheet" href="elegant.css">
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"]]
+        },
+        svg: {
+          fontCache: "global"
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+  <body>
+    <div class="site">
+      <nav class="toc" aria-label="Contents">
+        <h2 class="toc-title">Contents</h2>
+        <ol>
+          <li class="toc-level-1"><a href="#basic-combinatorics-and-probability-space">basic combinatorics and probability space</a></li>
+          <li class="toc-level-2"><a href="#permutations-and-combinations">1.1 permutations and combinations</a></li>
+          <li class="toc-level-3"><a href="#permutations">1.1.1 permutations</a></li>
+          <li class="toc-level-3"><a href="#combinations">1.1.2 combinations</a></li>
+          <li class="toc-level-3"><a href="#binomial-theorem">1.1.3 binomial theorem</a></li>
+        </ol>
+      </nav>
+
+      <main class="page">
+        <header class="doc-header">
+          <h1>Math 525</h1>
+          <p class="subtitle">ElegantBook-flavored Typst experiment</p>
+          <p class="meta">Author: notesblog &nbsp;&nbsp; Date: 2026-05-06</p>
+        </header>
+
+        <h2 id="basic-combinatorics-and-probability-space">Module 1&nbsp; basic combinatorics and probability space</h2>
+
+        <section class="intro" aria-labelledby="intro-title">
+          <div class="intro-label">Introduction</div>
+          <div class="intro-body">
+            <ul>
+              <li>用绿色框放 definition / 术语。</li>
+              <li>用橙色框放 theorem / lemma / corollary。</li>
+              <li>用青蓝色框放 proposition。</li>
+              <li>example、proof、solution、remark 保持轻量的行内标签。</li>
+            </ul>
+          </div>
+        </section>
+
+        <h3 id="permutations-and-combinations">1.1&nbsp; permutations and combinations</h3>
+
+        <h4 id="permutations">1.1.1&nbsp; permutations</h4>
+
+        <section class="env definition">
+          <div class="env-label">Def 1.1 (permutations)</div>
+          <div class="env-body">
+            <p>一个 permutation 就是对一组 objects 的一个 <strong>rearrangement</strong>。对于 \(n\) 个 <strong>distinct objects</strong>，一共存在</p>
+            <div class="math-display">\[n! = n (n - 1) (n - 2) \cdots 2 \cdot 1\]</div>
+            <p>个 permutations。</p>
+            <span class="env-mark">♣</span>
+          </div>
+        </section>
+
+        <section class="inline-env example">
+          <p><span class="inline-label">Example 1.1 (distinct permutations)</span></p>
+          <p>求 <code>&quot;STATISTICS&quot;</code> 的 distinct permutations 数量。</p>
+
+          <div class="inline-env solution">
+            <p><span class="inline-label">Sol.</span></p>
+            <p>这里一共有 10 个 objects，其中有 3 个 \(S\)、3 个 \(T\)、2 个 \(I\) 是相同的。 如果先把它们都看作 distinct objects，会得到 \(10!\) 个 permutations； 但每个真实排列都被重复计算了 \(3! 3! 2!\) 次。因此答案是</p>
+            <div class="math-display">\[10! / (3! 3! 2!)\]</div>
+          </div>
+        </section>
+
+        <div class="inline-env remark">
+          <p><span class="inline-label">Remark</span></p>
+          <p>求一组 objects 的 distinct permutations 数量时，只需要除去每一类相同 object 的内部 permutation 数量：</p>
+          <div class="math-display">\[n! / (n_1! n_2! \cdots n_k!)\]</div>
+        </div>
+
+        <section class="env definition">
+          <div class="env-label">Def 1.2 (multinomial coefficient)</div>
+          <div class="env-body">
+            <p>令 \(n \in \mathbb{N}\)，且 \(n_1 + n_2 + \cdots + n_k = n\)。我们定义</p>
+            <div class="math-display">\[\binom{n}{n_1 , n_2 , \cdots , n_k} = n! / (n_1! n_2! \cdots n_k!)\]</div>
+            <span class="env-mark">♣</span>
+          </div>
+        </section>
+
+        <section class="env proposition">
+          <div class="env-label">Proposition 1.1</div>
+          <div class="env-body">
+            <p>如果我们需要 \(n_1\) 个 object 1、\(n_2\) 个 object 2、直到 \(n_k\) 个 object \(k\)， 那么它们的 distinct permutations 的数量为</p>
+            <div class="math-display">\[\binom{n_1 + n_2 + \cdots + n_k}{n_1 , n_2 , \cdots , n_k}\]</div>
+            <span class="env-mark">♠</span>
+          </div>
+        </section>
+
+        <h4 id="combinations">1.1.2&nbsp; combinations</h4>
+
+        <section class="env definition">
+          <div class="env-label">Def 1.3 (combinations)</div>
+          <div class="env-body">
+            <p>一个 combination 就是从一个 set 中选取若干个 elements，而忽略它们的顺序。</p>
+            <span class="env-mark">♣</span>
+          </div>
+        </section>
+
+        <section class="env proposition">
+          <div class="env-label">Proposition 1.2</div>
+          <div class="env-body">
+            <p>从 \(n\) 个 <strong>distinct objects</strong> 中选取 \(k\) 个的 combinations 数量为</p>
+            <div class="math-display">\[\binom{n}{k} = n! / (k! (n - k)!)\]</div>
+            <span class="env-mark">♠</span>
+          </div>
+        </section>
+
+        <div class="inline-env proof">
+          <p><span class="inline-label">Proof.</span></p>
+          <p>先数 ordered selections：共有</p>
+          <div class="math-display">\[n (n - 1) \cdots (n - k + 1) = n! / (n - k)!\]</div>
+          <p>种。每个 valid combination 会对应 \(k!\) 个 ordering，所以最终除以 \(k!\)。</p>
+        </div>
+
+        <h4 id="binomial-theorem">1.1.3&nbsp; binomial theorem</h4>
+
+        <section class="env theorem">
+          <div class="env-label">Theorem 1.1 (Binomial Theorem)</div>
+          <div class="env-body">
+            <p>令 \(x, y \in \mathbb{R}\)，\(n \in \mathbb{N}\)。则有</p>
+            <div class="math-display">\[(x + y)^n = \sum_{k=0}^{n} \binom{n}{k} x^{n-k} y^k\]</div>
+            <span class="env-mark">♥</span>
+          </div>
+        </section>
+
+        <div class="inline-env proof">
+          <p><span class="inline-label">Proof.</span></p>
+          <p>展开 \(n\) 个 \((x + y)\) 的乘积时，每一项都来自于在每个括号里选择 \(x\) 或 \(y\)。 项 \(x^{n-k} y^k\) 的系数等于从 \(n\) 个位置里选出 \(k\) 个位置放 \(y\) 的组合数， 即 \(\binom{n}{k}\)。</p>
+        </div>
+
+        <section class="inline-env exercise">
+          <p><span class="inline-label">✎ Exercise 1.1 (quick check)</span></p>
+          <p>用 binomial theorem 解释为什么</p>
+          <div class="math-display">\[\sum_{k=0}^{n} \binom{n}{k} = 2^n\]</div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

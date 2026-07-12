@@ -1,0 +1,1870 @@
+\documentclass[lang=cn,11pt]{elegantbook}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+  language=Matlab,                % 设置代码语言为 MATLAB
+  basicstyle=\ttfamily\small,     % 代码的基本字体和大小
+  numbers=left,                   % 在代码左侧显示行号
+  numberstyle=\tiny,              % 行号的字体大小
+  stepnumber=1,                   % 行号递增步长
+  numbersep=10pt,                 % 行号与代码间的间隔
+  keywordstyle=\color{blue},      % 关键字颜色
+  commentstyle=\color{green},     % 注释颜色
+  stringstyle=\color{red},        % 字符串颜色
+  showstringspaces=false,         % 不显示字符串中的空格
+  breaklines=true,                % 自动换行
+  frame=single                    % 给代码加一个边框
+}
+
+\title{Math 571 Hw}
+
+
+\begin{document}
+\frontmatter
+\tableofcontents
+\mainmatter
+
+
+
+
+\chapter{on fundamentals}
+\section{operation on a matrix}
+
+Let \( B \) be a \( 4 \times 4 \) matrix, and consider the following operations:
+\begin{enumerate}
+    \item Double column 1.
+    \item Halve row 3.
+    \item Add row 3 to row 1.
+    \item Interchange columns 1 and 4.
+    \item Subtract row 2 from each of the other rows.
+    \item Replace column 4 by column 3.
+    \item Delete column 1 (so that the column dimension is reduced by 1).
+\end{enumerate}
+\begin{enumerate}
+    \item[(a)] Write the result as a product of eight matrices.
+    \item[(b)] Write it again as a product \( ABC \), where \( A \) combines all row operations, \( C \) combines all column operations, and \( B \) is the original matrix.
+\end{enumerate}
+
+\begin{solution}
+\textbf{to 1(a):}\\
+Each of the operations can be represented as a matrix multiplication:
+\begin{enumerate}
+    \item Double column 1: Multiply \( B \) on the right by
+    \[
+    M_1 = 
+    \begin{pmatrix}
+    2 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+    \end{pmatrix}.
+    \]
+    \item Halve row 3: Multiply \( B \) on the left by
+    \[
+    E_2 = 
+    \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & \frac{1}{2} & 0 \\
+    0 & 0 & 0 & 1
+    \end{pmatrix}.
+    \]
+    \item Add row 3 to row 1: Multiply \( B \) on the left by
+    \[
+    E_3 = 
+    \begin{pmatrix}
+    1 & 0 & 1 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+    \end{pmatrix}.
+    \]
+    \item Interchange columns 1 and 4: Multiply \( B \) on the right by
+    \[
+    M_4 = 
+    \begin{pmatrix}
+    0 & 0 & 0 & 1 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 0
+    \end{pmatrix}.
+    \]
+    \item Subtract row 2 from each of the other rows: Multiply \( B \) on the left by
+    \[
+    E_5 = 
+    \begin{pmatrix}
+    1 & -1 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & -1 & 1 & 0 \\
+    0 & -1 & 0 & 1
+    \end{pmatrix}.
+    \]
+    \item Replace column 4 by column 3: Multiply \( B \) on the right by
+    \[
+    M_6 = 
+    \begin{pmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 1 \\
+    0 & 0 & 0 & 0
+    \end{pmatrix}.
+    \]
+    \item Delete column 1: Multiply \( B \) on the right by
+    \[
+    M_7 = 
+    \begin{pmatrix}
+    0 & 0 & 0 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+    \end{pmatrix}.
+    \]
+\end{enumerate}
+
+The final matrix is given by:
+\[
+E_5 E_3 E_2 B M_1 M_4 M_6 M_7.
+\]
+\end{solution}
+
+\begin{solution}
+\textbf{to 1(b):}\\
+
+We group all row operations into a single matrix \( A \), and all column operations into a single matrix \( C \):
+\[
+A = E_5 E_3 E_2, \quad C = M_1 M_4 M_6 M_7.
+\]
+Thus, the final result can be written as:
+\[
+A B C.
+\]
+\end{solution}
+
+
+\section{eigen properties of Hermitian matrix}
+
+Let \( A \in \mathbb{C}^{m \times m} \) be Hermitian (\( A = A^* \)). An eigenvector of \( A \) is a nonzero vector \( x \in \mathbb{C}^m \) such that \( A x = \lambda x \) for some \( \lambda \in \mathbb{C} \), the corresponding eigenvalue.
+
+\begin{enumerate}
+    \item[(a)] Prove that all eigenvalues of \( A \) are real.
+    \item[(b)] Prove that if \( x \) and \( y \) are eigenvectors corresponding to distinct eigenvalues, then \( x \) and \( y \) are orthogonal.
+\end{enumerate}
+
+\begin{proof}
+\textbf{of 2(a):}\\
+Let \( x \) be a nonzero eigenvector of \( A \) with eigenvalue \( \lambda \). Then:
+\[
+A x = \lambda x.
+\]
+Taking the inner product with \( x \), we have:
+\[
+\langle x, A x \rangle = \langle x, \lambda x \rangle = \lambda \|x\|^2.
+\]
+Since \( A \) is Hermitian, \( \langle x, A x \rangle = \langle A x, x \rangle^* = \langle x, A x \rangle \), so \( \langle x, A x \rangle \) is real. As \( \|x\|^2 > 0 \), it follows that \( \lambda \) is real.\\\\
+\end{proof}
+
+
+\begin{proof}
+of 2(b):\\
+Let \( x \) and \( y \) be eigenvectors of \( A \) corresponding to distinct eigenvalues \( \lambda \) and \( \mu \) (\( \lambda \neq \mu \)). Then:
+\[
+A x = \lambda x, \quad A y = \mu y.
+\]
+Taking the inner product, we compute:
+\[
+\langle A x, y \rangle = \langle \lambda x, y \rangle = \lambda \langle x, y \rangle,
+\]
+and
+\[
+\langle x, A y \rangle = \langle x, \mu y \rangle = \mu \langle x, y \rangle.
+\]
+Since \( A \) is Hermitian, \( \langle A x, y \rangle = \langle x, A y \rangle \). Thus:
+\[
+\lambda \langle x, y \rangle = \mu \langle x, y \rangle.
+\]
+As \( \lambda \neq \mu \), it follows that \( \langle x, y \rangle = 0 \). Therefore, \( x \) and \( y \) are orthogonal.
+\end{proof}
+
+\section{eigenvalues of a unitary matrix is unit}
+
+What can be said about the eigenvalues of a unitary matrix?
+
+
+\begin{proof}
+\textbf{of 1(3): }  \\
+Let \( U \in \mathbb{C}^{m \times m} \) be unitary (\( U^* U = I \)). Let \( x \) be an eigenvector of \( U \) with eigenvalue \( \lambda \). Then:
+\[
+U x = \lambda x.
+\]
+Taking the norm on both sides:
+\[
+\|U x\| = \|\lambda x\|.
+\]
+Since \( U \) is unitary, \( \|U x\| = \|x\| \). Thus:
+\[
+|\lambda| \|x\| = \|x\|.
+\]
+As \( \|x\| > 0 \), it follows that \( |\lambda| = 1 \). Hence, all eigenvalues of a unitary matrix lie on the unit circle in the complex plane.
+\end{proof}
+
+
+\section{tensor product}
+
+After Trefethen--Bau 2.7, we define the Kronecker (tensor) product of
+\(\begin{pmatrix}a & b \\ c & d\end{pmatrix}\) by a matrix \(A\)
+as \(\begin{pmatrix}aA & bA \\ cA & dA\end{pmatrix}\), and similarly for other shapes.
+We set 
+\[
+  H_1 \;=\;\frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+    1 & 1\\
+    1 & -1
+  \end{pmatrix}.
+\]
+\begin{itemize}
+  \item[(a)] Show \(H_1\) is unitary.
+  \item[(b)] Write out the \(4\times 4\) matrix \(\sqrt{4}H_2 = \sqrt{4} H_1 \otimes H_1\)
+  \item[(c)] Show that if \(A\) and \(B\) are unitary, then \(A\otimes B\) is also unitary. (You may use block multiplication of matrices, after looking it up.)
+
+   \item[(d)] It follows that 
+\[
+H_k = H_1^{\otimes k} = \underbrace{H_1 \otimes H_1 \otimes \cdots \otimes H_1}_{k \text{ times}},
+\]
+the Kronecker product of $H_1$ with itself $k$ times, is unitary. The matrices $H_k$ are known as Hadamard matrices (or Hadamard-Walsh, or Fourier, and are related to Haar wavelets. More notes to come on Piazza or in the solution set.)
+
+\noindent
+Multiply $\sqrt{8} H_3$ by \(
+\begin{bmatrix}
+w_0 \\ 
+\vdots \\ 
+w_7
+\end{bmatrix}
+\) using this procedure: Do
+\[
+\vec{x}_0 = 
+\begin{bmatrix}
+w_0 + w_1 \\
+w_0 - w_1
+\end{bmatrix}, \quad \dots, \quad 
+\vec{x}_3 = 
+\begin{bmatrix}
+w_6 + w_7 \\
+w_6 - w_7
+\end{bmatrix}.
+\]
+Then \(
+\vec{y}_0 = 
+\begin{bmatrix}
+\vec{x}_0 + \vec{x}_1 \\
+\vec{x}_0 - \vec{x}_1
+\end{bmatrix}, \quad \text{but use, and don't recompute, $\vec{x}_0$, etc., for the two times it is needed.}
+\)
+Also  \(
+\vec{y}_1 = 
+\begin{bmatrix}
+\vec{x}_2 + \vec{x}_3 \\
+\vec{x}_2 - \vec{x}_3
+\end{bmatrix}.
+\) Finally, the result is \(
+\sqrt{8} H_3 \vec{w} = 
+\begin{bmatrix}
+\vec{y}_0 + \vec{y}_1 \\
+\vec{y}_0 - \vec{y}_1
+\end{bmatrix},
+\)
+a vector of eight rows. Write out all the 8-row vectors, including intermediate steps, that you get for 
+\[
+\sqrt{8} H_3
+\begin{bmatrix}
+1 & 3 & 5 & 7 & 9 & 11 & 13 & 15
+\end{bmatrix}^*.
+\]
+
+\item[(e)] How many scalars did you write, for $n = 2^3$ above? How about for general $n = 2^k$? (Each scalar takes just one new addition or subtraction of scalars to compute.) How many multiplications are involved in a general matrix-vector multiplication, $\vec{b} = A \vec{x}$ for $n \times n$ matrix $A$, by $b_i = \sum_j a_{ij} x_j$?
+\end{itemize}
+
+\begin{proof}
+    \textbf{of 1(4)(a)}:\\
+We check unitarity of
+\[
+  H_1 \;=\;\frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+    1 & 1\\
+    1 & -1
+  \end{pmatrix}.
+\]
+Since its entries are real, \(H_1^* = H_1^\mathsf{T}\). A direct multiplication shows
+\[
+  H_1^* H_1
+  \;=\;\frac{1}{2}
+  \begin{pmatrix}1 & 1\\ 1 & -1\end{pmatrix}
+  \begin{pmatrix}1 & 1\\ 1 & -1\end{pmatrix}
+  \;=\;I_2,
+\]
+which proves \(H_1\) is unitary.\\\\
+\end{proof}
+
+\begin{proof}
+    \textbf{of 1(4)(b):}\\
+By definition of the Kronecker product,
+\[
+  \sqrt{4}H_2 \;=\;  \sqrt{4}   H_1\otimes H_1
+  \;=\;\frac{4}{\sqrt{2}}
+  \begin{pmatrix}
+    1 & 1\\
+    1 & -1
+  \end{pmatrix}
+  \,\otimes\,
+  \frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+    1 & 1\\
+    1 & -1
+  \end{pmatrix}
+  \;=\;
+  \begin{pmatrix}
+    1 & 1 & 1 & 1\\
+    1 & -1 & 1 & -1\\
+    1 & 1 & -1 & -1\\
+    1 & -1 & -1 & 1
+  \end{pmatrix}.
+\]
+Hence it is a \(4\times 4\) matrix with the usual Hadamard pattern of \(\pm1\).\\\\
+\end{proof}
+
+\begin{proof}
+    \textbf{of 1(4)(c):} \\
+
+If \(A\) and \(B\) are unitary, then 
+\[
+  (A\otimes B)^* \;=\;A^*\otimes B^*
+  \quad\text{and}\quad
+  (A^*\otimes B^*)(A\otimes B)
+  \;=\;(A^*A)\,\otimes\,(B^*B)
+  \;=\;I\otimes I
+  \;=\;I.
+\]
+Thus \(A\otimes B\) is unitary.
+\end{proof}
+
+
+
+
+\begin{solution}
+
+    \textbf{of 1(4)(d):}\\
+
+\[
+H_3 \;=\; H_1 \otimes H_1 \otimes H_1,
+\]
+is an \(8\times 8\) matrix.  
+We want:
+\(
+\sqrt{8}\,H_3
+\begin{pmatrix}
+w_0 \\
+w_1 \\
+w_2 \\
+w_3 \\
+w_4 \\
+w_5 \\
+w_6 \\
+w_7
+\end{pmatrix}
+\),  for each pair \(
+x_i = 
+\begin{pmatrix}
+w_{2i} + w_{2i+1}\\
+w_{2i} - w_{2i+1}
+\end{pmatrix}
+\), So we have:
+
+1. \(x_0 = \begin{pmatrix} w_0 + w_1 \\ w_0 - w_1 \end{pmatrix}
+= \begin{pmatrix}1 + 3 \\ 1 - 3\end{pmatrix}
+= \begin{pmatrix}4 \\ -2\end{pmatrix}\)
+
+2. \(x_1 = \begin{pmatrix} w_2 + w_3 \\ w_2 - w_3 \end{pmatrix}
+= \begin{pmatrix}5 + 7 \\ 5 - 7\end{pmatrix}
+= \begin{pmatrix}12 \\ -2\end{pmatrix}\)
+
+3. \(x_2 = \begin{pmatrix} w_4 + w_5 \\ w_4 - w_5 \end{pmatrix}
+= \begin{pmatrix}9 + 11 \\ 9 - 11\end{pmatrix}
+= \begin{pmatrix}20 \\ -2\end{pmatrix}\)
+
+4. \(x_3 = \begin{pmatrix} w_6 + w_7 \\ w_6 - w_7 \end{pmatrix}
+= \begin{pmatrix}13 + 15 \\ 13 - 15\end{pmatrix}
+= \begin{pmatrix}28 \\ -2\end{pmatrix}\)
+
+Then we have
+\[
+\vec{y}_0
+=
+\begin{pmatrix}
+x_0 + x_1 \\
+x_0 - x_1
+\end{pmatrix},
+\quad
+\vec{y}_1
+=
+\begin{pmatrix}
+x_2 + x_3 \\
+x_2 - x_3
+\end{pmatrix}
+\]
+After computation we get \(
+    \vec{y}_0
+    =
+    \begin{pmatrix}
+      16\\
+      -4\\
+      -8\\
+      0
+    \end{pmatrix}
+  \),  \(
+    \vec{y}_1
+    =
+    \begin{pmatrix}
+      48\\
+      -4\\
+      -8\\
+      0
+    \end{pmatrix}
+  \)
+
+So
+\[
+\sqrt{8}\,H_3\,\vec{w}
+=
+\begin{pmatrix}
+\vec{y}_0 + \vec{y}_1 \\
+\vec{y}_0 - \vec{y}_1
+\end{pmatrix}
+\]
+where
+   \(\vec{y}_0 + \vec{y}_1 = 
+     \begin{pmatrix}
+     16 + 48\\
+     -4 + (-4)\\
+     -8 + (-8)\\
+     0 + 0
+     \end{pmatrix}
+     \;=\;
+     \begin{pmatrix}
+     64\\
+     -8\\
+     -16\\
+     0
+     \end{pmatrix}
+   \) and    \(\vec{y}_0 - \vec{y}_1 = 
+     \begin{pmatrix}
+     16 - 48\\
+     -4 - (-4)\\
+     -8 - (-8)\\
+     0 - 0
+     \end{pmatrix}
+     \;=\;
+     \begin{pmatrix}
+     -32\\
+     0\\
+     0\\
+     0
+     \end{pmatrix}
+   \)
+
+Concatenating these two vectors:
+\[
+\sqrt{8}\,H_3
+\begin{pmatrix}
+1 \\ 3 \\ 5 \\ 7 \\ 9 \\ 11 \\ 13 \\ 15
+\end{pmatrix}
+\;=\;
+\begin{pmatrix}
+64 \\ -8 \\ -16 \\ 0 \\[4pt]
+-32 \\ 0 \\ 0 \\ 0
+\end{pmatrix}
+\]
+
+This finishes the computation.\\\\
+\end{solution}
+
+
+\begin{solution}
+    \textbf{of 1(4)(e):}\\
+For \(\sqrt{8}\,H_3\), with \(\,H_3=H_1^{\otimes 3}\) an \(8\times 8\) matrix, we can multiply
+\(\sqrt{8}\,H_3\) by a vector \([\;w_0,\dots,w_7\;]^T\)
+using a fast sequence of pairwise sums and differences. Rather than performing \(64\) multiplications, one can do just \(\mathcal{O}(n)\) additions/subtractions for \(n=8\). 
+Generalizing, when \(n=2^k\), the Kronecker structure allows a fast transform with \(\mathcal{O}(n\log n)\) operations. In contrast, a general \(n\times n\) matrix--vector product requires \(\mathcal{O}(n^2)\) scalar operations unless further structure is exploited.
+\end{solution}
+
+\bigskip
+
+\section{submatrix's p-norm (always smaller)}
+
+Let \(A\) be an \(m\times n\) matrix, and let \(B\) be a \(\mu\times \nu\) submatrix of \(A\) obtained by selecting certain rows (\(\mu\le m\)) and columns (\(\nu\le n\)). 
+\begin{itemize}
+  \item[(a)] Explain how \(B\) can be written as \(B = R\,A\,C\), where \(R\) and \(C\) are ``deletion matrices'' (selecting certain rows or columns) as in step~7 of Exercise~1.1.
+  \item[(b)] Using this product, show \(\|B\|_p \le \|A\|_p\) for any \(p\) with \(1\le p\le\infty\).
+\end{itemize}
+
+\begin{proof}
+    \textbf{of 1(5)(a):}\\
+
+Define \(R\) as a \(\mu\times m\) matrix that selects the desired rows of \(A\), and \(C\) as an \(n\times \nu\) matrix that selects the desired columns. Each of \(R\) and \(C\) has 1's in the appropriate positions to ``keep'' certain rows or columns and 0's elsewhere. Then
+\[
+  B \;=\; R\,A\,C
+\]
+is precisely the \(\mu\times\nu\) submatrix of \(A\).
+\end{proof}
+
+\begin{proof}
+    \textbf{of 1(5)(b):}\\
+Since \(R\) and \(C\) come from partial identity structures, one has \(\|R\|_p \le 1\) and \(\|C\|_p \le 1\) for all \(1\le p\le\infty\). Hence
+\[
+  \|\,B\|_p
+  \;=\;\|\,R\,A\,C\,\|_p
+  \;\le\;\|\,R\|_p\,\|\,A\|_p\,\|\,C\|_p
+  \;\le\;\|A\|_p.
+\]
+Thus \(\|B\|_p \le \|A\|_p\).\\\\
+\end{proof}
+
+\bigskip
+
+\section{rank-1 outer product matrix: preserves 2-norm and Frobenius norm}
+
+Example 3.6 shows that if \(E = u\,v^*\) is an outer product, then its spectral norm (2-norm) is 
+\(\|E\|_2 = \|u\|_2 \,\|v\|_2.\)
+Is the same relation true for the Frobenius norm, \(\|E\|_F\)? Either prove it or provide a counterexample.
+
+\begin{proof}
+    \textbf{of 1(6):}\\
+Let \(E = u\,v^*\). Then 
+\[
+  E_{ij} \;=\; u_i\,\overline{v_j}.
+\]
+The Frobenius norm is 
+\[
+  \|E\|_F^2
+  \;=\;\sum_{i,j}\bigl|E_{ij}\bigr|^2
+  \;=\;\sum_{i,j} |u_i|^2\,|v_j|^2
+  \;=\;\Bigl(\sum_i |u_i|^2\Bigr)\,\Bigl(\sum_j |v_j|^2\Bigr)
+  \;=\;\|u\|_2^2\,\|v\|_2^2.
+\]
+Thus \(\|E\|_F = \|u\|_2 \,\|v\|_2.\) Since for vectors \(u\) and \(v\), their Frobenius norm equals their 2-norm, we have \(\|u\|_F = \|u\|_2\) and \(\|v\|_F = \|v\|_2\). Consequently,
+\[
+  \|E\|_F 
+  \;=\;\|u\|_F\,\|v\|_F.
+\]
+So the equality holds also in the Frobenius norm case, and no counterexample is needed.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\chapter{on SVD}
+\textbf{Group: Qiulin Fan, Linglong Meng}
+\section{Determine SVDs by hand}
+(Trefethen-Bau 4.1) Determine SVD, explain how to use the special structure, e.g., diagonal, low-rank, etc.
+\textbf{(a) }$$A = \begin{pmatrix}3 & 0\\[6pt]0 & -2\end{pmatrix}$$
+\begin{solution}\textbf{ of 2(1)(a):}\\
+Since $A$ is diagonal with entries $3$ and $-2$, the singular values are $|3|=3$ and $|-2|=2$.\\
+We may choose $V$ to be the $2\times 2$ identity (standard basis in $\mathbb{R}^2$). 
+$$
+V = \begin{pmatrix}1 & 0\\[4pt]0 & 1\end{pmatrix}
+$$
+Then to get the negative sign in the second diagonal entry, we let \[
+    U =  \begin{pmatrix}1 & 0\\0 & -1\end{pmatrix},
+    \quad
+    \Sigma =  \begin{pmatrix}3 & 0\\0 & 2\end{pmatrix}
+  \]
+\end{solution}
+\textbf{(b) }$$A = \begin{pmatrix}2 & 0\\[6pt]0 & 3\end{pmatrix}$$
+\begin{solution}\textbf{ of 2(1)(b):}\\
+Since $A$ is diagonal, the singular values are the absolute values of the diagonal entries, i.e.\ $2$ and $3$. 
+Notice we need to keep singular values in \textbf{descending order}, so we $U$ to be the e\textbf{lementary matrix of exchanging two rows}:
+\[
+  U =  \begin{pmatrix}0 & 1\\1 & 0\end{pmatrix},\quad
+  \Sigma = \begin{pmatrix}3 & 0\\0 & 2\end{pmatrix},\quad
+  V = I_2
+\]
+\end{solution}
+\textbf{(c) }$$\displaystyle
+A = \begin{pmatrix}
+0 & 2\\[4pt]
+0 & 0\\[4pt]
+0 & 0
+\end{pmatrix}
+$$
+\begin{solution}\textbf{ of 2(1)(c):}\\
+Idea: If we swap the two columns of $A$, it then become diagonal.\\
+Therefore we can set:
+$$
+V =   \begin{pmatrix}0 & 1\\1 & 0\end{pmatrix}
+$$
+And we set
+$$
+ \Sigma = \begin{pmatrix}
+   2 & 0\\[4pt]
+   0 & 0\\[4pt]
+   0 & 0
+   \end{pmatrix}
+$$
+Then $V^*$ will swap the two columns of $\Sigma$, so 
+$$
+\Sigma V^* = A
+$$
+And we are done by setting $U = I_3$
+\end{solution}
+
+
+(d) $$A = \begin{pmatrix}1 & 1\\[3pt]0 & 0\end{pmatrix}$$
+\begin{solution}\textbf{ of 2(1)(d):}\\
+\[
+A^T A = \begin{pmatrix}1 & 0\\1 & 0\end{pmatrix} \begin{pmatrix}1 & 1\\0 & 0\end{pmatrix}
+= \begin{pmatrix}1 & 1\\1 & 1\end{pmatrix}
+\]
+Solve for the eigenvalues of \( A^T A \):
+
+\[
+\det\left( \begin{pmatrix}1 & 1\\1 & 1\end{pmatrix} - \lambda I \right) = \det\begin{pmatrix}1-\lambda & 1\\1 & 1-\lambda\end{pmatrix} = (1-\lambda)(1-\lambda) - 1 = \lambda^2 - 2\lambda
+\]
+So its eigenvalues \( \lambda_1 = 2 \) and \( \lambda_2 = 0 \).\\
+This shows that \[
+\sigma_1 = \sqrt{2}, \quad \sigma_2 = 0
+\]
+The eigenvectors of \( A^T A \) correspond to the right singular vectors.\\
+For \( \lambda = 2 \): \[
+\begin{pmatrix}1 - 2 & 1 \\ 1 & 1 - 2\end{pmatrix} \begin{pmatrix}v_1 \\ v_2\end{pmatrix} = \begin{pmatrix}-1 & 1 \\ 1 & -1\end{pmatrix} \begin{pmatrix}v_1 \\ v_2\end{pmatrix} = 0
+\]
+Here \( v_1 = v_2 \), so a normalized unit vector is:
+\[
+v_1 = \frac{1}{\sqrt{2}} \begin{pmatrix}1 \\ 1\end{pmatrix}
+\]
+For \( \lambda = 0 \), similarly we get:
+\[
+v_2 = \frac{1}{\sqrt{2}} \begin{pmatrix}1 \\ -1\end{pmatrix}
+\]
+Thus,
+
+\[
+V = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\[3pt] \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}
+\]
+The left singular vectors $u_i$ are found from \( A v_i = \sigma_i u_i \).
+For \( \sigma_1 = \sqrt{2} \):
+\[
+A v_1 = A \begin{pmatrix} \frac{1}{\sqrt{2}} \\[3pt] \frac{1}{\sqrt{2}} \end{pmatrix}
+= \begin{pmatrix}1 & 1 \\[3pt] 0 & 0\end{pmatrix} 
+= \sqrt{2} \begin{pmatrix} 1 \\ 0\end{pmatrix}
+\]
+Thus, \( u_1 = \begin{pmatrix}1 \\ 0\end{pmatrix} \). For \( \sigma_2 = 0 \), similarly we have \(
+u_2 = \begin{pmatrix}0 \\ 1\end{pmatrix}\).
+Thus
+\[
+U = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}
+\]
+Therefore the SVD is:
+$$
+U = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad  \Sigma = \begin{pmatrix} \sqrt{2} & 0\\ 0 & 0 \end{pmatrix}     ,  \quad V = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}
+$$
+ \end{solution}
+
+(e)
+ $$A = \begin{pmatrix}1 & 1\\[3pt]1 & 1\end{pmatrix}$$
+ \begin{solution}\textbf{ of 2(1)(e):}\\
+\[
+A^T A = \begin{pmatrix}1 & 1\\ 1 & 1\end{pmatrix}^T \begin{pmatrix}1 & 1\\ 1 & 1\end{pmatrix} = \begin{pmatrix}2 & 2\\ 2 & 2\end{pmatrix}.
+\]
+We get the eigenvalues of \( A^T A \)  by solving:
+\[
+\det(A^T A - \lambda I) = \det \begin{pmatrix}2-\lambda & 2\\ 2 & 2-\lambda\end{pmatrix} = (2-\lambda)(2-\lambda) - 4 = \lambda^2 - 4\lambda.
+\]
+So \( \lambda_1 = 4 \) and \( \lambda_2 = 0 \), implying that \[
+\sigma_1 = \sqrt{4} = 2, \quad \sigma_2 = \sqrt{0} = 0.
+\]
+This confirms:
+\[
+\Sigma = \begin{pmatrix}2 & 0\\ 0 & 0\end{pmatrix}.
+\]
+(Since this is a rank-one matrix, we can write $A$ as $\sigma_1$ times the outer product of two vectors. 
+$$
+A = \sigma_1 u_1 v_1^*
+$$
+Since $A$ itself is the outer product of $(1,1)^T$ and $(1,1)$, we can easily get: $u_1 = v_1 = (1/\sqrt{2},1/\sqrt{2})$. But we still need the other one vector, so I think we still need to compute eigenvectors.)
+
+The eigenvectors of \( A^T A \) correspond to the right singular vectors.\\
+ For \( \lambda_1 = 4 \), we solve:\[
+  \begin{pmatrix}2 & 2\\ 2 & 2\end{pmatrix} \begin{pmatrix}x\\ y\end{pmatrix} = 4 \begin{pmatrix}x\\ y\end{pmatrix}
+  \]
+giving \( x = y \). Normalizing: \[
+  v_1 = \frac{1}{\sqrt{2}} \begin{pmatrix}1\\ 1\end{pmatrix}
+  \]
+For \( \lambda_2 = 0 \), we similarly get:
+  \[
+  v_2 = \frac{1}{\sqrt{2}} \begin{pmatrix}1\\ -1\end{pmatrix}
+  \]
+Thus
+  \[
+  V = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}
+  \]
+The left singular vectors are found from \( A v_i = \sigma_i u_i \).\\
+
+- For \( \sigma_1 = 2 \):
+  \[
+  A v_1 = A \begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{pmatrix}  = \begin{pmatrix}\sqrt{2}\\ \sqrt{2}\end{pmatrix}
+  \]
+Normalizing:
+  \[
+  u_1 = \frac{1}{\sqrt{2}} \begin{pmatrix}1\\ 1\end{pmatrix}
+  \]For \( \sigma_2 = 0 \), we get
+  \[
+  u_2 = \frac{1}{\sqrt{2}} \begin{pmatrix}1\\ -1\end{pmatrix}.
+  \]Thus, we have:
+  \[
+  U = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}
+  \]
+Thus the SVD of \( A \) is:
+\[
+U = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}, \quad
+\Sigma = \begin{pmatrix}2 & 0\\ 0 & 0\end{pmatrix}, \quad
+V = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{pmatrix}.
+\]
+\end{solution}
+
+
+
+\section{Rotation by 90 degrees on paper}
+(Trefethen-Bau 4.2.) Suppose $A$ is an $m\times n$ matrix, and $B$ is the $n\times m$ matrix obtained by rotating the array of $A$ by $90^\circ$ clockwise in the plane (not exactly a standard mathematical transformation!). Do $A,B$ have the same singular values? Prove that the answer is yes or give a counterexample.
+\begin{solution}
+\textbf{ of 2(2):} \textbf{Yes,$A$ and $B$ have the same singular values.}\\
+\begin{proof}
+Suppose
+\[
+A = \begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\[1mm]
+a_{21} & a_{22} & \cdots & a_{2n} \\[1mm]
+\vdots & \vdots & \ddots & \vdots \\[1mm]
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{pmatrix}
+\]
+Then \[
+A^T = \begin{pmatrix}
+a_{11} & a_{21} & \cdots & a_{m1} \\[1mm]
+a_{12} & a_{22} & \cdots & a_{m2} \\[1mm]
+\vdots & \vdots & \ddots & \vdots \\[1mm]
+a_{1n} & a_{2n} & \cdots & a_{mn}
+\end{pmatrix}
+\]
+and \[
+B = \begin{pmatrix}
+a_{m1}      & a_{m-1,1}      & \cdots & a_{11}      \\[1mm]
+a_{m2}      & a_{m-1,2}      & \cdots & a_{12}      \\[1mm]
+\vdots       & \vdots         & \ddots & \vdots       \\[1mm]
+a_{mn}      & a_{m-1,n}      & \cdots & a_{1n}
+\end{pmatrix}
+\]
+We can discover: the rotated matrix $B$ is just flipping all columns of $A^T$. So we consider defining:
+\[
+S = \begin{pmatrix}
+0      & 0      & \cdots & 0      & 1\\[1mm]
+0      & 0      & \cdots & 1      & 0\\[1mm]
+\vdots & \vdots & 1 & \vdots & \vdots\\[1mm]
+0      & 1      & \cdots & 0      & 0\\[1mm]
+1      & 0      & \cdots & 0      & 0
+\end{pmatrix} \in \bC^{m\times m}
+\]
+This matrix multiplied on the right, can flip all columns of a matrix.\\
+Thus we have:
+$$
+B = A^T S
+$$
+\textbf{Claim 2.1: For any complex matrix $A$, $A^T$ and $A$ has the same singular value.}\\
+\textbf{proof of Claim 2.1:} $A = U \Sigma V^* \implies A^T = (V^*)^T \Sigma U^T$, where $(V^*)^T $, $U^T$ are also unitrary. So $A$, $A^T$ have same singular values in $\Sigma$.\\\\
+\textbf{Claim 2.2: multiplying an unitary matrix on the right does not change the singular value.}\\
+\textbf{proof of Claim 2.2:} Suppose $Q$ is unitary, then
+$$
+AQ = U \Sigma V^* Q = U \Sigma (V^* Q)
+$$
+note $V^*Q$ is still unitary, since the prod of two unitary matrices are unitary.\\\\
+Combining claim 2.1, 2.2 and the fact that $S$ is unitary, we get that $B = A^TS$ has the same singular values as $A$.
+\end{proof}
+\end{solution}
+
+\section{full-rank matrices is a dense subset of $\mathbb{C}^{m \times n}$}
+\textbf{（Trefethen-Bau 5.2）} Using the SVD, prove that any matrix in $\mathbb{C}^{m \times n}$ is the limit of a sequence of matrices of full rank. In other words, prove that the set of full-rank matrices is a dense subset of $\mathbb{C}^{m \times n}$. Use the 2-norm for your proof. (The norm doesn't matter, since all norms on a finite-dimensional space are equivalent.)
+
+\textit{Hint}: Use the (assumed) SVD factorization and add random $\pm \varepsilon$ noise somewhere. One might regard this as supplying a useful tool—full-rank matrices are everywhere; they’re a powerful set. However, in an important way, it is a warning or limitation: The rank is not robust, since, given any low-rank matrix, there’s a full-rank matrix very close.
+   
+\begin{proof}
+    \textbf{of 2(c):}\\
+By SVD, $\exists$ unitary \( U \in \mathbb{C}^{m \times m} \) and \( V \in \mathbb{C}^{n \times n} \) such that
+\[
+A = U \Sigma V^*
+\]
+where \(\Sigma\) is \( m \times n \) diagonal matrix with nonnegative descending real entries as the singular values:
+\[
+\Sigma = \begin{pmatrix}
+\sigma_1 & 0 & \cdots & 0 \\
+0 & \sigma_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sigma_r \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & & \vdots
+\end{pmatrix},
+\]
+with \( r = \operatorname{rank}(A) \le \min(m,n) \). If \( A \) is already full rank, then it is done, since we can take itself repeating as the sequence. \textbf{So we can assume \( r < \min(m,n) \).}\\
+Since \( A \) is not full rank, there are \( \min(m,n) - r \) singular values that are zero. For a given \( \varepsilon > 0 \), define a new diagonal matrix \(\Sigma_\varepsilon\) by replacing each zero singular value with \(\varepsilon\), while leaving the nonzero singular values unchanged:
+\[
+\Sigma_\epsilon := \begin{pmatrix}
+\sigma_1 & 0 & \cdots & 0 \\
+0 & \sigma_2 & \cdots & 0 \\
+\vdots & \vdots & \varepsilon & \vdots \\
+0 & 0 & \cdots & \epsilon \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & & \vdots
+\end{pmatrix},
+\]
+Thus, every diagonal entry of \(\Sigma_\varepsilon\) is now positive, thus is full rank. Now let 
+$$
+A_\varepsilon := U \Sigma_\varepsilon V^*
+$$
+Since \( U \) and \( V \) are unitary, the singular values of \( A_\varepsilon \) are precisely the diagonal entries of \( \Sigma_\varepsilon \), all of which are positive. Hence, \textbf{\( A_\varepsilon \) is of full rank,} and
+\[
+A_\varepsilon - A = U (\Sigma_\varepsilon - \Sigma) V^*
+\]
+Since the 2-norm is unitarily invariant, we have
+\[
+\|A_\varepsilon - A\|_2 = \|\Sigma_\varepsilon - \Sigma\|_2.
+\]
+The matrix \(\Sigma_\varepsilon - \Sigma\) is diagonal with \( 0 \) for \( r \) entries, and \( \varepsilon \) for each of the remaining \(\min(m,n) - r\) entries. Thus we have:
+\[
+\|\Sigma_\varepsilon - \Sigma\|_2 = \max\{ 0, \varepsilon \} = \varepsilon.
+\]
+Now let $(A_{1/n})_{n\in\bN}$ be the sequence of full-rank matrices. We proved that it converge to $A$ by 2-norm. This shows that any matrix \( A \in \mathbb{C}^{m \times n} \) can be approximated arbitrarily well by full-rank matrices. Therefore, the set of full-rank matrices is dense in \(\mathbb{C}^{m \times n}\).
+\end{proof}
+
+
+
+
+\section{Computing SVD}
+\textbf{（Trefethen-Bau 5.3）}: Consider the matrix
+\[
+A = \begin{bmatrix}
+-2 & 11 \\
+-10 & 5
+\end{bmatrix}.
+\]
+
+   \textbf{ (a) }Determine, on paper, a real SVD of $A$ in the form $A = U \Sigma V^T$. The SVD is not unique, so find the one that has the minimal number of minus signs in $U$ and $V$.\\
+   You can use hand tools, e.g., a calculator or computer to multiply 3-digit numbers, etc. At this point, we can find the SVD by solving for $x, y$ under the condition that $A v_1$ is orthogonal to $A v_2$, i.e.,
+    \[
+    A \begin{bmatrix} x \\ y \end{bmatrix} \text{ is orthogonal to } A \begin{bmatrix} -y \\ x \end{bmatrix},
+    \]
+    since $\begin{bmatrix} x \\ y \end{bmatrix}$ is fully general and orthogonal to $\begin{bmatrix} -y \\ x \end{bmatrix}$. We get a quadratic form, with terms of the form $x^2, xy, y^2$. That means $x$ and $y$ have the same units, and it turns out that it makes sense for $y$ to be a multiple of $x$. We can solve for $y$ in terms of $x$ using the quadratic formula, obtaining two solutions (or the whole expression vanishes, e.g., if $A = I$, and any $x, y$ works). The solutions should be negative reciprocals (unless zeros arise)—check and confirm. Then, find a unit vector in the direction $\pm \begin{bmatrix} x \\ y \end{bmatrix}$ for each solution.\\
+    Note that we are solving a univariate quadratic, in which $\sigma_1$ and $\sigma_2$ don’t appear—they are lengths, and irrelevant to the orthogonality of $Av_1$ and $Av_2$. Naively, solving for $U, \Sigma, V$ in $A = U \Sigma V^*$ subject to $U^*U = V^*V = I$ involves a system of cubic equations, and even a univariate cubic is harder than a univariate quadratic. The system $A^*Av = \lambda v$ is (at first) a system including quadratic terms, like $\lambda v_1$, which is also plenty hard. The approach here is fine to get started, for $2 \times 2$ matrices. We’ll return many times to computation of SVDs, including issues.
+\begin{solution}
+    \textbf{of 2(4)(a): }\\ 
+Let
+\[
+v_1=\begin{bmatrix} x \\ y \end{bmatrix},\qquad x^2+y^2=1
+\]
+be a unit vector in $\bR^2$. Then a vector perpendicular to \(v_1\) is
+\[
+v_2=\begin{bmatrix} -y \\ x \end{bmatrix}
+\]
+We want to choose \(v_1\) so that the vectors $Av_1, Av_2$ are orthogonal. Compute:
+\[
+A\,v_1 = A\begin{bmatrix} x \\ y \end{bmatrix} =
+\begin{bmatrix} -2x+11y \\ -10x+5y \end{bmatrix}
+\]
+and
+\[
+A\,v_2 = A\begin{bmatrix} -y \\ x \end{bmatrix} =
+\begin{bmatrix} -2(-y)+11x \\ -10(-y)+5x \end{bmatrix} =
+\begin{bmatrix} 2y+11x \\ 10y+5x \end{bmatrix}
+\]
+The orthogonality condition is
+\[
+\langle A\,v_1,\;A\,v_2\rangle=0
+\]
+Then we compute the dot product:
+\[
+\begin{aligned}
+\langle A\,v_1,\, A\,v_2\rangle &= (-2x+11y)(11x+2y) + (-10x+5y)(5x+10y)\\[1mm]
+&=\Bigl[-22x^2 -4xy +121xy+22y^2\Bigr] + \Bigl[-50x^2 -100xy+25xy+50y^2\Bigr]\\[1mm]
+&=(-22-50)x^2 + (121-4-100+25)xy + (22+50)y^2\\[1mm]
+&=-72x^2 + 42\,xy + 72y^2
+\end{aligned}
+\]
+Setting this equal to zero we obtain
+\[
+-72x^2 + 42\,xy + 72y^2=0
+\]
+Set \(t=\frac{y}{x}\quad (x\neq0),\)  rewrite the equation (dividing by \(x^2\)) as
+\[
+-12+7\,t+12t^2=0
+\]
+This is a quadratic in \(t\). We have
+\[
+\Delta=7^2-4(12)(-12)=49+576=625
+\]
+Solve for $t$:
+\[
+t=\frac{-7\pm\sqrt{625}}{24}=\frac{-7\pm25}{24}
+\]
+So we have two solutions:
+\[
+t_1=\frac{18}{24}=\frac{3}{4}\quad \text{and} \quad t_2=\frac{-32}{24}=-\frac{4}{3}
+\]
+
+For \(t=-\frac{4}{3}\), we can choose\(
+   v^{(1)}=\begin{bmatrix} 3 \\ -4 \end{bmatrix}
+   \)  Normalizing it: 
+   \[
+   \|v^{(1)}\|=\sqrt{3^2+(-4)^2}=\sqrt{9+16}=5
+   \]
+   So we instead set $v^{(1)}=\begin{bmatrix} 3/5 \\ -4/5 \end{bmatrix}$.
+
+Similarly, for \(t=\frac{3}{4}\), we obtain $v^{(2)}=\begin{bmatrix} 4/5 \\ 3/5 \end{bmatrix}$
+Thus, we take our right singular vectors (the columns of \(V\)) to be
+\[
+V=\begin{bmatrix} v^{(1)} & v^{(2)} \end{bmatrix}
+=\begin{bmatrix} 3/5 & 4/5 \\ -4/5 & 3/5 \end{bmatrix}
+\]Now compute:
+\[
+A\,v^{(1)}=A\begin{bmatrix} 3/5 \\ -4/5 \end{bmatrix}=
+\begin{bmatrix} -2(3/5)+11(-4/5)\\ -10(3/5)+5(-4/5) \end{bmatrix}
+=\begin{bmatrix} -6/5-44/5 \\ -30/5-20/5 \end{bmatrix}
+=\begin{bmatrix} -50/5 \\ -50/5 \end{bmatrix}
+=\begin{bmatrix} -10 \\ -10 \end{bmatrix}
+\]
+\textbf{This will make $u^{(1)}$ has two many negative signs in it. So we instead let $v^{(1)}:= \begin{bmatrix} -3/5 \\ 4/5 \end{bmatrix}$}
+Then 
+\[
+A\,v^{(1)}=A\begin{bmatrix} -3/5 \\ 4/5 \end{bmatrix}=
+\begin{bmatrix} -2(-3/5)+11(4/5)\\ -10(-3/5)+5(4/5) \end{bmatrix}
+=\begin{bmatrix} 10 \\ 10 \end{bmatrix}
+\]
+Thus the first singular value is
+\[
+\sigma_1=\|A\,v^{(1)}\|=\sqrt{(-10)^2+(-10)^2}=\sqrt{100+100}=10\sqrt2
+\]
+Similarly,
+\[
+A\,v^{(2)}=A\begin{bmatrix} 4/5 \\ 3/5 \end{bmatrix}=
+\begin{bmatrix} -2(4/5)+11(3/5)\\ -10(4/5)+5(3/5) \end{bmatrix}
+=\begin{bmatrix} -8/5+33/5 \\ -40/5+15/5 \end{bmatrix}
+=\begin{bmatrix} 25/5 \\ -25/5 \end{bmatrix}
+=\begin{bmatrix} 5 \\ -5 \end{bmatrix}
+\]
+So
+\[
+\sigma_2=\|A\,v^{(2)}\|=\sqrt{5^2+(-5)^2}=\sqrt{25+25}=5\sqrt2
+\]
+Then we have
+\[
+\Sigma=\begin{bmatrix} 10\sqrt2 & 0\\ 0 & 5\sqrt2 \end{bmatrix}
+\]
+\textbf{Next, we comput the left singular vectors.}\\
+The left singular vectors are given by
+\[
+u^{(i)}=\frac{1}{\sigma_i}\,A\,v^{(i)}
+\]
+For \(v^{(1)}\):
+\[
+u^{(1)}=\frac{1}{10\sqrt2}\,A\,v^{(1)}=\frac{1}{10\sqrt2}\begin{bmatrix} 10 \\ 10 \end{bmatrix}=\begin{bmatrix} 1/\sqrt2 \\ 1/\sqrt2 \end{bmatrix}
+\]
+For \(v^{(2)}\):
+\[
+u^{(2)}=\frac{1}{5\sqrt2}\,A\,v^{(2)}=\frac{1}{5\sqrt2}\begin{bmatrix} 5 \\ -5 \end{bmatrix}=\begin{bmatrix} 1/\sqrt2 \\ -1/\sqrt2 \end{bmatrix}
+\]
+Thus, the left singular vectors (the columns of \(U\)) are
+\[
+U=\begin{bmatrix} 1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2 \end{bmatrix}
+\]
+We have now found an SVD
+\[
+A=U\,\Sigma\,V^*,\quad\text{with}
+\]
+\[
+U=\begin{bmatrix} 1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2 \end{bmatrix},\quad
+\Sigma=\begin{bmatrix} 10\sqrt2 & 0\\ 0 & 5\sqrt2 \end{bmatrix},\quad
+V=\begin{bmatrix} -3/5 & 4/5 \\ 4/5 & 3/5 \end{bmatrix}
+\]
+By verifying the matrix product, we have made it right.\\\\
+\end{solution}
+
+    (b) List the singular values, left singular vectors, and right singular vectors of $A$. Draw a careful, labeled picture of the unit ball in $\mathbb{R}^2$ and its image under $A$, together with the singular vectors, with the coordinates of their vertices marked.\\
+    \begin{solution}
+        \textbf{of 2(4)(b):}\\
+\textbf{Singular values:} \(\sigma_1=10\sqrt2\) and \(\sigma_2=5\sqrt2.\)\\
+\textbf{Right singular vectors:} \[
+  v^{(1)}=\begin{bmatrix} -3/5 \\ 4/5 \end{bmatrix},\quad
+  v^{(2)}=\begin{bmatrix} 4/5 \\ 3/5 \end{bmatrix}.
+  \]\textbf{Left singular vectors:} \[
+  u^{(1)}=\begin{bmatrix} 1/\sqrt2 \\ 1/\sqrt2 \end{bmatrix},\quad
+  u^{(2)}=\begin{bmatrix} 1/\sqrt2 \\ -1/\sqrt2 \end{bmatrix}.
+  \]
+\pic[0.5]{assets/hw2(4).png}
+        
+    \end{solution}
+
+    (c) What are the 1-, 2-, $\infty$-, and Frobenius norms of $A$?
+    \begin{solution}
+        \textbf{of 2(4)(c):}\\
+        Recall: \(\|A\|_1\) is equivalent to maximum column absolute sum: \[
+   \|A\|_1=\max\{|-2|+|-10|,\;|11|+|5|\}=\max\{2+10,\,11+5\}=\max\{12,16\}=16
+   \]
+Recall: \(\|A\|_\infty\) is equivalent to maximum row absolute sum: \[
+   \|A\|_\infty=\max\{|-2|+|11|,\;|{-10}|+|5|\}=\max\{2+11,\,10+5\}=\max\{13,15\}=15
+   \]
+Recall: \(\|A\|_2 = \sigma_1\), so \[
+   \|A\|_2=10\sqrt2
+   \]
+Recall: \(\|A\|_F\) is the squared sum of all singular values:  \[
+   \|A\|_F=\sqrt{2\times 100 + 2\times 25}=\sqrt{250}=5\sqrt{10}
+   \]
+
+    \end{solution}
+
+    (d) Find $A^{-1}$ not directly, but via the SVD.
+    \begin{solution}
+        \textbf{of 2(4)(d):}\\
+\[
+A=U\,\Sigma\,V^*,
+\]
+its inverse is
+$$
+A^{-1} = (U\Sigma V^*)^{-1} = (V^*)^{-1} \Sigma^{-1} U^{-1}
+$$
+By orthogonality (inverse it the adjoint), we have then
+$$
+A^{-1} = V  \Sigma^{-1}U^*
+$$
+where \(
+\Sigma^{-1}=\begin{bmatrix}1/(10\sqrt2)&0\\[1mm]0&1/(5\sqrt2)\end{bmatrix}.
+\) Thus we have
+\[
+A^{-1}=\begin{bmatrix} -3/5 & 4/5 \\ 4/5 & 3/5 \end{bmatrix}\begin{bmatrix}1/(10\sqrt2)&0\\ 0&1/(5\sqrt2)\end{bmatrix}\begin{bmatrix} 1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2\end{bmatrix} =  \begin{bmatrix} \frac{1}{20} & -\frac{11}{100} \\[6pt] \frac{1}{10} & -\frac{1}{50} \end{bmatrix}
+\]
+    \end{solution}
+
+    (e) Find the eigenvalues $\lambda_1, \lambda_2$ of $A$.\\
+    \begin{solution}
+        \textbf{of 2(4)(e):} \\
+Set \[
+\det(A-\lambda I)=0,\quad \quad A-\lambda I=\begin{bmatrix} -2-\lambda & 11 \\ -10 & 5-\lambda\end{bmatrix}
+\]
+The determinant is
+\[
+(-2-\lambda)(5-\lambda)-11(-10)=(-2-\lambda)(5-\lambda)+110 = \lambda^2-3\lambda + 100
+\]
+Thus the characteristic equation is:
+\[
+\det(A-\lambda I)=\lambda^2-3\lambda + 100=0
+\]
+The discriminant is:
+\[
+\Delta=9-400 = -391
+\]
+Thus, the eigenvalues are
+\[
+\lambda_{1,2}=\frac{3\pm i\sqrt{391}}{2}.
+\]
+    \end{solution}
+
+    (f) Verify that $\det A = \lambda_1 \lambda_2$ and $\lvert \det A \rvert = \sigma_1 \sigma_2$.
+    \begin{solution}
+        \textbf{of 2(4)(f):}\\
+        Directly we calculate\[
+   \det A=(-2)(5)-11(-10)=-10+110=100
+   \]
+And Product of the Eigenvalues:
+   \[
+   \lambda_1\lambda_2= \frac{9+391}{4} = 100
+   \]
+, verifying that $\det A = \lambda_1 \lambda_2$.\\
+And product of the Singular Values:\[
+   \sigma_1\sigma_2=(10\sqrt2)(5\sqrt2)=50\cdot2=100
+   \]
+, verifying that
+\[
+|\det A|=\sigma_1\sigma_2=100
+\]
+    \end{solution}
+
+    (g) What is the area of the ellipsoid onto which $A$ maps the unit ball of $\mathbb{R}^2$?\\
+\begin{solution}
+\[
+\text{Area}=\pi\,\sigma_1\sigma_2=\pi\,(10\sqrt2)(5\sqrt2)=\pi\,(50\cdot2)=100\pi
+\]
+by the area formula for ellipsoid, since the two singular values are just the length of its principal semiaxes.
+\end{solution}    
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{eigenvalue and singular value magnitude of $2 \times 2$ matrix}
+\textbf{(Follow-up to 5.3)}: Compare the largest-magnitude eigenvalue of 
+    \[
+    A = \begin{bmatrix} -2 & 11 \\ -10 & 5 \end{bmatrix}
+    \]
+    (not of $A^* A$) and the largest singular value of $A$. How do they compare for general $A$? Assuming $\det(A) = \lambda_1 \lambda_2$ and $|\det(A)| = \sigma_1 \sigma_2$, conclude about the smaller eigenvalue of a $2 \times 2$ matrix versus the smaller singular value of that matrix. (Assume no $\lambda$ or $\sigma$ is zero.)
+\begin{solution}
+    \textbf{of 2(5):}\\
+In our example, 
+\[
+\lambda_{1,2}=\frac{3\pm i\sqrt{391}}{2}
+\] The length is:
+\[
+|\lambda_{1}|=|\lambda_{2}|=\sqrt{\Bigl(\frac{3}{2}\Bigr)^2+\Bigl(\frac{\sqrt{391}}{2}\Bigr)^2}=\sqrt{\frac{9+391}{4}}=\sqrt{\frac{400}{4}}=10
+\]
+while
+\[
+\sigma_1=10\sqrt2 \quad \text{and} \quad \sigma_2=5\sqrt2
+\]
+Notice that
+$$
+  |\lambda_1| <\sigma_1 \quad \text{and} \quad |\lambda_2| > \sigma_2
+$$
+Now, denoting the (singular values and) \textbf{eigenvalues in descending order, i.e.} $\lambda_2 \leq \lambda_1$.\\
+\textbf{Claim: for any  $2 \times 2$ matrix, we have: \[
+  |\lambda_1|\le \sigma_1 \quad \text{and} \quad |\lambda_2| \ge \sigma_2
+  \]}\begin{proof} \textbf{of claim:}
+Let $A$ be a $2 \times 2$ matrix, $\lambda_1,\lambda_2$ be its eigenvalues in descending order, $\sigma_1,\sigma_2$ be ites singular values in descending order.\\
+Since for some non-zero eigenvector $v_1$ of $\lambda_1$, we have $A v_1  = \lambda_1 v_1$, we have:
+$$
+|\lambda_1| \leq ||A||_2
+$$, and we know that 
+$$
+||A||_2 = \sigma_1
+$$
+So we have:
+$$
+|\lambda_1| \leq \sigma_1
+$$
+And since 
+$$
+|\det (A)| = |\lambda_1 \lambda_2| = \sigma_1\sigma_2 
+$$, we also have 
+$$
+|\lambda_2| \geq \sigma_2
+$$
+This finishes the proof.  \end{proof}
+
+
+\end{solution}
+
+
+
+
+
+
+\chapter{on QR}
+Matlab/Octave or python is preferred. See me to discuss other possible platforms.
+\section{Experiment: Legendre polynomials}
+(1) Trefethen-Bau Experiment 9.1, Legendre polynomials. Get the plot to work, including axis
+labels, key, etc. (It’s ok to end up with different symbols than the book.)
+
+
+\section{Experiment: Legendre polynomials}
+(2) Trefethen-Bau Experiment 9.2. Again, get the plot to work.
+
+
+
+\section{Experiment: even modified Gram-Schmidt}
+(3) Trefethen-Bau Experiment 9.3. This is a handheld example of instability of even modified
+Gram-Schmidt (which you should implement) versus Householder.
+
+
+
+\section{Experiment: fast Hadamard transform}
+(4) Implement the fast Hadamard transform, FHT, from Homework 1, in Matlab. Save this—
+we’ll build on this for the FFT. We may assume the input is a vector of length 1, 2, 4, 8, 16, . . .;
+a power of 2. Practice recursive functions: On input x, call FHT on the first half x0 of x,
+getting y0 = Hx0, and on the second half x1 of x, getting y1 = Hx1, then output
+[ y0 + y1; y0 - y1]. (If x has length 1, just output x. And reuse y0 and y1; don’t
+recompute.)
+
+
+
+
+
+
+
+\chapter{on FOIL, Karatsuba, FFT}
+
+
+\section*{Problem statement}
+Multiply two $n$-term polynomials, for $n$ a power of 2. That is, the inputs and outputs are coefficient sequences of polynomials, such as $(1,2)$ and $(1,3)$ resulting in $(1,5,6)$, representing: \( (1 + 2x)(1 + 3x) = 1 + 5x + 6 \) \\
+\textbf{Compare three methods: FOIL, Karatsuba, and FFT/IFFT.}
+
+\subsection*{Implementation Details}
+
+\textbf{Copy/modify the implementation of the long FOIL} (First, Outer, Inner, Last) algorithm below, \textbf{implement the Karatsuba algorithm} (e.g., by modifying FOIL), and \textbf{use the built-in FFT and inverse FFT} algorithms.
+
+Multiply polynomials of sizes $n = 4, 8, 16, 32, \dots$ by the three methods and time the results.
+
+\subsection*{Asymptotic Analysis}
+
+Demonstrate runtimes of $n^2$, $n^{\log 3} \approx n^{1.58}$, and $n \log n = n^{1 + \frac{\log \log n}{\log n}} = n^{1+}$, at least for large $n$. How large does $n$ need to be? Plot the runtimes you get on a single plot, in a useful way to compare the exponents, e.g., on a log plot.
+
+\noindent --------------------------------------------------------------------------------------------------------------------------------------
+Below is only definitions, discussion, pointers, hacks, etc., meant to be helpful.
+
+\section*{Definitions}
+\subsection*{FOIL}
+
+The FOIL algorithm multiplies $p$ by $q$ by computing all $n^2$ products of a term in $p$ by a term in $q$, but can be regarded as recursing on the left and right halves of the polynomials.
+
+\subsection*{Karatsuba}
+
+The Karatsuba method does the obvious if $n=1$ and, for larger $n$, does the following:
+
+\begin{itemize}
+    \item Write $p(x) = p_0(x) + x^{n/2}p_1(x)$, where $p_0$ and $p_1$ are $n/2$-term polynomials, the left and right halves of p. Similarly, $q(x) = q_0(x) + x^{n/2} q_1(x)$.
+    \item Similarly, write $q(x) = q_0(x) + x^{n/2}q_1(x)$.
+    \item Recursively multiply $p_0q_0$, $(p_0 + p_1)(q_0 + q_1)$, and $p_1q_1$.
+    \item Output:
+    \[
+    p_0q_0 + [(p_0 + p_1)(q_0 + q_1) - p_0q_0 - p_1q_1]x^{n/2} + p_1q_1x^n.
+    \] That is, subtract, shift, and add the coefficient sequences.
+\end{itemize}
+
+\subsection*{FFT/IFFT}
+The FFT/IFFT approach is:
+\begin{itemize}
+    \item Take the FFT of length $2n$ of coefficient sequences of $p$ and $q$. (evaluate the polynomials at roots of unity)
+    \item Multiply the transforms pointwise. (multiply the evaluations)
+    \item take the inverse FFT. (interpolate from the evaluations to get the coefficients)
+\end{itemize}
+
+\section*{Implementation Notes}
+You need not reimplement fft and ifft, but do make sure that you choose wisely between fft and ifft (one each should do, in either order) and properly handle and interpret any and all pesky factors of 2 (built in should work if we do one each of FFT and IFFT).
+
+More/comments: Timing stuff in seconds on the clock on a single machine is not really repeatable. We don’t know whether, next time the algorithm is run, the same folks will be mining cryptocoin with malware the way they always seem to do on our laptop while we’re doing homework right before the deadline. (Sampling a large number of computer platforms and conditions can make timing information repeatable, but we won’t do that in this class.) It is not fair or useful to compare our implementations to highly optimized professional implementations in Matlab. For example, note that these recursive implementations (solve a size-n problem by solving one or more size-n/2 problems) are perhaps easier for humans to work with and perhaps closer to the mathematical expression, but are relatively slow compared with iterative implementations (loop,
+as with for i = 1:n). Matlab is generally even faster and can make use of available parallel processing of the kind in GPU chips, if the iteration is implicit, e.g.,
+\begin{verbatim}
+octave:8> (1:5).^2
+ans =
+1 4 9 16 25
+\end{verbatim}
+Please restrict the goal to illustrating the exponents of n, and what size n is needed to see the asymptotics, for the algorithms separately. Measure the timings several times and average, and discard the first run at each sitting, because the first run often involves the computer loading software like fft from disc or from across the network, but the software is often cached for the second and subsequent runs.
+
+Your implementations should be oblivious (non-adaptive), meaning they do the same multipli￾cations, etc., on all input data. But it’s possible that something like fft() does a smart thing and, for example, outputs 0 if the inputs are all 0. So pick some random numbers or at least non-zero numbers for your polynomials, but don’t worry further about that.
+
+
+
+
+
+\section*{Sample Code (FOIL Algorithm)}
+
+\begin{verbatim}
+function c = foil( a, b)
+% FOIL algorithm for multiplying polynomials given by equal-length arrays
+% of their coefficients and outputting an array of coefs of the product.
+% Break arrays into left halves and right halves and recursively foil the halves.
+
+% should check length(a) == length(b) is a power of 2
+    "calling with: " % For debugging. Semi-colon at end of line doesn’t print
+    a               % No semi-colon, so prints
+    b 
+    len = length(a);        % single equals for assignment
+    if (len == 1)           % double equals for equality
+        c = [0, a .* b];    % Supply extra 0 on left.
+                            % Use .* for term-wise multiplication of vectors.
+        return;
+    end
+    
+    a_left = a(1:len/2);
+    a_right = a(len/2 + 1 : len);
+    b_left = b(1:len/2);
+    b_right = b(len/2 + 1 : len);
+    
+    c = [foil(a_left, b_left), zeros(1, len)] + ...
+        [zeros(1, len/2), foil(a_left, b_right), zeros(1, len/2)] + ...
+        [zeros(1, len/2), foil(a_right, b_left), zeros(1, len/2)] + ...
+        [zeros(1, len), foil(a_right, b_right)];
+    "returning: "
+    c
+    return;
+end
+\end{verbatim}
+
+\section*{Timing Example}
+Here’s some timing information. The first line is the first time I used FFT at the session. It probably took some time to load, that was not seen in the second and third calls.
+\begin{verbatim}
+octave:5> tic; fft(1:4); toc
+Elapsed time is 0.000986814 seconds.
+octave:6> tic; fft(1:4); toc
+Elapsed time is 4.22001e-05 seconds.
+octave:7> tic; fft(1:4); toc
+Elapsed time is 4.3869e-05 seconds.
+\end{verbatim}
+
+\section*{My Answer}
+\subsection*{my implementation}
+\paragraph*{karatsuba.m}
+\begin{lstlisting}
+%   karatsuba.m
+%   The method computes:
+%       p0 = a_left * b_left,
+%       p2 = a_right * b_right,
+%       p1 = (a_left+a_right) * (b_left+b_right),
+%   then combines these as:
+%       c = p0 + (p1 - p0 - p2)*x^(n/2) + p2*x^n.
+function ckara = karatsuba(a, b)
+    n = length(a);
+    if n == 1
+        ckara = a * b;
+        return;
+    end
+    
+    m = n/2;
+    a_left  = a(1:m);
+    a_right = a(m+1:end);
+    b_left  = b(1:m);
+    b_right = b(m+1:end);
+    
+    p0 = karatsuba(a_left, b_left);         % length = 2*m - 1
+    p3 = karatsuba(a_right, b_right);        % length = 2*m - 1
+    p1 = karatsuba(a_left + a_right, b_left + b_right);  % length = 2*m - 1
+    
+    mid = p1 - p0 - p3;
+    
+    ckara = zeros(1, 2*n - 1);
+    ckara(1:(2*m - 1)) = ckara(1:(2*m - 1)) + p0;
+    ckara(m+1 : m + (2*m - 1)) = ckara(m+1 : m + (2*m - 1)) + mid;
+    ckara(2*m+1 : 2*m + (2*m - 1)) = ckara(2*m+1 : 2*m + (2*m - 1)) + p3;
+end
+\end{lstlisting}
+
+\paragraph*{fft.m}
+\begin{lstlisting}
+function c_fft = fftpoly(a, b)
+    n = length(a);
+    % The product have length 2n-1
+    N = 2*n - 1;
+    Nfft = 2^(nextpow2(N)); % Next power of 2 >= N
+    A = fft(a, Nfft);
+    B = fft(b, Nfft);
+    C = A .* B;
+    c_fft = ifft(C);
+    c_fft = c_fft(1:N);
+end
+\end{lstlisting}
+
+
+\paragraph*{runPolyMult.m}
+\begin{lstlisting}
+clear; clc; close all;
+
+% Define sizes: n is a power of 2. Here we set till 2^12
+nVals = 2.^(2:12);
+numTrials = 5; 
+foilTimes = zeros(size(nVals));
+karatsubaTimes = zeros(size(nVals));
+fftTimes = zeros(size(nVals));
+
+for i = 1:length(nVals)
+    n = nVals(i);
+    % Generate two random polynomials of length n.
+    a = rand(1, n);
+    b = rand(1, n);
+    
+    % FOIL
+    t = 0;
+    for trial = 1:(numTrials+1)
+        tic;
+        cfoil = foil(a, b);
+        elapsed = toc;
+        t = t + elapsed;
+        end
+    end
+    foilTimes(i) = t / numTrials;
+    
+    % Karatsuba
+    t = 0;
+    for trial = 1:(numTrials+1)
+        tic;
+        ckara = karatsuba(a, b);
+        elapsed = toc;
+        t = t + elapsed;
+        end
+    end
+    karatsubaTimes(i) = t / numTrials;
+    
+    % FFT/IFFT
+    t = 0;
+    for trial = 1:(numTrials+1)
+        tic;
+        cfft = fftpoly(a, b);
+        elapsed = toc;
+        t = t + elapsed;
+        end
+    end
+    fftTimes(i) = t / numTrials;
+    
+    % (debugging: verify that all three methods yield similar results.)
+    if norm(cfoil - ckara) > 1e-6 || norm(cfoil - cfft) > 1e-6
+       warning('Discrepancy detected in results for n = %d', n);
+    end
+end
+
+% Display the data
+T = table(nVals', foilTimes', karatsubaTimes', fftTimes', ...
+    'VariableNames', {'n', 'FOIL', 'Karatsuba', 'FFT'});
+disp(T);
+
+% Plot the timing (log-log scale)
+figure;
+loglog(nVals, foilTimes, 'o-', 'LineWidth', 2); hold on;
+loglog(nVals, karatsubaTimes, 's-', 'LineWidth', 2);
+loglog(nVals, fftTimes, 'd-', 'LineWidth', 2);
+xlabel('Polynomial Size n');
+ylabel('Average Time (sec)');
+legend('Foil', 'Karatsuba', 'FFT', 'Location', 'NorthWest');
+title('Timing Comparison for Polynomial Multiplication Methods');
+grid on;
+
+\end{lstlisting}
+
+
+\subsection*{data output}
+Performance output:
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+n & FOIL & Karatsuba & FFT \\
+\hline
+4 & 0.00021732 & 0.00023902 & 0.00015654 \\
+8 & 6.815e-05 & 6.8042e-05 & 1.1175e-05 \\
+16 & 0.00051273 & 0.00025568 & 8.9582e-06 \\
+32 & 0.00090484 & 0.00070701 & 1.475e-05 \\
+64 & 0.0044866 & 0.0012748 & 3.2775e-05 \\
+128 & 0.01507 & 0.002922 & 3.8533e-05 \\
+256 & 0.046232 & 0.0074241 & 2.91e-05 \\
+512 & 0.18168 & 0.021587 & 3.13e-05 \\
+1024 & 0.72908 & 0.064685 & 4.9542e-05 \\
+2048 & 2.8741 & 0.19373 & 6.4425e-05 \\
+4096 & 11.79 & 0.64112 & 0.00016662 \\
+\hline
+\end{tabular}
+\caption{Performance Comparison of FOIL, Karatsuba, and FFT}
+\end{table}
+
+
+\subsection*{graph}
+Below is the log plot of the performance output:
+\pic[0.95]{hw4/matlab/output.jpg}
+
+
+
+\subsection*{asymptotic analysis}
+For Foil and Karatsuba, the theoratical asymptotic relation between $\Delta t$ and $\Delta n $ should be constant 2 and 1.58 respectively, which is linear. In our graph, we can see exactly the trend. For FFT, it is asmptotically the fastest algorithm, having a theoratical complexity of  \(O(n \log n)\). Thus on a log–log plot:
+\[
+\frac{\log(\text{Time})}{\log(n)} 
+\sim \frac{\log n + \log(\log n)}{\log n} =1 + \frac{\log(\log n)}{\log n}
+\]
+Since \(\frac{\log(\log n)}{\log n} \to 0\) as \(n \to \infty\), the slope tends to be around constant 1 for large \(n\). The trend can be seen after $n$ reaches $10^3$.
+
+
+
+
+
+\chapter{Midterm practice}
+\section{Overview}
+
+Midterm 1 covers sections I and II in Trefethen Bau and our study of the Discrete Fourier Transform and FFT algorithm. The midterm may involve computation, but only (near-) minimum cases to illustrate the mathematics, not giant computations better suited for computation. Generally, that means $2\times2$ or $3\times3$ matrices, but also large sparse matrices (mostly zeros). For the midterm, you’ll need to describe algorithms in English and pseudocode, but not do any coding that should be done with the feedback of a computer. Simple proofs are fair game. Geometric and symbol-pushing views and their connections. We’ve seen some examples involving stability, but we haven’t yet started studying it thoroughly.
+
+\section{Details}
+
+\begin{enumerate}
+    \item 	extbf{Matrix-vector multiplication}: In $AB$, each column of $B$ picks out a linear combination of columns of $A$. That includes $B = v$, a vector. Each row of $A$ picks out a linear combination of rows of $B$.
+    
+    \item 	extbf{Vandermonde matrices}: $V\vec{c} = \vec{y}$ says that a polynomial with coefficient sequence $\vec{c}$, when evaluated at points in column number 1 of $V$ (starting with the all-1’s column as number zero), gives the values in $\vec{y}$. Fourier $F$ and $F^*$ are examples.
+    
+    \item 	extbf{Basics}: range, nullspace, determinant, inverse, rank, transpose, adjoint (conjugate-transpose), inner products, outer products, etc.
+    
+    \item 	extbf{Orthogonal vectors}: resolution of a vector into orthogonal components, unitary matrices, multiplying a unitary matrix by a vector as change of bases, dot products, projection: for vector $v$ and unit vector $u$, the expressions $v$ onto scalar $u^*v$ or vector $u(u^*v)$, which scales $u$ by $u^*v$, and $(uu^*)v = u(u^*v)$, in which the outer product $uu^*$ projects $v$ orthogonally onto the span of $u$.
+    
+    \item 	extbf{Kronecker product and Hadamard product}.
+    
+    \item 	extbf{Preservation and transformation of properties}: $(AB)^{-1} = B^{-1}A^{-1}$, Kronecker product of unitary is unitary, etc.
+    
+    \item 	extbf{p-norms of vectors}, with intuition for $p = 1, 2, \infty$. Unit balls under these norms. Induced matrix norms. Computing 1- and $\infty$- norms of matrices. Working with 2-norm of matrices (e.g., computing from singular value decomposition as the largest singular value). Simple bounds on norms, e.g., $\max(M) \leq \|M\|_1$, $\|M\|_{\infty} \leq \max(m,n)\max(M)$, $\|AB\| \leq \|A\| \cdot \|B\|$, norms of structured matrices (diagonal, rank-1), Frobenius norm. Unitary transformations preserve 2-norm and Frobenius, Cauchy-Schwarz.
+    
+    \item 	extbf{SVD}: computing for $2\times2$ matrices (but not bigger, unless the matrix is structured). Geometric interpretations (semi-major and semi-minor axes of ellipses; rotate-scale along axes-rotate), full and reduced, orthogonal to orthogonal bases, low-rank approximations, reading determinant, etc., from the SVD.
+    
+    \item 	extbf{Orthogonal projections}: changing some 1’s to 0 in the identity matrix in a natural basis, $QQ^*$ for orthogonal $Q$, complementary projections.
+    
+    \item 	extbf{QR factorizations}: from classic Gram-Schmidt, modified Gram-Schmidt, and Householder, orthogonal polynomials, solving $Ax = b$ using $QRx = b$.
+    
+    \item 	extbf{Projections and Reflections}, and their natural bases.
+    
+    \item 	extbf{Least squares}: Minimize $\|Ax - b\|_2$ when $b$ is not in the range of $A$. Geometric view, with right angle at closest point $Ax^*$: the vector $b - Ax^*$ is normal to the hyperplane range$(A)$. By normal equations, QR factorization, and SVD factorization.
+    
+    \item 	extbf{Computational cost in $O()$ form} (not caring about constant factors) for algorithms we’ve seen (including FFT).
+    
+    \item 	extbf{Complex numbers}: $re^{i\theta} = r\cos(\theta) + ir\sin(\theta)$, roots of unity, complex conjugates $re^{i\theta} = re^{-i\theta}$ and $a + bi = a - bi$.
+    
+    \item 	extbf{FFT}: Algorithm for $F_6 = F_2 \otimes F_3$, etc., using Kronecker product of Fouriers of relatively-prime order, FFT of length a power of 2 via polynomial interpolation at roots of unity, Fourier diagonalizes the cyclic shift operator $S$.
+\end{enumerate}
+
+\section{Exclusions (from Midterm, but still good stuff!)}
+
+\begin{enumerate}
+    \item Calculations and computations beyond (near-) minimum to illustrate math principles.
+    \item Proof of correctness and efficiency of the FFT of the form $F_6 = F_2 \otimes F_3$.
+    \item Multi-dimensional FFT.
+    \item Full analysis of stability.
+    \item Advanced vocabulary is off (though basic terms like vector and matrix are fair game). Minus signs and factors of 2, etc., will be provided, especially where the literature varies on definitions.
+\end{enumerate}
+
+
+\section*{Question 1 (5 points)}
+
+Suppose \( A = \begin{bmatrix} 1 & -1 \\ 1 & 5 \\ 0 & 6 \end{bmatrix} \).
+
+Explain key steps, commenting on runtime. Illustrate the steps in a way that generalizes to bigger matrices and higher dimensions.
+
+\begin{enumerate}
+    \item[(a)] (1 point) Find a reduced QR factorization of \( A \) by classical Gram-Schmidt (which orthonormalizes columns \( 1 \) to \( j \) of \( A \) before considering column \( j+1 \)). Make the diagonal elements of \( R \) non-negative reals.
+    
+    \item[(b)] (1 point) Let \( b = \begin{bmatrix} 2 \\ 8 \\ 15 \end{bmatrix} \). Find \( x \) to minimize \( \|Ax-b\| \), using a reduced QR factorization. Comment on the runtime (not including time to find the QR factorization), including how that generalizes to bigger matrices.
+    
+    \item[(c)] (1 point) Find a column, \( b_3 \), orthogonal to the range of \( A \). Let \( B = [A \ b_3] \). (No cross product without a lot of explanation on how to generalize the cross product to higher dimensions.)
+    
+    \item[(d)] (1 point) Find a full QR factorization \( QR \) of \( A \). Explain.
+    
+    \item[(e)] (1 point) Solve \( Bx = b \), for the \( b \) above.
+\end{enumerate}
+
+\section*{Question 2 (1 point)}
+
+Let \( C = \begin{bmatrix} * & * \\ * & * \\ * & * \end{bmatrix} \). Find a reduced QR factorization of \( C \) by Householder (which triangularizes one column at a time of \( A \), choosing a sign or complex unit strategically). Make the diagonal elements of \( R \) non-negative reals.
+
+\section*{Question 3 (1 point)}
+
+Find a 4-term polynomial \( p(z) \) through the following points:
+
+\begin{center}
+\begin{tabular}{c|c}
+    \( z \) & \( p(z) \) \\
+    \hline
+    1 & 4 \\
+    \( i \) & 8 \\
+    \( -1 \) & -4 \\
+    \( -i \) & 12 \\
+\end{tabular}
+\end{center}
+
+\section*{Question 4 (1 point)}
+
+Recall that, if \( Av = \lambda v \), then \( v \) is an eigenvector of \( A \) with corresponding eigenvalue \( \lambda \). Find eigenvectors and eigenvalues of
+
+\[
+\begin{bmatrix}
+    -1 & 1 \\
+    -1 & 1 \\
+    -1 & 1 \\
+     1 & -1
+\end{bmatrix}.
+\]
+
+\section*{Question 5 (1 point)}
+
+For \( A = \begin{bmatrix} 2 & -1 \\ -3 & 5 \\ 0 & 6 \end{bmatrix} \), find \( \|A\|_{\infty} \) and a witnessing \( x \neq 0 \) that maximizes \( \frac{\|Ax\|_{\infty}}{\|x\|_{\infty}} \). Briefly explain.
+
+
+
+
+
+
+\section*{Question 6 (4 points)}
+
+Suppose \( A \) is given by its SVD as
+
+\[
+A = \left( \frac{1}{3} \begin{bmatrix} 1 & -2 \\ 2 & 1 \\ 2 & 0 \\ 0 & 2 \end{bmatrix} \right) \left( \frac{3}{\sqrt{2}} \begin{bmatrix} 3 & 0 \\ 0 & 2 \end{bmatrix} \right) \left( \frac{1}{\sqrt{2}} \begin{bmatrix} 1 & 1 \\ -1 & 1 \end{bmatrix} \right).
+\]
+
+Note the columns of the left parenthesized expression are orthonormal, as are the rows of the right parenthesized expression.
+
+\begin{enumerate}
+    \item[(a)] (1 point) Write \( A \) as a sum of rank-1 matrices.
+    
+    \item[(b)] (1 point) Find \( \|A\|_2 \), using the geometric interpretation of SVD that shows \( A \) taking a circle to an ellipse. Briefly explain.
+    
+    \item[(c)] (1 point) What is the rank-1 approximation \( \tilde{A} \) to \( A \) that minimizes \( \|\tilde{A} - A\|_2 \)? For that \( \tilde{A} \), what is the error \( \|\tilde{A} - A\|_2 \)? Briefly explain, assuming SVDs are unique up to shifting of complex unit factors and the like.
+    
+    \item[(d)] (1 point) For \( b = \begin{bmatrix} 8 \\ -13 \\ -9 \\ -8 \end{bmatrix} \), find the \( x \) that minimizes \( \|Ax - b\|_2 \), illustrating how to use the SVD to solve faster than from scratch, in general.
+\end{enumerate}
+
+
+
+
+
+
+\chapter{on conditioning}
+
+\begin{center}
+  \Large \textbf{Homework 5} \\
+  Math 571, Winter, 2025 \\
+  Due: 11:59pm, Monday, March 17, 2025
+\end{center}
+
+
+\section{Square Root Approximation}
+\textbf{(Problem: \(x\) input; \(\sqrt{x}\) output)}\\
+Find, in your head, an approximation to 
+\[
+\sqrt{4.0004}
+\]
+accurate enough to compare with  \(\sqrt{4} = 2,\) in the sense of determining \(\sqrt{4.0004}-2\) to one digit of accuracy and the correct exponent of 10. Then, compare \(\sqrt{4.0004}-\sqrt{4} \quad \text{with} \quad 4.0004-4\).
+(You may use a calculator or computer, especially to check your work. However, describe how you would perform this computation mentally without working too hard.) Explain your reasoning using the derivative \(f'(4)\) for the function \(f(x)=\sqrt{x}\).\\
+(For differentiable functions such as the square root, we obtain an estimate of the output perturbation from the input perturbation. In practice, we typically seek only a bound on the output perturbation.)
+
+\begin{solution}
+To approximate \( \sqrt{4.0004} \), we use the linear approximation, i.e., first-order Taylor expansion around \( x = 4 \): \[
+f(x) \approx f(4) + f'(4) (x - 4)
+\]
+Since \( f(x) = \sqrt{x} \), its derivative is: \[
+f'(x) = \frac{1}{2\sqrt{x}}
+\]Evaluating at \( x = 4 \): \[
+f'(4) = \frac{1}{2\sqrt{4}} = \frac{1}{4}
+\]
+The input perturbation is: \[
+\delta x = 4.0004 - 4 = 0.0004.
+\]
+Using the linear approximation: \[
+\sqrt{4.0004} \approx \sqrt{4} + f'(4)\delta x = 2+ \frac{1}{4} \times 0.0004 = 2 + 0.0001
+\]
+Thus \[
+\sqrt{4.0004}  \approx 2.0001
+\]
+by our approximation.\\
+The perturbation in \( \sqrt{x} \) is about \( \frac{1}{4} \) of the perturbation in \( x \): \[
+\frac{\sqrt{4.0004} - 2}{4.0004 - 4} \approx \frac{0.0001}{0.0004} = \frac{1}{4}
+\]
+This is for sure becuase we used \[
+\delta y \approx f'(x) \delta x
+\]
+ and \( f'(4) = \frac{1}{4} \). And it is equal to the condition number at $x = 4$:\[
+\hat\kappa (4)  = ||J(4)|| =  |f'(4)|
+\]
+And the relative condition number all over the problem, as we checked in class is $\frac{1}{2}$, which means this is a well-conditioned problem. Since we are only perturbating a little portion of $x$, it should make a small error if we estimate $\delta y $ as \( \hat\kappa (x)\delta x\). \\
+(Check work: the exact difference is approximately \( 0.999975 \times 10^{-4} \), and our estimated difference was \( 1.0 \times 10^{-4} \). The one-digit accuracy and the exponent of 10 is correctly estimated by rounding rule.)
+\end{solution}
+
+
+
+
+
+
+\section{Sensitivity of a Quadratic's Root}
+\textbf{Problem: Quadratic coefficient(s) in; simple root(s) out}\\[1mm]
+Finding a nonzero double root from the coefficients of a polynomial is ill-conditioned, even when the polynomial is quadratic (i.e., low degree). In general, finding a simple root of a high-degree polynomial is ill-conditioned. However, if a quadratic has two roots, \(r_1\) and \(r_2\), that are well-separated (for example, if
+\[
+|r_1 - r_2| > \frac{1}{2}\min(|r_1|,|r_2|)),
+\]
+then finding them is well-conditioned. Two roots that are not well separated behave similarly to a double root.
+
+Consider
+\[
+p(x)=(x-1)(x-3)=x^2-4x+3 = ax^2+bx+c,
+\]
+which has well-separated roots at \(1\) and \(3\).
+\begin{enumerate}[label=(\alph*)]
+    \item Find
+    \[
+    \frac{\partial p(1)}{\partial a}, \quad \frac{\partial p(1)}{\partial b}, \quad \frac{\partial p(1)}{\partial c}.
+    \]
+    \item Using the approximation \(\delta p(1) \approx p'(1)\), find
+    \[
+    \frac{\delta r_1}{\delta a}, \quad \frac{\delta r_1}{\delta b}, \quad \frac{\delta r_1}{\delta c},
+    \]
+    where \(r_1\) is the perturbed version of the root near 1.
+    \item Finally, determine the three condition numbers:
+    \[
+    \frac{\delta r_1/1}{\delta a/1}, \quad \frac{\delta r_1/1}{\delta b/|{-4}|}, \quad \frac{\delta r_1/1}{\delta c/3}.
+    \]
+\end{enumerate}
+\begin{solution}
+The quadratic polynomial is given by: \[
+p(x) = ax^2 + bx + c
+\]
+For our specific quadratic:
+\[
+p(x) = x^2 - 4x + 3
+\]
+Now, compute the partial derivatives at \( x = 1 \):  \[
+   \frac{\partial p(x)}{\partial a} = x^2,\quad  \frac{\partial p(x)}{\partial b} = x, \quad   \frac{\partial p(x)}{\partial c} = 1
+   \]Evaluating at \( x = 1 \): \[
+   \frac{\partial p(1)}{\partial a} = 1^2 = 1,\quad  \frac{\partial p(1)}{\partial b} = 1,\quad  \frac{\partial p(x)}{\partial c} = 1
+   \]
+
+Now we compute \( \frac{\delta r_1}{\delta a} \), \( \frac{\delta r_1}{\delta b} \), and \( \frac{\delta r_1}{\delta c} \): 
+The root \(r_1\) near 1 satisfies \(p(r_1)=0\). When the coefficients are perturbed, we write
+\[
+\delta p(1) \approx p(r_1) + p'(1)\,\delta r_1 =  p'(1)\,\delta r_1 
+\]
+where \(p'(x)=2ax+b\) and, for \(a=1\) and \(b=-4\), we have
+\[
+p'(1)=2(1)+(-4)=2-4=-2.
+\]
+And perturbation in the coefficients causes
+\[
+\delta p(1)=\frac{\partial p(1)}{\partial a}\,\delta a+\frac{\partial p(1)}{\partial b}\,\delta b+\frac{\partial p(1)}{\partial c}\,\delta c = \delta a+\delta b+\delta c
+\]
+Setting this equal to the linearized change due to the shift in the root, we have: \[
+\delta a+\delta b+\delta c \approx p'(1)\,\delta r_1 = -2\,\delta r_1
+\]
+Thus solving for \(\delta r_1\): \[
+\delta r_1 \approx -\frac{1}{2}(\delta a+\delta b+\delta c).
+\]
+If we consider the effect with only \(\delta a\) nonzero: \(\delta r_1/\delta a = -\frac{1}{2}\). Similarly \(\delta r_1/\delta b = -\frac{1}{2}\), \(\delta r_1/\delta c = -\frac{1}{2}\).\\
+Then the condition numbers: 
+\begin{align*}
+     \frac{|\delta r_1/1|}{|\delta a/1|} &= \frac{\frac{1}{2}|\delta a|}{|\delta a|} = \frac{1}{2}\\  \frac{|\delta r_1/1|}{|\delta b/4|} &= \frac{\frac{1}{2}|\delta b|}{\frac{1}{4}|\delta b|} = 2 \\
+      \frac{|\delta r_1/1|}{|\delta c/3|} &= \frac{\frac{1}{2}|\delta c|}{\frac{1}{3}|\delta c|} = \frac{3}{2} = 1.5
+\end{align*}\end{solution}
+
+
+
+
+
+
+\section{Sensitivity for a Quadratic with Nearly Equal Roots}
+Consider
+\[
+q(x)=(x-999)(x-1001)=x^2-2000x+999999,
+\]
+which has roots at \(999\) and \(1001\). These roots are not well separated relative to their near-common magnitude (approximately \(1000\)). Repeat the analysis from Problem 2 for \(q(x)\) and show that the condition numbers are large.
+\begin{solution}\[
+p(x)=ax^2+bx+c
+\]
+We calculate partial derivatives:
+\[
+\frac{\partial p(r_1)}{\partial a} = r_1^2,\quad \frac{\partial p(r_1)}{\partial b} = r_1,\quad \frac{\partial p(r_1)}{\partial c} = 1
+\]
+At \(r_1=999\), these become:
+\[
+\frac{\partial q(999)}{\partial a} = 999^2,\quad \frac{\partial q(999)}{\partial b} = 999,\quad \frac{\partial q(999)}{\partial c} = 1
+\]
+Since \(q(r_1)=0\), a perturbation in the coefficients causes a change in the polynomial value at \(r_1\):
+\[
+\delta q(999) \approx \frac{\partial q(999)}{\partial a}\,\delta a + \frac{\partial q(999)}{\partial b}\,\delta b + \frac{\partial q(999)}{\partial c}\,\delta c
+\]
+And by Taylor’s expansion we also have
+\[
+\delta q(999) \approx q'(999)\,\delta r_1
+\]
+For \(q(x)=x^2-2000x+999999\), the derivative is
+\[ q'(x)=2x-2000
+\]
+so at \(x=999\) we get:
+\[
+q'(999)=2\cdot 999 - 2000 = 1998 - 2000 = -2
+\]
+Thus,
+\[
+999^2\,\delta a + 999\,\delta b + \delta c \approx -2\,\delta r_1
+\]
+i.e.
+\[
+\delta r_1 \approx -\frac{1}{2}\Bigl(999^2\,\delta a + 999\,\delta b + \delta c\Bigr)
+\]
+Considering perturbations in one coefficient at a time:
+1. with only \(\delta a\) nonzero:  \[
+  \frac{\delta r_1}{\delta a} = -\frac{999^2}{2}
+  \]
+2. with only \(\delta b\) nonzero:  \[
+  \frac{\delta r_1}{\delta b} = -\frac{999}{2}
+  \]
+3. with only \(\delta c\) nonzero: \[
+  \frac{\delta r_1}{\delta c} = -\frac{1}{2}
+  \]
+Thus, the condition number is: 
+\begin{align*}
+    \kappa_a &= \frac{\frac{999}{2}|\delta a|}{|\delta a|} = \frac{999}{2} = 499.5\\
+    \kappa_b &= \frac{\frac{1}{2}|\delta b|}{\frac{|\delta b|}{2000}} = \frac{1}{2}\cdot 2000 = 1000\\
+    \kappa_c &= \frac{\frac{1}{2}\frac{|\delta c|}{999}}{\frac{|\delta c|}{999999}} = \frac{1}{2}\cdot\frac{999999}{999} \approx 500.5
+\end{align*}
+\end{solution}
+
+
+
+
+\section{Scaling and Its Effect on Condition Numbers}
+Finally, let
+\[
+\hat{x}=\frac{x}{1000},
+\]
+so that \(x\) is measured in meters and \(\hat{x}\) in kilometers. Define the scaled coefficients as
+\[
+\hat{a}=1000000\,a,\quad \hat{b}=1000\,b,\quad \hat{c}=c.
+\]
+Then the polynomial transforms to
+\[
+\hat{a}\hat{x}^2+\hat{b}\hat{x}+\hat{c} = 1000000\,\hat{x}^2 - 2000000\,\hat{x} + 999999 = 1000000\Bigl(\hat{x}^2-2\hat{x}+0.999999\Bigr).
+\]
+Show that the factor ``kilo'' (from \(x\) to \(\hat{x}\)) and the corresponding scaling of the coefficients cancel out in the computation of the condition numbers, so that the condition numbers remain the same whether the measurements are in meters or kilometers. Also, demonstrate that multiplying the entire polynomial by \(1000000\) does not change the condition numbers. (For example, note that 2\,kV plus 3\% yields 2.06\,kV, and 2000\,V plus 3\% yields 2060\,V; scaling commutes with relative error, as in \(1000\cdot1.03=1.03\cdot1000\). In other words, we are effectively considering the polynomial
+\[
+y^2-2y+0.999999\approx y^2-2y+1,
+\]
+which exhibits a double root situation at the appropriate scale.)
+
+\begin{solution}
+Change of variable: \[
+\hat{x}=\frac{x}{1000}
+\]
+Scaled coefficients: \[
+\hat{a}=1000000\,a,\quad \hat{b}=1000\,b,\quad \hat{c}=c
+\]
+The polynomial becomes: \[
+\hat{a}\hat{x}^2+\hat{b}\hat{x}+\hat{c}=1000000\,\hat{x}^2-2000000\,\hat{x}+999999
+\]
+Factor out $1000000$: \[
+1000000\Bigl(\hat{x}^2-2\hat{x}+0.999999\Bigr)
+\]
+Note the relative pertubation in the root is then  \[
+   \frac{\delta \hat{r}_1}{\hat{r}_1}=\frac{\delta (r_1/1000)}{r_1/1000}=\frac{\delta r_1}{r_1}
+   \]
+And the relative pertubation in the root is also the same by scaling (since it is relative). Thus \[
+   \kappa_{\hat{a}}=\frac{\displaystyle \frac{|\delta \hat{r}_1|}{|\hat{r}_1|}}{\displaystyle \frac{|\delta \hat{a}|}{|{a}|}} = \frac{\displaystyle \frac{|\delta {r}_1|}{|\hat{r}_1|}}{\displaystyle \frac{|\delta {a}|}{|{a}|}} = \kappa_{{a}}
+   \]
+Same rule applies for $\kappa_{{b}}, \kappa_{{c}}$. Thus condition numbers remain the same regardless of whether the measurements (scaling).
+\end{solution}
+
+
+
+
+
+
+
+
+
+
+\end{document}
