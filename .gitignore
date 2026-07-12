@@ -46,3 +46,8 @@ core.*
 
 # JavaScript dependencies
 node_modules/
+
+# Generated blog
+_site/
+dist/
+.astro/
