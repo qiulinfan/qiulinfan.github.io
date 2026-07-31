@@ -90,6 +90,59 @@ local function title_from_head(head, kind)
   return text
 end
 
+local function latex_title_from_head(head, kind)
+  if head == nil or #head.content == 0 then
+    return ""
+  end
+  local block = head.content[1]
+  local inlines = block.content or {}
+  if #inlines == 1 and inlines[1].t == "Strong" then
+    inlines = inlines[1].content
+  end
+
+  local result = pandoc.List()
+  local index = 1
+  local label = string.upper(string.sub(kind, 1, 1)) .. string.sub(kind, 2)
+  if inlines[index] ~= nil
+      and inlines[index].t == "Str"
+      and inlines[index].text == label then
+    index = index + 1
+    if inlines[index] ~= nil and inlines[index].t == "Space" then
+      index = index + 1
+    end
+    if inlines[index] ~= nil
+        and inlines[index].t == "Str"
+        and string.match(inlines[index].text, "^%d+[%.%d]*$") then
+      index = index + 1
+      if inlines[index] ~= nil and inlines[index].t == "Space" then
+        index = index + 1
+      end
+    end
+    if inlines[index] ~= nil
+        and inlines[index].t == "Str"
+        and inlines[index].text == ":" then
+      index = index + 1
+      if inlines[index] ~= nil and inlines[index].t == "Space" then
+        index = index + 1
+      end
+    end
+  end
+  while index <= #inlines do
+    result:insert(inlines[index])
+    index = index + 1
+  end
+  if #result == 0 then
+    return ""
+  end
+  local rendered = pandoc.write(
+    pandoc.Pandoc({ pandoc.Plain(result) }),
+    "latex"
+  )
+  rendered = string.gsub(rendered, "^%s+", "")
+  rendered = string.gsub(rendered, "%s+$", "")
+  return rendered
+end
+
 local function latex_escape_title(title)
   if title == "" then
     return ""
@@ -165,9 +218,9 @@ local function markdown_semantic_div(element, kind, title, body)
   )
 end
 
-local function latex_environment(element, kind, title, body)
+local function latex_environment(element, kind, title, body, title_is_latex)
   local begin = "\\begin{" .. kind .. "}"
-  local rendered_title = latex_escape_title(title)
+  local rendered_title = title_is_latex and title or latex_escape_title(title)
   if rendered_title ~= "" then
     if kind == "example" then
       begin = begin .. "[" .. rendered_title .. "]"
@@ -208,7 +261,13 @@ local function convert_callout(element, kind)
   )
   local title = head and title_from_head(head, kind) or ""
   if FORMAT:match("latex") then
-    return latex_environment(element, kind, title, body)
+    return latex_environment(
+      element,
+      kind,
+      latex_title_from_head(head, kind),
+      body,
+      true
+    )
   end
   return markdown_semantic_div(element, kind, title, body)
 end
@@ -364,6 +423,8 @@ local function normalize_math(element)
   end
   element.text = string.gsub(element.text, "\\mathbb{([PENQRZ])}\\ ", "\\mathbb{%1}")
   element.text = string.gsub(element.text, "≔", ":=")
+  element.text = string.gsub(element.text, "⊄", "\\not\\subset")
+  element.text = string.gsub(element.text, "∌", "\\not\\ni")
   return element
 end
 
@@ -421,13 +482,24 @@ local function normalize_link(element)
 end
 
 local function normalize_image(element)
+  local style = element.attributes.style or ""
+  local percentage = string.match(style, "width:%s*([%d%.]+%%)")
+  if percentage ~= nil then
+    element.attributes.width = percentage
+    element.attributes.height = nil
+    element.attributes.style = nil
+  end
   if FORMAT:match("latex") then
     element.src = string.gsub(
       element.src,
-      "^[^/]+%.assets/(.+)%.svg$",
-      "assets/%1.pdf"
+      "^[^/]+%.assets/(.+)$",
+      "assets/%1"
     )
-    element.src = string.gsub(element.src, "%.svg$", ".pdf")
+    element.src = string.gsub(
+      element.src,
+      "%.svg$",
+      ".pdf"
+    )
   end
   return element
 end
@@ -440,6 +512,12 @@ local function normalize_figure(element)
     caption = string.gsub(caption, "^Table%s+%d+:%s*", "")
     table.caption = pandoc.Caption(caption)
     return table
+  end
+  if FORMAT:match("latex") then
+    local blocks = pandoc.List({ pandoc.RawBlock("latex", "\\begin{center}") })
+    blocks:extend(element.content)
+    blocks:insert(pandoc.RawBlock("latex", "\\end{center}"))
+    return blocks
   end
   return nil
 end

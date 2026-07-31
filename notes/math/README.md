@@ -39,8 +39,8 @@ make clean-all
 `make docs` 只构建本地站点。这个仓库统一由根目录的 Astro 工程发布，
 课程子目录不应单独执行 `mkdocs gh-deploy`。
 
-版本控制中保留 `docs/` 下的章节 PDF；整书 `main.pdf` 以及 `build/`、
-`site/` 等中间产物只保留在本地，不提交到 Git。
+版本控制只保留可编辑源文件、导出快照和必要的原始图片资源。整书 PDF、
+章节 PDF、分页预览图以及 `build/`、`site/` 等中间产物都不提交到 Git。
 
 ## 当前课程讲义工程
 
@@ -61,5 +61,9 @@ make clean-all
 为唯一权威源，并生成完整、可直接编辑的 LaTeX 与 Markdown 快照。
 
 `prob/` 已完成首个全量迁移：五章讲义、六份作业、147 个知识图谱节点和
-14 张 CeTZ 图均由 Typst 维护，并通过 PDF/HTML、Markdown 解析和独立
-LuaLaTeX 编译验证。其他课程仍应按课程逐一清点、迁移和验收。
+14 张 CeTZ 图均由 Typst 维护。`measure-theory/` 也已迁移为 Typst 权威源；
+其他课程仍应按课程逐一清点和迁移。发布流程只运行导出与 HTML 乱码/结构
+检查，网页由 GitHub Pages 自动构建发布。
+
+- Probability: <https://qiulinfan.github.io/qlblog/notes/math/probability/>
+- Measure Theory: <https://qiulinfan.github.io/qlblog/notes/math/measure-theory/>

@@ -5,14 +5,16 @@
 The legacy LaTeX files remain as the migration baseline.
 
 ```sh
-make
-make homeworks
-make export
-make export-check
+make                 # export snapshots and check both HTML entry points
+make export          # editable LaTeX and Markdown snapshots only
+make web-check
+make homeworks-web-check
 ```
 
-Generated main PDFs, HTML, and intermediate files stay under the ignored
+Generated HTML, optional local PDFs, and intermediate files stay under the ignored
 `../build/typst/` directory. Editable LaTeX and Markdown snapshots are written
 to `../exports/notes/` and `../exports/homeworks/`. Each snapshot is
 self-contained: its `main.tex` or `main.md` can be opened and edited without
 the Typst toolchain. Regeneration always starts from the Typst authority.
+GitHub Pages publishes the notes at
+<https://qiulinfan.github.io/qlblog/notes/math/probability/>.

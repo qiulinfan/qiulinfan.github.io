@@ -378,7 +378,7 @@ $$F_{Y}(y) = {\mathbb{P}}(X^{2} \leq y) = {\mathbb{P}}( - \sqrt{y} \leq X \leq \
 
 Compute each integral:
 
-[∫1𝑦12𝑥2𝑑𝑥=12∫1𝑦𝑥−2𝑑𝑥=12−𝑥−11𝑦=12(1−1𝑦)]{.math display="block"}
+[∫1y12x2dx=12∫1yx−2dx=12−x−11y=12(1−1y)]{.math display="block"}
 
 and similarly $\int_{- \sqrt{y}}^{- 1}\frac{1}{2x^{2}}\, dx = \frac{1}{2}\left( {1 - \frac{1}{\sqrt{y}}} \right)$ since the function is even. Therefore, for $y \geq 1$,
 
@@ -610,7 +610,7 @@ $$f(x,y) = \left\{ \begin{matrix}
 
   Hence,
 
-  [ℙ(𝑋+𝑌\<0)=∫−10(−𝑥32)𝑑𝑥=−12⋅𝑥44−10=18]{.math display="block"}
+  [ℙ(X+Y\<0)=∫−10(−x32)dx=−12⋅x44−10=18]{.math display="block"}
 
 - By def,
 
@@ -735,7 +735,7 @@ A machine produces a coin that shows heads with a random probability $p$. The va
 
   The unconditional probability of heads on the first toss is
 
-  [ℙ(H on first toss)=𝔼\[𝑝\]=∫01/2𝑝⋅2𝑑𝑝=2⋅𝑝2201/2=14]{.math display="block"}
+  [ℙ(H on first toss)=E\[p\]=∫01/2p⋅2dp=2⋅p2201/2=14]{.math display="block"}
 
 - Let $T$ be the number of tosses until the first tail occurs. Conditional on $p$, tails occurs with probability $1 - p$ each toss, so $T$ is geometric with parameter $1 - p$. Hence
 
@@ -743,7 +743,7 @@ A machine produces a coin that shows heads with a random probability $p$. The va
 
   Taking expectation over $p$,
 
-  [𝔼\[𝑇\]=𝔼\[11−𝑝\]=∫01/211−𝑝⋅2𝑑𝑝=2−ln(1−𝑝)01/2=2ln2]{.math display="block"}
+  [E\[T\]=E\[11−p\]=∫01/211−p⋅2dp=2−ln(1−p)01/2=2ln2]{.math display="block"}
 :::
 
 ## Problem 6 {#problem-6-3}
@@ -772,7 +772,7 @@ $$f_{X,Y}(x,y) = \left\{ \begin{matrix}
 
   For fixed $x$,
 
-  [∫02(𝑥2+𝑥𝑦2)𝑑𝑦=2𝑥2+𝑥2⋅𝑦2202=2𝑥2+𝑥]{.math display="block"}
+  [∫02(x2+xy2)dy=2x2+x2⋅y2202=2x2+x]{.math display="block"}
 
   Thus
 
@@ -796,7 +796,7 @@ $$f_{X,Y}(x,y) = \left\{ \begin{matrix}
 
   For fixed $x$,
 
-  [∫0𝑥(𝑥2+𝑥𝑦2)𝑑𝑦=𝑥3+𝑥2⋅𝑦220𝑥=𝑥3+𝑥34=54𝑥3]{.math display="block"}
+  [∫0x(x2+xy2)dy=x3+x2⋅y220x=x3+x34=54x3]{.math display="block"}
 
   Therefore
 
@@ -816,7 +816,7 @@ $$f_{X,Y}(x,y) = \left\{ \begin{matrix}
 
   For fixed $x$,
 
-  [∫1/22(𝑥2+𝑥𝑦2)𝑑𝑦=𝑥2(2−12)+𝑥2⋅𝑦221/22=32𝑥2+𝑥4(4−14)=32𝑥2+1516𝑥]{.math display="block"}
+  [∫1/22(x2+xy2)dy=x2(2−12)+x2⋅y221/22=32x2+x4(4−14)=32x2+1516x]{.math display="block"}
 
   Thus
 

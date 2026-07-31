@@ -15,6 +15,9 @@
 **/*.bcf
 **/*.run.xml
 
-# Whole-book PDFs are local build products. Chapter PDFs under docs/ are
-# intentionally not ignored, so they can be versioned.
+# Generated PDFs and pagination previews stay local. The repository keeps
+# editable sources/snapshots and their authored figure assets instead.
 **/main.pdf
+**/docs/*.pdf
+**/pages/
+**/contact-sheets/

@@ -1,11 +1,13 @@
-.PHONY: all pdf web homeworks export export-notes export-homeworks check export-check
+.PHONY: all release pdf web web-check homeworks homeworks-web homeworks-web-check export export-notes export-homeworks check export-check
 
 TYPST := typst
 TOOLCHAIN := ../../toolchain/typst-template
 BUILD := ../build/typst
 EXPORTS := ../exports
 
-all: pdf web check
+all: release
+
+release: export web-check homeworks-web-check
 
 pdf:
 	@mkdir -p $(BUILD)
@@ -16,9 +18,22 @@ web:
 	@$(TYPST) compile --root ../../.. --features html --format html \
 		main.typ $(BUILD)/index.html
 
+web-check: web
+	@python3 ../../../../skills/export-typst-math-notes/scripts/check_web.py \
+		$(BUILD)/index.html --expected-nodes 161 --expected-diagrams 14
+
 homeworks:
 	@mkdir -p $(BUILD)
 	@$(TYPST) compile --root ../../.. homeworks.typ $(BUILD)/homeworks.pdf
+
+homeworks-web:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../../.. --features html --format html \
+		homeworks.typ $(BUILD)/homeworks.html
+
+homeworks-web-check: homeworks-web
+	@python3 ../../../../skills/export-typst-math-notes/scripts/check_web.py \
+		$(BUILD)/homeworks.html --expected-nodes 0 --expected-diagrams 0
 
 export: export-notes export-homeworks
 

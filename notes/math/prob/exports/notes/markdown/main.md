@@ -585,17 +585,17 @@ def monty_hall_sim(trials=10000):
     stay_wins = 0
     switch_wins = 0
     for _ in range(trials):
-        # 初始化门: 0代表羊, 1代表车 
+        # 初始化门: 0代表羊, 1代表车
         doors = [0, 0, 0]
         car_position = random.randint(0, 2)
         doors[car_position] = 1
-        
+
         # 玩家最初的选择
         player_choice = random.randint(0, 2)
 
         # 主持人打开一扇有山羊的门
         possible_host_doors = [
-            i for i in range(3) 
+            i for i in range(3)
             if i != player_choice and doors[i] == 0
         ]
         host_opens = random.choice(possible_host_doors)
@@ -605,7 +605,7 @@ def monty_hall_sim(trials=10000):
             stay_wins += 1
         # 如果"换门"赢了
         remaining_door = [
-            i for i in range(3) 
+            i for i in range(3)
             if i != player_choice and i != host_opens
         ][0]
         if doors[remaining_door] == 1:
@@ -617,7 +617,7 @@ def monty_hall_sim(trials=10000):
 运行结果:
 
 ``` {data-lang="terminal"}
-总实验次数: 10000  
+总实验次数: 10000
 坚持不换中奖次数: 3312 (概率: 33.12%)
 换门后中奖次数: 6688 (概率: 66.88%)
 ```
@@ -1197,7 +1197,7 @@ $$\left. \sum\limits_{i}(b_{i} - a_{i}) < \delta\Longrightarrow\sum\limits_{i} \
 
   $$\left. T_{F}(x) := \sup\sum\limits_{i = 1}^{n} \middle| F(x_{i}) - F(x_{i - 1}) \mid - \infty < x_{0} < \cdots < x_{n}\  \right.$$
 
-   
+
 
 - 如果 $T_{F}(\infty) < \infty$ (注意这是单调递增函数, 因而即对于任意的 $x$ 都有 $T_{F}(x) < \infty$), 那么我们称 $F$ 是一个 **function of bounded variation**, 写作 $F \in BV$.
 
@@ -1632,7 +1632,7 @@ $$\text{Cov}(X,Y) = \sigma_{X}\sigma_{Y}\rho(X,Y)$$
 
 - $\rho(X,Y) \in \lbrack - 1,1\rbrack$
 
-- 如果 $\rho(X,Y) = 1$, 那么 $Y = aX + b$ for some $a > 0$ and $b$; 如果 $\rho(X,Y) = - 1$, 那么 $Y = aX + b$ for some $a < 0$ and $b$. 
+- 如果 $\rho(X,Y) = 1$, 那么 $Y = aX + b$ for some $a > 0$ and $b$; 如果 $\rho(X,Y) = - 1$, 那么 $Y = aX + b$ for some $a < 0$ and $b$.
 
 - By Cauchy-Schwarz inequality, $\left. |\text{Cov}(X,Y) \middle| \leq \sigma_{X}\sigma_{Y} \right.$.
 :::
@@ -2224,7 +2224,7 @@ $$X \sim \mathcal{N}(0,1)$$
 
   则
 
-  [𝐼2=∫0∞𝑒−𝑦22𝑑𝑦⋅∫0∞𝑒−𝑥22𝑑𝑥=∫ℝ≥02𝑒−𝑥2+𝑦22𝑑𝑥𝑑𝑦=∫0𝜋/2∫0∞𝑒−𝑟22𝑟𝑑𝑟𝑑𝜃=∫0𝜋/2−𝑒−𝑟220∞𝑑𝜃=∫0𝜋/21𝑑𝜃=𝜋2]{.math display="block"}
+  [I2=∫0∞e−y22dy⋅∫0∞e−x22dx=∫ℝ≥02e−x2+y22dxdy=∫0π/2∫0∞e−r22rdrdθ=∫0π/2−e−r220∞dθ=∫0π/21dθ=π2]{.math display="block"}
 
   从而得到 $I = \frac{\sqrt{2\pi}}{2}$. 因而 $\int_{- \infty}^{\infty}e^{- \frac{x^{2}}{2}}\, dx = \sqrt{2\pi}$, 因而 $\int_{\mathbb{R}}p(x)\, dx = 1$.
 
@@ -2240,7 +2240,7 @@ $$X \sim \mathcal{N}(0,1)$$
 
   因为这是一个 **odd function**. 从而
 
-  [𝔼\[𝑋2\]=12𝜋∫ℝ𝑥2𝑒−𝑥22𝑑𝑥=12𝜋∫ℝ𝑥(𝑥𝑒−𝑥22)𝑑𝑥=12𝜋∫ℝ𝑥(𝑒−𝑥22)′𝑑𝑥=−12𝜋𝑥𝑒−𝑥22−∞∞+12𝜋∫ℝ𝑒−𝑥22𝑑𝑥=0+1=1]{.math display="block"}
+  [E\[X2\]=12π∫ℝx2e−x22dx=12π∫ℝx(xe−x22)dx=12π∫ℝx(e−x22)′dx=−12πxe−x22−∞∞+12π∫ℝe−x22dx=0+1=1]{.math display="block"}
 
   从而:
 
@@ -2294,7 +2294,7 @@ $$X \sim \mathcal{N}(0,1)$$
 
 为什么 normal random variables 非常重要: 因为有一个 universality property called **central limit theorem.** 之后的章节我们会展开讨论:
 
-##### 任意的 random variable, 只要 expectation 和 variance 都是 finite 的, 那么它们的叠加极限都会服从 normal distribution. 
+##### 任意的 random variable, 只要 expectation 和 variance 都是 finite 的, 那么它们的叠加极限都会服从 normal distribution.
 
 这里我们先给出一个 special case of central limit theorem:
 
@@ -2324,7 +2324,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-##### 除此之外 need to mention: Poission distribution 当 $\lambda\rightarrow\infty$ 时, 也得到 normal distribution. 
+##### 除此之外 need to mention: Poission distribution 当 $\lambda\rightarrow\infty$ 时, 也得到 normal distribution.
 
 这并不是一个令人惊讶的事情. 也可以用 central limit theorem 来解释. 因为 recall: Poisson distribution 有一个很重要的 property: additivity. 因而 $\lambda\rightarrow\infty$ 也可以看作 $n$ 个 i.i.d. Poisson distribution 的 sum 在 $n\rightarrow\infty$ 时的极限行为, 从而通过 central limit theorem 得到 normal distribution.
 

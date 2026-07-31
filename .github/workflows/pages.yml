@@ -1,0 +1,75 @@
+name: Deploy blog and math notes to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.14.4 --activate
+
+      - name: Set up Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: 0.15.1
+
+      - name: Build blog
+        run: |
+          pnpm --dir site install --frozen-lockfile
+          pnpm --dir site build
+
+      - name: Export and check math-note HTML
+        run: |
+          make -C notes/math/prob/typst web-check homeworks-web-check
+          make -C notes/math/measure-theory/typst web-check extras-web-check
+
+      - name: Add math notes to Pages artifact
+        run: |
+          mkdir -p site/dist/notes/math/probability/homeworks
+          mkdir -p site/dist/notes/math/measure-theory/extras
+          cp notes/math/prob/build/typst/index.html site/dist/notes/math/probability/index.html
+          cp notes/math/prob/build/typst/homeworks.html site/dist/notes/math/probability/homeworks/index.html
+          cp notes/math/measure-theory/build/typst/index.html site/dist/notes/math/measure-theory/index.html
+          cp notes/math/measure-theory/build/typst/extras.html site/dist/notes/math/measure-theory/extras/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

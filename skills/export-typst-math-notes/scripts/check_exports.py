@@ -75,7 +75,10 @@ def markdown_environments(text: str) -> tuple[collections.Counter[str], dict[str
     # Attribute values can contain TeX braces (for example
     # aliases="L^2_0(\\Omega, \\mathbb{P})"), so match the complete
     # single-line attribute block instead of stopping at the first `}`.
-    fence = re.compile(r"^:{3,}\s+(\{[^\n]+\}|[A-Za-z][\w-]*)\s*$", re.MULTILINE)
+    fence = re.compile(
+        r"^[ \t]*:{3,}\s+(\{[^\n]+\}|[A-Za-z][\w-]*)\s*$",
+        re.MULTILINE,
+    )
     for match in fence.finditer(text):
         spec = match.group(1)
         if spec.startswith("{"):
@@ -141,13 +144,19 @@ def citation_keys(markdown: str, latex: str) -> tuple[set[str], set[str]]:
 def asset_paths(markdown: str, latex: str) -> tuple[set[Path], set[Path]]:
     markdown_assets = {
         Path(value)
-        for value in re.findall(r"\]\(([^)\s]+\.svg)\)", markdown)
+        for value in re.findall(
+            r"\]\(([^)\s]+\.(?:svg|png|jpe?g|webp|gif))\)",
+            markdown,
+            flags=re.IGNORECASE,
+        )
     }
     latex_assets = {
         Path(value)
         for value in re.findall(
-            r"\\includegraphics(?:\[[^\]]*\])?\{(assets/[^}]+\.pdf)\}",
+            r"\\includegraphics(?:\[[^\]]*\])?"
+            r"\{(assets/[^}]+\.(?:pdf|png|jpe?g|webp|gif))\}",
             latex,
+            flags=re.IGNORECASE,
         )
     }
     return markdown_assets, latex_assets
@@ -245,11 +254,15 @@ def check(args: argparse.Namespace) -> None:
     ]
     if misplaced:
         raise CheckError(
-            "Markdown SVGs must use the Typora sidecar directory "
+            "Markdown images must use the Typora sidecar directory "
             f"{expected_asset_dir}/: {sorted(map(str, misplaced))}"
         )
     for relative in markdown_assets:
-        read_text(markdown_dir / relative)
+        asset = markdown_dir / relative
+        if relative.suffix.lower() == ".svg":
+            read_text(asset)
+        elif not asset.is_file():
+            raise CheckError(f"missing required file: {asset}")
     for relative in latex_assets:
         if not (latex_dir / relative).is_file():
             raise CheckError(f"missing required file: {latex_dir / relative}")
@@ -261,13 +274,15 @@ def check(args: argparse.Namespace) -> None:
             f"Markdown: {sorted(markdown_stems)}\n"
             f"LaTeX: {sorted(latex_stems)}"
         )
+    supported_markdown_assets = {".svg", ".png", ".jpg", ".jpeg", ".webp", ".gif"}
     actual_markdown_assets = {
         path.relative_to(markdown_dir)
-        for path in (markdown_dir / expected_asset_dir).glob("*.svg")
+        for path in (markdown_dir / expected_asset_dir).iterdir()
+        if path.is_file() and path.suffix.lower() in supported_markdown_assets
     }
     if actual_markdown_assets != markdown_assets:
         raise CheckError(
-            "referenced and stored Markdown SVGs differ:\n"
+            "referenced and stored Markdown images differ:\n"
             f"Referenced: {sorted(map(str, markdown_assets))}\n"
             f"Stored: {sorted(map(str, actual_markdown_assets))}"
         )
@@ -308,7 +323,7 @@ def check(args: argparse.Namespace) -> None:
         f"semantic nodes: {declared_count}; "
         f"environments: {sum(markdown_counts.values())}; "
         f"citations: {len(markdown_citations)}; "
-        f"diagrams: {len(markdown_assets)}"
+        f"image assets: {len(markdown_assets)}"
     )
     print(f"Markdown: {markdown_path}")
     print(f"LaTeX: {latex_path}")

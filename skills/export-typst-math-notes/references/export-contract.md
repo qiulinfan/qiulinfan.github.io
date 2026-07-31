@@ -188,6 +188,13 @@ mathematics at arbitrary zoom and is displayed by Typora. Treat PNG as an
 on-demand fallback for a consumer that rejects SVG; do not emit or commit it in
 the default workflow.
 
+This vector rule applies to authored CeTZ diagrams. Legacy screenshots,
+scanned work, and other raster figures may remain PNG/JPEG. Typst can embed
+those authored images in its self-contained HTML; the exporter extracts and
+deduplicates them as deterministic `main.assets/figure-raster-*` files for
+Markdown and matching `assets/figure-raster-*` files for LaTeX. It must never
+leak `data:image/` URIs into either text snapshot.
+
 ## 7. Math aliases
 
 Define common symbols centrally in `math-aliases.typ` and import them into

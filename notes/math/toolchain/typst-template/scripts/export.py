@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import html
 import json
 import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -30,10 +33,40 @@ ATTR_RE = re.compile(
     r"""(?P<name>[-:\w]+)\s*=\s*(?P<quote>["'])(?P<value>.*?)(?P=quote)""",
     flags=re.DOTALL,
 )
+DATA_IMAGE_RE = re.compile(
+    r"(?P<prefix>\bsrc\s*=\s*(?P<quote>[\"']))"
+    r"data:image/(?P<mime>png|jpeg|jpg|webp|gif);base64,"
+    r"(?P<data>[A-Za-z0-9+/=\r\n]+)(?P=quote)",
+    flags=re.IGNORECASE,
+)
+RASTER_SUFFIX = {
+    "png": ".png",
+    "jpeg": ".jpg",
+    "jpg": ".jpg",
+    "webp": ".webp",
+    "gif": ".gif",
+}
 
 
 class ExportError(RuntimeError):
     pass
+
+
+def normalize_snapshot_text(value: str) -> str:
+    """Replace presentation-only mathematical Unicode with editable text."""
+
+    normalized: list[str] = []
+    for character in value:
+        codepoint = ord(character)
+        if 0x1D400 <= codepoint <= 0x1D7FF:
+            normalized.append(unicodedata.normalize("NFKC", character))
+        elif codepoint in {0xFE00, 0xFE0F}:
+            continue
+        else:
+            normalized.append(character)
+    text = "".join(normalized)
+    cleaned = "\n".join(line.rstrip() for line in text.splitlines())
+    return cleaned + ("\n" if text.endswith("\n") else "")
 
 
 def run(command: list[str], *, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
@@ -184,6 +217,47 @@ def extract_diagrams(
     return FIGURE_RE.sub(replace, source_html), names
 
 
+def extract_raster_images(
+    source_html: str,
+    markdown_assets: Path,
+    latex_assets: Path,
+) -> tuple[str, list[str]]:
+    """Extract Typst's self-contained raster images into editable sidecars."""
+
+    raster_suffixes = set(RASTER_SUFFIX.values())
+    clean_generated_assets(markdown_assets, raster_suffixes)
+    clean_generated_assets(latex_assets, raster_suffixes)
+    names: list[str] = []
+    seen: dict[bytes, str] = {}
+
+    def replace(match: re.Match[str]) -> str:
+        mime = match.group("mime").lower()
+        try:
+            payload = base64.b64decode(match.group("data"), validate=True)
+        except (binascii.Error, ValueError) as error:
+            raise ExportError("invalid base64 payload in embedded image") from error
+        if not payload:
+            raise ExportError("empty embedded image payload")
+
+        name = seen.get(payload)
+        if name is None:
+            suffix = RASTER_SUFFIX[mime]
+            name = f"figure-raster-{len(names) + 1:03d}{suffix}"
+            seen[payload] = name
+            names.append(name)
+            (markdown_assets / name).write_bytes(payload)
+            (latex_assets / name).write_bytes(payload)
+
+        quote = match.group("quote")
+        return (
+            match.group("prefix")
+            + f"{markdown_assets.name}/{name}"
+            + quote
+        )
+
+    return DATA_IMAGE_RE.sub(replace, source_html), names
+
+
 def resolve_bibliography(source: Path, value: str | None) -> Path | None:
     if not value:
         return None
@@ -271,6 +345,11 @@ def export(
         markdown_assets,
         latex_assets,
     )
+    converted_html, raster_images = extract_raster_images(
+        converted_html,
+        markdown_assets,
+        latex_assets,
+    )
     prepared_html = build / f"{source.stem}.prepared.html"
     prepared_html.write_text(converted_html, encoding="utf-8")
 
@@ -329,8 +408,12 @@ def export(
         cwd=latex_dir,
     )
 
-    markdown = (markdown_dir / "main.md").read_text(encoding="utf-8")
-    latex = (latex_dir / "main.tex").read_text(encoding="utf-8")
+    markdown_path = markdown_dir / "main.md"
+    latex_path = latex_dir / "main.tex"
+    markdown = normalize_snapshot_text(markdown_path.read_text(encoding="utf-8"))
+    latex = normalize_snapshot_text(latex_path.read_text(encoding="utf-8"))
+    markdown_path.write_text(markdown, encoding="utf-8")
+    latex_path.write_text(latex, encoding="utf-8")
     if "data:image/" in markdown or "data:image/" in latex:
         raise ExportError("embedded data URI leaked into an editable export")
     if diagrams and any(
@@ -339,11 +422,20 @@ def export(
         for name in diagrams
     ):
         raise ExportError("one or more diagram assets were not exported")
+    if raster_images and any(
+        not (markdown_assets / name).is_file()
+        or not (latex_assets / name).is_file()
+        for name in raster_images
+    ):
+        raise ExportError("one or more raster assets were not exported")
 
     print(f"Typst authority: {source}")
     print(f"Editable LaTeX: {latex_dir / 'main.tex'}")
     print(f"Editable Markdown: {markdown_dir / 'main.md'}")
-    print(f"Semantic nodes: {len(nodes)}; diagrams: {len(diagrams)}")
+    print(
+        f"Semantic nodes: {len(nodes)}; diagrams: {len(diagrams)}; "
+        f"raster images: {len(raster_images)}"
+    )
 
 
 def parse_args() -> argparse.Namespace:

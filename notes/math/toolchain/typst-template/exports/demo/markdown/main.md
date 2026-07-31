@@ -26,7 +26,7 @@ title: Measure Theory / 测度论
 
 ## Sigma-algebras
 
-::: {#def-sigma-algebra .definition concepts="sigma-algebra, measurable-space" aliases="σ-algebra, 西格玛代数" depends="set, complement, countable-union"}
+::: {#def-sigma-algebra .definition depends="set, complement, countable-union" aliases="σ-algebra, 西格玛代数" concepts="sigma-algebra, measurable-space"}
 **Definition: Sigma-algebra / σ-代数**
 
 Let $X$ be a set. A family $\mathcal{F} \subseteq 2^{X}$ is a **sigma-algebra** if:
@@ -48,7 +48,7 @@ The pair $\left( {X,\mathcal{F}} \right)$ is called a measurable space.
 
 ## Measures and continuity
 
-::: {#def-measure .definition concepts="measure" aliases="测度" depends="sigma-algebra, countable-additivity"}
+::: {#def-measure .definition depends="sigma-algebra, countable-additivity" aliases="测度" concepts="measure"}
 **Definition: Measure / 测度**
 
 A measure on the measurable space from [Definition 1.1](#def-sigma-algebra) is a map $\mu:\mathcal{F}\Rightarrow\left\lbrack {0,\infty} \right\rbrack$ such that $\mu(\varnothing) = 0$ and
@@ -58,7 +58,7 @@ $$\mu\left( {\cup_{n = 1}^{\infty}E_{n}} \right) = \sum\limits_{n = 1}^{\infty}\
 whenever the sets $E_{1},E_{2},\ldots$ are pairwise disjoint.
 :::
 
-::: {#thm-continuity-below .theorem concepts="continuity-from-below" aliases="下连续性" depends="measure, monotone-sequence-of-sets"}
+::: {#thm-continuity-below .theorem depends="measure, monotone-sequence-of-sets" aliases="下连续性" concepts="continuity-from-below"}
 **Theorem: Continuity from below / 下连续性**
 
 If $E_{1} \subseteq E_{2} \subseteq \ldots$ and $E = \cup_{n = 1}^{\infty}E_{n}$, then

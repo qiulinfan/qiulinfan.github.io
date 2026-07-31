@@ -22,7 +22,7 @@ title: Probability export round-trip / 概率论导出试验
 
 # Joint distributions / 联合分布
 
-::: {#def-joint-support .definition depends="random-variable, density" concepts="joint-distribution, support" aliases="联合分布支撑集"}
+::: {#def-joint-support .definition depends="random-variable, density" aliases="联合分布支撑集" concepts="joint-distribution, support"}
 **Definition: Support / 支撑集**
 
 The support of a joint density $f_{X,Y}$ is the set on which $f_{X,Y}\left( {x,y} \right) > 0$. In the region below, $\mathbb{P}\left( {\left( {X,Y} \right) \in A} \right)$ is obtained by integrating over $A$.

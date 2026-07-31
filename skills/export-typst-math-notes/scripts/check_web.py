@@ -20,8 +20,10 @@ class QLNotesHTMLParser(HTMLParser):
         self.title_parts: list[str] = []
         self.has_site_shell = False
         self.has_toc = False
+        self.has_utf8_charset = False
         self.math_count = 0
         self.svg_count = 0
+        self.data_image_count = 0
         self.semantic_ids: list[str] = []
         self.diagram_ids: list[str] = []
         self.diagram_svg: list[bool] = []
@@ -35,6 +37,8 @@ class QLNotesHTMLParser(HTMLParser):
 
         if tag == "title":
             self.in_title = True
+        if tag == "meta" and values.get("charset", "").lower().replace("-", "") == "utf8":
+            self.has_utf8_charset = True
         if "ql-site" in classes:
             self.has_site_shell = True
         if tag == "nav" and values.get("role") == "doc-toc":
@@ -45,6 +49,8 @@ class QLNotesHTMLParser(HTMLParser):
             self.svg_count += 1
             for index in self._open_diagrams:
                 self.diagram_svg[index] = True
+        if tag == "img" and values.get("src", "").startswith("data:image/"):
+            self.data_image_count += 1
 
         identifier = values.get("data-ql-id")
         if identifier:
@@ -82,10 +88,12 @@ def check(args: argparse.Namespace) -> None:
     if not html_path.is_file():
         raise CheckError(f"missing HTML output: {html_path}")
     text = html_path.read_text(encoding="utf-8")
-    if "data:image/" in text:
-        raise CheckError("embedded data URI found; diagrams must remain inline SVG")
     if "\ufffd" in text:
         raise CheckError("replacement character found in generated HTML")
+    mojibake_markers = ("Ã", "Â", "â€", "ï¿½", "锟斤拷")
+    found_mojibake = [marker for marker in mojibake_markers if marker in text]
+    if found_mojibake:
+        raise CheckError(f"common mojibake marker found: {found_mojibake}")
 
     parser = QLNotesHTMLParser()
     parser.feed(text)
@@ -93,6 +101,8 @@ def check(args: argparse.Namespace) -> None:
 
     if not parser.title:
         raise CheckError("HTML document has no title")
+    if not parser.has_utf8_charset:
+        raise CheckError("HTML document does not declare UTF-8")
     if not parser.has_site_shell:
         raise CheckError("HTML document has no ql-site responsive shell")
     if not parser.has_toc:
@@ -129,6 +139,7 @@ def check(args: argparse.Namespace) -> None:
     print(
         f"title: {parser.title}; semantic IDs: {len(parser.semantic_ids)}; "
         f"diagrams: {len(parser.diagram_ids)}; inline SVGs: {parser.svg_count}; "
+        f"embedded authored images: {parser.data_image_count}; "
         f"math elements: {parser.math_count}"
     )
 

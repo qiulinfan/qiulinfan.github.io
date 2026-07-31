@@ -56,6 +56,7 @@ def expand_math_aliases(source: str) -> str:
         r"\card": r"\operatorname{card}",
         r"\supp": r"\operatorname{supp}",
         r"\avint": r"\operatorname{avg}",
+        r"\ds": r"\displaystyle",
     }
     # Replace longer names first so `\bigintsec` is not partially rewritten
     # through the shorter `\intsec` alias.
@@ -69,6 +70,11 @@ def expand_math_aliases(source: str) -> str:
     source = re.sub(r"\\not\s+\\bot\b", r"\\not\\perp", source)
     source = re.sub(r"\\Bigm\b", r"\\Big", source)
     source = re.sub(r"\\newline\b", r"\\,", source)
+    source = re.sub(
+        r"\{([^{}]+)\\over\s+([^{}]+)\}",
+        r"\\frac{\1}{\2}",
+        source,
+    )
     source = re.sub(r"\\bf\{([A-Za-z])\}", r"\\mathbf{\1}", source)
     source = re.sub(r"\\b([A-Z])(?![A-Za-z])", r"\\mathbb{\1}", source)
     source = re.sub(r"\\c([A-Z])(?![A-Za-z])", r"\\mathcal{\1}", source)
@@ -267,6 +273,84 @@ def hoist_example_supporting_blocks(source: str) -> tuple[str, int]:
     return source, changes
 
 
+def replace_typst_function(
+    source: str,
+    name: str,
+    replacement: str,
+) -> tuple[str, int]:
+    """Rewrite a generated Typst math function while preserving its body."""
+
+    pattern = re.compile(rf"\b{re.escape(name)}\(")
+    cursor = 0
+    changes = 0
+    while match := pattern.search(source, cursor):
+        body_start = match.end() - 1
+        body_end = _matching_delimiter(source, body_start, "(", ")")
+        body = source[body_start + 1 : body_end]
+        rewritten = replacement.format(body=body)
+        source = source[: match.start()] + rewritten + source[body_end + 1 :]
+        changes += 1
+        cursor = match.start() + len(rewritten)
+    return source, changes
+
+
+def normalize_typst_output(source: str) -> tuple[str, int]:
+    """Normalize Pandoc output for paged and experimental HTML targets."""
+
+    changes = 0
+    # Typst's HTML backend currently ignores `overline`; `accent` preserves the
+    # notation in both paged PDF and HTML output.
+    source, rewritten = replace_typst_function(
+        source,
+        "overline",
+        "accent({body}, macron)",
+    )
+    changes += rewritten
+    # `underline` is currently dropped by Typst's MathML exporter. Express the
+    # same lower bar as an under-attachment, which survives both targets.
+    source, rewritten = replace_typst_function(
+        source,
+        "underline",
+        "attach(limits({body}), b: macron)",
+    )
+    changes += rewritten
+
+    # Pandoc emits set difference as two backslashes. Keep the following union
+    # operator lexically separate so Typst does not parse one unknown symbol.
+    before = source
+    source = source.replace("\\\\union.big", "\\\\ union.big")
+    changes += before.count("\\\\union.big")
+
+    # A TeX exponent or subscript ends before the following relation/spacing
+    # command. Pandoc occasionally omits the separating space in Typst output.
+    source, separated = re.subn(
+        r"\^([A-Za-z0-9]+?)(thin|quad|lt\.eq|gt\.eq|arrow\.r|in\b|dot\.op)",
+        r"^\1 \2",
+        source,
+    )
+    changes += separated
+    source, separated = re.subn(r"_sup(lt\.eq|gt\.eq)", r"_sup \1", source)
+    changes += separated
+    source, separated = re.subn(
+        r"_([A-Za-z0-9]+?)(thin|quad|lt\.eq|gt\.eq|arrow\.r|in\b|dot\.op)",
+        r"_\1 \2",
+        source,
+    )
+    changes += separated
+    source, separated = re.subn(r"\^nm\\\(", r"^n m\\(", source)
+    changes += separated
+    # Pandoc uses scaled one-character wrappers for TeX sizing commands such
+    # as `\bigl`. The scale is ignored in HTML and can detach following
+    # superscripts in MathML, so keep only the delimiter itself.
+    source, unwrapped = re.subn(
+        r"#scale\(x: [^,]+, y: [^)]+\)\[((?:\\[\[\]]|[^\[\]])*)\]",
+        r"\1",
+        source,
+    )
+    changes += unwrapped
+    return source, changes
+
+
 def migrate(
     sources: list[Path],
     output_dir: Path,
@@ -290,13 +374,15 @@ def migrate(
         migrated, hoisted = hoist_example_supporting_blocks(
             output.read_text(encoding="utf-8")
         )
-        if hoisted:
+        migrated, normalized = normalize_typst_output(migrated)
+        if hoisted or normalized:
             output.write_text(migrated, encoding="utf-8")
         all_diagrams.extend(diagrams)
         print(
             f"Migrated {source_path.name} -> {output} "
             f"({len(diagrams)} diagram(s), "
-            f"{hoisted} supporting block(s) hoisted)"
+            f"{hoisted} supporting block(s) hoisted, "
+            f"{normalized} HTML-safe math normalization(s))"
         )
 
     if manifest is not None:

@@ -1,6 +1,6 @@
 ---
 name: export-typst-math-notes
-description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX and produces paged PDF, semantic web HTML, editable LaTeX, and knowledge-graph Markdown. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; build or validate its PDF/web outputs; export Typst to LaTeX or Markdown; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; or extend the QLNotes environment set.
+description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX and produces semantic web HTML, editable LaTeX, and knowledge-graph Markdown, with optional local PDF builds. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; export or publish Typst notes; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; or extend the QLNotes environment set.
 ---
 
 # Export Typst Math Notes
@@ -54,8 +54,9 @@ Keep responsibilities separated:
   LaTeX template/class.
 - Put transient HTML, PDFs, logs, and TeX intermediates under an ignored build
   directory.
-- Commit chapter PDFs only when the repository policy permits them. Do not
-  commit a main PDF or intermediate build products.
+- Never commit generated whole-book PDFs, chapter PDFs, rendered PDF pages,
+  contact sheets, or other pagination previews. Commit only the Typst authority,
+  editable LaTeX/Markdown snapshots, and source assets required by those files.
 
 Do not place raw HTML, CSS, LaTeX layout commands, Pandoc options, or dependency
 setup in course content. Do not silently drop unsupported content.
@@ -130,7 +131,7 @@ relative vector-asset paths. Use the Typora-compatible `<note>.assets/` sidecar
 convention. Keep SVG as the default Markdown and web format; generate PNG only
 as an explicit compatibility fallback.
 
-## Build and validate the web output
+## Build and check the web output
 
 Compile the authoritative entry directly with Typst's HTML target into an
 ignored build directory. Treat the generated HTML as a first-class output, not
@@ -141,12 +142,10 @@ typst compile --features html --format html "$source" "$ignored_build/index.html
 python3 scripts/check_web.py "$ignored_build/index.html"
 ```
 
-Require a document title, QLNotes responsive shell, table of contents, unique
-stable semantic IDs, and one accessible inline SVG for every diagram. Inspect
-HTML warnings: ignore an experimental-backend warning only after proving that
-it changes neither mathematical meaning nor readable layout. Replace unsupported
-math constructs when meaning would be lost; for example, prefer
-`accent(body, macron)` to an HTML-ignored `overline(body)`.
+Require valid UTF-8 without replacement characters or common mojibake, a
+document title, QLNotes responsive shell, table of contents, unique stable
+semantic IDs, and one accessible inline SVG for every diagram. Fix a compiler
+warning only when it indicates failed export or obvious textual corruption.
 
 ## Extend an environment atomically
 
@@ -162,26 +161,28 @@ change:
    does not provide it.
 5. Add the environment to the round-trip fixture and validate both outputs.
 
-Never infer correctness from PDF appearance alone; the semantic metadata and
-editable exports are part of the contract.
+The semantic metadata and editable exports are the contract; a PDF is only an
+optional local convenience output.
 
 ## Validate
 
-Run the repository targets described in
-[references/validation.md](references/validation.md). Then run the skill's
-format-independent checker:
+Use the fast acceptance workflow in
+[references/validation.md](references/validation.md):
 
 ```sh
-python3 /path/to/export-typst-math-notes/scripts/check_exports.py \
-  "$export_dir" --source "$source" --full
+make export
+make web-check
 ```
+
+If both commands succeed, stop. Do not compile or inspect PDFs, render pages,
+compare screenshots, independently compile exported LaTeX, or run broad
+regression suites unless the user explicitly requests deeper QA or an export
+command fails.
 
 If dependencies are missing, run the toolchain's diagnostic first. Install
 packages only when the user has authorized machine changes. Do not install a
 persistent service, watcher, daemon, scheduled task, or messaging integration as
 part of setup.
 
-Report the authoritative source, paged PDF, web HTML, the two editable entry
-files, validation commands, semantic-node count, diagram count, and any
-intentionally unsupported constructs. State explicitly whether the web HTML is
-only a local ignored artifact or has also been integrated into a published site.
+Report the authoritative source, the two editable entry files, and the published
+web route. State explicitly when HTML remains only a local ignored artifact.
