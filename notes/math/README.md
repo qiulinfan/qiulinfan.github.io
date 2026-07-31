@@ -2,8 +2,11 @@
 
 课程讲义型 LaTeX 工程统一采用
 [`qiulinfan/localLatexenv`](https://github.com/qiulinfan/localLatexenv)
-的 ElegantBook 与 LuaLaTeX 工作流。当前同步基准为提交
+的 ElegantBook 与 LuaLaTeX/latexmk 工作流。当前同步基准为提交
 `f62053086eec079f6c7db99eac23d9c66e28b63f`（2026-04-17）。
+
+本地构建依赖 TeX Live（包含 `lualatex`、`latexmk` 与 `biber`）、
+Python 3，以及 MkDocs Material。
 
 ## 标准目录
 
@@ -35,6 +38,9 @@ make clean-all
 
 `make docs` 只构建本地站点。这个仓库统一由根目录的 Astro 工程发布，
 课程子目录不应单独执行 `mkdocs gh-deploy`。
+
+版本控制中保留 `docs/` 下的章节 PDF；整书 `main.pdf` 以及 `build/`、
+`site/` 等中间产物只保留在本地，不提交到 Git。
 
 ## 当前课程讲义工程
 

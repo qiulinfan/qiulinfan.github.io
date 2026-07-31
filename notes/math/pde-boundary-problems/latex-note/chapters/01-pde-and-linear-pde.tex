@@ -47,17 +47,19 @@
     \\如果一个 PDE $F[u] = 0 $ 的 source term 是 0，就称它是一个 homogenous 的 PDE.
 \end{defn}
 
-\proposition 
+\begin{proposition}
 \textbf{显然，如果一个 PDE/ODE 是 homogeneous 的，那么他的任意两个解 $u_1, u_2$ 的任意 linear combination 一定也是它的一个解.}
+\end{proposition}
 
 
 
-\example 
+\begin{example}
 所有的 second-order linear PDEs 都可以写成以下的形式:
 $$
 a(x,y)u_{xx} + b(x,y)u_{xy} + c(x,y)u_{yy} + d(x,y)u_x + e(x,y)u_y + f(x,y)u = g(x,y)
 $$
 $a,b,c,d,e,f$:  coefficients，$g$: source term.
+\end{example}
 
 \begin{defn}
     \deflab{Classifications of second-order linear PDEs}
@@ -65,4 +67,3 @@ $a,b,c,d,e,f$:  coefficients，$g$: source term.
     \\如果任取 $(x,y)$ 都有 $4a(x,y)c(x,y) - b^2(x,y) =0$，则称这个二阶线性 PDE 是 parabolic (抛物)的；
     \\如果任取 $(x,y)$ 都有 $4a(x,y)c(x,y) - b^2(x,y) <0$, 则称这个二阶线性 PDE 是 hyperbolic (双曲)的.
 \end{defn}
-

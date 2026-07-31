@@ -114,11 +114,11 @@ def compile_tex(tex_file, output_dir, project_root):
     output_dir = Path(output_dir)
     project_root = Path(project_root)
 
-    # 检查 lualatex 是否可用
+    # latexmk manages the required LuaLaTeX/Biber reruns.
     try:
-        subprocess.run(['lualatex', '--version'], capture_output=True, check=True)
+        subprocess.run(['latexmk', '--version'], capture_output=True, check=True)
     except (subprocess.CalledProcessError, FileNotFoundError):
-        print("错误: 未找到 lualatex。请安装 TeX Live。")
+        print("错误: 未找到 latexmk。请安装完整的 TeX Live。")
         return None
 
     # 从项目根目录编译
@@ -147,16 +147,15 @@ def compile_tex(tex_file, output_dir, project_root):
             except OSError:
                 pass
 
-        cmd = ['lualatex', '-interaction=nonstopmode',
+        cmd = ['latexmk', '-lualatex', '-interaction=nonstopmode',
                '-halt-on-error', '-file-line-error',
-               f'-output-directory={output_dir}', rel_tex_file_str]
+               f'-outdir={output_dir}', rel_tex_file_str]
 
-        # 编译两次（处理交叉引用）
+        # latexmk repeats LuaLaTeX and runs Biber when required.
         result = subprocess.run(cmd, capture_output=True, text=True)
-        second_result = subprocess.run(cmd, capture_output=True, text=True)
 
-        if result.returncode != 0 or second_result.returncode != 0:
-            details = second_result.stdout or result.stdout or second_result.stderr or result.stderr
+        if result.returncode != 0:
+            details = result.stdout or result.stderr
             if details:
                 print(f"错误: {details[-500:]}")
             return None

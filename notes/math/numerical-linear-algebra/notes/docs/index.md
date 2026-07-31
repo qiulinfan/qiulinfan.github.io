@@ -2,4 +2,15 @@
 
 ## PDFs
 
-No chapter PDFs found in docs/. Run `make` first.
+- [01-tensor-products-and-matrix-multiplication](01-tensor-products-and-matrix-multiplication.md)
+- [02-orthogonal-vectors-and-matrices](02-orthogonal-vectors-and-matrices.md)
+- [03-norms](03-norms.md)
+- [04-svd](04-svd.md)
+- [05-qr-factorization](05-qr-factorization.md)
+- [06-discrete-fourier-transform](06-discrete-fourier-transform.md)
+- [07-conditioning-and-stability](07-conditioning-and-stability.md)
+- [08-backward-error-analysis](08-backward-error-analysis.md)
+
+---
+
+*Generated automatically from docs/*.pdf*

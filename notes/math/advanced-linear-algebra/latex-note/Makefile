@@ -9,8 +9,7 @@ all: chapters
 
 main:
 	@mkdir -p build
-	@lualatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=build main.tex
-	@lualatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=build main.tex
+	@latexmk -lualatex -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build main.tex
 	@mv build/main.pdf main.pdf
 
 chapters:

@@ -23,3 +23,5 @@ extra_css:
 
 nav:
   - Home: index.md
+  - Chapters:
+    - 01-compactness-in-rn: 01-compactness-in-rn.md
