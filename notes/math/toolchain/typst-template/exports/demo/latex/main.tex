@@ -1,0 +1,114 @@
+% Generated from demo.typ. Typst is authoritative; regeneration overwrites this file.
+\documentclass{qlnotes-export}
+
+\title{Measure Theory / 测度论}
+\subtitle{A bilingual prototype for durable mathematical notes}
+\author{Qiulin Fan}
+\date{2026}
+
+\begin{document}
+\frontmatter
+\maketitle
+\tableofcontents
+
+\mainmatter
+\chapter{Foundations / 基础结构}\label{foundations}
+
+本原型保持现有 LaTeX 笔记的辨识度，但把样式从正文中移到模板。 章节、定理、定义、证明、公式和引用都使用语义组件；同一份源文件可以 生成分页 PDF 与响应式网页。
+
+\section{Sigma-algebras}
+
+% qlnotes: kind=definition; id=def-sigma-algebra; concepts=sigma-algebra, measurable-space; depends=set, complement, countable-union; aliases=σ-algebra, 西格玛代数
+\begin{definition}{Sigma-algebra / σ-代数}\label{def-sigma-algebra}
+
+Let \(X\) be a set. A family \(\mathcal{F} \subseteq 2^{X}\) is a \textbf{sigma-algebra} if:
+
+\begin{enumerate}
+\tightlist
+\item
+  \(X \in \mathcal{F}\);
+\item
+  \(E \in \mathcal{F}\) implies \(E^{c} \in \mathcal{F}\);
+\item
+  for every sequence \(\left( E_{n} \right)_{n \geq 1}\) in \(\mathcal{F}\), \(\cup_{n = 1}^{\infty}E_{n} \in \mathcal{F}\).
+\end{enumerate}
+
+The pair \(\left( {X,\mathcal{F}} \right)\) is called a measurable space.
+
+\end{definition}
+
+这里的组件不仅控制视觉样式，也保留了稳定 ID。以后 Markdown 知识图谱 可以直接把 \texttt{sigma-algebra} 识别为概念节点，并记录其前置依赖。
+
+\begin{qlnote}{Authoring principle / 写作原则}
+
+正文只表达语义，不直接指定颜色、边框或网页标签。PDF 和 HTML 的差异 完全由模板中的 \texttt{target()} 分支处理。
+
+\end{qlnote}
+
+\section{Measures and continuity}
+
+% qlnotes: kind=definition; id=def-measure; concepts=measure; depends=sigma-algebra, countable-additivity; aliases=测度
+\begin{definition}{Measure / 测度}\label{def-measure}
+
+A measure on the measurable space from \hyperref[def-sigma-algebra]{Definition~\ref*{def-sigma-algebra}} is a map \(\mu:\mathcal{F}\Rightarrow\left\lbrack {0,\infty} \right\rbrack\) such that \(\mu(\varnothing) = 0\) and
+
+\[\mu\left( {\cup_{n = 1}^{\infty}E_{n}} \right) = \sum\limits_{n = 1}^{\infty}\mu\left( E_{n} \right)\]
+
+whenever the sets \(E_{1},E_{2},\ldots\) are pairwise disjoint.
+
+\end{definition}
+
+% qlnotes: kind=theorem; id=thm-continuity-below; concepts=continuity-from-below; depends=measure, monotone-sequence-of-sets; aliases=下连续性
+\begin{theorem}{Continuity from below / 下连续性}\label{thm-continuity-below}
+
+If \(E_{1} \subseteq E_{2} \subseteq \ldots\) and \(E = \cup_{n = 1}^{\infty}E_{n}\), then
+
+\[\mu(E) = \lim\limits_{n\rightarrow\infty}\mu\left( E_{n} \right).\]
+
+\end{theorem}
+
+\begin{proof}
+
+Set \(A_{1} = E_{1}\) and \(A_{n} = E_{n} \smallsetminus E_{n - 1}\) for \(n \geq 2\). The sets \(A_{n}\) are pairwise disjoint and \(E_{n} = \cup_{k = 1}^{n}A_{k}\). Countable additivity gives
+
+\[\mu(E) = \sum\limits_{k = 1}^{\infty}\mu\left( A_{k} \right) = \lim\limits_{n\rightarrow\infty}\sum\limits_{k = 1}^{n}\mu\left( A_{k} \right) = \lim\limits_{n\rightarrow\infty}\mu\left( E_{n} \right).\]
+
+\end{proof}
+
+\begin{example}[A concrete exhaustion]
+
+On \(\left( {{\mathbb{R}},\mathcal{B}({\mathbb{R}}),\lambda} \right)\), take \(E_{n} = \left\lbrack {- n,n} \right\rbrack\). Then \(E_{n} \uparrow {\mathbb{R}}\) and \(\lambda\left( E_{n} \right) = 2n\rightarrow\infty = \lambda({\mathbb{R}})\).
+
+\end{example}
+
+\chapter{Sustainable components / 可持续组件}
+
+\section{Shared semantic vocabulary}
+
+下表展示当前原型覆盖的第一批可移植结构。它们将在后续转换器中成为 LaTeX、Typst 和 Markdown 的共同契约。
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{The initial QLNotes semantic component set.}\tabularnewline
+\toprule\noalign{}
+\textbf{Component} & \textbf{Typst authoring} & \textbf{Future portable meaning} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\textbf{Component} & \textbf{Typst authoring} & \textbf{Future portable meaning} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Definition & \texttt{\#definition{[}...{]}} & Typed concept node \\
+Theorem & \texttt{\#theorem{[}...{]}} & Claim with stable ID \\
+Proof & \texttt{\#proof{[}...{]}} & Evidence linked to a claim \\
+Note & \texttt{\#note{[}...{]}} & Non-normative annotation \\
+Reference & \texttt{@stable-id} & Directed graph edge \\
+\end{longtable}
+
+\section{References and bibliography}
+
+Stable bibliography keys remain shared with the LaTeX baseline. For example, the presentation here follows the standard development in \autocite{folland1999}. Typst reads the existing BibLaTeX format directly, so the bibliography database does not need to fork.
+
+\printbibliography
+\end{document}

@@ -1,0 +1,451 @@
+:root {
+  color-scheme: light;
+  --ql-ink: #172033;
+  --ql-muted: #667085;
+  --ql-canvas: #f4f7fb;
+  --ql-paper: #ffffff;
+  --ql-border: #dce4ef;
+  --ql-blue: #2574d8;
+  --ql-blue-soft: #eef6ff;
+  --ql-teal: #12988c;
+  --ql-teal-soft: #ecfbf8;
+  --ql-orange: #e66b18;
+  --ql-orange-soft: #fff5ec;
+  --ql-violet: #7657c8;
+  --ql-violet-soft: #f5f1ff;
+  --ql-shadow: 0 18px 50px rgba(24, 39, 75, 0.08);
+}
+
+.ql-site,
+.ql-hero,
+.ql-layout,
+.ql-toc,
+.ql-main,
+.ql-article,
+.ql-callout,
+.ql-note,
+.ql-remark,
+.ql-proof,
+.ql-solution,
+.ql-footer {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ql-canvas);
+}
+
+body {
+  margin: 0;
+  color: var(--ql-ink);
+  background:
+    radial-gradient(circle at 88% -8%, rgba(37, 116, 216, 0.12), transparent 30rem),
+    var(--ql-canvas);
+  font-family: "Libertinus Serif", "Songti SC", "STSong", serif;
+  font-size: 17px;
+  line-height: 1.78;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--ql-blue);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+.ql-site {
+  min-height: 100vh;
+}
+
+.ql-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem max(2rem, calc((100vw - 1160px) / 2));
+  color: white;
+  background:
+    linear-gradient(115deg, rgba(19, 42, 82, 0.98), rgba(22, 139, 139, 0.9)),
+    #17345f;
+}
+
+.ql-hero::after {
+  position: absolute;
+  right: -4rem;
+  bottom: -8rem;
+  width: 24rem;
+  height: 24rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3rem rgba(255, 255, 255, 0.05),
+    0 0 0 7rem rgba(255, 255, 255, 0.035);
+  content: "";
+}
+
+.ql-hero__eyebrow {
+  margin-bottom: 1rem;
+  color: #92e7da;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.ql-hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+  margin: 0;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: clamp(2.35rem, 5.2vw, 4.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.ql-hero__subtitle {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 1.2rem 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.12rem;
+}
+
+.ql-hero__meta {
+  position: relative;
+  z-index: 1;
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.86rem;
+}
+
+.ql-layout {
+  display: grid;
+  grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
+  gap: 2rem;
+  width: min(1160px, calc(100% - 3rem));
+  margin: 2.5rem auto 5rem;
+  align-items: start;
+}
+
+.ql-toc {
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  overflow: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--ql-border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 8px 30px rgba(24, 39, 75, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.ql-toc__label {
+  margin-bottom: 0.75rem;
+  color: var(--ql-muted);
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ql-toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ql-toc li {
+  margin: 0.3rem 0;
+}
+
+.ql-toc a {
+  color: #4c5b70;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.ql-toc a:hover {
+  color: var(--ql-blue);
+}
+
+.ql-main {
+  min-width: 0;
+}
+
+.ql-article {
+  padding: clamp(1.7rem, 4vw, 4rem);
+  border: 1px solid rgba(220, 228, 239, 0.9);
+  border-radius: 18px;
+  background: var(--ql-paper);
+  box-shadow: var(--ql-shadow);
+}
+
+.ql-article h2,
+.ql-article h3,
+.ql-article h4 {
+  scroll-margin-top: 1.5rem;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  line-height: 1.25;
+}
+
+.ql-article h2 {
+  margin: 3.2rem 0 1.15rem;
+  padding-bottom: 0.55rem;
+  color: var(--ql-blue);
+  border-bottom: 1px solid #dce9f8;
+  font-size: 1.7rem;
+}
+
+.ql-article h2:first-child {
+  margin-top: 0;
+}
+
+.ql-article h3 {
+  margin: 2.2rem 0 0.9rem;
+  color: var(--ql-teal);
+  font-size: 1.25rem;
+}
+
+.ql-article p {
+  margin: 0.85rem 0;
+}
+
+.ql-callout {
+  margin: 1.4rem 0;
+  overflow: hidden;
+  border: 1px solid var(--ql-border);
+  border-left-width: 4px;
+  border-radius: 10px;
+}
+
+.ql-callout__head {
+  padding: 0.65rem 1rem;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.ql-callout__body {
+  padding: 0.8rem 1rem 0.95rem;
+  text-align: left;
+}
+
+.ql-callout__body > :first-child {
+  margin-top: 0;
+}
+
+.ql-callout__body > :last-child {
+  margin-bottom: 0;
+}
+
+.ql-callout--definition {
+  border-color: #9adbd3;
+  border-left-color: var(--ql-teal);
+  background: var(--ql-teal-soft);
+}
+
+.ql-callout--definition .ql-callout__head {
+  color: #0d796f;
+  background: rgba(23, 168, 154, 0.09);
+}
+
+.ql-callout--theorem,
+.ql-callout--lemma,
+.ql-callout--corollary {
+  border-color: #f3c59f;
+  border-left-color: var(--ql-orange);
+  background: var(--ql-orange-soft);
+}
+
+.ql-callout--theorem .ql-callout__head,
+.ql-callout--lemma .ql-callout__head,
+.ql-callout--corollary .ql-callout__head {
+  color: #ad4b0b;
+  background: rgba(242, 122, 36, 0.09);
+}
+
+.ql-callout--proposition {
+  border-color: #cfc2ef;
+  border-left-color: var(--ql-violet);
+  background: var(--ql-violet-soft);
+}
+
+.ql-callout--proposition .ql-callout__head {
+  color: #5840a3;
+  background: rgba(118, 87, 200, 0.08);
+}
+
+.ql-callout--example {
+  border-color: #b8d4f5;
+  border-left-color: var(--ql-blue);
+  background: var(--ql-blue-soft);
+}
+
+.ql-callout--example .ql-callout__head {
+  color: #1d5da9;
+  background: rgba(37, 116, 216, 0.08);
+}
+
+.ql-note {
+  margin: 1.2rem 0;
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--ql-blue);
+  border-radius: 0 9px 9px 0;
+  background: var(--ql-blue-soft);
+}
+
+.ql-note__title,
+.ql-remark__title,
+.ql-proof__title,
+.ql-solution__title {
+  display: inline;
+  margin-right: 0.5rem;
+  color: var(--ql-blue);
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-weight: 700;
+}
+
+.ql-proof {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #f1c6a8;
+}
+
+.ql-remark {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #f1c6a8;
+}
+
+.ql-remark__title {
+  color: var(--ql-orange);
+}
+
+.ql-solution {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #a7ded8;
+}
+
+.ql-solution__title {
+  color: var(--ql-teal);
+}
+
+.ql-proof__title {
+  color: var(--ql-orange);
+}
+
+.ql-proof__qed {
+  float: right;
+  color: var(--ql-orange);
+}
+
+math[display="block"] {
+  max-width: 100%;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 9px;
+  background: #f8fafc;
+  text-align: center;
+}
+
+figure {
+  max-width: 100%;
+  margin: 1.4rem 0;
+  overflow-x: auto;
+}
+
+figcaption {
+  color: var(--ql-muted);
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  min-width: 36rem;
+  margin: 0;
+  overflow: hidden;
+  border-collapse: collapse;
+  border: 1px solid var(--ql-border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+}
+
+th,
+td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid var(--ql-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: #314158;
+  background: #f2f6fb;
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-weight: 700;
+}
+
+code {
+  padding: 0.13em 0.38em;
+  border-radius: 4px;
+  color: #8d3b18;
+  background: #fff0e8;
+  font-size: 0.86em;
+}
+
+.ql-footer {
+  padding: 2rem;
+  color: var(--ql-muted);
+  font-family: "PingFang SC", "Arial", sans-serif;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .ql-hero {
+    padding: 3.2rem 1.5rem;
+  }
+
+  .ql-layout {
+    display: block;
+    width: min(100% - 1.5rem, 760px);
+    margin-top: 1rem;
+  }
+
+  .ql-toc {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+  }
+
+  .ql-article {
+    padding: 1.35rem;
+    border-radius: 13px;
+  }
+}
+
+@media print {
+  .ql-toc {
+    display: none;
+  }
+
+  .ql-layout {
+    display: block;
+  }
+
+  .ql-article {
+    border: 0;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,101 @@
+# Legacy LaTeX to QLNotes Typst
+
+## Contents
+
+1. Inventory the authority baseline
+2. Generate a migration draft
+3. Normalize semantics and modules
+4. Port TikZ to CeTZ
+5. Prove migration completeness
+
+## 1. Inventory the authority baseline
+
+Read the LaTeX entry point and distinguish enabled lecture chapters from
+additional course sources such as homework. If the user asks for a full
+migration, include both, but keep separate Typst entry points when the LaTeX
+book did not include the extra material.
+
+Before conversion, record per-file counts for:
+
+- `definition`, `theorem`, `lemma`, `corollary`, `proposition`, and `example`;
+- `proof`, `solution`, `remark`, and `note`;
+- active TikZ blocks, code environments, citations, labels, and references.
+
+Ignore commented TikZ blocks. Keep the old LaTeX and its compiled main PDF as a
+read-only comparison baseline.
+
+## 2. Generate a migration draft
+
+Use the canonical migrator in
+`notes/math/toolchain/typst-template/scripts/migrate_latex.py`:
+
+```sh
+python3 scripts/migrate_latex.py chapters/*.tex \
+  --output-dir /path/to/draft/chapters \
+  --diagram-dir /path/to/ignored-build/tikz \
+  --manifest /path/to/ignored-build/diagrams.json
+```
+
+The migrator:
+
+- expands legacy `\bX`, `\cX`, and `\bfX` aliases before Pandoc;
+- maps theorem-like LaTeX environments to QLNotes components;
+- emits stable ASCII IDs and rewrites internal labels;
+- preserves Python and terminal blocks as native code;
+- extracts active TikZ blocks as named diagram placeholders;
+- hoists nested proof/solution blocks out of examples for safe pagination.
+
+Generate into an isolated draft directory once manual cleanup has begun. Never
+overwrite curated Typst blindly; compare the regenerated draft instead.
+
+## 3. Normalize semantics and modules
+
+Create one Typst authority entry for the lecture book and a second entry for
+homework when applicable. Every included chapter is its own module scope and
+must import the shared QLNotes component and alias modules itself.
+
+Inspect every generated semantic call:
+
+- keep IDs ASCII, unique, stable, and human-readable;
+- replace generic concepts where the source title provides a useful concept;
+- preserve old labels through the rewritten IDs;
+- keep supporting proof/solution blocks as siblings;
+- eliminate raw-LaTeX fallbacks from Typst math;
+- fix implicit LaTeX multiplication that Pandoc can merge, such as `p^kp^r`;
+- keep prose and callouts left-aligned.
+
+Avoid wrapping export-relevant content in paged-only outer `figure` or centered
+table constructs. Typst's experimental HTML target may omit nested content even
+when the paged PDF looks correct.
+
+## 4. Port TikZ to CeTZ
+
+Treat extracted TikZ as a visual specification, not as a retained dependency.
+Implement each active diagram as a zero-argument CeTZ function and replace its
+placeholder with `#diagram(...)`.
+
+Every diagram needs:
+
+- a stable `fig-` ID;
+- a meaningful caption;
+- non-empty alt text describing the relationship shown;
+- successful PDF and HTML rendering.
+
+Keep CeTZ authoritative. Markdown receives SVG in `main.assets/`; LaTeX receives
+the corresponding vector PDF. Do not regenerate TikZ.
+
+## 5. Prove migration completeness
+
+Accept a migration only after:
+
+- the LaTeX and Typst source-file inventories match;
+- every environment count matches by kind;
+- active TikZ count equals the number of CeTZ diagram calls and exported assets;
+- lecture and homework Typst entries compile;
+- HTML and metadata queries succeed;
+- exported Markdown reparses and exported LaTeX compiles independently;
+- PDF contact sheets and representative full-size pages show no overflow,
+  clipping, missing continuation, or unreadable table/diagram.
+
+Compare the migrated PDF against the old main PDF by chapter sequence and
+representative content, not by exact page count. Template pagination will differ.

@@ -1,30 +1,38 @@
 # Probability notes
 
-Math 525 概率论课程笔记。LaTeX 目录结构和构建命令遵循
-[`notes/math/README.md`](../README.md) 中的统一约定。
+Math 525 概率论课程笔记现以 [`typst/`](typst/README.md) 为唯一日常权威源。
+五章课程讲义和六份作业解答都已迁移；原 `chapters/*.tex` 与 `main.tex`
+保留为只读迁移基线。
 
-## 构建
-
-```bash
-make          # 为启用的章节生成 docs/*.pdf
-make main     # 生成整书 main.pdf
-make docs     # 生成并构建本地 MkDocs 页面
-make clean
-```
-
-章节启用顺序由 [`main.tex`](main.tex) 中未注释的 `\input` 命令决定。
-编译引擎为 LuaLaTeX。
-
-## LaTeX / Markdown 转换
-
-本课程额外保留了 `scripts/convert_notes.py`，用于在单个章节的 LaTeX
-和 Markdown 之间做基础结构转换：
+## Typst 构建与导出
 
 ```bash
-python3 scripts/convert_notes.py \
-  chapters/01-combinatorics\&prob_space.tex \
-  --direction tex-to-md
+cd typst
+make                 # 讲义 PDF、HTML 与语义检查
+make homeworks       # 六份作业合集 PDF
+make export          # 同时生成讲义、作业的 LaTeX/Markdown
+make export-check    # 解析 Markdown，并独立编译两份 LaTeX
 ```
 
-该脚本只处理常见标题、定理、列表、图片和数学环境，不是完整的
-LaTeX/Markdown 解析器。转换后应人工检查结果。
+本地 PDF、HTML 和中间文件写入忽略的 `build/typst/`。可提交、可直接编辑的
+快照写入：
+
+```text
+exports/
+├── notes/{latex,markdown}/
+└── homeworks/{latex,markdown}/
+```
+
+Markdown 图使用 Typora 可直接显示的 `main.assets/*.svg`；LaTeX 使用对应的
+`assets/*.pdf`。重新导出会覆盖快照，需长期保留的修改必须回到 Typst。
+
+## 旧 LaTeX 基线
+
+旧工作流仍可用于迁移对照：
+
+```bash
+make main
+```
+
+整书 `main.pdf` 和所有中间产物不提交；`docs/` 下的章节 PDF 可按仓库约定提交。
+旧 `scripts/convert_notes.py` 仅作历史工具，不再承担权威格式转换。

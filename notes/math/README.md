@@ -53,3 +53,13 @@ make clean-all
 - `topological-manifolds/latex-note/`
 
 作业、考试速查表和项目 proposal 属于不同文档类型，不要求使用本目录结构。
+
+## Typst-first toolchain
+
+新的单向导出工具链位于
+[`toolchain/typst-template/`](toolchain/typst-template/README.md)。它以 Typst
+为唯一权威源，并生成完整、可直接编辑的 LaTeX 与 Markdown 快照。
+
+`prob/` 已完成首个全量迁移：五章讲义、六份作业、147 个知识图谱节点和
+14 张 CeTZ 图均由 Typst 维护，并通过 PDF/HTML、Markdown 解析和独立
+LuaLaTeX 编译验证。其他课程仍应按课程逐一清点、迁移和验收。
