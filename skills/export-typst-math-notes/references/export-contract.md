@@ -221,4 +221,6 @@ For a new construct, verify:
 - Generated LaTeX and Markdown may be edited, but edits do not survive the next
   export unless applied back to Typst.
 - Experimental Typst HTML warnings are acceptable only when the build and
-  structural checks pass and no semantic content is lost.
+  structural checks pass and no semantic content or notation is lost. A warning
+  that removes an accent, relation, label, diagram, or other mathematical signal
+  is a failure even when compilation succeeds.

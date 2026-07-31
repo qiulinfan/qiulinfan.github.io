@@ -25,6 +25,9 @@ CODE_RE = re.compile(
     r"(?:\[[^\n]*\])?[ \t]*\n(?P<body>.*?)"
     r"^[ \t]*\\end\{(?P=kind)\}[ \t]*$"
 )
+PIC_RE = re.compile(
+    r"\\pic(?:\[(?P<scale>[^\]]+)\])?\{(?P<path>[^}]+)\}"
+)
 
 
 class MigrationError(RuntimeError):
@@ -37,10 +40,72 @@ def slug(value: str) -> str:
 
 
 def expand_math_aliases(source: str) -> str:
+    simple_commands = {
+        r"\fL": r"\mathcal{L}",
+        r"\sub": r"\subseteq",
+        r"\rar": r"\rightarrow",
+        r"\lar": r"\leftarrow",
+        r"\intsec": r"\bigcap",
+        r"\bigintsec": r"\displaystyle\bigcap",
+        r"\bigunion": r"\displaystyle\bigcup",
+        r"\union": r"\bigcup",
+        r"\borel": r"\mathcal{B}",
+        r"\extR": r"\overline{\mathbb{R}}",
+        r"\re": r"\operatorname{Re}",
+        r"\im": r"\operatorname{Im}",
+        r"\card": r"\operatorname{card}",
+        r"\supp": r"\operatorname{supp}",
+        r"\avint": r"\operatorname{avg}",
+    }
+    # Replace longer names first so `\bigintsec` is not partially rewritten
+    # through the shorter `\intsec` alias.
+    for command in sorted(simple_commands, key=len, reverse=True):
+        source = re.sub(
+            re.escape(command) + r"(?![A-Za-z])",
+            lambda _: simple_commands[command],
+            source,
+        )
+    source = re.sub(r"\\ol(?![A-Za-z])", r"\\overline", source)
+    source = re.sub(r"\\not\s+\\bot\b", r"\\not\\perp", source)
+    source = re.sub(r"\\Bigm\b", r"\\Big", source)
+    source = re.sub(r"\\newline\b", r"\\,", source)
     source = re.sub(r"\\bf\{([A-Za-z])\}", r"\\mathbf{\1}", source)
     source = re.sub(r"\\b([A-Z])(?![A-Za-z])", r"\\mathbb{\1}", source)
     source = re.sub(r"\\c([A-Z])(?![A-Za-z])", r"\\mathcal{\1}", source)
     source = re.sub(r"\\bf([A-Z])(?![A-Za-z])", r"\\mathbf{\1}", source)
+    return source
+
+
+def expand_picture_aliases(source: str) -> str:
+    r"""Turn the legacy `\pic[scale]{path}` helper into native LaTeX images."""
+
+    def replace(match: re.Match[str]) -> str:
+        scale = (match.group("scale") or "1").strip()
+        path = match.group("path").strip()
+        return (
+            "\\begin{figure}\n"
+            "\\centering\n"
+            f"\\includegraphics[width={scale}\\textwidth]{{{path}}}\n"
+            "\\end{figure}"
+        )
+
+    return PIC_RE.sub(replace, source)
+
+
+def normalize_nested_math_text(source: str) -> str:
+    """Flatten legacy nested math/text constructs that Pandoc cannot parse."""
+
+    source = re.sub(
+        r"\\text\{\$(.*?)\$\s*for every\s*\$(.*?)\$\s*and\s*\$(.*?)\$\}",
+        r"\1 \\text{ for every } \2 \\text{ and } \3",
+        source,
+        flags=re.DOTALL,
+    )
+    source = re.sub(
+        r"\\text\{([^{}]*)\\textbf\{([^{}]*)\}([^{}]*)\}",
+        r"\\text{\1\2\3}",
+        source,
+    )
     return source
 
 
@@ -217,6 +282,8 @@ def migrate(
         text = source_path.read_text(encoding="utf-8")
         text, diagrams = extract_diagrams(text, chapter, diagram_dir)
         text = extract_code(text)
+        text = expand_picture_aliases(text)
+        text = normalize_nested_math_text(text)
         text = expand_math_aliases(text)
         output = output_dir / f"{source_path.stem}.typ"
         run_pandoc(text, chapter, output)

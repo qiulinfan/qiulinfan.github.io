@@ -1,0 +1,4 @@
+interface:
+  display_name: "讨论游戏设计方案"
+  short_description: "阅读项目设计文档，区分事实与提案并形成可验证的设计方案"
+  default_prompt: "使用 $discuss-game-design 阅读现有设计文档并讨论下一项游戏设计方案。"

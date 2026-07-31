@@ -6,10 +6,11 @@
 2. Migration parity checks
 3. Template and semantic checks
 4. Export checks
-5. Independent snapshot checks
-6. Visual PDF checks
-7. Acceptance criteria
-8. Failure routing
+5. Web checks
+6. Independent snapshot checks
+7. Visual PDF checks
+8. Acceptance criteria
+9. Failure routing
 
 ## 1. Preflight
 
@@ -73,7 +74,27 @@ python3 scripts/export.py "$source" \
 
 Never put the build directory inside the committed export snapshot.
 
-## 5. Independent snapshot checks
+## 5. Web checks
+
+Compile the course HTML into its ignored build directory, then run:
+
+```sh
+python3 scripts/check_web.py build/index.html \
+  --expected-nodes "$semantic_and_diagram_id_count" \
+  --expected-diagrams "$diagram_count"
+```
+
+The checker requires a title, the QLNotes responsive shell, a document table of
+contents, unique ASCII semantic IDs, accessible diagram labels, inline SVG, and
+no `data:image/` URI. Review compiler warnings separately. Search the resulting
+HTML around every construct reported as ignored and reject any loss of notation;
+for example, an ignored `overline` that turns a sample mean into an ordinary
+variable is not a non-fatal warning.
+
+Report the final HTML path and whether it is a local artifact or a published
+site route. Do not imply that an ignored local build is already deployed.
+
+## 6. Independent snapshot checks
 
 Run the skill checker from the skill directory:
 
@@ -91,7 +112,7 @@ With `--full`, it also:
 
 This keeps main PDFs and TeX intermediates out of the export snapshot.
 
-## 6. Visual PDF checks
+## 7. Visual PDF checks
 
 Compile the Typst PDF into an ignored build directory. Render every page to PNG
 under `tmp/pdfs/` with `pdftoppm`, build contact sheets, and inspect them. Then
@@ -108,7 +129,7 @@ Exact page counts need not match. Reject any content crossing the footer,
 clipped callout, missing continuation, blank page caused by lost content, or
 unreadable figure.
 
-## 7. Acceptance criteria
+## 8. Acceptance criteria
 
 Accept the export only when:
 
@@ -122,14 +143,17 @@ Accept the export only when:
 - bibliography files exist when declared;
 - neither text export contains a `data:image/` URI;
 - Pandoc can parse Markdown;
-- LuaLaTeX/Biber can compile LaTeX.
+- LuaLaTeX/Biber can compile LaTeX;
 - source environment counts match the legacy baseline when migrating;
-- PDF visual inspection finds no overflow, clipping, or lost continuation.
+- PDF visual inspection finds no overflow, clipping, or lost continuation;
+- web HTML passes `check_web.py`, and ignored-backend warnings do not erase
+  mathematical notation or semantic content;
+- the handoff reports the local HTML artifact separately from site publication.
 
 Warnings from Typst's experimental HTML backend or CJK font fallback may be
 reported as non-fatal only when all acceptance checks pass.
 
-## 8. Failure routing
+## 9. Failure routing
 
 Route failures to the owning layer:
 
@@ -143,6 +167,7 @@ Route failures to the owning layer:
 | Citation key lost | `#cite-key`, Lua citation normalization |
 | Math alias unreadable | `math-aliases.typ`, Lua math normalization |
 | Web-only layout defect | `web.css` and HTML rendering branch |
+| Web math accent or operator missing | replace the unsupported Typst math construct and inspect generated MathML |
 | Long statement clipped | nested proof/solution structure and paged statement rendering |
 | Corrupt semantic ID | LaTeX migration slugging and UTF-8 truncation |
 | Broken diagram with `>` in alt text | quoted HTML attribute parsing in `scripts/export.py` |

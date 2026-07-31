@@ -1,6 +1,6 @@
 ---
 name: export-typst-math-notes
-description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX and exports complete, editable LaTeX and knowledge-graph Markdown. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; export Typst to LaTeX or Markdown; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; extend the QLNotes environment set; or validate that all three formats remain readable and consistent.
+description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX and produces paged PDF, semantic web HTML, editable LaTeX, and knowledge-graph Markdown. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; build or validate its PDF/web outputs; export Typst to LaTeX or Markdown; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; or extend the QLNotes environment set.
 ---
 
 # Export Typst Math Notes
@@ -130,6 +130,24 @@ relative vector-asset paths. Use the Typora-compatible `<note>.assets/` sidecar
 convention. Keep SVG as the default Markdown and web format; generate PNG only
 as an explicit compatibility fallback.
 
+## Build and validate the web output
+
+Compile the authoritative entry directly with Typst's HTML target into an
+ignored build directory. Treat the generated HTML as a first-class output, not
+as an exporter intermediate:
+
+```sh
+typst compile --features html --format html "$source" "$ignored_build/index.html"
+python3 scripts/check_web.py "$ignored_build/index.html"
+```
+
+Require a document title, QLNotes responsive shell, table of contents, unique
+stable semantic IDs, and one accessible inline SVG for every diagram. Inspect
+HTML warnings: ignore an experimental-backend warning only after proving that
+it changes neither mathematical meaning nor readable layout. Replace unsupported
+math constructs when meaning would be lost; for example, prefer
+`accent(body, macron)` to an HTML-ignored `overline(body)`.
+
 ## Extend an environment atomically
 
 When adding or renaming an environment, update every affected layer in one
@@ -163,6 +181,7 @@ packages only when the user has authorized machine changes. Do not install a
 persistent service, watcher, daemon, scheduled task, or messaging integration as
 part of setup.
 
-Report the authoritative source, the two editable entry files, validation
-commands, semantic-node count, diagram count, and any intentionally unsupported
-constructs.
+Report the authoritative source, paged PDF, web HTML, the two editable entry
+files, validation commands, semantic-node count, diagram count, and any
+intentionally unsupported constructs. State explicitly whether the web HTML is
+only a local ignored artifact or has also been integrated into a published site.

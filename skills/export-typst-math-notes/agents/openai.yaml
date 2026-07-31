@@ -1,4 +1,4 @@
 interface:
   display_name: "Export Typst Math Notes"
-  short_description: "Migrate and export semantic Typst mathematics notes"
-  default_prompt: "Use $export-typst-math-notes to migrate or export this math note and validate the editable LaTeX and Markdown snapshots."
+  short_description: "Migrate and publish semantic Typst mathematics notes"
+  default_prompt: "Use $export-typst-math-notes to migrate or export this math note and validate its PDF, web HTML, editable LaTeX, and knowledge-graph Markdown outputs."

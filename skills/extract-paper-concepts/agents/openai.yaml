@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extract Paper Concepts"
+  short_description: "Build a beginner-first concept map from a full paper"
+  default_prompt: "Use $extract-paper-concepts to read this paper completely and produce a beginner-first concept inventory."
