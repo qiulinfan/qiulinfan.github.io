@@ -1,11 +1,11 @@
-site_name: mathnotes-probability
+site_name: Probability
 site_author: qiulinfan
-site_url: https://qiulinfan.github.io/mathnotes-probability/
+site_url: https://qiulinfan.github.io/qlblog/
 use_directory_urls: false
 remote_branch: gh-deploy
 
-repo_name: mathnotes-probability
-repo_url: https://github.com/qiulinfan/mathnotes-probability
+repo_name: qlblog
+repo_url: https://github.com/qiulinfan/qlblog
 
 theme:
   name: material

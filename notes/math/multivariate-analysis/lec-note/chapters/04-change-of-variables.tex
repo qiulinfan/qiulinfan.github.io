@@ -1,0 +1,236 @@
+\chapter{Change of Variable Thm}
+\begin{theorem}{Change of Variable}
+Conditons:\\
+(1) $A,B \sub \bR^n$ open.\\
+(2) $g:A \rar B$ 是 $C^1$ diffeomorphism.\\
+(3) $f:B \rar \bR$ ctn.\\
+
+Statement:
+$f$ 在 $B$ 上 Riem intble 当且仅当 $f(g(x))  |\det Dg(x)) |$ 在 $A$ 上 Riem intble.\\
+并且有:
+$$
+\int_A f(g(x)) |\det (Dg(x))| dx = \int_B f
+$$
+    
+\end{theorem}
+\pic[0.4]{assets/change.png}
+\begin{remark}
+    当 $g$ 是一个微分同胚时, $f$ 在 $g(A)$ 上的积分就等于 $|det(Dg)| f\circ g $ 在 $A$ 上的积分.\\
+    我们记得 determinant of a matrix 在 $\bR^n$ 上的集合意义是在 apply 这个 linear trans 后, unit cube 扩张的倍数.\\
+\end{remark}
+
+
+
+
+\section{$C^1$ fucntion maps meas 0 set to meas 0 set}
+\begin{theorem}{$C^1$ map 把零测集映射至零测集}
+Conditions:\\
+(1) $A \sub \bR^n$ open\\
+(2) $g: A \rar \bR^n$ 是 $C^1$ 的\\
+Statement:\\
+$\forall E\sub A $ s.t. $m(E)= 0$, 都有 $m(g(E)) = 0$ 
+\end{theorem}
+\begin{proof}
+\textbf{Claim 1}: 对于一个零测集, 任取 $\epsilon, \delta$, 都可以用 ctbl 个 width 小于等于 $\delta$ 的 cubes 来 cover 它, 并使得 cubes 的总体积 $< \epsilon$.\\
+这个 statement 显然. 注意这里我们使用的是 cube 而不是 box, 也就是边长相同的 box. 这是一个 trivial corollary of 零测集的定义.\\
+\textbf{Claim 2}:任意 closed cube $C$ 在 $C^1$ map 下的 image, 可以用一个边长是它的 $n\sup_{x \in C} ||Dg(x)||$ cube 来 cover. 这个 Claim 容易证明.\\
+现在: WTS $g(E) = 0$.\\
+回忆:\\
+(1) ctbl 个零测集的测度和也是零测集.\\
+(2) 我们可以用 a seq of containing cpt sets $\{C_k \}$ 来获得一个 open set.\\
+令 $E_k := E \intsec C_k$, 我们有$E = \union E_k$.\\
+因而 it suffices to show $m(g(E_k)) = 0$.\\
+\textbf{Claim 3}: 每个 $E_k = C_k \intsec E$, 其 $g(E_k)$ 的 measure 都是 0\\
+\textbf{Claim 3.1}: 对于每一个 $C_k$, 都存在 $\delta > 0$, 使得 $C_k$ 的 $\delta-$nbh 被包含在 $C_{k+1} ^ {\circ}$ 中. (这是一个关于每个 $C_k$ 和其 $C_{k+1}$ 之间的空隙的厚度的命题. 既然 $C_K \sub C_{k+1} ^ {\circ}$ 那么它们之间的距离存在一定厚度,)\\
+\textbf{Collect things together:}
+\begin{enumerate}
+    \item 由于 $E$ 零测, 每个 $E_k$ 都是零测的. By Step 1, 我们可以用 ctbl 个 width $\leq \delta$ 的 cubes 来 cover $C_k$ 使得总体积 $< \frac{\epsilon}{(nM)^n}$. 
+    \item 并且 by Claim 3.1, 这个 cover $\{D_i\}$是 within $C_{k+1} $ 的. 
+    \item by claim 2, 我们可以 bound 每个 $D_i$ 的 image by 边长小于等于 $nM$ width($D_i$) 的 box, 于是所有 $D_i$ 的 image 的 volume sum bounded by $(nM)^n \epsilon /(nM)^n = \epsilon$. 于是 $m(g(E_k)) = 0$.
+\end{enumerate}
+\end{proof}
+
+\begin{remark}
+我觉得这里比较 insightful 的证明手段, 除去通过 operator norm 来 bound image 的大小之外, 还有就是 $C_k$ 的 cover by $\delta$-width cubes 是 within $C_{k+1}$ 的这一点. \\
+我们有时候觉得 Euclidean metric 是一个很麻烦的东西, 因为它无法推断每个维度的信息. 有时候需要在每个维度上都分别去 bound 一个东西: 就比如这里, 我们需要 bound 的是一整个 open cover of $C_k$, 使得这个 cover within $C_{k+1}$.\\
+这个时候我们可以混用 sup metric. 这里我们把 boxes 的 cover 转化为了 cubes 的 cover, 就是为了 bound 住这个 cover, 因为 cube 的每个维度都相同. 这里 Claim 3.1 先证明了一个 sup metric 的命题, 然后利用它来 bound 住 cube 的范围, 让 cube 不会出 $C_{k+1}$ 的边界: \textbf{by supmetric, 每一个维度都留了 $\delta$ 的空隙}. 从而它 bound 住一整个 cover 的 union. 
+\end{remark}
+
+
+
+
+
+\begin{corollary}{从小维度到大维度的 diffble map 的 image 零测}
+    对于 $C^1$ 的 $f: A \sub \bR^b \rar \bR^m $($A$ open), 如果 $m > n$ (小维度映射到大维度), 那么一定有 
+    $$
+    m(f(A)) = 0
+    $$
+\end{corollary}
+\begin{proof}
+    考虑
+    \begin{align}
+        g: A \times \bR^{m-n} \sub \bR^m &\rar bR^m\\
+        (a,b) & \mapsto f(a)
+    \end{align}
+    于是 $f(A) = g(A \times \{0\}$.
+\end{proof}
+\begin{remark}
+    如果 $f$ 不是 $C^1$ 的而是仅仅只是连续，则不成立. 考虑 space-filling curve.\\
+\end{remark}
+
+
+\section{diffeomorphism preserves boundary and interior AND J-measurability}
+\begin{theorem}{diffeomorphism preserves boundary and interior 以及 J-meas}
+Conditions:\\
+(1) $A,B \sub \bR^n$ open\\
+(2) $g: A \rar B$ 是 diffeo\\
+(3) $D \sub A$ cpt.\\
+Statement:\\
+(1) 
+$$
+g(D^{\circ}) = (g(D))^{\circ}
+$$
+$$
+g(\partial D) = \partial(g(D))
+$$
+(2) 并且如果 $D$ J-meas, 则有 $g(D)$ J-meas.
+\end{theorem}
+\begin{remark}
+    J-meas 的 set 的 boundary 的 L-meas 是 0, 但是 L-meas 的 set 的 boundary 的 L-meas 不一定.\\
+    比如 $\bQ$ 是 L-measurable 的, 但是它的 boundary 是整个 $\bR$.\\
+    这是因为 J-meas 是一个太过于严格的性质. 你必须用 elementary set 来逼近它. 
+\end{remark}
+
+
+\section{decompose diffeo into finite primitive diffeos}
+
+\begin{definition}{primitive map}
+对于 $A, B \in \bR^n$, 如
+    如果 $h:A \sub\bR^n \rar B \sub\bR^n$ 中, 有任何一个 subfunction $h_i(x) = x$, 即 preserves the $i$-th coord, 则称这个 function 为一个 primitive map
+\end{definition}
+
+
+\begin{lemma}{linear/affine map can be decomposed into finite prmitives}
+任何 linear map 以及 translation 都可以被 decompose into finite primitives.
+\end{lemma}
+\begin{proof}
+    Linear map 可以分解为 elementary matrices.
+    \pic[0.6]{assets/compose.jpg}
+    \pic[0.6]{assets/compose2.jpg}
+    至于 translation 则显然.
+\end{proof}
+\begin{remark}
+    所以任意一个 affine linear map 都可以分解成 primitives.
+\end{remark}
+
+
+\begin{theorem}{Any Diffeomprphism can be decomposed into finite primitive diffeomorphisms}
+Conditions:\\
+(1) $A, B$ open in $\bR^n$.\\
+(2) $g:A \rar B$ 为一个 diffeomorphism.\\
+Statements:\\
+对于任意 $a \in A$, 都存在 open nbh $U_0 \sub A$ of $a$, 以及 a finite seq. of \textbf{primitive diffeomorphisms}
+$$
+u_0 \xrar{h_1} u_1 \xrar{h_2} \cdots \xrar{h_k} u_k \sub B
+$$
+s.t. 
+$$
+h_k \circ h_{k-1} \circ \cdots \circ u_k  = g |_{u_0}
+$$
+\end{theorem}
+\begin{proof}
+    我们首先 prove $a = 0, g(a) = a, Dg(a) = 0$ 时的特殊情况.\\
+    这一情况下, 定义:
+    $$
+    h (x) = (g_1(x), \cdots, g_{n-1}(x), x_n)
+    $$
+    $$
+    k(y) = (y_1, \cdots, y_n, g_n(h^{-1}(y))
+    $$
+    使用两次 IFT 得到 $g$ 在 $a$ 附近等于 $k \circ h$
+    \pic[0.6]{assets/diff.jpeg}
+
+    For general case $g$: 我们发现, 总是可以通过 translate, apply $g$, 再 apply $ (Dg(a))^{-1}$ 的方式获得一个新的 map, 使得它满足 special case.\\
+    新 map 可分解, linear map 可分解, translate 可分解. 于是整个都可以分解.
+\end{proof}
+
+
+
+
+\section{Partition of Unity}
+
+\begin{lemma}{构造 supported only on a box 的光滑函数}
+    对于任意 box $B \sub \bR^n$, 都存在 $C^{\infty}$ 的 non-neg 函数 $\phi: \bR^n \rar \bR$ 使得 $\supp(\phi) = Q^{\circ}$
+\end{lemma}
+\begin{proof}
+    构造:
+    令
+    $$
+    f(x) = 
+    \begin{cases}
+    \exp(\frac{-1}{x}) \; , x >0 \\
+    0 \; , x \leq 0
+    \end{cases}
+    $$
+    再 define:
+    $$
+    g(x) = f(x)f(1-x)
+    $$
+    注意到这里的 $g$ 是一个仅在 $(0,1)$ 上 supported 的函数.\\
+    通过放缩与多维度叠加, 就可以得到对任意 box 的构造:
+    对于 $Q = [a_1, b_1] \times \cdots \times [a_n, b_n]$ we define
+    $$
+    \phi(x) := \prod_{i = 1}^n g(\frac{x_1 - a_i}{b_i - a_i})
+    $$
+    \pic[0.5]{assets/smooth.png}
+\end{proof}
+
+
+
+
+\begin{lemma}{Cube Partition Lemma}
+Let $\sA$ be a collection of open sets in $\bR^n$. Let $A  = \union_{S \in \sA} S$.\\
+There exists a seq of closed boxes(actually cubes) $Q_1, Q_2, \cdots, $ s.t.
+\begin{enumerate}
+    \item $A \sub \union_{i} Q_i ^{\circ}$
+    \item Each $Q_i$ is containted in some element of $\sA$ (因而, 实际上 $A  = \union_{i} Q_i ^{\circ}$)
+    \item \textbf{(Local Finiteness)} Every point of $A$ has some nbh that only intersects finitely many $Q_i$
+\end{enumerate}
+\end{lemma}
+\begin{remark}
+这个 theorem 又是另一个用 ctbl 个 closed boxs 来得到一个 open set 的 statement. Recall 我们已经有:\\
+(1) open set 可以分解成 ctbl 个 almost disjoint closed boxes 的 union.\\
+(2) 可以用 a seq. of cpt sets 来逼近一个 open set.\\
+现在我们有第三个 statement:\\
+(3) 即便是 unctbl 个 open sets 的 union(仍然是 open 的), 我们也可以找到一个 ctbl decomposition of closed cubes, 使得其中每个元素都完全包含在一个 open element 里; 并且 closed cubes 之间的排布不会太过紧密 (任意点都至多只 locally intersect 有限个 closed cubes.)\\
+\end{remark}
+
+\begin{proof}
+    首先 take 我们的 seq of containing cpt sets of $A$, 写作 $\{D_i\}$.\\
+    我们这次做一件我想做很久了的事情: 我们 take:
+    $$
+    B_i = D_i - D_{i-1}^{\circ}
+    $$ for each $D_i$. (对于 $i\leq 0$ 取 $D_i$ 是空集.)\\
+    于是把相互包含的 cpt sets $\{D_i\}$ 分解成了 almost disjoint 的 cpt sets $\{B_i\}$. \\
+    我们 recall 上次的证明: 对于每一个 $C_k$, 都存在 $\delta > 0$, 使得 $C_k$ 的 $\delta-$nbh 被包含在 $C_{k+1} ^ {\circ}$ 中. (这是一个关于每个 $C_k$ 和其 $C_{k+1}$ 之间的空隙的厚度的命题. 既然 $C_K \sub C_{k+1} ^ {\circ}$ 那么它们之间的距离存在一定厚度)\\
+    因而 $B_i$ 和 $D_{i-2}$ 之间有一定距离.\
+    对于 $B_i$ 中的每个 $x$ 我们都可以选取一个 centered at $x$ 的 closed cube, 并且使它包含在 $\sA$ 的某个元素中, 且 disjoint from $D_{i-2}$.\\
+    通过取 finite subcover, 我们于是把 $B_i$ 用 finite 个 closed cubes contained in $A$ 给 cover 上了.\\
+    这是 natural 的使用 ctbl 个 closed box(cube this time) 来 得到 open set 的方法.\\
+    并且, 这个 \textbf{disjointness of each $B_i$ and $D_{i-2}$ gives local finiteness:} 对于任意一个 $x\in A$, $x \in D_i ^{\circ}$ for some $D_i$. 根据我们的构造: $D_i$ 至多只会 intersec cubes in $C_1, \cdots, C_{i+1}$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

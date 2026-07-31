@@ -4,7 +4,7 @@
 %%
 %% This work may be distributed and/or modified freely
 %% available at https://github.com/ElegantLaTeX/ElegantBook
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%
 % % !Mode:: "TeX:UTF-8"
 \NeedsTeXFormat{LaTeX2e}
@@ -43,16 +43,9 @@
 \DeclareVoidOption{founder}{\ekv{chinesefont=founder}}
 \DeclareVoidOption{nofont}{\ekv{chinesefont=nofont}}
 
+% Language shortcuts (CN/EN only)
 \DeclareVoidOption{en}{\ekv{lang=en}}
 \DeclareVoidOption{cn}{\ekv{lang=cn}}
-\DeclareVoidOption{it}{\ekv{lang=it}}
-\DeclareVoidOption{fr}{\ekv{lang=fr}}
-\DeclareVoidOption{nl}{\ekv{lang=nl}}
-\DeclareVoidOption{hu}{\ekv{lang=hu}}
-\DeclareVoidOption{de}{\ekv{lang=de}}
-\DeclareVoidOption{mn}{\ekv{lang=mn}}
-\DeclareVoidOption{pt}{\ekv{lang=pt}}
-\DeclareVoidOption{jp}{\ekv{lang=jp}}
 
 \DeclareVoidOption{fancy}{\ekv{mode=fancy}}
 \DeclareVoidOption{simple}{\ekv{mode=simple}}
@@ -99,6 +92,14 @@
 
 \ProcessKeyvalOptions*\relax
 % \ProcessOptions*\relax
+
+\ifdefstring{\ELEGANT@lang}{cn}{}{%
+  \ifdefstring{\ELEGANT@lang}{en}{}{%
+    \ClassWarningNoLine{elegantbook}{Unsupported lang `\ELEGANT@lang'. Only `cn' and `en' are supported. Falling back to `en'}
+    \def\ELEGANT@lang{en}%
+  }%
+}
+
 \LoadClass[a4paper,oneside]{book}
 
 \RequirePackage{setspace}
@@ -143,7 +144,7 @@
 
 \ifdefstring{\ELEGANT@device}{pad}{
 \geometry{
-  paperwidth=7.5in, 
+  paperwidth=7.5in,
   paperheight=10in,
   margin=16mm,
   headheight=2.17cm,
@@ -158,7 +159,8 @@
   \RequirePackage[lite]{mtpro2}
 }{\relax}
 
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
+% \hypersetup{bookmarksdepth=subsection}
 \renewcommand{\baselinestretch}{1.2}
 
 \PassOptionsToPackage{no-math}{fontspec}
@@ -174,7 +176,7 @@
     BoldItalicFont = *-bolditalic ,
     Extension = .otf ,
     Scale = 1.0]
-    
+
   \setsansfont{texgyreheros}[
     UprightFont = *-regular ,
     BoldFont = *-bold ,
@@ -201,15 +203,17 @@
     \newcommand*{\heiti}{\CJKfamily{zhhei}}
     \newcommand*{\kaishu}{\CJKfamily{zhkai}}
     \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
-  
+
   \ifdefstring{\ELEGANT@chinesefont}{nofont}{
     \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}}{\relax}
 
   \ifdefstring{\ELEGANT@chinesefont}{ctexfont}{
     \RequirePackage[UTF8,scheme=plain]{ctex}}{\relax}
-  
+
   \AfterEndPreamble{
-    \setlength\parindent{2\ccwd}}
+    \setlength\parindent{0\ccwd}
+    %\setlength{\parskip}{0.5em}
+    }
 }{\relax}
 
 \ifcsname heiti\endcsname
@@ -328,7 +332,7 @@
 \ifdefstring{\ELEGANT@titlestyle}{hang}{\def\style{hang}}{\relax}
 \ifdefstring{\ELEGANT@titlestyle}{display}{\def\style{display}}{\relax}
 
-% reference: 
+% reference:
 % https://tex.stackexchange.com/questions/58506/how-to-make-a-new-command-similar-to-author
 % https://pastebin.com/C8W4axzV
 \newcommand\email[1]{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -352,7 +356,7 @@
 \RequirePackage[shortlabels,inline]{enumitem}
 \setlist{nolistsep}
 
-\RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
+\RequirePackage[labelfont={bf,color=structurecolor}]{caption}
 \captionsetup[table]{skip=3pt}
 \captionsetup[figure]{skip=3pt}
 
@@ -387,20 +391,20 @@
   backend=\ELEGANT@bibend,
   citestyle=\ELEGANT@citestyle,
   bibstyle=\ELEGANT@bibstyle]{biblatex}
-  
+
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\baselinestretch}{1.3}
-  \renewcommand{\contentsname}{目录}
-  \renewcommand{\figurename}{图}
-  \renewcommand{\tablename}{表}
+  \renewcommand{\contentsname}{Contents}
+  \renewcommand{\figurename}{Figure}
+  \renewcommand{\tablename}{Table}
   \renewcommand{\partname}{\color{structurecolor}}
   \renewcommand{\thepart}{第\zhnumber{\arabic{part}}部分}
   \renewcommand{\listfigurename}{插图目录}
   \renewcommand{\listtablename}{表格目录}
-  \renewcommand{\bibname}{参考文献}
-  \newcommand{\ebibname}{参考文献}
-  \renewcommand{\appendixname}{附录}
-  \renewcommand{\appendixtocname}{附录}
+  \renewcommand{\bibname}{Bibliography}
+  \newcommand{\ebibname}{Bibliography}
+  \renewcommand{\appendixname}{appendix}
+  \renewcommand{\appendixtocname}{appendix}
   \renewcommand{\indexname}{索\hspace{2em}引}
   \newcommand\figref[1]{\textbf{Figure}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{Table}~\ref{#1}}
@@ -430,7 +434,7 @@
   \newcommand\bioinfo[2]{\gdef\@bioinfo{{\citshape #1}：#2}}
   \newcommand{\updatename}{Update: }
   \newcommand{\historyname}{History}
-  \newcommand{\beforechap}{Ch}
+  \newcommand{\beforechap}{module}
   \newcommand{\afterchap}{:}
 }{\relax}
 
@@ -439,7 +443,7 @@
   \setlength\parindent{2em}
   \newcommand\figref[1]{\textbf{Figure}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{Table}~\ref{#1}}
-  \renewcommand{\chaptername}{Chapter}
+  \renewcommand{\chaptername}{Module}
   \renewcommand{\partname}{\color{structurecolor} Part}
   \newcommand{\authorname}{\textbf{Author: }}
   \newcommand{\institutename}{\textbf{Institute: }}
@@ -471,340 +475,6 @@
   \newcommand{\historyname}{Version History}
 }{\relax}
 
-\ifdefstring{\ELEGANT@lang}{it}{
-  % \RequirePackage[utf8]{inputenc}
-  \RequirePackage[italian]{babel}
-  % \RequirePackage[T1]{fontenc}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\textbf{Figura}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Tabella}~\ref{#1}}
-  \renewcommand{\chaptername}{Chapter}
-  \newcommand{\authorname}{\textbf{Autore: }}
-  \newcommand{\institutename}{\textbf{Istituto: }}
-  \newcommand{\datename}{\textbf{Data: }}
-  \newcommand{\versionname}{\textbf{Versione: }}
-  \newcommand{\notename}{Nota}
-  \newcommand{\proofname}{Dimostrazione}
-  \newcommand{\problemname}{Problema}
-  \newcommand{\definitionname}{Definizione}
-  \newcommand{\theoremname}{Teorema}
-  \newcommand{\axiomname}{Assioma}
-  \newcommand{\postulatename}{Postulato}
-  \newcommand{\lemmaname}{Lemma}
-  \newcommand{\propositionname}{Proposizione}
-  \newcommand{\corollaryname}{Corollario}
-  \newcommand{\examplename}{Esempio}
-  \newcommand{\exercisename}{Esercizio}
-  \newcommand{\remarkname}{Commento}
-  \newcommand{\assumptionname}{Assunto}
-  \newcommand{\conclusionname}{Conclusione}
-  \newcommand{\solutionname}{Soluzione}
-  \newcommand{\propertyname}{Proprietà}
-  \newcommand{\introductionname}{Introduzione}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Aggiornamenti:}
-  \newcommand{\ebibname}{Bibliografia}
-  \newcommand{\historyname}{Cronologia delle versioni}
-}{\relax}
-
-\ifdefstring{\ELEGANT@lang}{fr}{
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T1]{fontenc}
-  \RequirePackage[french]{babel}
-  \setlength\parindent{2em}
-  \renewcommand\figref[1]{\textbf{Figure}\ref{#1}}
-  \renewcommand\tabref[1]{\textbf{Tableau}\ref{#1}}
-  \renewcommand{\chaptername}{Chapitre}
-  \renewcommand{\authorname}{\textbf{Auteur: }}
-  \renewcommand{\institutename}{\textbf{Institut: }}
-  \renewcommand{\datename}{\textbf{Date: }}
-  \renewcommand{\versionname}{\textbf{Version: }}
-  \renewcommand{\notename}{Note}
-  \renewcommand{\proofname}{Démonstration}
-  \renewcommand{\problemname}{Problème}
-  \renewcommand{\definitionname}{Définition}
-  \renewcommand{\theoremname}{Théorème}
-  \renewcommand{\axiomname}{Axiôme}
-  \renewcommand{\postulatename}{Postulat}
-  \renewcommand{\lemmaname}{Lemme}
-  \renewcommand{\propositionname}{Proposition}
-  \renewcommand{\corollaryname}{Corollaire}
-  \renewcommand{\examplename}{Exemple}
-  \renewcommand{\exercisename}{Exercice}
-  \renewcommand{\remarkname}{Remarque}
-  \renewcommand{\assumptionname}{Supposition}
-  \renewcommand{\conclusionname}{Conclusion}
-  \renewcommand{\solutionname}{Solution}
-  \renewcommand{\propertyname}{Propriété}
-  \renewcommand{\introductionname}{Introduction}
-  \renewcommand{\problemsetname}{Exercice}
-  \renewcommand{\updatename}{Mises à jour:}
-  \newcommand{\ebibname}{Bibliographie}
-  \renewcommand{\historyname}{Historique des versions}
-}{\relax}
-
-
-\ifdefstring{\ELEGANT@lang}{nl}{
-  \RequirePackage[dutch]{babel}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\textbf{Figuur}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Tabel}~\ref{#1}}
-  \renewcommand{\chaptername}{Hoofdstuk}
-  \newcommand{\authorname}{\textbf{Auteur: }}
-  \newcommand{\institutename}{\textbf{Instituut: }}
-  \newcommand{\datename}{\textbf{Datum: }}
-  \newcommand{\versionname}{\textbf{Versie: }}
-  \newcommand{\notename}{Opmerking}
-  \newcommand{\proofname}{Bewijs}
-  \newcommand{\problemname}{Probleem}
-  \newcommand{\definitionname}{Definitie}
-  \newcommand{\theoremname}{Stelling}
-  \newcommand{\axiomname}{Uitgangspunt}
-  \newcommand{\postulatename}{Hypothese}
-  \newcommand{\lemmaname}{Lemma}
-  \newcommand{\propositionname}{Voorstel}
-  \newcommand{\corollaryname}{Gevolgtrekking}
-  \newcommand{\examplename}{Voorbeeld}
-  \newcommand{\exercisename}{Oefening}
-  \newcommand{\remarkname}{Commentaar}
-  \newcommand{\assumptionname}{Veronderstelling}
-  \newcommand{\conclusionname}{Besluit}
-  \newcommand{\solutionname}{Oplossing}
-  \newcommand{\propertyname}{Eigenschap}
-  \newcommand{\introductionname}{Introductie}
-  \newcommand{\problemsetname}{Probleemcomplex}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Update:}
-  \newcommand{\ebibname}{Bibliographie}
-  \newcommand{\historyname}{Versie Geschiedenis}
-}{\relax}
-
-
-\ifdefstring{\ELEGANT@lang}{hu}{
-  \RequirePackage[magyar]{babel}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\ref{#1}~\textbf{Ábra}}
-  \newcommand\tabref[1]{\ref{#1}~\textbf{Táblázat}}
-  \renewcommand{\chaptername}{Fejezet}
-  \newcommand{\authorname}{\textbf{Szerző: }}
-  \newcommand{\institutename}{\textbf{Intézmény: }}
-  \newcommand{\datename}{\textbf{Dátum: }}
-  \newcommand{\versionname}{\textbf{Verziószám: }}
-  \newcommand{\notename}{Jegyzet}
-  \newcommand{\proofname}{Bizonyítás}
-  \newcommand{\problemname}{Probléma}
-  \newcommand{\definitionname}{Definíció}
-  \newcommand{\theoremname}{Tétel}
-  \newcommand{\axiomname}{Axióma}
-  \newcommand{\postulatename}{Követelmény}
-  \newcommand{\lemmaname}{Lemma}
-  \newcommand{\propositionname}{Előzmény}
-  \newcommand{\corollaryname}{Következmény}
-  \newcommand{\examplename}{Példa}
-  \newcommand{\exercisename}{Feladat}
-  \newcommand{\remarkname}{Megjegyzés}
-  \newcommand{\assumptionname}{Sejtés}
-  \newcommand{\conclusionname}{Összefoglalás}
-  \newcommand{\solutionname}{Megoldás}
-  \newcommand{\propertyname}{Tulajdonság}
-  \newcommand{\introductionname}{Bevezetés}
-  \newcommand{\problemsetname}{Feladatok}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Frissítve:}
-  \newcommand{\ebibname}{Bibliográfia}
-  \newcommand{\historyname}{Korábbi verziók}
-}{\relax}
-
-\ifdefstring{\ELEGANT@lang}{de}{
-  \setlength\parindent{2em}
-  \renewcommand{\contentsname}{Inhaltsverzeichnis}
-  \newcommand\figref[1]{\textbf{Figur}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Tabelle}~\ref{#1}}
-  \renewcommand{\partname}{\color{structurecolor} Teil}
-  \renewcommand{\listfigurename}{Abbildungsverzeichnis}
-  \renewcommand{\listtablename}{Tabellenverzeichnis}
-  \renewcommand{\bibname}{Bibliographie}
-  \renewcommand{\appendixname}{Anhang}
-  \renewcommand{\chaptername}{Kapitel}
-  \newcommand{\authorname}{\textbf{Autor: }}
-  \newcommand{\institutename}{\textbf{Institut: }}
-  \newcommand{\datename}{\textbf{Datum: }}
-  \newcommand{\versionname}{\textbf{Version: }}
-  \newcommand{\notename}{Notiz}
-  \newcommand{\proofname}{Beweis}
-  \newcommand{\problemname}{Problem}
-  \newcommand{\definitionname}{Definition}
-  \newcommand{\theoremname}{Theorem}
-  \newcommand{\axiomname}{Axiom}
-  \newcommand{\postulatename}{Postulat}
-  \newcommand{\lemmaname}{Lemma}
-  \newcommand{\propositionname}{Behauptung}
-  \newcommand{\corollaryname}{Corollary}
-  \newcommand{\examplename}{Beispiel}
-  \newcommand{\instancename}{Beispiel} %
-  \newcommand{\exercisename}{\"{U}bung}
-  \newcommand{\remarkname}{Anmerkung}
-  \newcommand{\assumptionname}{Annahme}
-  \newcommand{\conclusionname}{Abschluss}
-  \newcommand{\solutionname}{Aufl\"{o}sung}
-  \newcommand{\propertyname}{Property}
-  \newcommand{\introductionname}{Einleitung}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Updates:}
-  \renewcommand{\ebibname}{Bibliographie}
-  \newcommand{\historyname}{Version der Geschichte}
-}{\relax}
-
-\ifdefstring{\ELEGANT@lang}{es}{
-  \RequirePackage[spanish]{babel}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\textbf{Figura}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Tabla}~\ref{#1}}
-  \renewcommand{\spanishchaptername}{Capítulo}
-  \newcommand{\authorname}{\textbf{Autor: }}
-  \newcommand{\institutename}{\textbf{Instituto: }}
-  \newcommand{\datename}{\textbf{Fecha: }}
-  \newcommand{\versionname}{\textbf{Versión: }}
-  \newcommand{\notename}{Nota}
-  \newcommand{\proofname}{Demostración}
-  \newcommand{\problemname}{Problema}
-  \newcommand{\definitionname}{Definición}
-  \newcommand{\theoremname}{Teorema}
-  \newcommand{\axiomname}{Axioma}
-  \newcommand{\postulatename}{Postulado}
-  \newcommand{\lemmaname}{Lema}
-  \newcommand{\propositionname}{Proposición}
-  \newcommand{\corollaryname}{Corolario}
-  \newcommand{\examplename}{Ejemplo}
-  \newcommand{\exercisename}{Ejercicio}
-  \newcommand{\remarkname}{Comentario}
-  \newcommand{\assumptionname}{Asunto}
-  \newcommand{\conclusionname}{Conclusión}
-  \newcommand{\solutionname}{Solución}
-  \newcommand{\propertyname}{Propiedad}
-  \newcommand{\introductionname}{Introducción}
-  \newcommand{\problemsetname}{Ejercicio}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Actualización:}
-  \newcommand{\ebibname}{Bibliografía}
-  \newcommand{\historyname}{Historial de versiones}
-}{\relax}
-
-\ifdefstring{\ELEGANT@lang}{mn}{
-  \RequirePackage[mongolian]{babel}
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T2A]{fontenc}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\textbf{Зураг}\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Хүснэгт}\ref{#1}}
-  \renewcommand{\chaptername}{Бүлэг}
-  \newcommand{\authorname}{\textbf{Зохиогч: }}
-  \newcommand{\institutename}{\textbf{Сургууль: }}
-  \newcommand{\datename}{\textbf{Огноо: }}
-  \newcommand{\versionname}{\textbf{Хувилбар: }}
-  \newcommand{\notename}{Тэмдэглэл}
-  \newcommand{\proofname}{Баталгаа}
-  \newcommand{\problemname}{Бодлого}
-  \newcommand{\definitionname}{Тодорхойлолт}
-  \newcommand{\theoremname}{Томьёо}
-  \newcommand{\axiomname}{Аксиом}
-  \newcommand{\postulatename}{Постулат}
-  \newcommand{\lemmaname}{Лемма}
-  \newcommand{\propositionname}{Таамаглал}
-  \newcommand{\corollaryname}{Үр дүн}
-  \newcommand{\examplename}{Жишээ}
-  \newcommand{\exercisename}{Дасгал}
-  \newcommand{\remarkname}{Тайлбар}
-  \newcommand{\assumptionname}{Урьдчилсан нөхцөл}
-  \newcommand{\conclusionname}{Дүгнэлт}
-  \newcommand{\solutionname}{Хариулт}
-  \newcommand{\propertyname}{Шинж чанар}
-  \newcommand{\introductionname}{Удиртгал}
-  \newcommand{\problemsetname}{Бодлогууд}
-  \newcommand\bioinfo[2]{\gdef@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Шинэчлэлтүүд:}
-  \newcommand{\ebibname}{Ном зүй}
-  \newcommand{\historyname}{Хувилбарын түүх}
-}{\relax}
-
-
-\ifdefstring{\ELEGANT@lang}{pt}{
-  \RequirePackage[portuguese]{babel}
-  \setlength\parindent{2em}
-  \newcommand\figref[1]{\textbf{Figura}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{Tabela}~\ref{#1}}
-  \renewcommand{\chaptername}{Capítulo}
-  \newcommand{\authorname}{\textbf{Autor: }}
-  \newcommand{\institutename}{\textbf{Instituição: }}
-  \newcommand{\datename}{\textbf{Data: }}
-  \newcommand{\versionname}{\textbf{Versão: }}
-  \newcommand{\notename}{Observação}
-  \newcommand{\proofname}{Demostração}
-  \newcommand{\problemname}{Problema}
-  \newcommand{\definitionname}{Definição}
-  \newcommand{\theoremname}{Teorema}
-  \newcommand{\axiomname}{Axioma}
-  \newcommand{\postulatename}{Postulado}
-  \newcommand{\lemmaname}{Lema}
-  \newcommand{\propositionname}{Proposição}
-  \newcommand{\corollaryname}{Corolário}
-  \newcommand{\examplename}{Exemplo}
-  \newcommand{\exercisename}{Exercício}
-  \newcommand{\remarkname}{Comentário}
-  \newcommand{\assumptionname}{Assunto}
-  \newcommand{\conclusionname}{Conclusão}
-  \newcommand{\solutionname}{Soluções}
-  \newcommand{\propertyname}{Propiedade}
-  \newcommand{\introductionname}{Introdução}
-  \newcommand{\problemsetname}{Questão}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{Atualização: }
-  \newcommand{\ebibname}{Bibliografia}
-  \newcommand{\historyname}{Histórico de versões}
-}{\relax}
-
-
-\ifdefstring{\ELEGANT@lang}{jp}{
- \RequirePackage{luatexja}
-  \setlength\parindent{2em}
-  \renewcommand{\contentsname}{目次}
-  \newcommand\figref[1]{\textbf{図}~\ref{#1}}
-  \newcommand\tabref[1]{\textbf{表}~\ref{#1}}
-  \renewcommand{\partname}{\color{structurecolor}}
-  \renewcommand{\listfigurename}{イラストカタログ}
-  \renewcommand{\listtablename}{表カタログ}
-  \renewcommand{\bibname}{参考文献}
-  \renewcommand{\appendixname}{付録}
-  \renewcommand{\chaptername}{第 \thechapter 章}
-  \newcommand{\authorname}{\textbf{著者：}}
-  \newcommand{\institutename}{\textbf{組織団体：}}
-  \newcommand{\datename}{\textbf{日付：}}
-  \newcommand{\versionname}{\textbf{\citshape バージョン：}}
-  \newcommand{\notename}{ノート}
-  \newcommand{\proofname}{証明}
-  \newcommand{\problemname}{問題}
-  \newcommand{\definitionname}{定義}
-  \newcommand{\theoremname}{定理}
-  \newcommand{\axiomname}{公理}
-  \newcommand{\postulatename}{公準}
-  \newcommand{\lemmaname}{補題}
-  \newcommand{\propositionname}{命題}
-  \newcommand{\corollaryname}{系}
-  \newcommand{\examplename}{例題}
-  \newcommand{\instancename}{例}
-  \newcommand{\exercisename}{練習}
-  \newcommand{\remarkname}{注}
-  \newcommand{\assumptionname}{仮設}
-  \newcommand{\conclusionname}{結論}
-  \newcommand{\solutionname}{解答}
-  \newcommand{\propertyname}{性質}
-  \newcommand{\introductionname}{内容概要}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{\textbf{#1}: #2}}
-  \newcommand{\updatename}{更新：}
-  \newcommand{\ebibname}{参考文献}
-  \newcommand{\historyname}{バージョン更新履歴}
-}{\relax}
-
 
 \graphicspath{{./figure/}{./figures/}{./image/}{./images/}{./graphics/}{./graphic/}{./pictures/}{./picture/}}
 
@@ -831,8 +501,8 @@
 
 \ifdefstring{\ELEGANT@lang}{cn}{
   \ifdefstring{\ELEGANT@scheme}{chinese}{
-    \newcommand{\xchaptertitle}{Chapter \zhnumber{\arabic{chapter}}} }{
-    \newcommand{\xchaptertitle}{Chapter \thechapter{}}} }{
+    \newcommand{\xchaptertitle}{Module \zhnumber{\arabic{chapter}}} }{
+    \newcommand{\xchaptertitle}{Module \thechapter{}}} }{
   \newcommand{\xchaptertitle}{\chaptername~\thechapter~}}
 
 \setcounter{secnumdepth}{5}
@@ -884,25 +554,28 @@
       separator sign={.},},
     defstyle/.style={
       common,
-      colframe=main,  
+      fontupper=\normalfont,
+      colframe=main,
       colback=main!5,
-      colbacktitle=main, 
+      colbacktitle=main,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{main}{$\clubsuit$}};}},
     thmstyle/.style={
       common,
-      colframe=second,  
+      fontupper=\normalfont,
+      colframe=second,
       colback=second!5,
-      colbacktitle=second, 
+      colbacktitle=second,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{second}{$\heartsuit$}};}},
     propstyle/.style={
       common,
-      colframe=third,  
+      fontupper=\normalfont,
+      colframe=third,
       colback=third!5,
-      colbacktitle=third, 
+      colbacktitle=third,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{third}{$\spadesuit$}};}},}
@@ -912,77 +585,91 @@
     IfValueTF={#1}
       {title={\definitionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\definitionname~\thetcbcounter\ (#2)}}
           {title=\definitionname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={def:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={def:\thetcbcounter}}}
+      {IfValueTF={#4}{label={def:#4}}{label={def:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{theorem}{\theoremname}{thmstyle}{thm}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{theorem}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\theoremname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\theoremname~\thetcbcounter\ (#2)}}
           {title=\theoremname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={thm:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={thm:\thetcbcounter}}}
+      {IfValueTF={#4}{label={thm:#4}}{label={thm:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{postulate}{\postulatename}{thmstyle}{pos}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{postulate}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\postulatename~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\postulatename~\thetcbcounter\ (#2)}}
           {title=\postulatename~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={pos:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={pos:\thetcbcounter}}}
+      {IfValueTF={#4}{label={pos:#4}}{label={pos:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{axiom}{\axiomname}{thmstyle}{axi}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{axiom}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\axiomname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\axiomname~\thetcbcounter\ (#2)}}
           {title=\axiomname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={axi:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={axi:\thetcbcounter}}}
+      {IfValueTF={#4}{label={axi:#4}}{label={axi:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{corollary}{\corollaryname}{thmstyle}{cor}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{corollary}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\corollaryname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\corollaryname~\thetcbcounter\ (#2)}}
           {title=\corollaryname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={cor:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={cor:\thetcbcounter}}}
+      {IfValueTF={#4}{label={cor:#4}}{label={cor:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{lemma}{\lemmaname}{thmstyle}{lem}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{lemma}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\lemmaname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\lemmaname~\thetcbcounter\ (#2)}}
           {title=\lemmaname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={lem:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={lem:\thetcbcounter}}}
+      {IfValueTF={#4}{label={lem:#4}}{label={lem:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{proposition}{\propositionname}{propstyle}{pro}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{proposition}{ g o t\label g }{
     common,propstyle,
     IfValueTF={#1}
       {title={\propositionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\propositionname~\thetcbcounter\ (#2)}}
           {title=\propositionname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={pro:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={pro:\thetcbcounter}}}
+      {IfValueTF={#4}{label={pro:#4}}{label={pro:\thetcbcounter}}}}
 }{\relax}
 
 
@@ -994,11 +681,11 @@
   \let\endproof\relax
 
   % declare a new theorem style
-  \newtheoremstyle{defstyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{defstyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{main}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
-  \newtheoremstyle{thmstyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{thmstyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{second}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
-  \newtheoremstyle{prostyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{prostyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{third}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
 
 
@@ -1017,7 +704,7 @@
 }{\relax}
 
 % main（green-def): example exercise problem solution
-% second（orange-thm）: proof note remark  
+% second（orange-thm）: proof note remark
 % third（blue-prop):  assumptions property conclusion custom
 
 %% Example with counter
@@ -1057,10 +744,10 @@
 \newenvironment{proof}{
   \par\noindent\textbf{\color{second}\proofname\;}
   \color{black!90}\cfs}{
-  % \hfill$\Box$\quad
+  \nobreak\hfill\ensuremath{\square}
   \par}
 
-\newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \citshape}{\par}
+\newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \cfs}{\par}
 \newenvironment{remark}{\noindent\textbf{\color{second}\remarkname}}{\par}
 \newenvironment{assumption}{\par\noindent\textbf{\color{third}\assumptionname} \citshape}{\par}
 \newenvironment{conclusion}{\par\noindent\textbf{\color{third}\conclusionname} \citshape}{\par}
@@ -1168,7 +855,7 @@
   \vskip-2ex
   \hspace{2em}
   \parbox{0.8\textwidth}{
-    \bfseries\Huge 
+    \bfseries\Huge
       \ifcsname @title\endcsname \@title \fi
     \par}
   \vfill
@@ -1204,7 +891,7 @@
   \vfill
   \begin{center}
     \setstretch{1.3}
-    \parbox[t]{0.7\textwidth}{\centering \citshape 
+    \parbox[t]{0.7\textwidth}{\centering \citshape
       \ifcsname @extrainfo\endcsname\@extrainfo\fi}
   \end{center}
   \vfill
@@ -1244,6 +931,146 @@
   columns=flexible,
   % backgroundcolor=\color{lightgrey}
 }
+
+% Python language style definition
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  emphstyle=\color{magenta!80}\bfseries,
+  emph={self,cls,True,False,None},
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% Define Python code environment
+\lstnewenvironment{python}[1][]{
+  \lstset{style=pythonstyle,#1}
+}{}
+
+% Define inline Python command
+\newcommand{\pythoninline}[1]{\lstinline[style=pythonstyle]!#1!}
+
+% C++ language style definition
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  emphstyle=\color{magenta!80}\bfseries,
+  emph={nullptr,override,final,constexpr,noexcept},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% Define C++ code environment
+\lstnewenvironment{cpp}[1][]{
+  \lstset{style=cppstyle,#1}
+}{}
+
+% Define inline C++ command
+\newcommand{\cppinline}[1]{\lstinline[style=cppstyle]!#1!}
+
+% Define plain text environment
+\lstdefinestyle{txtstyle}{
+  language=,
+  basicstyle=\ttfamily\small,
+  commentstyle=,
+  keywordstyle=,
+  stringstyle=,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+\lstnewenvironment{txt}[1][]{
+  \lstset{style=txtstyle,#1}
+}{}
+
+% Define terminal/command line environment
+\lstdefinestyle{terminalstyle}{
+  language=,
+  basicstyle=\ttfamily\small\color{white},
+  commentstyle=,
+  keywordstyle=,
+  stringstyle=,
+  numberstyle=\tiny\color{gray!60},
+  numbers=none,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  lineskip=0pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+
+\lstnewenvironment{terminal}[1][]{
+  \lstset{style=terminalstyle,#1}
+}{}
+
+% Alias for terminal environment
+\lstnewenvironment{cmd}[1][]{
+  \lstset{style=terminalstyle,#1}
+}{}
 
 \newcommand\bmmax{0}
 \RequirePackage{bm}
@@ -1309,8 +1136,8 @@
 \usepackage[titles]{tocloft}
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\cftchappresnum}{\beforechap\space}
-  \renewcommand{\cftchapaftersnum}{\space\afterchap}
-  \setlength{\cftchapnumwidth}{\widthof{\textbf{附录~999}}}
+  \renewcommand{\cftchapaftersnum}{\space\afterchap\space}
+  \setlength{\cftchapnumwidth}{\widthof{\textbf{\beforechap\space 999\space\afterchap\space}}}
   \g@addto@macro\appendix{%
     \addtocontents{toc}{%
       \protect\renewcommand{\protect\cftchappresnum}{\appendixname\space}%
@@ -1332,3 +1159,251 @@
 
 % restore the tt default family to lmodern tt family
 \renewcommand\ttdefault{lmtt}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% NEW COMMANDS
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\red}{\color{black}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\black}{\color{black}}
+
+\newcommand{\nc}{\newcommand}
+\newcommand{\rnc}{\renewcommand}
+% other
+\newcommand{\e}{\varepsilon}
+% annotation
+%\usepackage[marginpar=2.5cm]{geometry}
+%\newcommand{\ann}[1]{\marginpar{\tiny{#1}}}
+% emphbold
+%\newcommand{\eb}[1]{\emph{\textbf{#1}}}
+
+%%%%%%%%%%%%%%%%%%%
+% STANDARD FONTS
+%%%%%%%%%%%%%%%%%%%
+% mathbb
+\nc\bA{\mathbb{A}}
+\nc\bB{\mathbb{B}}
+\nc\bC{\mathbb{C}}
+\nc\bD{\mathbb{D}}
+\nc\bE{\mathbb{E}}
+\nc\bF{\mathbb{F}}
+\nc\bG{\mathbb{G}}
+\nc\bH{\mathbb{H}}
+\nc\bI{\mathbb{I}}
+\nc{\bJ}{\mathbb{J}}
+\nc\bK{\mathbb{K}}
+\nc\bL{\mathbb{L}}
+\nc\bM{\mathbb{M}}
+\nc\bN{\mathbb{N}}
+\nc\bO{\mathbb{O}}
+\nc\bP{\mathbb{P}}
+\nc\bQ{\mathbb{Q}}
+\nc\bR{\mathbb{R}}
+\nc\bS{\mathbb{S}}
+\nc\bT{\mathbb{T}}
+\nc\bU{\mathbb{U}}
+\nc\bV{\mathbb{V}}
+\nc\bW{\mathbb{W}}
+\nc\bY{\mathbb{Y}}
+\nc\bX{\mathbb{X}}
+\nc\bZ{\mathbb{Z}}
+% mathcal
+\nc\cA{\mathcal{A}}
+\nc\cB{\mathcal{B}}
+\nc\cC{\mathcal{C}}
+\nc\cD{\mathcal{D}}
+\nc\cE{\mathcal{E}}
+\nc\cF{\mathcal{F}}
+\nc\cG{\mathcal{G}}
+\nc\cH{\mathcal{H}}
+\nc\cI{\mathcal{I}}
+\nc{\cJ}{\mathcal{J}}
+\nc\cK{\mathcal{K}}
+\nc\cL{\mathcal{L}}
+\nc\cM{\mathcal{M}}
+\nc\cN{\mathcal{N}}
+\nc\cO{\mathcal{O}}
+\nc\cP{\mathcal{P}}
+\nc\cQ{\mathcal{Q}}
+\nc\cR{\mathcal{R}}
+\nc\cS{\mathcal{S}}
+\nc\cT{\mathcal{T}}
+\nc\cU{\mathcal{U}}
+\nc\cV{\mathcal{V}}
+\nc\cW{\mathcal{W}}
+\nc\cY{\mathcal{Y}}
+\nc\cX{\mathcal{X}}
+\nc\cZ{\mathcal{Z}}
+% mathbf
+\nc\bfA{\mathbf{A}}
+\nc\bfB{\mathbf{B}}
+\nc\bfC{\mathbf{C}}
+\nc\bfD{\mathbf{D}}
+\nc\bfE{\mathbf{E}}
+\nc\bfF{\mathbf{F}}
+\nc\bfG{\mathbf{G}}
+\nc\bfH{\mathbf{H}}
+\nc\bfI{\mathbf{I}}
+\nc{\bfJ}{\mathbf{J}}
+\nc\bfK{\bk}
+\nc\bfL{\mathbf{L}}
+\nc\bfM{\mathbf{M}}
+\nc\bfN{\mathbf{N}}
+\nc\bfO{\mathbf{O}}
+\nc\bfP{\mathbf{P}}
+\nc\bfQ{\mathbf{Q}}
+\nc\Q{\mathbf{Q}}
+\nc\bfR{\mathbf{R}}
+\nc\R{\mathbf{R}}
+\nc\bfS{\mathbf{S}}
+\nc\bfT{\mathbf{T}}
+\nc\bfU{\mathbf{U}}
+\nc\bfV{\mathbf{V}}
+\nc\bfW{\mathbf{W}}
+\nc\bfY{\mathbf{Y}}
+\nc\bfX{\mathbf{X}}
+\nc\bfZ{\mathbf{Z}}
+\nc\Z{\mathbf{Z}}
+
+% mathfrak
+\nc\mfS{\mathfrak{S}}
+\nc\mfg{\mathfrak{g}}
+
+
+\renewcommand{\bold}[1]{\medskip \noindent {\bf #1 }\nopagebreak}
+
+%%%%%%%%%%%%%%%%%%%
+% MATH OPERATORS
+%%%%%%%%%%%%%%%%%%%
+\nc{\dmo}{\DeclareMathOperator}
+\nc{\wt}{\widetilde}
+\nc{\wh}{\widehat}
+\rnc{\Re}{\operatorname{Re}}
+\rnc{\Im}{\operatorname{Im}}
+\dmo{\Hom}{Hom}
+\dmo{\Id}{Id}
+\dmo{\cone}{cone}
+\dmo{\diam}{diam}
+\dmo{\sys}{sys}
+\dmo{\Link}{Link}
+\dmo{\Cay}{Cay}
+
+\newcommand{\ql}[1]{%
+\todo[author=Qiulin,inline,color=blue!25]{#1}}
+\newcommand{\cy}[1]{%
+\todo[author=Chunye,inline,color=blue!25]{#1}}
+
+\newcommand{\F}{\mathbb{F}}
+
+
+\newcommand{\quadform}[3]
+{
+  \frac{#2 \pm \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+}
+
+\newcommand{\quadformp}[3]
+{
+  \frac{#2 + \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+}
+
+\newcommand{\quadformm}[3]
+{
+  \frac{#2 - \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+}
+
+\newcommand{\homo}{homomorphism\xspace}
+\DeclareMathOperator{\coker}{coker}
+
+\DeclareMathOperator{\Stab}{Stab}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Frob}{Frob}
+
+
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\osc}{osc}
+
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\SET}{SET}
+\DeclareMathOperator{\Nat}{Nat}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\colim}{colim}
+\DeclareMathOperator{\op}{op}
+\DeclareMathOperator{\Map}{Map}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\card}{card}
+
+\newcommand{\tri}{\overset{\triangle}{\leq}}
+\newcommand{\unif}{\xrightarrow{unif.}}
+\newcommand{\ptwise}{\xrightarrow{ptwise.}}
+\newcommand{\ball}[2]{\mathcal{B}_{#1}\left(#2\right)}
+
+\newcommand{\sub}{\subseteq}
+\newcommand{\ul}{\underline}
+\newcommand{\ol}{\overline}
+
+\newcommand{\rar}{\rightarrow}
+\newcommand{\lar}{\leftarrow}
+\newcommand{\eq}{\Leftrightarrow}
+\newcommand{\union}{\bigcup}
+\newcommand{\intsec}{\bigcap}
+\newcommand{\bigunion}{\displaystyle\bigcup}
+\newcommand{\bigintsec}{\displaystyle\bigcap}
+\newcommand{\BR}{\mathbb{R}}
+\newcommand{\borel}{\mathcal{B}}
+\newcommand{\extR}{\overline{\mathbb{R}}}
+\newcommand{\ds}{\displaystyle}
+
+
+\newcommand{\insertpic}[4][width=\textwidth]{
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[#1]{#2}
+        \caption{#3}
+        \label{#4}
+    \end{figure}
+}
+
+
+\newcommand{\pic}[2][1]{
+    \begin{center}
+        \includegraphics[width=#1\textwidth]{#2}
+    \end{center}
+}
+
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{xcolor}
+\newcommand*{\avint}{\mathop{\ooalign{$\int$\cr$-$}}}
+\setCJKmainfont{FandolSong-Regular}[BoldFont=FandolHei-Regular,ItalicFont=FandolKai-Regular]
+\setCJKsansfont{FandolHei-Regular}
+\setCJKmonofont{FandolFang-Regular}
+\setCJKfamilyfont{zhsong}{FandolSong-Regular}
+\setCJKfamilyfont{zhhei}{FandolHei-Regular}
+\setCJKfamilyfont{zhfs}{FandolFang-Regular}
+\setCJKfamilyfont{zhkai}{FandolKai-Regular}
+\newcommand*{\songti}{\CJKfamily{zhsong}}
+\newcommand*{\heiti}{\CJKfamily{zhhei}}
+\newcommand*{\fangsong}{\CJKfamily{zhfs}}
+\newcommand*{\kaishu}{\CJKfamily{zhkai}}
+
+\allowdisplaybreaks

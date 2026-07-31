@@ -147,20 +147,25 @@ def compile_tex(tex_file, output_dir, project_root):
             except OSError:
                 pass
 
-        cmd = ['lualatex', '-interaction=batchmode',
+        cmd = ['lualatex', '-interaction=nonstopmode',
+               '-halt-on-error', '-file-line-error',
                f'-output-directory={output_dir}', rel_tex_file_str]
 
         # 编译两次（处理交叉引用）
         result = subprocess.run(cmd, capture_output=True, text=True)
-        subprocess.run(cmd, capture_output=True, text=True)
+        second_result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode != 0 or second_result.returncode != 0:
+            details = second_result.stdout or result.stdout or second_result.stderr or result.stderr
+            if details:
+                print(f"错误: {details[-500:]}")
+            return None
 
         # 检查 PDF 是否生成（不同平台/发行版输出位置可能不同）
         for pdf_file in candidate_paths:
             if pdf_file.exists():
                 return pdf_file
 
-        if result.returncode != 0 and result.stderr:
-            print(f"错误: {result.stderr[:200]}")
         return None
 
     finally:
@@ -211,6 +216,7 @@ def main():
     print("\n开始生成独立的 PDF...")
 
     generated_pdfs = []
+    failed_chapters = []
     for chapter_path, _ in active_chapters:
         chapter_name = Path(chapter_path).stem
         counter = chapter_numbers.get(chapter_path, 0)
@@ -228,13 +234,19 @@ def main():
                 print(f"  ✓ 生成: {final_pdf.name}")
             else:
                 print(f"  ✗ 失败: {chapter_name}")
+                failed_chapters.append(chapter_name)
 
         except Exception as e:
             print(f"  ✗ 错误: {chapter_name} - {e}")
+            failed_chapters.append(chapter_name)
 
     print(f"\n完成! 生成了 {len(generated_pdfs)} 个 PDF 文件:")
     for pdf in generated_pdfs:
         print(f"  - {pdf}")
+
+    if failed_chapters:
+        print(f"\n失败章节: {', '.join(failed_chapters)}")
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

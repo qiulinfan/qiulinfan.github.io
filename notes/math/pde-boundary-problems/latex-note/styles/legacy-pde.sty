@@ -1,0 +1,39 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{legacy-pde}[2026/07/31 Compatibility commands for the Math 454 notes]
+
+\RequirePackage{mleftright}
+\RequirePackage{xspace}
+\RequirePackage{todonotes}
+
+\newenvironment{defn}{\begin{definition}}{\end{definition}}
+
+\providecommand{\emphi}[1]{\emph{\textbf{#1}}}
+
+\newcommand{\fql}[1]{%
+  \todo[author=Qiulin,inline,color=blue!25]{#1}%
+}
+\newcommand{\ycy}[1]{%
+  \todo[author=Chunye,inline,color=red!25]{#1}%
+}
+
+\newcommand{\HLink}[2]{\hyperref[#2]{#1~\ref*{#2}}}
+\newcommand{\HLinkSuffix}[3]{\hyperref[#2]{#1\ref*{#2}{#3}}}
+
+\newcommand{\thmlab}[1]{\label{theo:#1}}
+\newcommand{\thmref}[1]{\HLink{Theorem}{theo:#1}}
+\newcommand{\deflab}[1]{\label{def:#1}}
+\newcommand{\defref}[1]{\HLink{Definition}{def:#1}}
+
+\newcommand{\Set}[2]{\left\{#1 \;\middle\vert\; #2\right\}}
+\newcommand{\pth}[1]{\mleft(#1\mright)}
+\newcommand{\ceil}[1]{\mleft\lceil #1\mright\rceil}
+\newcommand{\floor}[1]{\mleft\lfloor #1\mright\rfloor}
+
+\newlist{compactenumI}{enumerate}{5}
+\setlist[compactenumI]{
+  topsep=0pt,
+  itemsep=-1ex,
+  partopsep=1ex,
+  parsep=1ex,
+  label=(\Roman*)
+}

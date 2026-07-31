@@ -4,7 +4,7 @@
 %%
 %% This work may be distributed and/or modified freely
 %% available at https://github.com/ElegantLaTeX/ElegantBook
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%
 % % !Mode:: "TeX:UTF-8"
 \NeedsTeXFormat{LaTeX2e}
@@ -43,16 +43,9 @@
 \DeclareVoidOption{founder}{\ekv{chinesefont=founder}}
 \DeclareVoidOption{nofont}{\ekv{chinesefont=nofont}}
 
+% Language shortcuts (CN/EN only)
 \DeclareVoidOption{en}{\ekv{lang=en}}
 \DeclareVoidOption{cn}{\ekv{lang=cn}}
-\DeclareVoidOption{it}{\ekv{lang=it}}
-\DeclareVoidOption{fr}{\ekv{lang=fr}}
-\DeclareVoidOption{nl}{\ekv{lang=nl}}
-\DeclareVoidOption{hu}{\ekv{lang=hu}}
-\DeclareVoidOption{de}{\ekv{lang=de}}
-\DeclareVoidOption{mn}{\ekv{lang=mn}}
-\DeclareVoidOption{pt}{\ekv{lang=pt}}
-\DeclareVoidOption{jp}{\ekv{lang=jp}}
 
 \DeclareVoidOption{fancy}{\ekv{mode=fancy}}
 \DeclareVoidOption{simple}{\ekv{mode=simple}}
@@ -99,6 +92,14 @@
 
 \ProcessKeyvalOptions*\relax
 % \ProcessOptions*\relax
+
+\ifdefstring{\ELEGANT@lang}{cn}{}{%
+  \ifdefstring{\ELEGANT@lang}{en}{}{%
+    \ClassWarningNoLine{elegantbook}{Unsupported lang `\ELEGANT@lang'. Only `cn' and `en' are supported. Falling back to `en'}
+    \def\ELEGANT@lang{en}%
+  }%
+}
+
 \LoadClass[a4paper,oneside]{book}
 
 \RequirePackage{setspace}
@@ -143,7 +144,7 @@
 
 \ifdefstring{\ELEGANT@device}{pad}{
 \geometry{
-  paperwidth=7.5in, 
+  paperwidth=7.5in,
   paperheight=10in,
   margin=16mm,
   headheight=2.17cm,
@@ -158,7 +159,8 @@
   \RequirePackage[lite]{mtpro2}
 }{\relax}
 
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
+% \hypersetup{bookmarksdepth=subsection}
 \renewcommand{\baselinestretch}{1.2}
 
 \PassOptionsToPackage{no-math}{fontspec}
@@ -174,7 +176,7 @@
     BoldItalicFont = *-bolditalic ,
     Extension = .otf ,
     Scale = 1.0]
-    
+
   \setsansfont{texgyreheros}[
     UprightFont = *-regular ,
     BoldFont = *-bold ,
@@ -201,15 +203,17 @@
     \newcommand*{\heiti}{\CJKfamily{zhhei}}
     \newcommand*{\kaishu}{\CJKfamily{zhkai}}
     \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
-  
+
   \ifdefstring{\ELEGANT@chinesefont}{nofont}{
     \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}}{\relax}
 
   \ifdefstring{\ELEGANT@chinesefont}{ctexfont}{
     \RequirePackage[UTF8,scheme=plain]{ctex}}{\relax}
-  
+
   \AfterEndPreamble{
-    \setlength\parindent{2\ccwd}}
+    \setlength\parindent{0\ccwd}
+    %\setlength{\parskip}{0.5em}
+    }
 }{\relax}
 
 \ifcsname heiti\endcsname
@@ -328,7 +332,7 @@
 \ifdefstring{\ELEGANT@titlestyle}{hang}{\def\style{hang}}{\relax}
 \ifdefstring{\ELEGANT@titlestyle}{display}{\def\style{display}}{\relax}
 
-% reference: 
+% reference:
 % https://tex.stackexchange.com/questions/58506/how-to-make-a-new-command-similar-to-author
 % https://pastebin.com/C8W4axzV
 \newcommand\email[1]{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -352,7 +356,7 @@
 \RequirePackage[shortlabels,inline]{enumitem}
 \setlist{nolistsep}
 
-\RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
+\RequirePackage[labelfont={bf,color=structurecolor}]{caption}
 \captionsetup[table]{skip=3pt}
 \captionsetup[figure]{skip=3pt}
 
@@ -387,7 +391,7 @@
   backend=\ELEGANT@bibend,
   citestyle=\ELEGANT@citestyle,
   bibstyle=\ELEGANT@bibstyle]{biblatex}
-  
+
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\baselinestretch}{1.3}
   \renewcommand{\contentsname}{Contents}
@@ -430,7 +434,7 @@
   \newcommand\bioinfo[2]{\gdef\@bioinfo{{\citshape #1}：#2}}
   \newcommand{\updatename}{Update: }
   \newcommand{\historyname}{History}
-  \newcommand{\beforechap}{Ch}
+  \newcommand{\beforechap}{module}
   \newcommand{\afterchap}{:}
 }{\relax}
 
@@ -439,7 +443,7 @@
   \setlength\parindent{2em}
   \newcommand\figref[1]{\textbf{Figure}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{Table}~\ref{#1}}
-  \renewcommand{\chaptername}{Chapter}
+  \renewcommand{\chaptername}{Module}
   \renewcommand{\partname}{\color{structurecolor} Part}
   \newcommand{\authorname}{\textbf{Author: }}
   \newcommand{\institutename}{\textbf{Institute: }}
@@ -497,8 +501,8 @@
 
 \ifdefstring{\ELEGANT@lang}{cn}{
   \ifdefstring{\ELEGANT@scheme}{chinese}{
-    \newcommand{\xchaptertitle}{Ch \zhnumber{\arabic{chapter}}} }{
-    \newcommand{\xchaptertitle}{Ch \thechapter{}}} }{
+    \newcommand{\xchaptertitle}{Module \zhnumber{\arabic{chapter}}} }{
+    \newcommand{\xchaptertitle}{Module \thechapter{}}} }{
   \newcommand{\xchaptertitle}{\chaptername~\thechapter~}}
 
 \setcounter{secnumdepth}{5}
@@ -550,25 +554,28 @@
       separator sign={.},},
     defstyle/.style={
       common,
-      colframe=main,  
+      fontupper=\normalfont,
+      colframe=main,
       colback=main!5,
-      colbacktitle=main, 
+      colbacktitle=main,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{main}{$\clubsuit$}};}},
     thmstyle/.style={
       common,
-      colframe=second,  
+      fontupper=\normalfont,
+      colframe=second,
       colback=second!5,
-      colbacktitle=second, 
+      colbacktitle=second,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{second}{$\heartsuit$}};}},
     propstyle/.style={
       common,
-      colframe=third,  
+      fontupper=\normalfont,
+      colframe=third,
       colback=third!5,
-      colbacktitle=third, 
+      colbacktitle=third,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{third}{$\spadesuit$}};}},}
@@ -578,77 +585,91 @@
     IfValueTF={#1}
       {title={\definitionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\definitionname~\thetcbcounter\ (#2)}}
           {title=\definitionname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={def:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={def:\thetcbcounter}}}
+      {IfValueTF={#4}{label={def:#4}}{label={def:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{theorem}{\theoremname}{thmstyle}{thm}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{theorem}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\theoremname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\theoremname~\thetcbcounter\ (#2)}}
           {title=\theoremname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={thm:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={thm:\thetcbcounter}}}
+      {IfValueTF={#4}{label={thm:#4}}{label={thm:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{postulate}{\postulatename}{thmstyle}{pos}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{postulate}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\postulatename~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\postulatename~\thetcbcounter\ (#2)}}
           {title=\postulatename~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={pos:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={pos:\thetcbcounter}}}
+      {IfValueTF={#4}{label={pos:#4}}{label={pos:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{axiom}{\axiomname}{thmstyle}{axi}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{axiom}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\axiomname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\axiomname~\thetcbcounter\ (#2)}}
           {title=\axiomname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={axi:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={axi:\thetcbcounter}}}
+      {IfValueTF={#4}{label={axi:#4}}{label={axi:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{corollary}{\corollaryname}{thmstyle}{cor}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{corollary}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\corollaryname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\corollaryname~\thetcbcounter\ (#2)}}
           {title=\corollaryname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={cor:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={cor:\thetcbcounter}}}
+      {IfValueTF={#4}{label={cor:#4}}{label={cor:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{lemma}{\lemmaname}{thmstyle}{lem}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{lemma}{ g o t\label g }{
     common,thmstyle,
     IfValueTF={#1}
       {title={\lemmaname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\lemmaname~\thetcbcounter\ (#2)}}
           {title=\lemmaname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={lem:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={lem:\thetcbcounter}}}
+      {IfValueTF={#4}{label={lem:#4}}{label={lem:\thetcbcounter}}}}
   % \newtcbtheorem[auto counter,number within=chapter]{proposition}{\propositionname}{propstyle}{pro}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{proposition}{ g o t\label g }{
     common,propstyle,
     IfValueTF={#1}
       {title={\propositionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\propositionname~\thetcbcounter\ (#2)}}
           {title=\propositionname~\thetcbcounter}
       },
-    IfBooleanTF={#3}{label=#4}{label={pro:#4}}}
+    IfBooleanTF={#3}
+      {IfValueTF={#4}{label=#4}{label={pro:\thetcbcounter}}}
+      {IfValueTF={#4}{label={pro:#4}}{label={pro:\thetcbcounter}}}}
 }{\relax}
 
 
@@ -660,11 +681,11 @@
   \let\endproof\relax
 
   % declare a new theorem style
-  \newtheoremstyle{defstyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{defstyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{main}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
-  \newtheoremstyle{thmstyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{thmstyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{second}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
-  \newtheoremstyle{prostyle}{3pt}{3pt}{\citshape}{-3pt}{
+  \newtheoremstyle{prostyle}{3pt}{3pt}{\normalfont}{-3pt}{
     \bfseries\color{third}}{}{0.5em}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
 
 
@@ -683,7 +704,7 @@
 }{\relax}
 
 % main（green-def): example exercise problem solution
-% second（orange-thm）: proof note remark  
+% second（orange-thm）: proof note remark
 % third（blue-prop):  assumptions property conclusion custom
 
 %% Example with counter
@@ -723,10 +744,10 @@
 \newenvironment{proof}{
   \par\noindent\textbf{\color{second}\proofname\;}
   \color{black!90}\cfs}{
-  % \hfill$\Box$\quad
+  \nobreak\hfill\ensuremath{\square}
   \par}
 
-\newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \citshape}{\par}
+\newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \cfs}{\par}
 \newenvironment{remark}{\noindent\textbf{\color{second}\remarkname}}{\par}
 \newenvironment{assumption}{\par\noindent\textbf{\color{third}\assumptionname} \citshape}{\par}
 \newenvironment{conclusion}{\par\noindent\textbf{\color{third}\conclusionname} \citshape}{\par}
@@ -834,7 +855,7 @@
   \vskip-2ex
   \hspace{2em}
   \parbox{0.8\textwidth}{
-    \bfseries\Huge 
+    \bfseries\Huge
       \ifcsname @title\endcsname \@title \fi
     \par}
   \vfill
@@ -870,7 +891,7 @@
   \vfill
   \begin{center}
     \setstretch{1.3}
-    \parbox[t]{0.7\textwidth}{\centering \citshape 
+    \parbox[t]{0.7\textwidth}{\centering \citshape
       \ifcsname @extrainfo\endcsname\@extrainfo\fi}
   \end{center}
   \vfill
@@ -911,6 +932,146 @@
   % backgroundcolor=\color{lightgrey}
 }
 
+% Python language style definition
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  emphstyle=\color{magenta!80}\bfseries,
+  emph={self,cls,True,False,None},
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% Define Python code environment
+\lstnewenvironment{python}[1][]{
+  \lstset{style=pythonstyle,#1}
+}{}
+
+% Define inline Python command
+\newcommand{\pythoninline}[1]{\lstinline[style=pythonstyle]!#1!}
+
+% C++ language style definition
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  emphstyle=\color{magenta!80}\bfseries,
+  emph={nullptr,override,final,constexpr,noexcept},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+% Define C++ code environment
+\lstnewenvironment{cpp}[1][]{
+  \lstset{style=cppstyle,#1}
+}{}
+
+% Define inline C++ command
+\newcommand{\cppinline}[1]{\lstinline[style=cppstyle]!#1!}
+
+% Define plain text environment
+\lstdefinestyle{txtstyle}{
+  language=,
+  basicstyle=\ttfamily\small,
+  commentstyle=,
+  keywordstyle=,
+  stringstyle=,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  lineskip=0pt,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+
+\lstnewenvironment{txt}[1][]{
+  \lstset{style=txtstyle,#1}
+}{}
+
+% Define terminal/command line environment
+\lstdefinestyle{terminalstyle}{
+  language=,
+  basicstyle=\ttfamily\small\color{white},
+  commentstyle=,
+  keywordstyle=,
+  stringstyle=,
+  numberstyle=\tiny\color{gray!60},
+  numbers=none,
+  numbersep=5pt,
+  frame=single,
+  framerule=0.2pt,
+  rulecolor=\color{structurecolor},
+  backgroundcolor=\color{black!85},
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
+  lineskip=0pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+
+\lstnewenvironment{terminal}[1][]{
+  \lstset{style=terminalstyle,#1}
+}{}
+
+% Alias for terminal environment
+\lstnewenvironment{cmd}[1][]{
+  \lstset{style=terminalstyle,#1}
+}{}
+
 \newcommand\bmmax{0}
 \RequirePackage{bm}
 
@@ -941,7 +1102,7 @@
   \begin{enumerate}[label=\small\protect\circled{\arabic*}]}{
   \end{enumerate}}
 
-\addbibresource[location=local]{ref.bib}
+\addbibresource[location=local]{reference.bib}
 
 \renewcommand\tableofcontents{%
   \hypersetup{linktoc=all, linkcolor=black}
@@ -975,8 +1136,8 @@
 \usepackage[titles]{tocloft}
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\cftchappresnum}{\beforechap\space}
-  \renewcommand{\cftchapaftersnum}{\space\afterchap}
-  \setlength{\cftchapnumwidth}{\widthof{\textbf{附录~999}}}
+  \renewcommand{\cftchapaftersnum}{\space\afterchap\space}
+  \setlength{\cftchapnumwidth}{\widthof{\textbf{\beforechap\space 999\space\afterchap\space}}}
   \g@addto@macro\appendix{%
     \addtocontents{toc}{%
       \protect\renewcommand{\protect\cftchappresnum}{\appendixname\space}%
@@ -1001,14 +1162,14 @@
 
 
 
+%%%%%%%%%%%%%%%%%%%
+% NEW COMMANDS
+%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\red}{\color{black}}
 \newcommand{\blue}{\color{blue}}
 \newcommand{\black}{\color{black}}
 
-%%%%%%%%%%%%%%%%%%%
-% NEW COMMANDS
-%%%%%%%%%%%%%%%%%%%
 \newcommand{\nc}{\newcommand}
 \newcommand{\rnc}{\renewcommand}
 % other
@@ -1110,7 +1271,7 @@
 % mathfrak
 \nc\mfS{\mathfrak{S}}
 \nc\mfg{\mathfrak{g}}
-\nc\fL{\mathfrak{L}}
+
 
 \renewcommand{\bold}[1]{\medskip \noindent {\bf #1 }\nopagebreak}
 
@@ -1130,9 +1291,9 @@
 \dmo{\Link}{Link}
 \dmo{\Cay}{Cay}
 
-\newcommand{\ql}[1]{%   
+\newcommand{\ql}[1]{%
 \todo[author=Qiulin,inline,color=blue!25]{#1}}
-\newcommand{\cy}[1]{%   
+\newcommand{\cy}[1]{%
 \todo[author=Chunye,inline,color=blue!25]{#1}}
 
 \newcommand{\F}{\mathbb{F}}
@@ -1140,17 +1301,17 @@
 
 \newcommand{\quadform}[3]
 {
-	\frac{#2 \pm \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+  \frac{#2 \pm \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
 }
 
 \newcommand{\quadformp}[3]
 {
-	\frac{#2 + \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+  \frac{#2 + \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
 }
 
 \newcommand{\quadformm}[3]
 {
-	\frac{#2 - \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
+  \frac{#2 - \sqrt{#2^2 - 4\left(#1\right)\left(#3\right)} }{2\left(#1\right)}
 }
 
 \newcommand{\homo}{homomorphism\xspace}
@@ -1174,10 +1335,6 @@
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Arg}{Arg}
 \DeclareMathOperator{\Log}{Log}
-\newcommand{\tri}{\overset{\triangle}{\leq}}
-\newcommand{\unif}{\xrightarrow{unif.}}
-\newcommand{\ptwise}{\xrightarrow{ptwise.}}
-\newcommand{\ball}[2]{\mathcal{B}_{#1}\left(#2\right)}
 \DeclareMathOperator{\osc}{osc}
 
 \DeclareMathOperator{\Ob}{Ob}
@@ -1188,6 +1345,16 @@
 \DeclareMathOperator{\op}{op}
 \DeclareMathOperator{\Map}{Map}
 \DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\card}{card}
+
+\newcommand{\tri}{\overset{\triangle}{\leq}}
+\newcommand{\unif}{\xrightarrow{unif.}}
+\newcommand{\ptwise}{\xrightarrow{ptwise.}}
+\newcommand{\ball}[2]{\mathcal{B}_{#1}\left(#2\right)}
 
 \newcommand{\sub}{\subseteq}
 \newcommand{\ul}{\underline}
@@ -1201,12 +1368,9 @@
 \newcommand{\bigunion}{\displaystyle\bigcup}
 \newcommand{\bigintsec}{\displaystyle\bigcap}
 \newcommand{\BR}{\mathbb{R}}
-
-
-\DeclareMathOperator{\Res}{Res}
-\DeclareMathOperator{\card}{card}
+\newcommand{\borel}{\mathcal{B}}
+\newcommand{\extR}{\overline{\mathbb{R}}}
 \newcommand{\ds}{\displaystyle}
-
 
 
 \newcommand{\insertpic}[4][width=\textwidth]{
@@ -1221,7 +1385,25 @@
 
 \newcommand{\pic}[2][1]{
     \begin{center}
-        \includegraphics[width=#1\textwidth]{#2} 
-        
+        \includegraphics[width=#1\textwidth]{#2}
     \end{center}
 }
+
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{graphicx}
+\usepackage{xcolor}
+\newcommand*{\avint}{\mathop{\ooalign{$\int$\cr$-$}}}
+\setCJKmainfont{FandolSong-Regular}[BoldFont=FandolHei-Regular,ItalicFont=FandolKai-Regular]
+\setCJKsansfont{FandolHei-Regular}
+\setCJKmonofont{FandolFang-Regular}
+\setCJKfamilyfont{zhsong}{FandolSong-Regular}
+\setCJKfamilyfont{zhhei}{FandolHei-Regular}
+\setCJKfamilyfont{zhfs}{FandolFang-Regular}
+\setCJKfamilyfont{zhkai}{FandolKai-Regular}
+\newcommand*{\songti}{\CJKfamily{zhsong}}
+\newcommand*{\heiti}{\CJKfamily{zhhei}}
+\newcommand*{\fangsong}{\CJKfamily{zhfs}}
+\newcommand*{\kaishu}{\CJKfamily{zhkai}}
+
+\allowdisplaybreaks

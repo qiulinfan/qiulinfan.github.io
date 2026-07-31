@@ -1,0 +1,135 @@
+\chapter{orthogonal vectors and matrices}
+
+\begin{definition}{adjoint(hermitian conjugate)}
+\[
+    ^*:
+    A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22}   \\a_{31} & a_{32}  \end{bmatrix}
+    \mapsto A^* =  \begin{bmatrix} \overline{a_{11}} & \overline{a_{21}}  &\overline{a_{31}} \\ \overline{a_{12}} & \overline{a_{22}} & \overline{a_{32}}   \end{bmatrix}
+    \]
+(where each overline means complex conjuate.)
+\end{definition}
+\begin{remark}
+    Can easily comfirm:
+    $$
+    (AB)^* = B^* A^*
+    $$
+\end{remark}
+
+
+
+\begin{definition}{standard inner product and norm on $\bC^m$}
+The \textbf{standard inner product}:
+$$
+<x,y> := x^* y  = \sum_{i=1}^m \overline{x_i} y_i
+$$
+The \textbf{standard norm}:
+$$
+||x|| : =  \sqrt{x^* x}
+$$
+\end{definition}
+\begin{remark}
+$$
+\sqrt{x^* x} = \sqrt{\sum_{i=1}^m |x_i|^2}
+$$, 其中 $|x_i| = |a+ bi| = \sqrt{a^2 + b^2}$, \\
+\textbf{Note: It is actually $\sqrt{\overline{x_i} x_i}$, but not $\sqrt{x_i^2}$, 这是因为 $\sqrt{\overline{x_i} x_i}$ 等于这个 complex scalar isomorphic 到 $\bR^2$ 上的 Euclidean norm,}\\ 
+这是因为两个复数相乘等于长度相乘幅角相加, 而 conjugate 的幅角是相反的, \textbf{所以 conjugate 之间相乘等于幅角相互抵消, 结果在 positive real axis 上, 取开方得到长度.} \\
+而平方得到的则是一个转两次的幅角.
+\end{remark}
+\begin{remark}
+    Can easily verifies:
+    $$
+    <a,b>_{\bC} = \overline{<b,a>_{\bC}}
+    $$
+    且注意: By bilinearity, \textbf{对于 $a$ 上的 scaling 在拿出 inner product 外后要进行 conjugate.}
+\end{remark}
+
+\begin{definition}{orthogonal, orthonomal vectors}
+    Say $x, y \in \bC^m$ 是 orthogonal vectors, if $x^* y = 0$.\\
+    Say $S \sub \bC^m$ 是 orthogonal 的, 如果其中的 vectors 相互 orthogonal.\\
+    Say $S \sub \bC^m$ 是 orthonomal 的, 如果其中的 vectors 相互 orthogonal, 并且每个 vector 的 norm 都是 1.
+\end{definition}
+
+\begin{theorem}{orthogonal $\implies$ lin.ind}
+    orthogonal 的 vectors 一定 linearly independent.
+\end{theorem}
+\begin{proof}
+    trivial.
+\end{proof}
+\begin{corollary}
+    orthogonal 的 $\dim(V)$ 个 vectors 一定是 $V$ 的一个 basis.
+\end{corollary}
+
+
+\section{decomposing vector by an orthonormal set}
+\begin{theorem}{decomposing vector by an orthonormal set}
+给定 $\bC^m$ 中的一个 orthonormal set $\{q_1, \cdots, q_n\}$ (by inner product $<\cdot>$, 这里以 standard complex inner product 为例), 
+\\对于一个 arbitrary vector $v$, 我们 define:
+$$
+r:= v - \sum_{i=1}^n <q_i, v>   q_i
+$$
+Claim: 这个 \textbf{$r$ is orthogonal to $\{q_1, \cdots, q_n\}$,} 即我们把这个 $v$ 分解成了在这个 orthonormal set 上的投影与一个和它们都正交的 vector.
+\end{theorem}
+\begin{proof}
+    注意: 由于 $q_i$ 都是 unit vectors, $$<q_i, v> q_i = \frac{v}{||v||} \cos \alpha = proj_{q_i}(v)$$\textbf{ is the projection of $v$ onto the direction of $q_i$.}\\
+我们在两边取和 $q_i$ 的 inner product, for each $i$. 由 linearity 可拆开, 由 orthgonality 可得到:
+$$
+<q_i,r> = <q_i,v> - <q_i,v><q_i,q_i>
+$$
+并且由于 $q_i$ 是 unit vector, 得到 $<q_i,q_i>=1$, 从而右边为 0.
+\end{proof}
+\begin{remark}
+    如果 $n=m$, 那么 $r=0$, 我们把 arbitrary vector 分解成了 $\{q_1, \cdots, q_n\}$ 方向上的向量, 相当于对它进行了 change of basis. 这个 change of basis matrix 就等于 $\begin{bmatrix} q_1  & \cdots  & q_n \end{bmatrix}^T$.
+\end{remark}
+
+
+ 对于 unit vector $w$, 我们刚才已经展示了一个 arbitrary vector $v$ 在它上面的 projection 是:$$proj_w (v) = <w, v> w  $$
+ 现在我们引入另一个形式的 projection 表达: projection matrix
+
+\begin{theorem}{projection matrix}
+对于任意的 \textbf{unit vector $w$}, we have
+$$proj_w (v) = (w \otimes w^*) v $$
+其中 $w\otimes w^*$ is called the \textbf{projection matrix} onto $w$.
+\end{theorem}
+\begin{proof}
+    In md.
+\textbf{    Notice that this matrix is rank 1.}
+\end{proof}
+
+
+\begin{definition}{unitrary matrix}
+一个 square matrix $Q \in \bC^{m\times m}$ 被称为 unitrary 的, if $Q^* = Q^{-1}$.
+\end{definition}
+
+\begin{remark}
+    unitrary: 即 $QQ^* = Q^*Q = I$. \\
+    \textbf{In real case, 它被称为 orthogonal matrix.}
+\end{remark}
+
+
+\begin{theorem}{unitrary matrix 的充要条件}
+$Q \in \bC^{m\times m}$ is unitrary $\Longleftrightarrow $ \textbf{its columns are orthonormal} $\Longleftrightarrow$ \textbf{its rows are orthonormal} 
+\end{theorem}
+\begin{proof}
+    显然, 因为 unitrary $\Longleftrightarrow QQ^* = Q^*Q = I$ $\Longleftrightarrow  <q_i, q_j> = \delta_{ij}$
+\end{proof}
+
+
+
+\begin{theorem}{unitrary transfromation preserves inner product and length}
+如果 $Q \in \bC^{m\times m}$ is unitrary, 那么对于任意的 $x,y \in \bC^m$, 都有:
+$$
+(Qx)^* (Qy) = x^*y
+$$
+并且自然得到 $$||Qx|| = ||x||
+$$
+\end{theorem}
+\begin{proof}
+Follows from: $(AB)^*= B^* A^*$:  $$(Qx)^* (Qy) = x^*Q^*Qy= x^*y
+$$
+\end{proof}
+\begin{remark}
+    并不 preserve 自定义的 inner product, 只 \textbf{preserve standard inner product 和 standard norm.}
+\end{remark}
+
+
+

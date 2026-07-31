@@ -4,7 +4,7 @@
 %%
 %% This work may be distributed and/or modified freely
 %% available at https://github.com/ElegantLaTeX/ElegantBook
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%
 % % !Mode:: "TeX:UTF-8"
 \NeedsTeXFormat{LaTeX2e}
@@ -144,7 +144,7 @@
 
 \ifdefstring{\ELEGANT@device}{pad}{
 \geometry{
-  paperwidth=7.5in, 
+  paperwidth=7.5in,
   paperheight=10in,
   margin=16mm,
   headheight=2.17cm,
@@ -176,7 +176,7 @@
     BoldItalicFont = *-bolditalic ,
     Extension = .otf ,
     Scale = 1.0]
-    
+
   \setsansfont{texgyreheros}[
     UprightFont = *-regular ,
     BoldFont = *-bold ,
@@ -203,13 +203,13 @@
     \newcommand*{\heiti}{\CJKfamily{zhhei}}
     \newcommand*{\kaishu}{\CJKfamily{zhkai}}
     \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
-  
+
   \ifdefstring{\ELEGANT@chinesefont}{nofont}{
     \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}}{\relax}
 
   \ifdefstring{\ELEGANT@chinesefont}{ctexfont}{
     \RequirePackage[UTF8,scheme=plain]{ctex}}{\relax}
-  
+
   \AfterEndPreamble{
     \setlength\parindent{0\ccwd}
     %\setlength{\parskip}{0.5em}
@@ -332,7 +332,7 @@
 \ifdefstring{\ELEGANT@titlestyle}{hang}{\def\style{hang}}{\relax}
 \ifdefstring{\ELEGANT@titlestyle}{display}{\def\style{display}}{\relax}
 
-% reference: 
+% reference:
 % https://tex.stackexchange.com/questions/58506/how-to-make-a-new-command-similar-to-author
 % https://pastebin.com/C8W4axzV
 \newcommand\email[1]{\href{mailto:#1}{\nolinkurl{#1}}}
@@ -356,7 +356,7 @@
 \RequirePackage[shortlabels,inline]{enumitem}
 \setlist{nolistsep}
 
-\RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
+\RequirePackage[labelfont={bf,color=structurecolor}]{caption}
 \captionsetup[table]{skip=3pt}
 \captionsetup[figure]{skip=3pt}
 
@@ -391,7 +391,7 @@
   backend=\ELEGANT@bibend,
   citestyle=\ELEGANT@citestyle,
   bibstyle=\ELEGANT@bibstyle]{biblatex}
-  
+
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\baselinestretch}{1.3}
   \renewcommand{\contentsname}{Contents}
@@ -555,27 +555,27 @@
     defstyle/.style={
       common,
       fontupper=\normalfont,
-      colframe=main,  
+      colframe=main,
       colback=main!5,
-      colbacktitle=main, 
+      colbacktitle=main,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{main}{$\clubsuit$}};}},
     thmstyle/.style={
       common,
       fontupper=\normalfont,
-      colframe=second,  
+      colframe=second,
       colback=second!5,
-      colbacktitle=second, 
+      colbacktitle=second,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{second}{$\heartsuit$}};}},
     propstyle/.style={
       common,
       fontupper=\normalfont,
-      colframe=third,  
+      colframe=third,
       colback=third!5,
-      colbacktitle=third, 
+      colbacktitle=third,
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
           \textcolor{third}{$\spadesuit$}};}},}
@@ -585,7 +585,7 @@
     IfValueTF={#1}
       {title={\definitionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\definitionname~\thetcbcounter\ (#2)}}
           {title=\definitionname~\thetcbcounter}
       },
@@ -598,7 +598,7 @@
     IfValueTF={#1}
       {title={\theoremname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\theoremname~\thetcbcounter\ (#2)}}
           {title=\theoremname~\thetcbcounter}
       },
@@ -611,7 +611,7 @@
     IfValueTF={#1}
       {title={\postulatename~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\postulatename~\thetcbcounter\ (#2)}}
           {title=\postulatename~\thetcbcounter}
       },
@@ -624,7 +624,7 @@
     IfValueTF={#1}
       {title={\axiomname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\axiomname~\thetcbcounter\ (#2)}}
           {title=\axiomname~\thetcbcounter}
       },
@@ -637,7 +637,7 @@
     IfValueTF={#1}
       {title={\corollaryname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\corollaryname~\thetcbcounter\ (#2)}}
           {title=\corollaryname~\thetcbcounter}
       },
@@ -650,7 +650,7 @@
     IfValueTF={#1}
       {title={\lemmaname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\lemmaname~\thetcbcounter\ (#2)}}
           {title=\lemmaname~\thetcbcounter}
       },
@@ -663,7 +663,7 @@
     IfValueTF={#1}
       {title={\propositionname~\thetcbcounter\ (#1)}}
       {
-        IfValueTF={#2} 
+        IfValueTF={#2}
           {title={\propositionname~\thetcbcounter\ (#2)}}
           {title=\propositionname~\thetcbcounter}
       },
@@ -704,7 +704,7 @@
 }{\relax}
 
 % main（green-def): example exercise problem solution
-% second（orange-thm）: proof note remark  
+% second（orange-thm）: proof note remark
 % third（blue-prop):  assumptions property conclusion custom
 
 %% Example with counter
@@ -744,7 +744,7 @@
 \newenvironment{proof}{
   \par\noindent\textbf{\color{second}\proofname\;}
   \color{black!90}\cfs}{
-  % \hfill$\Box$\quad
+  \nobreak\hfill\ensuremath{\square}
   \par}
 
 \newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \cfs}{\par}
@@ -855,7 +855,7 @@
   \vskip-2ex
   \hspace{2em}
   \parbox{0.8\textwidth}{
-    \bfseries\Huge 
+    \bfseries\Huge
       \ifcsname @title\endcsname \@title \fi
     \par}
   \vfill
@@ -891,7 +891,7 @@
   \vfill
   \begin{center}
     \setstretch{1.3}
-    \parbox[t]{0.7\textwidth}{\centering \citshape 
+    \parbox[t]{0.7\textwidth}{\centering \citshape
       \ifcsname @extrainfo\endcsname\@extrainfo\fi}
   \end{center}
   \vfill
@@ -935,24 +935,24 @@
 % Python language style definition
 \lstdefinestyle{pythonstyle}{
   language=Python,
-  basicstyle=\ttfamily\small\color{black!80},
-  keywordstyle=\color{blue!80}\bfseries,
-  commentstyle=\color{green!60}\itshape,
-  stringstyle=\color{orange!70},
-  numberstyle=\tiny\color{gray!70},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
   numbers=left,
   numbersep=5pt,
   frame=single,
   framerule=0.2pt,
   rulecolor=\color{structurecolor},
-  backgroundcolor=\color{yellow!12},
+  backgroundcolor=\color{black!85},
   breaklines=true,
   breakatwhitespace=false,
   tabsize=4,
   captionpos=b,
   columns=flexible,
   showstringspaces=false,
-  emphstyle=\color{purple!70}\bfseries,
+  emphstyle=\color{magenta!80}\bfseries,
   emph={self,cls,True,False,None},
   lineskip=0pt,
   aboveskip=6pt,
@@ -970,24 +970,24 @@
 % C++ language style definition
 \lstdefinestyle{cppstyle}{
   language=C++,
-  basicstyle=\ttfamily\small\color{black!80},
-  keywordstyle=\color{blue!80}\bfseries,
-  commentstyle=\color{green!60}\itshape,
-  stringstyle=\color{orange!70},
-  numberstyle=\tiny\color{gray!70},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{cyan}\bfseries,
+  commentstyle=\color{green!70}\itshape,
+  stringstyle=\color{yellow!80},
+  numberstyle=\tiny\color{gray!60},
   numbers=left,
   numbersep=5pt,
   frame=single,
   framerule=0.2pt,
   rulecolor=\color{structurecolor},
-  backgroundcolor=\color{yellow!12},
+  backgroundcolor=\color{black!85},
   breaklines=true,
   breakatwhitespace=false,
   tabsize=4,
   captionpos=b,
   columns=flexible,
   showstringspaces=false,
-  emphstyle=\color{purple!70}\bfseries,
+  emphstyle=\color{magenta!80}\bfseries,
   emph={nullptr,override,final,constexpr,noexcept},
   morecomment=[l]{//},
   morecomment=[s]{/*}{*/},
@@ -1039,17 +1039,17 @@
 % Define terminal/command line environment
 \lstdefinestyle{terminalstyle}{
   language=,
-  basicstyle=\ttfamily\small\color{black!80},
+  basicstyle=\ttfamily\small\color{white},
   commentstyle=,
   keywordstyle=,
   stringstyle=,
-  numberstyle=\tiny\color{gray!70},
+  numberstyle=\tiny\color{gray!60},
   numbers=none,
   numbersep=5pt,
   frame=single,
   framerule=0.2pt,
   rulecolor=\color{structurecolor},
-  backgroundcolor=\color{yellow!12},
+  backgroundcolor=\color{black!85},
   breaklines=true,
   breakatwhitespace=false,
   tabsize=4,
@@ -1291,9 +1291,9 @@
 \dmo{\Link}{Link}
 \dmo{\Cay}{Cay}
 
-\newcommand{\ql}[1]{%   
+\newcommand{\ql}[1]{%
 \todo[author=Qiulin,inline,color=blue!25]{#1}}
-\newcommand{\cy}[1]{%   
+\newcommand{\cy}[1]{%
 \todo[author=Chunye,inline,color=blue!25]{#1}}
 
 \newcommand{\F}{\mathbb{F}}
@@ -1371,7 +1371,7 @@
 \newcommand{\borel}{\mathcal{B}}
 \newcommand{\extR}{\overline{\mathbb{R}}}
 \newcommand{\ds}{\displaystyle}
-\newcommand{\tl}{\text}
+
 
 \newcommand{\insertpic}[4][width=\textwidth]{
     \begin{figure}[htbp]
@@ -1405,3 +1405,5 @@
 \newcommand*{\heiti}{\CJKfamily{zhhei}}
 \newcommand*{\fangsong}{\CJKfamily{zhfs}}
 \newcommand*{\kaishu}{\CJKfamily{zhkai}}
+
+\allowdisplaybreaks

@@ -1,0 +1,57 @@
+\chapter{Boundary Value Problems for PDEs}
+\subsection{Separation of variables}
+我们可以先假设这个 PDE 的解是可以分离为一个 $X$ 的函数和一个 $Y$ 的函数的，即 $u(x,y) = X(x)Y(y)$，然后我们把它代入原二阶 PDE 进行尝试，把 PDE 的左右两边分离 $u$ 关于变量 $x$ 和关于变量 $y$ 的 ODE，如果分离不出来就说明无法找到可分离变量的解。
+\\
+\fql{通常, second-order linear homogenenous PDEs 都具有可分离变量的解! 并且，大部分 second-order linear homogenenous PDEs 的解系中的任意解都是可分离变量的，即\textbf{我们通过分离变量法得出的结果是一个 complete 的 solution set.} 什么样的二阶 PDE 通过 separation of variables 得出的 solution set 是 complete 的? 请见下 criterion:}
+
+\begin{theorem}
+    \thmlab{Separable of variables}
+    如果对于 PDE $F[u] = 0$ 满足以下条件, 那么这个 PDE 通过 separable of variables 得出的 soluiton set 是 complete 的:\\
+    \begin{compactenumI}
+    \item $F[u] = 0$ 是 linear homogeneous PDE.
+    \item boundary conditions 也是 linear homogeneous 的.
+    \item 分离变量后得到的两边 ODE 对应的微分算子是 self-adjoint operator.
+    \item 分离变量后得到的两边 ODE 在 Sturm-Liouville eigenvalue problem 中的 eigenfunctions 形成一个 complete orthogonal system.
+\end{compactenumI}
+\end{theorem}
+这下面两个条件是什么意思？等下再说，我们先不管它。我们先分离一个看看是什么结果。
+
+我们分离 Laplace's equation:
+$$
+\frac{\partial ^2 u}{\partial x ^ 2} + \frac{\partial ^2 u}{\partial y ^ 2} = 0
+$$
+分离得到：
+$$
+Y \frac{d^2 X}{dx^2} = -X \frac{d^2 Y}{dy^2} \Rightarrow  \frac{X''}{X} = - \frac{Y''}{Y}
+$$
+
+令 $\frac{X''}{X} = - \frac{Y''}{Y} = \lambda$, 称 $\lambda$ 为 \textbf{separation constant}，我们得到了两个 separated ODE: $X'' + \lambda x = 0$, $Y'' - \lambda y = 0$.
+我们将 $\lambda$ 的值在 $\mathbb{R}$ 上分类讨论，得到了三个解系，将它们合并起来就是用 separation 法得出的整个解系:
+
+\[
+u = 
+\begin{cases} 
+(A_1 x + A_2)(B_1 y + B_2), \\ 
+(A_1 e^{ikx} + A_2 e^{-ikx})(B_1 e^{ky} + B_2 e^{-ky}), \\
+(A_1 e^{lx} + A_2 e^{-lx})(B_1 e^{ily} + B_2 e^{-ily})
+\end{cases}
+\]
+如果不选择指数作为基解而是选择 sin, cos (for complex) 及 sinh, cosh (for real) 作为等价的基解，那么这个 solution space 就成为以下的形式：
+\[
+u = 
+\begin{cases} 
+(A_1 x + A_2)(B_1 y + B_2), \\
+(A_1 \cos(kx) + A_2 \sin(kx))(B_1 \cosh(ky) + B_2 \sinh(ky)), \\
+(A_1 \cosh(lx) + A_2 \sinh(lx))(B_1 \cos(ly) + B_2 \sin(ly))
+\end{cases}
+\]
+
+
+\subsection{Fitting the solution set to boundary conditions}
+\paragraph{} 如果给出 $u(0,y) = 0, u(L,y) = 0, u(x,0) = 0$ 三个 boundary conditions, 那么 $u$ 就被限制到了 $u(x,y) = A \sin{\frac{n \pi x}{L}} sinh{\frac{n \pi x}{L}}, \; n\in \mathbb{N}$ 上;
+\\\\但是如果再给出第四个 boundary condition: $u(x, L) = \varphi(x)$，其中 $\varphi(x)$ 是一个函数，那么解空间会是什么样子呢？这个时候单个的 $u(x,y)$ 几乎不可能通过调整系数 $A, B$ 来模拟 $\varphi(x)$ 的行为。(除非 $\varphi(x)$ 正好就是一个正弦函数.)
+\\\\这个时候，我们想起来：因为这个微分方程是 linear homogeneous 的，所以任意解的任意 lienar combination 仍然是一个解，可以推广至无穷；但是这有什么用呢？我们需要介绍 Fourier theory: \textbf{满足一定条件的函数，可以用不同频率的 $sin, cos$ 函数来逼近，并且如果在无穷项上收敛到这个函数本身. 即: 通过调整每项系数 $A_i$，可以使得在一定范围内 $\varphi(x) = \sum_{n=1}^{\infty} A_i \sin{\frac{n \pi x}{L}}$}
+\\\\也就是说，我们可以调整所有的参数 $A_i$，我们可以让 $u(x,y) = \sum_{n=1}^{\infty} A_i \sin \frac{n \pi x}{L} \sinh \frac{n \pi x}{L}$ 满足这个 boundary condition 的要求. 所以存在一组系数 $\{A_i\}$ 使得 $u(x,y) = \sum_{n=1}^{\infty} A_i \sin \frac{n \pi x}{L} \sinh \frac{n \pi x}{L}$  成为满足 boundary condition 的唯一解。
+\\\\这个唯一解是可以求出来的，其中的系数 $A_n = \frac{2}{L \sinh{n \pi }} \int_0^L \varphi(x) \sin \frac{n \pi x}{L}dx$，具体的求法见下一章.
+
+

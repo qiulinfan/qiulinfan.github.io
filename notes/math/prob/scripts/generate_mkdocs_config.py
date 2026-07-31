@@ -59,6 +59,22 @@ def page_title_from_md(md_path: Path) -> str:
     return md_path.stem
 
 
+def project_site_name(project_root: Path) -> str:
+    generic_directory_names = {"latex-note", "lec-note", "notes"}
+    directory = (
+        project_root.parent
+        if project_root.name in generic_directory_names
+        else project_root
+    )
+    title_overrides = {
+        "pde-boundary-problems": "PDE Boundary Problems",
+        "prob": "Probability",
+    }
+    if directory.name in title_overrides:
+        return title_overrides[directory.name]
+    return directory.name.replace("-", " ").title()
+
+
 def generate_nav_items(docs_dir: Path) -> list[tuple[str, str]]:
     pages = sorted(
         p
@@ -128,7 +144,7 @@ def main() -> None:
     include_extra_css = (docs_dir / "stylesheets" / "extra.css").exists()
 
     mkdocs_content = build_mkdocs_yaml(
-        site_name=repo,
+        site_name=project_site_name(project_root),
         site_author=owner,
         site_url=site_url,
         repo_name=repo,

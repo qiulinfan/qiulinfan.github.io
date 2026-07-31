@@ -1,0 +1,102 @@
+\chapter{ODE 的解法 Review}
+\begin{defn}
+    \deflab{first-order linear ODE}
+    first-order linear ODE:\\
+    $$
+    y' + p(x)y = q(x)
+    $$
+    这是 first order linear ODE 的 general form，比 PDE 简单很多.
+\end{defn}
+
+\subsection{first-order linear ODE 的解法：}
+\paragraph{对于 homogeneous 的: }
+1-order linear ODE 如果是 homogeneous 的，那么就是 separable 的。可以通过分离变量来解出：$y(x) = Ce^{-\int p(x)dx}$ （此处严谨意义上我们可以把 $dx, dy$ 作为 differential form 来分开.）
+
+\paragraph{对于 non-homogenous 的:}
+我们有一种巧妙的方法来解出：
+\begin{compactenumI}
+    \item 对于待求解的微分方程 $y' + p(x)y = q(x)$, 我们先解一个 induced 的 homogeneous  的微分方程 $y' - p(x)y = 0$，并任取一个这个新方程的解函数，记作 $\hat{y}$，通常直接把 $C$ 去掉就可以（$\hat{y} = \; (= e^{\int p(x) dx})$）
+    \item 可以发现，$(\hat{y})' = p(x)y$
+    \item 在原微分方程的左右两边乘上 $\hat{y}$，得到 $(\hat{y}y)' = \hat{y}q(x)$
+    \item $y = \frac{1}{\hat{y}} (\int \hat{y}q(x)dx + C)$
+\end{compactenumI}
+
+\subsection{second-order linear ODE 的解法:}
+\paragraph{对于 constant coeff and homogeneous 的}: 形式为 $ay'' + by' + cy = 0$，有一个公式的解法：
+\\先解决 characteristic equation $a\lambda^2 + b\lambda + c = 0$ 得到两个解 $\lambda_1, \lambda_2$.
+\begin{compactenumI}
+    \item 如果 $\lambda_1 \not= \lambda_2$，那么 general solution 就是 $y(x) = C_1 e^{\lambda_1 x} + C_2 e^{\lambda_2 x}$；注意：如果没有实数根，那么这个方程只在 $\mathcal{F}(\mathbb{C}, \mathbb{C})$ 上有解，但是解的形式也一样.
+    \item 如果 $\lambda_1 = \lambda_2$，那么 general solution 就是 $y(x) = (C_1 + C_2 x) e^{\lambda x}$
+\end{compactenumI}
+
+\remark 
+对于 n 阶 ODE，我们需要解一个 n 次的 characteristic equation，通常需要通过 n 个 linearly independent 的齐次解的 linear combination 来描述整个齐次解空间。原因见 ODE 的自学笔记。
+
+\paragraph{对于 constant coeff and non-homogeneous 的}: 
+微分方程的形式即我们把 $F[u] = 0 $，其中 $F[u] = L[u] - f(x)$, $f(x)$ 为 source term. 
+\\对于每一个 non-homogeneous 的微分方程 $L[u] = f(x)$，我们都可以找到它的 homogeneous 的版本 $L[u] = 0$，并把 $L[u] = 0$ 的 soltion 称为 \textbf{general solution}.\\
+下面我们要说一个定理：
+\begin{theorem}
+    对于任意阶 linear ODE $L[u] = f(x)$：如果 $y_p$ 是 $L[u] = f(x)$ 的一个 solution，而 $y_h$ 是 $L[u] = 0$ 的 general solution，那么 $y_p + y_h$ 就是 $L[u] = f(x)$ 的 solution (的所有形式).
+\end{theorem}
+\fql{这是显然的。因为 L 是 linear 的，$L[y_p + y_h] = L[y_h] + L[y_p] = 0 + f(x) = f(x)$} 
+我们可以先通过上面的方法把二阶线性 homogeneous 方程 $L[u] = 0$ 给解出来.\\
+然后，我们只要找到 $L[x] = f(x)$ 的任意一个解，称之为一个 \textbf{particular solution}，就可以求出它的整个解空间。
+\\找出一个特定解也是有固定的公式方法的。\\
+1. 待定系数法 (method of undetermined coefficients): 适用当 source term $f(x)$ 是一个 polynomial, exponential 或者 trigonometric 函数的时候：我们知道方程的解也是一个形式类似形式的函数。比如 $y'' - 3y' + 2y = e^{2x}$，我们可以设 $y_p(x) = Ae^{2x}$，解出 $A$ 就好。\\
+2. 变量变换法 (variation of parameters): 适用于任何情况。
+公式步骤：
+\begin{compactenumI}
+    \item general solution 的形式一定是 $y_h(x) = C_1 y_1(x) + C_2 y_2(x)$. 现在我们忽略 $C_1, C_2$, 取出 $y_1(x), y_2(x)$.
+    \item 计算 \textbf{Wronskian}: $$W(y_1, y_2) = \begin{vmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'((x) \end{vmatrix} = y_1y_2' - y_2y_1'$$
+    \item $$y_p(x) = -y_1(x) \int{\frac{y_2(x)f(x)}{W(y_1, y_2)} dx} + y_2(x) \int{\frac{y_1(x)f(x)}{W(y_1, y_2)} dx}$$
+\end{compactenumI}
+\begin{proof}
+假设 particular solution \( y_p(x) \) 的形式为：
+\[y_p = u_1(x) y_1(x) + u_2(x) y_2(x)\]
+
+为了简化计算，我们施加一个条件：$u_1' y_1 + u_2' y_2 = 0$
+\\于是 \[y_p' = u_1 y_1' + u_2 y_2',
+\;\;y_p'' = u_1' y_1' + u_1 y_1'' + u_2' y_2' + u_2 y_2'' = (u_1' y_1' + u_2' y_2') + (u_1 y_1'' + u_2 y_2'')\]
+
+\textbf{代入原方程}
+\[(u_1' y_1' + u_2' y_2') + u_1 y_1'' + u_2 y_2'' + p(u_1 y_1' + u_2 y_2') + q(u_1 y_1 + u_2 y_2) = r(x)\]
+
+因为 \( y_1 \) 和 \( y_2 \) 满足 homogeneous 方程，所以：
+\[y_i'' + p y_i' + q y_i = 0 (i = 1, 2), \;\;y_i'' = -p y_i' - q y_i\]
+
+代入后得到：
+\[\begin{aligned}
+& (u_1' y_1' + u_2' y_2') + u_1 (-p y_1' - q y_1) + u_2 (-p y_2' - q y_2) \\
+& \quad + p(u_1 y_1' + u_2 y_2') + q(u_1 y_1 + u_2 y_2) = r(x)
+\end{aligned}\]
+
+化简后相互抵消，只剩下$u_1' y_1' + u_2' y_2' = r(x)$.
+
+\textbf{结合之前的条件，得到如下方程组：}
+
+\[\begin{bmatrix}y_1 & y_2 \\y_1' & y_2'\end{bmatrix}
+\begin{bmatrix}u_1' \\u_2'\end{bmatrix}=
+\begin{bmatrix}0 \\r(x)\end{bmatrix}\]
+
+\[W = \begin{vmatrix}y_1 & y_2 \\y_1' & y_2'\end{vmatrix} = y_1 y_2' - y_1' y_2\]
+\textbf{利用克莱姆法则求解}
+\[u_1' = \frac{\begin{vmatrix}0 & y_2 \\r(x) & y_2'\end{vmatrix}}{W} = \frac{0 \cdot y_2' - y_2 \cdot r(x)}{W} = -\frac{y_2 r(x)}{W}\]
+\[u_2' = \frac{\begin{vmatrix}y_1 & 0 \\y_1' & r(x)
+\end{vmatrix}}{W} = \frac{y_1 \cdot r(x) - 0 \cdot y_1'}{W} = \frac{y_1 r(x)}{W}\]
+\textbf{积分求解 \( u_1(x) \) 和 \( u_2(x) \)}
+\[\begin{aligned}
+u_1(x) &= -\int \frac{y_2 r(x)}{W} \, dx + C_1 \\
+u_2(x) &= \int \frac{y_1 r(x)}{W} \, dx + C_2
+\end{aligned}\]
+由于只需要一个 particular solution，可以令积分常数为零。
+\[y_p = u_1 y_1 + u_2 y_2 = y_1 \left( -\int \frac{y_2 r(x)}{W} \, dx \right) + y_2 \left( \int \frac{y_1 r(x)}{W} \, dx \right)\]
+\end{proof}
+
+\paragraph{对于 nonconstant coeff 的}: 
+见 ODE 的自学笔记。
+具体有以下：\\
+1. power series 解法：当 coeff function 在某点表现为 analytic 的时候使用。
+\\2. Frobenius 方法：power series 解法的扩展
+\\3. Laplace 变换：对于某些类型的 boundary value problem，可以把 diff equation 转化为 algebraic equation.
+次数不展开.

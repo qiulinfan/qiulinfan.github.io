@@ -1,0 +1,68 @@
+\chapter{PDE 以及 Linear PDE 的定义}
+一个微分方程，不论是 ODE 还是 PDE，求解的是满足某个涉及微分运算的等式的函数的集合。PDE 和 ODE 的区别就在于 ODE 把满足这个等是的函数限制在了一元函数中，因而等式中使用微分算子；而 PDE 则不限制函数的变量数量，可以有任意有限个自变量，因此等式中使用偏微分算子.
+\begin{defn}
+    \deflab{PDE}
+    PDE:
+    \\
+    一个 PDE 就是如下形式的一个等式，其中的变量为 $u = f(x_1,  \cdots, x_n)$:
+    $$
+    \\F(u, x_1, x_2, \ldots, x_n, \frac{\partial u}{\partial x_1}, \frac{\partial u}{\partial x_2}, \ldots, \frac{\partial u}{\partial x_n}, \frac{\partial^2 u}{\partial x_1 ^ 2}, \frac{\partial^2 u}{\partial x_1 x_2 }, \cdots) = 0
+    $$
+    其中，F 是关于(1) $u$,(2) $u$ 的所有自变量，以及(3) $u$ 对任意数量的自变量的任意 order 的 partial derivatives 的函数.
+    我们可以把这个 PDE 简写为 $F[u] = 0$
+\end{defn}
+
+\begin{defn}
+    \deflab{order of PDE}
+    一个 PDE 的 order 就是它其中包含的 partial derivatives 的最高 order.
+\end{defn}
+
+\begin{defn}
+    \deflab{Linear PDE}
+    Linear PDE:
+    \\
+    如果 PDE $F[u] = F(u, x_1, x_2, \ldots, x_n, \frac{\partial u}{\partial x_1}, \frac{\partial u}{\partial x_2}, \ldots, \frac{\partial u}{\partial x_n}, \frac{\partial^2 u}{\partial x_1 ^ 2}, \frac{\partial^2 u}{\partial x_1 x_2 }, \cdots) = 0$ 
+    满足：
+    \\$F$ 是 $u, \frac{\partial u}{\partial x_1}, \frac{\partial u}{\partial x_2}, \ldots, \frac{\partial u}{\partial x_n}, \frac{\partial^2 u}{\partial x_1 ^ 2}, \frac{\partial^2 u}{\partial x_1 x_2 }, \cdots$ 的 linear function (\textbf{即对未知函数 $u$ 以及 $u$ 的所有偏导数 linear})，那么就称 $F$ 是一个 \textbf{Linear PDE}.
+    \\ 也就是说对于任意 $u_1 = f_1(x_1, \cdots, x_n)$ 和 $u_2 = f_2(x_1, \cdots, x_n)$ 以及 const $c$，$$F[u_1 + u_2] = F[u_1] + F[u_2] \; , F[cu] = cF[u]$$
+    因而显然 \textbf{一个 Linear PDE 一定是如下形式的一个等式}，其中的变量为 $u = f(x_1,  \cdots, c_n)$:
+    $$
+        \sum_{1 \leq |\alpha| \leq m} c_{\alpha}(x_1, \cdots, x_n) \frac{\partial ^ {|\alpha|} {u}}{\partial{x_1}^{\alpha_1} \cdots \partial{x_n}^{\alpha_n}} = d(x_1, \cdots, x_n)
+    $$
+    因为 $\forall u_1, u_2 \in C^{|\alpha|}(\mathbf{R}^n)$，
+    \begin{align}
+         \sum_{1 \leq |\alpha| \leq m} c_{\alpha}(x_1, \cdots, x_n) \frac{\partial ^ {|\alpha|} {(u_1 + u_2)}}{\partial{x_1}^{\alpha_1} \cdots \partial{x_n}^{\alpha_n}}
+         &= 2d(x_1, \cdots, x_n) \\
+         &= \sum_{1 \leq |\alpha| \leq m} c_{\alpha}(x_1, \cdots, x_n) \frac{\partial ^ {|\alpha|} {u_2}}{\partial{x_1}^{\alpha_1} \cdots \partial{x_n}^{\alpha_n}}\\
+   & + \sum_{1 \leq |\alpha| \leq m} c_{\alpha}(x_1, \cdots, x_n) \frac{\partial ^ {|\alpha|} {u_1}}{\partial{x_1}^{\alpha_1} \cdots \partial{x_n}^{\alpha_n}}
+    \end{align}
+    
+我们把所有的 $c_\alpha(x_1, \cdots, x_n)$ 称为 coefficient，而把 $d(x_1, \cdots, x_n)$ 称为 source term.
+\end{defn}
+\fql{注意到，这里面每一个 $c_\alpha$ 作为偏导数前的系数函数，都是一个自变量是 $x_1, \cdots, x_n$ 的函数，不能依赖 $u$, 否则就不 linear 了. \textbf{并且由于偏微分算子本身是 linear 的，于是这个等式一定是关于 $u$ linear 的，并且其他形式都不是 linear PDE.}}
+
+\begin{defn}
+    \deflab{homogeneous}
+    Homogeneous:
+    \\如果一个 PDE $F[u] = 0 $ 的 source term 是 0，就称它是一个 homogenous 的 PDE.
+\end{defn}
+
+\proposition 
+\textbf{显然，如果一个 PDE/ODE 是 homogeneous 的，那么他的任意两个解 $u_1, u_2$ 的任意 linear combination 一定也是它的一个解.}
+
+
+
+\example 
+所有的 second-order linear PDEs 都可以写成以下的形式:
+$$
+a(x,y)u_{xx} + b(x,y)u_{xy} + c(x,y)u_{yy} + d(x,y)u_x + e(x,y)u_y + f(x,y)u = g(x,y)
+$$
+$a,b,c,d,e,f$:  coefficients，$g$: source term.
+
+\begin{defn}
+    \deflab{Classifications of second-order linear PDEs}
+    如果任取 $(x,y)$ 都有 $4a(x,y)c(x,y) - b^2(x,y) >0$, 则称这个二阶线性 PDE 是 elliptic (椭圆)的；
+    \\如果任取 $(x,y)$ 都有 $4a(x,y)c(x,y) - b^2(x,y) =0$，则称这个二阶线性 PDE 是 parabolic (抛物)的；
+    \\如果任取 $(x,y)$ 都有 $4a(x,y)c(x,y) - b^2(x,y) <0$, 则称这个二阶线性 PDE 是 hyperbolic (双曲)的.
+\end{defn}
+
