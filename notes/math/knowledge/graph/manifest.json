@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "edges": 1365,
+    "nodes": 1230
+  },
+  "generator": "notes/math/knowledge/scripts/knowledge.py",
+  "graph_sha256": "e35ed614bc3fe50d1ba8f774c75019cd9767bd41a176550b66522fd8e6ac6daa",
+  "node_types": {
+    "concept": 329,
+    "document": 4,
+    "figure": 14,
+    "section": 427,
+    "statement": 456
+  },
+  "relations": {
+    "about": 455,
+    "contains": 897,
+    "links-to": 13
+  },
+  "schema": "qlkg-v1",
+  "sources": [
+    {
+      "authority": "notes/math/measure-theory/typst/extras.typ",
+      "authority_sha256": "ae2d05c73845f620fae9b61a6b596b9af2205fd1dc96446e3fb26ab167070991",
+      "id": "math:measure-theory:extras",
+      "markdown": "notes/math/measure-theory/exports/extras/markdown/main.md",
+      "markdown_sha256": "dd97e0acdfc7e8c85a5540cb2dad4baa44290f5bc9ee16faad73c4288b8f2913",
+      "semantic_nodes": 7
+    },
+    {
+      "authority": "notes/math/measure-theory/typst/main.typ",
+      "authority_sha256": "5d99503676f5be962f2e4240c26615465adb1c55a81eccd3142d4a2ed1775423",
+      "id": "math:measure-theory:main",
+      "markdown": "notes/math/measure-theory/exports/main/markdown/main.md",
+      "markdown_sha256": "9461eff118662451d19f13a5611bcd4080348341ab6a95f2b7d066c6fb7b6bc2",
+      "semantic_nodes": 302
+    },
+    {
+      "authority": "notes/math/prob/typst/homeworks.typ",
+      "authority_sha256": "5da0a481022427b016b4c3863a707715b595eac92ec7ed97961b6d41882bc3e1",
+      "id": "math:probability:homeworks",
+      "markdown": "notes/math/prob/exports/homeworks/markdown/main.md",
+      "markdown_sha256": "be195d2cf642554f0c5bc4a816769011d7460b26b27427521f819010c7a4d9a8",
+      "semantic_nodes": 0
+    },
+    {
+      "authority": "notes/math/prob/typst/main.typ",
+      "authority_sha256": "082e588a08877f0caf71e64a5e6f1e9006ae3574151084c524703af15bed50e1",
+      "id": "math:probability:notes",
+      "markdown": "notes/math/prob/exports/notes/markdown/main.md",
+      "markdown_sha256": "d45583a357174e428da339db9b59c5a69bf119cc52670f880e77b6fba5c9c321",
+      "semantic_nodes": 147
+    }
+  ]
+}

@@ -7,11 +7,13 @@ For a migrated course, run only:
 ```sh
 make export
 make web-check
+make -C "$repo_root" knowledge-check
 ```
 
 Run the corresponding extra/homework web target when the course has another
-published entry point. If export and basic web checks succeed, accept the
-result and stop.
+published entry point. Course `make export` automatically rebuilds the
+repository graph after both Markdown entry points are current. If export, basic
+web checks, and the graph freshness check succeed, accept the result and stop.
 
 Do not perform any of these by default:
 
@@ -45,10 +47,12 @@ Commit:
 - editable `.tex` and `.md` snapshots;
 - bibliography and authored/diagram assets that those sources require;
 - the GitHub Pages workflow.
+- deterministic `notes/math/knowledge/graph/*.json*` snapshots.
 
 Never commit generated whole-book or chapter PDFs, rendered PDF pages, contact
-sheets, local HTML builds, or compiler intermediates. GitHub Actions must build
-HTML from the committed Typst source and deploy the static artifact directly.
+sheets, local HTML builds, the SQLite search index, or compiler intermediates.
+GitHub Actions must build HTML from the committed Typst source and deploy the
+static artifact directly.
 
 ## Failure routing
 
@@ -58,4 +62,6 @@ HTML from the committed Typst source and deploy the static artifact directly.
 | Replacement text or mojibake | source encoding and generated HTML |
 | Missing/duplicate semantic ID | `qlnotes.typ` metadata and content IDs |
 | Broken diagram | `#diagram`, CeTZ source, inline SVG extraction |
+| Graph contract error | Typst semantic attributes, Markdown Pandoc AST, `notes/math/knowledge/graph/diagnostics.json` |
+| Stale graph snapshot | rerun course export or `knowledge.py build` after all configured Markdown exists |
 | GitHub Pages build fails | workflow log and course web target |

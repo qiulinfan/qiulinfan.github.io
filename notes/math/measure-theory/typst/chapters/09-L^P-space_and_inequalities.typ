@@ -588,7 +588,7 @@ measure)],
   id: "thm-09-l-p-space-and-inequalities-inclusion-relation-between-l-p-spaces-when-base-space-is-finite",
   concepts: ("inclusion-relation-between-l-p-spaces-when-base-space-is-finite",),
   depends: (),
-  aliases: (" inclusion relation between L^p spaces (when base space is finite measure)",),
+  aliases: ("inclusion relation between L^p spaces (when base space is finite measure)",),
 )[
 如果 measure space $X$ has finite measure, 那么有 $ L^oo\(X\)subset dots.h.c subset L^m\(X\)subset dots.h.c subset L^n\(X\)subset dots.h.c $
 for 任意的 $m gt.eq n$.

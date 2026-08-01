@@ -1,8 +1,10 @@
-.PHONY: all release pdf web web-check watch extras extras-pdf extras-web extras-web-check check check-extras export export-main export-extras export-check
+.PHONY: all release pdf web web-check watch extras extras-pdf extras-web extras-web-check check check-extras export export-main export-extras export-check knowledge-sync
 
 TYPST := typst
 TOOLCHAIN := ../../toolchain/typst-template
 SKILL := ../../../../skills/export-typst-math-notes
+KNOWLEDGE := ../../knowledge/scripts/knowledge.py
+REPO_ROOT := ../../../..
 BUILD := ../build/typst
 EXPORTS := ../exports
 
@@ -44,6 +46,10 @@ extras-web-check: extras-web
 		--expected-nodes 7 --expected-diagrams 0
 
 export: export-main export-extras
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
+
+knowledge-sync:
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
 export-main:
 	@python3 $(TOOLCHAIN)/scripts/export.py main.typ \

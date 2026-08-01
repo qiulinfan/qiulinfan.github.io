@@ -8930,7 +8930,7 @@ $L^{p}$ space 的 Banach 性表示了其**极限存在的稳定性**. recall, Ba
 
 刚才我们已经 state 了, 但还没有证明:
 
-::: {#thm-09-l-p-space-and-inequalities-inclusion-relation-between-l-p-spaces-when-base-space-is-finite .theorem concepts="inclusion-relation-between-l-p-spaces-when-base-space-is-finite" aliases=" inclusion relation between L^p spaces (when base space is finite measure)"}
+::: {#thm-09-l-p-space-and-inequalities-inclusion-relation-between-l-p-spaces-when-base-space-is-finite .theorem concepts="inclusion-relation-between-l-p-spaces-when-base-space-is-finite" aliases="inclusion relation between L^p spaces (when base space is finite measure)"}
 **Theorem: inclusion relation between L\^{p} spaces (when base space is finite measure)**
 
 如果 measure space $X$ has finite measure, 那么有
@@ -12102,7 +12102,7 @@ it gives the average of $f$ on sets in $\mathcal{B}$.)
 一个 Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 被称为 regular 的, if $\nu$ is locally finite (finite on every compact set).
 :::
 
-::: {#thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity .theorem concepts="regular-borel-measure-regularity" aliases=" regular Borel measure: 蕴含了 regularity"}
+::: {#thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity .theorem concepts="regular-borel-measure-regularity" aliases="regular Borel measure: 蕴含了 regularity"}
 **Theorem: regular Borel measure: 蕴含了 regularity**
 
 一个 regular Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 一定满足:

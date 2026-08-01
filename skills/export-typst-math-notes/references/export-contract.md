@@ -24,6 +24,9 @@ authoritative .typ
     └── Pandoc AST + qlnotes.lua
         ├── editable LaTeX snapshot
         └── graph-oriented Markdown snapshot
+            └── deterministic qlkg compiler
+                ├── committed JSONL graph
+                └── ignored SQLite search index
 ```
 
 Never convert from PDF. It has already lost semantic structure.
@@ -141,6 +144,12 @@ For each semantic node, preserve:
 Keep the attributes as readable comma-separated strings in Markdown. Preserve
 the same values in the LaTeX `qlnotes` comment so both snapshots remain
 inspectable.
+
+In `qlblog`, `notes/math/knowledge/SPEC.md` defines the downstream `qlkg-v1`
+node, edge, provenance, diagnostic, and determinism contract. The graph compiler
+must consume the Pandoc AST and must not invent concept identity or dependency
+edges with an LLM. Typst remains authoritative: graph corrections return to
+Typst metadata and are then regenerated.
 
 ## 5. Citations and references
 

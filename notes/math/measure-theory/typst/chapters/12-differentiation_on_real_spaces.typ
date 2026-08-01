@@ -20,7 +20,7 @@
   id: "thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity",
   concepts: ("regular-borel-measure-regularity",),
   depends: (),
-  aliases: (" regular Borel measure: 蕴含了 regularity",),
+  aliases: ("regular Borel measure: 蕴含了 regularity",),
 )[
 一个 regular Borel measure $nu$ on $bb(R)^n$ 一定满足:
 

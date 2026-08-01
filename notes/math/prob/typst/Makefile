@@ -1,7 +1,9 @@
-.PHONY: all release pdf web web-check homeworks homeworks-web homeworks-web-check export export-notes export-homeworks check export-check
+.PHONY: all release pdf web web-check homeworks homeworks-web homeworks-web-check export export-notes export-homeworks check export-check knowledge-sync
 
 TYPST := typst
 TOOLCHAIN := ../../toolchain/typst-template
+KNOWLEDGE := ../../knowledge/scripts/knowledge.py
+REPO_ROOT := ../../../..
 BUILD := ../build/typst
 EXPORTS := ../exports
 
@@ -36,6 +38,10 @@ homeworks-web-check: homeworks-web
 		$(BUILD)/homeworks.html --expected-nodes 0 --expected-diagrams 0
 
 export: export-notes export-homeworks
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
+
+knowledge-sync:
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
 export-notes:
 	@python3 $(TOOLCHAIN)/scripts/export.py main.typ \

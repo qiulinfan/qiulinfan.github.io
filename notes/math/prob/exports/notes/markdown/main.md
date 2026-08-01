@@ -26,7 +26,7 @@ title: "Math 525: Probability"
 
 ### permutations
 
-::: {#def-01-combinatorics-prob-space-permutations .definition concepts="permutations" aliases="permutations"}
+::: {#def-01-combinatorics-prob-space-permutations .definition aliases="permutations" concepts="permutations"}
 **Definition: permutations**
 
 一个 permutation 就是对一组 objects 的一个 **rearrangement** (这些 objects 中可以有 same 的也可以有 distinct 的).\
@@ -65,7 +65,7 @@ $$\frac{n!}{n_{1}!n_{2}!\cdots n_{k}!}$$
 其中 $n_{1},n_{2},\cdots,n_{k}$ 是每个 object 的重复数量.\
 这个式子又叫做 multinomial coefficient.
 
-::: {#def-01-combinatorics-prob-space-multinomial-coefficient .definition concepts="multinomial-coefficient" aliases="multinomial coefficient"}
+::: {#def-01-combinatorics-prob-space-multinomial-coefficient .definition aliases="multinomial coefficient" concepts="multinomial-coefficient"}
 **Definition: multinomial coefficient**
 
 令 $n \in {\mathbb{N}},n_{1},n_{2},\cdots,n_{k} \in {\mathbb{N}},n_{1} + n_{2} + \cdots + n_{k} = n$, 我们定义 multinomial coefficient:
@@ -84,7 +84,7 @@ $$\left( \frac{n_{1} + n_{2} + \cdots + n_{k}}{n_{1},n_{2},\cdots,n_{k}} \right)
 
 ### combinations
 
-::: {#def-01-combinatorics-prob-space-combinations .definition concepts="combinations" aliases="combinations"}
+::: {#def-01-combinatorics-prob-space-combinations .definition aliases="combinations" concepts="combinations"}
 **Definition: combinations**
 
 一个 combination 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序.
@@ -112,7 +112,7 @@ $$\frac{n!}{k!(n - k)!}$$
 
 ### binomial theorem
 
-::: {#thm-01-combinatorics-prob-space-binomial-theorem .theorem concepts="binomial-theorem" aliases="Binomial Theorem"}
+::: {#thm-01-combinatorics-prob-space-binomial-theorem .theorem aliases="Binomial Theorem" concepts="binomial-theorem"}
 **Theorem: Binomial Theorem**
 
 令 $x,y \in {\mathbb{R}},n \in {\mathbb{N}}$, 则有:
@@ -235,7 +235,7 @@ $${\mathbb{P}}(\text{exactly one blue ball}) = 3 \cdot \frac{3 \cdot 10^{2}}{15^
 
 ### combinations with repetition
 
-::: {#def-01-combinatorics-prob-space-combinations-with-repetition .definition concepts="combinations-with-repetition" aliases="combinations with repetition"}
+::: {#def-01-combinatorics-prob-space-combinations-with-repetition .definition aliases="combinations with repetition" concepts="combinations-with-repetition"}
 **Definition: combinations with repetition**
 
 一个 combination with repetition 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序, 并且**允许重复选取**.
@@ -294,7 +294,7 @@ $${\mathbb{P}}(\text{each flavor is selected at least once}) = \frac{\left( \fra
 
 ### inclusion-exclusion principle
 
-::: {#prop-01-combinatorics-prob-space-inclusion-exclusion-principle .proposition concepts="inclusion-exclusion-principle" aliases="inclusion-exclusion principle"}
+::: {#prop-01-combinatorics-prob-space-inclusion-exclusion-principle .proposition aliases="inclusion-exclusion principle" concepts="inclusion-exclusion-principle"}
 **Proposition: inclusion-exclusion principle**
 
 如果 $\Omega$ 是一个 finite measure space, 那么对于任意 $A_{1},\ldots,A_{n} \subseteq \Omega$ 的, 有:
@@ -330,7 +330,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-:::: {#ex-01-combinatorics-prob-space-matching-problem .example concepts="matching-problem" aliases="(matching problem)"}
+:::: {#ex-01-combinatorics-prob-space-matching-problem .example aliases="(matching problem)" concepts="matching-problem"}
 **Example: (matching problem)**
 
 假设有 $n$ 个人参加一个 event, 每个人都上交了一顶帽子; 现在再把帽子随机地发给每个人, 求没有人拿回自己的帽子的概率.
@@ -370,7 +370,7 @@ $${\mathbb{P}}(\bigcap\limits_{i = 1}^{n}A_{i}^{c}) = \sum\limits_{k = 2}^{n}\fr
 
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory.\
 
-::: {#def-01-combinatorics-prob-space-prob-space-prob-measure-sample-space-event-space .definition concepts="prob-space-prob-measure-sample-space-event-space" aliases="prob space, prob measure, sample space, event space"}
+::: {#def-01-combinatorics-prob-space-prob-space-prob-measure-sample-space-event-space .definition aliases="prob space, prob measure, sample space, event space" concepts="prob-space-prob-measure-sample-space-event-space"}
 **Definition: prob space, prob measure, sample space, event space**
 
 一个 probability space 就是一个 measure space $(\Omega,\mathcal{F},{\mathbb{P}})$, 其中 ${\mathbb{P}}(\varnothing) = 0,{\mathbb{P}}(\Omega) = 1$.\
@@ -468,7 +468,7 @@ $${\mathbb{P}}(E) = \frac{m(E)}{m(\Omega)} = \frac{3600 - 2500}{3600} = \frac{11
 
 ### conditional probability and Bayes' theorem
 
-::: {#def-01-combinatorics-prob-space-conditional-probability .definition concepts="conditional-probability" aliases="conditional probability"}
+::: {#def-01-combinatorics-prob-space-conditional-probability .definition aliases="conditional probability" concepts="conditional-probability"}
 **Definition: conditional probability**
 
 对于 probability space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$, 如果 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability of an event $A \in \mathcal{F}$ given $B$ 为:
@@ -476,7 +476,7 @@ $${\mathbb{P}}(E) = \frac{m(E)}{m(\Omega)} = \frac{3600 - 2500}{3600} = \frac{11
 $${\mathbb{P}}(A \mid B) = \frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)}$$
 :::
 
-::: {#prop-01-combinatorics-prob-space-decomposing-probability-of-intersection-of-events .proposition concepts="decomposing-probability-of-intersection-of-events" aliases="decomposing probability of intersection of events"}
+::: {#prop-01-combinatorics-prob-space-decomposing-probability-of-intersection-of-events .proposition aliases="decomposing probability of intersection of events" concepts="decomposing-probability-of-intersection-of-events"}
 **Proposition: decomposing probability of intersection of events**
 
 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of events, 对于任意 $n \in {\mathbb{N}}$:
@@ -490,7 +490,7 @@ $${\mathbb{P}}\left( {A_{1} \cap A_{2} \cap \ldots \cap A_{n}} \right) = {\mathb
 Naturally follows from the def.
 :::
 
-::: {#thm-01-combinatorics-prob-space-law-of-total-probability .theorem concepts="law-of-total-probability" aliases="law of total probability"}
+::: {#thm-01-combinatorics-prob-space-law-of-total-probability .theorem aliases="law of total probability" concepts="law-of-total-probability"}
 **Theorem: law of total probability**
 
 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of **pairwise disjoint** events, 如果 $\sqcup_{i = 1}^{\infty}A_{i} = \Omega$, 那么对于任意 event $E \subseteq \Omega$:
@@ -510,7 +510,7 @@ $${\mathbb{P}}(E) = {\mathbb{P}}\left( {E \cap \cup_{i = 1}^{\infty}A_{i}} \righ
 $P(A_{i})P(E \mid A_{i})$ 就等于 $P(E \cap A_{i})$, 也就是在 $A_{i}$ 这个区域上, $E$ 的 measure. 因而 disjoint union 之下就是 $E$ 的完整 measure.
 :::
 
-::: {#thm-01-combinatorics-prob-space-bayes-theorem .theorem concepts="bayes-theorem" aliases="Bayes theorem"}
+::: {#thm-01-combinatorics-prob-space-bayes-theorem .theorem aliases="Bayes theorem" concepts="bayes-theorem"}
 **Theorem: Bayes theorem**
 
 If $A,B \subseteq \Omega$ such that ${\mathbb{P}}(B) \neq 0$, then
@@ -525,7 +525,7 @@ $${\mathbb{P}}(A \mid B) = \frac{{\mathbb{P}}(A) \cdot {\mathbb{P}}(B \mid A)}{{
 但是它的意义在于, 如果我们知道两个事件的概率和其中一个对另一个的条件概率, 我们就也得到了反过来的条件概率.
 :::
 
-:::: {#ex-01-combinatorics-prob-space-medical-testing .example concepts="medical-testing" aliases="(Medical testing)"}
+:::: {#ex-01-combinatorics-prob-space-medical-testing .example aliases="(Medical testing)" concepts="medical-testing"}
 **Example: (Medical testing)**
 
 在一个群体中, 随机选取一个人患有某种罕见疾病的概率是 0.001. 该疾病有一个诊断测试, 其性质如下: 给定个体患病, 测试呈阳性的概率 (真正阳性率) 是 0.99. 给定个体健康, 测试呈阳性的概率 (假阳性率) 是 0.02. 从群体中随机选取的一个人测试呈阳性. 该个体实际上患有该疾病的概率是多少? 于是
@@ -543,7 +543,7 @@ $${\mathbb{P}}(\text{sick} \mid \text{positive}) = \frac{0.99 \cdot 0.001}{0.020
 :::
 ::::
 
-::::: {#ex-01-combinatorics-prob-space-monty-hall-problem .example concepts="monty-hall-problem" aliases="(Monty Hall problem)"}
+::::: {#ex-01-combinatorics-prob-space-monty-hall-problem .example aliases="(Monty Hall problem)" concepts="monty-hall-problem"}
 **Example: (Monty Hall problem)**
 
 假设你参加一个游戏节目, 面前有三扇门: 一扇门后面有一辆车; 其他两扇门后面是山羊. 你选择了一扇门, 比如说是 1 号门, 然后主持人打开了另一扇门, 比如说是 3 号门, 里面有一只山羊. 然后他说 \"你想换成 2 号门吗?\". 换门对你有利吗?
@@ -624,7 +624,7 @@ def monty_hall_sim(trials=10000):
 :::
 :::::
 
-::::: {#ex-01-combinatorics-prob-space-wizards .example concepts="wizards" aliases="(Wizards)"}
+::::: {#ex-01-combinatorics-prob-space-wizards .example aliases="(Wizards)" concepts="wizards"}
 **Example: (Wizards)**
 
 两个巫师 $A$ 和 $B$ 进行决斗, 他们轮流射击对方. 巫师 $A$ 每次射击命中 $B$ 的概率是 ${\mathbb{P}}(A) = \frac{1}{2}$, 而巫师 $B$ 每次射击命中 $A$ 的概率是 ${\mathbb{P}}(B) = \frac{2}{3}$. 巫师 $A$ 先开枪. 求: 巫师 $A$ 获胜的概率是多少?\
@@ -656,7 +656,7 @@ Solving the system, we find ${\mathbb{P}}\left( W_{A} \right) = 0.6$.
 但是, 难道 ${\mathbb{P}}(B) = 0$ 就不能定义条件概率了吗? 我们考虑一个连续情况: 在 ${\mathbb{R}}^{3}$ 中任意选择一个点, 求: 该点位于单位球面上的概率. 显然, 这个概率是 0. 但是, 如果我们知道该点位于单位球内, 那么该点距离原点的距离为 $1$ 的概率应当为 $1$. 也就是说, 即使在 ${\mathbb{P}}(B) = 0$ 的情况下, 我们也希望定义 ${\mathbb{P}}(A \mid B)$.\
 在考虑这个定义之前, 首先我们发现: 基于我们先前定义的 conditional probability, 我们可以获得一个新的 probability space:
 
-::: {#def-01-combinatorics-prob-space-conditional-probability-space-and-trace-sigma-algebra .definition concepts="conditional-probability-space-and-trace-sigma-algebra" aliases="conditional probability space and trace \\sigma-algebra"}
+::: {#def-01-combinatorics-prob-space-conditional-probability-space-and-trace-sigma-algebra .definition aliases="conditional probability space and trace \\sigma-algebra" concepts="conditional-probability-space-and-trace-sigma-algebra"}
 **Definition: conditional probability space and trace \\sigma-algebra**
 
 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$ 且 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability space as the triplet $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$, 其中:
@@ -680,7 +680,7 @@ $${\mathbb{P}}(A \mid B) = \int_{A}f\, d{\mathbb{P}}$$
 
 既然这样, 我们能否直接从一个新的 prob space $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$ 出发, 来定义条件概率呢? 这就是 Kolmogorov 的定义:
 
-::: {#def-01-combinatorics-prob-space-kolmogorov-definition-of-conditional-probability .definition concepts="kolmogorov-definition-of-conditional-probability" aliases="Kolmogorov definition of conditional probability"}
+::: {#def-01-combinatorics-prob-space-kolmogorov-definition-of-conditional-probability .definition aliases="Kolmogorov definition of conditional probability" concepts="kolmogorov-definition-of-conditional-probability"}
 **Definition: Kolmogorov definition of conditional probability**
 
 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 设 $\mathcal{G} \subseteq \mathcal{F}$ 是一个 sub-$\sigma$-algebra. 对于 event $A \in \mathcal{F}$, 条件概率 ${\mathbb{P}}(A \mid \mathcal{G})$ 是一个 $\mathcal{G}$-measurable 的随机变量, 其满足对于任意 $G \in \mathcal{G}$, 有:
@@ -715,7 +715,7 @@ Further issue: **Borel-Kolmogorov paradox**.\
 
 ### independence of events
 
-::: {#def-01-combinatorics-prob-space-independence-of-events .definition concepts="independence-of-events" aliases="independence of events"}
+::: {#def-01-combinatorics-prob-space-independence-of-events .definition aliases="independence of events" concepts="independence-of-events"}
 **Definition: independence of events**
 
 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ 如果有
@@ -735,7 +735,7 @@ $${\mathbb{P}}\left( {\bigcap\limits_{j \in J}A_{j}} \right) = \prod\limits_{j \
 
 根据条件概率的定义, 容易得出: 两个 events $A,B$ independent 的定义**等价于 ${\mathbb{P}}(A \mid B) = {\mathbb{P}}(A)$**, 即事件 $B$ 的发生与否不影响事件 $A$ 发生的概率.\
 
-::: {#prop-01-combinatorics-prob-space-independence-of-two-events .proposition concepts="independence-of-two-events" aliases="independence of two events 的等价定义"}
+::: {#prop-01-combinatorics-prob-space-independence-of-two-events .proposition aliases="independence of two events 的等价定义" concepts="independence-of-two-events"}
 **Proposition: independence of two events 的等价定义**
 
 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ independent iff:
@@ -782,7 +782,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-pairwise-independence-vs-mutual-independence .example concepts="pairwise-independence-vs-mutual-independence" aliases="(Pairwise Independence vs. Mutual Independence)"}
+::: {#ex-01-combinatorics-prob-space-pairwise-independence-vs-mutual-independence .example aliases="(Pairwise Independence vs. Mutual Independence)" concepts="pairwise-independence-vs-mutual-independence"}
 **Example: (Pairwise Independence vs. Mutual Independence)**
 
 一组事件 $A_{1},A_{2},\ldots \in \mathcal{F}$ 如果是 mutually independent 的, 则它们两两 independent. **但是反过来不成立**.\
@@ -812,7 +812,7 @@ $$A := \left\{ {\text{first roll is}\ 4} \right\},\quad B := \left\{ {\text{seco
 这个例子提醒我们: 独立性不是一种可以由低维向高维简单"归纳"的性质. 一个系统可以局部解耦（两两独立, 但在全局尺度上却存在强耦合. 总之 mutual independence 是一个很强的条件.
 :::
 
-::::: {#ex-01-combinatorics-prob-space-coin-tossing .example concepts="coin-tossing" aliases="(coin tossing)"}
+::::: {#ex-01-combinatorics-prob-space-coin-tossing .example aliases="(coin tossing)" concepts="coin-tossing"}
 **Example: (coin tossing)**
 
 假设我们有一枚不均匀的硬币, 掷出正面的概率是 $p \in \lbrack 0,1\rbrack$, 反面的概率是 $1 - p$. 我们不断地掷这枚硬币, 直到第一次掷出正面为止, 并记录所需的掷币次数. 求: 掷币次数为奇数的概率是多少?
@@ -846,7 +846,7 @@ Solve 这个 equation 得到同样结果.
 
 ### random variable: 即 prob space 上的一个 Borel measurable function
 
-::: {#def-02-random-variables-random-variable .definition concepts="random-variable" aliases="random variable"}
+::: {#def-02-random-variables-random-variable .definition aliases="random variable" concepts="random-variable"}
 **Definition: random variable**
 
 对于 probability space $(\Omega,\mathcal{F},{\mathbb{P}})$, 一个 random variable 是一个 **Borel measurable function** $X:\Omega\rightarrow{\mathbb{R}}$.
@@ -886,7 +886,7 @@ Random variable (Borel measurable function) 本质上是对 样本空间中的�
 
 下面是一个简单的 proposition: 我们可以把多个 random variables 以一种 Borel measurable 的方式组合起来, 那么就成为一个新的 random variable.
 
-::: {#prop-02-random-variables-borel-measurable-random-variables .proposition concepts="-borel-measurable-random-variables" aliases="以 Borel measurable 的方式组合起多个 random variables"}
+::: {#prop-02-random-variables-borel-measurable-random-variables .proposition aliases="以 Borel measurable 的方式组合起多个 random variables" concepts="-borel-measurable-random-variables"}
 **Proposition: 以 Borel measurable 的方式组合起多个 random variables**
 
 Prob space $(\Omega,\mathcal{F},{\mathbb{P}})$ 上的 random variables $X_{1},X_{2},\ldots,X_{k}:\Omega\rightarrow{\mathbb{R}}$, 任取 Borel measurable function $g:{\mathbb{R}}^{k}\rightarrow{\mathbb{R}}$,
@@ -930,7 +930,7 @@ $$\begin{matrix}
 
 ### 由一个 random variable generate 的 $\sigma$-algebra
 
-::: {#def-02-random-variables-sigma-algebra-generated-by-a-random-variable-measurable-function .definition concepts="sigma-algebra-generated-by-a-random-variable-measurable-function" aliases="\\sigma-algebra generated by a random variable (measurable function)"}
+::: {#def-02-random-variables-sigma-algebra-generated-by-a-random-variable-measurable-function .definition aliases="\\sigma-algebra generated by a random variable (measurable function)" concepts="sigma-algebra-generated-by-a-random-variable-measurable-function"}
 **Definition: \\sigma-algebra generated by a random variable (measurable function)**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 generate 的 $\sigma$-algebra 定义为
@@ -990,7 +990,7 @@ $$\sigma(X) = \ \varnothing,\left\{ {1,3,5} \right\},\left\{ {2,4,6} \right\},\O
 
 ### distribution and cumulative distribution function
 
-::: {#def-02-random-variables-probability-distribution .definition concepts="probability-distribution" aliases="probability distribution"}
+::: {#def-02-random-variables-probability-distribution .definition aliases="probability distribution" concepts="probability-distribution"}
 **Definition: probability distribution**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$ on $\Omega,\mathcal{F},{\mathbb{P}}$, 其 probability distribution 是 $X$ 对于 $\mathbb{P}$ 的 pushforward measure, 记作 ${\mathbb{P}}^{X}:\mathcal{B}({\mathbb{R}})\rightarrow\lbrack 0,1\rbrack$. 即
@@ -1014,7 +1014,7 @@ $$X \sim {\mathbb{P}}^{X}$$
 接下来的定义和例子会更加直观.
 :::
 
-::: {#def-02-random-variables-distribution-function-cumulative-distribution-function-cdf .definition concepts="distribution-function-cumulative-distribution-function-cdf" aliases="distribution function (也称 cumulative distribution function, cdf)"}
+::: {#def-02-random-variables-distribution-function-cumulative-distribution-function-cdf .definition aliases="distribution function (也称 cumulative distribution function, cdf)" concepts="distribution-function-cumulative-distribution-function-cdf"}
 **Definition: distribution function (也称 cumulative distribution function, cdf)**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 **cumulative distribution function** 是 ${\mathbb{P}}^{X}$ 这一函数的 distribution function, 记作 $F_{X}$. 即对于任意 $x \in {\mathbb{R}}$, 有
@@ -1029,7 +1029,7 @@ $F_{X}(x)$ 即 ${\mathbb{P}}(\left\{ {X \leq x} \right\})$ 我们也会简写为
 $F_{X}(x)$ 的意义是: random variable $X$ 的值不超过 $x$ 的概率.\
 :::
 
-::: {#ex-02-random-variables-geometric-probability .example concepts="geometric-probability" aliases="(geometric probability)"}
+::: {#ex-02-random-variables-geometric-probability .example aliases="(geometric probability)" concepts="geometric-probability"}
 **Example: (geometric probability)**
 
 Fix $a,b > 0$. 我们在正方形区域 $\Omega = \lbrack 0,a\rbrack \times \lbrack 0,b\rbrack$ 上均匀地随机选取一个点 $(x,y)$.\
@@ -1049,7 +1049,7 @@ $$F_{X}(x) = \left\{ \begin{matrix}
 注意: 在这个例子中, probability measure $P$ 是 Lebesgue measure on $\lbrack 0,a\rbrack \times \lbrack 0,b\rbrack$. 很多时候我们在 计算 RV 的 distribution function 的时候, 都是直接直观地计算 $P(X \leq x)$. 但是在稍微复杂一些 的例子中, 我们需要对各个条件的 formalization 更清楚一点.
 :::
 
-::: {#thm-02-random-variables-distribution-function .theorem concepts="distribution-function" aliases="distribution function 的性质"}
+::: {#thm-02-random-variables-distribution-function .theorem aliases="distribution function 的性质" concepts="distribution-function"}
 **Theorem: distribution function 的性质**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 distribution function $F_{X}$ 满足:
@@ -1083,7 +1083,7 @@ $$A_{0} = \bigcap\limits_{n = 1}^{\infty}A_{n} = \left\{ {\omega:X(\omega) \leq 
 我们此时心里会默认一件事情: 一旦知道了 RV $X$ 的 distribution function $F_{X}$, 就知道了 $X$ 的完整 distribution $P^{X}$. 这个直觉是对的.\
 回忆一下: 我们在 measure theory 中, 证明 Carathéodory extension theorem 的时候, 证明过一个 $\pi - \lambda$ theorem, 以它作为工具才 把 premeasure 从一个 algebra extend 到一个 measure on the generated $\sigma$-algebra:
 
-::: {#thm-02-random-variables-dynkins-pi-lambda-theorem .theorem concepts="dynkins-pi-lambda-theorem" aliases="Dynkin’s \\pi-\\lambda theorem"}
+::: {#thm-02-random-variables-dynkins-pi-lambda-theorem .theorem aliases="Dynkin’s \\pi-\\lambda theorem" concepts="dynkins-pi-lambda-theorem"}
 **Theorem: Dynkin's \\pi - \\lambda theorem**
 
 设 $\mathcal{P}$ 是一个 $\pi$-system (closed under finite intersection), $\mathcal{L}$ 是一个 $\lambda$-system (closed under complementation and countable disjoint union), 如果 $\mathcal{P} \subseteq \mathcal{L}$, 那么 $\sigma(\mathcal{P}) \subseteq \mathcal{L}$.
@@ -1106,7 +1106,7 @@ $${\mathbb{B}}({\mathbb{R}}) = \sigma(\mathcal{G}) \subseteq \mathcal{L}$$
 
 因而:
 
-::: {#cor-02-random-variables-distribution-function-f-x-determines-distribution-mathbb-p-x .corollary concepts="distribution-function-f-x-determines-distribution-mathbb-p-x" aliases="distribution function F_X determines distribution \\mathbb{P}^X"}
+::: {#cor-02-random-variables-distribution-function-f-x-determines-distribution-mathbb-p-x .corollary aliases="distribution function F_X determines distribution \\mathbb{P}^X" concepts="distribution-function-f-x-determines-distribution-mathbb-p-x"}
 **Corollary: distribution function F\_{X} determines distribution {\\mathbb{P}}\^{X}**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 distribution function $F_{X}$ 确定了 distribution ${\mathbb{P}}^{X}$; 即 如果两个 random variable $X$ 和 $Y$ 满足 $F_{X} = F_{Y}$, 那么 ${\mathbb{P}}^{X} = {\mathbb{P}}^{Y}$.
@@ -1117,7 +1117,7 @@ $${\mathbb{B}}({\mathbb{R}}) = \sigma(\mathcal{G}) \subseteq \mathcal{L}$$
 
 我们基本上研究两类 random variable: discrete random variable 和 continuous random variable.
 
-::: {#def-02-random-variables-discrete-random-variable .definition concepts="discrete-random-variable" aliases="discrete random variable"}
+::: {#def-02-random-variables-discrete-random-variable .definition aliases="discrete random variable" concepts="discrete-random-variable"}
 **Definition: discrete random variable**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 如果存在一个 countable set $S \subseteq {\mathbb{R}}$ 使得 ${\mathbb{P}}(X \in S) = 1$, 那么 $X$ 是一个 discrete random variable.
@@ -1135,7 +1135,7 @@ $${\mathbb{B}}({\mathbb{R}}) = \sigma(\mathcal{G}) \subseteq \mathcal{L}$$
 对于 discrete random variable $X$, 其 distribution function $F_{X}$ 是一个 step function, 只有 countable 多个 jump discontinuity, 每个 jump 的大小就是 $X$ 在那个点的 probability mass.\
 因而, 对于 discrete random variable $X$, 通常考虑其 **probability mass function (pmf)** $p_{X}$ 更加有用:
 
-::: {#def-02-random-variables-probability-mass-function-pmf .definition concepts="probability-mass-function-pmf" aliases="probability mass function (pmf)"}
+::: {#def-02-random-variables-probability-mass-function-pmf .definition aliases="probability mass function (pmf)" concepts="probability-mass-function-pmf"}
 **Definition: probability mass function (pmf)**
 
 对于 discrete random variable $X$, 其 pmf 定义为
@@ -1150,7 +1150,7 @@ $$\sum\limits_{x}p_{X}(x) = 1$$
 
 值得一提的是, 这个 **pmf 其实就是 $X$ 的 distribution ${\mathbb{P}}^{X}$ 对于 counting measure (for range of $X$)的 Radon-Nikodym derivative:**
 
-::: {#prop-02-random-variables-pmf-distribution-counting-measure-mu-s-radon-nikodym .proposition concepts="pmf-distribution-counting-measure-mu-s-radon-nikodym" aliases="pmf 是 distribution 对于 counting measure \\mu_S 的 Radon-Nikodym 导数"}
+::: {#prop-02-random-variables-pmf-distribution-counting-measure-mu-s-radon-nikodym .proposition aliases="pmf 是 distribution 对于 counting measure \\mu_S 的 Radon-Nikodym 导数" concepts="pmf-distribution-counting-measure-mu-s-radon-nikodym"}
 **Proposition: pmf 是 distribution 对于 counting measure \\mu\_{S} 的 Radon-Nikodym 导数**
 
 对于一个 discrete random variable $X$, 假设其 range 是 countable set $S$, 则我们定义 counting measure $\mu_{S}$ on $S$ 为:
@@ -1176,7 +1176,7 @@ $${\mathbb{P}}^{X}(A) = \sum\limits_{x_{i} \in A}{\mathbb{P}}(X = x_{i}) = \sum\
 
 相对应 discrete random variable, 我们定义 continuous random variable:
 
-::: {#def-02-random-variables-continuous-random-variable .definition concepts="continuous-random-variable" aliases="continuous random variable"}
+::: {#def-02-random-variables-continuous-random-variable .definition aliases="continuous random variable" concepts="continuous-random-variable"}
 **Definition: continuous random variable**
 
 我们称一个 random variable $X:\Omega\rightarrow{\mathbb{R}}$ 是一个 **continuous random variable**, 如果它的 cdf $F_{X}$ 是一个 **absolutely continuous function.**
@@ -1214,7 +1214,7 @@ $$\left. \sum\limits_{i}(b_{i} - a_{i}) < \delta\Longrightarrow\sum\limits_{i} \
 
 这几行字浓缩了 measure theory 的 differentiation theory 的两个星期的内容... 具体见上文 notes 链接, 都有详细证明. 而我们这里就利用起最后这一条结论. 首先, 我们 state 一件事:
 
-::: {#lem-02-random-variables-cdf-nbv .lemma concepts="cdf-nbv" aliases="cdf 一定是 NBV 的"}
+::: {#lem-02-random-variables-cdf-nbv .lemma aliases="cdf 一定是 NBV 的" concepts="cdf-nbv"}
 **Lemma: cdf 一定是 NBV 的**
 
 任意的 random variable 的 cdf $F_{X}$ 都是一个 $NBV$ function.
@@ -1229,7 +1229,7 @@ $$\left. \sum\limits_{i}(b_{i} - a_{i}) < \delta\Longrightarrow\sum\limits_{i} \
 
 因而我们自然得出:
 
-::: {#thm-02-random-variables-random-variable-continuous-random-variable .theorem concepts="-random-variable-continuous-random-variable" aliases="一个 random variable 是 continuous random variable 的充要条件"}
+::: {#thm-02-random-variables-random-variable-continuous-random-variable .theorem aliases="一个 random variable 是 continuous random variable 的充要条件" concepts="-random-variable-continuous-random-variable"}
 **Theorem: 一个 random variable 是 continuous random variable 的充要条件**
 
 - 一个 random variable $X:\Omega\rightarrow{\mathbb{R}}$ 的 cdf 一定是 $m$-a.e. differentiable 的.
@@ -1262,7 +1262,7 @@ $$\left. \sum\limits_{i}(b_{i} - a_{i}) < \delta\Longrightarrow\sum\limits_{i} \
 $$F_{X}(x) = \int_{- \infty}^{x}F_{X}'(t) dt\quad\forall x \in {\mathbb{R}}$$
 :::
 
-::: {#def-02-random-variables-probability-density-function-pdf .definition concepts="probability-density-function-pdf" aliases="probability density function (pdf)"}
+::: {#def-02-random-variables-probability-density-function-pdf .definition aliases="probability density function (pdf)" concepts="probability-density-function-pdf"}
 **Definition: probability density function (pdf)**
 
 对于 continuous random variable $X$, 其 probability density function 定义为 $F_{X}$ 的 ($m$-a.e.)导数, 即
@@ -1278,7 +1278,7 @@ $$f_{X}(x) := F_{X}'(x),\quad m\ \text{-a.e.}\ x \in {\mathbb{R}}$$
 
 以及, 显然 pdf 有以下性质:
 
-::: {#prop-02-random-variables-probability-density-function .proposition concepts="probability-density-function" aliases="probability density function 的性质"}
+::: {#prop-02-random-variables-probability-density-function .proposition aliases="probability density function 的性质" concepts="probability-density-function"}
 **Proposition: probability density function 的性质**
 
 对于 continuous random variable $X$ with pdf $f_{X}$,
@@ -1306,7 +1306,7 @@ $$f_{X}(x) := F_{X}'(x),\quad m\ \text{-a.e.}\ x \in {\mathbb{R}}$$
 
 我们这里给出一个 counterexample: Cantor distribution. 它的 cdf 是 continuous 的, 但是它并没有能够满足 FTC of Lebesgue integral (返回原函数) 的 a.e. derivative, 因而没有 pdf.
 
-::: {#ex-02-random-variables-cantor-distribution .example concepts="cantor-distribution" aliases="(Cantor distribution)"}
+::: {#ex-02-random-variables-cantor-distribution .example aliases="(Cantor distribution)" concepts="cantor-distribution"}
 **Example: (Cantor distribution)**
 
 令 $X_{n}$ be 独立同分布 (i.i.d.) 的随机变量 $P(X_{n} = 0) = P(X_{n} = 2) = 1/2$. 然后定义:
@@ -1346,7 +1346,7 @@ $$\int_{- \infty}^{1}F_{X}'(t) dt = 0$$
 
 对于 Cantor distribution 这个例子, 我们称这样的 random variable 是一个 **singular continuous random variable**:
 
-::: {#def-02-random-variables-singular-continuous-random-variable .definition concepts="singular-continuous-random-variable" aliases="singular continuous random variable"}
+::: {#def-02-random-variables-singular-continuous-random-variable .definition aliases="singular continuous random variable" concepts="singular-continuous-random-variable"}
 **Definition: singular continuous random variable**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 如果 $X$ 的 cdf $F_{X}$ 是一个 continuous function, 并且 ${\mathbb{P}}^{X}\bot m$ (即存在一个 measure zero 的 Borel set $N$ 使得 ${\mathbb{P}}^{X}(N) = 1$, 也等价于 $F_{X}$ 的导数 $F_{X}' = 0$ a.e.), 那么我们称 $X$ 是一个 singular continuous random variable.
@@ -1360,7 +1360,7 @@ singular continuous random variable 的意思是, 在 $\mathbb{R}$ 上, $X$ 的�
 
 这个例子向我们说明了: 除了 discrete random variable 和 continuous random variable 以外, 还有其他的奇异的 random variables. 而下面这一定理刻画了任意的 random variable 的结构:
 
-::: {#thm-02-random-variables-lebesgue-decomposition-theorem .theorem concepts="lebesgue-decomposition-theorem" aliases="Lebesgue Decomposition Theorem"}
+::: {#thm-02-random-variables-lebesgue-decomposition-theorem .theorem aliases="Lebesgue Decomposition Theorem" concepts="lebesgue-decomposition-theorem"}
 **Theorem: Lebesgue Decomposition Theorem**
 
 对于任意 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 distribution ${\mathbb{P}}^{X}$ 可以唯一分解为三个 mutually singular 的 measure 的和:
@@ -1398,7 +1398,7 @@ Distribution 是一个 random variable 的完整刻画, 而这一节我们来谈
 
 而其 **variance** 是 $(X - E(X))^{2}$ 这个 induced RV w.r.t. $\mathbb{P}$ 的积分, 表示 $X$ 离它的值的 weighted average ${\mathbb{E}}(X)$的聚集程度:
 
-::: {#def-02-random-variables-expectation-and-variance-of-random-variable .definition concepts="expectation-and-variance-of-random-variable" aliases="expectation and variance of random variable"}
+::: {#def-02-random-variables-expectation-and-variance-of-random-variable .definition aliases="expectation and variance of random variable" concepts="expectation-and-variance-of-random-variable"}
 **Definition: expectation and variance of random variable**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 其 expectation 定义为
@@ -1420,7 +1420,7 @@ Note that: ${\mathbb{E}}\lbrack X\rbrack$ 未必是 finite 的. ${\mathbb{E}}\lb
 
 要计算 discrete random vairable 的 expectation 和 variance, 直接 by def, sum 就可以:
 
-::: {#prop-02-random-variables-discrete-random-variable-expectation-variance .proposition concepts="discrete-random-variable-expectation-variance" aliases="discrete random variable 的 expectation 和 variance"}
+::: {#prop-02-random-variables-discrete-random-variable-expectation-variance .proposition aliases="discrete random variable 的 expectation 和 variance" concepts="discrete-random-variable-expectation-variance"}
 **Proposition: discrete random variable 的 expectation 和 variance**
 
 对于 discrete random variable $X$ with pmf $p_{X}$,
@@ -1434,7 +1434,7 @@ $${\mathbb{E}}\lbrack X\rbrack = \sum\limits_{x}xp_{X}(x),\quad\text{Var}(X) = \
 
 为了实现这个目标, 我们首先需要一个工具来过渡一下:
 
-::: {#lem-02-random-variables-distribution-x-push-forward-measure-expectation .lemma concepts="-distribution-x-push-forward-measure-expectation" aliases="用 distribution (X 的 push-forward measure) 计算 expectation"}
+::: {#lem-02-random-variables-distribution-x-push-forward-measure-expectation .lemma aliases="用 distribution (X 的 push-forward measure) 计算 expectation" concepts="-distribution-x-push-forward-measure-expectation"}
 **Lemma: 用 distribution (X 的 push-forward measure) 计算 expectation**
 
 对于 random variable $X:\Omega\rightarrow{\mathbb{R}}$, 如果 $X$ integrable, 那么其 expectation
@@ -1456,7 +1456,7 @@ $$\int_{\Omega}X d{\mathbb{P}} = \int_{\Omega}(\text{id} \circ X) d{\mathbb{P}} 
 //TODO: 从 diffeomorphism version 的 change of variable formula 证明 push-forward version 的 change of variable formula, 然后 apply 这个结论. 参考: [change of variable](https://en.wikipedia.org/wiki/Change_of_variables)
 :::
 
-::: {#prop-02-random-variables-continuous-random-variable-expectation-variance .proposition concepts="continuous-random-variable-expectation-variance" aliases="continuous random variable 的 expectation 和 variance"}
+::: {#prop-02-random-variables-continuous-random-variable-expectation-variance .proposition aliases="continuous random variable 的 expectation 和 variance" concepts="continuous-random-variable-expectation-variance"}
 **Proposition: continuous random variable 的 expectation 和 variance**
 
 对于 continuous random variable $X$ with pdf $f_{X}$, 如果 ${\mathbb{E}}\lbrack X\rbrack$ 和 $\text{Var}(X)$ 都是 finite 的, 那么
@@ -1478,7 +1478,7 @@ $$d{\mathbb{P}}^{X}(x) = f_{X}(x) d\lambda(x)$$
 从而得证.
 :::
 
-::: {#prop-02-random-variables-expectation .proposition concepts="expectation" aliases="expectation 的性质"}
+::: {#prop-02-random-variables-expectation .proposition aliases="expectation 的性质" concepts="expectation"}
 **Proposition: expectation 的性质**
 
 令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 **integrable** random variables, 则
@@ -1492,7 +1492,7 @@ $$d{\mathbb{P}}^{X}(x) = f_{X}(x) d\lambda(x)$$
 
 这三条性质都容易验证, 直接 follow from linearity of Lebesgue integral, monotonicity of Lebesgue integral, triangle inequality of Lebesgue integral.
 
-::: {#prop-02-random-variables-computing-variance .proposition concepts="computing-variance" aliases="computing variance"}
+::: {#prop-02-random-variables-computing-variance .proposition aliases="computing variance" concepts="computing-variance"}
 **Proposition: computing variance**
 
 对于 random variable $X$ with finite expectation,
@@ -1534,7 +1534,7 @@ $$\frac{\langle X,Y\rangle}{\parallel X \parallel \parallel Y \parallel} = \frac
 
 因而 solution: normalize 每个 random variable, 把它们移动到 均值为 0 的位置! 即: 把每个 $X$ center 为 $X - {\mathbb{E}}\lbrack X\rbrack$. 这就是:
 
-::: {#def-02-random-variables-zero-centered-square-integrable-random-variables-l-2-0-omega-mat .definition concepts="zero-centered-square-integrable-random-variables-l-2-0-omega-mat" aliases="zero-centered square integrable random variables L^2_0(\\Omega, \\mathcal{F}, \\mathbb{P})"}
+::: {#def-02-random-variables-zero-centered-square-integrable-random-variables-l-2-0-omega-mat .definition aliases="zero-centered square integrable random variables L^2_0(\\Omega, \\mathcal{F}, \\mathbb{P})" concepts="zero-centered-square-integrable-random-variables-l-2-0-omega-mat"}
 **Definition: zero-centered square integrable random variables L\_{0}\^{2}(\\Omega,\\mathcal{F},{\\mathbb{P}})**
 
 我们定义:
@@ -1547,7 +1547,7 @@ $$L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}}) := \left\{ {X \in L^{2}(\Omega,\mat
 并且, **我们可以通过把每个 $X$ center 为 $X - {\mathbb{E}}\lbrack X\rbrack$ 的行为, 把 $X$ 从 $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 投影到 $L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 这个 subspace 上.**\
 而投影+度量的行为, 就是计算:
 
-::: {#def-02-random-variables-covariance .definition concepts="covariance" aliases="covariance"}
+::: {#def-02-random-variables-covariance .definition aliases="covariance" concepts="covariance"}
 **Definition: covariance**
 
 给定两个 random variables $X,Y$, 我们定义它们的 covariance 为
@@ -1579,7 +1579,7 @@ Geometric intuition of covariance: 考虑取这两个 random variables 的一些
 
 我们容易发现一件事情:
 
-::: {#thm-02-random-variables-covariance-a-positive-semi-definite-symmetric-bilinear-f .theorem concepts="covariance-a-positive-semi-definite-symmetric-bilinear-f" aliases="covariance 是一个 a positive semi-definite symmetric bilinear form"}
+::: {#thm-02-random-variables-covariance-a-positive-semi-definite-symmetric-bilinear-f .theorem aliases="covariance 是一个 a positive semi-definite symmetric bilinear form" concepts="covariance-a-positive-semi-definite-symmetric-bilinear-f"}
 **Theorem: covariance 是一个 a positive semi-definite symmetric bilinear form**
 
 - covariance 是一个 **symmetric bilinear form** (并且 **translation-invariant**, 忽略 translation) 的 operator:
@@ -1597,7 +1597,7 @@ By def.
 
 而当我们把空间限定在 $L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 上时,
 
-::: {#thm-02-random-variables-l-2-0-omega-mathcal-f-mathbb-p-hilbert-space-with-covar .theorem concepts="l-2-0-omega-mathcal-f-mathbb-p-hilbert-space-with-covar" aliases="L^2_0(\\Omega, \\mathcal{F}, \\mathbb{P}) 为一个 Hilbert space, with covariance as an inner product"}
+::: {#thm-02-random-variables-l-2-0-omega-mathcal-f-mathbb-p-hilbert-space-with-covar .theorem aliases="L^2_0(\\Omega, \\mathcal{F}, \\mathbb{P}) 为一个 Hilbert space, with covariance as an inner product" concepts="l-2-0-omega-mathcal-f-mathbb-p-hilbert-space-with-covar"}
 **Theorem: L\_{0}\^{2}(\\Omega,\\mathcal{F},{\\mathbb{P}}) 为一个 Hilbert space, with covariance as an inner product**
 
 $\ L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}}),\langle \cdot , \cdot \rangle_{\text{Cov}}\$ 为一个 Hilbert space, 即: covariance 在其上是一个 inner product (positive definite symmetric bilinear form).
@@ -1611,7 +1611,7 @@ $\ L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}}),\langle \cdot , \cdot \rangle_{\te
 
 而在 $L_{0}^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 上, 两个 random variables $X,Y$ 之间的夹角 $\theta$ 的 cosine, 就是它们 真正的 linear relationship 的强弱程度, 因而我们把它叫做 correlation:
 
-::: {#def-02-random-variables-correlation .definition concepts="correlation" aliases="correlation"}
+::: {#def-02-random-variables-correlation .definition aliases="correlation" concepts="correlation"}
 **Definition: correlation**
 
 $$\rho(X,Y) = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)}\sqrt{\text{Var}(Y)}}$$
@@ -1627,7 +1627,7 @@ $$\text{Cov}(X,Y) = \sigma_{X}\sigma_{Y}\rho(X,Y)$$
 
 从而有以下显然的结论:
 
-::: {#prop-02-random-variables-properties-of-correlation .proposition concepts="properties-of-correlation" aliases="properties of correlation"}
+::: {#prop-02-random-variables-properties-of-correlation .proposition aliases="properties of correlation" concepts="properties-of-correlation"}
 **Proposition: properties of correlation**
 
 - $\rho(X,Y) \in \lbrack - 1,1\rbrack$
@@ -1646,7 +1646,7 @@ $$\text{Cov}(X,Y) = \sigma_{X}\sigma_{Y}\rho(X,Y)$$
 **求两个 random variables 之间的 correlation, 就是把它们都 center 到 zero-centered 的位置 (即投影到 $L_{0}^{2}$ space 上), 然后计算它们在 $L_{0}^{2}$ space 上的 cosine similarity.**\
 此时我们看到 decomposition of variance:
 
-::: {#prop-02-random-variables-random-variables-variance .proposition concepts="-random-variables-variance" aliases="两个 random variables 之和的 variance"}
+::: {#prop-02-random-variables-random-variables-variance .proposition aliases="两个 random variables 之和的 variance" concepts="-random-variables-variance"}
 **Proposition: 两个 random variables 之和的 variance**
 
 两个 random variables 的和的 variance 可分解成 variances 和 covariance:
@@ -1688,7 +1688,7 @@ $${\mathbb{P}}^{X}(B) = \sum\limits_{x_{i} \in B}{\mathbb{P}}(X = x_{i}) = \sum\
 
 ### Bernoulli distribution and Binomial distribution
 
-::: {#ex-02-random-variables-bernoulli-distribution .example concepts="bernoulli-distribution" aliases="(Bernoulli distribution)"}
+::: {#ex-02-random-variables-bernoulli-distribution .example aliases="(Bernoulli distribution)" concepts="bernoulli-distribution"}
 **Example: (Bernoulli distribution)**
 
 令 $\Omega := \left\{ {\omega_{1},\omega_{2}} \right\}$, $\mathcal{F} := 2^{\Omega}$.\
@@ -1714,7 +1714,7 @@ $$X \sim \text{Ber}(p)$$
 
 显然.
 
-::: {#ex-02-random-variables-binomial-distribution .example concepts="binomial-distribution" aliases="(Binomial distribution)"}
+::: {#ex-02-random-variables-binomial-distribution .example aliases="(Binomial distribution)" concepts="binomial-distribution"}
 **Example: (Binomial distribution)**
 
 我们 independently repeat $n$ 次 Bernoulli trial, 每次 trial 的 success probability 都是 $p$.\
@@ -1757,7 +1757,7 @@ $${\mathbb{E}}\lbrack X\rbrack = p(1 - p)^{n - 1} \cdot n(1 + \frac{p}{1 - p})^{
 
 ### Geometric distribution and Negative Binomial distribution
 
-::: {#ex-02-random-variables-geometric-distribution .example concepts="geometric-distribution" aliases="(Geometric distribution)"}
+::: {#ex-02-random-variables-geometric-distribution .example aliases="(Geometric distribution)" concepts="geometric-distribution"}
 **Example: (Geometric distribution)**
 
 我们 perform independent Bernoulli trial, 每次 trial 的 success probability 都是 $p$.\
@@ -1794,7 +1794,7 @@ $${\mathbb{E}}\lbrack X^{2}\rbrack = \frac{2 - p}{p^{2}}$$
 $$\text{Var}\lbrack X\rbrack = {\mathbb{E}}\lbrack X^{2}\rbrack - ({\mathbb{E}}\lbrack X\rbrack)^{2} = \frac{1 - p}{p^{2}}$$
 :::
 
-::: {#ex-02-random-variables-negative-binomial-distribution .example concepts="negative-binomial-distribution" aliases="(Negative Binomial distribution)"}
+::: {#ex-02-random-variables-negative-binomial-distribution .example aliases="(Negative Binomial distribution)" concepts="negative-binomial-distribution"}
 **Example: (Negative Binomial distribution)**
 
 这是 Geometric distribution 的 generalization (但不完全一样).\
@@ -1815,7 +1815,7 @@ $$T_{r} \sim \text{NB}(r,p)$$
 
 ### Poisson distribution
 
-::::: {#ex-02-random-variables-poisson-distribution .example concepts="poisson-distribution" aliases="(Poisson distribution)"}
+::::: {#ex-02-random-variables-poisson-distribution .example aliases="(Poisson distribution)" concepts="poisson-distribution"}
 **Example: (Poisson distribution)**
 
 考虑这一 pmf:
@@ -1904,7 +1904,7 @@ $$\text{Var}(X) = {\mathbb{E}}\lbrack X^{2}\rbrack - ({\mathbb{E}}\lbrack X\rbra
 
 #### Poisson distribution 的 additivity
 
-::: {#thm-02-random-variables-additivity-of-poisson-distribution .theorem concepts="additivity-of-poisson-distribution" aliases="additivity of Poisson distribution"}
+::: {#thm-02-random-variables-additivity-of-poisson-distribution .theorem aliases="additivity of Poisson distribution" concepts="additivity-of-poisson-distribution"}
 **Theorem: additivity of Poisson distribution**
 
 如果 $X \sim \text{Poi}(\lambda_{1})$, $Y \sim \text{Poi}(\lambda_{2})$ are independent, 那么
@@ -1959,7 +1959,7 @@ $$\begin{matrix}
 
 ### uniform distribution: 最简单的 continuous RV
 
-::: {#def-02-random-variables-uniform-distribution .definition concepts="uniform-distribution" aliases="uniform distribution"}
+::: {#def-02-random-variables-uniform-distribution .definition aliases="uniform distribution" concepts="uniform-distribution"}
 **Definition: uniform distribution**
 
 如果 $f_{X}(x) = \frac{1}{b - a}$ on $(a,b)$ and $0$ elsewhere, 那么我们称 $X$ 的 distribution $P^{X}$ 为一个 **uniform distribution**, 写作
@@ -1971,7 +1971,7 @@ $$X \sim U(\lbrack a,b\rbrack)$$
 
 $$F_{X}(x) = \frac{x - b}{b - a},\quad{\mathbb{E}}\lbrack X\rbrack = \frac{a + b}{2},\quad\text{Var}(X) = \frac{(b - a)^{2}}{12}$$
 
-::: {#ex-02-random-variables-uniform-distribution-pdf-cdf .example concepts="uniform-distribution-pdf-cdf" aliases="(uniform distribution 的 pdf 和 cdf)"}
+::: {#ex-02-random-variables-uniform-distribution-pdf-cdf .example aliases="(uniform distribution 的 pdf 和 cdf)" concepts="uniform-distribution-pdf-cdf"}
 **Example: (uniform distribution 的 pdf 和 cdf)**
 
 考虑 $X \sim U(\lbrack a,b\rbrack)$, 其 pdf 和 cdf 的图像如下:
@@ -2003,7 +2003,7 @@ $$\begin{matrix}
 {0,\quad t \leq 0}
 \end{matrix}$$
 
-::: {#def-02-random-variables-exponential-distribution .definition concepts="exponential-distribution" aliases="exponential distribution"}
+::: {#def-02-random-variables-exponential-distribution .definition aliases="exponential distribution" concepts="exponential-distribution"}
 **Definition: exponential distribution**
 
 我们称 $X$ 为一个 **exponential random variable** with parameter $\lambda$, 如果它的 pdf is given by:
@@ -2055,7 +2055,7 @@ exponential 随机变量是 geometric 随机变量的 continuous analogue. 因�
 
 而 exponential random variable 其实也是, 只是 on a continuous time scale: 它假设的 constant 损坏率其实 implies: **在任意时间, 如果灯还没坏, 那么灯此刻坏掉的概率是 constant 的.**
 
-::: {#thm-02-random-variables-memoryless-property-of-exponential-distribution .theorem concepts="memoryless-property-of-exponential-distribution" aliases="memoryless property of exponential distribution"}
+::: {#thm-02-random-variables-memoryless-property-of-exponential-distribution .theorem aliases="memoryless property of exponential distribution" concepts="memoryless-property-of-exponential-distribution"}
 **Theorem: memoryless property of exponential distribution**
 
 任意 continuous RV,
@@ -2120,7 +2120,7 @@ $$\Gamma(n) = (n - 1)!$$
 
 Gamma 函数就是 factorial 函数的 continuous generalization.
 
-::: {#def-02-random-variables-gamma-distribution .definition concepts="gamma-distribution" aliases="\\Gamma-distribution"}
+::: {#def-02-random-variables-gamma-distribution .definition aliases="\\Gamma-distribution" concepts="gamma-distribution"}
 **Definition: \\Gamma-distribution**
 
 如果 continuous random variable $X$ 的 pdf 是:
@@ -2164,7 +2164,7 @@ $$\Gamma(1,\lambda) = \text{Exp}(\lambda)$$
 
 而当 $\alpha$ 是一个正整数 $n$ 时, $\Gamma$ distribution 实际就是 $n$ 个 independent exponential distribution 的 sum:
 
-::: {#prop-02-random-variables-gamma-distribution-independent-exponential-distribution-su .proposition concepts="gamma-distribution-independent-exponential-distribution-su" aliases="Gamma distribution 即是 independent exponential distribution 的 sum"}
+::: {#prop-02-random-variables-gamma-distribution-independent-exponential-distribution-su .proposition aliases="Gamma distribution 即是 independent exponential distribution 的 sum" concepts="gamma-distribution-independent-exponential-distribution-su"}
 **Proposition: Gamma distribution 即是 independent exponential distribution 的 sum**
 
 Let $X_{1},X_{2},\cdots,X_{n} \sim \text{Exp}(\lambda)$ be i.i.d., 则
@@ -2298,7 +2298,7 @@ $$X \sim \mathcal{N}(0,1)$$
 
 这里我们先给出一个 special case of central limit theorem:
 
-::: {#thm-02-random-variables-dehavres-central-limit-theorem-for-binomial-distribution .theorem concepts="dehavres-central-limit-theorem-for-binomial-distribution" aliases="DeHavre’s Central limit theorem for binomial distribution"}
+::: {#thm-02-random-variables-dehavres-central-limit-theorem-for-binomial-distribution .theorem aliases="DeHavre’s Central limit theorem for binomial distribution" concepts="dehavres-central-limit-theorem-for-binomial-distribution"}
 **Theorem: DeHavre's Central limit theorem for binomial distribution**
 
 令 $S_{n} \sim \text{Bin}(n,p)$, 则
@@ -2340,7 +2340,7 @@ $$\begin{matrix}
 
 ### random vector
 
-::: {#def-03-joint-conditional-distribution-random-vector .definition concepts="random-vector" aliases="random vector"}
+::: {#def-03-joint-conditional-distribution-random-vector .definition aliases="random vector" concepts="random-vector"}
 **Definition: random vector**
 
 对于 prob space $(\Omega,\mathcal{F},P)$, 一个 function $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ 如果是一个 $(\mathcal{F},\mathcal{B}({\mathbb{R}}^{n}))$-measurable function, 则 称它为一个 $n$-dimensional random variable, 或者 $n$-dimensional random vector.
@@ -2352,7 +2352,7 @@ $$\mathbf{X}(\omega) = (X_{1}(\omega),X_{2}(\omega),\ldots,X_{n}(\omega))^{T}$$
 
 random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass 的方法, 并把它们并列起来.
 
-::: {#prop-03-joint-conditional-distribution-n-random-variable-vector-random-vector .proposition concepts="-n-random-variable-vector-random-vector" aliases="由 n 个 random variable 构成的 vector 是一个 random vector"}
+::: {#prop-03-joint-conditional-distribution-n-random-variable-vector-random-vector .proposition aliases="由 n 个 random variable 构成的 vector 是一个 random vector" concepts="-n-random-variable-vector-random-vector"}
 **Proposition: 由 n 个 random variable 构成的 vector 是一个 random vector**
 
 令 $X_{1},X_{2},\cdots,X_{n}$ 是定义在**同一个 prob space** $(\Omega,\mathcal{F},{\mathbb{P}})$ 上的 $n$ 个 random variables. 则函数 $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ defined by
@@ -2368,7 +2368,7 @@ $$\omega\mapsto(X_{1}(\omega),X_{2}(\omega),\cdots,X_{n}(\omega))^{T}$$
 我们在 measure theory 中证明过: 对于任意的 finite seq of Borel measureable functions $(f_{i}:\Omega\rightarrow{\mathbb{R}})_{i = 1}^{k}$, 其各作为一个维度组成的函数 $f = (f_{1},\cdots,f_{k})$ 也是一个 Borel measurable function (from $\Omega$ 到 ${\mathbb{R}}^{k}$).
 :::
 
-::: {#prop-03-joint-conditional-distribution-random-vector-random-variable .proposition concepts="-random-vector-random-variable" aliases="一个 random vector 的每个分量都是一个 random variable"}
+::: {#prop-03-joint-conditional-distribution-random-vector-random-variable .proposition aliases="一个 random vector 的每个分量都是一个 random variable" concepts="-random-vector-random-variable"}
 **Proposition: 一个 random vector 的每个分量都是一个 random variable**
 
 令 $\mathbf{X} = (X_{1},X_{2},\cdots,X_{n})^{T}$ 是一个 random vector. 则对于任意 $i$, $X_{i}$ 都是一个 random variable.
@@ -2403,7 +2403,7 @@ $$X_{i} = \pi_{i} \circ \mathbf{X}$$
 
 ### joint distribution
 
-::: {#def-03-joint-conditional-distribution-joint-distribution-and-joint-cdf .definition concepts="joint-distribution-and-joint-cdf" aliases="joint distribution and joint cdf"}
+::: {#def-03-joint-conditional-distribution-joint-distribution-and-joint-cdf .definition aliases="joint distribution and joint cdf" concepts="joint-distribution-and-joint-cdf"}
 **Definition: joint distribution and joint cdf**
 
 令 $X_{1},\cdots,X_{n}$ 为 RV from the same prob space. 即 $\mathbf{X} := (X_{1},\cdots,X_{n})$ 是一个 random vector.
@@ -2423,7 +2423,7 @@ $$F_{\mathbf{X}}(x_{1},\cdots,x_{n}) = {\mathbb{P}}(X_{1} \leq x_{1},\cdots,X_{n
 
 joint distribution 的定义已经包括了如何从多个 random variables 的 distributions 得到一个 joint distribution. 而, 我们也可以从一个 joint distribution 的 limit behavior 得到每个 random variable 分量的 distributions, 称之为 marginal distribution:
 
-::: {#def-03-joint-conditional-distribution-marginal-distribution .definition concepts="marginal-distribution" aliases="marginal distribution"}
+::: {#def-03-joint-conditional-distribution-marginal-distribution .definition aliases="marginal distribution" concepts="marginal-distribution"}
 **Definition: marginal distribution**
 
 令 $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 是一个 random vector. 则对于任意 $i$, $X_{i}$ 的 distribution ${\mathbb{P}}^{X_{i}}$ 被称为 $\mathbf{X}$ 的第 $i$ 个分量的 **marginal distribution**.
@@ -2431,7 +2431,7 @@ joint distribution 的定义已经包括了如何从多个 random variables 的 
 
 我们以 ${\mathbb{R}}^{2}$ 为例. 得出的结论可以推广到 ${\mathbb{R}}^{n}$.
 
-::: {#prop-03-joint-conditional-distribution-joint-distribution-limit-behavior-marginal-distributio .proposition concepts="-joint-distribution-limit-behavior-marginal-distributio" aliases="通过 joint distribution 的 limit behavior 得到 marginal distribution"}
+::: {#prop-03-joint-conditional-distribution-joint-distribution-limit-behavior-marginal-distributio .proposition aliases="通过 joint distribution 的 limit behavior 得到 marginal distribution" concepts="-joint-distribution-limit-behavior-marginal-distributio"}
 **Proposition: 通过 joint distribution 的 limit behavior 得到 marginal distribution**
 
 令 $\mathbf{X} = (X_{1},X_{2})^{T}$ 是一个 random vector. 则对于任意 $x \in {\mathbb{R}}$, 有
@@ -2471,7 +2471,7 @@ $$F_{X}(x) = \int_{- \infty}^{x}f_{X}(t)\, dt$$
 
 这个定义可以 generalize 到 random vector 上.
 
-::: {#def-03-joint-conditional-distribution-continuous-random-vector-continuous-joint-cdf .definition concepts="continuous-random-vector-continuous-joint-cdf" aliases="continuous random vector 和 continuous joint cdf"}
+::: {#def-03-joint-conditional-distribution-continuous-random-vector-continuous-joint-cdf .definition aliases="continuous random vector 和 continuous joint cdf" concepts="continuous-random-vector-continuous-joint-cdf"}
 **Definition: continuous random vector 和 continuous joint cdf**
 
 对于 random vector $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 如果 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$, 即存在一个函数 $f_{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)$ 使得对于任意 Borel set $B \subseteq {\mathbb{R}}^{n}$, 有
@@ -2515,7 +2515,7 @@ $$\int_{- \infty}^{x_{\sigma(1)}}\cdots\int_{- \infty}^{x_{\sigma(n)}}f(t_{1},\c
 注意: **多个 continuous random variables 的 joint distribution 不一定是 continuous 的.** 反例: 考虑 random vector $\mathbf{X} = (X,X)^{T}$ where $X \sim \text{Uniform}(0,1)$ 则 ${\mathbb{P}}((X,X) \in \left\{ {y = x} \right\}) = 1$. 而注意, $\left\{ {y = x} \right\}$ 在 ${\mathbb{R}}^{2}$ 中的 Lebesgue measure 为 0, 而 absolute continuity 要求: 对于一个零测集, 其 ${\mathbb{P}}^{\mathbf{X}}$ 测度也必须是 0 (这是 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$ 的标准定义), 因而 joint distribution 不是 continuous 的.
 :::
 
-::: {#prop-03-joint-conditional-distribution-joint-pdf-joint-cdf .proposition concepts="joint-pdf-joint-cdf" aliases="joint pdf 和 joint cdf 的性质"}
+::: {#prop-03-joint-conditional-distribution-joint-pdf-joint-cdf .proposition aliases="joint pdf 和 joint cdf 的性质" concepts="joint-pdf-joint-cdf"}
 **Proposition: joint pdf 和 joint cdf 的性质**
 
 令 $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 是一个 continuous random vector, 则它的 joint pdf $f_{\mathbf{X}}$ 和 joint cdf $F_{\mathbf{X}}$ 有以下性质:
@@ -2676,7 +2676,7 @@ $$f_{X,Y}(x,y) = \left\{ \begin{matrix}
 
 ### independence of two random variables 的三种等价定义
 
-::: {#def-03-joint-conditional-distribution-independence-of-random-variables-def-1-joint-distribution-is-pro .definition concepts="independence-of-random-variables-def-1-joint-distribution-is-pro" aliases="independence of random variables, def 1: joint distribution is product of marginal distributions"}
+::: {#def-03-joint-conditional-distribution-independence-of-random-variables-def-1-joint-distribution-is-pro .definition aliases="independence of random variables, def 1: joint distribution is product of marginal distributions" concepts="independence-of-random-variables-def-1-joint-distribution-is-pro"}
 **Definition: independence of random variables, def 1: joint distribution is product of marginal distributions**
 
 两个 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$ 被称为 independent 的, 如果对于任意的 Borel sets $A,B \subseteq {\mathbb{R}}$, 都有
@@ -2698,7 +2698,7 @@ $$F_{X,Y}(x,y) = F_{X}(x)F_{Y}(y)$$
 
 详细而言:
 
-::: {#thm-03-joint-conditional-distribution-discrete-and-continuous-independence-joint-density-is-product-of .theorem concepts="discrete-and-continuous-independence-joint-density-is-product-of" aliases="discrete and continuous independence: joint density is product of marginal densities"}
+::: {#thm-03-joint-conditional-distribution-discrete-and-continuous-independence-joint-density-is-product-of .theorem aliases="discrete and continuous independence: joint density is product of marginal densities" concepts="discrete-and-continuous-independence-joint-density-is-product-of"}
 **Theorem: discrete and continuous independence: joint density is product of marginal densities**
 
 令 $X,Y$ 是两个 random variables.
@@ -2745,7 +2745,7 @@ $${\mathbb{P}}(X \in A,Y \in B) = {\mathbb{P}}(X \in A) \cdot {\mathbb{P}}(Y \in
 
 这个定义也当然等价于:
 
-::: {#prop-03-joint-conditional-distribution-independence-of-random-variables-def-2-conditional-distribution .proposition concepts="independence-of-random-variables-def-2-conditional-distribution" aliases="independence of random variables, def 2: conditional distribution is marginal distribution"}
+::: {#prop-03-joint-conditional-distribution-independence-of-random-variables-def-2-conditional-distribution .proposition aliases="independence of random variables, def 2: conditional distribution is marginal distribution" concepts="independence-of-random-variables-def-2-conditional-distribution"}
 **Proposition: independence of random variables, def 2: conditional distribution is marginal distribution**
 
 两个 random variables $X,Y$ 是 independent 的, iff: 对于任意的 Borel sets $A,B$, 如果${\mathbb{P}}(Y \in B) > 0$, 则
@@ -2765,7 +2765,7 @@ $${\mathbb{P}}(X \in A \mid Y \in B) = {\mathbb{P}}(X \in A)$$
 
 Furthermore: 我们不难发现一件事情, 可以**在 independence of two events 和 independence of two random variables 之间建立一个桥梁:**
 
-::: {#prop-03-joint-conditional-distribution-independence-of-random-variables-def-3-generated-sigma-algebras .proposition concepts="independence-of-random-variables-def-3-generated-sigma-algebras" aliases="independence of random variables, def 3: generated sigma-algebras"}
+::: {#prop-03-joint-conditional-distribution-independence-of-random-variables-def-3-generated-sigma-algebras .proposition aliases="independence of random variables, def 3: generated sigma-algebras" concepts="independence-of-random-variables-def-3-generated-sigma-algebras"}
 **Proposition: independence of random variables, def 3: generated sigma-algebras**
 
 令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 iff: $X$ 生成的 sigma-algebra $\sigma(X)$ 和 $Y$ 生成的 sigma-algebra $\sigma(Y)$ 中分别任取一个事件, 这两个事件都是 independent 的. 即:
@@ -2784,7 +2784,7 @@ $$\forall A \in \sigma(X),\forall B \in \sigma(Y),\quad{\mathbb{P}}(A \cap B) = 
 
 我们定义了两个 random variables 的 independence, 但是这个定义可以推广到多个 (甚至 uncountably many) random variables 上.
 
-::: {#def-03-joint-conditional-distribution-mutual-independence-of-multiple-random-variables .definition concepts="mutual-independence-of-multiple-random-variables" aliases="mutual independence of multiple random variables"}
+::: {#def-03-joint-conditional-distribution-mutual-independence-of-multiple-random-variables .definition aliases="mutual independence of multiple random variables" concepts="mutual-independence-of-multiple-random-variables"}
 **Definition: mutual independence of multiple random variables**
 
 令 $\left\{ {X_{i}:i \in I} \right\}$ 是一个 random variables 的 family, 其中 $I$ 是一个 index set. 则如果对于任意的 finite subset $J \subseteq I$, 以及对于任意的 Borel sets $\left\{ {A_{j}:j \in J} \right\}$, 都有
@@ -2800,7 +2800,7 @@ $${\mathbb{P}}(X_{j} \in A_{j},\forall j \in J) = \prod\limits_{j \in J}{\mathbb
 
 举个例子:
 
-::: {#ex-03-joint-conditional-distribution-pairwise-independence-does-not-imply-mutual-independence .example concepts="pairwise-independence-does-not-imply-mutual-independence" aliases="pairwise independence does NOT imply mutual independence"}
+::: {#ex-03-joint-conditional-distribution-pairwise-independence-does-not-imply-mutual-independence .example aliases="pairwise independence does NOT imply mutual independence" concepts="pairwise-independence-does-not-imply-mutual-independence"}
 **Example: pairwise independence does NOT imply mutual independence**
 
 假设我们抛掷两枚公平的硬币. 令 $X,Y$ 是两个 independent 的 random variables, 且都服从 uniform distribution on $\left\{ {- 1,1} \right\}$. 即:
@@ -2828,7 +2828,7 @@ $$\text{Cov}(X,Y) := {\mathbb{E}}\lbrack(X - {\mathbb{E}}\lbrack X\rbrack)(Y - {
 
 我们容易发现: **independence 是一个比 covariance 为 0 (即 uncorrelated) 更强的概念:**
 
-::: {#prop-03-joint-conditional-distribution-independent-uncorrelated .proposition concepts="independent-uncorrelated" aliases="independent 严格强于 uncorrelated"}
+::: {#prop-03-joint-conditional-distribution-independent-uncorrelated .proposition aliases="independent 严格强于 uncorrelated" concepts="independent-uncorrelated"}
 **Proposition: independent 严格强于 uncorrelated**
 
 令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 $\Longrightarrow$ $\text{Cov}(X,Y) = 0$. 但是 $\text{Cov}(X,Y) = 0$ 不一定 $\Longrightarrow$ $X,Y$ 是 independent 的.
@@ -2858,7 +2858,7 @@ $$\text{Cov}(X,Y) := {\mathbb{E}}\lbrack(X - {\mathbb{E}}\lbrack X\rbrack)(Y - {
 
 刚才说到, 两个 random variables 的 independence 显然 imply ${\mathbb{E}}\lbrack XY\rbrack = {\mathbb{E}}\lbrack X\rbrack{\mathbb{E}}\lbrack Y\rbrack$. 而 BTW: 这个性质其实**可以 generalize 到任意 finite number of independent random variables 的 product 上, 并且 我们可以在这些 random variables 上任意地施加 Borel measurable functions**, 只要保证这些函数的 expectation 是 finite 的,
 
-::: {#thm-03-joint-conditional-distribution-independence-implies-expectation-is-closed-under-product .theorem concepts="independence-implies-expectation-is-closed-under-product" aliases="independence \\implies expectation is closed under product"}
+::: {#thm-03-joint-conditional-distribution-independence-implies-expectation-is-closed-under-product .theorem aliases="independence \\implies expectation is closed under product" concepts="independence-implies-expectation-is-closed-under-product"}
 **Theorem: independence \\Longrightarrow expectation is closed under product**
 
 令 $\left\{ {X_{i}:i \in I} \right\}$ 是一个 independent 的 random variables 的 family, 则对于任意的 finite subset $J \subseteq I$, 以及对于任意的 Borel measurable functions $\left\{ {g_{j}:j \in J} \right\}$, 如果 $\left. {\mathbb{E}}\lbrack \middle| g_{j}(X_{j}) \middle| \rbrack < \infty \right.$ for all $j \in J$, 则
@@ -2930,7 +2930,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 关于两个 discrete random variables $X,Y$ 是否 independent 的判断, 还有一个直观的方法.
 
-::: {#prop-03-joint-conditional-distribution-discrete-rv-independence-characterization .proposition concepts="discrete-rv-independence-characterization" aliases="discrete RV independence 的 characterization"}
+::: {#prop-03-joint-conditional-distribution-discrete-rv-independence-characterization .proposition aliases="discrete RV independence 的 characterization" concepts="discrete-rv-independence-characterization"}
 **Proposition: discrete RV independence 的 characterization**
 
 两个 discrete random variables $X,Y$ 是 independent 的 iff 它们的 joint pmf as a matrix 有 rank 1(每行每列都互为倍数).
@@ -2988,7 +2988,7 @@ $$\begin{matrix}
 
 ### conditional distribution and its distribution function
 
-::: {#def-03-joint-conditional-distribution-conditional-distribution .definition concepts="conditional-distribution" aliases="conditional distribution"}
+::: {#def-03-joint-conditional-distribution-conditional-distribution .definition aliases="conditional distribution" concepts="conditional-distribution"}
 **Definition: conditional distribution**
 
 给定 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$, 我们定义 the conditional distribution of $X$ given $Y = y$ 为 the probability measure ${\mathbb{P}}^{X|Y = y}$:
@@ -3026,7 +3026,7 @@ $$F_{X|Y = y}(x) = \sum\limits_{t \leq x}\frac{{\mathbb{P}}(X = t,Y = y)}{{\math
 
 ### conditional density for random variables jointly continuous
 
-::: {#thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density .theorem concepts="jointly-continuous-rvs-defined-conditional-density" aliases="jointly continuous RVs 之间所有 defined 处总有 conditional density"}
+::: {#thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density .theorem aliases="jointly continuous RVs 之间所有 defined 处总有 conditional density" concepts="jointly-continuous-rvs-defined-conditional-density"}
 **Theorem: jointly continuous RVs 之间所有 defined 处总有 conditional density**
 
 令 $\mathbf{X} = (X,Y)^{T}$ 是一个 continuous random vector, 则对于任意 $y$ 使得 $f_{Y}(y) > 0$, 都有 conditional distribution of $X$ given $Y = y$ 的 pdf:
@@ -3148,7 +3148,7 @@ $$f_{Y \mid X}(y \mid x) = \left\{ \begin{matrix}
 
 ## conditional expectation
 
-::: {#def-03-joint-conditional-distribution-conditional-expectation .definition concepts="conditional-expectation" aliases="conditional expectation"}
+::: {#def-03-joint-conditional-distribution-conditional-expectation .definition aliases="conditional expectation" concepts="conditional-expectation"}
 **Definition: conditional expectation**
 
 令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs. 对于 $y \in {\mathbb{R}}$ where $F_{X|Y} = {\mathbb{P}}^{X|Y = y}(X \leq x)$ is defined (这个条件对于 discrete 是筛选掉 ${\mathbb{P}}(y) = 0$ 的点, 对于 continuous 这是为了筛选掉 $f_{Y} = 0$ 的点), 我们定义 conditional expectation:
@@ -3176,7 +3176,7 @@ $$\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack:\omega\mapsto{\mathbb{E}}\lbrac
 Notice: 这个函数是一个 random variable. 同理, 我们可以构造 conditional expectation given multiple random variables $\left. {\mathbb{E}}\lbrack X \middle| Y_{1},\cdots,Y_{n}\rbrack \right.$. 但是暂时不谈论这个.
 :::
 
-::: {#prop-03-joint-conditional-distribution-independence-conditional-distribution-density-expectation .proposition concepts="independence-conditional-distribution-density-expectation" aliases="independence 让 conditional distribution, density 和 expectation 都退化"}
+::: {#prop-03-joint-conditional-distribution-independence-conditional-distribution-density-expectation .proposition aliases="independence 让 conditional distribution, density 和 expectation 都退化" concepts="independence-conditional-distribution-density-expectation"}
 **Proposition: independence 让 conditional distribution, density 和 expectation 都退化**
 
 如果 $X,Y$ 是 independent 的, 那么在任意 defined $y$ 上,
@@ -3256,7 +3256,7 @@ $${\mathbb{E}}\lbrack X \mid Y = y\rbrack = \int_{- \infty}^{+ \infty}xf_{X \mid
 
 ## law of total expectation
 
-::: {#thm-03-joint-conditional-distribution-law-of-total-expectation .theorem concepts="law-of-total-expectation" aliases="law of total expectation"}
+::: {#thm-03-joint-conditional-distribution-law-of-total-expectation .theorem aliases="law of total expectation" concepts="law-of-total-expectation"}
 **Theorem: law of total expectation**
 
 令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs, 我们知道它们的 conditional expectation $\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.$ 也是一个 $\Omega\rightarrow{\mathbb{R}}$ 的 RV.
@@ -3397,7 +3397,7 @@ since $\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.$ is a constant fun
 
 ### Markov's ineqaulity and Chebyshev's inequality
 
-::: {#thm-04-lln-markovs-inequality .theorem concepts="markovs-inequality" aliases="Markov’s inequality"}
+::: {#thm-04-lln-markovs-inequality .theorem aliases="Markov’s inequality" concepts="markovs-inequality"}
 **Theorem: Markov's inequality**
 
 对于一个 non-negative random variable $X$ (即 $X \geq 0$ a.s.), 任取 $t > 0$, 都有
@@ -3431,7 +3431,7 @@ $${\mathbb{E}}\lbrack X\rbrack \geq t{\mathbb{E}}\lbrack\mathbf{1}_{\{{X \geq t}
 其值为 1 当 $X \geq t$ 时, 否则为 0. 对于任意的 $t > 0$, 有
 :::
 
-::: {#cor-04-lln-chebyshevs-inequality .corollary concepts="chebyshevs-inequality" aliases="Chebyshev’s inequality"}
+::: {#cor-04-lln-chebyshevs-inequality .corollary aliases="Chebyshev’s inequality" concepts="chebyshevs-inequality"}
 **Corollary: Chebyshev's inequality**
 
 对于一个 random variable $X$ 和任意的 $t > 0$, 如果它的方差 $\text{Var}(X)$ 是有限的, 那么 有
@@ -3457,7 +3457,7 @@ $$\left. {\mathbb{P}}( \middle| X - {\mathbb{E}}\lbrack X\rbrack \middle| \geq t
 
 ### Cauchy-Schwarz and Jensen's ineq
 
-::: {#thm-04-lln-cauchy-schwarz-inequality .theorem concepts="cauchy-schwarz-inequality" aliases="Cauchy-Schwarz inequality"}
+::: {#thm-04-lln-cauchy-schwarz-inequality .theorem aliases="Cauchy-Schwarz inequality" concepts="cauchy-schwarz-inequality"}
 **Theorem: Cauchy-Schwarz inequality**
 
 对于任意的 random variables $X$ 和 $Y$, 都有
@@ -3467,7 +3467,7 @@ $$\left. |{\mathbb{E}}\lbrack XY\rbrack \middle| \leq \sqrt{{\mathbb{E}}\lbrack 
 
 这是 prob space 作为一个 measure space, 其上的函数空间 $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 作为一个 Hilbert space, 自然的 Cauchy-Schwarz inequality. 不赘述了.
 
-::: {#thm-04-lln-jensens-inequality .theorem concepts="jensens-inequality" aliases="Jensen’s inequality"}
+::: {#thm-04-lln-jensens-inequality .theorem aliases="Jensen’s inequality" concepts="jensens-inequality"}
 **Theorem: Jensen's inequality**
 
 对于一个 convex function $\phi$ 和 任意的 random variable $X$, 只要 ${\mathbb{E}}\lbrack X\rbrack$ 和 ${\mathbb{E}}\lbrack\phi(X)\rbrack$ 都是 well-defined 的 (即 finite), 都有
@@ -3497,7 +3497,7 @@ $${\mathbb{E}}\lbrack\varphi(X)\rbrack \geq \varphi({\mathbb{E}}\lbrack X\rbrack
 
 我们在 measure theory 中最熟悉的三个定理. 复习一下. 这里不 prove 了. proof 请左转 measure theory notes.
 
-::: {#thm-04-lln-fatous-lemma .theorem concepts="fatous-lemma" aliases="Fatou’s Lemma"}
+::: {#thm-04-lln-fatous-lemma .theorem aliases="Fatou’s Lemma" concepts="fatous-lemma"}
 **Theorem: Fatou's Lemma**
 
 令 $\left\{ X_{n} \right\}$ 是一列 non-negative random variables, 那么
@@ -3517,7 +3517,7 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 而 pointwise liminf 的 expectation 就是对每个点都取最终稳定的最低水平, 从而避免了这些 spikes 的影响.
 :::
 
-::: {#thm-04-lln-monotone-convergence-theorem-mct .theorem concepts="monotone-convergence-theorem-mct" aliases="Monotone Convergence Theorem (MCT)"}
+::: {#thm-04-lln-monotone-convergence-theorem-mct .theorem aliases="Monotone Convergence Theorem (MCT)" concepts="monotone-convergence-theorem-mct"}
 **Theorem: Monotone Convergence Theorem (MCT)**
 
 令 $\left\{ X_{n} \right\}$ 是一列递增的 non-negative random variables (即 $X_{n} \uparrow X$ a.s.), 那么 suppose $X := \lim_{n\rightarrow\infty}X_{n}$ a.e. exists, 那么 a.s. 有
@@ -3531,7 +3531,7 @@ $$\lim\limits_{n\rightarrow\infty}{\mathbb{E}}\lbrack X_{n}\rbrack = {\mathbb{E}
 如果 $X_{n}$ 是递减的, 那么 expectation 的 limit 就等于逐点 limit 的 expectation 了.
 :::
 
-::: {#thm-04-lln-dominated-convergence-theorem-dct .theorem concepts="dominated-convergence-theorem-dct" aliases="Dominated Convergence Theorem (DCT)"}
+::: {#thm-04-lln-dominated-convergence-theorem-dct .theorem aliases="Dominated Convergence Theorem (DCT)" concepts="dominated-convergence-theorem-dct"}
 **Theorem: Dominated Convergence Theorem (DCT)**
 
 令 $\left\{ X_{n} \right\}$ 是一列 random variables, 并且存在一个 a.e. pointwise limit $X$ (即 $X_{n}\rightarrow X$ a.s.), 并且存在一个 integrable random variable $Y$ 作为一个 bound: 使得 $\left. |X_{n} \middle| \leq Y \right.$ a.s. 对所有的 $n$ 成立,
@@ -3549,7 +3549,7 @@ $$\lim\limits_{n\rightarrow\infty}{\mathbb{E}}\lbrack X_{n}\rbrack = {\mathbb{E}
 
 ### Tonneli and fubini
 
-::: {#thm-04-lln-tonnelis-theorem .theorem concepts="tonnelis-theorem" aliases="Tonneli’s Theorem"}
+::: {#thm-04-lln-tonnelis-theorem .theorem aliases="Tonneli’s Theorem" concepts="tonnelis-theorem"}
 **Theorem: Tonneli's Theorem**
 
 对于一列 non-negative random variables $\left\{ X_{n} \right\}$, 累加和积分(求期望)的顺序可以交换:
@@ -3557,7 +3557,7 @@ $$\lim\limits_{n\rightarrow\infty}{\mathbb{E}}\lbrack X_{n}\rbrack = {\mathbb{E}
 $${\mathbb{E}}\left\lbrack {\sum\limits_{n = 1}^{+ \infty}X_{n}} \right\rbrack = \sum\limits_{n = 1}^{+ \infty}{\mathbb{E}}\left\lbrack X_{n} \right\rbrack$$
 :::
 
-::: {#thm-04-lln-fubinis-theorem .theorem concepts="fubinis-theorem" aliases="Fubini’s Theorem"}
+::: {#thm-04-lln-fubinis-theorem .theorem aliases="Fubini’s Theorem" concepts="fubinis-theorem"}
 **Theorem: Fubini's Theorem**
 
 对于一列任意的 random variables $\left\{ X_{n} \right\}$, 只要其绝对值的 sum 的 expectation 是 finite 的 (或者绝对值的 expectation 的 sum 是 finite 的, by Tonneli 都是一样的), 那么就有 linearity of expectation 的推广:
@@ -3577,7 +3577,7 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 
 首先, 我们对 pointwise limit 和 uniform limit 的定义已经很熟悉了, 这里就不赘述了. (算了 uniform 还是提一嘴, 意思是我们需要 pointwise limit 的 收敛速度也是 uniform 的, 即对任意的 $\epsilon > 0$, 都存在一个 $N$ 使得对于所有的 $n \geq N$ 和所有的 $\omega$, 都有 $\left. |X_{n}(\omega) - X(\omega) \middle| < \epsilon \right.$, 是一个严格强于 pointwise 的收敛方式. )
 
-::: {#def-04-lln-rv .definition concepts="rv" aliases="RV 序列的三种收敛方式"}
+::: {#def-04-lln-rv .definition aliases="RV 序列的三种收敛方式" concepts="rv"}
 **Definition: RV 序列的三种收敛方式**
 
 - **converge a.s. (almost surely)** 或称 converge with probability 1:
@@ -3617,7 +3617,7 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 例如最经典的例子就是抛硬币: 我们连续抛 $n$ 次一个公平的硬币, 记录每次抛出正面 (记为 1) 或者反面 (记为 0), 然后计算这些结果的平均值, 随着 $n$ 的增加, 这个平均值会趋近于 0.5, 等于 理论的 expectation (这是个 Bernouli random variable, expectation = $p$).\
 LLN 有两个阶段, weak LLN 和 strong LLN, weak LLN 证明的是这个 convergence 是 in probability 的, 而 strong LLN 证明的是这个 convergence 是 a.s. 的. 就是说 strong LLN 是严格强于 weak LLN 的.
 
-::: {#thm-04-lln-weak-law-of-large-numbers .theorem concepts="weak-law-of-large-numbers" aliases="weak Law of Large Numbers"}
+::: {#thm-04-lln-weak-law-of-large-numbers .theorem aliases="weak Law of Large Numbers" concepts="weak-law-of-large-numbers"}
 **Theorem: weak Law of Large Numbers**
 
 对于一列 i.i.d. 的 random variables $\left\{ X_{i} \right\}$, 只要这个 random variable 的 expectation 是 finite 的 ${\mathbb{E}}\lbrack X_{1}^{2}\rbrack < \infty$, 那么就有:
@@ -3644,7 +3644,7 @@ notice: 由于每个 $X_{i}$ 都是 i.i.d. 的, independence $\Longrightarrow$ u
 $$\left. {\mathbb{P}}\left( {\left| {S_{n}/n - \mu} \right| > \varepsilon} \right) = \frac{1}{\varepsilon^{2}n^{2}}\sum\limits_{n = 1}^{n}{\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{2}\rbrack = \frac{1}{\varepsilon^{2}n} \cdot n\ \text{Var}(X_{1})\overset{n\rightarrow\infty}{\rightarrow}0 \right.$$
 :::
 
-::: {#thm-04-lln-strong-law-of-large-numbers .theorem concepts="strong-law-of-large-numbers" aliases="strong Law of Large Numbers"}
+::: {#thm-04-lln-strong-law-of-large-numbers .theorem aliases="strong Law of Large Numbers" concepts="strong-law-of-large-numbers"}
 **Theorem: strong Law of Large Numbers**
 
 在 weak LLN[Theorem 4.28](#thm-04-lln-weak-law-of-large-numbers) 的相同条件 (其实可以更弱, 让 $E\lbrack X_{1}\rbrack < \infty$ 即可) 下, 我们其实可以得到一个更强的结论:
@@ -3724,7 +3724,7 @@ $$\frac{X_{1} + \ldots + X_{n}}{n} = \frac{X_{1}^{+} + \ldots + X_{n}^{+}}{n} - 
 
 - 我们可以用 Chebyshev's inequality 来给出这个近似的误差 bound.
 
-::: {#ex-04-lln-pi .example concepts="-pi" aliases="估算 \\pi"}
+::: {#ex-04-lln-pi .example aliases="估算 \\pi" concepts="-pi"}
 **Example: 估算 \\pi**
 
 我们令 $X,Y \sim U(\lbrack - 1,1\rbrack)$
@@ -3773,7 +3773,7 @@ print(pi_approx)
 
 ## convergence in distribution
 
-::: {#def-05-clt-convergence-in-distribution .definition concepts="convergence-in-distribution" aliases="convergence in distribution"}
+::: {#def-05-clt-convergence-in-distribution .definition aliases="convergence in distribution" concepts="convergence-in-distribution"}
 **Definition: convergence in distribution**
 
 我们称一个 seq of random variables $\left\{ X_{n} \right\}$ converge in distribution to a random variable $X$, 写作 $X_{n}\overset{d}{\rightarrow}X$, 如果 $X$ 的 分布函数 $F_{X}$ 下所有 右连续的 $x$ (即 $F_{X}(x) = F_{X}(x - )$ ), 都有
@@ -3799,7 +3799,7 @@ Convergence in distribution 的意思就是: 随着 $n$ 越来越大, $X_{n}$ �
 
 ### moment generating function
 
-::: {#def-05-clt-moment-generating-function .definition concepts="moment-generating-function" aliases="moment generating function"}
+::: {#def-05-clt-moment-generating-function .definition aliases="moment generating function" concepts="moment-generating-function"}
 **Definition: moment generating function**
 
 对于一个随机变量 $X$, 其 moment generating function (MGF) 定义为
@@ -3827,7 +3827,7 @@ $${\mathbb{E}}\lbrack X^{n}\rbrack = M_{X}^{(n)}(0)$$
 
 ## Central Limit Theorem
 
-::: {#thm-05-clt-lindeberg-levy-central-limit-theorem .theorem concepts="lindeberg-levy-central-limit-theorem" aliases="Lindeberg-Levy Central Limit Theorem"}
+::: {#thm-05-clt-lindeberg-levy-central-limit-theorem .theorem aliases="Lindeberg-Levy Central Limit Theorem" concepts="lindeberg-levy-central-limit-theorem"}
 **Theorem: Lindeberg-Levy Central Limit Theorem**
 
 对于任意一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$ for each $n$.
@@ -3860,7 +3860,7 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 ### applications of CLT
 
-:::: {#ex-05-clt-coin-fair .example concepts="-coin-fair" aliases="(判断 coin 是否 fair)"}
+:::: {#ex-05-clt-coin-fair .example aliases="(判断 coin 是否 fair)" concepts="-coin-fair"}
 **Example: (判断 coin 是否 fair)**
 
 我们有两个 coins, 想要判断它们是否是 fair coin. 我们可以 toss 这个 coin $n$ 次, 记录下每次 toss 的结果, 记为 $X_{1},X_{2},\cdots,X_{n}$, 其中 $X_{i} = 1$ if the $i$-th toss is heads.
@@ -3928,7 +3928,7 @@ $$\frac{S_{n}}{n} = \mu + \frac{\sigma}{\sqrt{n}}Z,\quad Z \sim N(0,1)$$
 
 下面有一个 theorem 刻画了这件事.
 
-::: {#thm-05-clt-berry-esseen-theorem .theorem concepts="berry-esseen-theorem" aliases="Berry-Esseen Theorem"}
+::: {#thm-05-clt-berry-esseen-theorem .theorem aliases="Berry-Esseen Theorem" concepts="berry-esseen-theorem"}
 **Theorem: Berry-Esseen Theorem**
 
 给定一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, 以及 $\left. {\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{3}\rbrack = \rho < \infty \right.$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$, 我们有: 对于任意 $x \in {\mathbb{R}}$,

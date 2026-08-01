@@ -1,6 +1,6 @@
 ---
 name: export-typst-math-notes
-description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX and produces semantic web HTML, editable LaTeX, and knowledge-graph Markdown, with optional local PDF builds. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; export or publish Typst notes; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; or extend the QLNotes environment set.
+description: Maintain and use a Typst-first mathematics-notes workflow that migrates legacy LaTeX, produces semantic web HTML, editable LaTeX, and knowledge-graph Markdown, and synchronizes the repository-owned personal knowledge graph, with optional local PDF builds. Use when Codex needs to inventory or migrate a LaTeX math course into semantic Typst; export or publish Typst notes; refresh or query the math knowledge graph; preserve theorem-like environments, stable IDs, concepts, dependencies, aliases, citations, internal references, or TikZ/CeTZ diagrams; or extend the QLNotes environment set.
 ---
 
 # Export Typst Math Notes
@@ -34,6 +34,11 @@ implementation. Read its `README.md`, `Makefile`, and the files being modified
 before changing behavior. Do not create a second exporter or copy template code
 into a course note.
 
+In `qlblog`, also read `notes/math/knowledge/SPEC.md` before changing graph
+semantics or integration. Use `notes/math/knowledge/scripts/knowledge.py` as the
+only graph compiler/query interface and `notes/math/knowledge/sources.json` as
+the bounded source registry. Do not create a second graph extractor.
+
 Read [references/export-contract.md](references/export-contract.md) before
 migrating content, changing semantic environments, diagrams, citations, aliases,
 or export mappings. Read
@@ -52,6 +57,8 @@ Keep responsibilities separated:
   `web.css`.
 - Put format conversion in `scripts/export.py`, `filters/qlnotes.lua`, and the
   LaTeX template/class.
+- Put deterministic cross-document graph compilation and local search in
+  `notes/math/knowledge/`; keep it downstream of exported Markdown.
 - Put transient HTML, PDFs, logs, and TeX intermediates under an ignored build
   directory.
 - Never commit generated whole-book PDFs, chapter PDFs, rendered PDF pages,
@@ -94,6 +101,27 @@ statement instead of nesting them inside `#example[...]`. The legacy migration
 script hoists them automatically so long solutions can paginate without
 clipping.
 
+## Explore graph semantics before export
+
+For new or changed mathematical content, inspect the existing graph before
+choosing concept identities:
+
+```sh
+python3 notes/math/knowledge/scripts/knowledge.py search "candidate concept"
+python3 notes/math/knowledge/scripts/knowledge.py show "concept:candidate-concept"
+```
+
+Compare the changed Typst statements with existing concepts and aliases. Reuse
+an existing concept key when it is genuinely the same concept. Otherwise add a
+new stable concept key. Put all durable corrections in Typst, including IDs,
+`concepts`, `depends`, and `aliases`; never patch generated Markdown or JSONL.
+
+Create prerequisite edges only from explicit `depends` values justified by the
+content. Do not infer them from proximity or co-occurrence. Do not introduce
+placeholder keys such as `example-001` in new or edited nodes. Graph diagnostics
+may expose legacy placeholders or sparse dependency metadata; report those, but
+do not turn an ordinary export into an unrelated whole-course cleanup.
+
 ## Export both snapshots
 
 Run the canonical exporter rather than converting the paged PDF:
@@ -130,6 +158,27 @@ with YAML metadata, fenced semantic divs, native math, citation keys, and
 relative vector-asset paths. Use the Typora-compatible `<note>.assets/` sidecar
 convention. Keep SVG as the default Markdown and web format; generate PNG only
 as an explicit compatibility fallback.
+
+## Synchronize the personal knowledge graph
+
+After Markdown export, rebuild the repository graph from every configured
+snapshot:
+
+```sh
+python3 notes/math/knowledge/scripts/knowledge.py build --repo-root "$repo_root"
+python3 notes/math/knowledge/scripts/knowledge.py check --repo-root "$repo_root"
+```
+
+Course Makefiles in `qlblog` run the build automatically at the end of
+`make export`. The explicit check proves that the committed `nodes.jsonl`,
+`edges.jsonl`, `manifest.json`, and `diagnostics.json` match the current Typst
+exports. The ignored SQLite file is only a rebuildable local search index.
+
+Treat any graph error as an export failure. Fix invalid semantic Markdown by
+editing Typst or the canonical exporter and regenerating. Warnings are quality
+signals: inspect warnings caused by the current change, while allowing known
+legacy warnings to remain. Record the printed node/edge delta for the final
+report.
 
 ## Build and check the web output
 
@@ -172,9 +221,11 @@ Use the fast acceptance workflow in
 ```sh
 make export
 make web-check
+make -C "$repo_root" knowledge-check
 ```
 
-If both commands succeed, stop. Do not compile or inspect PDFs, render pages,
+Run the corresponding extra/homework web target when applicable. If these
+commands succeed, stop. Do not compile or inspect PDFs, render pages,
 compare screenshots, independently compile exported LaTeX, or run broad
 regression suites unless the user explicitly requests deeper QA or an export
 command fails.
@@ -184,5 +235,6 @@ packages only when the user has authorized machine changes. Do not install a
 persistent service, watcher, daemon, scheduled task, or messaging integration as
 part of setup.
 
-Report the authoritative source, the two editable entry files, and the published
-web route. State explicitly when HTML remains only a local ignored artifact.
+Report the authoritative source, the two editable entry files, the published web
+route, graph delta, diagnostic count, and committed graph directory. State
+explicitly when HTML remains only a local ignored artifact.
