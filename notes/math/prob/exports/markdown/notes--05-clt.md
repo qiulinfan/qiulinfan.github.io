@@ -13,8 +13,8 @@ keywords:
 - law of large numbers
 - central limit theorem
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 8
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes
 title: "Math 525: Probability"
@@ -23,7 +23,7 @@ title: "Math 525: Probability"
 
 ## convergence in distribution
 
-::: {#def-05-clt-convergence-in-distribution .definition aliases="convergence in distribution" concepts="convergence-in-distribution"}
+::: definition
 **Definition: convergence in distribution**
 
 我们称一个 seq of random variables $\left\{ X_{n} \right\}$ converge in distribution to a random variable $X$, 写作 $X_{n}\overset{d}{\rightarrow}X$, 如果 $X$ 的 分布函数 $F_{X}$ 下所有 右连续的 $x$ (即 $F_{X}(x) = F_{X}(x - )$ ), 都有
@@ -49,7 +49,7 @@ Convergence in distribution 的意思就是: 随着 $n$ 越来越大, $X_{n}$ �
 
 ### moment generating function
 
-::: {#def-05-clt-moment-generating-function .definition aliases="moment generating function" concepts="moment-generating-function"}
+::: definition
 **Definition: moment generating function**
 
 对于一个随机变量 $X$, 其 moment generating function (MGF) 定义为
@@ -63,7 +63,7 @@ $$M_{X}(t) = {\mathbb{E}}\lbrack e^{tX}\rbrack,\quad t \in {\mathbb{R}}$$
 为什么这个东西叫做 moment generating function 呢? 因为如果 $M_{X}(t)$ 在 $t = 0$ 的某个 neighborhood 内存在, 那么我们可以通过对 $M_{X}(t)$ 求导来得到 $X$ 的各阶矩:
 :::
 
-::: {#prop-05-clt-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 如果 $M_{X}(t)$ 在 $t = 0$ 的某个 neighborhood 内存在, 则 $X$ 的 $n$ 阶矩可以表示为
@@ -77,7 +77,7 @@ $${\mathbb{E}}\lbrack X^{n}\rbrack = M_{X}^{(n)}(0)$$
 
 ## Central Limit Theorem
 
-::: {#thm-05-clt-lindeberg-levy-central-limit-theorem .theorem aliases="Lindeberg-Levy Central Limit Theorem" concepts="lindeberg-levy-central-limit-theorem"}
+::: theorem
 **Theorem: Lindeberg-Levy Central Limit Theorem**
 
 对于任意一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$ for each $n$.
@@ -110,7 +110,7 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 ### applications of CLT
 
-:::: {#ex-05-clt-coin-fair .example aliases="(判断 coin 是否 fair)" concepts="-coin-fair"}
+:::: example
 **Example: (判断 coin 是否 fair)**
 
 我们有两个 coins, 想要判断它们是否是 fair coin. 我们可以 toss 这个 coin $n$ 次, 记录下每次 toss 的结果, 记为 $X_{1},X_{2},\cdots,X_{n}$, 其中 $X_{i} = 1$ if the $i$-th toss is heads.
@@ -128,7 +128,7 @@ $${\mathbb{P}}(S_{100} < 38) = {\mathbb{P}}\left( {\frac{S_{100} - 100 \cdot \fr
 :::
 ::::
 
-::::: {#ex-05-clt .example aliases="(样本量需求的计算)"}
+::::: example
 **Example: (样本量需求的计算)**
 
 工厂生产了一批电线, 我们想知道它们的平均断裂强度 $\mu$ 是多少. 遂抽取 $n$ 根电线进行测量, 得到 $X_{1},...,X_{n}$, 然后计算它们的样本平均值 ${\bar{X}}_{n}$ 来估计 $\mu$.
@@ -178,7 +178,7 @@ $$\frac{S_{n}}{n} = \mu + \frac{\sigma}{\sqrt{n}}Z,\quad Z \sim N(0,1)$$
 
 下面有一个 theorem 刻画了这件事.
 
-::: {#thm-05-clt-berry-esseen-theorem .theorem aliases="Berry-Esseen Theorem" concepts="berry-esseen-theorem"}
+::: theorem
 **Theorem: Berry-Esseen Theorem**
 
 给定一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, 以及 $\left. {\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{3}\rbrack = \rho < \infty \right.$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$, 我们有: 对于任意 $x \in {\mathbb{R}}$,
@@ -202,7 +202,7 @@ $$\left| {{\mathbb{P}}\left( {\frac{S_{n} - n\mu}{\sqrt{n\sigma^{2}}} \leq x} \r
 //TODO:
 :::
 
-::: {#ex-05-clt-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 一个工厂生产电子元件, 每个原件有概率是有缺陷的.

@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 35
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -36,7 +36,7 @@ $$\int f = \int f^{+} - \int f^{-}$$
 
 但是其中有一个 undefined 的问题: 我们要避免 $\infty - \infty$ 这一类的问题. 因而我们无法对所有的可测函数进行积分, 而是定义 \"integrable\" 的可测函数.
 
-::: {#lem-05-integration-of-real-and-complex-functions-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 $$\begin{matrix}
@@ -57,7 +57,7 @@ trivial.
 
 ### $\widetilde{L}(X,\mu,{\mathbb{C}})$ and $L^{1}(X,\mu,{\mathbb{C}}$)
 
-::: {#def-05-integration-of-real-and-complex-functions-real-valued-integrable-function .definition concepts="real-valued-integrable-function" aliases="real-valued integrable function"}
+::: definition
 **Definition: real-valued integrable function**
 
 Given measure space $(X,\mathcal{M},\mu)$, **measurable $f:X\rightarrow\bar{\mathbb{R}}$ 被称为 integrable** 的, 如果它满足
@@ -69,7 +69,7 @@ $$\left. \int \middle| f \middle| < \infty \right.$$
 $$\int f = \int f^{+} - \int f^{-}$$
 :::
 
-::: {#def-05-integration-of-real-and-complex-functions-complex-valued-integrable-function .definition concepts="complex-valued-integrable-function" aliases="complex-valued integrable function"}
+::: definition
 **Definition: complex-valued integrable function**
 
 Further, 我们定义 **measurable $f:X\rightarrow{\mathbb{C}}$ 是 integrable 的**, 如果它同样满足:
@@ -91,7 +91,7 @@ $$\int f = \int\text{Re}\ f + i\int\text{Im}\ f$$
 所以说, **实值函数的积分要计算两个, 复值函数的积分要计算四个**. (好麻烦.)
 :::
 
-::: {#prop-05-integration-of-real-and-complex-functions-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 所有的 real-valued integrable functions 构成一个 $\mathbb{R}$-vector space, 并且 integral 是一个 linear functional on it.
@@ -107,7 +107,7 @@ trivial.
 
 下面我们可以定义这个 vector space 并在上面进行一定研究. 此处为一个 temporary 的记号:
 
-::: {#def-05-integration-of-real-and-complex-functions-tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space .definition concepts="tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space" aliases="\\tilde{L}(X, \\mu, \\mathbb{R}) 以及\\tilde{L}(X, \\mu, \\mathbb{C}) space"}
+::: definition
 **Definition: \\widetilde{L}(X,\\mu,{\\mathbb{R}}) 以及\\widetilde{L}(X,\\mu,{\\mathbb{C}}) space**
 
 给定 measure space $(X,\mathcal{M},\mu)$ 我们定义
@@ -135,7 +135,7 @@ $$\widetilde{L}(X,\mu,{\mathbb{C}}) := \left\{ {\text{all complex-valued integra
 比如, $\widetilde{L}({\mathbb{R}}^{n},\mu,{\mathbb{C}})$ 的 dimension 就是 uncountable 的.
 :::
 
-::: {#prop-05-integration-of-real-and-complex-functions-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 $\widetilde{L}(X,\mu,{\mathbb{C}})$ 上, $f\mapsto\int f$ 为一个 linear functional.
@@ -143,7 +143,7 @@ $\widetilde{L}(X,\mu,{\mathbb{C}})$ 上, $f\mapsto\int f$ 为一个 linear funct
 
 因为积分是 linear 的, as we have proved.
 
-::: {#prop-05-integration-of-real-and-complex-functions-proposition-003 .proposition concepts="proposition-003"}
+::: proposition
 **Proposition**
 
 $$\left. f \in \widetilde{L}(X,\mu,{\mathbb{C}})\Longrightarrow \middle| \int f \middle| \leq \int \middle| f| \right.$$
@@ -170,8 +170,8 @@ $$\left. |\int f\  \middle| = \bar{\alpha}\int f = \int\bar{\alpha}f \in {\mathb
 $$\left. |\int f\  \middle| = \int\bar{\alpha}f = \int\text{Re}(\bar{\alpha}f) \leq \int \middle| \text{Re}(\bar{\alpha}f) \middle| \leq \int \middle| \bar{\alpha}f \middle| = \int \middle| f| \right.$$
 :::
 
-::: {#def-05-integration-of-real-and-complex-functions-integratal-restricted-to-a-measurable-set .definition concepts="integratal-restricted-to-a-measurable-set" aliases="integratal restricted to a measurable set"}
-**Definition: integratal restricted to a measurable set**
+::: definition
+**Definition: integral restricted to a measurable set**
 
 if $f \in \widetilde{L}(X,\mu,{\mathbb{C}})$, $E \in \mathcal{A}$ ($\mu$ 的 $\sigma$-algebra), 我们 define:
 
@@ -184,7 +184,7 @@ $$\int_{E}f\, d\mu := \int f\chi_{E}\, d\mu$$
 容易验证, restricted to a measurable set 的积分也是 linear 且 monotone 的.
 :::
 
-::: {#prop-05-integration-of-real-and-complex-functions-proposition-004 .proposition concepts="proposition-004" aliases="可积函数几乎处处相等的等价条件"}
+::: proposition
 **Proposition: 可积函数几乎处处相等的等价条件**
 
 if $f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})$, 则 TFAE:
@@ -232,7 +232,7 @@ $$\left. f:X\rightarrow\bar{\mathbb{R}}\quad s.t.\quad \middle| f \middle| < \in
 
 并且我们发现, a.e. 相等的两个可积函数 $f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})$ 在任意可测集上的积分都相等. 于是这两个函数在 $\widetilde{L}(X,\mu,{\mathbb{C}})$ 中的表现是相等的. 因而我们可以把 a.e. 相等的这种关系 quotient 掉, 简化这个空间:
 
-::: {#def-05-integration-of-real-and-complex-functions-l-1-mu-space .definition concepts="l-1-mu-space" aliases="L^1(\\mu) space"}
+::: definition
 **Definition: L\^{1}(\\mu) space**
 
 我们定义 $L^{1}(X,\mu,{\mathbb{C}})$, 或简称为 $L^{1}(\mu)$, 为:
@@ -250,7 +250,7 @@ $$f\mapsto\int f$$
 
 ### DCT
 
-::: {#lem-05-integration-of-real-and-complex-functions-lemma-002 .lemma concepts="lemma-002"}
+::: lemma
 **Lemma**
 
 令 $(f_{n})$ 为 a seq of **a.e. defined measurable functions** on $X$., s.t.
@@ -267,7 +267,7 @@ Claim: **$f$ is measurable.**
 Measurability is well preserved by taking limit, 并且更改一个零测集上函数的 definedness 不会改变这个 behavior. (这是一个很宽的条件了)
 :::
 
-::: {#thm-05-integration-of-real-and-complex-functions-dominated-convergence-theorem .theorem concepts="dominated-convergence-theorem" aliases="dominated convergence theorem"}
+::: theorem
 **Theorem: dominated convergence theorem**
 
 Let $(f_{n})$ be a seq of functions in $L^{1}(\mu)$, s.t.
@@ -336,7 +336,7 @@ DCT 增加的要求是存在一个 $L^{1}$ 的 (a.e.) bound function, 以及极�
 Proof 在 hw 5.
 :::
 
-::: {#ex-05-integration-of-real-and-complex-functions-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 Suppose $u:\lbrack 0,1\rbrack\rightarrow\lbrack 0,1\rbrack$ is Lebesgue measurable.\
@@ -346,7 +346,7 @@ Suppose $u:\lbrack 0,1\rbrack\rightarrow\lbrack 0,1\rbrack$ is Lebesgue measurab
 $$\int f = \lim\limits_{n\rightarrow\infty}\int f_{n} = \int_{\{{u = 1}\}}1 = m(\left\{ {\mu = 1} \right\})$$
 :::
 
-::: {#ex-05-integration-of-real-and-complex-functions-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 compute
@@ -366,7 +366,7 @@ $$I = \lim\limits_{n\rightarrow\infty}\int_{\lbrack 0,1\rbrack}\frac{1 + nx^{2}}
 
 ### Fubini for series and integral
 
-::: {#cor-05-integration-of-real-and-complex-functions-fubini-for-series-and-integral .corollary concepts="fubini-for-series-and-integral" aliases="Fubini for series and integral"}
+::: corollary
 **Corollary: Fubini for series and integral**
 
 对于 $L^{1}(\mu)$ 中的 sequence $(f_{n})$, 如果 $\left. \sum_{n = 1}^{\infty}\int \middle| f_{n} \middle| < \infty \right.$, 则
@@ -412,7 +412,7 @@ Fubini's for sum and integrals : 对于一个 seq of 可积函数, **如果它�
 
 ### a function that is measurable in one var and ctn/diffble in another
 
-::: {#cor-05-integration-of-real-and-complex-functions-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 令 $(X,\mathcal{A},\mu)$ be a measure space.\
@@ -458,7 +458,7 @@ $$F'(t) = \lim\limits_{n\rightarrow\infty}\frac{F(t_{n}) - F(t)}{t_{n} - t} = \l
 看起来很雾但是我们看一个例子 (此为一个反例):
 :::
 
-::: {#ex-05-integration-of-real-and-complex-functions-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 是否有:
@@ -480,7 +480,7 @@ $$g(x,t) = xe^{- ax}$$
 
 ### $L^{1}$ as a Banach space
 
-::: {#thm-05-integration-of-real-and-complex-functions-l-1-mu-integral-w-r-t-mu-norm-normed-vs .theorem concepts="l-1-mu-integral-w-r-t-mu-norm-normed-vs" aliases="L^1(\\mu) 以 integral w.r.t. \\mu 作为 norm 是一个 normed VS"}
+::: theorem
 **Theorem: L\^{1}(\\mu) 以 integral w.r.t. \\mu 作为 norm 是一个 normed VS**
 
 在 $L^{1}(\mu)$ 上, 我们 set
@@ -510,7 +510,7 @@ recall norm 的定义, 需要符合:
 前两条是积分的 linearity 的下位推论. 后一条 by def.
 :::
 
-::: {#cor-05-integration-of-real-and-complex-functions-l-1-mu-cdot-banach-space .corollary concepts="l-1-mu-cdot-banach-space" aliases="(L^1(\\mu), , \\cdot, ) 是一个 Banach space"}
+::: corollary
 **Corollary: \\left. (L\^{1}(\\mu), \\middle\| \\middle\| \\cdot \\middle\| \\middle\| ) \\right. 是一个 Banach space**
 
 $\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.$ 的 induced metric space 是 complete 的. 即, every Cauchy seq converges.\
@@ -523,7 +523,7 @@ $\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.$ 的 in
 取一个 Cauchy seq $(f_{n})$ in $L^{1}$.\
 这里有一个值得 recall 的 proposition:
 
-::: {#prop-05-integration-of-real-and-complex-functions-proposition-005 .proposition concepts="proposition-005"}
+::: proposition
 **Proposition**
 
 在一个 metric space 中, 一个 Cauchy seq converges 当且仅当它存在一个 convergent 的 subsequence.
@@ -562,7 +562,7 @@ $$\left. \int \middle| f - f_{n_{j}} \middle| \leq \sum\limits_{j + 1}^{\infty}\
 
 ### density of simple function of $L^{1}(\mu)$
 
-::: {#thm-05-integration-of-real-and-complex-functions-density-of-simple-functions-in-l-1-mu .theorem concepts="density-of-simple-functions-in-l-1-mu" aliases="density of simple functions in L^1(\\mu)"}
+::: theorem
 **Theorem: density of simple functions in L\^{1}(\\mu)**
 
 令 $(X,\mathcal{A},\mu)$ 为一个 measure space, 令 $f \in L^{1}(\mu)$,\
@@ -591,7 +591,7 @@ $$\left. | \middle| u^{+} - \phi_{n} \middle| \middle| {}_{1} \leq \int u^{+} - 
 
 ### density of step functions in $L^{1}(m)$
 
-::: {#thm-05-integration-of-real-and-complex-functions-ls-measure-space-l-1-space-density-of-step-functions .theorem concepts="ls-measure-space-l-1-space-density-of-step-functions" aliases="LS measure space 的 L^1 space 上的 density of step functions"}
+::: theorem
 **Theorem: LS measure space 的 L\^{1} space 上的 density of step functions**
 
 考虑 $({\mathbb{R}},\mathcal{L},m_{s})$ where $m_{s}$ 为一个 Lebesgue-Stieljes measure on $\mathbb{R}$, let $f \in L^{1}(\mu)$,\
@@ -618,7 +618,7 @@ where each $I_{j}$ 都是 open intervals.
 
 也就是说, **任意的 Lebesgue intble function 都可以用 ctn function with compact supp 来近似.** 一个可积函数可以是 supp 非常怪异的以及非常 unctn 的, 但是却可以用 ctn and cpt supp functions 来逼近, in $L^{1}$ sense. 当然这是一种弱逼近. 函数可以差异很大.
 
-::: {#def-05-integration-of-real-and-complex-functions-c-c-x .definition concepts="c-c-x" aliases="C_c (X)"}
+::: definition
 **Definition: C\_{c}(X)**
 
 令 $X$ be a metric space, 我们定义:
@@ -626,7 +626,7 @@ where each $I_{j}$ 都是 open intervals.
 $$C_{c}(X) := \left\{ {\text{all ctn functions}\ f:X\rightarrow{\mathbb{C}}\ \text{with cpt supp}} \right\}$$
 :::
 
-::: {#thm-05-integration-of-real-and-complex-functions-c-c-x-subset-l-1-mu-dense-linear-subspace .theorem concepts="c-c-x-subset-l-1-mu-dense-linear-subspace" aliases="C_c(X) \\subset L^1(\\mu) 是一个 dense linear subspace"}
+::: theorem
 **Theorem: C\_{c}(X) \\subset L\^{1}(\\mu) 是一个 dense linear subspace**
 
 $C_{c}({\mathbb{R}}) \subset L^{1}(\mu_{m})$ 为一个 dense linear subspace.
@@ -653,7 +653,7 @@ Recall: Riemann integral 是对于 ${\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ 的
 现在我们比较对于 ${\mathbb{R}}\rightarrow{\mathbb{R}}$ 的函数的 Riemann 和 Lebesgue 积分. 我们将会得出结论: **Riemann 积分是 Lebesgue 积分的特殊情况, 即, Riemann 可积的函数一定也 Lebesgue 可积, 并且积分值相同**. (对于 ${\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ 的函数也一样, 之后将展开.)\
 Recall Riemann integral 的定义:
 
-::: {#def-05-integration-of-real-and-complex-functions-definition-007 .definition concepts="definition-007"}
+::: definition
 **Definition**
 
 对于 $f:\lbrack a,b\rbrack\rightarrow{\mathbb{R}}$ bdd, 一个 **partition** $\mathcal{P} = \left\{ t_{j} \right\}_{j = 0}^{n}$ on $\lbrack a,b\rbrack$ 满足
@@ -681,7 +681,7 @@ $$\underset{¯}{I}(f) = \bar{I}(f) := I(f)$$
 
 ### Riemann intble $\Longrightarrow$ Lebesgue intble
 
-::: {#thm-05-integration-of-real-and-complex-functions-riemann-integral-lebesgue-integral .theorem concepts="riemann-integral-lebesgue-integral" aliases="Riemann integral 是 Lebesgue integral 的特殊情况"}
+::: theorem
 **Theorem: Riemann integral 是 Lebesgue integral 的特殊情况**
 
 $$\begin{matrix}
@@ -747,7 +747,7 @@ $$I(f) = \int f dm$$
 
 ### Lebesgue's criterion for Riemann integrability
 
-::: {#thm-05-integration-of-real-and-complex-functions-lebesgue-s-characterization-of-riemann-integrability .theorem concepts="lebesgue-s-characterization-of-riemann-integrability" aliases="Lebesgue’s characterization of Riemann integrability"}
+::: theorem
 **Theorem: Lebesgue's characterization of Riemann integrability**
 
 定义
@@ -803,7 +803,7 @@ $$\text{uni. conv}\Longrightarrow\text{ptwise. conv}\Longrightarrow\text{conv. a
 
 ### examples showing a.e. ptwise conv 和 $L^{1}$ conv 不能互推
 
-::: {#ex-05-integration-of-real-and-complex-functions-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 on $({\mathbb{R}},{\mathfrak{L}},m)$, 以下 $(f_{n})$:
@@ -848,8 +848,8 @@ on $({\mathbb{R}},{\mathfrak{L}},m)$, 以下 $(f_{n})$:
 
 ### 3 new modes of convergence: fast $L^{1}$-conv, conv measure and subseq a.e. conv
 
-::: {#def-05-integration-of-real-and-complex-functions-fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen .definition concepts="fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen" aliases="fast L^1-convergence, convergence in measure, subseq a.e. convergence"}
-**Definition: fast L\^{1}-convergence, convergence in measure, subseq a.e. convergence**
+::: definition
+**Definition: modes of convergence for measurable functions**
 
 对于 $f_{n},f:X\rightarrow{\mathbb{C}}$, 我们定义以下三种 convergence:
 
@@ -900,7 +900,7 @@ Recall Chebyshev:
 
 $$\left. g \in L^{1}\Longrightarrow\mu(\left\{ |g \middle| \geq c \right\}) \leq \frac{1}{c}\int \middle| g| \right.$$
 
-::: {#prop-05-integration-of-real-and-complex-functions-fast-l-1-conv-implies-a-e-conv .proposition concepts="fast-l-1-conv-implies-a-e-conv" aliases="fast L^1-conv \\implies a.e. conv."}
+::: proposition
 **Proposition: fast L\^{1}-conv \\Longrightarrow a.e. conv.**
 
 $$\left. \sum\limits_{j = 1}^{\infty}\int \middle| f_{n} - f \middle| < \infty\Longrightarrow f_{n}\rightarrow f a.e. \right.$$
@@ -940,7 +940,7 @@ $$\mu(E) = 0$$
 我们知道, $L^{1}$-convergence 和 a.e. convergence 互不能推, 因为这一个是逐点的性质, 一个是整体的性质. 但是 $L^{1}$-convergence 作为一个整体的性质又不够强大 (它允许用函数的纵深来换取宽度, 从而在收敛的情况下保持积分不变.). 然而, fast $L^{1}$-convergence 则是一个足够强大的整体性质. 因而它可以 imply a.e. convergence.
 :::
 
-::: {#cor-05-integration-of-real-and-complex-functions-l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv .corollary concepts="l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv" aliases="L^1-convergence (\\impliesconv. in measure) \\implies subseq a.e. conv. "}
+::: corollary
 **Corollary: L\^{1}-convergence (\\Longrightarrowconv. in measure) \\Longrightarrow subseq a.e. conv.**
 
 if $f_{n}\rightarrow f$ in $L^{1}$, then there exists subseq $(f_{n_{j}})_{j \in {\mathbb{N}}}$ s.t. $f_{n_{j}}\rightarrow f$ a.e.\
@@ -964,7 +964,7 @@ $$\left. \sum\limits_{j = 1}^{\infty}\int \middle| f_{n_{j}} - f \middle| < \inf
 
 ### a.u. conv.(并非 uni. conv. a.e.) 和 Egoroff's Theorem
 
-::: {#def-05-integration-of-real-and-complex-functions-definition-009 .definition concepts="definition-009"}
+::: definition
 **Definition**
 
 我们称 $f_{n}\rightarrow f$ almost uniformly (a.u.), 如果 $\forall\varepsilon > 0$, 都存在 $E \subseteq A$ s.t. $\mu(E) < \varepsilon$ 并且 $f_{n}\rightarrow f$ uniformly on $E^{C}$
@@ -978,7 +978,7 @@ $$\left. \sum\limits_{j = 1}^{\infty}\int \middle| f_{n_{j}} - f \middle| < \inf
 我们将在 $L^{p}$ space 的部分讨论 uniform convergence a.e. 这个 convergence mode, 并表示它等价于 $L^{\infty}$ convergence.
 :::
 
-::: {#thm-05-integration-of-real-and-complex-functions-egoroff-s-theorem .theorem concepts="egoroff-s-theorem" aliases="Egoroff’s Theorem"}
+::: theorem
 **Theorem: Egoroff's Theorem**
 
 如果 $\mu$ 是个 finite measure ($\mu(X) < \infty$), 那么
@@ -1024,14 +1024,14 @@ $$\begin{matrix}
 在 Prob Theory 中很有用, 因为 prob space 是 finite measure space.
 :::
 
-::: {#ex-05-integration-of-real-and-complex-functions-example-005 .example concepts="example-005"}
+::: example
 **Example**
 
 $\mu = \infty$ 时的反例: 考虑 escape to hat function $f_{n} := \chi_{(n,n + 1)}$ on $({\mathbb{R}},{\mathfrak{L}},m)$.\
 $f_{n}\rightarrow 0$ a.e. 但是并不 a.u., 因为 $\mu(X) = \infty$.
 :::
 
-::: {#thm-05-integration-of-real-and-complex-functions-lusin-s-theorem .theorem concepts="lusin-s-theorem" aliases="Lusin’s Theorem"}
+::: theorem
 **Theorem: Lusin's Theorem**
 
 If $f:\lbrack a,b\rbrack\rightarrow{\mathbb{C}}$ 是 Leb. mble 的, 那么 $\forall\varepsilon > 0$, 都存在 compact $K \subseteq \lbrack a,b\rbrack$ s.t. $m(K^{c}) < \varepsilon$ 并且 $f|_{K}$ ctn.

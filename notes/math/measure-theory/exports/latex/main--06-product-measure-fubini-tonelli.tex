@@ -20,8 +20,8 @@ So that we can do Fubini (iterated integration) like that in Riemann integral.
 
 \subsection{\texorpdfstring{product \(\sigma\)-algebra}{product \textbackslash sigma-algebra}}\label{product-sigma-algebra}
 
-% qlnotes: kind=definition; id=def-06-product-measure-fubini-tonelli-product-sigma-algebra; concepts=product-sigma-algebra; aliases=product \sigma-algebra
-\begin{definition}{product \(\sigma\)-algebra}\label{def-06-product-measure-fubini-tonelli-product-sigma-algebra}
+\begin{definition}{\protect\phantomsection\label{kn-product-sigma-algebra}{\textbf{product
+\(\sigma\)-algebra}}}
 
 Suppose \((X_{i},\mathcal{A}_{i})\) mble, \(1 \leq i \leq n\), the product \(\sigma\)-algebra \(A_{1} \otimes \cdots \otimes A_{n}\) on \(X_{1} \times \cdots \times X_{n}\) is the smallest \(\sigma\)-algebra s.t. the \textbf{coordinate map}
 
@@ -36,8 +36,7 @@ Suppose \((X_{i},\mathcal{A}_{i})\) mble, \(1 \leq i \leq n\), the product \(\si
 
 我们容易发现:
 
-% qlnotes: kind=proposition; id=prop-06-product-measure-fubini-tonelli-proposition-001; concepts=proposition-001
-\begin{proposition}\label{prop-06-product-measure-fubini-tonelli-proposition-001}
+\begin{proposition}
 
 \[A_{1} \otimes \cdots \otimes A_{n} = < \left\{ {E_{1} \times \cdots \times E_{n} \in \mathcal{A}_{i} \times \cdots \times \mathcal{A}_{n}} \right\} >\]
 
@@ -57,8 +56,7 @@ By def 易得. (Prop 1.14 in book).\\
 
 \subsection{\texorpdfstring{product Borel algebra \(\subset\) Borel algebra of the product space}{product Borel algebra \textbackslash subset Borel algebra of the product space}}\label{product-borel-algebra-subset-borel-algebra-of-the-product-space}
 
-% qlnotes: kind=proposition; id=prop-06-product-measure-fubini-tonelli-proposition-002; concepts=proposition-002
-\begin{proposition}\label{prop-06-product-measure-fubini-tonelli-proposition-002}
+\begin{proposition}
 
 If \(X_{1},\cdots,X_{n}\) are metric spaces. Let \(X := X_{1} \times \cdots \times X_{n}\) (with product metric), then:
 
@@ -90,15 +88,13 @@ Then: \textbf{every open set in \(X_{1} \times \cdots \times X_{n}\) is a ctbl u
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-06-product-measure-fubini-tonelli-example-001; concepts=example-001
-\begin{example}\label{ex-06-product-measure-fubini-tonelli-example-001}
+\begin{example}
 
 \[\mathcal{B}_{{\mathbb{R}}^{n}} = \mathcal{B}_{\mathbb{R}} \otimes \cdots \otimes \mathcal{B}_{\mathbb{R}}\]
 
 \end{example}
 
-% qlnotes: kind=corollary; id=cor-06-product-measure-fubini-tonelli-corollary-001; concepts=corollary-001
-\begin{corollary}\label{cor-06-product-measure-fubini-tonelli-corollary-001}
+\begin{corollary}
 
 if \((X,\mathcal{A})\) is a mble space, then
 
@@ -123,8 +119,7 @@ And let \(X := X_{1} \times ... \times X_{n}\), \(\mathcal{A} := \mathcal{A}_{i}
 
 \subsection{all finite disjoint unions of rectangles as an algebra}\label{all-finite-disjoint-unions-of-rectangles-as-an-algebra}
 
-% qlnotes: kind=proposition; id=prop-06-product-measure-fubini-tonelli-proposition-003; concepts=proposition-003
-\begin{proposition}\label{prop-06-product-measure-fubini-tonelli-proposition-003}
+\begin{proposition}
 
 \(\mathcal{A}'\) is an algebra.
 
@@ -160,8 +155,7 @@ as follows:
 
 Claim 2:
 
-% qlnotes: kind=proposition; id=prop-06-product-measure-fubini-tonelli-proposition-004; concepts=proposition-004
-\begin{proposition}\label{prop-06-product-measure-fubini-tonelli-proposition-004}
+\begin{proposition}
 
 \textbf{(1) \(\mu'\) is a well-defined premeasure on \(\mathcal{A}'\).\\
 (2) If each \(\mu_{i}\) is \(\sigma\)-finite, so is \(\mu'\).}
@@ -199,8 +193,7 @@ And repeat for \(i = 2,\cdots,n\).\\
 
 \textbf{Step 3: 现在已经有了 \(\sigma\)-finite 的 premeasure, 我们可以应用 HK Thm 构建出完整的 measure.} Now use HK:
 
-% qlnotes: kind=corollary; id=cor-06-product-measure-fubini-tonelli-corollary-002; concepts=corollary-002
-\begin{corollary}\label{cor-06-product-measure-fubini-tonelli-corollary-002}
+\begin{corollary}
 
 \(\exists\) measure \(\mu := \mu_{1} \times \cdots \times \mu_{n}\) on \(\mathcal{A} = \mathcal{A}_{1} \otimes \cdots\mathcal{A}_{n}\) extending \(\mu'\).\\
 (\textbf{And if each \(\mu_{i}\) are \(\sigma\)-finite, then product measure 也 \(\sigma\)-finite, 从而 \(\mu\) 是 unique extension.)}
@@ -212,8 +205,8 @@ And repeat for \(i = 2,\cdots,n\).\\
 
 \subsection{\texorpdfstring{associativity of product \(\sigma\)-algebra and \(\sigma\)-finite product measure}{associativity of product \textbackslash sigma-algebra and \textbackslash sigma-finite product measure}}\label{associativity-of-product-sigma-algebra-and-sigma-finite-product-measure}
 
-% qlnotes: kind=corollary; id=cor-06-product-measure-fubini-tonelli-assotiativity; concepts=assotiativity; aliases=assotiativity
-\begin{corollary}{assotiativity}\label{cor-06-product-measure-fubini-tonelli-assotiativity}
+\begin{corollary}{\protect\phantomsection\label{kn-associativity-of-product-measure}{\textbf{associativity
+of product measure}}}
 
 总有
 
@@ -235,8 +228,7 @@ DIY. 前者 play with def, 后者直接由 \(\sigma\)-finite 的 premeasure 的 
 
 要证明一个函数是 product measurable 的, 只需要证明它对于每个 measurable rectangle 的 preimage 都是 measurable 的即可.
 
-% qlnotes: kind=lemma; id=lem-06-product-measure-fubini-tonelli-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-06-product-measure-fubini-tonelli-lemma-001}
+\begin{lemma}
 
 Suppose \(f:X\rightarrow Y \times Z\) is a function from a measurable space \((X,\mathcal{A})\) to a product measure space \((Y \times Z,\mathcal{B}_{1} \otimes \mathcal{B}_{2})\).\\
 Claim: If \(f^{- 1}(B_{1} \times B_{2}) \in \mathcal{A}\) for each measurable rectangle \(B_{1} \times B_{2} \in \mathcal{B}_{1} \otimes \mathcal{B}_{2}\), then \(f\) is an \((\mathcal{A},\mathcal{B}_{1} \otimes \mathcal{B}_{2})\)-measurable function.
@@ -254,8 +246,7 @@ Hw7 中有另一版的证明作为 lemma.
 
 对于特殊的函数, 比如两个 measurable function 的乘积, 其一定是 product measurable 的.
 
-% qlnotes: kind=lemma; id=lem-06-product-measure-fubini-tonelli-easier-fubini; concepts=easier-fubini; aliases=easier Fubini
-\begin{lemma}{easier Fubini}\label{lem-06-product-measure-fubini-tonelli-easier-fubini}
+\begin{lemma}{\protect\phantomsection\label{kn-easier-fubini}{\textbf{easier Fubini}}}
 
 条件: \((X,\mathcal{A},\mu)\), \((Y,\mathcal{B},\nu)\) 为 arbitrary measure space (不需要 \(\sigma\)-finite.), \(f:X\rightarrow{\mathbb{C}}\), \(g:Y\rightarrow{\mathbb{C}}\) 为 measurable functions.\\
 结论:
@@ -284,8 +275,8 @@ in hw 8. 这个 statement 表示一个 \(\mathcal{A}\ \text{-measurable}\) 的�
 
 \subsection{\texorpdfstring{\(E \subset X \times Y\) 的 section}{E \textbackslash subset X \textbackslash times Y 的 section}}\label{e-subset-x-times-y-ux7684-section}
 
-% qlnotes: kind=definition; id=def-06-product-measure-fubini-tonelli-x-section-y-section; concepts=x-section-y-section; aliases=x-section, y-section
-\begin{definition}{\(x\)-section, \(y\)-section}\label{def-06-product-measure-fubini-tonelli-x-section-y-section}
+\begin{definition}{\protect\phantomsection\label{kn-x-section-y-section}{\textbf{\(x\)-section,
+\(y\)-section}}}
 
 给定 product space 上的集合 \(E \subset X \times Y\), 对于 \(x \in X\), \(y \in Y\), 我们定义:
 
@@ -305,8 +296,7 @@ in hw 8. 这个 statement 表示一个 \(\mathcal{A}\ \text{-measurable}\) 的�
 
 \end{definition}
 
-% qlnotes: kind=example; id=ex-06-product-measure-fubini-tonelli-example-002; concepts=example-002
-\begin{example}\label{ex-06-product-measure-fubini-tonelli-example-002}
+\begin{example}
 
 对于任意的 \(E \subset X \times Y\)如果定义:
 
@@ -325,8 +315,7 @@ in hw 8. 这个 statement 表示一个 \(\mathcal{A}\ \text{-measurable}\) 的�
 
 \end{example}
 
-% qlnotes: kind=proposition; id=prop-06-product-measure-fubini-tonelli-proposition-005; concepts=proposition-005
-\begin{proposition}\label{prop-06-product-measure-fubini-tonelli-proposition-005}
+\begin{proposition}
 
 (a)
 
@@ -378,8 +367,8 @@ Claim: \(\mathcal{E}\) 包含了所有的 rectangles, 并且 \(\mathcal{E}\) a \
 
 \end{qlremark}
 
-% qlnotes: kind=definition; id=def-06-product-measure-fubini-tonelli-monotone-class; concepts=monotone-class; aliases=monotone class
-\begin{definition}{monotone class}\label{def-06-product-measure-fubini-tonelli-monotone-class}
+\begin{definition}{\protect\phantomsection\label{kn-monotone-class}{\textbf{monotone
+class}}}
 
 Given a set \(X\), a collection \(C \subset \mathcal{P}(X)\) is called a monotone class, if it is closed under \textbf{countable increasing unions} and \textbf{countable decreasing intersections}
 
@@ -389,8 +378,8 @@ Given a set \(X\), a collection \(C \subset \mathcal{P}(X)\) is called a monoton
 
 \subsection{tool needed to show Tonelli: Monotone Class Lemma}\label{tool-needed-to-show-tonelli-monotone-class-lemma}
 
-% qlnotes: kind=lemma; id=lem-06-product-measure-fubini-tonelli-monotone-class-lemma; concepts=monotone-class-lemma; aliases=monotone class lemma
-\begin{lemma}{monotone class lemma}\label{lem-06-product-measure-fubini-tonelli-monotone-class-lemma}
+\begin{lemma}{\protect\phantomsection\label{kn-monotone-class-lemma}{\textbf{monotone
+class lemma}}}
 
 Let \(\mathcal{A} \subset \mathcal{P}(X)\) be an algebra.\\
 Define \(\mathcal{C}\) 为包含 \(\mathcal{A}\) 的最小的 montone class.\\
@@ -418,8 +407,7 @@ Claim:
 
 但是如果我们只知道 \(\mathcal{C} \supset \mathcal{A}\), 没有 "包含 \(\mathcal{A}\) 的最小的 monotone class" 这个条件怎么办? 那也没关系, 我们很自然得出
 
-% qlnotes: kind=corollary; id=cor-06-product-measure-fubini-tonelli-corollary-004; concepts=corollary-004
-\begin{corollary}\label{cor-06-product-measure-fubini-tonelli-corollary-004}
+\begin{corollary}
 
 Let \(\mathcal{A} \subset \mathcal{P}(X)\) be an algebra, \(\mathcal{C} \supset \mathcal{A}\) be a monotone class, 那么一定有
 
@@ -431,8 +419,8 @@ Let \(\mathcal{A} \subset \mathcal{P}(X)\) be an algebra, \(\mathcal{C} \supset 
 
 \subsection{Tonelli for sets: integrating a section to get product measure}\label{tonelli-for-sets-integrating-a-section-to-get-product-measure}
 
-% qlnotes: kind=theorem; id=thm-06-product-measure-fubini-tonelli-tonelli-for-sets; concepts=tonelli-for-sets; aliases=Tonelli for sets
-\begin{theorem}{Tonelli for sets}\label{thm-06-product-measure-fubini-tonelli-tonelli-for-sets}
+\begin{theorem}{\protect\phantomsection\label{kn-tonelli-for-sets}{\textbf{Tonelli for
+sets}}}
 
 Let \((X,\mathcal{A},\mu)\), \((Y,\mathcal{B},\nu)\) be \textbf{\(\sigma\)-finite} measure spaces.\\
 Take \(E \in \mathcal{A} \otimes \mathcal{B}\). Then:
@@ -513,8 +501,7 @@ It remains to show: \(\mathcal{C}\) closed under ctbl decreasing intersection. �
 
 \subsection{Tonelli's Theorem}\label{tonellis-theorem}
 
-% qlnotes: kind=theorem; id=thm-06-product-measure-fubini-tonelli-tonelli; concepts=tonelli; aliases=Tonelli
-\begin{theorem}{Tonelli}\label{thm-06-product-measure-fubini-tonelli-tonelli}
+\begin{theorem}{\protect\phantomsection\label{kn-tonelli-theorem}{\textbf{Tonelli}}}
 
 Let \((X,\mathcal{A},\mu)\), \((Y,\mathcal{B},\nu)\) be \(\sigma\)-finite measure spaces.\\
 条件: 令 \(f \in L^{+}(X \times Y)\),\\
@@ -565,8 +552,7 @@ recall Tonelli's Theorem: Given \(f \in L^{+}(X \times Y)\), set \(g(x) := \int 
 
 \[\int f d(\mu \times \nu) = \iint f d\nu d\mu = \iint f d\mu d\nu\]
 
-% qlnotes: kind=corollary; id=cor-06-product-measure-fubini-tonelli-corollary-005; concepts=corollary-005
-\begin{corollary}\label{cor-06-product-measure-fubini-tonelli-corollary-005}
+\begin{corollary}
 
 if \(f \in L^{1}(X \times Y)\) and \(f \geq 0\) then
 
@@ -590,8 +576,8 @@ Fubini's Theorem 是 Tonelli's Theorem 对 \(\mathbb{C}\)-valued 函数 (instead
 
 \subsection{Fubini's Theorem}\label{fubinis-theorem}
 
-% qlnotes: kind=theorem; id=thm-06-product-measure-fubini-tonelli-fubini-s-theorem; concepts=fubini-s-theorem; aliases=Fubini’s Theorem
-\begin{theorem}{Fubini's Theorem}\label{thm-06-product-measure-fubini-tonelli-fubini-s-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-fubini-theorem}{\textbf{Fubini's
+Theorem}}}
 
 条件: \(f \in L^{1}(\mu \times \nu)\),\\
 结论:
@@ -623,8 +609,7 @@ Tonelli and Fubini's Theorem 不仅有用在可以拆分积分以进行计算, �
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-06-product-measure-fubini-tonelli-example-003; concepts=example-003
-\begin{example}\label{ex-06-product-measure-fubini-tonelli-example-003}
+\begin{example}
 
 求和换序的合理性:\\
 考虑
@@ -651,8 +636,7 @@ Thm: 对于任意 \(n \in {\mathbb{N}}\), \(\sum_{m}a_{mn}\) conv absly to some 
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-06-product-measure-fubini-tonelli-example-004; concepts=example-004
-\begin{example}\label{ex-06-product-measure-fubini-tonelli-example-004}
+\begin{example}
 
 考虑 \((X,\mathcal{A},\mu) = (Y,\mathcal{B},\nu) = ({\mathbb{R}},\mathcal{L},m)\) 考虑一个 Vitali set.
 
@@ -664,8 +648,8 @@ Thm: 对于任意 \(n \in {\mathbb{N}}\), \(\sum_{m}a_{mn}\) conv absly to some 
 
 \[(X \times Y,\bar{\mathcal{A}\otimes\mathcal{B}},\bar{\mu\times\nu})\]
 
-% qlnotes: kind=theorem; id=thm-06-product-measure-fubini-tonelli-complete-fubini-tonelli; concepts=complete-fubini-tonelli; aliases=complete Fubini-Tonelli
-\begin{theorem}{complete Fubini-Tonelli}\label{thm-06-product-measure-fubini-tonelli-complete-fubini-tonelli}
+\begin{theorem}{\protect\phantomsection\label{kn-complete-fubini-tonelli}{\textbf{complete
+Fubini-Tonelli}}}
 
 对于 complete measure space \((X,\mathcal{A},\mu)\), \((Y,\mathcal{B},\nu)\), 取它们的 product measure space 的 completion:
 
@@ -701,8 +685,7 @@ exercise. 比较简单.
 
 \subsection{remark: integral of 非负函数等于 area under graph}\label{remark-integral-of-ux975eux8d1fux51fdux6570ux7b49ux4e8e-area-under-graph}
 
-% qlnotes: kind=theorem; id=thm-06-product-measure-fubini-tonelli-theorem-005; concepts=theorem-005
-\begin{theorem}\label{thm-06-product-measure-fubini-tonelli-theorem-005}
+\begin{theorem}
 
 令 \((X,\mathcal{A},\mu)\) 为一个 arbitrary measure space, \(f \in L^{+}(\mu)\) 为 arbitrary 可测非负函数, 我们定义:
 

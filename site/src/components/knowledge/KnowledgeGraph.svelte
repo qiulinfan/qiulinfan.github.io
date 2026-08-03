@@ -3,13 +3,7 @@
 
 	export let dataUrl: string;
 
-	type NodeType =
-		| "concept"
-		| "statement"
-		| "section"
-		| "document"
-		| "figure"
-		| "citation";
+	type NodeType = "discipline" | "field" | "topic" | "knowledge";
 
 	type Properties = Record<string, unknown>;
 
@@ -21,8 +15,10 @@
 		properties?: Properties;
 		provenance?: {
 			authority?: string;
-			markdown?: string;
+			line?: number;
 			anchor?: string;
+			web?: string;
+			active?: boolean;
 		};
 	}
 
@@ -30,8 +26,19 @@
 		source: string;
 		relation: string;
 		target: string;
-		provenance: string;
+		origin?: string;
+		confidence?: string;
 		evidence?: string;
+	}
+
+	interface GraphReference {
+		id: string;
+		target: string;
+		label: string;
+		authority: string;
+		line: number;
+		web?: string;
+		context?: string;
 	}
 
 	interface Diagnostic {
@@ -44,7 +51,7 @@
 	interface GraphPayload {
 		manifest: {
 			graph_sha256: string;
-			counts: { nodes: number; edges: number };
+			counts: { nodes: number; edges: number; references: number };
 			node_types: Record<string, number>;
 			relations: Record<string, number>;
 		};
@@ -54,6 +61,7 @@
 		};
 		nodes: GraphNode[];
 		edges: GraphEdge[];
+		references: GraphReference[];
 	}
 
 	interface Neighbor {
@@ -70,31 +78,22 @@
 		ring: number;
 	}
 
-	const typeOrder: NodeType[] = [
-		"concept",
-		"statement",
-		"section",
-		"document",
-		"figure",
-		"citation",
-	];
+	const typeOrder: NodeType[] = ["discipline", "field", "topic", "knowledge"];
 
 	const typeLabels: Record<NodeType, string> = {
-		concept: "概念",
-		statement: "陈述",
-		section: "章节",
-		document: "文档",
-		figure: "图表",
-		citation: "引用",
+		discipline: "学科",
+		field: "领域",
+		topic: "主题",
+		knowledge: "知识",
 	};
 
 	const relationLabels: Record<string, string> = {
-		about: "讨论",
 		contains: "包含",
-		"links-to": "链接到",
-		requires: "依赖",
 		"prerequisite-for": "前置于",
-		cites: "引用",
+		implies: "蕴含",
+		generalizes: "推广",
+		"contrasts-with": "对照",
+		"derived-from": "导出自",
 	};
 
 	let payload: GraphPayload | null = null;
@@ -106,6 +105,7 @@
 	let selectedNode: GraphNode | null = null;
 	let results: GraphNode[] = [];
 	let neighbors: Neighbor[] = [];
+	let backlinks: GraphReference[] = [];
 	let nodeIndex = new Map<string, GraphNode>();
 	let activePanel: "detail" | "diagnostics" = "detail";
 	let copied = false;
@@ -141,8 +141,8 @@
 				node.id,
 				node.text,
 				...stringList(node, "aliases"),
-				...stringList(node, "concepts"),
-				...stringList(node, "depends"),
+				propertyText(node, "course"),
+				propertyText(node, "topic"),
 			].join(" "),
 		);
 	}
@@ -150,7 +150,7 @@
 	function searchScore(node: GraphNode, terms: string[]) {
 		if (terms.length === 0) {
 			const evidence = Number(node.properties?.evidence_count ?? 0);
-			const typeBias = node.type === "concept" ? 80 : node.type === "statement" ? 40 : 0;
+			const typeBias = node.type === "knowledge" ? 80 : node.type === "topic" ? 40 : 0;
 			return typeBias + Math.min(evidence, 20);
 		}
 
@@ -168,8 +168,8 @@
 			if (aliases.includes(term)) score += 55;
 			if (id.includes(term)) score += 25;
 		}
-		if (node.type === "concept") score += 14;
-		if (node.type === "statement") score += 8;
+		if (node.type === "knowledge") score += 14;
+		if (node.type === "topic") score += 8;
 		return score;
 	}
 
@@ -192,8 +192,12 @@
 		selectedNode = selectedId ? nodeIndex.get(selectedId) ?? null : null;
 		if (!selectedNode || !payload) {
 			neighbors = [];
+			backlinks = [];
 			return;
 		}
+		backlinks = payload.references
+			.filter((reference) => reference.target === selectedId)
+			.sort((left, right) => left.authority.localeCompare(right.authority) || left.line - right.line);
 		neighbors = payload.edges
 			.flatMap((edge): Neighbor[] => {
 				if (edge.source === selectedId) {
@@ -225,13 +229,6 @@
 		void tick().then(drawGraph);
 	}
 
-	function selectConcept(key: string) {
-		const concept = payload?.nodes.find(
-			(node) => node.type === "concept" && propertyText(node, "key") === key,
-		);
-		if (concept) selectNode(concept.id);
-	}
-
 	function selectFromHash() {
 		const id = new URLSearchParams(window.location.hash.slice(1)).get("node");
 		if (id && nodeIndex.has(id)) selectNode(id, false);
@@ -251,22 +248,19 @@
 
 	function nodeColor(type: NodeType, alpha = 1) {
 		const colors: Record<NodeType, string> = {
-			concept: `oklch(0.68 0.17 218 / ${alpha})`,
-			statement: `oklch(0.67 0.17 292 / ${alpha})`,
-			section: `oklch(0.72 0.14 150 / ${alpha})`,
-			document: `oklch(0.72 0.15 68 / ${alpha})`,
-			figure: `oklch(0.69 0.17 25 / ${alpha})`,
-			citation: `oklch(0.7 0.05 250 / ${alpha})`,
+			discipline: `oklch(0.60 0.16 270 / ${alpha})`,
+			field: `oklch(0.65 0.17 230 / ${alpha})`,
+			topic: `oklch(0.72 0.14 150 / ${alpha})`,
+			knowledge: `oklch(0.69 0.16 45 / ${alpha})`,
 		};
 		return colors[type];
 	}
 
 	function relationColor(relation: string) {
-		if (relation === "about") return "oklch(0.68 0.17 218 / 0.54)";
-		if (relation === "requires" || relation === "prerequisite-for") {
+		if (relation === "prerequisite-for") {
 			return "oklch(0.7 0.17 25 / 0.58)";
 		}
-		if (relation === "links-to") return "oklch(0.72 0.14 150 / 0.48)";
+		if (relation !== "contains") return "oklch(0.68 0.17 218 / 0.54)";
 		return "oklch(0.58 0.03 250 / 0.28)";
 	}
 
@@ -366,12 +360,31 @@
 			const from = positions.get(edge.source);
 			const to = positions.get(edge.target);
 			if (!from || !to) continue;
+			const angle = Math.atan2(to.y - from.y, to.x - from.x);
+			const startX = from.x + Math.cos(angle) * (from.radius + 2);
+			const startY = from.y + Math.sin(angle) * (from.radius + 2);
+			const endX = to.x - Math.cos(angle) * (to.radius + 4);
+			const endY = to.y - Math.sin(angle) * (to.radius + 4);
+			const color = relationColor(edge.relation);
 			context.beginPath();
-			context.moveTo(from.x, from.y);
-			context.lineTo(to.x, to.y);
-			context.strokeStyle = relationColor(edge.relation);
+			context.moveTo(startX, startY);
+			context.lineTo(endX, endY);
+			context.strokeStyle = color;
 			context.lineWidth = edge.relation === "contains" ? 0.8 : 1.35;
 			context.stroke();
+			context.beginPath();
+			context.moveTo(endX, endY);
+			context.lineTo(
+				endX - Math.cos(angle - Math.PI / 6) * 6,
+				endY - Math.sin(angle - Math.PI / 6) * 6,
+			);
+			context.lineTo(
+				endX - Math.cos(angle + Math.PI / 6) * 6,
+				endY - Math.sin(angle + Math.PI / 6) * 6,
+			);
+			context.closePath();
+			context.fillStyle = color;
+			context.fill();
 		}
 
 		const styles = getComputedStyle(document.documentElement);
@@ -450,7 +463,11 @@
 	}
 
 	function sourceUrl(node: GraphNode) {
-		const path = node.provenance?.authority ?? node.provenance?.markdown;
+		return node.provenance?.web ?? "";
+	}
+
+	function sourceCodeUrl(node: GraphNode) {
+		const path = node.provenance?.authority;
 		return path ? `https://github.com/qiulinfan/qlblog/blob/main/${path}` : "";
 	}
 
@@ -484,8 +501,8 @@
 				const fromHash = new URLSearchParams(window.location.hash.slice(1)).get("node");
 				const initial =
 					(fromHash && nodeIndex.has(fromHash) && fromHash) ||
-					(nodeIndex.has("concept:conditional-expectation") && "concept:conditional-expectation") ||
-					graph.nodes.find((node) => node.type === "concept")?.id ||
+					(nodeIndex.has("conditional-expectation") && "conditional-expectation") ||
+					graph.nodes.find((node) => node.type === "knowledge")?.id ||
 					graph.nodes[0]?.id ||
 					"";
 				loading = false;
@@ -515,12 +532,12 @@
 		<div class="hero-copy">
 			<div class="eyebrow"><span></span> PERSONAL KNOWLEDGE GRAPH</div>
 			<h1 id="knowledge-title">找回你已经学过的东西。</h1>
-			<p>从 Typst 权威笔记生成的可追溯知识索引。搜索概念，沿着陈述与章节查看证据，再回到源文件修订。</p>
+			<p>从权威笔记生成的分层有向图。搜索知识节点，沿直接依赖与主题层级追踪，再回到唯一的原定义。</p>
 		</div>
 		{#if payload}
 			<div class="stat-grid" aria-label="Graph summary">
-				<div><strong>{payload.manifest.node_types.concept ?? 0}</strong><span>概念</span></div>
-				<div><strong>{payload.manifest.node_types.statement ?? 0}</strong><span>陈述</span></div>
+				<div><strong>{payload.manifest.node_types.knowledge ?? 0}</strong><span>知识节点</span></div>
+				<div><strong>{(payload.manifest.node_types.topic ?? 0) + (payload.manifest.node_types.field ?? 0) + (payload.manifest.node_types.discipline ?? 0)}</strong><span>层级节点</span></div>
 				<div><strong>{payload.manifest.counts.edges}</strong><span>关系</span></div>
 				<div class:warning={payload.diagnostics.warnings.length > 0}>
 					<strong>{payload.diagnostics.warnings.length}</strong><span>待整理</span>
@@ -580,7 +597,7 @@
 					<canvas bind:this={canvas} aria-label="Selected node and its two-hop neighborhood" on:mousemove={handleCanvasMove} on:mouseleave={() => { hoveredId = ""; drawGraph(); }} on:click={handleCanvasClick}></canvas>
 					{#if hoveredId}
 						<div class="graph-tooltip" style={`left:${tooltipX}px;top:${tooltipY}px`}>
-							<strong>{nodeIndex.get(hoveredId)?.label}</strong><span>{typeLabel(nodeIndex.get(hoveredId)?.type ?? "concept")}</span>
+							<strong>{nodeIndex.get(hoveredId)?.label}</strong><span>{typeLabel(nodeIndex.get(hoveredId)?.type ?? "knowledge")}</span>
 						</div>
 					{/if}
 					<div class="canvas-note">点击节点继续追踪 · 外圈为第二跳</div>
@@ -607,11 +624,11 @@
 						{#if stringList(selectedNode, "aliases").length}
 							<div class="detail-block"><h3>别名</h3><div class="chip-list">{#each stringList(selectedNode, "aliases") as alias}<span>{alias}</span>{/each}</div></div>
 						{/if}
-						{#if stringList(selectedNode, "concepts").length}
-							<div class="detail-block"><h3>概念</h3><div class="chip-list">{#each stringList(selectedNode, "concepts") as concept}<button type="button" on:click={() => selectConcept(concept)}>{concept}</button>{/each}</div></div>
+						{#if propertyText(selectedNode, "source_status")}
+							<div class="attribute-row"><span>来源状态</span><strong>{propertyText(selectedNode, "source_status")}</strong></div>
 						{/if}
-						{#if stringList(selectedNode, "depends").length}
-							<div class="detail-block"><h3>前置知识</h3><div class="chip-list dependencies">{#each stringList(selectedNode, "depends") as dependency}<button type="button" on:click={() => selectConcept(dependency)}>{dependency}</button>{/each}</div></div>
+						{#if propertyText(selectedNode, "course")}
+							<div class="attribute-row"><span>课程</span><strong>{propertyText(selectedNode, "course")}</strong></div>
 						{/if}
 
 						{#if selectedNode.text}
@@ -629,15 +646,26 @@
 							</div></div>
 						{/if}
 
+						{#if backlinks.length}
+							<div class="detail-block"><h3>反向引用 <span>{backlinks.length}</span></h3><div class="neighbor-list">
+								{#each backlinks as backlink}
+									<a class="backlink-item" href={backlink.web || `https://github.com/qiulinfan/qlblog/blob/main/${backlink.authority}#L${backlink.line}`} target="_blank" rel="noreferrer">
+										<span class="relation-arrow">↩</span><span><small>{backlink.label}</small><strong>{backlink.authority}:{backlink.line}</strong></span>
+									</a>
+								{/each}
+							</div></div>
+						{/if}
+
 						<div class="source-actions">
 							<button type="button" on:click={copyNodeReference}>{copied ? "已复制" : "复制引用"}</button>
-							{#if sourceUrl(selectedNode)}<a href={sourceUrl(selectedNode)} target="_blank" rel="noreferrer">查看 Typst 源文件 ↗</a>{/if}
+							{#if sourceUrl(selectedNode)}<a href={sourceUrl(selectedNode)} target="_blank" rel="noreferrer">打开原定义 ↗</a>{/if}
+							{#if sourceCodeUrl(selectedNode)}<a href={sourceCodeUrl(selectedNode)} target="_blank" rel="noreferrer">查看 Typst 源码 ↗</a>{/if}
 						</div>
 						{#if selectedNode.provenance?.authority}<p class="source-path">{selectedNode.provenance.authority}</p>{/if}
 					</div>
 				{:else if activePanel === "diagnostics"}
 					<div class="detail-scroll diagnostic-scroll">
-						<div class="diagnostic-summary"><strong>{payload.diagnostics.warnings.length}</strong><span>个非阻塞质量提示</span><p>它们不会阻止图谱使用，但指出了下一轮值得整理的 Typst 元数据。</p></div>
+						<div class="diagnostic-summary"><strong>{payload.diagnostics.warnings.length}</strong><span>个非阻塞质量提示</span><p>这里会明确显示孤立节点和未解析引用，但不会静默删除已沉淀的知识。</p></div>
 						{#each payload.diagnostics.warnings as warning}
 							<button type="button" class="diagnostic-item" disabled={!warning.node || !nodeIndex.has(warning.node)} on:click={() => warning.node && selectNode(warning.node)}>
 								<span>{warning.code}</span><strong>{warning.message}</strong>{#if warning.source}<small>{warning.source}</small>{/if}
@@ -649,7 +677,7 @@
 		</div>
 
 		<footer class="graph-meta">
-			<span><i></i> Typst authority · qlkg-v1</span>
+			<span><i></i> Typst authority · qlkg-v2</span>
 			<code>{payload.manifest.graph_sha256.slice(0, 12)}</code>
 		</footer>
 	{/if}
@@ -739,9 +767,9 @@
 	.chip-list.dependencies button { border-color: oklch(.7 .17 25 / .2); background: oklch(.7 .17 25 / .07); }
 	.evidence-text { max-height: 16rem; overflow-y: auto; padding: .72rem; border-radius: .65rem; white-space: pre-wrap; overflow-wrap: anywhere; background: color-mix(in oklch, var(--page-bg) 58%, transparent); font-size: .73rem; line-height: 1.62; color: color-mix(in oklch, currentColor 64%, transparent); }
 	.neighbor-list { display: flex; flex-direction: column; gap: .3rem; }
-	.neighbor-list button { width: 100%; padding: .52rem; display: grid; grid-template-columns: 1.5rem 1fr; gap: .25rem; align-items: center; text-align: left; border: 0; border-radius: .55rem; background: transparent; color: inherit; cursor: pointer; }
-	.neighbor-list button:hover { background: var(--btn-plain-bg-hover); }
-	.neighbor-list button > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: .18rem; }
+	.neighbor-list button, .neighbor-list .backlink-item { width: 100%; padding: .52rem; display: grid; grid-template-columns: 1.5rem 1fr; gap: .25rem; align-items: center; text-align: left; border: 0; border-radius: .55rem; background: transparent; color: inherit; cursor: pointer; text-decoration: none; }
+	.neighbor-list button:hover, .neighbor-list .backlink-item:hover { background: var(--btn-plain-bg-hover); }
+	.neighbor-list button > span:last-child, .neighbor-list .backlink-item > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: .18rem; }
 	.neighbor-list small { color: var(--primary); font-size: .57rem; }
 	.neighbor-list strong { font-size: .68rem; line-height: 1.3; color: color-mix(in oklch, currentColor 68%, transparent); overflow-wrap: anywhere; }
 	.relation-arrow { color: color-mix(in oklch, currentColor 28%, transparent); font-family: "JetBrains Mono Variable", monospace; }

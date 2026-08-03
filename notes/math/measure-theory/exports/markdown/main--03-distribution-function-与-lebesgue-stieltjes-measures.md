@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 15
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -28,7 +28,7 @@ This lecture: 1. distribution function 是 increasing 且 right continuous 的, 
 
 ### distribution function of a locally finite (i.e. regular) Borel measure
 
-::: {#def-03-distribution-function-lebesgue-stieltjes-measures-distribution-function-of-mu .definition concepts="distribution-function-of-mu" aliases="distribution function of \\mu"}
+::: definition
 **Definition: distribution function of \\mu**
 
 给定一个 **locally finite (finite on all compact sets)** 的 **Borel measure** on $\mathbb{R}$ (即 $({\mathbb{R}},\mathcal{B}(bR),\mu)$), 我们定义:
@@ -48,7 +48,7 @@ $$\begin{matrix}
 在 Ch 3 中, 我们将在讨论 ${\mathbb{R}}^{n}$ 上 regular measure 对于 Lebesgue measure 的 derivative.
 :::
 
-::: {#prop-03-distribution-function-lebesgue-stieltjes-measures-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 容易发现: $F$ 是 $\mu$ 的 distribution function, 当且仅当 $\mu((a,b\rbrack) = F(b) - F(a)$, 任取这样的 interval.
@@ -56,7 +56,7 @@ $$\begin{matrix}
 
 这两个定义是等价的.
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-distribution-function-is-increasing-and-right-ctn .theorem concepts="distribution-function-is-increasing-and-right-ctn" aliases="distribution function is increasing and right ctn"}
+::: theorem
 **Theorem: distribution function is increasing and right ctn**
 
 对于 $\mathbb{R}$ 上的任意 locally finite Borel measure $\mu$, 其 distribution function $F_{\mu}$ 都是 increasing 且 right continuous 的. (right ctn:
@@ -79,7 +79,7 @@ right continuous: follows from measure 的 ctnity. 正轴上: $\mu((0,x + 1/n\rb
 
 ### any increasing and right ctn function is a unique distribution function
 
-::: {#def-03-distribution-function-lebesgue-stieltjes-measures-h-interval .definition concepts="h-interval" aliases="h-interval"}
+::: definition
 **Definition: h-interval**
 
 我么定义形如 $(a,b\rbrack$, $( - \infty,b\rbrack$ 的 $\mathbb{R}$ 的子集, 以及 $\varnothing$, $\mathbb{R}$, 为 h-intervals.
@@ -89,7 +89,7 @@ h-intervals 即**所有的左开右闭区间.**
 
 ![Figure 6:[ ]{style="white-space: pre-wrap"}](.assets/main--figure-raster-006.png){width="20%"}
 
-::: {#lem-03-distribution-function-lebesgue-stieltjes-measures-h-intervals-form-an-algebra-and-generate-borel-set .lemma concepts="h-intervals-form-an-algebra-and-generate-borel-set" aliases="h-intervals form an algebra and generate borel set"}
+::: lemma
 **Lemma: h-intervals form an algebra and generate borel set**
 
 $$\mathcal{A}_{0} := \left\{ \text{finite (disjoint) unions of h-intervals} \right\}$$
@@ -105,7 +105,7 @@ $$< \mathcal{A}_{0} > = \mathcal{B}({\mathbb{R}})$$
 trivial. follows from lec 2 的 generating set of borel set on $\mathbb{R}$.
 :::
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-increasing-right-ctn-regular-borel-measure-distribution .theorem concepts="increasing-right-ctn-regular-borel-measure-distribution" aliases="任意 increasing 且 right ctn 函数都是某个 regular Borel measure 的 distribution 函数"}
+::: theorem
 **Theorem: 任意 increasing 且 right ctn 函数都是某个 regular Borel measure 的 distribution 函数**
 
 取 lemma 中的 $\mathcal{A}_{0}$. 对于**任意的 increasing 且 right ctn 的 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$,** 我们 define $\mu_{0}:\mathcal{A}_{0}\rightarrow\lbrack 0,\infty\rbrack$, by:
@@ -177,7 +177,7 @@ Claim 2, 3 都 directly follows from Hahn-Komogrov Thm.
 这一证明实则简单. 关键的步骤是 1. 简化问题为 union 成一个 h-interval; 2. 通过 cptness 取 finite covering；3. 对每个 $A_{i}$ 取一个 $\epsilon/2^{i}$ 的小 cover, 最后可以被 $\epsilon$ bound.
 :::
 
-::: {#ex-03-distribution-function-lebesgue-stieltjes-measures-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 我们已经证明, 从任意的 increasing 且 right ctn 的函数都可以构造出一个以其为 distribution function 的 locally finite Borel measure on $\mathbb{R}$, 因而我们简称这样的函数都叫做 distribution function.\
@@ -211,7 +211,7 @@ $$({\mathbb{R}},\mathcal{M}_{\mu},\bar{\mu_{F}})$$
 
 $$\text{Regular Borel measure}\overset{\text{completion}}{\rightarrow}\text{LS measure}$$
 
-::: {#def-03-distribution-function-lebesgue-stieltjes-measures-lebesgue-stieltjes-measure-associated-with-f .definition concepts="lebesgue-stieltjes-measure-associated-with-f" aliases="Lebesgue-Stieltjes measure associated with F"}
+::: definition
 **Definition: Lebesgue-Stieltjes measure associated with F**
 
 给定一个 distribution function $F$, 我们使用它来定义 h-intervals 的 premeasure $\mu_{0}$, 并把这个 premeasure induce 出的 outer measure $\mu^{\ast}$ 限制在
@@ -237,8 +237,8 @@ $$\mu_{F}(E) = \inf\left\{ {\sum\limits_{1}^{\infty}(F(b_{i}) - F(a_{i})) \mid E
 
 虽然我们使用 h-intervals 来 induce 了这个 measure, 但是实际上我们在表示 measure 时,可以用 open intervals 来代替 h-intervals:
 
-::: {#lem-03-distribution-function-lebesgue-stieltjes-measures-open-intervals-can-substitute-for-h-intervals-when-computing-mea .lemma concepts="open-intervals-can-substitute-for-h-intervals-when-computing-mea" aliases="open intervals can substitute for h-intervals when computing measure"}
-**Lemma: open intervals can substitute for h-intervals when computing measure**
+::: lemma
+**Lemma: open-interval covers for Lebesgue--Stieltjes measure**
 
 固定一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
 
@@ -251,7 +251,7 @@ $$\mu_{F}(E) = \inf\left\{ {\sum\limits_{1}^{\infty}(F(b_{i}) - F(a_{i})) \mid E
 每个 open interval 都等于 a ctbl disjoint union of h-intervals, 从而是在这个被取 inf 集合内的; 所以只需要证明能取到这个 inf 即可. Fix $\epsilon > 0$, 我们根据定义可以取到一个 seq $(a_{i},b_{i}\rbrack$ 使得它 measure sum $\leq \mu(E) + \epsilon/2$, 而我们对于每个 $i$, 在 interval 的右边再取一个 $< \epsilon/2^{i + 1}$ 的 $\delta_{i}$, 就变成了一个 open interval, 并且最后距离这个 h-interval seq 的 measure sum 差距至多 $\epsilon/2$. 从而得证.
 :::
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-outer-regularity .theorem concepts="outer-regularity" aliases="outer regularity"}
+::: theorem
 **Theorem: outer regularity**
 
 对于一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
@@ -265,7 +265,7 @@ $$\mu_{F}(E) = \inf\left\{ {\mu_{F}(U) \mid U\ \text{open , and}\ E \subseteq U}
 Directly follows from lemma. 首先, by monotonicity, 一个包含 $E$ 的开集 $U$ 的 $\mu_{F}$ 一定比 $E$ 的大. 并且, 对于任意的 $\epsilon > 0$, 都可以找到一个 open covering 使得 measure sum $< \mu_{F}(E) + \epsilon$, by def.\
 :::
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-inner-regularity .theorem concepts="inner-regularity" aliases="inner regularity"}
+::: theorem
 **Theorem: inner regularity**
 
 对于一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
@@ -303,7 +303,7 @@ outer / inner regularity 表示, $\mathbb{R}$ 上一个 (LS-measurable set 的) 
 
 ### Lebesgue-Stieltjes measurable 的等价条件
 
-::: {#def-03-distribution-function-lebesgue-stieltjes-measures-g-delta-f-sigma-sets .definition concepts="g-delta-f-sigma-sets" aliases="G_\\delta, F_\\sigma sets"}
+::: definition
 **Definition: G\_{\\delta},F\_{\\sigma} sets**
 
 Topological space 中, 一个 **coutable intersection of open sets 被称为一个 $G_{\delta}$ set**, 一个 **countable union of closed sets 被称为一个 $F_{\sigma}$ set**.
@@ -316,7 +316,7 @@ topological space 中, finite intersection of open sets 还是 open set, 但是 
 $G_{\delta}$ sets 包括了所有的 open sets, 以及一部分扩充; $F_{\sigma}$ sets 包括了所有的 closed sets, 以及一部分扩充.
 :::
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-lebesgue-stieltjes-measurable .theorem concepts="lebesgue-stieltjes-measurable" aliases="Lebesgue-Stieltjes measurable 的等价条件"}
+::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-lebesgue-stieltjes-measurable .theorem}
 **Theorem: Lebesgue-Stieltjes measurable 的等价条件**
 
 TFAE:
@@ -354,7 +354,7 @@ $\sigma$-algebra 和 topology 各自只 closed under finite 的交和并, 而 $<
 
 ### Lebesgue measure and its invariance properties
 
-::: {#def-03-distribution-function-lebesgue-stieltjes-measures-lebesgue-measure .definition concepts="lebesgue-measure" aliases="Lebesgue measure"}
+::: definition
 **Definition: Lebesgue measure**
 
 Lebesgue measure 即 Lebesgue-Stieltjes measure associated with $F(x) = x$. 我们用 $m := \mu_{F}$ 来表示它, 并用 $\mathcal{L} := \mathcal{M}_{m}$ 来表示所有的 Lebesgue measurable sets.\
@@ -371,7 +371,7 @@ Lebesgue measure 是最 normal 的 Lebesgue-Stieltjes measure, 它 preserve inte
 $$m((a,b\rbrack) = b - a$$
 :::
 
-::: {#thm-03-distribution-function-lebesgue-stieltjes-measures-mathcal-l-preserves-translation-and-scaling .theorem concepts="mathcal-l-preserves-translation-and-scaling" aliases="\\mathcal{L} preserves translation and scaling"}
+::: theorem
 **Theorem: \\mathcal{L} preserves translation and scaling**
 
 if $E \in \mathcal{L}$ $\Rightarrow$ $E + s,rE \in \mathcal{L}$ $\forall s,r \in {\mathbb{R}}$.\

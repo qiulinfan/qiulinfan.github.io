@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 34
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -26,7 +26,7 @@ title: "MATH 597: Measure Theory"
 
 ### general measurable function
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-mathcal-m-mathcal-n-measurable-function .definition concepts="mathcal-m-mathcal-n-measurable-function" aliases="(\\mathcal{M}, \\mathcal{N})-measurable function"}
+::: definition
 **Definition: (\\mathcal{M},\\mathcal{N})-measurable function**
 
 Let $(X,\mathcal{M})$, $(Y,\mathcal{N})$ be measurable spaces, 如果 $f:X\rightarrow Y$ 满足:
@@ -44,7 +44,7 @@ $$B \in \mathcal{N}\Longrightarrow f^{- 1}(B) \in \mathcal{M}$$
 
 这两个定义都表示的是: 性质不好的集合不会被映射到性质良好的集合. (但是性质良好的集合有可能被映射到性质不好的集合.)
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-composition-preserves-measurability .proposition concepts="composition-preserves-measurability" aliases="composition preserves measurability"}
+::: proposition
 **Proposition: composition preserves measurability**
 
 如果 $f$ 是 $(\mathcal{A},\mathcal{B})$-measurable 的, $g$ 是 $(\mathcal{B},\mathcal{C})$-measurable 的, 那么 $g \circ f$ 是 $(\mathcal{A},\mathcal{C})$-measurable 的.
@@ -56,7 +56,7 @@ $$B \in \mathcal{N}\Longrightarrow f^{- 1}(B) \in \mathcal{M}$$
 Trivial.
 :::
 
-::: {#lem-04-measurable-functions-and-integration-on-l-mu-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 Let $(X,\mathcal{M})$, $(Y,\mathcal{N})$ be measurable spaces, 如果 $\mathcal{N} = < \varepsilon >$ for some $\varepsilon \subseteq Y$, 那么
@@ -84,7 +84,7 @@ $$D: = \left\{ {E \subseteq Y \mid f^{- 1}(E) \in \mathcal{M}} \right\}$$
 同样类比 topological space, 如果 $Y$ 的 topology 存在一个 basis, 那么判断 $f:X\rightarrow Y$ 连续, 只需要判断这个 basis 的 preimage 都是 open 的就好了.
 :::
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 对于 topological space $X,Y$, let $f:X\rightarrow Y$
@@ -100,7 +100,7 @@ topological spaces 之间, 连续函数一定是在它们的 Borel algebra 之�
 
 ### real and complex-valued measurable function
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-real-valued-measurable-functions .definition concepts="real-valued-measurable-functions" aliases="(real-valued) measurable functions"}
+::: definition
 **Definition: (real-valued) measurable functions**
 
 Let $(X,\mathcal{A})$ be a measurable space, 对于 $f:X\rightarrow\bar{\mathbb{R}}$ 如果它是 $(\mathcal{A},\mathcal{B}(\bar{\mathbb{R}}))$-measurable 的, 我们直接简称它是 $\mathcal{A}$-measurable 的, 或者简称为 measurable 的.
@@ -122,7 +122,7 @@ $$\mathcal{B}(\bar{\mathbb{R}}) = \left\{ {E \subseteq \bar{\mathbb{R}} \mid E \
 以及, $\mathcal{B}(\bar{\mathbb{R}})$ 的 generating set 可以是所有的 $(a,\infty\rbrack$ 集合或者 $\lbrack - \infty,a)$ 集合**.** 所以**一个 map to $\bar{\mathbb{R}}$ 的函数是可测的, 当且仅当任意 $(a,\infty\rbrack$ 的 preimage 都可测**.\
 :::
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-complex-valued-measurable-functions .definition concepts="complex-valued-measurable-functions" aliases="(complex-valued) measurable functions"}
+::: definition
 **Definition: (complex-valued) measurable functions**
 
 如果 $f:X\rightarrow{\mathbb{C}}$ 满足: $\text{Re}\ f,\text{Im}\ f$ 都是 (real-valued) $X$-measurable 的, 那么也称 $f$ 是 $X$-measurable 的, 或者直接说是 measurable 的.
@@ -140,7 +140,7 @@ $$f = \text{Re}\ f + i\ \text{Im}\ f$$
 $$\mathcal{B}({\mathbb{C}}) \equiv \mathcal{B}({\mathbb{R}}^{2}) = \mathcal{B}({\mathbb{R}}) \otimes \mathcal{B}({\mathbb{R}})$$
 :::
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-lebesgue-measurable-functions-borel-measurable-functions .definition concepts="lebesgue-measurable-functions-borel-measurable-functions" aliases="Lebesgue measurable functions, Borel measurable functions"}
+::: definition
 **Definition: Lebesgue measurable functions, Borel measurable functions**
 
 Naturally, 如果 $f:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是一个 $\mathfrak{L}$-measurable 的函数, 那么我们称 $f$ 是 **Lebesgue measurable** 的.
@@ -148,7 +148,7 @@ Naturally, 如果 $f:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是一个 $\mathfrak{L
 同样地, 如果它是一个 $\mathcal{B}({\mathbb{R}})$-measurable 的函数, 称 $f$ 是 **Borel measurable** 的.
 :::
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-proposition-003 .proposition concepts="proposition-003"}
+::: proposition
 **Proposition**
 
 在任何 $\mathcal{M}$-measurable function $f$ 前 compose 一个 Borel measurable 的 function, 结果仍然是 $\mathcal{M}$-measurable 的, follows from composition preserves measurability.
@@ -160,7 +160,7 @@ Naturally, 如果 $f:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是一个 $\mathfrak{L
 Follows from def.
 :::
 
-::: {#ex-04-measurable-functions-and-integration-on-l-mu-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 $f^{2}$, $- 3f$, $\frac{1}{|f|}$ ($f \neq 0$) 都仍然是 $\mathcal{M}$-measuble 的.
@@ -168,8 +168,8 @@ $f^{2}$, $- 3f$, $\frac{1}{|f|}$ ($f \neq 0$) 都仍然是 $\mathcal{M}$-measubl
 
 ### arithmetic and sequential preservation of measurable functions
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-addition-and-multiplication-measuability .proposition concepts="addition-and-multiplication-measuability" aliases="addition and multiplication 保留 measuability"}
-**Proposition: addition and multiplication 保留 measuability**
+::: proposition
+**Proposition: addition and multiplication preserve measurability**
 
 如果 $f,g$ 是 $\mathcal{M}$-measurable function, 那么 $f + g,fg$ 也是.
 :::
@@ -194,7 +194,7 @@ $$fg = \frac{1}{2}((f + g)^{2} - f^{2} - g^{2})$$
 于是也 finishes the proof, following 前一个 proposition.
 :::
 
-::: {#lem-04-measurable-functions-and-integration-on-l-mu-sequential-behavior-of-real-valued-measurable-function .lemma concepts="sequential-behavior-of-real-valued-measurable-function" aliases="sequential behavior of real-valued measurable function"}
+::: lemma
 **Lemma: sequential behavior of real-valued measurable function**
 
 如果 $\left\{ {f_{n}:X\rightarrow\bar{\mathbb{R}}} \right\}_{n \in {\mathbb{N}}}$ 是一个 seq of $\mathcal{M}$-measurable functions, 那么
@@ -245,7 +245,7 @@ $$(sup_{j}f_{j})^{- 1}((a,\infty\rbrack) = \bigcup\limits_{1}^{\infty}f_{j}^{- 1
 以及得出了一个很重要的结论: **可测函数的 seq 的各种极限仍然是可测函数.**
 :::
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-corollary-001 .corollary concepts="corollary-001"}
+::: corollary
 **Corollary**
 
 如果 $\left\{ {f_{n}:X\rightarrow\bar{\mathbb{R}}} \right\}_{n \in {\mathbb{N}}}$ 是一个 seq of $\mathcal{M}$-measurable functions, 且在任意 $x$ 处极限都存在, 那么
@@ -261,7 +261,7 @@ $$f(x) := \lim\limits_{j\rightarrow\infty}f_{j}(x)$$
 directly follows from lemma. 因为 $x$ 处极限如果存在, 那么 $\sup_{f}f_{j}(x) = \inf_{j}f_{j}(x)$
 :::
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 $f,g$ $\mathcal{M}$-measurable $\Longrightarrow$ $\max(f,g),\min(f,g)$$\mathcal{M}$- measurable
@@ -289,7 +289,7 @@ two element sequence, 剩余的用空集, 于是 follows form above.
 
 ### indicator and simple function
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-characteristic-indicator-function .definition concepts="characteristic-indicator-function" aliases="characteristic (indicator) function"}
+::: definition
 **Definition: characteristic (indicator) function**
 
 Given $E \subseteq X$, 我们定义:
@@ -300,7 +300,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-::: {#lem-04-measurable-functions-and-integration-on-l-mu-lemma-003 .lemma concepts="lemma-003"}
+::: lemma
 **Lemma**
 
 如果 $(X,\mathcal{M})$ 是一个 measurable space, 那么一个 indicator function
@@ -310,7 +310,7 @@ $$\begin{matrix}
 
 indicator function measurable 当且仅当它 indicate 的集合是 measurable 的.
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-simple-function .definition concepts="simple-function" aliases="simple function"}
+::: definition
 **Definition: simple function**
 
 一个 simple function on measurable space $(X,\mathcal{A})$ 是一个 $\mathcal{A}$-measurable function $\phi:X\rightarrow{\mathbb{C}}$, taking only finitely many values.
@@ -318,7 +318,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 即: $\phi(X) = \left\{ {c_{1},\cdots,c_{k}} \right\}$
 :::
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-a-sum-of-indicator-functions-of-measurable-sets-simple-function .proposition concepts="a-sum-of-indicator-functions-of-measurable-sets-simple-function" aliases="使用 a sum of indicator functions of measurable sets 来定义 simple function"}
+::: proposition
 **Proposition: 使用 a sum of indicator functions of measurable sets 来定义 simple function**
 
 对于 simple function $\phi:X\rightarrow{\mathbb{C}}$ s.t. $\phi(X) = \left\{ {c_{1},\cdots,c_{n}} \right\}$, 我们也可以定义它为:
@@ -344,7 +344,7 @@ $$\bigsqcup\limits_{j = 1}^{n}E_{j} = X$$
 其中通常有一个 $E_{j}$ 上 $\phi$ 的值是 0.
 :::
 
-::: {#lem-04-measurable-functions-and-integration-on-l-mu-lemma-004 .lemma concepts="lemma-004"}
+::: lemma
 **Lemma**
 
 如果 $\phi,\psi:X\rightarrow{\mathbb{C}}$ 是 simple functions, 那么
@@ -370,7 +370,7 @@ trivial.
 
 ### measurable function is a limit of simple functions
 
-::: {#thm-04-measurable-functions-and-integration-on-l-mu-approximating-a-nonneg-measurable-function-by-simple-function .theorem concepts="approximating-a-nonneg-measurable-function-by-simple-function" aliases="approximating a nonneg measurable function by simple function"}
+::: {#thm-04-measurable-functions-and-integration-on-l-mu-approximating-a-nonneg-measurable-function-by-simple-function .theorem}
 **Theorem: approximating a nonneg measurable function by simple function**
 
 任意的 measurable $f:X\rightarrow\lbrack 0,\infty\rbrack$ 都是 **pointwise limit** of an **increasing sequence of simple functions** $\left\{ {\phi_{n}:X\rightarrow\lbrack 0,\infty\rbrack} \right\}_{n \in {\mathbb{N}}}$.
@@ -420,8 +420,8 @@ $$0 \leq f - \phi_{n} \leq \frac{1}{2^{n}}$$
 我们在构造 simple function 的时候这样用到 measurability: 这里的每个 $\phi_{n}$ 是 simple function, 是由于 $f$ measurable, 以至于每个 **$E_{n}^{k},F_{n}$ 作为 interval 的 preimage, 都是 measurable sets.**
 :::
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-approximating-a-complex-valued-measurable-function-by-simple-fun .corollary concepts="approximating-a-complex-valued-measurable-function-by-simple-fun" aliases="approximating a complex-valued measurable function by simple function"}
-**Corollary: approximating a complex-valued measurable function by simple function**
+::: corollary
+**Corollary: simple approximation of complex measurable functions**
 
 对于任意的 measurable $f:X\rightarrow{\mathbb{C}}$, 都存在 a seq of simple functions
 
@@ -442,7 +442,7 @@ $$\left. 0 \leq \middle| \phi_{1} \middle| \leq \middle| \phi_{2} \middle| \leq 
 
 ### integration of non-neg functions
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-l-space-and-integration-on-it .definition concepts="l-space-and-integration-on-it" aliases="L^+ space and integration on it"}
+::: definition
 **Definition: L\^{+} space and integration on it**
 
 给定一个 measure space $(X,\mathcal{M},\mu)$ 我们定义:
@@ -478,7 +478,7 @@ measure theory 中的积分理论是把从 ${\mathbb{R}}^{n}$ 出发的函数 �
 笔者感觉积分理论就是在一个抽象空间上，通过一个抽象的密度函数(被积函数) 以及体积指标(measure function), 得到一个抽象质量。由于这个理念本身是从 ${\mathbb{R}}^{n}$ 上 generalize 的，因而各种不同的积分理论在 ${\mathbb{R}}^{n}$ 上的积分总是 coincide 的
 :::
 
-::: {#def-04-measurable-functions-and-integration-on-l-mu-integration-on-a-subset .definition concepts="integration-on-a-subset" aliases="integration on a subset"}
+::: definition
 **Definition: integration on a subset**
 
 对非负 **simple functions $\phi = \sum_{j = 1}^{n}a_{j}\chi_{E_{j}} \in L^{+}(\mu)$**, 我们定义 **the integral of $\phi$ on $A \in \mathcal{M}$ with respect to $\mu$** by:
@@ -496,7 +496,7 @@ $$\int_{A}fd\mu := \sup\left\{ {\int_{A}\phi d\mu \mid 0 \leq \phi \leq f,\phi\ 
 $$\int_{A}\phi d\mu := \int\phi\chi_{A} d\mu = \sum\limits_{j}a_{j}\chi_{A \cap E_{j}}$$
 :::
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-integral-of-simple-functions .proposition concepts="integral-of-simple-functions" aliases="integral of simple functions 的性质"}
+::: proposition
 **Proposition: integral of simple functions 的性质**
 
 Let $\phi,\psi$ be simple functions in $L^{+}(\mu)$, 有:
@@ -550,7 +550,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 
 ### MCT
 
-::: {#thm-04-measurable-functions-and-integration-on-l-mu-monotone-convergence-theorem .theorem concepts="monotone-convergence-theorem" aliases="monotone convergence theorem"}
+::: theorem
 **Theorem: monotone convergence theorem**
 
 Let $\left\{ f_{n} \right\}_{n \in {\mathbb{N}}}$ be a seq in $L^{+}(\mu)$, 并且有 $f_{n} \leq f_{n + 1}$ for each $n$.\
@@ -617,7 +617,7 @@ finishing the proof.
 
 以下为一个应用 MCT 得到的结论.
 
-::: {#ex-04-measurable-functions-and-integration-on-l-mu-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 取
@@ -645,7 +645,7 @@ $$\sum\limits_{1}^{\infty}f_{n}(j)\operatorname{\nearrow ︎}\sum\limits_{1}^{\i
 
 ### (countable) linearity of integral
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-corollary-004 .corollary concepts="corollary-004"}
+::: corollary
 **Corollary**
 
 $$f,g \in L^{+}(\mu)\quad\Rightarrow\quad\int(f + g) = \int f + \int g$$
@@ -691,7 +691,7 @@ $$\int(f + g) \geq \int f + \int g$$
 
 ### Tonelli for sum and integrals
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-tonelli-for-sum-and-integrals .corollary concepts="tonelli-for-sum-and-integrals" aliases="Tonelli for sum and integrals"}
+::: corollary
 **Corollary: Tonelli for sum and integrals**
 
 for $\left\{ f_{i} \right\}_{i \in {\mathbb{N}}}$ in $L^{+}(\mu)$, 有:
@@ -720,7 +720,7 @@ $$g_{n} = \sum\limits_{i = 1}^{n}f_{i}$$
 
 ### Fatou's Lemma
 
-::: {#thm-04-measurable-functions-and-integration-on-l-mu-fatou-s-lemma .theorem concepts="fatou-s-lemma" aliases="Fatou’s Lemma"}
+::: theorem
 **Theorem: Fatou's Lemma**
 
 令 $(f_{n})$ be a seq of functions in $L^{+}(\mu)$, then
@@ -760,7 +760,7 @@ $$\operatorname{lim\, inf}\limits_{n}\int f_{n} \geq \operatorname{lim\, inf}\li
 积分的极限是一个 numerical seq 的极限, 比较 robust. 而函数的逐点极限是一个比较不稳定的事情, **在对函数逐点极限的过程中, 它的 \"质量\" 会存在一个比较大的损失, 因为其中可能包含了 uncountably many 个点的函数值的逐点极限的累积, 而积分的极限只是单个点的逐点极限. 因而大小关系很显然.**
 :::
 
-::: {#ex-04-measurable-functions-and-integration-on-l-mu-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 取 $({\mathbb{R}},{\mathfrak{L}},m)$, 考虑 $L^{+}(m)$ 上的函数, 即非负 Lebesgue 可测函数.
@@ -798,7 +798,7 @@ $$\lim\int f_{n} = 1$$
 
 ### Chebyshev's inequality with corollaries
 
-::: {#lem-04-measurable-functions-and-integration-on-l-mu-chebyshev-s-inequality .lemma concepts="chebyshev-s-inequality" aliases="Chebyshev’s inequality"}
+::: lemma
 **Lemma: Chebyshev's inequality**
 
 对于 measure space $(X,\mathcal{M},\mu)$, 如果 $f \in L^{+}(\mu)$ 并且 $c > 0$, 那么
@@ -822,7 +822,7 @@ $$\int f \geq \int f\chi_{E} \geq \int c\chi_{E} = c\int\chi_{E} = c\mu(E)$$
 这是一个简单而常用的结论.
 :::
 
-::: {#prop-04-measurable-functions-and-integration-on-l-mu-0-0 .proposition concepts="0-0" aliases="非负函数积分为 0 等价于几乎处处为 0"}
+::: proposition
 **Proposition: 非负函数积分为 0 等价于几乎处处为 0**
 
 令 $f \in L^{+}(\mu)$, 有:
@@ -838,7 +838,7 @@ forward direction: directly follows from Chebyshev: set $A_{n} := \left\{ {f \ge
 backward direction: 对于 simple function, trivial by 积分的定义; 对于 general $f$, 通过 limit 得到 (它下方的所有 simple functions 也 a.e. 为 0 从而积分为 0).
 :::
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-corollary-006 .corollary concepts="corollary-006" aliases="几乎处处相等的非负函数积分相等"}
+::: corollary
 **Corollary: 几乎处处相等的非负函数积分相等**
 
 Let $f,g \in L^{+}(\mu)$ 且 $f = g$ a.e., 则有
@@ -854,7 +854,7 @@ Set $D: = \left\{ {x \mid f(x) \neq g(x)} \right\}$, 则 $\mu(D) = 0$ by def
 $$\int f = \int_{D}f + \int_{D^{c}}f = 0 + \int_{D^{c}}g = \int g$$
 :::
 
-::: {#cor-04-measurable-functions-and-integration-on-l-mu-liminf-version-of-mct .corollary concepts="liminf-version-of-mct" aliases="liminf version of MCT"}
+::: corollary
 **Corollary: liminf version of MCT**
 
 suppose $(f_{n})_{n \in {\mathbb{N}}}$ 是一个 seq of functions in $L^{+}(\mu)$, 且 $f_{n}\rightarrow f \in L^{+}(\mu)$, 则:
@@ -869,7 +869,7 @@ $$\operatorname{lim\, inf}\limits_{n}\int f_{n} \geq \int f$$
 **modify $f_{n}$ and $f$ on a null set** (thus without chaning the integral) 后, follows directly from **Fatou's lemma**,
 :::
 
-::: {#thm-04-measurable-functions-and-integration-on-l-mu-implies-support-sigma-finite .theorem concepts="implies-support-sigma-finite" aliases="积分收敛 \\implies 发散点集零测, 以及 support \\sigma-finite"}
+::: theorem
 **Theorem: 积分收敛 \\Longrightarrow 发散点集零测, 以及 support \\sigma-finite**
 
 如果 $f \in L^{+}(\mu)$ 且 $\left. |\int f \middle| < \infty \right.$, 则有:

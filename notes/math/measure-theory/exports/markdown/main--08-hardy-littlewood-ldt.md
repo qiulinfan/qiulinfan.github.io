@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 17
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -49,7 +49,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, **pdf/pmf 都是 cdf 
 
 ### $L_{loc}^{1}$ and local average
 
-::: {#def-08-hardy-littlewood-ldt-locally-integrable .definition concepts="locally-integrable" aliases="locally integrable"}
+::: definition
 **Definition: locally integrable**
 
 如果 measurable $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ 在任意 bounded subset of ${\mathbb{R}}^{n}$ 上的 integral 都 $< \infty$, 则称 function $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ 是 locally integrable 的, 写作 $f \in L_{loc}^{1}(m)$.
@@ -70,7 +70,7 @@ for all $x,r$.\
 这是比 $f \in L^{1}(m)$ 更弱的条件. For example: 连续函数一定是 $L_{loc}^{1}$ 的.
 :::
 
-::: {#ex-08-hardy-littlewood-ldt-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 考虑
@@ -82,7 +82,7 @@ $$\left. f(x) := \middle| x \middle| {}_{p},\quad x \in {\mathbb{R}}^{n} \right.
 $$f \in L_{loc}^{1}(m)\quad\Leftrightarrow\quad p > - n$$
 :::
 
-::: {#def-08-hardy-littlewood-ldt-average .definition concepts="average" aliases="average"}
+::: definition
 **Definition: average**
 
 对于 $f \in L_{loc}^{1}(m)$, 以及 bounded and Lebesgue measurable $E \subset {\mathbb{R}}^{n}$ with $m(E) > 0$, 我们定义:
@@ -97,7 +97,7 @@ $$A_{r}f(x) := \text{avg}_{B(r,x)}f$$
 表示它在 $x$ 为中心的 $r$ 为半径的 ball 上的 average.
 :::
 
-::: {#lem-08-hardy-littlewood-ldt-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 对于任意 $f \in L_{loc}^{1}$, $A_{r}f(x)$ 都是 jointly continuous in $r$ and $x$ 的. ($r > 0,x \in {\mathbb{R}}^{n}$)
@@ -118,7 +118,7 @@ $$\int f\chi_{B(x_{j},r_{j})}\rightarrow\int\chi_{B(x,r)}$$
 
 ### Hardy-Littlewood maximal function
 
-::: {#def-08-hardy-littlewood-ldt-hardy-littlewood-maximal-function .definition concepts="hardy-littlewood-maximal-function" aliases="Hardy-Littlewood maximal function"}
+::: definition
 **Definition: Hardy-Littlewood maximal function**
 
 对于 $f \in L_{loc}^{1}$, 我们定义它的 HL maximal function 为:
@@ -128,7 +128,7 @@ $$\left. Hf(x): = \sup\limits_{r > 0}A_{r} \middle| f \middle| (x) \right.$$
 
 HF maximal 函数 $Hf(x)$表示 $f$ 的绝对值函数在 $x$ 处能取到最大的 local average.
 
-::: {#thm-08-hardy-littlewood-ldt-hl-maximal-function-measurable .theorem concepts="hl-maximal-function-measurable" aliases="HL maximal function 是 measurable 的"}
+::: theorem
 **Theorem: HL maximal function 是 measurable 的**
 
 对于任意 $f \in L_{loc}^{1}$, $Hf$ 都是 measurable 的.
@@ -144,7 +144,7 @@ $$\left. (Hf)^{- 1}((a,\infty)) = \bigcup\limits_{r > 0}(A_{r} \middle| f \middl
 是 open 的, 因为 $\left. A_{r} \middle| f| \right.$ ctn, ctn function 下 open set 的 preimage 也 open.
 :::
 
-::: {#cor-08-hardy-littlewood-ldt-corollary-001 .corollary concepts="corollary-001"}
+::: corollary
 **Corollary**
 
 如果 $f:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)$ 是 lower semictn 的, 那么它一定 Borel (thus Lebesgue) measurable.
@@ -156,8 +156,8 @@ $$\left. (Hf)^{- 1}((a,\infty)) = \bigcup\limits_{r > 0}(A_{r} \middle| f \middl
 
 $$cB := B(x,cr)$$
 
-::: {#lem-08-hardy-littlewood-ldt-vitali-type-convering-lemma .lemma concepts="vitali-type-convering-lemma" aliases="Vitali-type convering lemma"}
-**Lemma: Vitali-type convering lemma**
+::: lemma
+**Lemma: Vitali-type covering lemma**
 
 For given collection of balls $\left\{ {B_{j} \subset {\mathbb{R}}^{n}} \right\}_{j = 1}^{k}$, 存在 **disjoint** subcollection $\left\{ {B_{j_{1}},\cdots,B_{j_{m}}} \right\}$ 使得
 
@@ -183,7 +183,7 @@ Prove without words:
 
 ### Hardy-Littlewood maximal theorem
 
-::: {#thm-08-hardy-littlewood-ldt-hl-maximal-theorem .theorem concepts="hl-maximal-theorem" aliases="HL maximal theorem"}
+::: theorem
 **Theorem: HL maximal theorem**
 
 For $L^{1}(m^{n})$, take constant $C := 3^{n}$, 则对于任意 $f \in L^{1}(m^{n})$, 都有:
@@ -235,7 +235,7 @@ $$\left. m(\left\{ {f > \alpha} \right\}) \leq \frac{1}{\alpha}\int \middle| f| 
 
 对应: Folland 3.4(2)
 
-::: {#def-08-hardy-littlewood-ldt-lebesgue-set .definition concepts="lebesgue-set" aliases="Lebesgue set"}
+::: definition
 **Definition: Lebesgue set**
 
 我们定义一个函数 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$ 的 Lebesgue set 为:
@@ -270,8 +270,8 @@ $$\begin{matrix}
 
 ### original LDT: locally $L^{1}$ 函数几乎每一点附近的函数均值都等于这一点上的值
 
-::: {#thm-08-hardy-littlewood-ldt-lebesgue-differentition-theorem .theorem concepts="lebesgue-differentition-theorem" aliases="Lebesgue differentition theorem"}
-**Theorem: Lebesgue differentition theorem**
+::: theorem
+**Theorem: Lebesgue differentiation theorem**
 
 对于任意的 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$, $L_{f}$ is Leb mble and $m(L_{f}^{c}) = 0$.
 :::
@@ -331,7 +331,7 @@ $$\left. m(\left\{ {Q > \alpha} \right\}) \leq \frac{2 \cdot 3^{n}}{\alpha}\int 
 从而得证.
 :::
 
-::: {#cor-08-hardy-littlewood-ldt-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 $$x \in L_{loc}^{1}({\mathbb{R}}^{n}))\Longrightarrow\lim\limits_{r\rightarrow 0^{+}}A_{r}f(x) = f(x) a.e.$$
@@ -363,7 +363,7 @@ $$\left. \lim\limits_{r\rightarrow 0}\frac{1}{2r}\int_{x - r}^{x + r} \middle| f
 
 ### density of a set at a point
 
-::: {#def-08-hardy-littlewood-ldt-density-of-a-set-at-a-point .definition concepts="density-of-a-set-at-a-point" aliases="density of a set at a point"}
+::: definition
 **Definition: density of a set at a point**
 
 对于 $E \subset {\mathbb{R}}^{n}$ Lebesgue measurable (which implies: $\chi_{E} \in L_{loc}^{1}$), 我们定义:
@@ -383,7 +383,7 @@ density, 一个点附近一个集合占的密度, 理解很直观.\
 不过, LDT 告诉我们:
 :::
 
-::: {#cor-08-hardy-littlewood-ldt-corollary-003 .corollary concepts="corollary-003"}
+::: corollary
 **Corollary**
 
 对于$E \subset {\mathbb{R}}^{n}$ Lebesgue measurable (which implies: $\chi_{E} \in L_{loc}^{1}$), 一定有:
@@ -400,7 +400,7 @@ $$\begin{matrix}
 因为这个 indicator function 是 measurable 的, 以及 locally $L^{1}$ 的. 所以**它在 $x$ 处的 density 就变成了它在 $x$ 处的均值**, 从而在 $E$ 上 a.e. 为 1, 在 $E^{c}$ 上 a.e. 为 0 (函数值).
 :::
 
-::: {#ex-08-hardy-littlewood-ldt-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 我们这里介绍一些 behavior 比较特殊的集合, 空间每点上这个集合的 density.\
@@ -434,7 +434,7 @@ $$D_{E}(0) = \frac{\alpha}{2}$$
 
 genralized LDT 表示**对形状不规则 (未必是 ball) 的收敛行为**, LDT 的 statement 仍然 stay true. 即, **只要 a family of Lebesgue mble sets $E_{r}$ shrink nicely to $x$, LDT 就满足.**
 
-::: {#thm-08-hardy-littlewood-ldt-generalized-ldt .theorem concepts="generalized-ldt" aliases="generalized LDT"}
+::: theorem
 **Theorem: generalized LDT**
 
 对于 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$, 任意的 $x \in L_{f}$, 令 $\left\{ {E_{r}(x)} \right\}$ 为 a family of Lebesgue measurable sets, 其中对于每个 $E_{r}(x)$ 都有:
@@ -460,7 +460,7 @@ $$\lim\limits_{r\rightarrow 0^{+}}\frac{\left. \int_{E_{r}(x)} \middle| f(y) - f
 
 LDT 最重要的作用是之一定义了在 **Lebesgue 积分理论下的一种形式的 FTC:**
 
-::: {#thm-08-hardy-littlewood-ldt-ftc-in-lebesgue .theorem concepts="ftc-in-lebesgue" aliases="FTC in Lebesgue "}
+::: theorem
 **Theorem: FTC in Lebesgue**
 
 对于 $f \in L_{loc}^{1}({\mathbb{R}})$, 任取 $x \in L_{f}$, 都有

@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 2
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -69,7 +69,7 @@ $$\begin{matrix}
 
 To confirm this equal to $\int\bar{f}\, d\nu$, we extend Folland prop 3.9 to the complex case.
 
-::: {#prop-hw10-on-lrn-theorem-complex-measure-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 For complex measure $\nu$ and $\sigma$-finite positive measure $\mu$ s.t. $\nu \ll \mu$, if $g \in L^{1}(\nu)$, then
@@ -215,7 +215,7 @@ $$\left. \left| \int_{X}hd\  \middle| \ \nu\ | \right| = \int_{X} \middle| h \mi
 **Claim: $h$ is constant $|\nu|$-a.e.**\
 We first prove a lemma:
 
-::: {#lem-hw10-on-lrn-theorem-complex-measure-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 Let $\mu$ be a finite positive measure.\

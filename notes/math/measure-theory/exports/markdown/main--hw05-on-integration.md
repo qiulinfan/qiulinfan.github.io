@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 1
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -639,7 +639,7 @@ So $\int_{\mathbb{R}}f < \infty$. This proves $f \in L^{1}({\mathbb{R}})$.\
 
 **of (c):**
 
-::: {#lem-hw05-on-integration-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 For $f \in L^{+}(\mu)$, if $f(x) = + \infty$ on a set $S$ where $\mu(S) > 0$, then $\int f = \infty$

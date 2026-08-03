@@ -13,8 +13,8 @@ keywords:
 - law of large numbers
 - central limit theorem
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 13
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes
 title: "Math 525: Probability"
@@ -27,7 +27,7 @@ title: "Math 525: Probability"
 
 ### Markov's ineqaulity and Chebyshev's inequality
 
-::: {#thm-04-lln-markovs-inequality .theorem aliases="Markov’s inequality" concepts="markovs-inequality"}
+::: theorem
 **Theorem: Markov's inequality**
 
 对于一个 non-negative random variable $X$ (即 $X \geq 0$ a.s.), 任取 $t > 0$, 都有
@@ -61,7 +61,7 @@ $${\mathbb{E}}\lbrack X\rbrack \geq t{\mathbb{E}}\lbrack\mathbf{1}_{\{{X \geq t}
 其值为 1 当 $X \geq t$ 时, 否则为 0. 对于任意的 $t > 0$, 有
 :::
 
-::: {#cor-04-lln-chebyshevs-inequality .corollary aliases="Chebyshev’s inequality" concepts="chebyshevs-inequality"}
+::: corollary
 **Corollary: Chebyshev's inequality**
 
 对于一个 random variable $X$ 和任意的 $t > 0$, 如果它的方差 $\text{Var}(X)$ 是有限的, 那么 有
@@ -87,7 +87,7 @@ $$\left. {\mathbb{P}}( \middle| X - {\mathbb{E}}\lbrack X\rbrack \middle| \geq t
 
 ### Cauchy-Schwarz and Jensen's ineq
 
-::: {#thm-04-lln-cauchy-schwarz-inequality .theorem aliases="Cauchy-Schwarz inequality" concepts="cauchy-schwarz-inequality"}
+::: theorem
 **Theorem: Cauchy-Schwarz inequality**
 
 对于任意的 random variables $X$ 和 $Y$, 都有
@@ -97,7 +97,7 @@ $$\left. |{\mathbb{E}}\lbrack XY\rbrack \middle| \leq \sqrt{{\mathbb{E}}\lbrack 
 
 这是 prob space 作为一个 measure space, 其上的函数空间 $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 作为一个 Hilbert space, 自然的 Cauchy-Schwarz inequality. 不赘述了.
 
-::: {#thm-04-lln-jensens-inequality .theorem aliases="Jensen’s inequality" concepts="jensens-inequality"}
+::: theorem
 **Theorem: Jensen's inequality**
 
 对于一个 convex function $\phi$ 和 任意的 random variable $X$, 只要 ${\mathbb{E}}\lbrack X\rbrack$ 和 ${\mathbb{E}}\lbrack\phi(X)\rbrack$ 都是 well-defined 的 (即 finite), 都有
@@ -127,7 +127,7 @@ $${\mathbb{E}}\lbrack\varphi(X)\rbrack \geq \varphi({\mathbb{E}}\lbrack X\rbrack
 
 我们在 measure theory 中最熟悉的三个定理. 复习一下. 这里不 prove 了. proof 请左转 measure theory notes.
 
-::: {#thm-04-lln-fatous-lemma .theorem aliases="Fatou’s Lemma" concepts="fatous-lemma"}
+::: theorem
 **Theorem: Fatou's Lemma**
 
 令 $\left\{ X_{n} \right\}$ 是一列 non-negative random variables, 那么
@@ -147,8 +147,8 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 而 pointwise liminf 的 expectation 就是对每个点都取最终稳定的最低水平, 从而避免了这些 spikes 的影响.
 :::
 
-::: {#thm-04-lln-monotone-convergence-theorem-mct .theorem aliases="Monotone Convergence Theorem (MCT)" concepts="monotone-convergence-theorem-mct"}
-**Theorem: Monotone Convergence Theorem (MCT)**
+::: theorem
+**Theorem: monotone convergence theorem**
 
 令 $\left\{ X_{n} \right\}$ 是一列递增的 non-negative random variables (即 $X_{n} \uparrow X$ a.s.), 那么 suppose $X := \lim_{n\rightarrow\infty}X_{n}$ a.e. exists, 那么 a.s. 有
 
@@ -161,8 +161,8 @@ $$\lim\limits_{n\rightarrow\infty}{\mathbb{E}}\lbrack X_{n}\rbrack = {\mathbb{E}
 如果 $X_{n}$ 是递减的, 那么 expectation 的 limit 就等于逐点 limit 的 expectation 了.
 :::
 
-::: {#thm-04-lln-dominated-convergence-theorem-dct .theorem aliases="Dominated Convergence Theorem (DCT)" concepts="dominated-convergence-theorem-dct"}
-**Theorem: Dominated Convergence Theorem (DCT)**
+::: theorem
+**Theorem: dominated convergence theorem**
 
 令 $\left\{ X_{n} \right\}$ 是一列 random variables, 并且存在一个 a.e. pointwise limit $X$ (即 $X_{n}\rightarrow X$ a.s.), 并且存在一个 integrable random variable $Y$ 作为一个 bound: 使得 $\left. |X_{n} \middle| \leq Y \right.$ a.s. 对所有的 $n$ 成立,
 
@@ -179,15 +179,15 @@ $$\lim\limits_{n\rightarrow\infty}{\mathbb{E}}\lbrack X_{n}\rbrack = {\mathbb{E}
 
 ### Tonneli and fubini
 
-::: {#thm-04-lln-tonnelis-theorem .theorem aliases="Tonneli’s Theorem" concepts="tonnelis-theorem"}
-**Theorem: Tonneli's Theorem**
+::: theorem
+**Theorem: Tonelli**
 
 对于一列 non-negative random variables $\left\{ X_{n} \right\}$, 累加和积分(求期望)的顺序可以交换:
 
 $${\mathbb{E}}\left\lbrack {\sum\limits_{n = 1}^{+ \infty}X_{n}} \right\rbrack = \sum\limits_{n = 1}^{+ \infty}{\mathbb{E}}\left\lbrack X_{n} \right\rbrack$$
 :::
 
-::: {#thm-04-lln-fubinis-theorem .theorem aliases="Fubini’s Theorem" concepts="fubinis-theorem"}
+::: theorem
 **Theorem: Fubini's Theorem**
 
 对于一列任意的 random variables $\left\{ X_{n} \right\}$, 只要其绝对值的 sum 的 expectation 是 finite 的 (或者绝对值的 expectation 的 sum 是 finite 的, by Tonneli 都是一样的), 那么就有 linearity of expectation 的推广:
@@ -207,7 +207,7 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 
 首先, 我们对 pointwise limit 和 uniform limit 的定义已经很熟悉了, 这里就不赘述了. (算了 uniform 还是提一嘴, 意思是我们需要 pointwise limit 的 收敛速度也是 uniform 的, 即对任意的 $\epsilon > 0$, 都存在一个 $N$ 使得对于所有的 $n \geq N$ 和所有的 $\omega$, 都有 $\left. |X_{n}(\omega) - X(\omega) \middle| < \epsilon \right.$, 是一个严格强于 pointwise 的收敛方式. )
 
-::: {#def-04-lln-rv .definition aliases="RV 序列的三种收敛方式" concepts="rv"}
+::: definition
 **Definition: RV 序列的三种收敛方式**
 
 - **converge a.s. (almost surely)** 或称 converge with probability 1:
@@ -247,7 +247,7 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 例如最经典的例子就是抛硬币: 我们连续抛 $n$ 次一个公平的硬币, 记录每次抛出正面 (记为 1) 或者反面 (记为 0), 然后计算这些结果的平均值, 随着 $n$ 的增加, 这个平均值会趋近于 0.5, 等于 理论的 expectation (这是个 Bernouli random variable, expectation = $p$).\
 LLN 有两个阶段, weak LLN 和 strong LLN, weak LLN 证明的是这个 convergence 是 in probability 的, 而 strong LLN 证明的是这个 convergence 是 a.s. 的. 就是说 strong LLN 是严格强于 weak LLN 的.
 
-::: {#thm-04-lln-weak-law-of-large-numbers .theorem aliases="weak Law of Large Numbers" concepts="weak-law-of-large-numbers"}
+::: {#thm-04-lln-weak-law-of-large-numbers .theorem}
 **Theorem: weak Law of Large Numbers**
 
 对于一列 i.i.d. 的 random variables $\left\{ X_{i} \right\}$, 只要这个 random variable 的 expectation 是 finite 的 ${\mathbb{E}}\lbrack X_{1}^{2}\rbrack < \infty$, 那么就有:
@@ -274,7 +274,7 @@ notice: 由于每个 $X_{i}$ 都是 i.i.d. 的, independence $\Longrightarrow$ u
 $$\left. {\mathbb{P}}\left( {\left| {S_{n}/n - \mu} \right| > \varepsilon} \right) = \frac{1}{\varepsilon^{2}n^{2}}\sum\limits_{n = 1}^{n}{\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{2}\rbrack = \frac{1}{\varepsilon^{2}n} \cdot n\ \text{Var}(X_{1})\overset{n\rightarrow\infty}{\rightarrow}0 \right.$$
 :::
 
-::: {#thm-04-lln-strong-law-of-large-numbers .theorem aliases="strong Law of Large Numbers" concepts="strong-law-of-large-numbers"}
+::: theorem
 **Theorem: strong Law of Large Numbers**
 
 在 weak LLN[Theorem 4.28](#thm-04-lln-weak-law-of-large-numbers) 的相同条件 (其实可以更弱, 让 $E\lbrack X_{1}\rbrack < \infty$ 即可) 下, 我们其实可以得到一个更强的结论:
@@ -354,7 +354,7 @@ $$\frac{X_{1} + \ldots + X_{n}}{n} = \frac{X_{1}^{+} + \ldots + X_{n}^{+}}{n} - 
 
 - 我们可以用 Chebyshev's inequality 来给出这个近似的误差 bound.
 
-::: {#ex-04-lln-pi .example aliases="估算 \\pi" concepts="-pi"}
+::: example
 **Example: 估算 \\pi**
 
 我们令 $X,Y \sim U(\lbrack - 1,1\rbrack)$

@@ -21,9 +21,6 @@ Suppose $mu$ is a regular (positive) Borel measure on $bb(R)^n$.
 We prove a lemma:
 
 #lemma(
-  id: "lem-hw11-on-regular-borel-measure-bv-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 For regular positive Borel measure $mu$ on $bb(R)^n$, fixing $r > 0$, $x mapsto mu\(B\(x\,r\)\)$ is Borel measurable.
 
@@ -48,9 +45,6 @@ Same trick is applied to $attach(limits(f), b: macron)$. We set $g_epsilon.alt\(
 Notice:
 
 #lemma(
-  id: "lem-hw11-on-regular-borel-measure-bv-lemma-002",
-  concepts: ("lemma-002",),
-  depends: (),
 )[
 if $\(X\,cal(A)\)$ is a measurable space; $f\,g : X arrow.r bb(R)$ are $\(cal(A)\,cal(B)\(bb(R)\)\)$ -measurable functions, then $ F\(x\):=\(f\(x\)\,g\(x\)\): X arrow.r bb(R)^2 $is a $\(cal(A)\,cal(B)\(bb(R)^2\)\)$-measurable function.
 
@@ -63,9 +57,6 @@ Since the diagonal ${\(x\,x\)\|x in bb(R) }$ is a closed set, it is a Borel set.
 
 ]
 #example(
-  id: "ex-hw11-on-regular-borel-measure-bv-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 #strong[of (c):]
 Consider $ I : = { 0 } union union.big_(j = 0)^oo\[2 / 3 dot.op 1 / 2^j\,1 / 2^j\] $
@@ -106,9 +97,6 @@ Recall that for two complex measures $lambda\,rho$, we define they are mutually 
 We first show an equivalent form of it, for further use. \
 
 #lemma(
-  id: "lem-hw11-on-regular-borel-measure-bv-lemma-003",
-  concepts: ("lemma-003",),
-  depends: (),
 )[
 For two complex measures $lambda\,rho$ $ lambda perp rho quad arrow.l.r.double quad exists A in cal(A) #h(0em) upright(" s.t. ") #h(0em)\|lambda\|\(A^c\)= 0 upright(" and ")\|rho\|\(A\)= 0 quad arrow.l.r.double quad\|lambda\|perp\|rho\| $
 
@@ -121,9 +109,6 @@ Since $A_(r r) inter A_(r i)$ is a null set for $rho_r\,rho_i$, thus a null set 
 and $lambda_i$, thus a null set for $lambda$. \ This finishes the construction of $A$, proving our lemma. Now we can apply the equivalent conditions of $lambda perp rho$ for positive, signed and complex measures. \ Now we prove this statement which immediately implies what we want:
 
 #proposition(
-  id: "prop-hw11-on-regular-borel-measure-bv-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 If complex measure $lambda$ and $rho$ on the same measurable space are mutually singular, then $ \|lambda + rho\|=\|lambda\|+\|rho\| $
 

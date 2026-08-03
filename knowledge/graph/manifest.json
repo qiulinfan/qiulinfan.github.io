@@ -1,0 +1,72 @@
+{
+  "counts": {
+    "edges": 363,
+    "nodes": 279,
+    "references": 9
+  },
+  "generator": "knowledge/scripts/knowledge.py",
+  "graph_sha256": "bc579a37353fd53cebe49715cc42ad53bad5ea08f74bef09ae9c7105d0ff2f0c",
+  "node_types": {
+    "discipline": 1,
+    "field": 3,
+    "knowledge": 257,
+    "topic": 18
+  },
+  "relations": {
+    "contains": 278,
+    "generalizes": 1,
+    "prerequisite-for": 84
+  },
+  "schema": "qlkg-v2",
+  "source_hashes": {
+    "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "0841aa6949c932fe90416ed6753070e6f4580479daf45feec2a9ecef703d81eb",
+    "notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ": "f82c730da07ba1a615b15a0fb85820bbe69d54126a315f8fe5eeb28c9215c838",
+    "notes/math/measure-theory/chapters/03-distribution-function-与-lebesgue-stieltjes-measures.typ": "30558efcc4e880fc58a37e4b09170511ae0067592bb7aceb7ee8d6befa0e330a",
+    "notes/math/measure-theory/chapters/04-measurable_functions_and_integration_on_L^+(mu).typ": "0674b2312b177a4f957bbd61b0a455a069b87be33ff35ad8cd0d1eb8f3770752",
+    "notes/math/measure-theory/chapters/05-integration_of_real_and_complex_functions.typ": "40783d315bcc1b5cb59cf96053a9944cbd907c071033efa804bb1718c817b2a3",
+    "notes/math/measure-theory/chapters/06-product_measure&Fubini-Tonelli.typ": "01fb3b40538b6b2654dd8c238f73d7049e7753c388f3fe4aff785d0158a6205b",
+    "notes/math/measure-theory/chapters/07-Lebesgue_measure_on_R^n.typ": "55709d5049eec2fcd2a02284cb262c2f0109ec4d7af373fbb79e55d884803638",
+    "notes/math/measure-theory/chapters/08-Hardy-Littlewood&LDT.typ": "4e3c86301125dc49bf98c8309285d0762c5c006a84668822c61a3cbab5e31e05",
+    "notes/math/measure-theory/chapters/09-L^P-space_and_inequalities.typ": "5e581859b57a1a52f18993fe3d20add484d54a81c17672edeb5da15b52d2f632",
+    "notes/math/measure-theory/chapters/10-signed_measure&Jordan-decomposition.typ": "46cf4f23a45eb8328dcba6acc07411dac21c5eb6bd0ca6a5e9a84b806bb6fcf4",
+    "notes/math/measure-theory/chapters/11-Radon-Nikodym_theorem.typ": "09ee262131c14fd241e221e5304640250d7e48dea668ca2ed2485fff67b1774f",
+    "notes/math/measure-theory/chapters/12-differentiation_on_real_spaces.typ": "3410bad6807dc169a7c8ea2a0ea11796b0e777266745e80e39c543fb85e9c29a",
+    "notes/math/measure-theory/chapters/13-the_dual_of_L^p-spaces.typ": "3bcb65d134d38c89ef26ee01cef180d459307e87ef11600afcfaa4fa1c6b74a3",
+    "notes/math/measure-theory/extras.typ": "cec589036c2318f597ae2b921022bbf82d18a75408f362c967ee93a013be6996",
+    "notes/math/measure-theory/extras/hw00.typ": "0ebd2f0785ce5f25e1c8f87198ae757d0d63b2c2c264e221661675929ab517e1",
+    "notes/math/measure-theory/extras/lec36-problem-solving.typ": "a76db7a59ae6a6c20aa476aa7efb048414bb0a4587a1ac84ed42c1b800d35a70",
+    "notes/math/measure-theory/extras/lec37-problem-solving-iii.typ": "c55c7e716bc90ce4962f511990da6e637116f8cbd259eff9c1cdc2a9a7d0776c",
+    "notes/math/measure-theory/extras/lec38-extra-topics.typ": "e4290034476f6d9c7a137a8eaf36a18fa82e134d8cc09c651fe2e40077ec3bec",
+    "notes/math/measure-theory/extras/practice_problems.typ": "28569cf73d4194c2fe367db4f9a4265802d3382eca3e07e84a5b3ab3d0dec1c4",
+    "notes/math/measure-theory/homeworks/hw01-on_sigma-algebra.typ": "06df72648a738a2ecfe353e1e6e2a744f135e85329cd79aa7b9b870502c697eb",
+    "notes/math/measure-theory/homeworks/hw02-on_Carathéodorys&Hahn-Kolmogrov-thm.typ": "8acb893731de01173c97279256091ccdd0c907696b5fbe232eb90ab5f547fb38",
+    "notes/math/measure-theory/homeworks/hw03-on_Lebesgue-Stieljes-measures.typ": "16570afb3b92460ce26e5a20d9e849996df419268429912fe8bf658dc3591ea4",
+    "notes/math/measure-theory/homeworks/hw04-on_measurable-functions.typ": "bd9e4faca69a4da941b3d251bf45bcd3e883c1c931f9fda76b9c86ab404a0517",
+    "notes/math/measure-theory/homeworks/hw05-on_integration.typ": "606af9c22f0aa270ed29f885431bb23c50508b2ec8adf0884d097e6951713d72",
+    "notes/math/measure-theory/homeworks/hw06-on_product-measure&mode-of-convergence.typ": "7951bde504ef2e01c1d351fee72d63918be5883acd8ebb4af222f9576900b11e",
+    "notes/math/measure-theory/homeworks/hw07-on_differentiaion.typ": "6d7f1b89f162b44400172ab351c53699fc8fb62c023816903bf18c4d2178755d",
+    "notes/math/measure-theory/homeworks/hw08-on_L^p-spacecs.typ": "7f6339aa96ee474b79774b8eb032091b228706600e62f91e69547144bc974988",
+    "notes/math/measure-theory/homeworks/hw09-on_signed-measure.typ": "f9c62d1af62acae202b9aa5a273c01b71bef353c419d090e204490b65886b2da",
+    "notes/math/measure-theory/homeworks/hw10-on_LRN-theorem&complex-measure.typ": "8d6b440c6fe0207bc3e0b67023eee8fbfbcca9533f264b0b37e56a39f522353f",
+    "notes/math/measure-theory/homeworks/hw11-on_regular-borel-measure&BV.typ": "921b1a11659d85fe0680fadfadf2fcca15e70f3871619658cf97c0c5ef5d94d1",
+    "notes/math/measure-theory/homeworks/hw12-on_absolutely-continuous-functions.typ": "c267f694d1095fd43e58d0518521406e4631d0ef966e7388cf6ea6d950831ee0",
+    "notes/math/measure-theory/main.typ": "73744ef631a5c9980b1fccb048d965d57518697a3d40a0cb38b359bde5e5d6a3",
+    "notes/math/prob/chapters/01-combinatorics&prob_space.typ": "b4858e3dc617b6c19718caecfa94246d97b30def80b20ff8b71b58f3cb9c11f3",
+    "notes/math/prob/chapters/02-random-variables.typ": "ae29178c950e3a9bf05dbd5e81414c3c9b17705260ce8b01363a50b28f1f7e4f",
+    "notes/math/prob/chapters/03-joint&conditional-distribution.typ": "2c62dde6f7648109ef38ff767eec49396b8493d108261e67a0d275881b05b5dc",
+    "notes/math/prob/chapters/04-LLN.typ": "cdd689838e6f08a4d1e6876b7f8a7225469aca3128ec9cc5e9c392521b2b5d78",
+    "notes/math/prob/chapters/05-CLT.typ": "88d799268db0cc91a0a37db031d5e89034d3d441d7e3d5c617ddc8aa3ba01e5a",
+    "notes/math/prob/homeworks.typ": "afd29a23d0793016a219fdd2e2c216c79bc853a2db176ff7cadf161f46474845",
+    "notes/math/prob/homeworks/hw01.typ": "2ab64e15dc39409cd91bea4a6616f9e6902025fdb420e7f67146ec7ab80ac848",
+    "notes/math/prob/homeworks/hw02.typ": "26786530bee3fb0effac934c698da60448f6c16ecae770b46e248c55fc946ed4",
+    "notes/math/prob/homeworks/hw03.typ": "653b07f3df98496ae1de733c1a6d9fc383d500049e63656b81b5b5934a688a83",
+    "notes/math/prob/homeworks/hw04.typ": "646ee9e152654ea3fd480cc67a942ed6f97124e39bf85184e7e05c3d05e821e8",
+    "notes/math/prob/homeworks/hw05.typ": "ad41fb90e81966ec24edd8ece581634b7fd071e5e43ab46f1a4211fb46ea2fab",
+    "notes/math/prob/homeworks/hw06.typ": "199f72b96afa615c50fd485692bdfd499e6929870729e8db73903c3cee30dfd5",
+    "notes/math/prob/main.typ": "49c2e69c915c2641146e03e9355f018eb75949629d46184588bff0b7c2f804d6"
+  },
+  "statuses": {
+    "active": 257,
+    "meta": 22
+  }
+}

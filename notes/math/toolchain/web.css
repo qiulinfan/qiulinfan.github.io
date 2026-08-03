@@ -54,6 +54,19 @@ a {
   text-underline-offset: 0.16em;
 }
 
+.ql-kn {
+  color: var(--ql-ink);
+  font-weight: 700;
+  scroll-margin-top: 1.5rem;
+}
+
+.ql-ref {
+  color: var(--ql-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
 .ql-site {
   min-height: 100vh;
 }
@@ -260,7 +273,8 @@ a {
 
 .ql-callout--theorem,
 .ql-callout--lemma,
-.ql-callout--corollary {
+.ql-callout--corollary,
+.ql-callout--axiom {
   border-color: #f3c59f;
   border-left-color: var(--ql-orange);
   background: var(--ql-orange-soft);
@@ -268,7 +282,8 @@ a {
 
 .ql-callout--theorem .ql-callout__head,
 .ql-callout--lemma .ql-callout__head,
-.ql-callout--corollary .ql-callout__head {
+.ql-callout--corollary .ql-callout__head,
+.ql-callout--axiom .ql-callout__head {
   color: #ad4b0b;
   background: rgba(242, 122, 36, 0.09);
 }

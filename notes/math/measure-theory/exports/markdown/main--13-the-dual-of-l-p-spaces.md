@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 8
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -35,7 +35,7 @@ recall Hölder's ineq: for $1 \leq p,q \leq \infty,\frac{1}{p} + \frac{1}{q} = 1
 
 $$\left. | \middle| fg \middle| \middle| {}_{1} \leq \middle| \middle| f \middle| \middle| {}_{p} \middle| \middle| g \middle| |_{q} \right.$$
 
-::: {#ex-13-the-dual-of-l-p-spaces-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 Prove:
@@ -62,7 +62,7 @@ $$f:V\rightarrow{\mathbb{K}}$$
 
 对于作为 NVS 的 $V$, 我们还可以定义一个 linear functional 的 boundedness.
 
-::: {#def-13-the-dual-of-l-p-spaces-bounded-linear-functional .definition concepts="bounded-linear-functional" aliases="bounded linear functional "}
+::: definition
 **Definition: bounded linear functional**
 
 Let $V$ be a $\mathbb{K}$-NVS, $f:V\rightarrow{\mathbb{K}}$ be a linear functional.\
@@ -78,7 +78,7 @@ $$\left. |f(v) \middle| \leq C \middle| \middle| v \middle| \middle| ,\quad\fora
 作为函数的 boundedness 表示函数值的有界性, 而**作为 linear map 的 boundedness (此处) 表示它的作用效果的 boundedness, 不会把一个 vector 放大太多倍.**
 :::
 
-::: {#prop-13-the-dual-of-l-p-spaces-linear-functional-bounded-iff-ctn-at-0 .proposition concepts="linear-functional-bounded-iff-ctn-at-0" aliases="linear functional bounded \\iff ctn at 0"}
+::: proposition
 **Proposition: linear functional bounded \\Leftrightarrow ctn at 0**
 
 if $f:V\rightarrow{\mathbb{K}}$ is a linear functional, TFAE:
@@ -117,7 +117,7 @@ recall in 395: 实际上这个性质应该对所有的 linear map 都成立, 不
 以及: **linear map between finite dim spaces 总是 bounded 的, 从而总是 ctn 的**. 不过这里我们要讨论的就是 infinite dim spaces. 比如 $L^{p}$.
 :::
 
-::: {#def-13-the-dual-of-l-p-spaces-dual-space .definition concepts="dual-space" aliases="dual space"}
+::: definition
 **Definition: dual space**
 
 If $V$ is a NVS, 我们定义它的 **dual space** as:
@@ -125,7 +125,7 @@ If $V$ is a NVS, 我们定义它的 **dual space** as:
 $$V^{\ast} := \left\{ {\text{bounded linear functionals} f:V\rightarrow{\mathbb{K}}} \right\}$$
 :::
 
-::: {#def-13-the-dual-of-l-p-spaces-norm-of-dual-space-dual-norm .definition concepts="norm-of-dual-space-dual-norm" aliases="norm of dual space: 即 dual norm"}
+::: definition
 **Definition: norm of dual space: 即 dual norm**
 
 Given $f \in V^{\ast}$, set
@@ -147,7 +147,7 @@ $$\left. |f(v) \middle| \leq \parallel f\underset{\ast}{\parallel} \middle| v| \
 
 ### $V^{\ast}$ being a Banach space
 
-::: {#thm-13-the-dual-of-l-p-spaces-dual-space-is-always-banach .theorem concepts="dual-space-is-always-banach" aliases="dual space is always Banach"}
+::: theorem
 **Theorem: dual space is always Banach**
 
 对于**任意的 NVS** $V$: $V^{\ast}$ 都是一个 Banach space. (not assuming $V$ Banach).
@@ -211,7 +211,7 @@ $$\left. \parallel f_{n} - f \parallel = \sup\limits_{\parallel x \parallel = 1}
 
 Actually 这个 Theorem 有更 general 的形式:
 
-::: {#thm-13-the-dual-of-l-p-spaces-theorem-002 .theorem concepts="theorem-002"}
+::: theorem
 **Theorem**
 
 对于任意 nvm $V$ 和 Banach $W$, $\mathcal{L}(V,W)$ 一定是 Banach 的.
@@ -221,7 +221,7 @@ Proof 见 Folland 5.4.
 
 ### $(L^{p})^{\ast} = L^{q}$, $\frac{1}{p} + \frac{1}{q} = 1$
 
-::: {#thm-13-the-dual-of-l-p-spaces-conjugate-exponent-p-q-l-p-l-q-dual-space .theorem concepts="conjugate-exponent-p-q-l-p-l-q-dual-space" aliases="对于互为 conjugate exponent 的 p,q, L^p 是 L^q 的 dual space"}
+::: theorem
 **Theorem: 对于互为 conjugate exponent 的 p,q, L\^{p} 是 L\^{q} 的 dual space**
 
 For $1 < p,q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$, we have:

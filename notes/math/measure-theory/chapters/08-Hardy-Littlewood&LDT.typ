@@ -15,11 +15,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, #strong[pdf/pmf 都�
 === $L_(l o c)^1$ and local average
 <l1_loc-and-local-average>
 #definition(
-  title: [locally integrable],
-  id: "def-08-hardy-littlewood-ldt-locally-integrable",
-  concepts: ("locally-integrable",),
-  depends: (),
-  aliases: ("locally integrable",),
+  title: [#kn[locally integrable]],
 )[
 如果 measurable $f : bb(R)^n arrow.r bb(C)$ 在任意 bounded subset of $bb(R)^n$ 上的 integral 都 $< oo$, 则称 function $f : bb(R)^n arrow.r bb(C)$ 是 locally integrable 的, 写作 $f in L_(l o c)^1\(m\)$.
 
@@ -29,28 +25,18 @@ Radon Nikodym derivative 的应用: 比如在概率论中, #strong[pdf/pmf 都�
 
 ]
 #example(
-  id: "ex-08-hardy-littlewood-ldt-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 考虑 $ f\(x\):=\|x\|^p\,quad x in bb(R)^n $
 (使用 polar coord) 可验证: $ f in L_(l o c)^1\(m\)quad arrow.l.r.double quad p > - n $
 
 ]
 #definition(
-  title: [average],
-  id: "def-08-hardy-littlewood-ldt-average",
-  concepts: ("average",),
-  depends: (),
-  aliases: ("average",),
+  title: [#kn[average]],
 )[
 对于 $f in L_(l o c)^1\(m\)$, 以及 bounded and Lebesgue measurable $E subset bb(R)^n$ with $m\(E\)> 0$, 我们定义: $ "avg"_E f : = frac(1, m\(E\)) integral_E f #h(0em) d m $ 为 $f$ 在 $E$ 上的 #strong[average value]. \ 特别地, 当 $E$ 为一个 ball $B\(r\,x\)$ 时, 我们可以写作: $ A_r f\(x\):= "avg"_(B\(r\,x\)) f $表示它在 $x$ 为中心的 $r$ 为半径的 ball 上的 average.
 
 ]
 #lemma(
-  id: "lem-08-hardy-littlewood-ldt-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 对于任意 $f in L_(l o c)^1$, $A_r f\(x\)$ 都是 jointly continuous in $r$ and $x$ 的. ($r > 0\,x in bb(R)^n$)
 
@@ -63,11 +49,7 @@ Suppose $\(x_j\,r_j\)arrow.r\(x\,r\)$ in $bb(R)^n times bb(R)_(> 0)$. \ 于是 f
 === Hardy-Littlewood maximal function
 <hardy-littlewood-maximal-function>
 #definition(
-  title: [Hardy-Littlewood maximal function],
-  id: "def-08-hardy-littlewood-ldt-hardy-littlewood-maximal-function",
-  concepts: ("hardy-littlewood-maximal-function",),
-  depends: (),
-  aliases: ("Hardy-Littlewood maximal function",),
+  title: [#kn[Hardy-Littlewood maximal function]],
 )[
 对于 $f in L_(l o c)^1$, 我们定义它的 HL maximal function 为: $ H f\(x\): = sup_(r > 0) A_r\|f\|\(x\) $
 
@@ -75,11 +57,7 @@ Suppose $\(x_j\,r_j\)arrow.r\(x\,r\)$ in $bb(R)^n times bb(R)_(> 0)$. \ 于是 f
 HF maximal 函数 $H f\(x\)$表示 $f$ 的绝对值函数在 $x$ 处能取到最大的 local average.
 
 #theorem(
-  title: [HL maximal function 是 measurable 的],
-  id: "thm-08-hardy-littlewood-ldt-hl-maximal-function-measurable",
-  concepts: ("hl-maximal-function-measurable",),
-  depends: (),
-  aliases: ("HL maximal function 是 measurable 的",),
+  title: [#kn[HL maximal function 是 measurable 的]],
 )[
 对于任意 $f in L_(l o c)^1$, $H f$ 都是 measurable 的.
 
@@ -89,9 +67,6 @@ Follows from lemma. $ \(H f\)^(- 1)\(\(a\,oo\)\)= union.big_(r > 0)\(A_r\|f\|\)^
 
 ]
 #corollary(
-  id: "cor-08-hardy-littlewood-ldt-corollary-001",
-  concepts: ("corollary-001",),
-  depends: (),
 )[
 如果 $f : bb(R)^n arrow.r\[0\,oo\)$ 是 lower semictn 的, 那么它一定 Borel (thus Lebesgue) measurable.
 
@@ -101,11 +76,7 @@ Follows from lemma. $ \(H f\)^(- 1)\(\(a\,oo\)\)= union.big_(r > 0)\(A_r\|f\|\)^
 对于一个 ball $B = B\(x\,r\)$ 以及一个 constant $c$, 我们定义: $ c B := B\(x\,c r\) $
 
 #lemma(
-  title: [Vitali-type convering lemma],
-  id: "lem-08-hardy-littlewood-ldt-vitali-type-convering-lemma",
-  concepts: ("vitali-type-convering-lemma",),
-  depends: (),
-  aliases: ("Vitali-type convering lemma",),
+  title: [#kn[Vitali-type covering lemma]],
 )[
 For given collection of balls ${ B_j subset bb(R)^n }_(j = 1)^k$, 存在 #strong[disjoint] subcollection ${ B_(j_1)\,dots.h.c\,B_(j_m) }$ 使得$ union.big_(j = 1)^k B_j subset union.big_(i = 1)^m\(3 B_(j_i)\) $
 (于是, $ m\(union.big_(j = 1)^k B_j\)lt.eq 3^n m\(union.big_(i = 1)^m\(3 B_(j_i)\)\) $)
@@ -125,11 +96,7 @@ Greedy Algrithm: 直接按照半径大小排序, 取出最大的 disjoint subcol
 === Hardy-Littlewood maximal theorem
 <hardy-littlewood-maximal-theorem>
 #theorem(
-  title: [HL maximal theorem],
-  id: "thm-08-hardy-littlewood-ldt-hl-maximal-theorem",
-  concepts: ("hl-maximal-theorem",),
-  depends: (),
-  aliases: ("HL maximal theorem",),
+  title: [#kn[HL maximal theorem]],
 )[
 For $L^1\(m^n\)$, take constant $C := 3^n$, 则对于任意 $f in L^1\(m^n\)$, 都有: $ m\({ x : H f\(x\)> alpha }\)lt.eq C / alpha integral\|f\| $
 
@@ -155,11 +122,7 @@ Set $ E_alpha : = { x : H f\(x\)> alpha } subset bb(R)^n $
 对应: Folland 3.4(2)
 
 #definition(
-  title: [Lebesgue set],
-  id: "def-08-hardy-littlewood-ldt-lebesgue-set",
-  concepts: ("lebesgue-set",),
-  depends: (),
-  aliases: ("Lebesgue set",),
+  title: [#kn[Lebesgue set]],
 )[
 我们定义一个函数 $f in L_(l o c)^1\(bb(R)^n\)$ 的 Lebesgue set 为: $ L_f := { x in bb(R)^n divides lim_(r arrow.r 0^(+)) "avg"_(B\(x\,r\))\|f\(y\)- f\(x\)\|#h(0em) d y = 0 } $
 其中每个 point 被称为一个#strong[Lebesgue point].
@@ -179,11 +142,7 @@ Set $ E_alpha : = { x : H f\(x\)> alpha } subset bb(R)^n $
 === original LDT: locally $L^1$ 函数几乎每一点附近的函数均值都等于这一点上的值
 <original-ldt-locally-l1-函数几乎每一点附近的函数均值都等于这一点上的值>
 #theorem(
-  title: [Lebesgue differentition theorem],
-  id: "thm-08-hardy-littlewood-ldt-lebesgue-differentition-theorem",
-  concepts: ("lebesgue-differentition-theorem",),
-  depends: (),
-  aliases: ("Lebesgue differentition theorem",),
+  title: [#kn[Lebesgue differentiation theorem]],
 )[
 对于任意的 $f in L_(l o c)^1\(bb(R)^n\)$, $L_f$ is Leb mble and $m\(L_f^c\)= 0$.
 
@@ -201,9 +160,6 @@ where $ upright("(constant)") #h(0em) A_r\|f\(x\)- g\(x\)\|\(x\)=\|f\(x\)- g\(x\
 
 ]
 #corollary(
-  id: "cor-08-hardy-littlewood-ldt-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 $ x in L_(l o c)^1\(bb(R)^n\)\)arrow.r.double.long lim_(r arrow.r 0^(+)) A_r f\(x\)= f\(x\)#h(0em) #h(0em) a . e . $
 
@@ -223,11 +179,7 @@ If $x in L_f$ then $ \| "avg"_(B\(x\,r\)) \( f\(y\)- f\(x\)\) #h(0em) d y \| lt.
 === density of a set at a point
 <density-of-a-set-at-a-point>
 #definition(
-  title: [density of a set at a point],
-  id: "def-08-hardy-littlewood-ldt-density-of-a-set-at-a-point",
-  concepts: ("density-of-a-set-at-a-point",),
-  depends: (),
-  aliases: ("density of a set at a point",),
+  title: [#kn[density of a set at a point]],
 )[
 对于 $E subset bb(R)^n$ Lebesgue measurable (which implies: $chi_E in L_(l o c)^1$), 我们定义: $ D_E\(x\): = lim_(r arrow.r 0^(+)) frac(m\(E inter B\(x\,r\)\), m\(B\(x\,r\)\)) $
 
@@ -244,9 +196,6 @@ density, 一个点附近一个集合占的密度, 理解很直观. \
 
 ]
 #corollary(
-  id: "cor-08-hardy-littlewood-ldt-corollary-003",
-  concepts: ("corollary-003",),
-  depends: (),
 )[
 对于$E subset bb(R)^n$ Lebesgue measurable (which implies: $chi_E in L_(l o c)^1$), 一定有: $ D_E\(x\)= {1\,quad upright("for a.e. ") x in E\
 0\,quad upright("for a.e. ") x in E^c\
@@ -258,9 +207,6 @@ density, 一个点附近一个集合占的密度, 理解很直观. \
 
 ]
 #example(
-  id: "ex-08-hardy-littlewood-ldt-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 我们这里介绍一些 behavior 比较特殊的集合, 空间每点上这个集合的 density. \ 考虑 $ E : = { 0 } union union.big_(j = 0)^oo\[2 / 3 dot.op 1 / 2^j\,1 / 2^j\] $
 这是一个 closed set. \
@@ -285,11 +231,7 @@ density, 一个点附近一个集合占的密度, 理解很直观. \
 genralized LDT 表示#strong[对形状不规则 (未必是 ball) 的收敛行为], LDT 的 statement 仍然 stay true. 即, #strong[只要 a family of Lebesgue mble sets $E_r$ shrink nicely to $x$, LDT 就满足.]
 
 #theorem(
-  title: [generalized LDT],
-  id: "thm-08-hardy-littlewood-ldt-generalized-ldt",
-  concepts: ("generalized-ldt",),
-  depends: (),
-  aliases: ("generalized LDT",),
+  title: [#kn[generalized LDT]],
 )[
 对于 $f in L_(l o c)^1\(bb(R)^n\)$, 任意的 $x in L_f$, 令 ${ E_r\(x\)}$ 为 a family of Lebesgue measurable sets, 其中对于每个 $E_r\(x\)$ 都有: $ E_r\(x\)subset B\(x\,r\) $
 并且 $ m\(E_r\(x\)\)> alpha m\(B\(x\,r\)\) $ for some $0 < alpha < 1$. \ 则有: $ lim_(r arrow.r 0^(+)) frac(integral_(E_r\(x\))\|f\(y\)- f\(x\)\|#h(0em) d y, m\(E_r\(x\)) = 0 quad upright("for a.e.") x $
@@ -301,11 +243,7 @@ genralized LDT 表示#strong[对形状不规则 (未必是 ball) 的收敛行为
 LDT 最重要的作用是之一定义了在 #strong[Lebesgue 积分理论下的一种形式的 FTC:]
 
 #theorem(
-  title: [FTC in Lebesgue],
-  id: "thm-08-hardy-littlewood-ldt-ftc-in-lebesgue",
-  concepts: ("ftc-in-lebesgue",),
-  depends: (),
-  aliases: ("FTC in Lebesgue ",),
+  title: [#kn[FTC in Lebesgue]],
 )[
 对于 $f in L_(l o c)^1\(bb(R)\)$, 任取 $x in L_f$, 都有 $ lim_(r arrow.r 0) 1 / r integral_x^(x + r) f #h(0em) d m = f\(x\) $
 

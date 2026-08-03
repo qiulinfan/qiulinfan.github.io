@@ -8,11 +8,7 @@
 === general measurable function
 <general-measurable-function>
 #definition(
-  title: [$\(cal(M)\,cal(N)\)$-measurable function],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-mathcal-m-mathcal-n-measurable-function",
-  concepts: ("mathcal-m-mathcal-n-measurable-function",),
-  depends: (),
-  aliases: ("(\\mathcal{M}, \\mathcal{N})-measurable function",),
+  title: [#kn[$\(cal(M)\,cal(N)\)$-measurable function]],
 )[
 Let $\(X\,cal(M)\)$, $\(Y\,cal(N)\)$ be measurable spaces, 如果 $f : X arrow.r Y$ 满足: $ B in cal(N) arrow.r.double.long f^(- 1)\(B\)in cal(M) $, 则称 $f$ 为一个 $\(cal(M)\,cal(N)\)$-measurable function.
 
@@ -26,11 +22,7 @@ Let $\(X\,cal(M)\)$, $\(Y\,cal(N)\)$ be measurable spaces, 如果 $f : X arrow.r
 这两个定义都表示的是: 性质不好的集合不会被映射到性质良好的集合. (但是性质良好的集合有可能被映射到性质不好的集合.)
 
 #proposition(
-  title: [composition preserves measurability],
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-composition-preserves-measurability",
-  concepts: ("composition-preserves-measurability",),
-  depends: (),
-  aliases: ("composition preserves measurability",),
+  title: [#kn[composition preserves measurability]],
 )[
 如果 $f$ 是 $\(cal(A)\,cal(B)\)$-measurable 的, $g$ 是 $\(cal(B)\,cal(C)\)$-measurable 的, 那么 $g compose f$ 是 $\(cal(A)\,cal(C)\)$-measurable 的.
 
@@ -40,9 +32,6 @@ Trivial.
 
 ]
 #lemma(
-  id: "lem-04-measurable-functions-and-integration-on-l-mu-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 Let $\(X\,cal(M)\)$, $\(Y\,cal(N)\)$ be measurable spaces, 如果 $cal(N) = < epsilon >$ for some $epsilon subset.eq Y$, 那么
 
@@ -62,9 +51,6 @@ $ D : = { E subset.eq Y divides f^(- 1)\(E\)in cal(M) } $
 
 ]
 #proposition(
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 对于 topological space $X\,Y$, let $f : X arrow.r Y$
 
@@ -78,11 +64,7 @@ topological spaces 之间, 连续函数一定是在它们的 Borel algebra 之�
 === real and complex-valued measurable function
 <real-and-complex-valued-measurable-function>
 #definition(
-  title: [\(real-valued) measurable functions],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-real-valued-measurable-functions",
-  concepts: ("real-valued-measurable-functions",),
-  depends: (),
-  aliases: ("(real-valued) measurable functions",),
+  title: [#kn[\(real-valued) measurable functions]],
 )[
 Let $\(X\,cal(A)\)$ be a measurable space,
 对于 $f : X arrow.r accent(bb(R), macron)$ 如果它是 $\(cal(A)\,cal(B)\(accent(bb(R), macron)\)\)$-measurable 的, 我们直接简称它是 $cal(A)$-measurable 的, 或者简称为 measurable 的.
@@ -102,11 +84,7 @@ $ cal(B)\(accent(bb(R), macron)\)= { E subset.eq accent(bb(R), macron) divides E
 
 ]
 #definition(
-  title: [\(complex-valued) measurable functions],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-complex-valued-measurable-functions",
-  concepts: ("complex-valued-measurable-functions",),
-  depends: (),
-  aliases: ("(complex-valued) measurable functions",),
+  title: [#kn[\(complex-valued) measurable functions]],
 )[
 如果 $f : X arrow.r bb(C)$ 满足: $"Re" f\,"Im" f$ 都是 (real-valued) $X$-measurable 的, 那么也称 $f$ 是 $X$-measurable 的, 或者直接说是 measurable 的.
 
@@ -118,11 +96,7 @@ $ f = "Re" f + i "Im" f $
 
 ]
 #definition(
-  title: [Lebesgue measurable functions, Borel measurable functions],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-lebesgue-measurable-functions-borel-measurable-functions",
-  concepts: ("lebesgue-measurable-functions-borel-measurable-functions",),
-  depends: (),
-  aliases: ("Lebesgue measurable functions, Borel measurable functions",),
+  title: [#kn[Lebesgue measurable functions, Borel measurable functions]],
 )[
 Naturally, 如果 $f : bb(R) arrow.r bb(C)$ 是一个 $frak(L)$-measurable 的函数, 那么我们称 $f$ 是 #strong[Lebesgue measurable] 的.
 
@@ -130,9 +104,6 @@ Naturally, 如果 $f : bb(R) arrow.r bb(C)$ 是一个 $frak(L)$-measurable 的�
 
 ]
 #proposition(
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-proposition-003",
-  concepts: ("proposition-003",),
-  depends: (),
 )[
 在任何 $cal(M)$-measurable function $f$ 前 compose 一个 Borel measurable 的 function, 结果仍然是 $cal(M)$-measurable 的, follows from composition preserves measurability.
 
@@ -142,9 +113,6 @@ Follows from def.
 
 ]
 #example(
-  id: "ex-04-measurable-functions-and-integration-on-l-mu-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 $f^2$, $- 3 f$, $frac(1, \|f\|)$ ($f eq.not 0$) 都仍然是 $cal(M)$-measuble 的.
 
@@ -152,11 +120,7 @@ $f^2$, $- 3 f$, $frac(1, \|f\|)$ ($f eq.not 0$) 都仍然是 $cal(M)$-measuble �
 === arithmetic and sequential preservation of measurable functions
 <arithmetic-and-sequential-preservation-of-measurable-functions>
 #proposition(
-  title: [addition and multiplication 保留 measuability],
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-addition-and-multiplication-measuability",
-  concepts: ("addition-and-multiplication-measuability",),
-  depends: (),
-  aliases: ("addition and multiplication 保留 measuability",),
+  title: [#kn[addition and multiplication preserve measurability]],
 )[
 如果 $f\,g$ 是 $cal(M)$-measurable function, 那么 $f + g\,f g$ 也是.
 
@@ -176,11 +140,7 @@ $ f g = 1 / 2\(\(f + g\)^2- f^2 - g^2\) $
 
 ]
 #lemma(
-  title: [sequential behavior of real-valued measurable function],
-  id: "lem-04-measurable-functions-and-integration-on-l-mu-sequential-behavior-of-real-valued-measurable-function",
-  concepts: ("sequential-behavior-of-real-valued-measurable-function",),
-  depends: (),
-  aliases: ("sequential behavior of real-valued measurable function",),
+  title: [#kn[sequential behavior of real-valued measurable function]],
 )[
 如果 ${ f_n : X arrow.r accent(bb(R), macron) }_(n in bb(N))$ 是一个 seq of $cal(M)$-measurable functions, 那么
 
@@ -222,9 +182,6 @@ $ \(s u p_j f_j\)^(- 1)\(\(a\,oo\]\)= union.big_1^oo f_j^(- 1)\(\(a\,oo\]\) $
 
 ]
 #corollary(
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-corollary-001",
-  concepts: ("corollary-001",),
-  depends: (),
 )[
 如果 ${ f_n : X arrow.r accent(bb(R), macron) }_(n in bb(N))$ 是一个 seq of $cal(M)$-measurable functions, 且在任意 $x$ 处极限都存在, 那么
 $ f\(x\):= lim_(j arrow.r oo) f_j\(x\) $
@@ -236,9 +193,6 @@ directly follows from lemma. 因为 $x$ 处极限如果存在, 那么 $sup_f f_j
 
 ]
 #corollary(
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 $f\,g$ $cal(M)$-measurable $arrow.r.double.long$ $max\(f\,g\)\,min\(f\,g\)$$cal(M)$- measurable
 
@@ -262,11 +216,7 @@ two element sequence, 剩余的用空集, 于是 follows form above.
 === indicator and simple function
 <indicator-and-simple-function>
 #definition(
-  title: [characteristic (indicator) function],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-characteristic-indicator-function",
-  concepts: ("characteristic-indicator-function",),
-  depends: (),
-  aliases: ("characteristic (indicator) function",),
+  title: [#kn[characteristic (indicator) function]],
 )[
 Given $E subset.eq X$, 我们定义:
 $ chi_E\(x\):= {1 quad\,x in E\
@@ -274,9 +224,6 @@ $ chi_E\(x\):= {1 quad\,x in E\
 
 ]
 #lemma(
-  id: "lem-04-measurable-functions-and-integration-on-l-mu-lemma-003",
-  concepts: ("lemma-003",),
-  depends: (),
 )[
 如果 $\(X\,cal(M)\)$ 是一个 measurable space, 那么一个 indicator function
 
@@ -286,11 +233,7 @@ $ chi_E\(x\):= {1 quad\,x in E\
 indicator function measurable 当且仅当它 indicate 的集合是 measurable 的.
 
 #definition(
-  title: [simple function],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-simple-function",
-  concepts: ("simple-function",),
-  depends: (),
-  aliases: ("simple function",),
+  title: [#kn[simple function]],
 )[
 一个 simple function on measurable space $\(X\,cal(A)\)$ 是一个 $cal(A)$-measurable function $phi.alt : X arrow.r bb(C)$, taking only finitely many values.
 
@@ -298,12 +241,8 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 
 ]
 #proposition(
-  title: [使用 #strong[a sum of indicator functions of measurable sets] 来定义
-simple function],
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-a-sum-of-indicator-functions-of-measurable-sets-simple-function",
-  concepts: ("a-sum-of-indicator-functions-of-measurable-sets-simple-function",),
-  depends: (),
-  aliases: ("使用 a sum of indicator functions of measurable sets 来定义 simple function",),
+  title: [#kn[使用 #strong[a sum of indicator functions of measurable sets] 来定义
+simple function]],
 )[
 对于 simple function $phi.alt : X arrow.r bb(C)$ s.t. $phi.alt\(X\)= { c_1\,dots.h.c\,c_n }$, 我们也可以定义它为: $ phi.alt\(x\)= sum_(j = 1)^n c_j chi_(E_j) $
 其中, $E_j = phi.alt^(- 1)\({ c_j }\)$.
@@ -317,9 +256,6 @@ simple function],
 
 ]
 #lemma(
-  id: "lem-04-measurable-functions-and-integration-on-l-mu-lemma-004",
-  concepts: ("lemma-004",),
-  depends: (),
 )[
 如果 $phi.alt\,psi : X arrow.r bb(C)$ 是 simple functions, 那么
 
@@ -343,11 +279,8 @@ trivial.
 === measurable function is a limit of simple functions
 <measurable-function-is-a-limit-of-simple-functions>
 #theorem(
-  title: [approximating a nonneg measurable function by simple function],
+  title: [#kn[approximating a nonneg measurable function by simple function]],
   id: "thm-04-measurable-functions-and-integration-on-l-mu-approximating-a-nonneg-measurable-function-by-simple-function",
-  concepts: ("approximating-a-nonneg-measurable-function-by-simple-function",),
-  depends: (),
-  aliases: ("approximating a nonneg measurable function by simple function",),
 )[
 任意的 measurable $f : X arrow.r\[0\,oo\]$ 都是 #strong[pointwise limit] of an #strong[increasing sequence of simple functions] ${ phi.alt_n : X arrow.r\[0\,oo\]}_(n in bb(N))$.
 
@@ -390,11 +323,7 @@ $ 0 lt.eq f - phi.alt_n lt.eq 1 / 2^n $
 
 ]
 #corollary(
-  title: [approximating a complex-valued measurable function by simple function],
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-approximating-a-complex-valued-measurable-function-by-simple-fun",
-  concepts: ("approximating-a-complex-valued-measurable-function-by-simple-fun",),
-  depends: (),
-  aliases: ("approximating a complex-valued measurable function by simple function",),
+  title: [#kn[simple approximation of complex measurable functions]],
 )[
 对于任意的 measurable $f : X arrow.r bb(C)$, 都存在 a seq of simple functions $ 0 lt.eq\|phi.alt_1\|lt.eq\|phi.alt_2\|lt.eq dots.h.c lt.eq\|f\| $ 使得
 
@@ -410,11 +339,7 @@ $ 0 lt.eq f - phi.alt_n lt.eq 1 / 2^n $
 === integration of non-neg functions
 <integration-of-non-neg-functions>
 #definition(
-  title: [$L^(+)$ space and integration on it],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-l-space-and-integration-on-it",
-  concepts: ("l-space-and-integration-on-it",),
-  depends: (),
-  aliases: ("L^+ space and integration on it",),
+  title: [#kn[$L^(+)$ space and integration on it]],
 )[
 给定一个 measure space $\(X\,cal(M)\,mu\)$
 我们定义: $ L^(+)\(mu\):= { bold("measurable functions ") f : X arrow.r\[0\,oo\]} $
@@ -441,11 +366,7 @@ measure theory 中的积分理论是把从 $bb(R)^n$ 出发的函数 推广到�
 
 ]
 #definition(
-  title: [integration on a subset],
-  id: "def-04-measurable-functions-and-integration-on-l-mu-integration-on-a-subset",
-  concepts: ("integration-on-a-subset",),
-  depends: (),
-  aliases: ("integration on a subset",),
+  title: [#kn[integration on a subset]],
 )[
 对非负 #strong[simple functions $phi.alt = sum_(j = 1)^n a_j chi_(E_j) in L^(+)\(mu\)$], 我们定义 #strong[the integral of $phi.alt$ on $A in cal(M)$ with respect to $mu$] by:
 $ integral_A phi.alt #h(0em) d mu := integral phi.alt chi_A #h(0em) d mu $
@@ -458,11 +379,7 @@ $ integral_A phi.alt #h(0em) d mu := integral phi.alt chi_A #h(0em) d mu = sum_j
 
 ]
 #proposition(
-  title: [integral of simple functions 的性质],
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-integral-of-simple-functions",
-  concepts: ("integral-of-simple-functions",),
-  depends: (),
-  aliases: ("integral of simple functions 的性质",),
+  title: [#kn[integral of simple functions 的性质]],
 )[
 Let $phi.alt\,psi$ be simple functions in $L^(+)\(mu\)$, 有:
 
@@ -498,11 +415,7 @@ $lt.eq$ 是容易证明的, 但是 $gt.eq$ 有点困难. 为了证明 $gt.eq$ �
 === MCT
 <mct>
 #theorem(
-  title: [monotone convergence theorem],
-  id: "thm-04-measurable-functions-and-integration-on-l-mu-monotone-convergence-theorem",
-  concepts: ("monotone-convergence-theorem",),
-  depends: (),
-  aliases: ("monotone convergence theorem",),
+  title: [#kn[monotone convergence theorem]],
 )[
 Let ${ f_n }_(n in bb(N))$ be a seq in $L^(+)\(mu\)$, 并且有 $f_n lt.eq f_(n + 1)$ for each $n$. \ 我们 define:$ f := lim_n f_n #h(0em) #h(0em)\(= sup_n f_n\) $, 则一定有 $ integral f = lim_(n arrow.r oo) integral f_n $
 
@@ -545,9 +458,6 @@ $ lim_n integral_(E_n) phi.alt = integral phi.alt $
 以下为一个应用 MCT 得到的结论.
 
 #example(
-  id: "ex-04-measurable-functions-and-integration-on-l-mu-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 取 $ \(bb(N)\,cal(P)\(bb(N)\)\,mu_(c o u n t i n g)\) $
 于是$ L^(+)\(mu\)= { f : bb(N) arrow.r\[0\,oo\]} $
@@ -561,9 +471,6 @@ $ sum_1^oo f_n\(j\)arrow.tr sum_1^oo f\(j\) $
 === \(countable) linearity of integral
 <countable-linearity-of-integral>
 #corollary(
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-corollary-004",
-  concepts: ("corollary-004",),
-  depends: (),
 )[
 $ f\,g in L^(+)\(mu\)quad arrow.r.double quad integral\(f + g\)= integral f + integral g $
 
@@ -587,11 +494,7 @@ $ integral\(f + g\)gt.eq integral f + integral g $
 === Tonelli for sum and integrals
 <tonelli-for-sum-and-integrals>
 #corollary(
-  title: [Tonelli for sum and integrals],
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-tonelli-for-sum-and-integrals",
-  concepts: ("tonelli-for-sum-and-integrals",),
-  depends: (),
-  aliases: ("Tonelli for sum and integrals",),
+  title: [#kn[Tonelli for sum and integrals]],
 )[
 for ${ f_i }_(i in bb(N))$ in $L^(+)\(mu\)$, 有:
 $ integral sum_(i = 1)^oo f_i = sum_(i = 1)^oo integral f_i $
@@ -611,11 +514,7 @@ $ g_n = sum_(i = 1)^n f_i $ 可得证.
 === Fatou's Lemma
 <fatous-lemma>
 #theorem(
-  title: [Fatou's Lemma],
-  id: "thm-04-measurable-functions-and-integration-on-l-mu-fatou-s-lemma",
-  concepts: ("fatou-s-lemma",),
-  depends: (),
-  aliases: ("Fatou’s Lemma",),
+  title: [#kn[Fatou's Lemma]],
 )[
 令 $\(f_n\)$ be a seq of functions in $L^(+)\(mu\)$, then $ liminf_n integral f_n gt.eq integral liminf_n f_n $
 
@@ -637,9 +536,6 @@ By def, 我们有 $g_n lt.eq f_n #h(0em) #h(0em) forall n$, 于是 by monotonici
 
 ]
 #example(
-  id: "ex-04-measurable-functions-and-integration-on-l-mu-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 取 $\(bb(R)\,frak(L)\,m\)$, 考虑 $L^(+)\(m\)$ 上的函数, 即非负 Lebesgue 可测函数.
 
@@ -660,11 +556,7 @@ $f_n$ 逐渐变成一根针.
 === Chebyshev's inequality with corollaries
 <chebyshevs-inequality-with-corollaries>
 #lemma(
-  title: [Chebyshev's inequality],
-  id: "lem-04-measurable-functions-and-integration-on-l-mu-chebyshev-s-inequality",
-  concepts: ("chebyshev-s-inequality",),
-  depends: (),
-  aliases: ("Chebyshev’s inequality",),
+  title: [#kn[Chebyshev's inequality]],
 )[
 对于 measure space $\(X\,cal(M)\,mu\)$, 如果 $f in L^(+)\(mu\)$ 并且 $c > 0$, 那么
 $ mu { f gt.eq c } lt.eq 1 / c integral f $
@@ -682,11 +574,7 @@ $ integral f gt.eq integral f chi_E gt.eq integral c chi_E = c integral chi_E = 
 
 ]
 #proposition(
-  title: [非负函数积分为 0 等价于几乎处处为 0],
-  id: "prop-04-measurable-functions-and-integration-on-l-mu-0-0",
-  concepts: ("0-0",),
-  depends: (),
-  aliases: ("非负函数积分为 0 等价于几乎处处为 0",),
+  title: [#kn[非负函数积分为 0 等价于几乎处处为 0]],
 )[
 令 $f in L^(+)\(mu\)$, 有:
 
@@ -701,10 +589,6 @@ backward direction: 对于 simple function, trivial by 积分的定义; 对于 g
 ]
 #corollary(
   title: [几乎处处相等的非负函数积分相等],
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-corollary-006",
-  concepts: ("corollary-006",),
-  depends: (),
-  aliases: ("几乎处处相等的非负函数积分相等",),
 )[
 Let $f\,g in L^(+)\(mu\)$ 且 $f = g$ a.e., 则有 $ integral f = integral g $
 
@@ -715,11 +599,7 @@ $ integral f = integral_D f + integral_(D^c) f = 0 + integral_(D^c) g = integral
 
 ]
 #corollary(
-  title: [liminf version of MCT],
-  id: "cor-04-measurable-functions-and-integration-on-l-mu-liminf-version-of-mct",
-  concepts: ("liminf-version-of-mct",),
-  depends: (),
-  aliases: ("liminf version of MCT",),
+  title: [#kn[liminf version of MCT]],
 )[
 suppose $\(f_n\)_(n in bb(N))$ 是一个 seq of functions in $L^(+)\(mu\)$, 且 $f_n arrow.r f in L^(+)\(mu\)$, 则:
 $ liminf_n integral f_n gt.eq integral f $
@@ -730,11 +610,7 @@ $ liminf_n integral f_n gt.eq integral f $
 
 ]
 #theorem(
-  title: [积分收敛 $arrow.r.double.long$ 发散点集零测, 以及 support $sigma$-finite],
-  id: "thm-04-measurable-functions-and-integration-on-l-mu-implies-support-sigma-finite",
-  concepts: ("implies-support-sigma-finite",),
-  depends: (),
-  aliases: ("积分收敛 \\implies 发散点集零测, 以及 support \\sigma-finite",),
+  title: [#kn[积分收敛 $arrow.r.double.long$ 发散点集零测, 以及 support $sigma$-finite]],
 )[
 如果 $f in L^(+)\(mu\)$ 且 $\|integral f\|< oo$, 则有: $ mu\({ x in X divides f\(x\)= oo }\)= 0 $ 并且 $ { x divides f\(x\)> 0 } $ is #strong[$sigma$-finite]
 

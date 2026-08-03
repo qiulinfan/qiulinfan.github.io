@@ -33,8 +33,8 @@ Motivation: 我们都知道, 对于 nonnegative measurable \(f\) 即 \(f \in L^{
 通过 integration of the function with respect to some measure \(\mu\) 定义出了另一个 measure \(\nu\).\\
 But what about \(f \in L^{1}\)?
 
-% qlnotes: kind=definition; id=def-10-signed-measure-jordan-decomposition-signed-measure; concepts=signed-measure; aliases=signed measure
-\begin{definition}{signed measure}\label{def-10-signed-measure-jordan-decomposition-signed-measure}
+\begin{definition}{\protect\phantomsection\label{kn-signed-measure}{\textbf{signed
+measure}}}
 
 一个 signed measure on a measurable space \((X,\mathcal{A})\) 是一个 function \(\nu:\mathcal{A}\rightarrow\lbrack - \infty,\infty)\) 或者 \(\nu:\mathcal{A}\rightarrow( - \infty,\infty\rbrack\), \textbf{和普通 meausre 一样满足 \(\nu(\varnothing) = 0\) 以及 ctbl disjoint additivity}.\\
 Note: signed measure 只 admit \(+ \infty\) 和 \(- \infty\) 中的一个值 (\textbf{不可以同时存在两个集合 \(\nu(A) = \infty\), \(\nu(B) = - \infty\)})
@@ -48,13 +48,11 @@ signed measure 实则是偏向一边的, 要么偏向 positive 要么偏向 nega
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-10-signed-measure-jordan-decomposition-example-001; concepts=example-001
-\begin{example}\label{ex-10-signed-measure-jordan-decomposition-example-001}
+\begin{example}
 
 容易验证:
 
-% qlnotes: kind=proposition; id=prop-10-signed-measure-jordan-decomposition-proposition-001; concepts=proposition-001
-\begin{proposition}\label{prop-10-signed-measure-jordan-decomposition-proposition-001}
+\begin{proposition}
 
 对于 positive measure \(\mu_{1},\mu_{2}\), 如果其中有至少一个是 finite 的, 那么
 
@@ -68,11 +66,9 @@ This follows from ctbl disjoint additivity. (两个 ctbl sum 加起来)
 
 \end{example}
 
-% qlnotes: kind=example; id=ex-10-signed-measure-jordan-decomposition-example-002; concepts=example-002
-\begin{example}\label{ex-10-signed-measure-jordan-decomposition-example-002}
+\begin{example}
 
-% qlnotes: kind=proposition; id=prop-10-signed-measure-jordan-decomposition-proposition-002; concepts=proposition-002
-\begin{proposition}\label{prop-10-signed-measure-jordan-decomposition-proposition-002}
+\begin{proposition}
 
 对于 measurable function \(f\), 如果 \(f^{+}\) 和 \(f^{-}\) 中至少有一个是 \(L^{1}\) 的 (这个条件弱于 \(f \in L^{1}\), 被称为 \(f\) is extended \(\mu\)-integrable), 那么
 
@@ -88,8 +84,8 @@ This follows from that (1) 对于 \(f \in L^{+}\), \(\nu(E): = \int_{E}f d\mu\) 
 
 \subsection{signed measure 的 CFB, CFA}\label{signed-measure-ux7684-cfb-cfa}
 
-% qlnotes: kind=proposition; id=prop-10-signed-measure-jordan-decomposition-cfb-and-cfa; concepts=cfb-and-cfa; aliases=CFB and CFA
-\begin{proposition}{CFB and CFA}\label{prop-10-signed-measure-jordan-decomposition-cfb-and-cfa}
+\begin{proposition}{\protect\phantomsection\label{kn-continuity-of-signed-measures}{\textbf{continuity
+from below and above for signed measures}}}
 
 给定 signed measure \(\nu\), 对于 increasing seq \(E_{j}\), 有
 
@@ -115,8 +111,7 @@ Elementary fact: 对于 signed measure 而言,
 
 但是
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-10-signed-measure-jordan-decomposition-lemma-001}
+\begin{lemma}
 
 对于 signed measure \(\nu\), 和 measurable \(A \subset B\),
 
@@ -144,8 +139,8 @@ Elementary fact: 对于 signed measure 而言,
 
 \end{qlremark}
 
-% qlnotes: kind=definition; id=def-10-signed-measure-jordan-decomposition-positive-set-negative-set-null-set; concepts=positive-set-negative-set-null-set; aliases=positive set, negative set, null set
-\begin{definition}{positive set, negative set, null set}\label{def-10-signed-measure-jordan-decomposition-positive-set-negative-set-null-set}
+\begin{definition}{\protect\phantomsection\label{kn-positive-set-negative-set-null-set}{\textbf{positive
+set, negative set, null set}}}
 
 给定 signed measure \(\nu\), 对于 \(E \in \mathcal{A}\), 我们称 \(E\) 是一个 \textbf{postive se}t, 如果对于对于任意的 \(F \subset E\), 都有
 
@@ -162,8 +157,8 @@ null set 既是 positive set, 又是 negative set.
 
 \end{qlremark}
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-measurable-subset-preserves-sign; concepts=measurable-subset-preserves-sign; aliases=measurable subset preserves sign
-\begin{lemma}{measurable subset preserves sign}\label{lem-10-signed-measure-jordan-decomposition-measurable-subset-preserves-sign}
+\begin{lemma}{\protect\phantomsection\label{kn-measurable-subset-preserves-sign}{\textbf{measurable
+subset preserves sign}}}
 
 measurable subset of a measurable set \(F \subset E\) preserves the sign of \(E\).\\
 即: \(E\) 是一个 positive / null / negative \(\Longrightarrow\)任意 \(F \subset E\) 是一个 positive / null / negative.
@@ -176,8 +171,8 @@ By def, 可以 by contradiction 得到.
 
 \end{proof}
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-positive-negative-null-set-measure-space; concepts=positive-negative-null-set-measure-space; aliases=positive, negative, null set 内的局部性质和普通的 measure space 一样
-\begin{lemma}{positive, negative, null set 内的局部性质和普通的 measure space 一样}\label{lem-10-signed-measure-jordan-decomposition-positive-negative-null-set-measure-space}
+\begin{lemma}{\protect\phantomsection\label{kn-positive-negative-null-set-measure-space}{\textbf{positive,
+negative, null set 内的局部性质和普通的 measure space 一样}}}
 
 如果 \(E\) 是一个 \textbf{positive set} for signed measure \(\nu\), 那么
 
@@ -204,8 +199,7 @@ positive, negative, null set 就是这个 signed measure space 中的 "\textbf{�
 
 \end{center}
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-lemma-004; concepts=lemma-004
-\begin{lemma}\label{lem-10-signed-measure-jordan-decomposition-lemma-004}
+\begin{lemma}
 
 Countable union of positive / negative / null sets 仍然是 positive / negative / null sets.
 
@@ -228,8 +222,8 @@ Hahn Decomposition Theorem 表示: \textbf{任意一个 signed measure 都把整
 
 \subsection{Hahn Decomposition}\label{hahn-decomposition}
 
-% qlnotes: kind=theorem; id=thm-10-signed-measure-jordan-decomposition-hahn-decomposition-theorem; concepts=hahn-decomposition-theorem; aliases=Hahn Decomposition Theorem
-\begin{theorem}{Hahn Decomposition Theorem}\label{thm-10-signed-measure-jordan-decomposition-hahn-decomposition-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-hahn-decomposition-theorem}{\textbf{Hahn
+Decomposition Theorem}}}
 
 对于任意 measurable space \((X,\mathcal{A})\) 上的任意 signed measure \(\nu\), 都存在一个 positive set \(P\) 和一个 negative set \(N\) s.t.
 
@@ -355,8 +349,7 @@ Set
 
 对于任意的 signed measure \(\nu\), 我们已经通过 Hahn-Decomposition 证明了它一定把集合分为一个 positive set \(P\) 和一个 negative set \(N\), 并且 unique in \(\nu\)-a.e. sense.\\
 
-% qlnotes: kind=example; id=ex-10-signed-measure-jordan-decomposition-example-003; concepts=example-003
-\begin{example}\label{ex-10-signed-measure-jordan-decomposition-example-003}
+\begin{example}
 
 Consider mble space \(({\mathbb{N}},\mathcal{P}({\mathbb{N}}))\), 考虑由
 
@@ -372,8 +365,8 @@ Consider mble space \(({\mathbb{N}},\mathcal{P}({\mathbb{N}}))\), 考虑由
 
 \subsection{mutually singular s.m.}\label{mutually-singular-s.m.}
 
-% qlnotes: kind=definition; id=def-10-signed-measure-jordan-decomposition-mutually-singular; concepts=mutually-singular; aliases=mutually singular
-\begin{definition}{mutually singular}\label{def-10-signed-measure-jordan-decomposition-mutually-singular}
+\begin{definition}{\protect\phantomsection\label{kn-mutually-singular}{\textbf{mutually
+singular}}}
 
 我们称两个 signed measure \(\nu_{1},\nu_{2}\) on \((X,\mathcal{A})\) 是 mutually singular 的, 如果 \(X = E_{1} \sqcup E_{2}\), 其中 \(E_{i}\) 是 \(\nu_{i}\) 的 null set.\\
 简单而言就是: 这两个 measure 可以把
@@ -395,8 +388,7 @@ Note: Mutually Singular 并不要求对于任意一个集合, 这两个s.m. 至�
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-10-signed-measure-jordan-decomposition-example-004; concepts=example-004
-\begin{example}\label{ex-10-signed-measure-jordan-decomposition-example-004}
+\begin{example}
 
 1. 把所有 measurable set map to \(0\) 的 trivial measure 和任意 s.m. 都 mutually singular.\\
 2. 再比如:
@@ -432,8 +424,7 @@ Note: Mutually Singular 并不要求对于任意一个集合, 这两个s.m. 至�
 
 \[\nu^{-}(E): = \nu(E \cap N) \geq 0\]
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-lemma-005; concepts=lemma-005
-\begin{lemma}\label{lem-10-signed-measure-jordan-decomposition-lemma-005}
+\begin{lemma}
 
 对于 s.m. \(\nu\), 我们通过 Hahn Decomposition 得到 \(P \sqcup N = X\).\\
 Now let
@@ -516,8 +507,8 @@ and characterized by:
 
 下面我们证明 Jordan decomposition:
 
-% qlnotes: kind=theorem; id=thm-10-signed-measure-jordan-decomposition-jordan-decomposition-theorem; concepts=jordan-decomposition-theorem; aliases=Jordan decomposition theorem
-\begin{theorem}{Jordan decomposition theorem}\label{thm-10-signed-measure-jordan-decomposition-jordan-decomposition-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-jordan-decomposition-theorem}{\textbf{Jordan
+decomposition theorem}}}
 
 对于任意 s.m. \(\nu\) on \((X,\mathcal{A})\), 都存在唯一的 positive measure \(\nu^{+}\), \(\nu^{-}\) s.t.
 
@@ -561,8 +552,8 @@ Suppose \(\nu = \mu^{+} - \mu^{-}\) 是另一个 decomposition s.t. \(\mu^{+}\bo
 
 \subsection{total variation measure}\label{total-variation-measure}
 
-% qlnotes: kind=definition; id=def-10-signed-measure-jordan-decomposition-total-variation-measure; concepts=total-variation-measure; aliases=total variation measure
-\begin{definition}{total variation measure}\label{def-10-signed-measure-jordan-decomposition-total-variation-measure}
+\begin{definition}{\protect\phantomsection\label{kn-total-variation-measure}{\textbf{total
+variation measure}}}
 
 \[\left. |\nu \middle| : = \nu^{+} + \nu^{-} \right.\]
 
@@ -574,8 +565,7 @@ Totcal variation measure 和原 s.m. 的关系, 可以类比一个函数的绝�
 
 但是这里, 这个 \(| \cdot |\) 符号和绝对值的 \(| \cdot |\) 符号的意义并不一致: \textbf{这个 \(|\nu|\) 并不是 \(\nu\) 的绝对值函数}. 在 positive, negative, null sets 上, \(|\nu|\) 确实是 \(\nu\) 的绝对值函数, 但是\textbf{在内部既有 positive measure 的部分, 又有 negative measure 的部分的集合, 它的 total variation measure 是要比它的原 s.m. 的绝对值更大的.} 因而它才被叫做原 s.m. 的 total variation measure, 表示某个集合内部, 原 s.m. 从正到负的\textbf{最大变差}.
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-lemma-006; concepts=lemma-006
-\begin{lemma}\label{lem-10-signed-measure-jordan-decomposition-lemma-006}
+\begin{lemma}
 
 \(|\nu|\) 是 \((X,\mathcal{A})\) 上的 positive measure.\\
 并且 \(|\nu|\) finite iff \(\nu^{+}\) 和 \(\nu^{-}\) 都 finite.\\
@@ -591,8 +581,8 @@ trivial.
 
 \subsection{integration w.r.t. s.m.}\label{integration-w.r.t.-s.m.}
 
-% qlnotes: kind=definition; id=def-10-signed-measure-jordan-decomposition-integration-w-r-t-signed-measure; concepts=integration-w-r-t-signed-measure; aliases=integration w.r.t. signed measure
-\begin{definition}{integration w.r.t. signed measure}\label{def-10-signed-measure-jordan-decomposition-integration-w-r-t-signed-measure}
+\begin{definition}{\protect\phantomsection\label{kn-integration-w-r-t-signed-measure}{\textbf{integration
+w.r.t. signed measure}}}
 
 对于 signed measure \(\nu\), 我们 set:
 
@@ -604,8 +594,7 @@ trivial.
 
 \end{definition}
 
-% qlnotes: kind=proposition; id=prop-10-signed-measure-jordan-decomposition-proposition-004; concepts=proposition-004
-\begin{proposition}\label{prop-10-signed-measure-jordan-decomposition-proposition-004}
+\begin{proposition}
 
 我们知道, 对于任意 p.m. \(\mu\) on \((X,\mathcal{A})\) 以及 \(f \in L^{1}(\mu)\),
 
@@ -636,8 +625,8 @@ trivial.
 
 We will learn that: 这个 \(f\) 正是 \(\nu\) w.r.t. \(\mu\) 的 Radon-Nikodym derivative, 从而 \(f(x)\) 表示在某个元素处, \(\nu\) 相对于 \(\mu\) 的变化趋势. 而 total variation measure of \(\nu\) 正是把所有的元素上的这个变化趋势都取正 (即取总变化量, 不管方向) 得到的.
 
-% qlnotes: kind=lemma; id=lem-10-signed-measure-jordan-decomposition-total-variation-measure; concepts=total-variation-measure; aliases=total variation measure 的性质
-\begin{lemma}{total variation measure 的性质}\label{lem-10-signed-measure-jordan-decomposition-total-variation-measure}
+\begin{lemma}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-total-variation-measure}{total
+variation measure}}
 
 令 \(\nu\) be a s.m. on \((X,\mathcal{A})\), \(E \in \mathcal{A}\), 则
 

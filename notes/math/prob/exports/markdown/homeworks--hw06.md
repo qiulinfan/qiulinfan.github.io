@@ -12,7 +12,7 @@ keywords:
 - homework
 - worked solutions
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
+qlnotes-schema: qlnotes-v2
 semantic-node-count: "0"
 source: homeworks.typ
 subtitle: Typst-first worked solutions

@@ -13,8 +13,8 @@ keywords:
 - law of large numbers
 - central limit theorem
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 35
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes
 title: "Math 525: Probability"
@@ -25,7 +25,7 @@ title: "Math 525: Probability"
 
 ### permutations
 
-::: {#def-01-combinatorics-prob-space-permutations .definition aliases="permutations" concepts="permutations"}
+::: definition
 **Definition: permutations**
 
 一个 permutation 就是对一组 objects 的一个 **rearrangement** (这些 objects 中可以有 same 的也可以有 distinct 的).\
@@ -36,7 +36,7 @@ $$n! = n(n - 1)(n - 2)\cdots$$
 个 permutations.
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 求 \"STATISTICS\" 的 \# distinct permutations.
@@ -64,7 +64,7 @@ $$\frac{n!}{n_{1}!n_{2}!\cdots n_{k}!}$$
 其中 $n_{1},n_{2},\cdots,n_{k}$ 是每个 object 的重复数量.\
 这个式子又叫做 multinomial coefficient.
 
-::: {#def-01-combinatorics-prob-space-multinomial-coefficient .definition aliases="multinomial coefficient" concepts="multinomial-coefficient"}
+::: definition
 **Definition: multinomial coefficient**
 
 令 $n \in {\mathbb{N}},n_{1},n_{2},\cdots,n_{k} \in {\mathbb{N}},n_{1} + n_{2} + \cdots + n_{k} = n$, 我们定义 multinomial coefficient:
@@ -72,7 +72,7 @@ $$\frac{n!}{n_{1}!n_{2}!\cdots n_{k}!}$$
 $$\left( \frac{n}{n_{1},n_{2},\cdots,n_{k}} \right) = \frac{n!}{n_{1}!n_{2}!\cdots n_{k}!}$$
 :::
 
-::: {#prop-01-combinatorics-prob-space-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 如果我们需要 $n_{1}$ 个 object 1, $n_{2}$ 个 object 2, $\cdots$, $n_{k}$ 个 object $k$, 那么它们的 distinct permutations 的数量为:
@@ -83,13 +83,13 @@ $$\left( \frac{n_{1} + n_{2} + \cdots + n_{k}}{n_{1},n_{2},\cdots,n_{k}} \right)
 
 ### combinations
 
-::: {#def-01-combinatorics-prob-space-combinations .definition aliases="combinations" concepts="combinations"}
+::: definition
 **Definition: combinations**
 
 一个 combination 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序.
 :::
 
-::: {#prop-01-combinatorics-prob-space-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 从 $n$ 个 **distinct objects** 中选取 $k$ 个的 combinations 的数量为:
@@ -111,7 +111,7 @@ $$\frac{n!}{k!(n - k)!}$$
 
 ### binomial theorem
 
-::: {#thm-01-combinatorics-prob-space-binomial-theorem .theorem aliases="Binomial Theorem" concepts="binomial-theorem"}
+::: theorem
 **Theorem: Binomial Theorem**
 
 令 $x,y \in {\mathbb{R}},n \in {\mathbb{N}}$, 则有:
@@ -133,7 +133,7 @@ $$(x + y)^{n} = \sum\limits_{k = 0}^{n}\left( \frac{n}{k} \right)x^{n - k}y^{k}$
 
 另外一种更轮椅的思路是 prove by induction. 这需要一个辅助的 proposition:
 
-::: {#prop-01-combinatorics-prob-space-proposition-003 .proposition concepts="proposition-003"}
+::: proposition
 **Proposition**
 
 $$\left( \frac{n}{k} \right) = \left( \frac{n - 1}{k - 1} \right) + \left( \frac{n - 1}{k} \right)$$
@@ -145,7 +145,7 @@ $$\left( \frac{n}{k} \right) = \left( \frac{n - 1}{k - 1} \right) + \left( \frac
 
 - 这个 object 不被选中的情况, combinations 的数量: $\left( \frac{n - 1}{k} \right)$ (从其他里面选 $k$ 个).
 
-::: {#ex-01-combinatorics-prob-space-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 一个 52-card deck, 取 5 张随机牌, 我们获得:
@@ -171,7 +171,7 @@ $$\frac{13 \times 48}{\left( \frac{52}{5} \right)}$$
 $$\frac{13 \cdot \left( \frac{4}{3} \right) \cdot 12 \cdot \left( \frac{4}{2} \right)}{\left( \frac{52}{5} \right)}$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 我们有 $n$ 把钥匙, 其中有一把是正确的. 尝试 $k$ 次, 能够成功开门的概率是多少?
@@ -214,7 +214,7 @@ $${\mathbb{P}}(A) = 1 - \left( {1 - \frac{1}{n}} \right)^{k}$$
 放回和不防回最大的区别是: 放回时, 每次尝试都是独立的, 而不放回时, 每次尝试都不是独立的. 最明显的例子就是, 如果不放回, $k = n$ 时概率为 1. 而如果放回, 不论 $k$ 有多大, 概率都小于 1; 当 $k \ll n$ 的时候, 这两个概率相近 (符合直觉, 因为 $n$ 很大时放回和不放回几乎没区别.)
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 一个篮子里有 $10$ 个 red balls 和 $5$ 个 blue balls. 我们随机从中取出 $3$ 个 balls, exactly 其中 $1$ 个是 blue ball 的概率是多少? 如果每次都放回呢?
@@ -234,13 +234,13 @@ $${\mathbb{P}}(\text{exactly one blue ball}) = 3 \cdot \frac{3 \cdot 10^{2}}{15^
 
 ### combinations with repetition
 
-::: {#def-01-combinatorics-prob-space-combinations-with-repetition .definition aliases="combinations with repetition" concepts="combinations-with-repetition"}
+::: definition
 **Definition: combinations with repetition**
 
 一个 combination with repetition 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序, 并且**允许重复选取**.
 :::
 
-::: {#prop-01-combinatorics-prob-space-proposition-004 .proposition concepts="proposition-004"}
+::: proposition
 **Proposition**
 
 从 $n$ 个 **distinct objects** 中选取 $k$ 个的 combinations with repetition 的数量为:
@@ -276,7 +276,7 @@ $$\left\{ {y = (x_{1}',x_{2}',\cdots,x_{n}') \in {\mathbb{Z}}_{\geq 1}^{n}:x_{1}
 $$\left( \frac{k + n - 1}{n - 1} \right) = \left( \frac{k + n - 1}{k} \right)$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-005 .example concepts="example-005"}
+::: example
 **Example**
 
 有 5 种口味的 ice creams. 一个人随机选择 20 个 scoops. 求: 每种口味至少被选中一次的 probability.
@@ -293,7 +293,7 @@ $${\mathbb{P}}(\text{each flavor is selected at least once}) = \frac{\left( \fra
 
 ### inclusion-exclusion principle
 
-::: {#prop-01-combinatorics-prob-space-inclusion-exclusion-principle .proposition aliases="inclusion-exclusion principle" concepts="inclusion-exclusion-principle"}
+::: proposition
 **Proposition: inclusion-exclusion principle**
 
 如果 $\Omega$ 是一个 finite measure space, 那么对于任意 $A_{1},\ldots,A_{n} \subseteq \Omega$ 的, 有:
@@ -308,7 +308,7 @@ $$\left| {\cup_{i = 1}^{n}A_{i}} \right| = \sum\limits_{i = 1}^{n}\left| A_{i} \
 这个定理是 countable additivity 的直接推广.
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-006 .example concepts="example-006"}
+::: example
 **Example**
 
 (Divisibility) 令 $n \in {\mathbb{N}}$, 我们随机取一个 $x \in \left\{ {1,2,\cdots,n} \right\}$, 求 $x$ is divisible by 2 or 3 or 5 的概率.
@@ -329,7 +329,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-:::: {#ex-01-combinatorics-prob-space-matching-problem .example aliases="(matching problem)" concepts="matching-problem"}
+:::: example
 **Example: (matching problem)**
 
 假设有 $n$ 个人参加一个 event, 每个人都上交了一顶帽子; 现在再把帽子随机地发给每个人, 求没有人拿回自己的帽子的概率.
@@ -369,8 +369,8 @@ $${\mathbb{P}}(\bigcap\limits_{i = 1}^{n}A_{i}^{c}) = \sum\limits_{k = 2}^{n}\fr
 
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory.\
 
-::: {#def-01-combinatorics-prob-space-prob-space-prob-measure-sample-space-event-space .definition aliases="prob space, prob measure, sample space, event space" concepts="prob-space-prob-measure-sample-space-event-space"}
-**Definition: prob space, prob measure, sample space, event space**
+::: definition
+**Definition: probability space, probability measure, sample space, event space**
 
 一个 probability space 就是一个 measure space $(\Omega,\mathcal{F},{\mathbb{P}})$, 其中 ${\mathbb{P}}(\varnothing) = 0,{\mathbb{P}}(\Omega) = 1$.\
 对于这样的 measure $\mathbb{P}$, 我们称之为 **probability measure (概率测度, 即概率)**.\
@@ -410,7 +410,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-008 .example concepts="example-008"}
+::: example
 **Example**
 
 (dice roll) 如果我们掷一个 6 面的骰子, 那么样本空间 $\Omega = \left\{ {1,2,3,4,5,6} \right\}$. 一个可能的事件是 $A = \left\{ {1,2} \right\}$. 如果假设骰子是公平的 (所有结果都是等可能的), 那么事件 $A$ 的概率是
@@ -420,7 +420,7 @@ $${\mathbb{P}}(A) = \frac{\text{Number of favorable outcomes}}{\text{Total numbe
 根据我们 measure-based 的定义, 这一结果自然 follows from countable additivity of $\mathbb{P}$.
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-009 .example concepts="example-009"}
+::: example
 **Example**
 
 三个人独立地掷一个 6 面的骰子, 求第三个人掷出的点数等于前两个人的点数之和的概率.
@@ -439,7 +439,7 @@ $$E = \left\{ {(1,1,2),(1,2,3),(1,3,4),\cdots,(2,1,3),(2,2,4),\cdots,(3,1,4),\cd
 $${\mathbb{P}}(A) = \frac{|A|}{|\Omega|} = \frac{15}{216} = \frac{5}{72}$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-example-010 .example concepts="example-010"}
+::: example
 **Example**
 
 两个人计划在 12:00 到 1:00 之间碰面. 他们各自都会在期间的某个时间点到达. 求: 他们彼此不会等待对方超过 10 分钟的概率.\
@@ -467,7 +467,7 @@ $${\mathbb{P}}(E) = \frac{m(E)}{m(\Omega)} = \frac{3600 - 2500}{3600} = \frac{11
 
 ### conditional probability and Bayes' theorem
 
-::: {#def-01-combinatorics-prob-space-conditional-probability .definition aliases="conditional probability" concepts="conditional-probability"}
+::: definition
 **Definition: conditional probability**
 
 对于 probability space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$, 如果 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability of an event $A \in \mathcal{F}$ given $B$ 为:
@@ -475,7 +475,7 @@ $${\mathbb{P}}(E) = \frac{m(E)}{m(\Omega)} = \frac{3600 - 2500}{3600} = \frac{11
 $${\mathbb{P}}(A \mid B) = \frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)}$$
 :::
 
-::: {#prop-01-combinatorics-prob-space-decomposing-probability-of-intersection-of-events .proposition aliases="decomposing probability of intersection of events" concepts="decomposing-probability-of-intersection-of-events"}
+::: proposition
 **Proposition: decomposing probability of intersection of events**
 
 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of events, 对于任意 $n \in {\mathbb{N}}$:
@@ -489,7 +489,7 @@ $${\mathbb{P}}\left( {A_{1} \cap A_{2} \cap \ldots \cap A_{n}} \right) = {\mathb
 Naturally follows from the def.
 :::
 
-::: {#thm-01-combinatorics-prob-space-law-of-total-probability .theorem aliases="law of total probability" concepts="law-of-total-probability"}
+::: theorem
 **Theorem: law of total probability**
 
 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of **pairwise disjoint** events, 如果 $\sqcup_{i = 1}^{\infty}A_{i} = \Omega$, 那么对于任意 event $E \subseteq \Omega$:
@@ -509,7 +509,7 @@ $${\mathbb{P}}(E) = {\mathbb{P}}\left( {E \cap \cup_{i = 1}^{\infty}A_{i}} \righ
 $P(A_{i})P(E \mid A_{i})$ 就等于 $P(E \cap A_{i})$, 也就是在 $A_{i}$ 这个区域上, $E$ 的 measure. 因而 disjoint union 之下就是 $E$ 的完整 measure.
 :::
 
-::: {#thm-01-combinatorics-prob-space-bayes-theorem .theorem aliases="Bayes theorem" concepts="bayes-theorem"}
+::: theorem
 **Theorem: Bayes theorem**
 
 If $A,B \subseteq \Omega$ such that ${\mathbb{P}}(B) \neq 0$, then
@@ -524,7 +524,7 @@ $${\mathbb{P}}(A \mid B) = \frac{{\mathbb{P}}(A) \cdot {\mathbb{P}}(B \mid A)}{{
 但是它的意义在于, 如果我们知道两个事件的概率和其中一个对另一个的条件概率, 我们就也得到了反过来的条件概率.
 :::
 
-:::: {#ex-01-combinatorics-prob-space-medical-testing .example aliases="(Medical testing)" concepts="medical-testing"}
+:::: example
 **Example: (Medical testing)**
 
 在一个群体中, 随机选取一个人患有某种罕见疾病的概率是 0.001. 该疾病有一个诊断测试, 其性质如下: 给定个体患病, 测试呈阳性的概率 (真正阳性率) 是 0.99. 给定个体健康, 测试呈阳性的概率 (假阳性率) 是 0.02. 从群体中随机选取的一个人测试呈阳性. 该个体实际上患有该疾病的概率是多少? 于是
@@ -542,7 +542,7 @@ $${\mathbb{P}}(\text{sick} \mid \text{positive}) = \frac{0.99 \cdot 0.001}{0.020
 :::
 ::::
 
-::::: {#ex-01-combinatorics-prob-space-monty-hall-problem .example aliases="(Monty Hall problem)" concepts="monty-hall-problem"}
+::::: example
 **Example: (Monty Hall problem)**
 
 假设你参加一个游戏节目, 面前有三扇门: 一扇门后面有一辆车; 其他两扇门后面是山羊. 你选择了一扇门, 比如说是 1 号门, 然后主持人打开了另一扇门, 比如说是 3 号门, 里面有一只山羊. 然后他说 \"你想换成 2 号门吗?\". 换门对你有利吗?
@@ -623,7 +623,7 @@ def monty_hall_sim(trials=10000):
 :::
 :::::
 
-::::: {#ex-01-combinatorics-prob-space-wizards .example aliases="(Wizards)" concepts="wizards"}
+::::: example
 **Example: (Wizards)**
 
 两个巫师 $A$ 和 $B$ 进行决斗, 他们轮流射击对方. 巫师 $A$ 每次射击命中 $B$ 的概率是 ${\mathbb{P}}(A) = \frac{1}{2}$, 而巫师 $B$ 每次射击命中 $A$ 的概率是 ${\mathbb{P}}(B) = \frac{2}{3}$. 巫师 $A$ 先开枪. 求: 巫师 $A$ 获胜的概率是多少?\
@@ -655,7 +655,7 @@ Solving the system, we find ${\mathbb{P}}\left( W_{A} \right) = 0.6$.
 但是, 难道 ${\mathbb{P}}(B) = 0$ 就不能定义条件概率了吗? 我们考虑一个连续情况: 在 ${\mathbb{R}}^{3}$ 中任意选择一个点, 求: 该点位于单位球面上的概率. 显然, 这个概率是 0. 但是, 如果我们知道该点位于单位球内, 那么该点距离原点的距离为 $1$ 的概率应当为 $1$. 也就是说, 即使在 ${\mathbb{P}}(B) = 0$ 的情况下, 我们也希望定义 ${\mathbb{P}}(A \mid B)$.\
 在考虑这个定义之前, 首先我们发现: 基于我们先前定义的 conditional probability, 我们可以获得一个新的 probability space:
 
-::: {#def-01-combinatorics-prob-space-conditional-probability-space-and-trace-sigma-algebra .definition aliases="conditional probability space and trace \\sigma-algebra" concepts="conditional-probability-space-and-trace-sigma-algebra"}
+::: definition
 **Definition: conditional probability space and trace \\sigma-algebra**
 
 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$ 且 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability space as the triplet $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$, 其中:
@@ -679,7 +679,7 @@ $${\mathbb{P}}(A \mid B) = \int_{A}f\, d{\mathbb{P}}$$
 
 既然这样, 我们能否直接从一个新的 prob space $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$ 出发, 来定义条件概率呢? 这就是 Kolmogorov 的定义:
 
-::: {#def-01-combinatorics-prob-space-kolmogorov-definition-of-conditional-probability .definition aliases="Kolmogorov definition of conditional probability" concepts="kolmogorov-definition-of-conditional-probability"}
+::: definition
 **Definition: Kolmogorov definition of conditional probability**
 
 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 设 $\mathcal{G} \subseteq \mathcal{F}$ 是一个 sub-$\sigma$-algebra. 对于 event $A \in \mathcal{F}$, 条件概率 ${\mathbb{P}}(A \mid \mathcal{G})$ 是一个 $\mathcal{G}$-measurable 的随机变量, 其满足对于任意 $G \in \mathcal{G}$, 有:
@@ -714,7 +714,7 @@ Further issue: **Borel-Kolmogorov paradox**.\
 
 ### independence of events
 
-::: {#def-01-combinatorics-prob-space-independence-of-events .definition aliases="independence of events" concepts="independence-of-events"}
+::: definition
 **Definition: independence of events**
 
 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ 如果有
@@ -734,7 +734,7 @@ $${\mathbb{P}}\left( {\bigcap\limits_{j \in J}A_{j}} \right) = \prod\limits_{j \
 
 根据条件概率的定义, 容易得出: 两个 events $A,B$ independent 的定义**等价于 ${\mathbb{P}}(A \mid B) = {\mathbb{P}}(A)$**, 即事件 $B$ 的发生与否不影响事件 $A$ 发生的概率.\
 
-::: {#prop-01-combinatorics-prob-space-independence-of-two-events .proposition aliases="independence of two events 的等价定义" concepts="independence-of-two-events"}
+::: proposition
 **Proposition: independence of two events 的等价定义**
 
 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ independent iff:
@@ -765,7 +765,7 @@ $$\frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)} = \frac{{\mathbb{P}}(A)}{{\math
 因而, 这两个集合在 measure (probability) 的意义下是完全解耦的, 这就是 independence 的 information geometric 意义.
 :::
 
-::: {#prop-01-combinatorics-prob-space-proposition-008 .proposition concepts="proposition-008"}
+::: proposition
 **Proposition**
 
 如果 events $A$ 和 $B$ independent, 则 $A$ 和 $B^{c}$ 也是 independent 的.
@@ -781,7 +781,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-::: {#ex-01-combinatorics-prob-space-pairwise-independence-vs-mutual-independence .example aliases="(Pairwise Independence vs. Mutual Independence)" concepts="pairwise-independence-vs-mutual-independence"}
+::: example
 **Example: (Pairwise Independence vs. Mutual Independence)**
 
 一组事件 $A_{1},A_{2},\ldots \in \mathcal{F}$ 如果是 mutually independent 的, 则它们两两 independent. **但是反过来不成立**.\
@@ -811,7 +811,7 @@ $$A := \left\{ {\text{first roll is}\ 4} \right\},\quad B := \left\{ {\text{seco
 这个例子提醒我们: 独立性不是一种可以由低维向高维简单"归纳"的性质. 一个系统可以局部解耦（两两独立, 但在全局尺度上却存在强耦合. 总之 mutual independence 是一个很强的条件.
 :::
 
-::::: {#ex-01-combinatorics-prob-space-coin-tossing .example aliases="(coin tossing)" concepts="coin-tossing"}
+::::: example
 **Example: (coin tossing)**
 
 假设我们有一枚不均匀的硬币, 掷出正面的概率是 $p \in \lbrack 0,1\rbrack$, 反面的概率是 $1 - p$. 我们不断地掷这枚硬币, 直到第一次掷出正面为止, 并记录所需的掷币次数. 求: 掷币次数为奇数的概率是多少?

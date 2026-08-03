@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 14
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -42,8 +42,8 @@ $$\nu(E) = \int_{E}f\, d\mu$$
 
 ### absolutely continuous: $\nu \ll \mu$
 
-::: {#def-11-radon-nikodym-theorem-a-s-m-absolutely-continuous-w-r-t-a-p-m .definition concepts="a-s-m-absolutely-continuous-w-r-t-a-p-m" aliases="a s.m. absolutely continuous w.r.t. a p.m."}
-**Definition: a s.m. absolutely continuous w.r.t. a p.m.**
+::: definition
+**Definition: absolute continuity of signed measures**
 
 给定 p.m. $\mu$ 和 s.m. $\nu$ on $(X,\mathcal{A})$, 我们称 $\nu$ is absolutely continuous w.r.t. $\mu$, 如果
 
@@ -59,7 +59,7 @@ $$\nu \ll \mu$$
 
 **$\nu\bot\mu$ 表示的是 $\nu$ 和 $\mu$ 出现变化的区域完全不同**, 而 **$\nu \ll \mu$ 表示的是 $\nu$ 出现变化的区域完全包括在 $\mu$ 出现变化的区域里** (因为 $\mu$ 不变化的区域被包括在 $\nu$ 不变化的区域里).
 
-::: {#ex-11-radon-nikodym-theorem-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 $f \in L^{1}(\mu)$, $\nu(E): = \int_{E}f\, d\mu$, 由积分定义出的 s.m., 总是满足
@@ -67,7 +67,7 @@ $f \in L^{1}(\mu)$, $\nu(E): = \int_{E}f\, d\mu$, 由积分定义出的 s.m., �
 $$\nu \ll \mu$$
 :::
 
-::: {#ex-11-radon-nikodym-theorem-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 $$\nu_{1}: = m,\quad\nu_{2} := \sum\limits_{j = 1}^{\infty}c_{j}\delta_{x_{j}},\quad\nu_{3}: = \mu_{Cantor}$$
@@ -80,7 +80,7 @@ $$\nu_{i}\ll\not{}\nu_{j}\quad\forall i \neq j$$
 显然, 这里三个 measure 都不是 trivial measure, 因而它们之间没有 abs ctn 的关系.
 :::
 
-::: {#prop-11-radon-nikodym-theorem-absolutely-continuous .proposition concepts="absolutely-continuous" aliases="absolutely continuous 的性质"}
+::: proposition
 **Proposition: absolutely continuous 的性质**
 
 - $$\left. |\nu \middle| \ll \mu\Leftrightarrow\nu^{+} \ll \mu\ \text{and}\ \nu^{-} \ll \mu \right.$$
@@ -102,7 +102,7 @@ $$\left. \text{say}\ \nu \ll \mu,\text{if}\ \nu \ll \middle| \mu| \right.$$
 
 question: 为什么这个定义要叫做 absolutely continuous, 它和 continuous 这个词到底有什么关系. 下面这个 theorem 说明了这一点.
 
-::: {#thm-11-radon-nikodym-theorem-why-it-is-called-absolutely-continuous .theorem concepts="why-it-is-called-absolutely-continuous" aliases="why it is called \"absolutely continuous\""}
+::: theorem
 **Theorem: why it is called \"absolutely continuous\"**
 
 令 $\nu$ 为一个 **finite s.m.**, $\mu$ 为一个 **p.m.** on $(X,\mathcal{A})$.\
@@ -153,7 +153,7 @@ $$\nu(E) \geq \epsilon$$
 
 ### RN derivative: (if exist) express how $\nu$ can be induced from $\mu$
 
-::: {#def-11-radon-nikodym-theorem-radon-nikodym-derivative .definition concepts="radon-nikodym-derivative" aliases="Radon-Nikodym derivative"}
+::: definition
 **Definition: Radon-Nikodym derivative**
 
 对于 $\begin{matrix}
@@ -175,7 +175,7 @@ $$d\nu = fd\mu$$
 Radon-Nikodym derivative $f$ 刻画的是**在每一点 $x \in X$ 上, signed 测度 $\nu$ 相对于测度 $\mu$ 的变化速率.**\
 We sometimes call $\nu$ **the signed measure $f\, d\mu$.**\
 
-::: {#ex-11-radon-nikodym-theorem-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 取 LS measure $\mu_{F}$ on $({\mathbb{R}},\mathcal{B}({\mathbb{R}}))$, with $F = e^{2x}$.\
@@ -192,7 +192,7 @@ $$\mu_{F}(E) = \int_{E}2e^{2x}\, dx,\quad\forall E \in \mathcal{B}({\mathbb{R}})
 $$\frac{d\mu_{F}}{dm} = 2e^{2x} = F'(x)$$
 :::
 
-::: {#prop-11-radon-nikodym-theorem-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 任取 measure $\mu$, 以及 extended $\mu$-integrable function $f$, 那么the **signed measure $\nu$ induced by $\mu$ and $f$** 即 $\nu(E): = \int_{E}f\, d\mu$ 一定有:
@@ -210,7 +210,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 
 ### RN Thm: $\sigma$-finite $\nu \ll \mu\Leftrightarrow$ 存在 RN derivative
 
-::: {#thm-11-radon-nikodym-theorem-radon-nikodym-theorem .theorem concepts="radon-nikodym-theorem" aliases="Radon-Nikodym Theorem"}
+::: theorem
 **Theorem: Radon-Nikodym Theorem**
 
 对于 **$\sigma$-finite** $\begin{matrix}
@@ -226,7 +226,7 @@ $$\nu \ll \mu\Leftrightarrow\exists\ \text{ext.}\ \mu\ \text{-intble}\ f = \frac
 Radon Nikodym Theorem 表示, 对于 $\sigma$-finite 的 $\nu$ 和 $\mu$, RN derivative 存在(并且一定唯一)当且仅当 $\nu \ll \mu$. 即对于任意两个 abs ctn 的 measure, 只要它们 $\sigma$-finite, 就可以用一个具体的函数 $f$ 来表达它们之间的关系.\
 要证明 RN Theorem, 我们还需要一些 Lemma.
 
-::: {#lem-11-radon-nikodym-theorem-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 如果 $\nu,\mu$ 都是 **finite positive** measure on $(X,\mathcal{A})$ 并且 $\mu\operatorname{\perp\not{}}\nu$, 那么一定存在 $\epsilon > 0$ 以及 $E \in \mathcal{A}$ with $\mu(E) > 0$ s.t.
@@ -394,7 +394,7 @@ $$\begin{matrix}
 
 $$\nu(E) = \int_{E}f d\mu$$
 
-::: {#ex-11-radon-nikodym-theorem-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 Application: conditional expectation.\
@@ -411,7 +411,7 @@ $f$ 并非一定是 $B$-measurable 的.
 
 ### LRNT: 任意 $\sigma$-finite $\nu,\mu$, 可将 $\nu$ 拆解成 $\lambda\bot\mu$ 和 $\rho \ll \mu$
 
-::: {#thm-11-radon-nikodym-theorem-lebesgue-radon-nikodym-theorem .theorem concepts="lebesgue-radon-nikodym-theorem" aliases="Lebesgue-Radon-Nikodym Theorem"}
+::: theorem
 **Theorem: Lebesgue-Radon-Nikodym Theorem**
 
 如果 $\begin{matrix}
@@ -487,13 +487,13 @@ $\mu$-a.e. = $\nu$-a.e.
 
 ### complex measure 以及 complex version of LRNT
 
-::: {#def-11-radon-nikodym-theorem-complex-measure .definition concepts="complex-measure" aliases="complex measure"}
+::: definition
 **Definition: complex measure**
 
 一个 complex measure on a measurable space $(X,\mathcal{A})$ 是一个 map $\nu:\mathcal{A}\rightarrow{\mathbb{C}}$ satisfying $\nu(\varnothing) = 0$ 以及 ctbl disjoint additivity.
 :::
 
-::: {#ex-11-radon-nikodym-theorem-example-005 .example concepts="example-005"}
+::: example
 **Example**
 
 simple complex measures:

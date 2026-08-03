@@ -29,6 +29,12 @@ make export
 make web-check
 ```
 
+知识节点在 Typst 中用唯一的 `#kn[名称]` 标记，其他位置用
+`#ref[名称]` 链回原定义。内部稳定 ID 由同步程序在源文件之外维护。全局图谱位于仓库根目录的 `knowledge/`；普通章节、
+例题和未标记陈述不会自动成为节点。可用 `make knowledge-subject SUBJECT=math`、
+`make knowledge-course COURSE=measure-theory` 或 `make knowledge-file FILE=...`
+按不同粒度同步。
+
 课程本地 HTML、PDF、编译中间文件和 `site/` 均被忽略。GitHub Actions 从
 Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
 

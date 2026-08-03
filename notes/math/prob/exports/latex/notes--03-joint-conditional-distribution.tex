@@ -14,8 +14,7 @@
 
 \subsection{random vector}\label{random-vector}
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-random-vector; concepts=random-vector; aliases=random vector
-\begin{definition}{random vector}\label{def-03-joint-conditional-distribution-random-vector}
+\begin{definition}{\protect\phantomsection\label{kn-random-vector}{\textbf{random vector}}}
 
 对于 prob space \((\Omega,\mathcal{F},P)\), 一个 function \(\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}\) 如果是一个 \((\mathcal{F},\mathcal{B}({\mathbb{R}}^{n}))\)-measurable function, 则 称它为一个 \(n\)-dimensional random variable, 或者 \(n\)-dimensional random vector.
 
@@ -27,8 +26,8 @@
 
 random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass 的方法, 并把它们并列起来.
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-n-random-variable-vector-random-vector; concepts=-n-random-variable-vector-random-vector; aliases=由 n 个 random variable 构成的 vector 是一个 random vector
-\begin{proposition}{由 \(n\) 个 random variable 构成的 vector 是一个 random vector}\label{prop-03-joint-conditional-distribution-n-random-variable-vector-random-vector}
+\begin{proposition}{\protect\phantomsection\label{kn-n-random-variable-vector-random-vector}{\textbf{由
+\(n\) 个 random variable 构成的 vector 是一个 random vector}}}
 
 令 \(X_{1},X_{2},\cdots,X_{n}\) 是定义在\textbf{同一个 prob space} \((\Omega,\mathcal{F},{\mathbb{P}})\) 上的 \(n\) 个 random variables. 则函数 \(\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}\) defined by
 
@@ -44,8 +43,8 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 
 \end{proof}
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-random-vector-random-variable; concepts=-random-vector-random-variable; aliases=一个 random vector 的每个分量都是一个 random variable
-\begin{proposition}{一个 random vector 的每个分量都是一个 random variable}\label{prop-03-joint-conditional-distribution-random-vector-random-variable}
+\begin{proposition}{\protect\phantomsection\label{kn-random-vector-random-variable}{\textbf{一个
+random vector 的每个分量都是一个 random variable}}}
 
 令 \(\mathbf{X} = (X_{1},X_{2},\cdots,X_{n})^{T}\) 是一个 random vector. 则对于任意 \(i\), \(X_{i}\) 都是一个 random variable.
 
@@ -83,8 +82,8 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 
 \subsection{joint distribution}\label{joint-distribution}
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-joint-distribution-and-joint-cdf; concepts=joint-distribution-and-joint-cdf; aliases=joint distribution and joint cdf
-\begin{definition}{joint distribution and joint cdf}\label{def-03-joint-conditional-distribution-joint-distribution-and-joint-cdf}
+\begin{definition}{\protect\phantomsection\label{kn-joint-distribution-and-joint-cdf}{\textbf{joint
+distribution and joint cdf}}}
 
 令 \(X_{1},\cdots,X_{n}\) 为 RV from the same prob space. 即 \(\mathbf{X} := (X_{1},\cdots,X_{n})\) 是一个 random vector.
 
@@ -104,8 +103,8 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 
 joint distribution 的定义已经包括了如何从多个 random variables 的 distributions 得到一个 joint distribution. 而, 我们也可以从一个 joint distribution 的 limit behavior 得到每个 random variable 分量的 distributions, 称之为 marginal distribution:
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-marginal-distribution; concepts=marginal-distribution; aliases=marginal distribution
-\begin{definition}{marginal distribution}\label{def-03-joint-conditional-distribution-marginal-distribution}
+\begin{definition}{\protect\phantomsection\label{kn-marginal-distribution}{\textbf{marginal
+distribution}}}
 
 令 \(\mathbf{X} = (X_{1},\cdots,X_{n})^{T}\) 是一个 random vector. 则对于任意 \(i\), \(X_{i}\) 的 distribution \({\mathbb{P}}^{X_{i}}\) 被称为 \(\mathbf{X}\) 的第 \(i\) 个分量的 \textbf{marginal distribution}.
 
@@ -113,8 +112,8 @@ joint distribution 的定义已经包括了如何从多个 random variables 的 
 
 我们以 \({\mathbb{R}}^{2}\) 为例. 得出的结论可以推广到 \({\mathbb{R}}^{n}\).
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-joint-distribution-limit-behavior-marginal-distributio; concepts=-joint-distribution-limit-behavior-marginal-distributio; aliases=通过 joint distribution 的 limit behavior 得到 marginal distribution
-\begin{proposition}{通过 joint distribution 的 limit behavior 得到 marginal distribution}\label{prop-03-joint-conditional-distribution-joint-distribution-limit-behavior-marginal-distributio}
+\begin{proposition}{\protect\phantomsection\label{kn-marginal-distribution-from-joint-limits}{\textbf{通过
+joint distribution 的极限得到 marginal distribution}}}
 
 令 \(\mathbf{X} = (X_{1},X_{2})^{T}\) 是一个 random vector. 则对于任意 \(x \in {\mathbb{R}}\), 有
 
@@ -157,8 +156,8 @@ recall: 一个随机变量 \(X\) 被称为一个 continuous random variable, 如
 
 这个定义可以 generalize 到 random vector 上.
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-continuous-random-vector-continuous-joint-cdf; concepts=continuous-random-vector-continuous-joint-cdf; aliases=continuous random vector 和 continuous joint cdf
-\begin{definition}{continuous random vector 和 continuous joint cdf}\label{def-03-joint-conditional-distribution-continuous-random-vector-continuous-joint-cdf}
+\begin{definition}{\protect\phantomsection\label{kn-continuous-random-vector-continuous-joint-cdf}{\textbf{continuous
+random vector 和 continuous joint cdf}}}
 
 对于 random vector \(\mathbf{X} = (X_{1},\cdots,X_{n})^{T}\) 如果 \({\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}\), 即存在一个函数 \(f_{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)\) 使得对于任意 Borel set \(B \subseteq {\mathbb{R}}^{n}\), 有
 
@@ -202,8 +201,8 @@ recall: 一个随机变量 \(X\) 被称为一个 continuous random variable, 如
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-joint-pdf-joint-cdf; concepts=joint-pdf-joint-cdf; aliases=joint pdf 和 joint cdf 的性质
-\begin{proposition}{joint pdf 和 joint cdf 的性质}\label{prop-03-joint-conditional-distribution-joint-pdf-joint-cdf}
+\begin{proposition}{\protect\phantomsection\label{kn-joint-pdf-joint-cdf}{\textbf{joint pdf
+和 joint cdf 的性质}}}
 
 令 \(\mathbf{X} = (X_{1},\cdots,X_{n})^{T}\) 是一个 continuous random vector, 则它的 joint pdf \(f_{\mathbf{X}}\) 和 joint cdf \(F_{\mathbf{X}}\) 有以下性质:
 
@@ -257,8 +256,7 @@ recall: 一个随机变量 \(X\) 被称为一个 continuous random variable, 如
 
 \end{proof}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-001; concepts=example-001
-\begin{example}\label{ex-03-joint-conditional-distribution-example-001}
+\begin{example}
 
 考虑
 
@@ -305,8 +303,7 @@ evaluate 这两个积分:
 
 \end{qlsolution}
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-theorem-001; concepts=theorem-001
-\begin{theorem}\label{thm-03-joint-conditional-distribution-theorem-001}
+\begin{theorem}
 
 对于 continuous random vector \(\mathbf{X} = (X_{1},\cdots,X_{n})^{T}\), 取任意 Borel measurable function \(g:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}\), 则 \(g(\mathbf{X})\) 是一个 random variable, 并且如果 \(\left. {\mathbb{E}}\lbrack \middle| g(\mathbf{X}) \middle| \rbrack < \infty \right.\), 则 , 则
 
@@ -314,8 +311,7 @@ evaluate 这两个积分:
 
 \end{theorem}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-002; concepts=example-002
-\begin{example}\label{ex-03-joint-conditional-distribution-example-002}
+\begin{example}
 
 Let \((X,Y)\) be a two-dimensional random variable with joint density function
 
@@ -383,9 +379,8 @@ Let \((X,Y)\) be a two-dimensional random variable with joint density function
 
 \subsection{independence of two random variables 的三种等价定义}\label{independence-of-two-random-variables-ux7684ux4e09ux79cdux7b49ux4ef7ux5b9aux4e49}
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-independence-of-random-variables-def-1-joint-distribution-is-pro; concepts=independence-of-random-variables-def-1-joint-distribution-is-pro; aliases=independence of random variables, def 1: joint distribution is product of marginal distributions
-\begin{definition}{independence of random variables, def 1: joint distribution is product
-of marginal distributions}\label{def-03-joint-conditional-distribution-independence-of-random-variables-def-1-joint-distribution-is-pro}
+\begin{definition}{\protect\phantomsection\label{kn-independence-via-product-distribution}{\textbf{independence
+via product distribution of marginal distributions}}}
 
 两个 random variables \(X,Y:\Omega\rightarrow{\mathbb{R}}\) 被称为 independent 的, 如果对于任意的 Borel sets \(A,B \subseteq {\mathbb{R}}\), 都有
 
@@ -410,9 +405,8 @@ of marginal distributions}\label{def-03-joint-conditional-distribution-independe
 
 详细而言:
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-discrete-and-continuous-independence-joint-density-is-product-of; concepts=discrete-and-continuous-independence-joint-density-is-product-of; aliases=discrete and continuous independence: joint density is product of marginal densities
-\begin{theorem}{discrete and continuous independence: joint density is product of
-marginal densities}\label{thm-03-joint-conditional-distribution-discrete-and-continuous-independence-joint-density-is-product-of}
+\begin{theorem}{\protect\phantomsection\label{kn-independence-via-joint-density-factorization}{\textbf{independence
+via joint-density factorization marginal densities}}}
 
 令 \(X,Y\) 是两个 random variables.
 
@@ -464,9 +458,8 @@ Recall 两个事件 independence 的定义:
 
 这个定义也当然等价于:
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-independence-of-random-variables-def-2-conditional-distribution; concepts=independence-of-random-variables-def-2-conditional-distribution; aliases=independence of random variables, def 2: conditional distribution is marginal distribution
-\begin{proposition}{independence of random variables, def 2: conditional distribution is
-marginal distribution}\label{prop-03-joint-conditional-distribution-independence-of-random-variables-def-2-conditional-distribution}
+\begin{proposition}{\protect\phantomsection\label{kn-independence-via-conditional-distribution}{\textbf{independence
+via conditional distribution: marginal distribution}}}
 
 两个 random variables \(X,Y\) 是 independent 的, iff: 对于任意的 Borel sets \(A,B\), 如果\({\mathbb{P}}(Y \in B) > 0\), 则
 
@@ -486,8 +479,8 @@ marginal distribution}\label{prop-03-joint-conditional-distribution-independence
 
 Furthermore: 我们不难发现一件事情, 可以\textbf{在 independence of two events 和 independence of two random variables 之间建立一个桥梁:}
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-independence-of-random-variables-def-3-generated-sigma-algebras; concepts=independence-of-random-variables-def-3-generated-sigma-algebras; aliases=independence of random variables, def 3: generated sigma-algebras
-\begin{proposition}{independence of random variables, def 3: generated sigma-algebras}\label{prop-03-joint-conditional-distribution-independence-of-random-variables-def-3-generated-sigma-algebras}
+\begin{proposition}{\protect\phantomsection\label{kn-independence-via-generated-sigma-algebras}{\textbf{independence
+via generated sigma-algebras}}}
 
 令 \(X,Y\) 是两个 random variables. 则 \(X,Y\) 是 independent 的 iff: \(X\) 生成的 sigma-algebra \(\sigma(X)\) 和 \(Y\) 生成的 sigma-algebra \(\sigma(Y)\) 中分别任取一个事件, 这两个事件都是 independent 的. 即:
 
@@ -507,8 +500,8 @@ Furthermore: 我们不难发现一件事情, 可以\textbf{在 independence of t
 
 我们定义了两个 random variables 的 independence, 但是这个定义可以推广到多个 (甚至 uncountably many) random variables 上.
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-mutual-independence-of-multiple-random-variables; concepts=mutual-independence-of-multiple-random-variables; aliases=mutual independence of multiple random variables
-\begin{definition}{\textbf{mutual independence} of multiple random variables}\label{def-03-joint-conditional-distribution-mutual-independence-of-multiple-random-variables}
+\begin{definition}{\protect\phantomsection\label{kn-mutual-independence-of-multiple-random-variables}{\textbf{\textbf{mutual
+independence} of multiple random variables}}}
 
 令 \(\left\{ {X_{i}:i \in I} \right\}\) 是一个 random variables 的 family, 其中 \(I\) 是一个 index set. 则如果对于任意的 finite subset \(J \subseteq I\), 以及对于任意的 Borel sets \(\left\{ {A_{j}:j \in J} \right\}\), 都有
 
@@ -524,8 +517,7 @@ Furthermore: 我们不难发现一件事情, 可以\textbf{在 independence of t
 
 举个例子:
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-pairwise-independence-does-not-imply-mutual-independence; concepts=pairwise-independence-does-not-imply-mutual-independence; aliases=pairwise independence does NOT imply mutual independence
-\begin{example}[pairwise independence does NOT imply mutual independence]\label{ex-03-joint-conditional-distribution-pairwise-independence-does-not-imply-mutual-independence}
+\begin{example}[pairwise independence does NOT imply mutual independence]
 
 假设我们抛掷两枚公平的硬币. 令 \(X,Y\) 是两个 independent 的 random variables, 且都服从 uniform distribution on \(\left\{ {- 1,1} \right\}\). 即:
 
@@ -553,8 +545,8 @@ covariance 的定义:
 
 我们容易发现: \textbf{independence 是一个比 covariance 为 0 (即 uncorrelated) 更强的概念:}
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-independent-uncorrelated; concepts=independent-uncorrelated; aliases=independent 严格强于 uncorrelated
-\begin{proposition}{independent 严格强于 uncorrelated}\label{prop-03-joint-conditional-distribution-independent-uncorrelated}
+\begin{proposition}{\protect\phantomsection\label{kn-independent-uncorrelated}{\textbf{independent
+严格强于 uncorrelated}}}
 
 令 \(X,Y\) 是两个 random variables. 则 \(X,Y\) 是 independent 的 \(\Longrightarrow\) \(\text{Cov}(X,Y) = 0\). 但是 \(\text{Cov}(X,Y) = 0\) 不一定 \(\Longrightarrow\) \(X,Y\) 是 independent 的.
 
@@ -591,8 +583,8 @@ covariance 的定义:
 
 刚才说到, 两个 random variables 的 independence 显然 imply \({\mathbb{E}}\lbrack XY\rbrack = {\mathbb{E}}\lbrack X\rbrack{\mathbb{E}}\lbrack Y\rbrack\). 而 BTW: 这个性质其实\textbf{可以 generalize 到任意 finite number of independent random variables 的 product 上, 并且 我们可以在这些 random variables 上任意地施加 Borel measurable functions}, 只要保证这些函数的 expectation 是 finite 的,
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-independence-implies-expectation-is-closed-under-product; concepts=independence-implies-expectation-is-closed-under-product; aliases=independence \implies expectation is closed under product
-\begin{theorem}{independence \(\Longrightarrow\) expectation is closed under product}\label{thm-03-joint-conditional-distribution-independence-implies-expectation-is-closed-under-product}
+\begin{theorem}{\protect\phantomsection\label{kn-independence-implies-expectation-is-closed-under-product}{\textbf{independence
+\(\Longrightarrow\) expectation is closed under product}}}
 
 令 \(\left\{ {X_{i}:i \in I} \right\}\) 是一个 independent 的 random variables 的 family, 则对于任意的 finite subset \(J \subseteq I\), 以及对于任意的 Borel measurable functions \(\left\{ {g_{j}:j \in J} \right\}\), 如果 \(\left. {\mathbb{E}}\lbrack \middle| g_{j}(X_{j}) \middle| \rbrack < \infty \right.\) for all \(j \in J\), 则
 
@@ -632,8 +624,7 @@ recall: expectation is a linear operator (因而 linearity 是 regardless of ind
 
 实际上: 当这些 Borel measurable functions \(\left\{ {g_{j}:j \in J} \right\}\) 全都 bounded 时, 这个定理其实反向也是成立的:
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-theorem-004; concepts=theorem-004
-\begin{theorem}\label{thm-03-joint-conditional-distribution-theorem-004}
+\begin{theorem}
 
 令 \(\left\{ {X_{i}:i \in I} \right\}\) 是一个family of random variables. 如果对于任意的 finite subset \(J \subseteq I\), 以及任意的 bounded Borel measurable functions \(\left\{ {g_{j}:j \in J} \right\}\), 都有
 
@@ -664,8 +655,8 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 关于两个 discrete random variables \(X,Y\) 是否 independent 的判断, 还有一个直观的方法.
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-discrete-rv-independence-characterization; concepts=discrete-rv-independence-characterization; aliases=discrete RV independence 的 characterization
-\begin{proposition}{discrete RV independence 的 characterization}\label{prop-03-joint-conditional-distribution-discrete-rv-independence-characterization}
+\begin{proposition}{\protect\phantomsection\label{kn-discrete-rv-independence-characterization}{\textbf{discrete
+RV independence 的 characterization}}}
 
 两个 discrete random variables \(X,Y\) 是 independent 的 iff 它们的 joint pmf as a matrix 有 rank 1(每行每列都互为倍数).
 
@@ -693,8 +684,7 @@ note: 一个矩阵 \(M\) 的 rank 等于 1 iff 它可以被分解为两个向量
 
 \end{proof}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-004; concepts=example-004
-\begin{example}\label{ex-03-joint-conditional-distribution-example-004}
+\begin{example}
 
 \[\begin{matrix}
 {P = X \smallsetminus Y} & 0 & {1\ } & {\text{Marginal}\ {\mathbb{P}}(X)} \\
@@ -732,8 +722,8 @@ note: 一个矩阵 \(M\) 的 rank 等于 1 iff 它可以被分解为两个向量
 
 \subsection{conditional distribution and its distribution function}\label{conditional-distribution-and-its-distribution-function}
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-conditional-distribution; concepts=conditional-distribution; aliases=conditional distribution
-\begin{definition}{conditional distribution}\label{def-03-joint-conditional-distribution-conditional-distribution}
+\begin{definition}{\protect\phantomsection\label{kn-conditional-distribution}{\textbf{conditional
+distribution}}}
 
 给定 random variables \(X,Y:\Omega\rightarrow{\mathbb{R}}\), 我们定义 the conditional distribution of \(X\) given \(Y = y\) 为 the probability measure \({\mathbb{P}}^{X|Y = y}\):
 
@@ -771,8 +761,9 @@ note: 一个矩阵 \(M\) 的 rank 等于 1 iff 它可以被分解为两个向量
 
 \subsection{conditional density for random variables jointly continuous}\label{conditional-density-for-random-variables-jointly-continuous}
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density; concepts=jointly-continuous-rvs-defined-conditional-density; aliases=jointly continuous RVs 之间所有 defined 处总有 conditional density
-\begin{theorem}{jointly continuous RVs 之间所有 defined 处总有 conditional density}\label{thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density}
+% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density
+\begin{theorem}{\protect\phantomsection\label{kn-jointly-continuous-rvs-defined-conditional-density}{\textbf{jointly
+continuous RVs 之间所有 defined 处总有 conditional density}}}\label{thm-03-joint-conditional-distribution-jointly-continuous-rvs-defined-conditional-density}
 
 令 \(\mathbf{X} = (X,Y)^{T}\) 是一个 continuous random vector, 则对于任意 \(y\) 使得 \(f_{Y}(y) > 0\), 都有 conditional distribution of \(X\) given \(Y = y\) 的 pdf:
 
@@ -810,8 +801,7 @@ note: 一个矩阵 \(M\) 的 rank 等于 1 iff 它可以被分解为两个向量
 
 \subsection{Law of Total Probability for continuous random vector}\label{law-of-total-probability-for-continuous-random-vector}
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-theorem-006; concepts=theorem-006
-\begin{theorem}\label{thm-03-joint-conditional-distribution-theorem-006}
+\begin{theorem}
 
 令 \(\mathbf{X} = (X,Y)^{T}\) 是一个 continuous random vector, 则对于任意 \(A \in \mathcal{B}({\mathbb{R}})\),
 
@@ -854,8 +844,7 @@ recall 最普通的全概率公式: 把样本空间 partition 成几个 disjoint
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-005; concepts=example-005
-\begin{example}\label{ex-03-joint-conditional-distribution-example-005}
+\begin{example}
 
 考虑 random vector \(\mathbf{X} = (X,Y)^{T}\) with joint pdf
 
@@ -896,8 +885,9 @@ and
 
 \section{conditional expectation}\label{conditional-expectation}
 
-% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-conditional-expectation; concepts=conditional-expectation; aliases=conditional expectation
-\begin{definition}{conditional expectation}\label{def-03-joint-conditional-distribution-conditional-expectation}
+% qlnotes: kind=definition; id=def-03-joint-conditional-distribution-conditional-expectation
+\begin{definition}{\protect\phantomsection\label{kn-conditional-expectation}{\textbf{conditional
+expectation}}}\label{def-03-joint-conditional-distribution-conditional-expectation}
 
 令 \(X,Y:\Omega\rightarrow{\mathbb{R}}\) 为 RVs. 对于 \(y \in {\mathbb{R}}\) where \(F_{X|Y} = {\mathbb{P}}^{X|Y = y}(X \leq x)\) is defined (这个条件对于 discrete 是筛选掉 \({\mathbb{P}}(y) = 0\) 的点, 对于 continuous 这是为了筛选掉 \(f_{Y} = 0\) 的点), 我们定义 conditional expectation:
 
@@ -925,8 +915,8 @@ Notice: 这个函数是一个 random variable. 同理, 我们可以构造 condit
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-independence-conditional-distribution-density-expectation; concepts=independence-conditional-distribution-density-expectation; aliases=independence 让 conditional distribution, density 和 expectation 都退化
-\begin{proposition}{independence 让 conditional distribution, density 和 expectation 都退化}\label{prop-03-joint-conditional-distribution-independence-conditional-distribution-density-expectation}
+\begin{proposition}{\protect\phantomsection\label{kn-independence-conditional-distribution-density-expectation}{\textbf{independence
+让 conditional distribution, density 和 expectation 都退化}}}
 
 如果 \(X,Y\) 是 independent 的, 那么在任意 defined \(y\) 上,
 
@@ -938,8 +928,7 @@ Notice: 这个函数是一个 random variable. 同理, 我们可以构造 condit
 
 \end{proposition}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-006; concepts=example-006
-\begin{example}\label{ex-03-joint-conditional-distribution-example-006}
+\begin{example}
 
 \textbf{(constant random variable 的 conditional expectation)}
 
@@ -962,8 +951,7 @@ Notice: 这个函数是一个 random variable. 同理, 我们可以构造 condit
 
 为什么我们要提及这个很呆的例子 因为我们要说一个很呆但是要说一下的事情:
 
-% qlnotes: kind=proposition; id=prop-03-joint-conditional-distribution-proposition-010; concepts=proposition-010
-\begin{proposition}\label{prop-03-joint-conditional-distribution-proposition-010}
+\begin{proposition}
 
 conditional expectation 满足 linear property. 即任取 \(a,b \in {\mathbb{R}}\),
 
@@ -971,8 +959,7 @@ conditional expectation 满足 linear property. 即任取 \(a,b \in {\mathbb{R}}
 
 \end{proposition}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-007; concepts=example-007
-\begin{example}\label{ex-03-joint-conditional-distribution-example-007}
+\begin{example}
 
 (computation exercise) 令 \(X,Y\) 为 RVs with joint pdf
 
@@ -1009,8 +996,8 @@ conditional expectation 满足 linear property. 即任取 \(a,b \in {\mathbb{R}}
 
 \section{law of total expectation}\label{law-of-total-expectation}
 
-% qlnotes: kind=theorem; id=thm-03-joint-conditional-distribution-law-of-total-expectation; concepts=law-of-total-expectation; aliases=law of total expectation
-\begin{theorem}{law of total expectation}\label{thm-03-joint-conditional-distribution-law-of-total-expectation}
+\begin{theorem}{\protect\phantomsection\label{kn-law-of-total-expectation}{\textbf{law
+of total expectation}}}
 
 令 \(X,Y:\Omega\rightarrow{\mathbb{R}}\) 为 RVs, 我们知道它们的 conditional expectation \(\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.\) 也是一个 \(\Omega\rightarrow{\mathbb{R}}\) 的 RV.
 
@@ -1052,8 +1039,7 @@ For continuous case:
 
 \end{proof}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-008; concepts=example-008
-\begin{example}\label{ex-03-joint-conditional-distribution-example-008}
+\begin{example}
 
 (\textbf{fair coin toss}) 我们投掷一枚 fair coin. \(X_{1}\): 直到 HH 出现钱, 投掷的次数;
 
@@ -1077,8 +1063,7 @@ We condition on 第一次 toss \(Y_{1}\), 以及第二次 toss \(Y_{2}\).
 
 \end{qlsolution}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-009; concepts=example-009
-\begin{example}\label{ex-03-joint-conditional-distribution-example-009}
+\begin{example}
 
 一只鸡在一段时间内下 \(N\) 个蛋, 其中 \(N \sim \text{Pois}(\lambda)\). 每只蛋孵化成小鸡的概率为 \(p\), 互相独立. 令 \(K\) 表示孵化成小鸡的蛋的数量, 计算 \(\left. K \middle| N,{\mathbb{E}}\lbrack K\rbrack \right.\), 以及 \(K\) 的 distribution.
 
@@ -1111,8 +1096,7 @@ We condition on 第一次 toss \(Y_{1}\), 以及第二次 toss \(Y_{2}\).
 
 \end{qlsolution}
 
-% qlnotes: kind=example; id=ex-03-joint-conditional-distribution-example-010; concepts=example-010
-\begin{example}\label{ex-03-joint-conditional-distribution-example-010}
+\begin{example}
 
 令 \((X,Y)\) 为一对 continuous RVs with joint pdf:
 

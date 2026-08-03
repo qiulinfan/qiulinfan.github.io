@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 1
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -41,7 +41,7 @@ $$\operatorname{lim\, sup}\limits_{i}A_{i} = \left\{ {x \in X \mid x \in A_{i}\ 
 :::: remark
 **Remark**
 
-::: {#thm-hw02-on-carath-odorys-hahn-kolmogrov-thm-borel-cantelli-lemma .theorem concepts="borel-cantelli-lemma" aliases="Borel–Cantelli Lemma"}
+::: theorem
 **Theorem: Borel--Cantelli Lemma**
 
 一个 measure 和有限的 set seq, 其 $\lim\sup$ (出现 infinitely many times 的元素) 是零测的.

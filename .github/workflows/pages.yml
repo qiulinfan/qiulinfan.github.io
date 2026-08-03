@@ -38,6 +38,7 @@ jobs:
 
       - name: Build blog
         run: |
+          python3 knowledge/scripts/knowledge.py --repo-root . check
           pnpm --dir site install --frozen-lockfile
           pnpm --dir site build
 

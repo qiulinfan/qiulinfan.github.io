@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 5
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -47,7 +47,7 @@ Suppose $\mu$ is a regular (positive) Borel measure on ${\mathbb{R}}^{n}$.
 
 **of (a):** We prove a lemma:
 
-::: {#lem-hw11-on-regular-borel-measure-bv-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 For regular positive Borel measure $\mu$ on ${\mathbb{R}}^{n}$, fixing $r > 0$, $x\mapsto\mu(B(x,r))$ is Borel measurable.
@@ -120,7 +120,7 @@ A & {:= \left\{ {x \in {\mathbb{R}}^{n}:\text{the limit}\lim\limits_{r\rightarro
 
 Notice:
 
-::: {#lem-hw11-on-regular-borel-measure-bv-lemma-002 .lemma concepts="lemma-002"}
+::: lemma
 **Lemma**
 
 if $(X,\mathcal{A})$ is a measurable space; $f,g:X\rightarrow{\mathbb{R}}$ are $(\mathcal{A},\mathcal{B}({\mathbb{R}}))$ -measurable functions, then
@@ -147,7 +147,7 @@ $$A = \left\{ {x \in {\mathbb{R}}^{n}:\bar{f}(x) = \underset{¯}{f}(x)} \right\}
 Since the diagonal $\left\{ (x,x) \middle| x \in {\mathbb{R}} \right\}$ is a closed set, it is a Borel set. And by lemma, $F$ is a Borel measurable function, implying that $A$ is Borel measurable.
 ::::
 
-::: {#ex-hw11-on-regular-borel-measure-bv-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 **of (c):** Consider
@@ -226,7 +226,7 @@ $$\lambda \perp \rho\quad\Leftrightarrow\quad\lambda_{r} \perp \rho_{r},\quad\la
 
 We first show an equivalent form of it, for further use.\
 
-::: {#lem-hw11-on-regular-borel-measure-bv-lemma-003 .lemma concepts="lemma-003"}
+::: lemma
 **Lemma**
 
 For two complex measures $\lambda,\rho$
@@ -252,7 +252,7 @@ Thus, $A$ is a null set for $|\rho|$, and $A^{c} = (A_{rr} \cap A_{ri})^{c}\bigc
 This finishes the construction of $A$, proving our lemma. Now we can apply the equivalent conditions of $\lambda \perp \rho$ for positive, signed and complex measures.\
 Now we prove this statement which immediately implies what we want:
 
-::: {#prop-hw11-on-regular-borel-measure-bv-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 If complex measure $\lambda$ and $\rho$ on the same measurable space are mutually singular, then

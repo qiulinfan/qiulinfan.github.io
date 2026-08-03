@@ -13,11 +13,7 @@
 === Markov's ineqaulity and Chebyshev's inequality
 <markovs-ineqaulity-and-chebyshevs-inequality>
 #theorem(
-  title: [Markov's inequality],
-  id: "thm-04-lln-markovs-inequality",
-  concepts: ("markovs-inequality",),
-  depends: (),
-  aliases: ("Markov’s inequality",),
+  title: [#kn[Markov's inequality]],
 )[
 对于一个 non-negative random variable $X$ (即 $X gt.eq 0$ a.s.),
 任取 $t > 0$, 都有
@@ -55,11 +51,7 @@ $ bb(E)\[X\]gt.eq t bb(E)\[upright(bold(1))_({ X gt.eq t })\]= t bb(P)\(X gt.eq 
 
 ]
 #corollary(
-  title: [Chebyshev's inequality],
-  id: "cor-04-lln-chebyshevs-inequality",
-  concepts: ("chebyshevs-inequality",),
-  depends: (),
-  aliases: ("Chebyshev’s inequality",),
+  title: [#ref[Chebyshev's inequality]],
 )[
 对于一个 random variable $X$ 和任意的 $t > 0$,
 如果它的方差 $upright("Var")\(X\)$ 是有限的, 那么
@@ -84,11 +76,7 @@ $ bb(P)\(\|X - bb(E)\[X\]\|gt.eq t\)= bb(P)\(\(X - bb(E)\[X\]\)^2gt.eq t^2\)lt.e
 === Cauchy-Schwarz and Jensen's ineq
 <cauchy-schwarz-and-jensens-ineq>
 #theorem(
-  title: [Cauchy-Schwarz inequality],
-  id: "thm-04-lln-cauchy-schwarz-inequality",
-  concepts: ("cauchy-schwarz-inequality",),
-  depends: (),
-  aliases: ("Cauchy-Schwarz inequality",),
+  title: [#kn[Cauchy-Schwarz inequality]],
 )[
 对于任意的 random variables $X$ 和 $Y$, 都有
 $ \|bb(E)\[X Y\]\|lt.eq sqrt(bb(E)\[X^2\]dot.op bb(E)\[Y^2\]) $
@@ -101,11 +89,7 @@ $L^2\(Omega\,cal(F)\,bb(P)\)$
 不赘述了.
 
 #theorem(
-  title: [Jensen's inequality],
-  id: "thm-04-lln-jensens-inequality",
-  concepts: ("jensens-inequality",),
-  depends: (),
-  aliases: ("Jensen’s inequality",),
+  title: [#kn[Jensen's inequality]],
 )[
 对于一个 convex function $phi.alt$ 和
 任意的 random variable $X$,
@@ -136,11 +120,7 @@ $ bb(E)\[phi\(X\)\]gt.eq phi\(bb(E)\[X\]\)+ m\(bb(E)\[X\]- bb(E)\[X\]\)= phi\(bb
 这里不 prove 了. proof 请左转 measure theory notes.
 
 #theorem(
-  title: [Fatou's Lemma],
-  id: "thm-04-lln-fatous-lemma",
-  concepts: ("fatous-lemma",),
-  depends: (),
-  aliases: ("Fatou’s Lemma",),
+  title: [#ref[Fatou's Lemma]],
 )[
 令 ${ X_n }$ 是一列 non-negative random variables, 那么
 $ bb(E)\[liminf_(n arrow.r oo) X_n\]lt.eq liminf_(n arrow.r oo) bb(E)\[X_n\] $
@@ -168,11 +148,7 @@ pointwise 下极限的积分,
 
 ]
 #theorem(
-  title: [Monotone Convergence Theorem (MCT)],
-  id: "thm-04-lln-monotone-convergence-theorem-mct",
-  concepts: ("monotone-convergence-theorem-mct",),
-  depends: (),
-  aliases: ("Monotone Convergence Theorem (MCT)",),
+  title: [#ref[monotone convergence theorem]],
 )[
 令 ${ X_n }$ 是一列递增的 non-negative random variables
 (即 $X_n arrow.t X$ a.s.), 那么
@@ -186,11 +162,7 @@ $ lim_(n arrow.r oo) bb(E)\[X_n\]= bb(E)\[X\] $
 
 ]
 #theorem(
-  title: [Dominated Convergence Theorem (DCT)],
-  id: "thm-04-lln-dominated-convergence-theorem-dct",
-  concepts: ("dominated-convergence-theorem-dct",),
-  depends: (),
-  aliases: ("Dominated Convergence Theorem (DCT)",),
+  title: [#ref[dominated convergence theorem]],
 )[
 令 ${ X_n }$ 是一列 random variables,
 并且存在一个 a.e. pointwise limit $X$
@@ -212,11 +184,7 @@ uniform bound (不要有很多 unbounded 的 spike 就行了),
 === Tonneli and fubini
 <tonneli-and-fubini>
 #theorem(
-  title: [Tonneli's Theorem],
-  id: "thm-04-lln-tonnelis-theorem",
-  concepts: ("tonnelis-theorem",),
-  depends: (),
-  aliases: ("Tonneli’s Theorem",),
+  title: [#ref[Tonelli]],
 )[
 对于一列 non-negative random variables
 ${ X_n }$, 累加和积分(求期望)的顺序可以交换:
@@ -224,11 +192,7 @@ $ bb(E) [sum_(n = 1)^(+ oo) X_n] = sum_(n = 1)^(+ oo) bb(E) [X_n] $
 
 ]
 #theorem(
-  title: [Fubini's Theorem],
-  id: "thm-04-lln-fubinis-theorem",
-  concepts: ("fubinis-theorem",),
-  depends: (),
-  aliases: ("Fubini’s Theorem",),
+  title: [#ref[Fubini's Theorem]],
 )[
 对于一列任意的 random variables ${ X_n }$,
 只要其绝对值的 sum 的 expectation 是 finite 的
@@ -264,11 +228,7 @@ uniform limit 的定义已经很熟悉了,
 )
 
 #definition(
-  title: [RV 序列的三种收敛方式],
-  id: "def-04-lln-rv",
-  concepts: ("rv",),
-  depends: (),
-  aliases: ("RV 序列的三种收敛方式",),
+  title: [#kn[RV 序列的三种收敛方式]],
 )[
 - #strong[converge a.s. (almost surely)]
   或称 converge with probability 1:
@@ -321,11 +281,8 @@ weak LLN 证明的是这个 convergence 是 in probability 的,
 就是说 strong LLN 是严格强于 weak LLN 的.
 
 #theorem(
-  title: [weak Law of Large Numbers],
+  title: [#kn[weak Law of Large Numbers]],
   id: "thm-04-lln-weak-law-of-large-numbers",
-  concepts: ("weak-law-of-large-numbers",),
-  depends: (),
-  aliases: ("weak Law of Large Numbers",),
 )[
 对于一列 i.i.d. 的 random variables ${ X_i }$,
 只要这个 random variable 的 expectation 是 finite 的
@@ -354,11 +311,7 @@ $ bb(P) (lr(|S_n \/ n - mu|) > epsilon) = frac(1, epsilon^2 n^2) sum_(n = 1)^n b
 
 ]
 #theorem(
-  title: [strong Law of Large Numbers],
-  id: "thm-04-lln-strong-law-of-large-numbers",
-  concepts: ("strong-law-of-large-numbers",),
-  depends: (),
-  aliases: ("strong Law of Large Numbers",),
+  title: [#kn[strong Law of Large Numbers]],
 )[
 在 weak LLN@thm-04-lln-weak-law-of-large-numbers
 的相同条件 (其实可以更弱,
@@ -452,10 +405,6 @@ $- oo$) 时,
 
 #example(
   title: [估算 $pi$],
-  id: "ex-04-lln-pi",
-  concepts: ("-pi",),
-  depends: (),
-  aliases: ("估算 \\pi",),
 )[
 我们令 $X\,Y tilde.op U\(\[- 1\,1\]\)$
 

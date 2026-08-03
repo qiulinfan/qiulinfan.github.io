@@ -12,8 +12,8 @@ keywords:
 - problem solving
 - practice problems
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 5
+qlnotes-schema: qlnotes-v2
+semantic-node-count: "0"
 source: extras.typ
 subtitle: Homework 0, problem-solving lectures, and practice problems
 title: "MATH 597: Measure Theory --- Supplementary Material"
@@ -35,7 +35,7 @@ $$\lambda_{f}(\alpha) \leq (\frac{\parallel f\underset{p}{\parallel}}{\alpha})^{
 for $0 < p < \infty$.\
 Today: Problem Solving
 
-::: {#prop-lec36-problem-solving-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 对于任意 $0 < p < \infty$, 我们有:
@@ -90,7 +90,7 @@ $$\lim\limits_{n\rightarrow\infty}\int_{0}^{\infty}p\alpha^{p - 1}\lambda_{g_{n}
 
 $\lambda_{f}(\alpha) = \mu(\left\{ |f \middle| > \alpha \right\})$, 以及 $\left\{ |f \middle| > \alpha \right\} = \bigcup_{1}^{\infty}\left\{ {g_{n} > \alpha} \right\}$ increasing union.
 
-::: {#ex-lec36-problem-solving-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 Let $f:\lbrack 0,1\rbrack\rightarrow{\mathbb{R}}$ be abs ctn. Suppose $f(0) = 0$ 以及 $f^{1} \in L^{2}(\lbrack 0,1\rbrack)$.\
@@ -124,7 +124,7 @@ Use fact: $g = L^{1}(X,\mathcal{A},\mu)\Longrightarrow\forall\epsilon > 0,\exist
 $$\left. \int_{0}^{x} \middle| f'(t) \middle| {}_{2}dt\overset{x\rightarrow 0}{\rightarrow}0 \right.$$
 :::
 
-::: {#ex-lec36-problem-solving-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 Let $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ be a function.\
@@ -167,7 +167,7 @@ $$f(x) = \operatorname{lim\, inf}\limits_{k\rightarrow\infty}h_{k}(x)\quad\text{
 This proves that, $f$ is Lebesgue measurable.
 :::
 
-::: {#ex-lec36-problem-solving-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 Prove that:
@@ -215,7 +215,7 @@ $$\left. \operatorname{lim\, sup}\limits_{n\rightarrow\infty} \middle| \int_{E}f
 Since $\epsilon$ arbitrary, 得证.
 :::
 
-::: {#ex-lec36-problem-solving-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 Let $E \subset {\mathbb{R}}$ be a Borel set, with $m(E) > 0$.\

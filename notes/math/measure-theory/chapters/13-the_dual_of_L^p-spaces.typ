@@ -9,9 +9,6 @@
 的证明 (差了一个 proof surjectivity of the isometry $g arrow.r ell_g$). 因而我把它放在这里, 衔接下面几个 lectures, 完成 6.2 这一节. \ 我们首先练习一个 example of Hölder's ineq 来回忆一下: \ recall Hölder's ineq: for $1 lt.eq p\,q lt.eq oo\,#h(0em) 1 / p + 1 / q = 1 arrow.r.double.long$ $ \|\|f g\|\|_1 lt.eq\|\|f\|\|_p\|\|g\|\|_q $
 
 #example(
-  id: "ex-13-the-dual-of-l-p-spaces-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 Prove:$ f in L^3\(\[- 1\,1\]\,m\)arrow.r.double.long integral_(- 1)^1 frac(\|f\(x\)\|, sqrt(\|x\|)) thin d x < oo $
 
@@ -27,11 +24,7 @@ Apply Hölder's: 既然 $f in L^3$, 那么我们就拉满, take $p = 3$, corresp
 对于作为 NVS 的 $V$, 我们还可以定义一个 linear functional 的 boundedness.
 
 #definition(
-  title: [bounded linear functional],
-  id: "def-13-the-dual-of-l-p-spaces-bounded-linear-functional",
-  concepts: ("bounded-linear-functional",),
-  depends: (),
-  aliases: ("bounded linear functional ",),
+  title: [#kn[bounded linear functional]],
 )[
 Let $V$ be a $bb(K)$-NVS, $f : V arrow.r bb(K)$ be a linear functional. \ 我们称 $f$ bounded, if exist $C > 0$ s.t. $ \|f\(v\)\|lt.eq C\|\|v\|\|\,quad forall thin v in V $
 
@@ -41,11 +34,7 @@ Let $V$ be a $bb(K)$-NVS, $f : V arrow.r bb(K)$ be a linear functional. \ 我们
 
 ]
 #proposition(
-  title: [linear functional bounded $arrow.l.r.double$ ctn at $0$],
-  id: "prop-13-the-dual-of-l-p-spaces-linear-functional-bounded-iff-ctn-at-0",
-  concepts: ("linear-functional-bounded-iff-ctn-at-0",),
-  depends: (),
-  aliases: ("linear functional bounded \\iff ctn at 0",),
+  title: [#kn[linear functional bounded $arrow.l.r.double$ ctn at $0$]],
 )[
 if $f : V arrow.r bb(K)$ is a linear functional, TFAE:
 
@@ -67,21 +56,13 @@ $ \|\|v - v_0\|\|< delta arrow.r.double.long\|f\(v\)- f\(v_0\)\|=\|f\(v - v_0\)\
 
 ]
 #definition(
-  title: [dual space],
-  id: "def-13-the-dual-of-l-p-spaces-dual-space",
-  concepts: ("dual-space",),
-  depends: (),
-  aliases: ("dual space",),
+  title: [#kn[dual space]],
 )[
 If $V$ is a NVS, 我们定义它的 #strong[dual space] as: $ V^(*) := { upright("bounded linear functionals ") #h(0em) f : V arrow.r bb(K) } $
 
 ]
 #definition(
-  title: [norm of dual space: 即 #strong[dual norm]],
-  id: "def-13-the-dual-of-l-p-spaces-norm-of-dual-space-dual-norm",
-  concepts: ("norm-of-dual-space-dual-norm",),
-  depends: (),
-  aliases: ("norm of dual space: 即 dual norm",),
+  title: [#kn[norm of dual space: 即 #strong[dual norm]]],
 )[
 Given $f in V^(*)$, set $ \|\|f\|\|_(*): = sup_(v in V\\{ 0 }) frac(\|f\(v\)\|, \|\|v\|\|) = sup_(\|\|v\|\|= 1)\|f\(v\)\| $
 where $parallel v parallel$ 表示的是 $V$ 上使用的 norm. 这个 norm 被称为 dual norm.
@@ -96,11 +77,7 @@ where $parallel v parallel$ 表示的是 $V$ 上使用的 norm. 这个 norm 被�
 === $V^(*)$ being a Banach space
 <v-being-a-banach-space>
 #theorem(
-  title: [dual space is always Banach],
-  id: "thm-13-the-dual-of-l-p-spaces-dual-space-is-always-banach",
-  concepts: ("dual-space-is-always-banach",),
-  depends: (),
-  aliases: ("dual space is always Banach",),
+  title: [#kn[dual space is always Banach]],
 )[
 对于#strong[任意的 NVS] $V$: $V^(*)$ 都是一个 Banach space. (not assuming $V$ Banach).
 
@@ -125,9 +102,6 @@ WTS: $ parallel f_n - f parallel = sup_(parallel x parallel = 1)\|\(f_n - f\)\(x
 Actually 这个 Theorem 有更 general 的形式:
 
 #theorem(
-  id: "thm-13-the-dual-of-l-p-spaces-theorem-002",
-  concepts: ("theorem-002",),
-  depends: (),
 )[
 对于任意 nvm $V$ 和 Banach $W$, $cal(L)\(V\,W\)$ 一定是 Banach 的.
 
@@ -137,11 +111,7 @@ Proof 见 Folland 5.4.
 === $\(L^p\)^(*)= L^q$, $1 / p + 1 / q = 1$
 <lp-lq-frac1p-frac1q-1>
 #theorem(
-  title: [对于互为 conjugate exponent 的 $p\,q$, $L^p$ 是 $L^q$ 的 dual space],
-  id: "thm-13-the-dual-of-l-p-spaces-conjugate-exponent-p-q-l-p-l-q-dual-space",
-  concepts: ("conjugate-exponent-p-q-l-p-l-q-dual-space",),
-  depends: (),
-  aliases: ("对于互为 conjugate exponent 的 p,q, L^p 是 L^q 的 dual space",),
+  title: [#kn[对于互为 conjugate exponent 的 $p\,q$, $L^p$ 是 $L^q$ 的 dual space]],
 )[
 For $1 < p\,q < oo$ with $1 / p + 1 / q = 1$, we have: $ \(L^p\)^(*)= L^q $
 In particular the Hilbert space: $ \(L^2\)^(*)= L^2 $

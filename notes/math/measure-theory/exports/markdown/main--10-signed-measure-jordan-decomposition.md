@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 22
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -45,7 +45,7 @@ $$\nu(E): = \int_{E}f d\mu$$
 通过 integration of the function with respect to some measure $\mu$ 定义出了另一个 measure $\nu$.\
 But what about $f \in L^{1}$?
 
-::: {#def-10-signed-measure-jordan-decomposition-signed-measure .definition concepts="signed-measure" aliases="signed measure"}
+::: definition
 **Definition: signed measure**
 
 一个 signed measure on a measurable space $(X,\mathcal{A})$ 是一个 function $\nu:\mathcal{A}\rightarrow\lbrack - \infty,\infty)$ 或者 $\nu:\mathcal{A}\rightarrow( - \infty,\infty\rbrack$, **和普通 meausre 一样满足 $\nu(\varnothing) = 0$ 以及 ctbl disjoint additivity**.\
@@ -59,12 +59,12 @@ Note: signed measure 只 admit $+ \infty$ 和 $- \infty$ 中的一个值 (**不�
 signed measure 实则是偏向一边的, 要么偏向 positive 要么偏向 negatve, 在取值上并不对称. 因为一旦有 $\nu(A) = \infty$ 就不能有 signed measure 为 $- \infty$ 的集合, 反之亦然. 另一边只是一个调节, 作为一个有限的补偿项.
 :::
 
-:::: {#ex-10-signed-measure-jordan-decomposition-example-001 .example concepts="example-001"}
+:::: example
 **Example**
 
 容易验证:
 
-::: {#prop-10-signed-measure-jordan-decomposition-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 对于 positive measure $\mu_{1},\mu_{2}$, 如果其中有至少一个是 finite 的, 那么
@@ -77,10 +77,10 @@ $$\nu: = \mu_{1} - \mu_{2}$$
 This follows from ctbl disjoint additivity. (两个 ctbl sum 加起来)
 ::::
 
-:::: {#ex-10-signed-measure-jordan-decomposition-example-002 .example concepts="example-002"}
+:::: example
 **Example**
 
-::: {#prop-10-signed-measure-jordan-decomposition-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 对于 measurable function $f$, 如果 $f^{+}$ 和 $f^{-}$ 中至少有一个是 $L^{1}$ 的 (这个条件弱于 $f \in L^{1}$, 被称为 $f$ is extended $\mu$-integrable), 那么
@@ -95,8 +95,8 @@ This follows from that (1) 对于 $f \in L^{+}$, $\nu(E): = \int_{E}f d\mu$ 定�
 
 ### signed measure 的 CFB, CFA
 
-::: {#prop-10-signed-measure-jordan-decomposition-cfb-and-cfa .proposition concepts="cfb-and-cfa" aliases="CFB and CFA"}
-**Proposition: CFB and CFA**
+::: proposition
+**Proposition: continuity from below and above for signed measures**
 
 给定 signed measure $\nu$, 对于 increasing seq $E_{j}$, 有
 
@@ -121,7 +121,7 @@ $$A \subset B\operatorname{\Rightarrow\not{}}\nu(A) \leq \nu(B)$$
 
 但是
 
-::: {#lem-10-signed-measure-jordan-decomposition-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 对于 signed measure $\nu$, 和 measurable $A \subset B$,
@@ -149,7 +149,7 @@ $$B = A \sqcup (B\backslash A)$$
 这个性质表示了 signed measure 的稳定性: **一旦一个集合有无穷的 measure, 它外面的任何 superset 一定也有同向的无穷 measure**.
 :::
 
-::: {#def-10-signed-measure-jordan-decomposition-positive-set-negative-set-null-set .definition concepts="positive-set-negative-set-null-set" aliases="positive set, negative set, null set"}
+::: definition
 **Definition: positive set, negative set, null set**
 
 给定 signed measure $\nu$, 对于 $E \in \mathcal{A}$, 我们称 $E$ 是一个 **postive se**t, 如果对于对于任意的 $F \subset E$, 都有
@@ -166,7 +166,7 @@ Note: For signed measure, **一个集合的 signed measure 为 $0$ 并不代表�
 null set 既是 positive set, 又是 negative set.
 :::
 
-::: {#lem-10-signed-measure-jordan-decomposition-measurable-subset-preserves-sign .lemma concepts="measurable-subset-preserves-sign" aliases="measurable subset preserves sign"}
+::: lemma
 **Lemma: measurable subset preserves sign**
 
 measurable subset of a measurable set $F \subset E$ preserves the sign of $E$.\
@@ -179,7 +179,7 @@ measurable subset of a measurable set $F \subset E$ preserves the sign of $E$.\
 By def, 可以 by contradiction 得到.
 :::
 
-::: {#lem-10-signed-measure-jordan-decomposition-positive-negative-null-set-measure-space .lemma concepts="positive-negative-null-set-measure-space" aliases="positive, negative, null set 内的局部性质和普通的 measure space 一样"}
+::: lemma
 **Lemma: positive, negative, null set 内的局部性质和普通的 measure space 一样**
 
 如果 $E$ 是一个 **positive set** for signed measure $\nu$, 那么
@@ -202,7 +202,7 @@ positive, negative, null set 就是这个 signed measure space 中的 \"**纯净
 
 ![Figure 29:[ ]{style="white-space: pre-wrap"}](.assets/main--figure-raster-028.png){width="40%"}
 
-::: {#lem-10-signed-measure-jordan-decomposition-lemma-004 .lemma concepts="lemma-004"}
+::: lemma
 **Lemma**
 
 Countable union of positive / negative / null sets 仍然是 positive / negative / null sets.
@@ -225,7 +225,7 @@ Hahn Decomposition Theorem 表示: **任意一个 signed measure 都把整个空
 
 ### Hahn Decomposition
 
-::: {#thm-10-signed-measure-jordan-decomposition-hahn-decomposition-theorem .theorem concepts="hahn-decomposition-theorem" aliases="Hahn Decomposition Theorem"}
+::: theorem
 **Theorem: Hahn Decomposition Theorem**
 
 对于任意 measurable space $(X,\mathcal{A})$ 上的任意 signed measure $\nu$, 都存在一个 positive set $P$ 和一个 negative set $N$ s.t.
@@ -343,7 +343,7 @@ $$\nu(A') > \nu(A) + \frac{1}{n} \geq \nu(A_{j}) + \frac{1}{n}\quad\text{for all
 
 对于任意的 signed measure $\nu$, 我们已经通过 Hahn-Decomposition 证明了它一定把集合分为一个 positive set $P$ 和一个 negative set $N$, 并且 unique in $\nu$-a.e. sense.\
 
-::: {#ex-10-signed-measure-jordan-decomposition-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 Consider mble space $({\mathbb{N}},\mathcal{P}({\mathbb{N}}))$, 考虑由
@@ -359,7 +359,7 @@ $$P = \left\{ {1,2,3} \right\},\quad N = {\mathbb{N}}\backslash P$$
 
 ### mutually singular s.m.
 
-::: {#def-10-signed-measure-jordan-decomposition-mutually-singular .definition concepts="mutually-singular" aliases="mutually singular"}
+::: definition
 **Definition: mutually singular**
 
 我们称两个 signed measure $\nu_{1},\nu_{2}$ on $(X,\mathcal{A})$ 是 mutually singular 的, 如果 $X = E_{1} \sqcup E_{2}$, 其中 $E_{i}$ 是 $\nu_{i}$ 的 null set.\
@@ -377,7 +377,7 @@ Note: Mutually Singular 并不要求对于任意一个集合, 这两个s.m. 至�
 我们知道, (positive) measure 比普通的函数更加复杂, 因为一旦在某个集合上有值, 它在这个集合的所有超集上都有更大的值, 因而不可能 \"两个 measure positive 的地方完全不同\". 但是 mutually singular 代表的是: **这两个 measure 出现变化的区域完全不同.**
 :::
 
-::: {#ex-10-signed-measure-jordan-decomposition-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 1\. 把所有 measurable set map to $0$ 的 trivial measure 和任意 s.m. 都 mutually singular.\
@@ -413,7 +413,7 @@ $$\nu^{+}(E): = \nu(E \cap P) \geq 0$$
 
 $$\nu^{-}(E): = \nu(E \cap N) \geq 0$$
 
-::: {#lem-10-signed-measure-jordan-decomposition-lemma-005 .lemma concepts="lemma-005"}
+::: lemma
 **Lemma**
 
 对于 s.m. $\nu$, 我们通过 Hahn Decomposition 得到 $P \sqcup N = X$.\
@@ -493,7 +493,7 @@ $$\nu^{+}\bot\,\nu^{-}$$
 
 下面我们证明 Jordan decomposition:
 
-::: {#thm-10-signed-measure-jordan-decomposition-jordan-decomposition-theorem .theorem concepts="jordan-decomposition-theorem" aliases="Jordan decomposition theorem"}
+::: theorem
 **Theorem: Jordan decomposition theorem**
 
 对于任意 s.m. $\nu$ on $(X,\mathcal{A})$, 都存在唯一的 positive measure $\nu^{+}$, $\nu^{-}$ s.t.
@@ -534,7 +534,7 @@ $$\mu^{+} = \nu^{+}$$
 
 ### total variation measure
 
-::: {#def-10-signed-measure-jordan-decomposition-total-variation-measure .definition concepts="total-variation-measure" aliases="total variation measure"}
+::: definition
 **Definition: total variation measure**
 
 $$\left. |\nu \middle| : = \nu^{+} + \nu^{-} \right.$$
@@ -546,7 +546,7 @@ $$\left. f = f^{+} - f^{-},\quad \middle| f \middle| = f^{+} + f^{-} \right.$$
 
 但是这里, 这个 $| \cdot |$ 符号和绝对值的 $| \cdot |$ 符号的意义并不一致: **这个 $|\nu|$ 并不是 $\nu$ 的绝对值函数**. 在 positive, negative, null sets 上, $|\nu|$ 确实是 $\nu$ 的绝对值函数, 但是**在内部既有 positive measure 的部分, 又有 negative measure 的部分的集合, 它的 total variation measure 是要比它的原 s.m. 的绝对值更大的.** 因而它才被叫做原 s.m. 的 total variation measure, 表示某个集合内部, 原 s.m. 从正到负的**最大变差**.
 
-::: {#lem-10-signed-measure-jordan-decomposition-lemma-006 .lemma concepts="lemma-006"}
+::: lemma
 **Lemma**
 
 $|\nu|$ 是 $(X,\mathcal{A})$ 上的 positive measure.\
@@ -562,7 +562,7 @@ trivial.
 
 ### integration w.r.t. s.m.
 
-::: {#def-10-signed-measure-jordan-decomposition-integration-w-r-t-signed-measure .definition concepts="integration-w-r-t-signed-measure" aliases="integration w.r.t. signed measure"}
+::: definition
 **Definition: integration w.r.t. signed measure**
 
 对于 signed measure $\nu$, 我们 set:
@@ -574,7 +574,7 @@ $$\left. L^{1}(\nu): = L^{1}( \middle| \nu \middle| ) = L^{1}(\nu^{+}) \cap L^{1
 $$\int f\, d\nu: = \int f\, d\nu^{+} - \int f\, d\nu^{-}$$
 :::
 
-::: {#prop-10-signed-measure-jordan-decomposition-proposition-004 .proposition concepts="proposition-004"}
+::: proposition
 **Proposition**
 
 我们知道, 对于任意 p.m. $\mu$ on $(X,\mathcal{A})$ 以及 $f \in L^{1}(\mu)$,
@@ -605,8 +605,8 @@ $$\nu^{+}(E) = \int_{E \cap {\{{f \geq 0}\}}}f\, d\mu = \int_{E}f^{+}\, d\mu$$
 
 We will learn that: 这个 $f$ 正是 $\nu$ w.r.t. $\mu$ 的 Radon-Nikodym derivative, 从而 $f(x)$ 表示在某个元素处, $\nu$ 相对于 $\mu$ 的变化趋势. 而 total variation measure of $\nu$ 正是把所有的元素上的这个变化趋势都取正 (即取总变化量, 不管方向) 得到的.
 
-::: {#lem-10-signed-measure-jordan-decomposition-total-variation-measure .lemma concepts="total-variation-measure" aliases="total variation measure 的性质"}
-**Lemma: total variation measure 的性质**
+::: lemma
+**Lemma: total variation measure**
 
 令 $\nu$ be a s.m. on $(X,\mathcal{A})$, $E \in \mathcal{A}$, 则
 

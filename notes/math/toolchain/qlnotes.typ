@@ -1,6 +1,8 @@
 // Shared QLNotes Typst template and semantic authoring API.
 // The same semantic components render to paged PDF and semantic HTML.
 
+#import "generated/knowledge-registry.typ": knowledge-registry
+
 #let palette = (
   ink: rgb("#172033"),
   muted: rgb("#667085"),
@@ -33,25 +35,58 @@
   }
 }
 
-#let semantic(
-  id: none,
-  kind: none,
-  concepts: (),
-  depends: (),
-  aliases: (),
-) = metadata((
-  schema: "qlnotes-v1",
-  id: id,
-  kind: kind,
-  concepts: concepts,
-  depends: depends,
-  aliases: aliases,
-))
+#let knowledge-entry(name) = knowledge-registry.find(entry => entry.name == name)
 
-#let attribute-list(values) = if values.len() == 0 {
-  ""
-} else {
-  values.join("|")
+// Define one globally unique knowledge name. Machine IDs stay in the generated
+// registry; authors write only #kn[Name].
+#let kn(body) = context {
+  let entry = knowledge-entry(body)
+  if entry == none {
+    text(fill: palette.ink, weight: "bold")[#body]
+  } else if target() == "html" {
+    let anchor = "kn-" + entry.id
+    let record = metadata((schema: "qlkg-node-v2", id: entry.id))
+    [
+      #record
+      #html.elem(
+        "span",
+        attrs: (
+          id: anchor,
+          class: "ql-kn",
+          data-ql-kn: entry.id,
+        ),
+      )[#strong(body)]
+    ]
+  } else {
+    let anchor = "kn-" + entry.id
+    let record = metadata((schema: "qlkg-node-v2", id: entry.id))
+    [#record #text(fill: palette.ink, weight: "bold")[#body] #label(anchor)]
+  }
+}
+
+// Refer to the unique definition point with the same semantic name. Authors
+// write only #ref[Name]; unresolved names remain readable until the next sync.
+#let typst-ref = ref
+#let ref(name, ..arguments) = context {
+  if type(name) == label {
+    typst-ref(name)
+  } else {
+    let entry = knowledge-entry(name)
+    if entry == none {
+      name
+    } else if target() == "html" {
+      html.elem(
+        "a",
+        attrs: (
+          class: "ql-ref",
+          href: entry.url,
+          data-ql-ref: entry.id,
+        ),
+      )[#name]
+    } else {
+      link(entry.url, name)
+    }
+  }
 }
 
 #let semantic-wrapper(
@@ -62,17 +97,6 @@
   depends: (),
   aliases: (),
 ) = context {
-  let record = if id == none {
-    none
-  } else {
-    semantic(
-      id: id,
-      kind: kind,
-      concepts: concepts,
-      depends: depends,
-      aliases: aliases,
-    )
-  }
   let labelled-body = if id == none {
     body
   } else {
@@ -80,25 +104,16 @@
   }
 
   if target() == "html" and id != none {
-    [
-      #record
-      #html.elem(
-        "div",
-        attrs: (
-          class: "ql-semantic",
-          data-ql-id: id,
-          data-ql-kind: kind,
-          data-ql-concepts: attribute-list(concepts),
-          data-ql-depends: attribute-list(depends),
-          data-ql-aliases: attribute-list(aliases),
-        ),
-      )[#labelled-body]
-    ]
+    html.elem(
+      "div",
+      attrs: (
+        id: id,
+        class: "ql-statement-anchor",
+        data-ql-statement-id: id,
+      ),
+    )[#labelled-body]
   } else {
-    [
-      #record
-      #labelled-body
-    ]
+    labelled-body
   }
 }
 
@@ -216,6 +231,27 @@
   statement(
     kind: "proposition",
     supplement: [Proposition],
+    title: title,
+    body,
+  ),
+)
+
+#let axiom(
+  body,
+  title: none,
+  id: none,
+  concepts: (),
+  depends: (),
+  aliases: (),
+) = semantic-wrapper(
+  id: id,
+  kind: "axiom",
+  concepts: concepts,
+  depends: depends,
+  aliases: aliases,
+  statement(
+    kind: "axiom",
+    supplement: [Axiom],
     title: title,
     body,
   ),
@@ -570,6 +606,11 @@
     palette.orange,
     palette.orange-soft,
   )
+  show figure.where(kind: "axiom"): it => render-statement(
+    it,
+    palette.orange,
+    palette.orange-soft,
+  )
   show figure.where(kind: "proposition"): it => render-statement(
     it,
     palette.violet,
@@ -644,6 +685,11 @@
     palette.orange-soft,
   )
   show figure.where(kind: "corollary"): it => render-statement(
+    it,
+    palette.orange,
+    palette.orange-soft,
+  )
+  show figure.where(kind: "axiom"): it => render-statement(
     it,
     palette.orange,
     palette.orange-soft,

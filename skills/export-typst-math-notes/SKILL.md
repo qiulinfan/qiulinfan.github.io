@@ -1,31 +1,30 @@
 ---
 name: export-typst-math-notes
-description: Maintain a Typst-first mathematics-notes workflow with course-root Typst authority, per-chapter editable LaTeX and knowledge-graph Markdown exports, semantic web HTML, CeTZ-to-SVG figure delivery, and repository graph synchronization. Use when Codex migrates a LaTeX math course, edits or publishes QLNotes Typst, exports chapter snapshots, updates math-note Pages routes, or refreshes and queries the personal math knowledge graph.
+description: Maintain and export Typst-first mathematics notes at repository, subject, course, or individual-file scope. Use when Codex authors or migrates QLNotes Typst; curates global #kn knowledge nodes and #ref backlinks; preserves orphaned node metadata during concept moves; extracts semantic graph edges; exports chaptered editable LaTeX and Markdown; checks semantic HTML; or publishes math notes to GitHub Pages.
 ---
 
 # Export Typst Math Notes
 
-Treat Typst as the only authority. Generated LaTeX and Markdown are readable,
-committable, overwriteable chapter snapshots.
+Treat Typst as the only authority. LaTeX and Markdown are readable,
+committable, overwriteable chapter snapshots. The repository-wide graph is an
+agent-maintained semantic index, not a mirror of document structure.
 
-## Load the repository contract
+## Load the contracts
 
-In `qlblog`, use `notes/math/toolchain/` as the only template and exporter.
-Read its `README.md`, the course `Makefile`, and every toolchain file being
-changed. Do not copy template or conversion code into a course.
+In `qlblog`, read these before acting:
 
-Read [references/export-contract.md](references/export-contract.md) before
-changing semantics, diagrams, citations, aliases, or format mappings. Read
-[references/validation.md](references/validation.md) before acceptance. For a
-legacy course, also read [references/migration.md](references/migration.md).
+- `notes/math/toolchain/README.md` and the affected course `Makefile`;
+- `knowledge/SPEC.md`;
+- [references/export-contract.md](references/export-contract.md);
+- [references/validation.md](references/validation.md).
 
-Before graph integration changes, read `notes/math/knowledge/SPEC.md`. Keep
-`knowledge.py` as the only compiler/query interface and `sources.json` as the
-bounded registry.
+For a legacy LaTeX course, also read
+[references/migration.md](references/migration.md). Keep all presentation,
+aliases, conversion code, and dependency setup in `notes/math/toolchain/`.
 
-## Preserve the layout
+## Preserve repository boundaries
 
-Use this shape for a migrated course:
+Course roots contain authority directly, never another `typst/` subproject:
 
 ```text
 course/
@@ -41,129 +40,135 @@ course/
     └── markdown/<entry>--<chapter>.md
 ```
 
-Put Typst entries directly in the course root; never create another `typst/`
-subproject. Keep presentation, aliases, conversion, and dependency setup in
-`notes/math/toolchain/`. Keep HTML, PDFs, logs, prepared HTML, and other
-intermediates under ignored `build/`. Course-local `site/` is generated and
-ignored; GitHub Actions alone publishes HTML to Pages.
+Commit Typst, per-chapter `.tex`/`.md`, bibliography, required authored assets,
+and deterministic `knowledge/graph/` snapshots. Keep HTML, PDFs, compiler logs,
+SQLite, monolithic exports, rendered pages, and other intermediates ignored.
+GitHub Actions publishes HTML to Pages; never commit a generated course `site/`.
 
-Do not commit whole-book or chapter PDFs, rendered pages, contact sheets, or
-monolithic `main.tex`/`main.md` exports. Commit Typst authority, per-chapter
-`.tex`/`.md`, bibliography, and required authored/vector assets.
+## Curate explicit knowledge identity
 
-## Author semantic Typst
-
-Use QLNotes components with stable IDs and explicit graph attributes:
+Use exactly one global `#kn` for a concept's authoritative definition:
 
 ```typst
-#definition(
-  title: [Conditional expectation / 条件期望],
-  id: "def-conditional-expectation",
-  concepts: ("conditional-expectation",),
-  depends: ("sigma-algebra", "integral"),
-  aliases: ("条件期望",),
+#theorem(
+  title: [#kn[Dominated convergence theorem]],
 )[
   ...
 ]
 ```
 
-Use `#cite-key("key")` and `#diagram(...)`. Import shared aliases from
-`math-aliases.typ`; keep a space before content-alias parentheses such as
-`bP (A)`. Only formal display math and intentional figures are centered.
+Use any number of `#ref` occurrences:
 
-Every included file is a Typst module and must import `qlnotes.typ` and
-`math-aliases.typ` itself. Keep `#proof[...]` and `#solution[...]` immediately
-after, not inside, their statement.
-
-For new or edited graph metadata, query before choosing identity:
-
-```sh
-python3 notes/math/knowledge/scripts/knowledge.py search "candidate concept"
-python3 notes/math/knowledge/scripts/knowledge.py show "concept:candidate-concept"
+```typst
+#ref[Dominated convergence theorem]
 ```
 
-Reuse a concept only when it is genuinely identical. Derive prerequisites only
-from explicit `depends`; never infer edges from proximity. Fix durable metadata
-in Typst, never in exported Markdown or graph JSON.
+`#kn` renders black and bold. `#ref` links to the active canonical definition
+and produces a backlink. The authored name is the public identity; the graph
+maintains a hidden stable machine ID. Reuse a name only for the identical
+concept, and query first:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . search "candidate concept"
+python3 knowledge/scripts/knowledge.py --repo-root . show "Candidate concept"
+```
+
+For automatic curation, consider only named definitions, axioms, theorems,
+propositions, lemmas, and corollaries. Never create implicit nodes from sections,
+examples, exercises, remarks, proofs, figures, equations, or diagrams. An author
+may explicitly mark an unusually important item with `#kn`.
+
+Prefer stable conceptual names over statement numbers, source locations, or
+generic labels. Formal components without `#kn` remain readable statements and
+do not enter the graph.
+
+## Ingest the changed scope agentically
+
+Choose the smallest complete scope:
+
+```sh
+# whole repository or subject
+python3 knowledge/scripts/knowledge.py --repo-root . sync
+python3 knowledge/scripts/knowledge.py --repo-root . sync --subject math
+
+# one course
+python3 knowledge/scripts/knowledge.py --repo-root . sync --course measure-theory
+
+# one or several changed files
+python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/chapter.typ
+python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/chapter.typ
+```
+
+Before synchronization:
+
+1. read the changed source and existing graph neighborhood;
+2. add or correct only high-confidence `#kn` and `#ref` markers in Typst;
+3. preview with scoped `scan` and resolve duplicate names;
+4. infer direct semantic relations from the statement and its proof/context;
+5. apply a `qlkg-agent-delta-v2` for high-confidence node/edge upserts;
+6. synchronize the source scope.
+
+Do not infer edges from proximity, section order, or keyword co-occurrence. Do
+not materialize transitive closure. `#ref` is a backlink occurrence, not a
+semantic edge; inspect its context before asserting a relation.
+
+If a selected file loses a `#kn`, accept the resulting orphan. Its canonical
+source becomes inactive, but node metadata and all semantic edges remain. When
+the same name appears in its new article and that file is synchronized, the node
+reattaches. Remove semantic knowledge only through an explicit reviewed delta.
 
 ## Export chapter snapshots
 
-Prefer the course command:
+Run the course command; it synchronizes that course before exporting:
 
 ```sh
 make export
 ```
 
-For a new Makefile, invoke the shared exporter once with every entry:
+For a new Makefile, call the shared exporter once with all entries. It compiles
+each entry once, discovers included modules, and writes flat per-chapter LaTeX
+and Markdown. Markdown diagrams use Typora-compatible `.assets/*.svg`; LaTeX
+uses vector `assets/*.pdf`. CeTZ remains the editable diagram authority. Never
+reconstruct TikZ and never emit page PNGs.
 
-```sh
-python3 ../toolchain/scripts/export_course.py \
-  --document main=main.typ \
-  --document extras=extras.typ \
-  --root ../.. \
-  --output exports \
-  --build build/typst/export
-```
+If export succeeds, accept it. Do not compile or inspect PDFs, render pages,
+inspect every image, or independently compile generated LaTeX unless a command
+fails or the user explicitly asks.
 
-The exporter compiles each entry once, discovers its included sources, splits
-at real level-one chapters, and writes flat `exports/latex/` and
-`exports/markdown/` directories. `exports/markdown/index.md` is only a link
-index. Markdown uses `.assets/*.svg`; LaTeX uses `assets/*.pdf` figure assets.
-PNG is an explicit compatibility fallback only.
+## Build and publish web output
 
-If the export command succeeds, accept the export and stop inspecting PDFs,
-images, or downstream rendering. Investigate further only after a command
-failure or an explicit user request.
-
-## Synchronize graph and web
-
-After all configured Markdown exists:
-
-```sh
-python3 notes/math/knowledge/scripts/knowledge.py build --repo-root "$repo_root"
-python3 notes/math/knowledge/scripts/knowledge.py check --repo-root "$repo_root"
-```
-
-The source registry may use repository-relative globs for chapter snapshots.
-The compiler preserves one logical document ID per Typst entry and records the
-actual Markdown chapter path as node provenance.
-
-Compile HTML directly from the Typst entry into ignored `build/` and run only
-the basic checker:
+Compile Typst HTML under the ignored course `build/` directory, then run:
 
 ```sh
 make web-check
 ```
 
-Require valid UTF-8 without replacement characters/common mojibake, a title,
-the QLNotes shell and table of contents, unique semantic IDs, and accessible
-inline SVG. Experimental Typst warnings are acceptable when the command and
-checker succeed.
+Only require basic integrity: valid UTF-8 without replacement characters or
+common mojibake, a title, the QLNotes shell/table of contents, unique `#kn`
+anchors, valid `#ref` targets, and accessible inline SVG. Experimental Typst
+warnings are acceptable when compilation and the checker succeed.
 
-When publishing, update `.github/workflows/pages.yml` to build from the course
-root and copy ignored HTML into the Pages artifact. Never commit built HTML.
+GitHub Actions builds the same HTML from committed Typst and deploys only the
+Pages artifact. Update `.github/workflows/pages.yml` when adding a course route.
 
 ## Extend mappings atomically
 
 For a new semantic environment, update `qlnotes.typ`, `web.css`,
-`filters/qlnotes.lua`, and the LaTeX class together. Preserve the same ID,
-concept, dependency, alias, citation, reference, and figure semantics in both
-chapter formats.
+`filters/qlnotes.lua`, and the LaTeX class together. Preserve `#kn`, `#ref`,
+citation, internal-reference, and figure semantics across HTML, Markdown, and
+LaTeX.
 
 ## Accept
 
-Run only:
+Run only the affected scope:
 
 ```sh
 make export
 make web-check
+make <secondary>-web-check   # when present
 make -C "$repo_root" knowledge-check
 ```
 
-Run the secondary-entry web checker when present. If all commands succeed,
-stop. Do not compile or inspect PDFs, independently compile LaTeX, render pages,
-inspect every image, or run broad regression suites by default.
-
-Report the Typst entries, chapter counts, two export directories, graph delta,
-diagnostic count, and published route. Mention whether HTML is only a local
-ignored artifact or already deployed.
+Then stop. Report the scope, Typst entries, chapter counts, export directories,
+knowledge-node/reference/edge deltas, diagnostics, and published route. State
+whether HTML is only local and ignored or already deployed.

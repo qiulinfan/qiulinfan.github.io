@@ -211,9 +211,6 @@ $ lim_(x arrow.r 0) x sin\(1\/x\)= 0 $
 Thus $f$ is differentiable at $0$ and $f'\(0\)= 0$.
 
 #lemma(
-  id: "lem-hw04-on-measurable-functions-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 $f : bb(R) arrow.r bb(R)$ is strongly differentiable at $x$ $arrow.r.double.long$ it is differentiable at $x$, and $lambda$ is uniquely equal to the derivative at $x$.
 
@@ -341,9 +338,6 @@ And since $f^(- 1)\({ 1 }\)= V$, mapping a not measurable set to a measurable se
 And since the distance function $d\(x\,C\)$ is a continuous function of $\[0\,1\]$, it is measurable, by the result proved in class that a continuous funciton on a topological space is measurable.
 
 #lemma(
-  id: "lem-hw04-on-measurable-functions-lemma-002",
-  concepts: ("lemma-002",),
-  depends: (),
 )[
 The product of a measurable $f : bb(R) arrow.r bb(R)_(> 0)$ and a not measurable $g : bb(R) arrow.r bb(R)$ is not measurable.
 

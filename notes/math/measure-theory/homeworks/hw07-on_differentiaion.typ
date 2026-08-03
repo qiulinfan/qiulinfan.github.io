@@ -72,9 +72,6 @@ $ phi.alt^(- 1)\(A times B\)= { x in X : x in A\,x in B } = A inter B in cal(A) 
 We first prove a lemma:
 
 #lemma(
-  id: "lem-hw07-on-differentiaion-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 Suppose $f : X arrow.r Y times Z$ is a function from a measurable space $\(X\,cal(A)\)$ to a product measure space $\(Y times Z\,cal(B)_1 times.o cal(B)_2\)$. \ Claim: If $f^(- 1)\(B_1 times B_2\)in cal(A)$ for each measurable rectangle $B_1 times B_2 in cal(B)_1 times.o cal(B)_2$, then $f$ is an $\(cal(A)\,cal(B)_1 times.o cal(B)_2\)$-measurable function.
 

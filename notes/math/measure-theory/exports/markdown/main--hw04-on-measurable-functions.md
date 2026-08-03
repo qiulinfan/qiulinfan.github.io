@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 2
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -296,7 +296,7 @@ $$\lim\limits_{x\rightarrow 0}x\sin(1/x) = 0$$
 
 Thus $f$ is differentiable at $0$ and $f'(0) = 0$.
 
-::: {#lem-hw04-on-measurable-functions-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 $f:{\mathbb{R}}\rightarrow{\mathbb{R}}$ is strongly differentiable at $x$ $\Longrightarrow$ it is differentiable at $x$, and $\lambda$ is uniquely equal to the derivative at $x$.
@@ -538,7 +538,7 @@ And since $f^{- 1}(\left\{ 1 \right\}) = V$, mapping a not measurable set to a m
 
 And since the distance function $d(x,C)$ is a continuous function of $\lbrack 0,1\rbrack$, it is measurable, by the result proved in class that a continuous funciton on a topological space is measurable.
 
-::: {#lem-hw04-on-measurable-functions-lemma-002 .lemma concepts="lemma-002"}
+::: lemma
 **Lemma**
 
 The product of a measurable $f:{\mathbb{R}}\rightarrow{\mathbb{R}}_{> 0}$ and a not measurable $g:{\mathbb{R}}\rightarrow{\mathbb{R}}$ is not measurable.

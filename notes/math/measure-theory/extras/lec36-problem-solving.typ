@@ -8,9 +8,6 @@ by $ lambda_f\(alpha\)= mu\({ \|f\|> alpha }\) $
 Chebyshevs ineq: $ lambda_f\(alpha\)lt.eq \( frac(parallel f parallel_p, alpha) \)^p $for $0 < p < oo$. \ Today: Problem Solving
 
 #proposition(
-  id: "prop-lec36-problem-solving-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 对于任意 $0 < p < oo$, 我们有: $ integral_X\|f\|^p thin d mu = integral_0^oo p alpha^(p - 1) lambda_f\(alpha\)thin d alpha $
 
@@ -36,9 +33,6 @@ Also, $ lambda_(g_n) arrow.tr^(upright("CFB")) lambda_f quad upright("pointwisel
 $lambda_f\(alpha\)= mu\({\|f\|> alpha }\)$, 以及 ${\|f\|> alpha } = union.big_1^oo { g_n > alpha }$ increasing union.
 
 #example(
-  id: "ex-lec36-problem-solving-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 Let $f :\[0\,1\]arrow.r bb(R)$ be abs ctn. Suppose $f\(0\)= 0$ 以及 $f^1 in L^2\(\[0\,1\]\)$. \ Show that the limit $ lim_(x arrow.r 0^(+)) x^(- 1\/2) f\(x\) $exists, 并 compute it. \ What could the limit be? Must be $0$. \
 
@@ -52,9 +46,6 @@ Use fact: $g = L^1\(X\,cal(A)\,mu\)arrow.r.double.long forall epsilon.alt > 0\,e
 ]
 
 #example(
-  id: "ex-lec36-problem-solving-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 Let $f : bb(R)^n arrow.r bb(R)$ be a function. \ Assume: 对于 $forall epsilon.alt > 0$, 都存在 Lebesgue mble functions $g\,h in L^1\(m\)$ s.t. $ g\(x\)lt.eq f\(x\)lt.eq h\(x\)quad forall x in bb(R)^n $并且 $ integral_(bb(R)^n)\(h - g\)thin d m < epsilon.alt $
 Prove that: $f$ 也是 Lebesgue mble 的, 并且 $f in L^1\(m\)$. \
@@ -70,9 +61,6 @@ This proves that, $f$ is Lebesgue measurable.
 ]
 
 #example(
-  id: "ex-lec36-problem-solving-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 Prove that: $ lim_(n arrow.r oo) integral_E sin\(n x\)thin d x = 0 $for every bounded Borel set $E subset bb(R)$. \
 
@@ -88,9 +76,6 @@ Since $epsilon.alt$ arbitrary, 得证.
 ]
 
 #example(
-  id: "ex-lec36-problem-solving-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 Let $E subset bb(R)$ be a Borel set, with $m\(E\)> 0$. \ Set $f : bb(R) arrow.r bb(R)$ be mble, nonneg, 并且 $integral f > 0$. \ Prove that: 存在 $t in bb(R)$ s.t. $ integral_(E + t) f > 0 $
 

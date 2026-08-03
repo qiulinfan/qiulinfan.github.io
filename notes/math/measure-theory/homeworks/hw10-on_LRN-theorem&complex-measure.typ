@@ -25,9 +25,6 @@ $ sum_(j = 1)^oo lr(|nu (E_j)|) & lt.eq sum_(j = 1)^oo\|nu\|(E_j) quad & upright
 To confirm this equal to $integral macron(f) thin d nu$, we extend Folland prop 3.9 to the complex case.
 
 #proposition(
-  id: "prop-hw10-on-lrn-theorem-complex-measure-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 For complex measure $nu$ and $sigma$-finite positive measure $mu$ s.t. $nu lt.double mu$, if $g in L^1\(nu\)$, then $ g \( frac(d nu, d mu) \) in L^1\(mu\)\,quad integral g thin d nu = integral g \( frac(d nu, d mu) \) d mu $
 
@@ -95,9 +92,6 @@ Since we have $\|nu\(X\)\|=\|nu\|\(X\)$, it implie that: $ lr(|integral_X h d \|
 #strong[Claim: $h$ is constant $\|nu\|$-a.e.] \ We first prove a lemma:
 
 #lemma(
-  id: "lem-hw10-on-lrn-theorem-complex-measure-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 Let $mu$ be a finite positive measure. \ For measurable function $f : X arrow.r bb(C)$, if $\|f\|= k$ a.e. for some nonzero constant $k$ and $ \| integral f thin d mu \| = integral\|f\|thin d mu $
 then $f$ must be a.e. constant.

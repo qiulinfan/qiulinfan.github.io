@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 34
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -24,13 +24,13 @@ title: "MATH 597: Measure Theory"
 
 ## differentiation of regular Borel measures on ${\mathbb{R}}^{n}$ \[Fol 3.4, finished\]
 
-::: {#def-12-differentiation-on-real-spaces-regular-borel-measure .definition concepts="regular-borel-measure" aliases="regular Borel measure"}
+::: definition
 **Definition: regular Borel measure**
 
 一个 Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 被称为 regular 的, if $\nu$ is locally finite (finite on every compact set).
 :::
 
-::: {#thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity .theorem concepts="regular-borel-measure-regularity" aliases="regular Borel measure: 蕴含了 regularity"}
+::: theorem
 **Theorem: regular Borel measure: 蕴含了 regularity**
 
 一个 regular Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 一定满足:
@@ -51,7 +51,7 @@ title: "MATH 597: Measure Theory"
 regular $\Longrightarrow$ outer regularity: Hard, 其推导需要 Ch7 regular 和 inner regularity $\Longrightarrow$ outer regularity: 这个简单, same as proof of Thm 1.18 on Folland.
 :::
 
-::: {#ex-12-differentiation-on-real-spaces-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 任何 LS measure on $\mathbb{R}$ (restrict to Borel sets) 都是 regular measure. Lebesgue measure $m$ on ${\mathbb{R}}^{n}$ (restrict to Borel sets) 是 regular measure.
@@ -59,13 +59,13 @@ regular $\Longrightarrow$ outer regularity: Hard, 其推导需要 Ch7 regular �
 
 当然, 这个概念也可以推广至 signed/coplex measure 上.
 
-::: {#def-12-differentiation-on-real-spaces-regular-signed-complex-measure .definition concepts="regular-signed-complex-measure" aliases="regular signed/complex measure"}
+::: definition
 **Definition: regular signed/complex measure**
 
 一个 signed/complex measure $\nu$ on ${\mathbb{R}}^{n}$ 被称为 regular measure, if $|\nu|$ is regular 的.
 :::
 
-::: {#lem-12-differentiation-on-real-spaces-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 如果 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$, 则 $f\, dm$ 是一个 regular measure. 如果 $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ 是 extended-integrable 的, 则
@@ -79,7 +79,7 @@ $$f \in L_{loc}^{1}(m)\Leftrightarrow f\, dm\ \text{is a regular measure}$$
 Folland p99. 这显然, 因为 $f$ locally integrable 就说明 $f\, dm$ 是 locally finite 的.
 :::
 
-::: {#lem-12-differentiation-on-real-spaces-lemma-002 .lemma concepts="lemma-002"}
+::: lemma
 **Lemma**
 
 如果 $\rho,\lambda$ 是 signed/complex measure 并且 $\rho\bot\lambda$, 那么
@@ -104,7 +104,7 @@ $$\left. \nu = \lambda + \rho,\lambda \perp \rho\Longrightarrow \middle| \nu \mi
 
 ### LDT meets LRNT: 任何 regular Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 对于 $m$ 的 RN-derivative $=$ relative density
 
-::: {#thm-12-differentiation-on-real-spaces-ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n .theorem concepts="ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n" aliases="LDT meets LRNT: computing RN derivative on \\mathbb{R}^n"}
+::: theorem
 **Theorem: LDT meets LRNT: computing RN derivative on {\\mathbb{R}}\^{n}**
 
 Let $\nu$ be a regular Borel measure on ${\mathbb{R}}^{n}$, with LRN decomposition
@@ -231,7 +231,7 @@ $$\mu_{F}\operatorname{\leftrightarrow ︎}F$$
 
 distribution function 和 regular measure 之间的对应关系, 关键用处在于什么呢? 我们 recall 刚刚才证明的定理, 不过使用一个更 general 的 version (can easily be extended from what we proved):
 
-::: {#thm-12-differentiation-on-real-spaces-slightly-more-general-version-of-lrnt-meets-ldt .theorem concepts="slightly-more-general-version-of-lrnt-meets-ldt" aliases="slightly more general version of LRNT meets LDT"}
+::: theorem
 **Theorem: slightly more general version of LRNT meets LDT**
 
 Let $\nu$ be a regular Borel measure on ${\mathbb{R}}^{n}$, with LRN decomposition
@@ -256,7 +256,7 @@ $$\lim\limits_{r\rightarrow 0}\frac{\mu_{G}(E_{r})}{m(E_{r})} = G'(x)$$
 
 ### Monotone Differentiation Theorem
 
-::: {#thm-12-differentiation-on-real-spaces-monotone-differentiation-theorem .theorem concepts="monotone-differentiation-theorem" aliases="Monotone Differentiation Theorem"}
+::: theorem
 **Theorem: Monotone Differentiation Theorem**
 
 令 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ 为一个 increasing (nondecreasing) function, set:
@@ -349,7 +349,7 @@ $$F(b) - F(a) = \int_{a}^{b}F'(x)\, dx$$
 
 ### total variation function $T_{F}$ of a function $F$
 
-::: {#def-12-differentiation-on-real-spaces-total-variation-function .definition concepts="total-variation-function" aliases="total variation function"}
+::: definition
 **Definition: total variation function**
 
 给定一个 function $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, 我们定义它的 total variation function $T_{F}$ 为:
@@ -368,7 +368,7 @@ Total variation 是一个很形象的定义. $T_{F}(x)$ 表示的是 $F$ 从 $- 
 ![Figure 35:[ ]{style="white-space: pre-wrap"}](.assets/main--figure-raster-034.png){width="50%"}
 :::
 
-::: {#lem-12-differentiation-on-real-spaces-lemma-003 .lemma concepts="lemma-003"}
+::: lemma
 **Lemma**
 
 对于任意的 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, $T_{F}$ 都是 increasing 的; 并且对于任意 $a < b$, 有:
@@ -390,13 +390,13 @@ $$T_{F}(a;b) = \sup\left\{ \sum\limits_{j = 1}^{n} \middle| F(x_{j}) - F(x_{j + 
 
 ### space of functions of bounded variation: $BV$ 的基本性质
 
-::: {#def-12-differentiation-on-real-spaces-function-of-bounded-variation .definition concepts="function-of-bounded-variation" aliases="function of bounded variation"}
+::: definition
 **Definition: function of bounded variation**
 
 如果 $T_{F}(\infty) < \infty$, 我们称 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ is **of bounded variation** 的, 写作 $F \in BV$.
 :::
 
-::: {#def-12-differentiation-on-real-spaces-function-of-bounded-variation-on-an-interval .definition concepts="function-of-bounded-variation-on-an-interval" aliases="function of bounded variation on an interval"}
+::: definition
 **Definition: function of bounded variation on an interval**
 
 如果 $T_{F}(a;b) < \infty$, 我们称 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ is **of bounded variation** on $\lbrack a,b\rbrack$, 写成 $F \in BV(\lbrack a,b\rbrack)$.
@@ -404,7 +404,7 @@ $$T_{F}(a;b) = \sup\left\{ \sum\limits_{j = 1}^{n} \middle| F(x_{j}) - F(x_{j + 
 
 首先显然, $F \in BV$ 可以 reduce to real-valued 的情况来讨论.
 
-::: {#prop-12-differentiation-on-real-spaces-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 $$F \in BV\Leftrightarrow\Re f \in BV\ \text{and}\ \Im f \in BV$$
@@ -412,7 +412,7 @@ $$F \in BV\Leftrightarrow\Re f \in BV\ \text{and}\ \Im f \in BV$$
 
 ### $BV$ as a vector space
 
-::: {#lem-12-differentiation-on-real-spaces-bv-complex-vector-space .lemma concepts="bv-complex-vector-space" aliases="BV 是一个 complex vector space"}
+::: lemma
 **Lemma: BV 是一个 complex vector space**
 
 如果 $F,G \in BV$, 那么对于任意的 $a,b \in {\mathbb{C}}$, we have
@@ -434,7 +434,7 @@ $$aF + bG \in BV$$
 
 我们知道，$F \in BV$ if $T_{F}(\infty) < \infty$. 而关于 $T_{F}( - \infty)$, 同样有强结论:
 
-::: {#prop-12-differentiation-on-real-spaces-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 $$F \in BV\Longrightarrow T_{F}( - \infty) = 0$$
@@ -466,7 +466,7 @@ Since $\epsilon > 0$ arbitrary, 这证明了 $T_{F}( - \infty) = 0$
 $F$ bounded variation 的必要条件是它在 $x\rightarrow\infty$ 时, 截止 $x$ 处的 variation $\rightarrow 0$.
 :::
 
-::: {#lem-12-differentiation-on-real-spaces-f-in-bv-right-ctn-implies-t-f-right-ctn .lemma concepts="f-in-bv-right-ctn-implies-t-f-right-ctn" aliases="F\\in BV right ctn \\implies T_F right ctn"}
+::: lemma
 **Lemma: F \\in BV right ctn \\Longrightarrow T\_{F} right ctn**
 
 $F \in BV$ right ctn $\Longrightarrow T_{F}$ 也 right ctn
@@ -487,7 +487,7 @@ Fix 一个满足 $0 < h < \delta$ 的 $h$. 其后的证明见 Folland 104.
 
 ### 属于 $BV,BV(I)$ 的函数
 
-::: {#lem-12-differentiation-on-real-spaces-bv-or-bv-i .lemma concepts="bv-or-bv-i" aliases="哪些函数一定 BV or BV(I)"}
+::: lemma
 **Lemma: 哪些函数一定 BV or BV(I)**
 
 1.  如果 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ bounded 且 increasing, 那么 $F \in BV$ 且 $T_{F}(x) = F(x) - F( - \infty)$.\
@@ -505,7 +505,7 @@ Fix 一个满足 $0 < h < \delta$ 的 $h$. 其后的证明见 Folland 104.
 (3): 这是 (2) 的推论, 因为 recall: by MCT 可得: $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ 是 differentiable 且 $F'$ bounded $\Longrightarrow F$ Lipstchiz ctn.
 :::
 
-::: {#prop-12-differentiation-on-real-spaces-proposition-003 .proposition concepts="proposition-003"}
+::: proposition
 **Proposition**
 
 以下是一些经典的函数的 variational behavior:
@@ -545,7 +545,7 @@ As $N\rightarrow\infty$, this sum $\left. \sum_{n = 1}^{N + 2} \middle| F(x_{j})
 
 ### Jordan decomposition for $f \in BV$: $f = \frac{1}{2}(T_{F} + F) - \frac{1}{2}(T_{F} - F)$
 
-::: {#lem-12-differentiation-on-real-spaces-lemma-007 .lemma concepts="lemma-007"}
+::: lemma
 **Lemma**
 
 如果 real-valued $F \in BV$, 那么 $T_{F} + F,T_{F} - F$ 都是 increasing 的.
@@ -585,7 +585,7 @@ $$\left. T_{F}(y) - T_{F}(x) \geq \middle| F(y) - F(x)| \right.$$
 $$\left. (T_{F}(y) - F(y)) - (T_{F}(x) - F(x)) \geq \middle| F(y) - F(x) \middle| - (F(y) - F(x)) \geq 0 \right.$$
 :::
 
-::: {#thm-12-differentiation-on-real-spaces-jordan-decomposition-for-f-in-bv .theorem concepts="jordan-decomposition-for-f-in-bv" aliases="Jordan decomposition for F \\in BV"}
+::: theorem
 **Theorem: Jordan decomposition for F \\in BV**
 
 对于 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ (注意是 real-valued):
@@ -642,7 +642,7 @@ $$F_{+}: = \frac{1}{2}T_{F} + F,\quad F_{-}: = \frac{1}{2}T_{F} - F$$
 
 ### corollaries of Jordan decomposition
 
-::: {#cor-12-differentiation-on-real-spaces-corollary-001 .corollary concepts="corollary-001"}
+::: corollary
 **Corollary**
 
 Let $F \in BV$. By Jordan decomposition, $F$ 等于两个 bounded increasing functions 的差.从而我们 **by MDT 得**:
@@ -662,7 +662,7 @@ $$F \in BV\Longrightarrow F\ \text{a.e. differentiable}$$
 
 ### $NBV$ 及其性质
 
-::: {#def-12-differentiation-on-real-spaces-nbv .definition concepts="nbv" aliases="NBV"}
+::: definition
 **Definition: NBV**
 
 For $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, 我们定义: $F \in NBV$, if $F \in BV$ 且 $F$ right ctn, $F( - \infty) = 0$.
@@ -674,7 +674,7 @@ For $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, 我们定义: $F \in NBV$, if $F \i
 这个要求中 $F( - \infty) = 0$ 这一条并不要紧, 因为我们知道 for $F \in BV$, $F( - \infty) = c$ for some const $c$ 是一定的 (因为 $T_{F}( - \infty) = 0$), 因而 right ctn 的 $F \in BV$ 减去一个常数一定是 $NBV$ 的. $F \in NBV$ 的
 :::
 
-::: {#prop-12-differentiation-on-real-spaces-proposition-004 .proposition concepts="proposition-004"}
+::: proposition
 **Proposition**
 
 $NBV \subset BV$ 是一个 linear subspace.
@@ -714,7 +714,7 @@ $$\mu_{F}((a,b\rbrack) = F(b) - F(a)$$
 
 注意: 一个 complex Borel measure 和一个 $F \in NBV$ 都是 finite 的.
 
-::: {#thm-12-differentiation-on-real-spaces-text-complex-borel-measures-on-mathbb-r-simeq-nbv .theorem concepts="text-complex-borel-measures-on-mathbb-r-simeq-nbv" aliases="\\{\\text{complex Borel measures on }\\mathbb{R}\\} \\simeq NBV"}
+::: theorem
 **Theorem: \\left\\{ {\\text{complex Borel measures on}\\ {\\mathbb{R}}} \\right\\} \\simeq NBV**
 
 1.  对于 $\mathbb{R}$ 上的 complex measure $\mu$, defining
@@ -766,7 +766,7 @@ $$F(x): = \mu(( - \infty,x\rbrack)$$
 $$F(x): = \mu(( - \infty,x\rbrack)$$
 :::
 
-::: {#thm-12-differentiation-on-real-spaces-mu-f-total-variation-measure-mu-t-f .theorem concepts="mu-f-total-variation-measure-mu-t-f" aliases="\\mu_F 的 total variation measure = \\mu_{T_F}"}
+::: theorem
 **Theorem: \\mu\_{F} 的 total variation measure = \\mu\_{T\_{F}}**
 
 对于任意的 $F \in NBV$, 我们有:
@@ -780,7 +780,7 @@ $$\mu_{\pm} = \mu_{F_{\pm}}$$
 
 Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \perp m$, 什么时候 $\mu_{F} \ll m$?
 
-::: {#thm-12-differentiation-on-real-spaces-characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv .theorem concepts="characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv" aliases="characterization of \\mu_F \\perp m 和 \\mu_F \\ll m, for F\\in NBV "}
+::: theorem
 **Theorem: characterization of \\mu\_{F} \\perp m 和 \\mu\_{F} \\ll m, for F \\in NBV**
 
 对于 $F \in NBV$, 我们已经知道: $F'$ $m$-a.e. 存在, 且 $F' \in L^{1}(m)$.\
@@ -819,7 +819,7 @@ $$F(x): = \rho(( - \infty,x\rbrack) = F'dm(( - \infty,x\rbrack) = \int_{- \infty
 
 ### $AC$ 及其性质
 
-::: {#def-12-differentiation-on-real-spaces-absolutely-continuous-function .definition concepts="absolutely-continuous-function" aliases="absolutely continuous function"}
+::: definition
 **Definition: absolutely continuous function**
 
 我们定义 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是 absolutely ctn 的, if 对于任意 $\epsilon > 0$ 都存在 $\delta > 0$ 使得对于任意的 disjoint intervals $(a_{1},b_{1}),\cdots,(a_{N},b_{N})$, 都有:
@@ -835,7 +835,7 @@ absolutely continuous 表示了一种更强的控制性: 选取任意一些地�
 这一看就和 measure 有关系.
 :::
 
-::: {#def-12-differentiation-on-real-spaces-absolutely-continuous-function-on-a-cpt-interval .definition concepts="absolutely-continuous-function-on-a-cpt-interval" aliases="absolutely continuous function on a cpt interval"}
+::: definition
 **Definition: absolutely continuous function on a cpt interval**
 
 我们定义 $F:I\rightarrow{\mathbb{C}}$ 是 absolutely ctn 的, if 对于任意 $\epsilon > 0$ 都存在 $\delta > 0$ 使得对于任意的 disjoint intervals $(a_{1},b_{1}),\cdots,(a_{N},b_{N}) \subset I$, 都有:
@@ -843,7 +843,7 @@ absolutely continuous 表示了一种更强的控制性: 选取任意一些地�
 $$\left. \sum\limits_{1}^{N} \middle| F(b_{j}) - F(a_{j}) \middle| < \epsilon\quad\text{whenever}\quad\sum\limits_{1}^{N} \middle| b_{j} - a_{j} \middle| < \delta \right.$$
 :::
 
-::: {#lem-12-differentiation-on-real-spaces-f-in-nbv-abs-ctn-iff-mu-f-ll-m .lemma concepts="f-in-nbv-abs-ctn-iff-mu-f-ll-m" aliases="F\\in NBV abs ctn \\iff \\mu_F \\ll m"}
+::: lemma
 **Lemma: F \\in NBV abs ctn \\Leftrightarrow \\mu\_{F} \\ll m**
 
 对于 $F \in NBV$,
@@ -869,7 +869,7 @@ for all $j$, 从而 $\mu_{F}(E) \leq \epsilon$. 从而得证, since $\epsilon$ a
 
 ### FTC for Lebesgue integral on $\mathbb{R}$: requires $NBV + AC$
 
-::: {#cor-12-differentiation-on-real-spaces-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 如果 $f \in L^{1}(m)$, 那么
@@ -903,7 +903,7 @@ $$F(x) = \int_{- \infty}^{x}F'(t)\, dt$$
 
 比起刚才的 FTC-I, FTC-II 的条件要宽松很多, 只需要 $F$ 在它需要被用到的 compact interval 上 AC 即可以. 这是因为, 我们不需要用到 NBV 只需要 BV, 并且在 cpt interval 上, AC 本身就可以推出 BV.
 
-::: {#lem-12-differentiation-on-real-spaces-lemma-009 .lemma concepts="lemma-009"}
+::: lemma
 **Lemma**
 
 如果 $F \in AC(\lbrack a,b\rbrack)$, 那么 $F \in BV(\lbrack a,b\rbrack)$.\
@@ -929,7 +929,7 @@ $$\left. \sum\limits_{1}^{N} \middle| F(b_{j}) - F(a_{j}) \middle| < \epsilon\qu
 这里没有仔细证明, 但是理解这个 idea 即可. 这表现了 locally, $AC$ 是一个比 $BV$ 更强的条件, 因为 total variation 就是 sup of variations over 所有划分, 而 **$AC$ 的定义正好就是: 无视划分的方法, 只要这个集合的总长度小于 $\delta$, 它上面的 variation by partition 就要小于 $\epsilon$.**
 :::
 
-::: {#thm-12-differentiation-on-real-spaces-ftc-ii-for-lebesgue-integral-on-a-cpt-interval .theorem concepts="ftc-ii-for-lebesgue-integral-on-a-cpt-interval" aliases="FTC-II for Lebesgue integral on a cpt interval"}
+::: theorem
 **Theorem: FTC-II for Lebesgue integral on a cpt interval**
 
 TFAE:
@@ -953,7 +953,7 @@ Notice that: 这里我们只考虑 $F|_{\lbrack a,b\rbrack}$, 于是我们可以
 
 ### characterization for Lipschitz ctn
 
-::: {#thm-12-differentiation-on-real-spaces-characterization-for-lipschitz-ctn .theorem concepts="characterization-for-lipschitz-ctn" aliases="characterization for Lipschitz ctn"}
+::: theorem
 **Theorem: characterization for Lipschitz ctn**
 
 对于 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, we have:

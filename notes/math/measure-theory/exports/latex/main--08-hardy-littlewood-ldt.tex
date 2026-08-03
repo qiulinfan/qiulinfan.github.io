@@ -37,8 +37,8 @@ Radon Nikodym derivative 的应用: 比如在概率论中, \textbf{pdf/pmf 都�
 
 \subsection{\texorpdfstring{\(L_{loc}^{1}\) and local average}{L\_\{loc\}\^{}\{1\} and local average}}\label{l_loc1-and-local-average}
 
-% qlnotes: kind=definition; id=def-08-hardy-littlewood-ldt-locally-integrable; concepts=locally-integrable; aliases=locally integrable
-\begin{definition}{locally integrable}\label{def-08-hardy-littlewood-ldt-locally-integrable}
+\begin{definition}{\protect\phantomsection\label{kn-locally-integrable}{\textbf{locally
+integrable}}}
 
 如果 measurable \(f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}\) 在任意 bounded subset of \({\mathbb{R}}^{n}\) 上的 integral 都 \(< \infty\), 则称 function \(f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}\) 是 locally integrable 的, 写作 \(f \in L_{loc}^{1}(m)\).
 
@@ -59,8 +59,7 @@ for all \(x,r\).\\
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-08-hardy-littlewood-ldt-example-001; concepts=example-001
-\begin{example}\label{ex-08-hardy-littlewood-ldt-example-001}
+\begin{example}
 
 考虑
 
@@ -72,8 +71,7 @@ for all \(x,r\).\\
 
 \end{example}
 
-% qlnotes: kind=definition; id=def-08-hardy-littlewood-ldt-average; concepts=average; aliases=average
-\begin{definition}{average}\label{def-08-hardy-littlewood-ldt-average}
+\begin{definition}{\protect\phantomsection\label{kn-average}{\textbf{average}}}
 
 对于 \(f \in L_{loc}^{1}(m)\), 以及 bounded and Lebesgue measurable \(E \subset {\mathbb{R}}^{n}\) with \(m(E) > 0\), 我们定义:
 
@@ -88,8 +86,7 @@ for all \(x,r\).\\
 
 \end{definition}
 
-% qlnotes: kind=lemma; id=lem-08-hardy-littlewood-ldt-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-08-hardy-littlewood-ldt-lemma-001}
+\begin{lemma}
 
 对于任意 \(f \in L_{loc}^{1}\), \(A_{r}f(x)\) 都是 jointly continuous in \(r\) and \(x\) 的. (\(r > 0,x \in {\mathbb{R}}^{n}\))
 
@@ -110,8 +107,8 @@ Suppose \((x_{j},r_{j})\rightarrow(x,r)\) in \({\mathbb{R}}^{n} \times {\mathbb{
 
 \subsection{Hardy-Littlewood maximal function}\label{hardy-littlewood-maximal-function}
 
-% qlnotes: kind=definition; id=def-08-hardy-littlewood-ldt-hardy-littlewood-maximal-function; concepts=hardy-littlewood-maximal-function; aliases=Hardy-Littlewood maximal function
-\begin{definition}{Hardy-Littlewood maximal function}\label{def-08-hardy-littlewood-ldt-hardy-littlewood-maximal-function}
+\begin{definition}{\protect\phantomsection\label{kn-hardy-littlewood-maximal-function}{\textbf{Hardy-Littlewood
+maximal function}}}
 
 对于 \(f \in L_{loc}^{1}\), 我们定义它的 HL maximal function 为:
 
@@ -121,8 +118,8 @@ Suppose \((x_{j},r_{j})\rightarrow(x,r)\) in \({\mathbb{R}}^{n} \times {\mathbb{
 
 HF maximal 函数 \(Hf(x)\)表示 \(f\) 的绝对值函数在 \(x\) 处能取到最大的 local average.
 
-% qlnotes: kind=theorem; id=thm-08-hardy-littlewood-ldt-hl-maximal-function-measurable; concepts=hl-maximal-function-measurable; aliases=HL maximal function 是 measurable 的
-\begin{theorem}{HL maximal function 是 measurable 的}\label{thm-08-hardy-littlewood-ldt-hl-maximal-function-measurable}
+\begin{theorem}{\protect\phantomsection\label{kn-hl-maximal-function-measurable}{\textbf{HL
+maximal function 是 measurable 的}}}
 
 对于任意 \(f \in L_{loc}^{1}\), \(Hf\) 都是 measurable 的.
 
@@ -138,8 +135,7 @@ Follows from lemma.
 
 \end{proof}
 
-% qlnotes: kind=corollary; id=cor-08-hardy-littlewood-ldt-corollary-001; concepts=corollary-001
-\begin{corollary}\label{cor-08-hardy-littlewood-ldt-corollary-001}
+\begin{corollary}
 
 如果 \(f:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)\) 是 lower semictn 的, 那么它一定 Borel (thus Lebesgue) measurable.
 
@@ -151,8 +147,8 @@ Follows from lemma.
 
 \[cB := B(x,cr)\]
 
-% qlnotes: kind=lemma; id=lem-08-hardy-littlewood-ldt-vitali-type-convering-lemma; concepts=vitali-type-convering-lemma; aliases=Vitali-type convering lemma
-\begin{lemma}{Vitali-type convering lemma}\label{lem-08-hardy-littlewood-ldt-vitali-type-convering-lemma}
+\begin{lemma}{\protect\phantomsection\label{kn-vitali-covering-lemma}{\textbf{Vitali-type
+covering lemma}}}
 
 For given collection of balls \(\left\{ {B_{j} \subset {\mathbb{R}}^{n}} \right\}_{j = 1}^{k}\), 存在 \textbf{disjoint} subcollection \(\left\{ {B_{j_{1}},\cdots,B_{j_{m}}} \right\}\) 使得
 
@@ -183,8 +179,8 @@ Prove without words:
 
 \subsection{Hardy-Littlewood maximal theorem}\label{hardy-littlewood-maximal-theorem}
 
-% qlnotes: kind=theorem; id=thm-08-hardy-littlewood-ldt-hl-maximal-theorem; concepts=hl-maximal-theorem; aliases=HL maximal theorem
-\begin{theorem}{HL maximal theorem}\label{thm-08-hardy-littlewood-ldt-hl-maximal-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-hl-maximal-theorem}{\textbf{HL maximal
+theorem}}}
 
 For \(L^{1}(m^{n})\), take constant \(C := 3^{n}\), 则对于任意 \(f \in L^{1}(m^{n})\), 都有:
 
@@ -236,8 +232,7 @@ recall, 一个 operator 的 \textbf{(strongly) boundedness} 表示:
 
 对应: Folland 3.4(2)
 
-% qlnotes: kind=definition; id=def-08-hardy-littlewood-ldt-lebesgue-set; concepts=lebesgue-set; aliases=Lebesgue set
-\begin{definition}{Lebesgue set}\label{def-08-hardy-littlewood-ldt-lebesgue-set}
+\begin{definition}{\protect\phantomsection\label{kn-lebesgue-set}{\textbf{Lebesgue set}}}
 
 我们定义一个函数 \(f \in L_{loc}^{1}({\mathbb{R}}^{n})\) 的 Lebesgue set 为:
 
@@ -272,8 +267,8 @@ recall, 一个 operator 的 \textbf{(strongly) boundedness} 表示:
 
 \subsection{\texorpdfstring{original LDT: locally \(L^{1}\) 函数几乎每一点附近的函数均值都等于这一点上的值}{original LDT: locally L\^{}\{1\} 函数几乎每一点附近的函数均值都等于这一点上的值}}\label{original-ldt-locally-l1-ux51fdux6570ux51e0ux4e4eux6bcfux4e00ux70b9ux9644ux8fd1ux7684ux51fdux6570ux5747ux503cux90fdux7b49ux4e8eux8fd9ux4e00ux70b9ux4e0aux7684ux503c}
 
-% qlnotes: kind=theorem; id=thm-08-hardy-littlewood-ldt-lebesgue-differentition-theorem; concepts=lebesgue-differentition-theorem; aliases=Lebesgue differentition theorem
-\begin{theorem}{Lebesgue differentition theorem}\label{thm-08-hardy-littlewood-ldt-lebesgue-differentition-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-lebesgue-differentiation-theorem}{\textbf{Lebesgue
+differentiation theorem}}}
 
 对于任意的 \(f \in L_{loc}^{1}({\mathbb{R}}^{n})\), \(L_{f}\) is Leb mble and \(m(L_{f}^{c}) = 0\).
 
@@ -334,8 +329,7 @@ where
 
 \end{proof}
 
-% qlnotes: kind=corollary; id=cor-08-hardy-littlewood-ldt-corollary-002; concepts=corollary-002
-\begin{corollary}\label{cor-08-hardy-littlewood-ldt-corollary-002}
+\begin{corollary}
 
 \[x \in L_{loc}^{1}({\mathbb{R}}^{n}))\Longrightarrow\lim\limits_{r\rightarrow 0^{+}}A_{r}f(x) = f(x) a.e.\]
 
@@ -367,8 +361,8 @@ If \(x \in L_{f}\) then
 
 \subsection{density of a set at a point}\label{density-of-a-set-at-a-point}
 
-% qlnotes: kind=definition; id=def-08-hardy-littlewood-ldt-density-of-a-set-at-a-point; concepts=density-of-a-set-at-a-point; aliases=density of a set at a point
-\begin{definition}{density of a set at a point}\label{def-08-hardy-littlewood-ldt-density-of-a-set-at-a-point}
+\begin{definition}{\protect\phantomsection\label{kn-density-of-a-set-at-a-point}{\textbf{density
+of a set at a point}}}
 
 对于 \(E \subset {\mathbb{R}}^{n}\) Lebesgue measurable (which implies: \(\chi_{E} \in L_{loc}^{1}\)), 我们定义:
 
@@ -392,8 +386,7 @@ density, 一个点附近一个集合占的密度, 理解很直观.\\
 
 \end{qlremark}
 
-% qlnotes: kind=corollary; id=cor-08-hardy-littlewood-ldt-corollary-003; concepts=corollary-003
-\begin{corollary}\label{cor-08-hardy-littlewood-ldt-corollary-003}
+\begin{corollary}
 
 对于\(E \subset {\mathbb{R}}^{n}\) Lebesgue measurable (which implies: \(\chi_{E} \in L_{loc}^{1}\)), 一定有:
 
@@ -410,8 +403,7 @@ density, 一个点附近一个集合占的密度, 理解很直观.\\
 
 \end{proof}
 
-% qlnotes: kind=example; id=ex-08-hardy-littlewood-ldt-example-002; concepts=example-002
-\begin{example}\label{ex-08-hardy-littlewood-ldt-example-002}
+\begin{example}
 
 我们这里介绍一些 behavior 比较特殊的集合, 空间每点上这个集合的 density.\\
 考虑
@@ -453,8 +445,8 @@ density, 一个点附近一个集合占的密度, 理解很直观.\\
 
 genralized LDT 表示\textbf{对形状不规则 (未必是 ball) 的收敛行为}, LDT 的 statement 仍然 stay true. 即, \textbf{只要 a family of Lebesgue mble sets \(E_{r}\) shrink nicely to \(x\), LDT 就满足.}
 
-% qlnotes: kind=theorem; id=thm-08-hardy-littlewood-ldt-generalized-ldt; concepts=generalized-ldt; aliases=generalized LDT
-\begin{theorem}{generalized LDT}\label{thm-08-hardy-littlewood-ldt-generalized-ldt}
+\begin{theorem}{\protect\phantomsection\label{kn-generalized-ldt}{\textbf{generalized
+LDT}}}
 
 对于 \(f \in L_{loc}^{1}({\mathbb{R}}^{n})\), 任意的 \(x \in L_{f}\), 令 \(\left\{ {E_{r}(x)} \right\}\) 为 a family of Lebesgue measurable sets, 其中对于每个 \(E_{r}(x)\) 都有:
 
@@ -479,8 +471,8 @@ for some \(0 < \alpha < 1\).\\
 
 LDT 最重要的作用是之一定义了在 \textbf{Lebesgue 积分理论下的一种形式的 FTC:}
 
-% qlnotes: kind=theorem; id=thm-08-hardy-littlewood-ldt-ftc-in-lebesgue; concepts=ftc-in-lebesgue; aliases=FTC in Lebesgue
-\begin{theorem}{FTC in Lebesgue}\label{thm-08-hardy-littlewood-ldt-ftc-in-lebesgue}
+\begin{theorem}{\protect\phantomsection\label{kn-ftc-in-lebesgue}{\textbf{FTC in
+Lebesgue}}}
 
 对于 \(f \in L_{loc}^{1}({\mathbb{R}})\), 任取 \(x \in L_{f}\), 都有
 

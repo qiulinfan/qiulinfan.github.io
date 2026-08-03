@@ -7,11 +7,7 @@
 == convergence in distribution
 <convergence-in-distribution>
 #definition(
-  title: [convergence in distribution],
-  id: "def-05-clt-convergence-in-distribution",
-  concepts: ("convergence-in-distribution",),
-  depends: (),
-  aliases: ("convergence in distribution",),
+  title: [#kn[convergence in distribution]],
 )[
 我们称一个 seq of random variables ${ X_n }$
 converge in distribution to a random variable $X$,
@@ -51,11 +47,7 @@ $x$.
 === moment generating function
 <moment-generating-function>
 #definition(
-  title: [moment generating function],
-  id: "def-05-clt-moment-generating-function",
-  concepts: ("moment-generating-function",),
-  depends: (),
-  aliases: ("moment generating function",),
+  title: [#kn[moment generating function]],
 )[
 对于一个随机变量 $X$, 其 moment generating function (MGF) 定义为
 $ M_X\(t\)= bb(E)\[e^(t X)\]\,quad t in bb(R) $
@@ -68,9 +60,6 @@ $ M_X\(t\)= bb(E)\[e^(t X)\]\,quad t in bb(R) $
 
 ]
 #proposition(
-  id: "prop-05-clt-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 如果 $M_X\(t\)$ 在 $t = 0$ 的某个 neighborhood 内存在,
 则 $X$ 的 $n$ 阶矩可以表示为
@@ -83,11 +72,7 @@ $ bb(E)\[X^n\]= M_X^(\(n\))\(0\) $
 == Central Limit Theorem
 <central-limit-theorem-1>
 #theorem(
-  title: [Lindeberg-Levy Central Limit Theorem],
-  id: "thm-05-clt-lindeberg-levy-central-limit-theorem",
-  concepts: ("lindeberg-levy-central-limit-theorem",),
-  depends: (),
-  aliases: ("Lindeberg-Levy Central Limit Theorem",),
+  title: [#kn[Lindeberg-Levy Central Limit Theorem]],
 )[
 对于任意一个 seq of i.i.d. random variables ${ X_i }$
 with mean $mu$ and variance $sigma^2 < oo$,
@@ -126,10 +111,6 @@ CLT 的一个主要的应用价值, 就是可以用来估计
 <applications-of-clt>
 #example(
   title: [\(判断 coin 是否 fair)],
-  id: "ex-05-clt-coin-fair",
-  concepts: ("-coin-fair",),
-  depends: (),
-  aliases: ("(判断 coin 是否 fair)",),
 )[
 我们有两个 coins, 想要判断它们是否是 fair coin.
 我们可以 toss 这个 coin $n$ 次, 记录下每次 toss 的结果,
@@ -157,10 +138,6 @@ $ bb(P)\(S_100 < 38\)= bb(P) (frac(S_100 - 100 dot.op 1 / 2, sqrt(100 dot.op 1 /
 ]
 #example(
   title: [\(样本量需求的计算)],
-  id: "ex-05-clt",
-  concepts: ("",),
-  depends: (),
-  aliases: ("(样本量需求的计算)",),
 )[
 工厂生产了一批电线,
 我们想知道它们的平均断裂强度 $mu$ 是多少.
@@ -225,11 +202,7 @@ normal distribution, 来计算一些概率.
 下面有一个 theorem 刻画了这件事.
 
 #theorem(
-  title: [Berry-Esseen Theorem],
-  id: "thm-05-clt-berry-esseen-theorem",
-  concepts: ("berry-esseen-theorem",),
-  depends: (),
-  aliases: ("Berry-Esseen Theorem",),
+  title: [#kn[Berry-Esseen Theorem]],
 )[
 给定一个 seq of i.i.d. random variables ${ X_i }$
 with mean $mu$ and variance $sigma^2 < oo$,
@@ -269,9 +242,6 @@ Berry-Esseen 需要 third order moment 的信息,
 
 ]
 #example(
-  id: "ex-05-clt-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 一个工厂生产电子元件,
 每个原件有概率是有缺陷的.

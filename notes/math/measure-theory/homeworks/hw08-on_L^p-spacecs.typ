@@ -23,10 +23,6 @@ Now we continuing this definition of $f$, and further define:$ F : bb(R)^2025 & 
 
 #lemma(
   title: [\(Folland 2.5 exercise 51)],
-  id: "lem-hw08-on-l-p-spacecs-folland-2-5-exercise-51",
-  concepts: ("folland-2-5-exercise-51",),
-  depends: (),
-  aliases: ("(Folland 2.5 exercise 51)",),
 )[
 If $f$ is $cal(M)$-measurable, $g$ is $cal(N)$-measurable, then $f g$ is $\(cal(M) times.o cal(N)\)$-measurable. \ Particularly, if $f in L^1\(mu\)$, $g in L^1\(nu\)$, then $f g in L^1\(mu times nu\)$ and $ integral f g #h(0em) d\(mu times nu\)= \( f #h(0em) d mu \) \( g #h(0em) d nu \) $
 
@@ -188,11 +184,7 @@ Prove that if $f_n arrow.r f$ a.e. and $parallel f_n parallel_p arrow.r parallel
 Recall we have proved
 
 #theorem(
-  title: [Generalized DCT],
-  id: "thm-hw08-on-l-p-spacecs-generalized-dct",
-  concepts: ("generalized-dct",),
-  depends: (),
-  aliases: ("Generalized DCT",),
+  title: [#kn[Generalized DCT]],
 )[
 Let $\(X\,cal(A)\,mu\)$ be a measure space, and $f_n\,g_n\,f\,g in L^1$, $n in bb(N)$. Suppose that
 

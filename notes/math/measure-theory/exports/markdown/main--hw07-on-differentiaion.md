@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 1
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -141,7 +141,7 @@ $$\phi^{- 1}(A \times B) = \left\{ {x \in X:x \in A,x \in B} \right\} = A \cap B
 
 We first prove a lemma:
 
-::: {#lem-hw07-on-differentiaion-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 Suppose $f:X\rightarrow Y \times Z$ is a function from a measurable space $(X,\mathcal{A})$ to a product measure space $(Y \times Z,\mathcal{B}_{1} \otimes \mathcal{B}_{2})$.\

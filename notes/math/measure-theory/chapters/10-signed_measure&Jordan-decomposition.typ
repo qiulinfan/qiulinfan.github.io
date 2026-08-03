@@ -16,11 +16,7 @@ Motivation: 我们都知道, 对于 nonnegative measurable $f$ 即 $f in L^(+)$,
 通过 integration of the function with respect to some measure $mu$ 定义出了另一个 measure $nu$. \ But what about $f in L^1$?
 
 #definition(
-  title: [signed measure],
-  id: "def-10-signed-measure-jordan-decomposition-signed-measure",
-  concepts: ("signed-measure",),
-  depends: (),
-  aliases: ("signed measure",),
+  title: [#kn[signed measure]],
 )[
 一个 signed measure on a measurable space $\(X\,cal(A)\)$ 是一个 function $nu : cal(A) arrow.r\[- oo\,oo\)$ 或者 $nu : cal(A) arrow.r\(- oo\,oo\]$, #strong[和普通 meausre 一样满足 $nu\(diameter\)= 0$ 以及 ctbl disjoint additivity]. \ Note: signed measure 只 admit $+ oo$ 和 $- oo$ 中的一个值 (#strong[不可以同时存在两个集合 $nu\(A\)= oo$, $nu\(B\)= - oo$])
 
@@ -30,16 +26,10 @@ Motivation: 我们都知道, 对于 nonnegative measurable $f$ 即 $f in L^(+)$,
 
 ]
 #example(
-  id: "ex-10-signed-measure-jordan-decomposition-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 容易验证:
 
 #proposition(
-  id: "prop-10-signed-measure-jordan-decomposition-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 对于 positive measure $mu_1\,mu_2$, 如果其中有至少一个是 finite 的, 那么 $ nu : = mu_1 - mu_2 $ 是一个 signed measure.
 
@@ -48,14 +38,8 @@ This follows from ctbl disjoint additivity. (两个 ctbl sum 加起来)
 
 ]
 #example(
-  id: "ex-10-signed-measure-jordan-decomposition-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 #proposition(
-  id: "prop-10-signed-measure-jordan-decomposition-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 对于 measurable function $f$, 如果 $f^(+)$ 和 $f^(-)$ 中至少有一个是 $L^1$ 的 (这个条件弱于 $f in L^1$, 被称为 $f$ is extended $mu$-integrable), 那么 $ nu\(E\)= integral_E f #h(0em) d mu $就是一个 well-defined 的 signed measure.
 
@@ -66,11 +50,7 @@ This follows from that (1) 对于 $f in L^(+)$, $nu\(E\): = integral_E f #h(0em)
 === signed measure 的 CFB, CFA
 <signed-measure-的-cfb-cfa>
 #proposition(
-  title: [CFB and CFA],
-  id: "prop-10-signed-measure-jordan-decomposition-cfb-and-cfa",
-  concepts: ("cfb-and-cfa",),
-  depends: (),
-  aliases: ("CFB and CFA",),
+  title: [#kn[continuity from below and above for signed measures]],
 )[
 给定 signed measure $nu$, 对于 increasing seq $E_j$, 有 $ nu\(union.big_(j = 1)^oo E_j\)= lim_(j arrow.r oo) nu\(E_j\) $
 对于 decreasing seq $F_j$, 有: $ nu\(inter.big_(j = 1)^oo F_j\)= lim_(j arrow.r oo) nu\(F_j\) $
@@ -86,9 +66,6 @@ Elementary fact: 对于 signed measure 而言, $ A subset B ⇏ nu\(A\)lt.eq n
 但是
 
 #lemma(
-  id: "lem-10-signed-measure-jordan-decomposition-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 对于 signed measure $nu$, 和 measurable $A subset B$,
 $ nu\(A\)= oo arrow.r.double.long nu\(B\)= oo $以及同理 $ nu\(A\)= - oo arrow.r.double.long nu\(B\)= - oo $
@@ -104,11 +81,7 @@ $ nu\(A\)= oo arrow.r.double.long nu\(B\)= oo $以及同理 $ nu\(A\)= - oo arro
 
 ]
 #definition(
-  title: [positive set, negative set, null set],
-  id: "def-10-signed-measure-jordan-decomposition-positive-set-negative-set-null-set",
-  concepts: ("positive-set-negative-set-null-set",),
-  depends: (),
-  aliases: ("positive set, negative set, null set",),
+  title: [#kn[positive set, negative set, null set]],
 )[
 给定 signed measure $nu$, 对于 $E in cal(A)$, 我们称 $E$ 是一个 #strong[postive se]t, 如果对于对于任意的 $F subset E$, 都有 $ nu\(F\)gt.eq 0 $ #strong[negative set] 和 #strong[null set] 同理. \ Note: For signed measure, #strong[一个集合的 signed measure 为 $0$ 并不代表它的任何子集的 measure 也是 $0$], 它可以是两个正负 measure 相抵的集合的 union. 因而我们要这样额外定义 null set.
 
@@ -118,11 +91,7 @@ null set 既是 positive set, 又是 negative set.
 
 ]
 #lemma(
-  title: [measurable subset preserves sign],
-  id: "lem-10-signed-measure-jordan-decomposition-measurable-subset-preserves-sign",
-  concepts: ("measurable-subset-preserves-sign",),
-  depends: (),
-  aliases: ("measurable subset preserves sign",),
+  title: [#kn[measurable subset preserves sign]],
 )[
 measurable subset of a measurable set $F subset E$ preserves the sign of $E$. \ 即: $E$ 是一个 positive / null / negative $arrow.r.double.long$任意 $F subset E$ 是一个 positive / null / negative.
 
@@ -132,11 +101,7 @@ By def, 可以 by contradiction 得到.
 
 ]
 #lemma(
-  title: [positive, negative, null set 内的局部性质和普通的 measure space 一样],
-  id: "lem-10-signed-measure-jordan-decomposition-positive-negative-null-set-measure-space",
-  concepts: ("positive-negative-null-set-measure-space",),
-  depends: (),
-  aliases: ("positive, negative, null set 内的局部性质和普通的 measure space 一样",),
+  title: [#kn[positive, negative, null set 内的局部性质和普通的 measure space 一样]],
 )[
 如果 $E$ 是一个 #strong[positive set] for signed measure $nu$, 那么 $ F subset E arrow.r.double.long nu\(F\)lt.eq nu\(E\) $
 通过上一个 lemma, $E$ 的任何子集也有这个性质. 因而 #strong[$E$ 局部是一个普通的 measure space]. \ 同理, 如果 $E$ 是一个 #strong[negative set], 那么 $ F subset E arrow.r.double.long nu\(F\)gt.eq nu\(E\) $
@@ -153,9 +118,6 @@ positive, negative, null set 就是这个 signed measure space 中的 \"#strong[
 )
 
 #lemma(
-  id: "lem-10-signed-measure-jordan-decomposition-lemma-004",
-  concepts: ("lemma-004",),
-  depends: (),
 )[
 Countable union of positive / negative / null sets 仍然是 positive / negative / null sets.
 
@@ -171,11 +133,7 @@ Turns out that: there exists a canonical way to do this. #strong[这个分解存
 === Hahn Decomposition
 <hahn-decomposition>
 #theorem(
-  title: [Hahn Decomposition Theorem],
-  id: "thm-10-signed-measure-jordan-decomposition-hahn-decomposition-theorem",
-  concepts: ("hahn-decomposition-theorem",),
-  depends: (),
-  aliases: ("Hahn Decomposition Theorem",),
+  title: [#kn[Hahn Decomposition Theorem]],
 )[
 对于任意 measurable space $\(X\,cal(A)\)$ 上的任意 signed measure $nu$, 都存在一个 positive set $P$ 和一个 negative set $N$ s.t. $ P inter N = diameter $
 并且 $ P union.sq N = X $
@@ -223,9 +181,6 @@ notice: $A_j$ 这个 seq 的 measure 是递增的. 我们取 $ A : = inter.big_(
 对于任意的 signed measure $nu$, 我们已经通过 Hahn-Decomposition 证明了它一定把集合分为一个 positive set $P$ 和一个 negative set $N$, 并且 unique in $nu$-a.e. sense. \
 
 #example(
-  id: "ex-10-signed-measure-jordan-decomposition-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 Consider mble space $\(bb(N)\,cal(P)\(bb(N)\)\)$, 考虑由$ nu\({ n }\)= n - 3 $
 和 countable subadditivity 生成的 signed measure. 从而: $ P = { 1\,2\,3 }\,quad N = bb(N)\\P $
@@ -235,11 +190,7 @@ Consider mble space $\(bb(N)\,cal(P)\(bb(N)\)\)$, 考虑由$ nu\({ n }\)= n - 3 
 === mutually singular s.m.
 <mutually-singular-s.m.>
 #definition(
-  title: [mutually singular],
-  id: "def-10-signed-measure-jordan-decomposition-mutually-singular",
-  concepts: ("mutually-singular",),
-  depends: (),
-  aliases: ("mutually singular",),
+  title: [#kn[mutually singular]],
 )[
 我们称两个 signed measure $nu_1\,nu_2$ on $\(X\,cal(A)\)$ 是 mutually singular 的, 如果 $X = E_1 union.sq E_2$, 其中 $E_i$ 是 $nu_i$ 的 null set. \ 简单而言就是: 这两个 measure 可以把
 
@@ -256,9 +207,6 @@ Note: Mutually Singular 并不要求对于任意一个集合, 这两个s.m. 至�
 
 ]
 #example(
-  id: "ex-10-signed-measure-jordan-decomposition-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 \1. 把所有 measurable set map to $0$ 的 trivial measure 和任意 s.m. 都 mutually singular. \ 2. 再比如: $ \(X\,cal(A)\)=\(bb(R)\,cal(B)\(bb(R)\)\) $
 我们选择 Lebesgue measure as $nu_1$, discrete measure as $nu_2$, Cantor measure as $nu_3$. $ nu_1 : = m\,quad nu_2 := sum_(j = 1)^oo c_j delta_(x_j)\,quad nu_3 : = mu_(C a n t o r) $
@@ -273,9 +221,6 @@ Note: Mutually Singular 并不要求对于任意一个集合, 这两个s.m. 至�
 以及 $ nu^(-)\(E\): = nu\(E inter N\)gt.eq 0 $
 
 #lemma(
-  id: "lem-10-signed-measure-jordan-decomposition-lemma-005",
-  concepts: ("lemma-005",),
-  depends: (),
 )[
 对于 s.m. $nu$, 我们通过 Hahn Decomposition 得到 $P union.sq N = X$. \ Now let $ {nu^(+)\(E\): = nu\(E inter P\)gt.eq 0\
 nu^(-)\(E\): = nu\(E inter N\)gt.eq 0 $
@@ -310,11 +255,7 @@ and characterized by: $ nu^(+) tack.t thin nu^(-) $
 下面我们证明 Jordan decomposition:
 
 #theorem(
-  title: [Jordan decomposition theorem],
-  id: "thm-10-signed-measure-jordan-decomposition-jordan-decomposition-theorem",
-  concepts: ("jordan-decomposition-theorem",),
-  depends: (),
-  aliases: ("Jordan decomposition theorem",),
+  title: [#kn[Jordan decomposition theorem]],
 )[
 对于任意 s.m. $nu$ on $\(X\,cal(A)\)$, 都存在唯一的 positive measure $nu^(+)$, $nu^(-)$ s.t.
 
@@ -337,11 +278,7 @@ Existence 就是前一个 lemma 一模一样. 我们知道, Jordan decomposition
 === total variation measure
 <total-variation-measure>
 #definition(
-  title: [total variation measure],
-  id: "def-10-signed-measure-jordan-decomposition-total-variation-measure",
-  concepts: ("total-variation-measure",),
-  depends: (),
-  aliases: ("total variation measure",),
+  title: [#kn[total variation measure]],
 )[
 $ \|nu\|: = nu^(+) + nu^(-) $
 
@@ -350,9 +287,6 @@ Totcal variation measure 和原 s.m. 的关系, 可以类比一个函数的绝�
 但是这里, 这个 $\|dot.op\|$ 符号和绝对值的 $\|dot.op\|$ 符号的意义并不一致: #strong[这个 $\|nu\|$ 并不是 $nu$ 的绝对值函数]. 在 positive, negative, null sets 上, $\|nu\|$ 确实是 $nu$ 的绝对值函数, 但是#strong[在内部既有 positive measure 的部分, 又有 negative measure 的部分的集合, 它的 total variation measure 是要比它的原 s.m. 的绝对值更大的.] 因而它才被叫做原 s.m. 的 total variation measure, 表示某个集合内部, 原 s.m. 从正到负的#strong[最大变差].
 
 #lemma(
-  id: "lem-10-signed-measure-jordan-decomposition-lemma-006",
-  concepts: ("lemma-006",),
-  depends: (),
 )[
 $\|nu\|$ 是 $\(X\,cal(A)\)$ 上的 positive measure. \ 并且 $\|nu\|$ finite iff $nu^(+)$ 和 $nu^(-)$ 都 finite. \ (Then we define: 我们称 $nu$ 是 finite 的, if $\|nu\|$ finite p.m.)
 
@@ -364,20 +298,13 @@ trivial.
 === integration w.r.t. s.m.
 <integration-w.r.t.-s.m.>
 #definition(
-  title: [integration w.r.t. signed measure],
-  id: "def-10-signed-measure-jordan-decomposition-integration-w-r-t-signed-measure",
-  concepts: ("integration-w-r-t-signed-measure",),
-  depends: (),
-  aliases: ("integration w.r.t. signed measure",),
+  title: [#kn[integration w.r.t. signed measure]],
 )[
 对于 signed measure $nu$, 我们 set: $ L^1\(nu\): = L^1\(\|nu\|\)= L^1\(nu^(+)\)inter L^1\(nu^(-)\) $
 且对于每个 $f in L^1\(nu\)$, 我们 set: $ integral f thin d nu : = integral f thin d nu^(+) - integral f thin d nu^(-) $
 
 ]
 #proposition(
-  id: "prop-10-signed-measure-jordan-decomposition-proposition-004",
-  concepts: ("proposition-004",),
-  depends: (),
 )[
 我们知道, 对于任意 p.m. $mu$ on $\(X\,cal(A)\)$ 以及 $f in L^1\(mu\)$, $ nu\(E\): = integral_E f thin d mu $
 定义了 $\(X\,cal(A)\)$ 上的一个 s.m. \ 而通过积分定义出来的 s.m., 对于任意一个 $E in cal(A)$, 有: $ nu^plus.minus\(E\)= integral_E f^plus.minus thin d mu $从而 $ \|nu\|\(E\)= integral_E\|f\|thin d mu $
@@ -391,11 +318,7 @@ trivial.
 We will learn that: 这个 $f$ 正是 $nu$ w.r.t. $mu$ 的 Radon-Nikodym derivative, 从而 $f\(x\)$ 表示在某个元素处, $nu$ 相对于 $mu$ 的变化趋势. 而 total variation measure of $nu$ 正是把所有的元素上的这个变化趋势都取正 (即取总变化量, 不管方向) 得到的.
 
 #lemma(
-  title: [total variation measure 的性质],
-  id: "lem-10-signed-measure-jordan-decomposition-total-variation-measure",
-  concepts: ("total-variation-measure",),
-  depends: (),
-  aliases: ("total variation measure 的性质",),
+  title: [#ref[total variation measure]],
 )[
 令 $nu$ be a s.m. on $\(X\,cal(A)\)$, $E in cal(A)$, 则
 

@@ -1,0 +1,54 @@
+{
+  "schema": "qlkg-sources-v2",
+  "sources": [
+    {
+      "id": "math:measure-theory",
+      "subject": "math",
+      "course": "measure-theory",
+      "root": "notes/math/measure-theory",
+      "files": [
+        "main.typ",
+        "extras.typ",
+        "chapters/*.typ",
+        "homeworks/*.typ",
+        "extras/*.typ"
+      ],
+      "web": "https://qiulinfan.github.io/qlblog/notes/math/measure-theory",
+      "topics": [
+        {"glob": "chapters/01-*.typ", "id": "measurable-spaces-and-measures", "label": "Measurable Spaces and Measures"},
+        {"glob": "chapters/02-*.typ", "id": "outer-measure-and-extension", "label": "Outer Measure and Measure Extension"},
+        {"glob": "chapters/03-*.typ", "id": "lebesgue-stieltjes-measures", "label": "Lebesgue–Stieltjes Measures"},
+        {"glob": "chapters/04-*.typ", "id": "measurable-functions-and-nonnegative-integration", "label": "Measurable Functions and Nonnegative Integration"},
+        {"glob": "chapters/05-*.typ", "id": "lebesgue-integration-and-convergence", "label": "Lebesgue Integration and Convergence"},
+        {"glob": "chapters/06-*.typ", "id": "product-measures-and-fubini-tonelli", "label": "Product Measures and Fubini–Tonelli"},
+        {"glob": "chapters/07-*.typ", "id": "lebesgue-measure-on-euclidean-space", "label": "Lebesgue Measure on Euclidean Space"},
+        {"glob": "chapters/08-*.typ", "id": "differentiation-of-integrals", "label": "Differentiation of Integrals"},
+        {"glob": "chapters/09-*.typ", "id": "lp-spaces-and-inequalities", "label": "Lp Spaces and Inequalities"},
+        {"glob": "chapters/10-*.typ", "id": "signed-measures", "label": "Signed Measures"},
+        {"glob": "chapters/11-*.typ", "id": "radon-nikodym-theory", "label": "Radon–Nikodym Theory"},
+        {"glob": "chapters/12-*.typ", "id": "functions-of-bounded-variation", "label": "Differentiation and Functions of Bounded Variation"},
+        {"glob": "chapters/13-*.typ", "id": "duality-of-lp-spaces", "label": "Duality of Lp Spaces"}
+      ]
+    },
+    {
+      "id": "math:probability",
+      "subject": "math",
+      "course": "probability",
+      "root": "notes/math/prob",
+      "files": [
+        "main.typ",
+        "homeworks.typ",
+        "chapters/*.typ",
+        "homeworks/*.typ"
+      ],
+      "web": "https://qiulinfan.github.io/qlblog/notes/math/probability",
+      "topics": [
+        {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics"},
+        {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions"},
+        {"glob": "chapters/03-*.typ", "id": "joint-and-conditional-distributions", "label": "Joint and Conditional Distributions"},
+        {"glob": "chapters/04-*.typ", "id": "laws-of-large-numbers", "label": "Laws of Large Numbers"},
+        {"glob": "chapters/05-*.typ", "id": "central-limit-theorems", "label": "Central Limit Theorems"}
+      ]
+    }
+  ]
+}

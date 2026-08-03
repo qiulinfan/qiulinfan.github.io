@@ -4,9 +4,6 @@
 = problem solving-III
 <problem-solving-iii>
 #example(
-  id: "ex-lec37-problem-solving-iii-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 Let $f in L_(l o c)^2\(bb(R)\)$. \ Assume $ integral_a^a\|t\|\|f\(x + t\)\|thin d t gt.eq 2 / sqrt(3) a^2 $for all $a > 0$, $x in bb(R)$. \ Now show: $\|f\(x\)\|gt.eq 1$ for a.e. $x$. \
 
@@ -23,9 +20,6 @@ for a.e. $x$. 因而 $ f\(x\)^2 gt.eq 1 thin quad upright("for a.e. ") x $于是
 ]
 
 #example(
-  id: "ex-lec37-problem-solving-iii-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 Prove or disprove: 对于 bounded open set $E subset bb(R)$, 它的 boundary 是否一定满足 $m\(partial E\)= 0$ ? \
 

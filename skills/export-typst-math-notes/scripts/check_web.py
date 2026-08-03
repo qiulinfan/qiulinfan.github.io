@@ -24,7 +24,8 @@ class QLNotesHTMLParser(HTMLParser):
         self.math_count = 0
         self.svg_count = 0
         self.data_image_count = 0
-        self.semantic_ids: list[str] = []
+        self.knowledge_ids: list[str] = []
+        self.reference_ids: list[str] = []
         self.diagram_ids: list[str] = []
         self.diagram_svg: list[bool] = []
         self._open_diagrams: list[int] = []
@@ -52,9 +53,12 @@ class QLNotesHTMLParser(HTMLParser):
         if tag == "img" and values.get("src", "").startswith("data:image/"):
             self.data_image_count += 1
 
-        identifier = values.get("data-ql-id")
-        if identifier:
-            self.semantic_ids.append(identifier)
+        knowledge_id = values.get("data-ql-kn")
+        if knowledge_id:
+            self.knowledge_ids.append(knowledge_id)
+        reference_id = values.get("data-ql-ref")
+        if reference_id:
+            self.reference_ids.append(reference_id)
 
         if tag == "figure" and "ql-diagram" in classes:
             diagram_id = values.get("data-ql-id") or values.get("id")
@@ -108,13 +112,13 @@ def check(args: argparse.Namespace) -> None:
     if not parser.has_toc:
         raise CheckError("HTML document has no document table of contents")
 
-    id_counts = {identifier: parser.semantic_ids.count(identifier) for identifier in set(parser.semantic_ids)}
+    id_counts = {identifier: parser.knowledge_ids.count(identifier) for identifier in set(parser.knowledge_ids)}
     duplicates = sorted(identifier for identifier, count in id_counts.items() if count > 1)
     if duplicates:
         raise CheckError(f"duplicate semantic IDs: {duplicates}")
     invalid = sorted(
         identifier
-        for identifier in parser.semantic_ids
+        for identifier in parser.knowledge_ids + parser.reference_ids
         if not identifier.isascii() or not identifier.strip()
     )
     if invalid:
@@ -126,9 +130,9 @@ def check(args: argparse.Namespace) -> None:
     ]
     if missing_svg:
         raise CheckError(f"diagram figures without inline SVG: {missing_svg}")
-    if args.expected_nodes is not None and len(parser.semantic_ids) != args.expected_nodes:
+    if args.expected_nodes is not None and len(parser.knowledge_ids) != args.expected_nodes:
         raise CheckError(
-            f"semantic ID count is {len(parser.semantic_ids)}, expected {args.expected_nodes}"
+            f"knowledge node count is {len(parser.knowledge_ids)}, expected {args.expected_nodes}"
         )
     if args.expected_diagrams is not None and len(parser.diagram_ids) != args.expected_diagrams:
         raise CheckError(
@@ -137,7 +141,8 @@ def check(args: argparse.Namespace) -> None:
 
     print(f"OK: {html_path}")
     print(
-        f"title: {parser.title}; semantic IDs: {len(parser.semantic_ids)}; "
+        f"title: {parser.title}; knowledge nodes: {len(parser.knowledge_ids)}; "
+        f"references: {len(parser.reference_ids)}; "
         f"diagrams: {len(parser.diagram_ids)}; inline SVGs: {parser.svg_count}; "
         f"embedded authored images: {parser.data_image_count}; "
         f"math elements: {parser.math_count}"

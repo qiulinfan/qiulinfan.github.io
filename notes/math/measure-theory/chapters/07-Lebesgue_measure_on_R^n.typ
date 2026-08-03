@@ -18,9 +18,6 @@
 这是 product measure 最常见的应用和例子.
 
 #definition(
-  id: "def-07-lebesgue-measure-on-r-n-definition-001",
-  concepts: ("definition-001",),
-  depends: (),
 )[
 $\(bb(R)^n\,cal(L)^n\,m\)$ Lebesgue measure is #strong[completion of] $\(bb(R)^n\,cal(B)_(bb(R)^n)\,m\|_(b o r e l)\)$.
 
@@ -30,11 +27,7 @@ $cal(L^n) = { upright("Leb meas sets") } supset cal(B)_(bb(R)^n)$
 Write: $ integral f #h(0em) d m^n quad $
 
 #theorem(
-  title: [Fubini-Tonelli for $m^n$],
-  id: "thm-07-lebesgue-measure-on-r-n-fubini-tonelli-for-m-n",
-  concepts: ("fubini-tonelli-for-m-n",),
-  depends: (),
-  aliases: ("Fubini-Tonelli for m^n",),
+  title: [#kn[Fubini-Tonelli for $m^n$]],
 )[
 Suppose $f in L^(+)\(bb(R)^n\)$ or $L^1\(bb(R)^n\)$
 $ integral f #h(0em) d m^n & = integral dots.h.c integral f\(x_1\,dots.h.c\,x_n\)#h(0em) d x_1 dots.h.c d x_n\
@@ -42,9 +35,6 @@ $ integral f #h(0em) d m^n & = integral dots.h.c integral f\(x_1\,dots.h.c\,x_n\
 
 ]
 #example(
-  id: "ex-07-lebesgue-measure-on-r-n-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 Show: $ integral_0^oo e^(- s x) frac(sin^2\(x\), x) #h(0em) d x = 1 / 4 log\(1 + 4 s^(- 2)\) $
 for $s > 0$, by integrating $e^(- s x) sin 2 x y = f\(x\,y\)$ over the rectangle $x in\(0\,oo\)\,y in\(0\,1\)$. \ Sketch: $f in L^1$ (since it is ctn on $bb(R)$)
@@ -56,11 +46,7 @@ for $s > 0$, by integrating $e^(- s x) sin 2 x y = f\(x\,y\)$ over the rectangle
 === regularities of Lebesgue measure in $bb(R)^n$
 <regularities-of-lebesgue-measure-in-mathbbrn>
 #theorem(
-  title: [regularities of $cal(L)^n$],
-  id: "thm-07-lebesgue-measure-on-r-n-regularities-of-mathcal-l-n",
-  concepts: ("regularities-of-mathcal-l-n",),
-  depends: (),
-  aliases: ("regularities of \\mathcal{L}^n",),
+  title: [#kn[regularities of $cal(L)^n$]],
 )[
 If $E subset cal(L)^n$, 则有:
 
@@ -86,9 +72,6 @@ Now pick $R_1\,dots.h.c\,R_N$ from honest rectangles (即 sides 都是 intervals
 
 ]
 #corollary(
-  id: "cor-07-lebesgue-measure-on-r-n-corollary-001",
-  concepts: ("corollary-001",),
-  depends: (),
 )[
 For $f in L^1\(m\)$,
 if $f in L^1\(m\)$ and $epsilon.alt > 0$ then
@@ -119,11 +102,7 @@ By CFB, CFA 容易得到: $ accent(kappa, macron)\(E\)= m\(accent(A, macron)\(E\
 Note: 这里的 $attach(limits(A), b: macron)\(E\,k\)\,#h(0em) accent(A, macron)\(E\,k\)\,#h(0em) attach(limits(A), b: macron)\(E\)\,#h(0em) accent(A, macron)\(E\)$ 都是 union of cubes with disjoint interiors.
 
 #lemma(
-  title: [approximate an open set by disjoint interior cubes],
-  id: "lem-07-lebesgue-measure-on-r-n-approximate-an-open-set-by-disjoint-interior-cubes",
-  concepts: ("approximate-an-open-set-by-disjoint-interior-cubes",),
-  depends: (),
-  aliases: ("approximate an open set by disjoint interior cubes",),
+  title: [#kn[approximate an open set by disjoint interior cubes]],
 )[
 Let $E subset bb(R)^n$ be open. \ Claim: $E = attach(limits(A), b: macron)\(E\)$
 
@@ -133,9 +112,6 @@ Folland 2.43.
 
 ]
 #corollary(
-  id: "cor-07-lebesgue-measure-on-r-n-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 $E subset bb(R)^n$ 是 Lebesuge measurable 的 $arrow.l.r.double$ $accent(kappa, macron)\(E\)= attach(limits(kappa), b: macron)\(E\)$
 
@@ -149,11 +125,7 @@ Affine transformation 即 linear transformation + translation.
 对于 $a in bb(R)^n$, 一个 translation $t : bb(R)^n arrow.r bb(R)^n\,x mapsto x + a$ 是 ctn 的并且 $ t_a^(- 1) = t_(- a) $
 
 #theorem(
-  title: [Lebesgue measure and integral is invariant under translation],
-  id: "thm-07-lebesgue-measure-on-r-n-lebesgue-measure-and-integral-is-invariant-under-translation",
-  concepts: ("lebesgue-measure-and-integral-is-invariant-under-translation",),
-  depends: (),
-  aliases: ("Lebesgue measure and integral is invariant under translation",),
+  title: [#kn[Lebesgue measure and integral is invariant under translation]],
 )[
 \(a) 任取 $a in bb(R)^n$,
 $ E in cal(L)^n arrow.r.double.long t_a\(E\)in cal(L)^n quad upright(" and ") quad m\(t_a\(E\)\)= m\(E\) $
@@ -184,11 +156,7 @@ if $N subset bb(R)^n$ subnull set, so is $t_a\(N\)$. 因而 $ m\(t_a\(E\)\)= m\(
 === Lebesgue measure and integration is scaled $\|det T\|$ under linear map
 <lebesgue-measure-and-integration-is-scaled-det-t-under-linear-map>
 #theorem(
-  title: [Lebesgue measure and integration is scaled $\|det T\|$ by linear map],
-  id: "thm-07-lebesgue-measure-on-r-n-lebesgue-measure-and-integration-is-scaled-det-t-by-linear-map",
-  concepts: ("lebesgue-measure-and-integration-is-scaled-det-t-by-linear-map",),
-  depends: (),
-  aliases: ("Lebesgue measure and integration is scaled |\\det T| by linear map",),
+  title: [#kn[Lebesgue measure and integration is scaled $\|det T\|$ by linear map]],
 )[
 For $T in G L\(n\,bb(R)\)$ (即 linear map $T : bb(R)^n arrow.r bb(R)^n$ 且可逆)
 (a) 如果 $f : bb(R)^n arrow.r bb(C)$ is Lebesgue measurable, then so is $f compose T$. \ Moreover if $f in L^(+)$ or $f in L^1$, then $f compose T in L^(+)$, $f compose T in L^1$ respectively. And $ integral f #h(0em) d m =\|det T\|integral f compose T #h(0em) d m $
@@ -200,11 +168,7 @@ Note: 对于 $T\,S in G L\(n\,bb(R)\)$, 如果 $ integral f =\|det T\|integral f
 which trivially follows from computation. (and $det\(S compose T\)= det S times det T$ for any linear map $S\,T$\.) \ recall that:
 
 #lemma(
-  title: [row reduction],
-  id: "lem-07-lebesgue-measure-on-r-n-row-reduction",
-  concepts: ("row-reduction",),
-  depends: (),
-  aliases: ("row reduction",),
+  title: [#kn[row reduction]],
 )[
 #strong[任意 invertible linear map 可以被拆分为 finite 个 elementary linear maps.] ( $T_1$: scale 一行; $T_2$: 交换两行; $T_3$: 一行加上另一行的倍数).
 
@@ -217,11 +181,7 @@ which trivially follows from computation. (and $det\(S compose T\)= det S times 
 === Lebesgue measure is invariant under rotation (and reflection)
 <lebesgue-measure-is-invariant-under-rotation-and-reflection>
 #corollary(
-  title: [Lebesgue measure is invariant under rotation],
-  id: "cor-07-lebesgue-measure-on-r-n-lebesgue-measure-is-invariant-under-rotation",
-  concepts: ("lebesgue-measure-is-invariant-under-rotation",),
-  depends: (),
-  aliases: ("Lebesgue measure is invariant under rotation",),
+  title: [#kn[Lebesgue measure is invariant under rotation]],
 )[
 对于 rotation 和 reflection (即 orthogonal transformation), 即 $T T^(*) = I_n$ 的 linear map $T$, 有 $m\(T\(E\)\)= m\(E\)$.
 
@@ -239,11 +199,7 @@ $A in G L\(n\,bb(R)\)$ 为一个 orthogonal transformation (可写作 $A in O\(n
 === COV
 <cov>
 #theorem(
-  title: [general change of variable theorem],
-  id: "thm-07-lebesgue-measure-on-r-n-general-change-of-variable-theorem",
-  concepts: ("general-change-of-variable-theorem",),
-  depends: (),
-  aliases: ("general change of variable theorem",),
+  title: [#kn[general change of variable theorem]],
 )[
 Suppose $Omega subset bb(R)^n$ #strong[open], $G : Omega arrow.r bb(R)^n$ 为一个 $C^1$ #strong[diffeomorphism]. \ Claim:
 
@@ -281,11 +237,7 @@ simple function 的 case reduces to measure, 而 $L^(+)$ 的 case follows from M
 === application of COV: polar coordinate
 <application-of-cov-polar-coordinate>
 #definition(
-  title: [mapping from Euclidean coord to polar coord],
-  id: "def-07-lebesgue-measure-on-r-n-mapping-from-euclidean-coord-to-polar-coord",
-  concepts: ("mapping-from-euclidean-coord-to-polar-coord",),
-  depends: (),
-  aliases: ("mapping from Euclidean coord to polar coord",),
+  title: [#kn[mapping from Euclidean coord to polar coord]],
 )[
 我们定义: $ Phi : bb(R)^n\\{ 0 } arrow.r med\(0\,oo\)times S^(n - 1) $by: $ x mapsto\(r in bb(R)\,theta in bb(S^(n - 1))\) $
 其中, $ r =\|x\|\,quad theta = frac(x, \|x\|) in S^(n - 1) $
@@ -294,11 +246,7 @@ simple function 的 case reduces to measure, 而 $L^(+)$ 的 case follows from M
 这是一个很直观的坐标变换, 即一个 diffeomorphism. \
 
 #definition(
-  title: [a Borel measure on $\(0\,oo\)times S^(n - 1)$],
-  id: "def-07-lebesgue-measure-on-r-n-a-borel-measure-on-0-infty-times-s-n-1",
-  concepts: ("a-borel-measure-on-0-infty-times-s-n-1",),
-  depends: (),
-  aliases: ("a Borel measure on (0,\\infty) \\times S^{n-1}",),
+  title: [#kn[a Borel measure on $\(0\,oo\)times S^(n - 1)$]],
 )[
 我们定义 $ m_(*)\(E\):= m\(Phi^(- 1)\(E\)\) $
 
@@ -306,9 +254,6 @@ simple function 的 case reduces to measure, 而 $L^(+)$ 的 case follows from M
 这是一个通过坐标变换的 preimage 的 Borel measure 定义的新的 Borel measure. \
 
 #theorem(
-  id: "thm-07-lebesgue-measure-on-r-n-theorem-006",
-  concepts: ("theorem-006",),
-  depends: (),
 )[
 Define Borel measure $rho$ on $\(0\,oo\)$ by: $ rho\(E\)= integral_E r^(n - 1) #h(0em) d r $
 存在 unique 的 Borel measure $sigma_(n - 1)$ on $S^(n - 1)$, 使得 for Borel measurable $f : bb(R)^n arrow.r bb(C)$ 且 $f gt.eq 0$ or $f in L^1\(m\)$, 有 $ integral_(bb(R)^n) f\(x\)#h(0em) d m & =^(C O V) integral_(\(0\,oo\)times S^(n - 1)) f\(r theta\)#h(0em) d m_(*)\
@@ -337,17 +282,11 @@ Define Borel measure $rho$ on $\(0\,oo\)$ by: $ rho\(E\)= integral_E r^(n - 1) #
 
 ]
 #example(
-  id: "ex-07-lebesgue-measure-on-r-n-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 $sigma\(S^1\)= 2 pi$, $sigma\(S^2\)= 4 pi$.
 
 ]
 #example(
-  id: "ex-07-lebesgue-measure-on-r-n-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 使用 polar coordinate 计算积分: $ integral_(bb(R)^n) e^(- a\|x\|^2) #h(0em) d x =\(pi / a\)^(n / 2) $
 这是因为: $ I_2 = 2 pi integral_0^oo r e^(- a r^2) #h(0em) d r = pi / a $

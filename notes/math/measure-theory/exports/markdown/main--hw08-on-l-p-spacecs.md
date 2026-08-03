@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 2
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -51,7 +51,7 @@ $$\begin{matrix}
 **Claim 1:** $F \in L^{1}({\mathbb{R}}^{2025})$.\
 To prove this, we just need this lemma.
 
-::: {#lem-hw08-on-l-p-spacecs-folland-2-5-exercise-51 .lemma concepts="folland-2-5-exercise-51" aliases="(Folland 2.5 exercise 51)"}
+::: lemma
 **Lemma: (Folland 2.5 exercise 51)**
 
 If $f$ is $\mathcal{M}$-measurable, $g$ is $\mathcal{N}$-measurable, then $fg$ is $(\mathcal{M} \otimes \mathcal{N})$-measurable.\
@@ -447,7 +447,7 @@ Suppose that $1 \leq p < \infty$ and that $f_{n},f \in L^{p}$ for some measure s
 
 Recall we have proved
 
-::: {#thm-hw08-on-l-p-spacecs-generalized-dct .theorem concepts="generalized-dct" aliases="Generalized DCT"}
+::: theorem
 **Theorem: Generalized DCT**
 
 Let $(X,\mathcal{A},\mu)$ be a measure space, and $f_{n},g_{n},f,g \in L^{1}$, $n \in {\mathbb{N}}$. Suppose that

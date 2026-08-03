@@ -24,8 +24,7 @@ recall: 对于任意 \(\bar{\mathbb{R}}\)-valued \(f\),
 
 但是其中有一个 undefined 的问题: 我们要避免 \(\infty - \infty\) 这一类的问题. 因而我们无法对所有的可测函数进行积分, 而是定义 "integrable" 的可测函数.
 
-% qlnotes: kind=lemma; id=lem-05-integration-of-real-and-complex-functions-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-05-integration-of-real-and-complex-functions-lemma-001}
+\begin{lemma}
 
 \[\begin{matrix}
 {\{\int f^{+} < \infty} \\
@@ -46,8 +45,8 @@ trivial.
 
 \subsection{\texorpdfstring{\(\widetilde{L}(X,\mu,{\mathbb{C}})\) and \(L^{1}(X,\mu,{\mathbb{C}}\))}{\textbackslash widetilde\{L\}(X,\textbackslash mu,\{\textbackslash mathbb\{C\}\}) and L\^{}\{1\}(X,\textbackslash mu,\{\textbackslash mathbb\{C\}\})}}\label{widetildelxmumathbbc-and-l1xmumathbbc}
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-real-valued-integrable-function; concepts=real-valued-integrable-function; aliases=real-valued integrable function
-\begin{definition}{real-valued integrable function}\label{def-05-integration-of-real-and-complex-functions-real-valued-integrable-function}
+\begin{definition}{\protect\phantomsection\label{kn-real-valued-integrable-function}{\textbf{real-valued
+integrable function}}}
 
 Given measure space \((X,\mathcal{M},\mu)\), \textbf{measurable \(f:X\rightarrow\bar{\mathbb{R}}\) 被称为 integrable} 的, 如果它满足
 
@@ -59,8 +58,8 @@ Given measure space \((X,\mathcal{M},\mu)\), \textbf{measurable \(f:X\rightarrow
 
 \end{definition}
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-complex-valued-integrable-function; concepts=complex-valued-integrable-function; aliases=complex-valued integrable function
-\begin{definition}{complex-valued integrable function}\label{def-05-integration-of-real-and-complex-functions-complex-valued-integrable-function}
+\begin{definition}{\protect\phantomsection\label{kn-complex-valued-integrable-function}{\textbf{complex-valued
+integrable function}}}
 
 Further, 我们定义 \textbf{measurable \(f:X\rightarrow{\mathbb{C}}\) 是 integrable 的}, 如果它同样满足:
 
@@ -82,8 +81,7 @@ Further, 我们定义 \textbf{measurable \(f:X\rightarrow{\mathbb{C}}\) 是 inte
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-proposition-001; concepts=proposition-001
-\begin{proposition}\label{prop-05-integration-of-real-and-complex-functions-proposition-001}
+\begin{proposition}
 
 所有的 real-valued integrable functions 构成一个 \(\mathbb{R}\)-vector space, 并且 integral 是一个 linear functional on it.
 
@@ -99,9 +97,8 @@ trivial.
 
 下面我们可以定义这个 vector space 并在上面进行一定研究. 此处为一个 temporary 的记号:
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space; concepts=tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space; aliases=\tilde{L}(X, \mu, \mathbb{R}) 以及\tilde{L}(X, \mu, \mathbb{C}) space
-\begin{definition}{\(\widetilde{L}(X,\mu,{\mathbb{R}})\)
-以及\(\widetilde{L}(X,\mu,{\mathbb{C}})\) space}\label{def-05-integration-of-real-and-complex-functions-tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space}
+\begin{definition}{\protect\phantomsection\label{kn-tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space}{\textbf{\(\widetilde{L}(X,\mu,{\mathbb{R}})\)
+以及\(\widetilde{L}(X,\mu,{\mathbb{C}})\) space}}}
 
 给定 measure space \((X,\mathcal{M},\mu)\) 我们定义
 
@@ -129,8 +126,7 @@ trivial.
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-proposition-002; concepts=proposition-002
-\begin{proposition}\label{prop-05-integration-of-real-and-complex-functions-proposition-002}
+\begin{proposition}
 
 \(\widetilde{L}(X,\mu,{\mathbb{C}})\) 上, \(f\mapsto\int f\) 为一个 linear functional.
 
@@ -138,8 +134,7 @@ trivial.
 
 因为积分是 linear 的, as we have proved.
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-proposition-003; concepts=proposition-003
-\begin{proposition}\label{prop-05-integration-of-real-and-complex-functions-proposition-003}
+\begin{proposition}
 
 \[\left. f \in \widetilde{L}(X,\mu,{\mathbb{C}})\Longrightarrow \middle| \int f \middle| \leq \int \middle| f| \right.\]
 
@@ -166,8 +161,8 @@ For complex-valued case, Set
 
 \end{proof}
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-integratal-restricted-to-a-measurable-set; concepts=integratal-restricted-to-a-measurable-set; aliases=integratal restricted to a measurable set
-\begin{definition}{integratal restricted to a measurable set}\label{def-05-integration-of-real-and-complex-functions-integratal-restricted-to-a-measurable-set}
+\begin{definition}{\protect\phantomsection\label{kn-integral-restricted-to-a-measurable-set}{\textbf{integral
+restricted to a measurable set}}}
 
 if \(f \in \widetilde{L}(X,\mu,{\mathbb{C}})\), \(E \in \mathcal{A}\) (\(\mu\) 的 \(\sigma\)-algebra), 我们 define:
 
@@ -181,8 +176,7 @@ if \(f \in \widetilde{L}(X,\mu,{\mathbb{C}})\), \(E \in \mathcal{A}\) (\(\mu\) �
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-proposition-004; concepts=proposition-004; aliases=可积函数几乎处处相等的等价条件
-\begin{proposition}{可积函数几乎处处相等的等价条件}\label{prop-05-integration-of-real-and-complex-functions-proposition-004}
+\begin{proposition}{可积函数几乎处处相等的等价条件}
 
 if \(f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})\), 则 TFAE:
 
@@ -233,8 +227,8 @@ if \(f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})\), 则 TFAE:
 
 并且我们发现, a.e. 相等的两个可积函数 \(f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})\) 在任意可测集上的积分都相等. 于是这两个函数在 \(\widetilde{L}(X,\mu,{\mathbb{C}})\) 中的表现是相等的. 因而我们可以把 a.e. 相等的这种关系 quotient 掉, 简化这个空间:
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-l-1-mu-space; concepts=l-1-mu-space; aliases=L^1(\mu) space
-\begin{definition}{\(L^{1}(\mu)\) space}\label{def-05-integration-of-real-and-complex-functions-l-1-mu-space}
+\begin{definition}{\protect\phantomsection\label{kn-l-1-mu-space}{\textbf{\(L^{1}(\mu)\)
+space}}}
 
 我们定义 \(L^{1}(X,\mu,{\mathbb{C}})\), 或简称为 \(L^{1}(\mu)\), 为:
 
@@ -252,8 +246,7 @@ if \(f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})\), 则 TFAE:
 
 \subsection{DCT}\label{dct}
 
-% qlnotes: kind=lemma; id=lem-05-integration-of-real-and-complex-functions-lemma-002; concepts=lemma-002
-\begin{lemma}\label{lem-05-integration-of-real-and-complex-functions-lemma-002}
+\begin{lemma}
 
 令 \((f_{n})\) 为 a seq of \textbf{a.e. defined measurable functions} on \(X\)., s.t.
 
@@ -270,8 +263,8 @@ Measurability is well preserved by taking limit, 并且更改一个零测集上�
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-dominated-convergence-theorem; concepts=dominated-convergence-theorem; aliases=dominated convergence theorem
-\begin{theorem}{dominated convergence theorem}\label{thm-05-integration-of-real-and-complex-functions-dominated-convergence-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-dominated-convergence-theorem}{\textbf{dominated
+convergence theorem}}}
 
 Let \((f_{n})\) be a seq of functions in \(L^{1}(\mu)\), s.t.
 
@@ -346,8 +339,7 @@ Proof 在 hw 5.
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-05-integration-of-real-and-complex-functions-example-001; concepts=example-001
-\begin{example}\label{ex-05-integration-of-real-and-complex-functions-example-001}
+\begin{example}
 
 Suppose \(u:\lbrack 0,1\rbrack\rightarrow\lbrack 0,1\rbrack\) is Lebesgue measurable.\\
 考虑这一 seq of function: \((u^{n})\).\\
@@ -357,8 +349,7 @@ Suppose \(u:\lbrack 0,1\rbrack\rightarrow\lbrack 0,1\rbrack\) is Lebesgue measur
 
 \end{example}
 
-% qlnotes: kind=example; id=ex-05-integration-of-real-and-complex-functions-example-002; concepts=example-002
-\begin{example}\label{ex-05-integration-of-real-and-complex-functions-example-002}
+\begin{example}
 
 compute
 
@@ -378,8 +369,8 @@ compute
 
 \subsection{Fubini for series and integral}\label{fubini-for-series-and-integral}
 
-% qlnotes: kind=corollary; id=cor-05-integration-of-real-and-complex-functions-fubini-for-series-and-integral; concepts=fubini-for-series-and-integral; aliases=Fubini for series and integral
-\begin{corollary}{Fubini for series and integral}\label{cor-05-integration-of-real-and-complex-functions-fubini-for-series-and-integral}
+\begin{corollary}{\protect\phantomsection\label{kn-fubini-for-series-and-integral}{\textbf{Fubini
+for series and integral}}}
 
 对于 \(L^{1}(\mu)\) 中的 sequence \((f_{n})\), 如果 \(\left. \sum_{n = 1}^{\infty}\int \middle| f_{n} \middle| < \infty \right.\), 则
 
@@ -425,8 +416,7 @@ Fubini's for sum and integrals : 对于一个 seq of 可积函数, \textbf{如�
 
 \subsection{a function that is measurable in one var and ctn/diffble in another}\label{a-function-that-is-measurable-in-one-var-and-ctndiffble-in-another}
 
-% qlnotes: kind=corollary; id=cor-05-integration-of-real-and-complex-functions-corollary-002; concepts=corollary-002
-\begin{corollary}\label{cor-05-integration-of-real-and-complex-functions-corollary-002}
+\begin{corollary}
 
 令 \((X,\mathcal{A},\mu)\) be a measure space.\\
 如果 \(f:X \times \lbrack a,b\rbrack\rightarrow{\mathbb{C}}\) 满足 \(f( \cdot ,t) \in L^{1}(\mu)\) for all \(t \in \lbrack a,b\rbrack\), 令
@@ -475,8 +465,7 @@ Apply DCT to
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-05-integration-of-real-and-complex-functions-example-003; concepts=example-003
-\begin{example}\label{ex-05-integration-of-real-and-complex-functions-example-003}
+\begin{example}
 
 是否有:
 
@@ -498,8 +487,8 @@ Here
 
 \subsection{\texorpdfstring{\(L^{1}\) as a Banach space}{L\^{}\{1\} as a Banach space}}\label{l1-as-a-banach-space}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-l-1-mu-integral-w-r-t-mu-norm-normed-vs; concepts=l-1-mu-integral-w-r-t-mu-norm-normed-vs; aliases=L^1(\mu) 以 integral w.r.t. \mu 作为 norm 是一个 normed VS
-\begin{theorem}{\(L^{1}(\mu)\) 以 integral w.r.t. \(\mu\) 作为 norm 是一个 normed VS}\label{thm-05-integration-of-real-and-complex-functions-l-1-mu-integral-w-r-t-mu-norm-normed-vs}
+\begin{theorem}{\protect\phantomsection\label{kn-l-1-mu-integral-w-r-t-mu-norm-normed-vs}{\textbf{\(L^{1}(\mu)\)
+以 integral w.r.t. \(\mu\) 作为 norm 是一个 normed VS}}}
 
 在 \(L^{1}(\mu)\) 上, 我们 set
 
@@ -532,9 +521,8 @@ recall norm 的定义, 需要符合:
 
 \end{proof}
 
-% qlnotes: kind=corollary; id=cor-05-integration-of-real-and-complex-functions-l-1-mu-cdot-banach-space; concepts=l-1-mu-cdot-banach-space; aliases=(L^1(\mu), , \cdot, ) 是一个 Banach space
-\begin{corollary}{\(\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.\)
-是一个 Banach space}\label{cor-05-integration-of-real-and-complex-functions-l-1-mu-cdot-banach-space}
+\begin{corollary}{\protect\phantomsection\label{kn-l-1-mu-cdot-banach-space}{\textbf{\(\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.\)
+是一个 Banach space}}}
 
 \(\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.\) 的 induced metric space 是 complete 的. 即, every Cauchy seq converges.\\
 (\textbf{从而这是一个 Banach space}. )
@@ -546,8 +534,7 @@ recall norm 的定义, 需要符合:
 取一个 Cauchy seq \((f_{n})\) in \(L^{1}\).\\
 这里有一个值得 recall 的 proposition:
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-proposition-005; concepts=proposition-005
-\begin{proposition}\label{prop-05-integration-of-real-and-complex-functions-proposition-005}
+\begin{proposition}
 
 在一个 metric space 中, 一个 Cauchy seq converges 当且仅当它存在一个 convergent 的 subsequence.
 
@@ -587,8 +574,8 @@ recall norm 的定义, 需要符合:
 
 \subsection{\texorpdfstring{density of simple function of \(L^{1}(\mu)\)}{density of simple function of L\^{}\{1\}(\textbackslash mu)}}\label{density-of-simple-function-of-l1mu}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-density-of-simple-functions-in-l-1-mu; concepts=density-of-simple-functions-in-l-1-mu; aliases=density of simple functions in L^1(\mu)
-\begin{theorem}{density of simple functions in \(L^{1}(\mu)\)}\label{thm-05-integration-of-real-and-complex-functions-density-of-simple-functions-in-l-1-mu}
+\begin{theorem}{\protect\phantomsection\label{kn-density-of-simple-functions-in-l-1-mu}{\textbf{density
+of simple functions in \(L^{1}(\mu)\)}}}
 
 令 \((X,\mathcal{A},\mu)\) 为一个 measure space, 令 \(f \in L^{1}(\mu)\),\\
 对于任意 \(\epsilon > 0\), 都存在 simple \(\phi:X\rightarrow{\mathbb{C}}\) in \(L^{1}(\mu)\), 使得
@@ -617,8 +604,8 @@ recall norm 的定义, 需要符合:
 
 \subsection{\texorpdfstring{density of step functions in \(L^{1}(m)\)}{density of step functions in L\^{}\{1\}(m)}}\label{density-of-step-functions-in-l1m}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-ls-measure-space-l-1-space-density-of-step-functions; concepts=ls-measure-space-l-1-space-density-of-step-functions; aliases=LS measure space 的 L^1 space 上的 density of step functions
-\begin{theorem}{LS measure space 的 \(L^{1}\) space 上的 density of step functions}\label{thm-05-integration-of-real-and-complex-functions-ls-measure-space-l-1-space-density-of-step-functions}
+\begin{theorem}{\protect\phantomsection\label{kn-ls-measure-space-l-1-space-density-of-step-functions}{\textbf{LS
+measure space 的 \(L^{1}\) space 上的 density of step functions}}}
 
 考虑 \(({\mathbb{R}},\mathcal{L},m_{s})\) where \(m_{s}\) 为一个 Lebesgue-Stieljes measure on \(\mathbb{R}\), let \(f \in L^{1}(\mu)\),\\
 对于任意 \(\epsilon > 0\), 都存在 step function \(\phi = \sum_{j = 1}^{N}c_{j}\chi_{I_{j}}\), 使得
@@ -645,8 +632,7 @@ where each \(I_{j}\) 都是 open intervals.
 
 也就是说, \textbf{任意的 Lebesgue intble function 都可以用 ctn function with compact supp 来近似.} 一个可积函数可以是 supp 非常怪异的以及非常 unctn 的, 但是却可以用 ctn and cpt supp functions 来逼近, in \(L^{1}\) sense. 当然这是一种弱逼近. 函数可以差异很大.
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-c-c-x; concepts=c-c-x; aliases=C_c (X)
-\begin{definition}{\(C_{c}(X)\)}\label{def-05-integration-of-real-and-complex-functions-c-c-x}
+\begin{definition}{\protect\phantomsection\label{kn-c-c-x}{\textbf{\(C_{c}(X)\)}}}
 
 令 \(X\) be a metric space, 我们定义:
 
@@ -654,8 +640,8 @@ where each \(I_{j}\) 都是 open intervals.
 
 \end{definition}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-c-c-x-subset-l-1-mu-dense-linear-subspace; concepts=c-c-x-subset-l-1-mu-dense-linear-subspace; aliases=C_c(X) \subset L^1(\mu) 是一个 dense linear subspace
-\begin{theorem}{\(C_{c}(X) \subset L^{1}(\mu)\) 是一个 dense linear subspace}\label{thm-05-integration-of-real-and-complex-functions-c-c-x-subset-l-1-mu-dense-linear-subspace}
+\begin{theorem}{\protect\phantomsection\label{kn-c-c-x-subset-l-1-mu-dense-linear-subspace}{\textbf{\(C_{c}(X) \subset L^{1}(\mu)\)
+是一个 dense linear subspace}}}
 
 \(C_{c}({\mathbb{R}}) \subset L^{1}(\mu_{m})\) 为一个 dense linear subspace.
 
@@ -686,8 +672,7 @@ Recall: Riemann integral 是对于 \({\mathbb{R}}^{n}\rightarrow{\mathbb{R}}\) �
 现在我们比较对于 \({\mathbb{R}}\rightarrow{\mathbb{R}}\) 的函数的 Riemann 和 Lebesgue 积分. 我们将会得出结论: \textbf{Riemann 积分是 Lebesgue 积分的特殊情况, 即, Riemann 可积的函数一定也 Lebesgue 可积, 并且积分值相同}. (对于 \({\mathbb{R}}^{n}\rightarrow{\mathbb{R}}\) 的函数也一样, 之后将展开.)\\
 Recall Riemann integral 的定义:
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-definition-007; concepts=definition-007
-\begin{definition}\label{def-05-integration-of-real-and-complex-functions-definition-007}
+\begin{definition}
 
 对于 \(f:\lbrack a,b\rbrack\rightarrow{\mathbb{R}}\) bdd, 一个 \textbf{partition} \(\mathcal{P} = \left\{ t_{j} \right\}_{j = 0}^{n}\) on \(\lbrack a,b\rbrack\) 满足
 
@@ -715,8 +700,8 @@ Define over all possible partition on \(\lbrack a,b\rbrack\): \textbf{lower inte
 
 \subsection{\texorpdfstring{Riemann intble \(\Longrightarrow\) Lebesgue intble}{Riemann intble \textbackslash Longrightarrow Lebesgue intble}}\label{riemann-intble-longrightarrow-lebesgue-intble}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-riemann-integral-lebesgue-integral; concepts=riemann-integral-lebesgue-integral; aliases=Riemann integral 是 Lebesgue integral 的特殊情况
-\begin{theorem}{Riemann integral 是 Lebesgue integral 的特殊情况}\label{thm-05-integration-of-real-and-complex-functions-riemann-integral-lebesgue-integral}
+\begin{theorem}{\protect\phantomsection\label{kn-riemann-integral-lebesgue-integral}{\textbf{Riemann
+integral 是 Lebesgue integral 的特殊情况}}}
 
 \[\begin{matrix}
 {f\ \text{Riemann integrable}\Longrightarrow\{ f \in L^{1}(\lbrack a,b\rbrack,\mathcal{L}.m)} \\
@@ -782,8 +767,8 @@ for (a): 对于给定 partition \(\mathcal{P}\), 我们 set:
 
 \subsection{Lebesgue's criterion for Riemann integrability}\label{lebesgues-criterion-for-riemann-integrability}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-lebesgue-s-characterization-of-riemann-integrability; concepts=lebesgue-s-characterization-of-riemann-integrability; aliases=Lebesgue’s characterization of Riemann integrability
-\begin{theorem}{Lebesgue's characterization of Riemann integrability}\label{thm-05-integration-of-real-and-complex-functions-lebesgue-s-characterization-of-riemann-integrability}
+\begin{theorem}{\protect\phantomsection\label{kn-lebesgue-s-characterization-of-riemann-integrability}{\textbf{Lebesgue's
+characterization of Riemann integrability}}}
 
 定义
 
@@ -845,8 +830,7 @@ To prove this: 见 395.
 
 \subsection{\texorpdfstring{examples showing a.e. ptwise conv 和 \(L^{1}\) conv 不能互推}{examples showing a.e. ptwise conv 和 L\^{}\{1\} conv 不能互推}}\label{examples-showing-a.e.-ptwise-conv-ux548c-l1-conv-ux4e0dux80fdux4e92ux63a8}
 
-% qlnotes: kind=example; id=ex-05-integration-of-real-and-complex-functions-example-004; concepts=example-004
-\begin{example}\label{ex-05-integration-of-real-and-complex-functions-example-004}
+\begin{example}
 
 on \(({\mathbb{R}},{\mathfrak{L}},m)\), 以下 \((f_{n})\):
 
@@ -894,9 +878,8 @@ on \(({\mathbb{R}},{\mathfrak{L}},m)\), 以下 \((f_{n})\):
 
 \subsection{\texorpdfstring{3 new modes of convergence: fast \(L^{1}\)-conv, conv measure and subseq a.e. conv}{3 new modes of convergence: fast L\^{}\{1\}-conv, conv measure and subseq a.e. conv}}\label{new-modes-of-convergence-fast-l1-conv-conv-measure-and-subseq-a.e.-conv}
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen; concepts=fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen; aliases=fast L^1-convergence, convergence in measure, subseq a.e. convergence
-\begin{definition}{fast \(L^{1}\)-convergence, convergence in measure, subseq a.e.
-convergence}\label{def-05-integration-of-real-and-complex-functions-fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen}
+\begin{definition}{\protect\phantomsection\label{kn-modes-of-convergence-for-functions}{\textbf{modes
+of convergence for measurable functions}}}
 
 对于 \(f_{n},f:X\rightarrow{\mathbb{C}}\), 我们定义以下三种 convergence:
 
@@ -951,8 +934,8 @@ Recall Chebyshev:
 
 \[\left. g \in L^{1}\Longrightarrow\mu(\left\{ |g \middle| \geq c \right\}) \leq \frac{1}{c}\int \middle| g| \right.\]
 
-% qlnotes: kind=proposition; id=prop-05-integration-of-real-and-complex-functions-fast-l-1-conv-implies-a-e-conv; concepts=fast-l-1-conv-implies-a-e-conv; aliases=fast L^1-conv \implies a.e. conv.
-\begin{proposition}{\textbf{fast \(L^{1}\)-conv \(\Longrightarrow\) a.e. conv.}}\label{prop-05-integration-of-real-and-complex-functions-fast-l-1-conv-implies-a-e-conv}
+\begin{proposition}{\protect\phantomsection\label{kn-fast-l-1-conv-implies-a-e-conv}{\textbf{\textbf{fast
+\(L^{1}\)-conv \(\Longrightarrow\) a.e. conv.}}}}
 
 \[\left. \sum\limits_{j = 1}^{\infty}\int \middle| f_{n} - f \middle| < \infty\Longrightarrow f_{n}\rightarrow f a.e. \right.\]
 
@@ -992,9 +975,9 @@ Recall Chebyshev:
 
 \end{qlremark}
 
-% qlnotes: kind=corollary; id=cor-05-integration-of-real-and-complex-functions-l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv; concepts=l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv; aliases=L^1-convergence (\impliesconv. in measure) \implies subseq a.e. conv.
-\begin{corollary}{\(L^{1}\)-convergence (\(\Longrightarrow\)conv. in measure)
-\(\Longrightarrow\) subseq a.e. conv.}\label{cor-05-integration-of-real-and-complex-functions-l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv}
+\begin{corollary}{\protect\phantomsection\label{kn-l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv}{\textbf{\(L^{1}\)-convergence
+(\(\Longrightarrow\)conv. in measure) \(\Longrightarrow\) subseq a.e.
+conv.}}}
 
 if \(f_{n}\rightarrow f\) in \(L^{1}\), then there exists subseq \((f_{n_{j}})_{j \in {\mathbb{N}}}\) s.t. \(f_{n_{j}}\rightarrow f\) a.e.\\
 (即 \textbf{\(L^{1}\) convergence implies subseq a.e. convergence})
@@ -1018,8 +1001,7 @@ Then
 
 \subsection{a.u. conv.(并非 uni. conv. a.e.) 和 Egoroff's Theorem}\label{a.u.-conv.ux5e76ux975e-uni.-conv.-a.e.-ux548c-egoroffs-theorem}
 
-% qlnotes: kind=definition; id=def-05-integration-of-real-and-complex-functions-definition-009; concepts=definition-009
-\begin{definition}\label{def-05-integration-of-real-and-complex-functions-definition-009}
+\begin{definition}
 
 我们称 \(f_{n}\rightarrow f\) almost uniformly (a.u.), 如果 \(\forall\varepsilon > 0\), 都存在 \(E \subseteq A\) s.t. \(\mu(E) < \varepsilon\) 并且 \(f_{n}\rightarrow f\) uniformly on \(E^{C}\)
 
@@ -1033,8 +1015,8 @@ Then
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-egoroff-s-theorem; concepts=egoroff-s-theorem; aliases=Egoroff’s Theorem
-\begin{theorem}{Egoroff's Theorem}\label{thm-05-integration-of-real-and-complex-functions-egoroff-s-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-egoroff-s-theorem}{\textbf{Egoroff's
+Theorem}}}
 
 如果 \(\mu\) 是个 finite measure (\(\mu(X) < \infty\)), 那么
 
@@ -1080,16 +1062,15 @@ Then we have:
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-05-integration-of-real-and-complex-functions-example-005; concepts=example-005
-\begin{example}\label{ex-05-integration-of-real-and-complex-functions-example-005}
+\begin{example}
 
 \(\mu = \infty\) 时的反例: 考虑 escape to hat function \(f_{n} := \chi_{(n,n + 1)}\) on \(({\mathbb{R}},{\mathfrak{L}},m)\).\\
 \(f_{n}\rightarrow 0\) a.e. 但是并不 a.u., 因为 \(\mu(X) = \infty\).
 
 \end{example}
 
-% qlnotes: kind=theorem; id=thm-05-integration-of-real-and-complex-functions-lusin-s-theorem; concepts=lusin-s-theorem; aliases=Lusin’s Theorem
-\begin{theorem}{Lusin's Theorem}\label{thm-05-integration-of-real-and-complex-functions-lusin-s-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-lusin-s-theorem}{\textbf{Lusin's
+Theorem}}}
 
 If \(f:\lbrack a,b\rbrack\rightarrow{\mathbb{C}}\) 是 Leb. mble 的, 那么 \(\forall\varepsilon > 0\), 都存在 compact \(K \subseteq \lbrack a,b\rbrack\) s.t. \(m(K^{c}) < \varepsilon\) 并且 \(f|_{K}\) ctn.
 

@@ -13,9 +13,6 @@ recall: 对于任意 $accent(bb(R), macron)$-valued $f$, $ f = f^(+) - f^(-) $
 但是其中有一个 undefined 的问题: 我们要避免 $oo - oo$ 这一类的问题. 因而我们无法对所有的可测函数进行积分, 而是定义 \"integrable\" 的可测函数.
 
 #lemma(
-  id: "lem-05-integration-of-real-and-complex-functions-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 $ {integral f^(+) < oo\
 integral f^(-) < oo arrow.l.r.double integral\|f\|< oo $
@@ -32,21 +29,13 @@ trivial.
 === $tilde(L)\(X\,mu\,bb(C)\)$ and $L^1\(X\,mu\,bb(C)$)
 <tildelx-mu-mathbbc-and-l1x-mu-mathbbc>
 #definition(
-  title: [real-valued integrable function],
-  id: "def-05-integration-of-real-and-complex-functions-real-valued-integrable-function",
-  concepts: ("real-valued-integrable-function",),
-  depends: (),
-  aliases: ("real-valued integrable function",),
+  title: [#kn[real-valued integrable function]],
 )[
 Given measure space $\(X\,cal(M)\,mu\)$, #strong[measurable $f : X arrow.r accent(bb(R), macron)$ 被称为 integrable] 的, 如果它满足 $ integral\|f\|< oo $ 并定义其 integral 为: $ integral f = integral f^(+) - integral f^(-) $
 
 ]
 #definition(
-  title: [complex-valued integrable function],
-  id: "def-05-integration-of-real-and-complex-functions-complex-valued-integrable-function",
-  concepts: ("complex-valued-integrable-function",),
-  depends: (),
-  aliases: ("complex-valued integrable function",),
+  title: [#kn[complex-valued integrable function]],
 )[
 Further, 我们定义 #strong[measurable $f : X arrow.r bb(C)$ 是 integrable 的], 如果它同样满足: $ integral\|f\|< oo $
 #strong[注意到这个条件等价于 $"Re" f\,"Im" f$ integrable, 因为]
@@ -59,9 +48,6 @@ $ \|f\|lt.eq\|"Re" f\|+\|"Im" f\|lt.eq 2\|f\| $
 
 ]
 #proposition(
-  id: "prop-05-integration-of-real-and-complex-functions-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 所有的 real-valued integrable functions 构成一个 $bb(R)$-vector space, 并且 integral 是一个 linear functional on it.
 
@@ -75,11 +61,7 @@ trivial.
 下面我们可以定义这个 vector space 并在上面进行一定研究. 此处为一个 temporary 的记号:
 
 #definition(
-  title: [$tilde(L)\(X\,mu\,bb(R)\)$ 以及$tilde(L)\(X\,mu\,bb(C)\)$ space],
-  id: "def-05-integration-of-real-and-complex-functions-tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space",
-  concepts: ("tilde-l-x-mu-mathbb-r-tilde-l-x-mu-mathbb-c-space",),
-  depends: (),
-  aliases: ("\\tilde{L}(X, \\mu, \\mathbb{R}) 以及\\tilde{L}(X, \\mu, \\mathbb{C}) space",),
+  title: [#kn[$tilde(L)\(X\,mu\,bb(R)\)$ 以及$tilde(L)\(X\,mu\,bb(C)\)$ space]],
 )[
 给定 measure space $\(X\,cal(M)\,mu\)$
 我们定义 $ tilde(L)\(X\,mu\,bb(R)\):= { upright("all (extended) real-valued integrable functions on ") X } $ 以及 $ tilde(L)\(X\,mu\,bb(C)\):= { upright("all complex-valued integrable functions on ") X } $
@@ -96,9 +78,6 @@ trivial.
 
 ]
 #proposition(
-  id: "prop-05-integration-of-real-and-complex-functions-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 $tilde(L)\(X\,mu\,bb(C)\)$ 上, $f mapsto integral f$ 为一个 linear functional.
 
@@ -106,9 +85,6 @@ $tilde(L)\(X\,mu\,bb(C)\)$ 上, $f mapsto integral f$ 为一个 linear functiona
 因为积分是 linear 的, as we have proved.
 
 #proposition(
-  id: "prop-05-integration-of-real-and-complex-functions-proposition-003",
-  concepts: ("proposition-003",),
-  depends: (),
 )[
 $ f in tilde(L)\(X\,mu\,bb(C)\)arrow.r.double.long\|integral f\|lt.eq integral\|f\| $
 
@@ -123,11 +99,7 @@ $ \| integral f \| = accent(alpha, macron) integral f = integral accent(alpha, m
 
 ]
 #definition(
-  title: [integratal restricted to a measurable set],
-  id: "def-05-integration-of-real-and-complex-functions-integratal-restricted-to-a-measurable-set",
-  concepts: ("integratal-restricted-to-a-measurable-set",),
-  depends: (),
-  aliases: ("integratal restricted to a measurable set",),
+  title: [#kn[integral restricted to a measurable set]],
 )[
 if $f in tilde(L)\(X\,mu\,bb(C)\)$, $E in cal(A)$ ($mu$ 的 $sigma$-algebra), 我们 define: $ integral_E f thin d mu := integral f chi_E thin d mu $
 
@@ -138,10 +110,6 @@ if $f in tilde(L)\(X\,mu\,bb(C)\)$, $E in cal(A)$ ($mu$ 的 $sigma$-algebra), �
 ]
 #proposition(
   title: [可积函数几乎处处相等的等价条件],
-  id: "prop-05-integration-of-real-and-complex-functions-proposition-004",
-  concepts: ("proposition-004",),
-  depends: (),
-  aliases: ("可积函数几乎处处相等的等价条件",),
 )[
 if $f\,g in tilde(L)\(X\,mu\,bb(C)\)$, 则 TFAE:
 
@@ -170,11 +138,7 @@ $integral\|f - g\|= 0$ 是一个比 $integral f - g = 0$ 更强的条件. $integ
 并且我们发现, a.e. 相等的两个可积函数 $f\,g in tilde(L)\(X\,mu\,bb(C)\)$ 在任意可测集上的积分都相等. 于是这两个函数在 $tilde(L)\(X\,mu\,bb(C)\)$ 中的表现是相等的. 因而我们可以把 a.e. 相等的这种关系 quotient 掉, 简化这个空间:
 
 #definition(
-  title: [$L^1\(mu\)$ space],
-  id: "def-05-integration-of-real-and-complex-functions-l-1-mu-space",
-  concepts: ("l-1-mu-space",),
-  depends: (),
-  aliases: ("L^1(\\mu) space",),
+  title: [#kn[$L^1\(mu\)$ space]],
 )[
 我们定义 $L^1\(X\,mu\,bb(C)\)$, 或简称为 $L^1\(mu\)$, 为:$ tilde(L)\(X\,mu\,bb(C)\)\/tilde.op $
 其中 $tilde.op$ 表示一个 equivalent class: $f tilde.op g$ if $f = g$ a.e. (等价于 $integral\|f - g\|= 0$)
@@ -186,9 +150,6 @@ $L^1\(mu\)$ 中的每个函数之间彼此至少都在一个正测度集上相�
 === DCT
 <dct>
 #lemma(
-  id: "lem-05-integration-of-real-and-complex-functions-lemma-002",
-  concepts: ("lemma-002",),
-  depends: (),
 )[
 令 $\(f_n\)$ 为 a seq of #strong[a.e. defined measurable functions] on $X$\., s.t. $ f\(x\):= lim_(n arrow.r oo) f_n\(x\) $ #strong[exists a.e.] \ Claim: #strong[$f$ is measurable.]
 
@@ -198,11 +159,7 @@ Measurability is well preserved by taking limit, 并且更改一个零测集上�
 
 ]
 #theorem(
-  title: [dominated convergence theorem],
-  id: "thm-05-integration-of-real-and-complex-functions-dominated-convergence-theorem",
-  concepts: ("dominated-convergence-theorem",),
-  depends: (),
-  aliases: ("dominated convergence theorem",),
+  title: [#kn[dominated convergence theorem]],
 )[
 Let $\(f_n\)$ be a seq of functions in $L^1\(mu\)$, s.t.
 
@@ -237,18 +194,12 @@ Proof 在 hw 5.
 
 ]
 #example(
-  id: "ex-05-integration-of-real-and-complex-functions-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 Suppose $u :\[0\,1\]arrow.r\[0\,1\]$ is Lebesgue measurable. \ 考虑这一 seq of function: $\(u^n\)$. \ 容易发现 $u^n arrow.r chi_({ u = 1 })$ p.w.
 我们可以用 $g = 1$ 作为 bound function. 从而得到: $ integral f = lim_(n arrow.r oo) integral f_n = integral_({ u = 1 }) 1 = m\({ mu = 1 }\) $
 
 ]
 #example(
-  id: "ex-05-integration-of-real-and-complex-functions-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 compute $ I = lim_(n arrow.r oo) integral_(\[0\,1\]) frac(1 + n x^2, \(1 + x^2\)^n) $
 令 $f_n\(x\): = frac(1 + n x^2, \(1 + x^2\)^n)$, 有: $f_n\(x\)arrow.r 0$ as $n arrow.r oo$ for $x in\(0\,1\]$\; \ 并且考虑 $g = 1$, 作为 bound. \ 因而有 $I = 0$
@@ -263,11 +214,7 @@ compute $ I = lim_(n arrow.r oo) integral_(\[0\,1\]) frac(1 + n x^2, \(1 + x^2\)
 === Fubini for series and integral
 <fubini-for-series-and-integral>
 #corollary(
-  title: [Fubini for series and integral],
-  id: "cor-05-integration-of-real-and-complex-functions-fubini-for-series-and-integral",
-  concepts: ("fubini-for-series-and-integral",),
-  depends: (),
-  aliases: ("Fubini for series and integral",),
+  title: [#kn[Fubini for series and integral]],
 )[
 对于 $L^1\(mu\)$ 中的 sequence $\(f_n\)$, 如果 $sum_(n = 1)^oo integral\|f_n\|< oo$, 则 $ sum_(n = 1)^oo f_n arrow.r^(a . e .) F in L^1\(mu\)#h(0em) #h(0em) $ 并且 $ integral sum_(n = 1)^oo f_n = integral F = sum_(n = 1)^oo integral f_n $
 
@@ -288,9 +235,6 @@ Fubini's for sum and integrals : 对于一个 seq of 可积函数, #strong[如�
 === a function that is measurable in one var and ctn/diffble in another
 <a-function-that-is-measurable-in-one-var-and-ctndiffble-in-another>
 #corollary(
-  id: "cor-05-integration-of-real-and-complex-functions-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 令 $\(X\,cal(A)\,mu\)$ be a measure space. \ 如果 $f : X times\[a\,b\]arrow.r bb(C)$ 满足 $f\(dot.op\,t\)in L^1\(mu\)$ for all $t in\[a\,b\]$, 令 $ F\(t\):= integral f\(x\,t\)#h(0em) d mu\(x\) $ 则有:
 
@@ -310,9 +254,6 @@ Fubini's for sum and integrals : 对于一个 seq of 可积函数, #strong[如�
 
 ]
 #example(
-  id: "ex-05-integration-of-real-and-complex-functions-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 是否有: $ frac(partial, partial t) integral_(bb(R)_(> 0)) e^(- t x) #h(0em) d m\(x\)=^(? ? ?) integral_(bb(R)_(> 0)) - x e^(- t x) #h(0em) d m\(x\)= - 1 / t^2 $
 Here $ f\(t\,x\)= e^(- t x)\,quad t > 0\,x > 0 $ 因而 $ \| frac(partial, partial t) f\(t\,x\)\| = x e^(- t x)\,quad t > 0\,x > 0 $
@@ -322,11 +263,7 @@ Here $ f\(t\,x\)= e^(- t x)\,quad t > 0\,x > 0 $ 因而 $ \| frac(partial, parti
 === $L^1$ as a Banach space
 <l1-as-a-banach-space>
 #theorem(
-  title: [$L^1\(mu\)$ 以 integral w.r.t. $mu$ 作为 norm 是一个 normed VS],
-  id: "thm-05-integration-of-real-and-complex-functions-l-1-mu-integral-w-r-t-mu-norm-normed-vs",
-  concepts: ("l-1-mu-integral-w-r-t-mu-norm-normed-vs",),
-  depends: (),
-  aliases: ("L^1(\\mu) 以 integral w.r.t. \\mu 作为 norm 是一个 normed VS",),
+  title: [#kn[$L^1\(mu\)$ 以 integral w.r.t. $mu$ 作为 norm 是一个 normed VS]],
 )[
 在 $L^1\(mu\)$ 上, 我们 set $ \|\|f\|\|:= integral\|f\| $
 则 $\(L^1\(mu\)\,\|\|dot.op\|\|\)$ 为一个 #strong[normed $bb(C)$-vector space. 即, 这是一个 well-defined norm.]
@@ -345,11 +282,7 @@ recall norm 的定义, 需要符合:
 
 ]
 #corollary(
-  title: [$\(L^1\(mu\)\,\|\|dot.op\|\|\)$ 是一个 Banach space],
-  id: "cor-05-integration-of-real-and-complex-functions-l-1-mu-cdot-banach-space",
-  concepts: ("l-1-mu-cdot-banach-space",),
-  depends: (),
-  aliases: ("(L^1(\\mu), ||\\cdot||) 是一个 Banach space",),
+  title: [#kn[$\(L^1\(mu\)\,\|\|dot.op\|\|\)$ 是一个 Banach space]],
 )[
 $\(L^1\(mu\)\,\|\|dot.op\|\|\)$ 的 induced metric space 是 complete 的. 即, every Cauchy seq converges. \ (#strong[从而这是一个 Banach space]. )
 
@@ -358,9 +291,6 @@ $\(L^1\(mu\)\,\|\|dot.op\|\|\)$ 的 induced metric space 是 complete 的. 即, 
 取一个 Cauchy seq $\(f_n\)$ in $L^1$. \ 这里有一个值得 recall 的 proposition:
 
 #proposition(
-  id: "prop-05-integration-of-real-and-complex-functions-proposition-005",
-  concepts: ("proposition-005",),
-  depends: (),
 )[
 在一个 metric space 中, 一个 Cauchy seq converges 当且仅当它存在一个 convergent 的 subsequence.
 
@@ -379,11 +309,7 @@ $ f : = lim_(j arrow.r oo) sum_(i = 1)^j g_j = lim_(j arrow.r oo) f_(n_j) in L^1
 === density of simple function of $L^1\(mu\)$
 <density-of-simple-function-of-l1mu>
 #theorem(
-  title: [density of simple functions in $L^1\(mu\)$],
-  id: "thm-05-integration-of-real-and-complex-functions-density-of-simple-functions-in-l-1-mu",
-  concepts: ("density-of-simple-functions-in-l-1-mu",),
-  depends: (),
-  aliases: ("density of simple functions in L^1(\\mu)",),
+  title: [#kn[density of simple functions in $L^1\(mu\)$]],
 )[
 令 $\(X\,cal(A)\,mu\)$ 为一个 measure space, 令 $f in L^1\(mu\)$, \ 对于任意 $epsilon.alt > 0$, 都存在 simple $phi.alt : X arrow.r bb(C)$ in $L^1\(mu\)$, 使得 $ integral\|f - phi.alt\|< epsilon.alt $
 
@@ -400,11 +326,7 @@ $ integral lim phi.alt_n = integral u^(+) = lim integral phi.alt_n $
 === density of step functions in $L^1\(m\)$
 <density-of-step-functions-in-l1m>
 #theorem(
-  title: [LS measure space 的 $L^1$ space 上的 density of step functions],
-  id: "thm-05-integration-of-real-and-complex-functions-ls-measure-space-l-1-space-density-of-step-functions",
-  concepts: ("ls-measure-space-l-1-space-density-of-step-functions",),
-  depends: (),
-  aliases: ("LS measure space 的 L^1 space 上的 density of step functions",),
+  title: [#kn[LS measure space 的 $L^1$ space 上的 density of step functions]],
 )[
 考虑 $\(bb(R)\,cal(L)\,m_s\)$ where $m_s$ 为一个 Lebesgue-Stieljes measure on $bb(R)$, let $f in L^1\(mu\)$, \ 对于任意 $epsilon.alt > 0$, 都存在 step function $phi.alt = sum_(j = 1)^N c_j chi_(I_j)$, 使得 $ integral\(f - phi.alt\)< epsilon.alt $ where each $I_j$ 都是 open intervals.
 
@@ -424,22 +346,14 @@ $ integral lim phi.alt_n = integral u^(+) = lim integral phi.alt_n $
 也就是说, #strong[任意的 Lebesgue intble function 都可以用 ctn function with compact supp 来近似.] 一个可积函数可以是 supp 非常怪异的以及非常 unctn 的, 但是却可以用 ctn and cpt supp functions 来逼近, in $L^1$ sense. 当然这是一种弱逼近. 函数可以差异很大.
 
 #definition(
-  title: [$C_c\(X\)$],
-  id: "def-05-integration-of-real-and-complex-functions-c-c-x",
-  concepts: ("c-c-x",),
-  depends: (),
-  aliases: ("C_c (X)",),
+  title: [#kn[$C_c\(X\)$]],
 )[
 令 $X$ be a metric space, 我们定义:
 $ C_c\(X\):= { upright("all ctn functions ") f : X arrow.r bb(C) upright(" with cpt supp") } $
 
 ]
 #theorem(
-  title: [$C_c\(X\)subset L^1\(mu\)$ 是一个 dense linear subspace],
-  id: "thm-05-integration-of-real-and-complex-functions-c-c-x-subset-l-1-mu-dense-linear-subspace",
-  concepts: ("c-c-x-subset-l-1-mu-dense-linear-subspace",),
-  depends: (),
-  aliases: ("C_c(X) \\subset L^1(\\mu) 是一个 dense linear subspace",),
+  title: [#kn[$C_c\(X\)subset L^1\(mu\)$ 是一个 dense linear subspace]],
 )[
 $C_c\(bb(R)\)subset L^1\(mu_m\)$ 为一个 dense linear subspace.
 
@@ -461,9 +375,6 @@ $C_c\(bb(R)\)subset L^1\(mu_m\)$ 为一个 dense linear subspace.
 我们已经完成了一个任意的 measure space 上的 Lebesgue 积分的定义, 以及可积空间的定义. \ Recall: Riemann integral 是对于 $bb(R)^n arrow.r bb(R)$ 的函数定义的, 经典定义为 $bb(R) arrow.r bb(R)$ 的函数. \ 现在我们比较对于 $bb(R) arrow.r bb(R)$ 的函数的 Riemann 和 Lebesgue 积分. 我们将会得出结论: #strong[Riemann 积分是 Lebesgue 积分的特殊情况, 即, Riemann 可积的函数一定也 Lebesgue 可积, 并且积分值相同]. (对于 $bb(R)^n arrow.r bb(R)$ 的函数也一样, 之后将展开.) \ Recall Riemann integral 的定义:
 
 #definition(
-  id: "def-05-integration-of-real-and-complex-functions-definition-007",
-  concepts: ("definition-007",),
-  depends: (),
 )[
 对于 $f :\[a\,b\]arrow.r bb(R)$ bdd, 一个 #strong[partition] $cal(P) = { t_j }_(j = 0)^n$ on $\[a\,b\]$ 满足 $ a = t_0 < t_1 < dots.h.c < t_n = b $
 Define: $ S_(cal(P))\(f\): = sum_(j = 1)^n sup_(\[t_(j - 1)\,t_j\]) f\(t_j - t_(j - 1)\) $$ s_(cal(P))\(f\): = sum_(j = 1)^n inf_(\[t_(j - 1)\,t_j\]) f\(t_j - t_(j - 1)\) $
@@ -476,11 +387,7 @@ Define over all possible partition on $\[a\,b\]$: #strong[lower integral] and #s
 === Riemann intble $arrow.r.double.long$ Lebesgue intble
 <riemann-intble-implies-lebesgue-intble>
 #theorem(
-  title: [Riemann integral 是 Lebesgue integral 的特殊情况],
-  id: "thm-05-integration-of-real-and-complex-functions-riemann-integral-lebesgue-integral",
-  concepts: ("riemann-integral-lebesgue-integral",),
-  depends: (),
-  aliases: ("Riemann integral 是 Lebesgue integral 的特殊情况",),
+  title: [#kn[Riemann integral 是 Lebesgue integral 的特殊情况]],
 )[
 $ f upright(" Riemann integrable") arrow.r.double.long {f in L^1\(\[a\,b\]\,cal(L) . m\)\
 I\(f\)= integral_(\[a\,b\]) f #h(0em) d m $
@@ -506,11 +413,7 @@ for (a): 对于给定 partition $cal(P)$, 我们 set: $ G_(cal(P)) : = sum_j M_j
 === Lebesgue's criterion for Riemann integrability
 <lebesgues-criterion-for-riemann-integrability>
 #theorem(
-  title: [Lebesgue's characterization of Riemann integrability],
-  id: "thm-05-integration-of-real-and-complex-functions-lebesgue-s-characterization-of-riemann-integrability",
-  concepts: ("lebesgue-s-characterization-of-riemann-integrability",),
-  depends: (),
-  aliases: ("Lebesgue’s characterization of Riemann integrability",),
+  title: [#kn[Lebesgue's characterization of Riemann integrability]],
 )[
 定义 $ D_f = { x upright(" where ") f upright(" is not ctn at") } $
 则有 $ f upright(" Riemann intble ") arrow.l.r.double m\(D_f\)= 0 $
@@ -543,9 +446,6 @@ for (a): 对于给定 partition $cal(P)$, 我们 set: $ G_(cal(P)) : = sum_j M_j
 === examples showing a.e. ptwise conv 和 $L^1$ conv 不能互推
 <examples-showing-a.e.-ptwise-conv-和-l1-conv-不能互推>
 #example(
-  id: "ex-05-integration-of-real-and-complex-functions-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 on $\(bb(R)\,frak(L)\,m\)$, 以下 $\(f_n\)$:
 
@@ -569,11 +469,7 @@ on $\(bb(R)\,frak(L)\,m\)$, 以下 $\(f_n\)$:
 === 3 new modes of convergence: fast $L^1$-conv, conv measure and subseq a.e. conv
 <new-modes-of-convergence-fast-l1-conv-conv-measure-and-subseq-a.e.-conv>
 #definition(
-  title: [fast $L^1$-convergence, convergence in measure, subseq a.e. convergence],
-  id: "def-05-integration-of-real-and-complex-functions-fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen",
-  concepts: ("fast-l-1-convergence-convergence-in-measure-subseq-a-e-convergen",),
-  depends: (),
-  aliases: ("fast L^1-convergence, convergence in measure, subseq a.e. convergence",),
+  title: [#kn[modes of convergence for measurable functions]],
 )[
 对于 $f_n\,f : X arrow.r bb(C)$, 我们定义以下三种 convergence:
 
@@ -601,11 +497,7 @@ Recall Chebyshev:
 $ g in L^1 arrow.r.double.long mu\({\|g\|gt.eq c }\)lt.eq 1 / c integral\|g\| $
 
 #proposition(
-  title: [#strong[fast $L^1$-conv $arrow.r.double.long$ a.e. conv.]],
-  id: "prop-05-integration-of-real-and-complex-functions-fast-l-1-conv-implies-a-e-conv",
-  concepts: ("fast-l-1-conv-implies-a-e-conv",),
-  depends: (),
-  aliases: ("fast L^1-conv \\implies a.e. conv.",),
+  title: [#kn[#strong[fast $L^1$-conv $arrow.r.double.long$ a.e. conv.]]],
 )[
 $ sum_(j = 1)^oo integral\|f_n - f\|< oo arrow.r.double.long f_n arrow.r f #h(0em) a . e . $
 
@@ -623,12 +515,8 @@ $ mu\(E\)= 0 $
 
 ]
 #corollary(
-  title: [$L^1$-convergence ($arrow.r.double.long$conv. in measure)
-$arrow.r.double.long$ subseq a.e. conv.],
-  id: "cor-05-integration-of-real-and-complex-functions-l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv",
-  concepts: ("l-1-convergence-impliesconv-in-measure-implies-subseq-a-e-conv",),
-  depends: (),
-  aliases: ("L^1-convergence (\\impliesconv. in measure) \\implies subseq a.e. conv. ",),
+  title: [#kn[$L^1$-convergence ($arrow.r.double.long$conv. in measure)
+$arrow.r.double.long$ subseq a.e. conv.]],
 )[
 if $f_n arrow.r f$ in $L^1$, then there exists subseq $\(f_(n_j)\)_(j in bb(N))$ s.t. $f_(n_j) arrow.r f$ a.e. \ (即 #strong[$L^1$ convergence implies subseq a.e. convergence])
 
@@ -643,9 +531,6 @@ Then $ sum_(j = 1)^oo integral\|f_(n_j) - f\|< oo $
 === a.u. conv.(并非 uni. conv. a.e.) 和 Egoroff's Theorem
 <a.u.-conv.并非-uni.-conv.-a.e.-和-egoroffs-theorem>
 #definition(
-  id: "def-05-integration-of-real-and-complex-functions-definition-009",
-  concepts: ("definition-009",),
-  depends: (),
 )[
 我们称 $f_n arrow.r f$ almost uniformly (a.u.), 如果 $forall epsilon > 0$, 都存在 $E subset.eq A$ s.t. $mu\(E\)< epsilon$ 并且 $f_n arrow.r f$ uniformly on $E^C$
 
@@ -655,11 +540,7 @@ Then $ sum_(j = 1)^oo integral\|f_(n_j) - f\|< oo $
 
 ]
 #theorem(
-  title: [Egoroff's Theorem],
-  id: "thm-05-integration-of-real-and-complex-functions-egoroff-s-theorem",
-  concepts: ("egoroff-s-theorem",),
-  depends: (),
-  aliases: ("Egoroff’s Theorem",),
+  title: [#kn[Egoroff's Theorem]],
 )[
 如果 $mu$ 是个 finite measure ($mu\(X\)< oo$), 那么
 $ f_n arrow.r f #h(0em) #h(0em) a . e . #h(0em) #h(0em) arrow.l.r.double f_n arrow.r f #h(0em) #h(0em) a . u . $
@@ -680,19 +561,12 @@ f_n arrow.r f #h(0em) #h(0em) upright("unif. on ") E^c = inter.big_(k = 1)^oo in
 
 ]
 #example(
-  id: "ex-05-integration-of-real-and-complex-functions-example-005",
-  concepts: ("example-005",),
-  depends: (),
 )[
 $mu = oo$ 时的反例: 考虑 escape to hat function $f_n := chi_(\(n\,n + 1\))$ on $\(bb(R)\,frak(L)\,m\)$. \ $f_n arrow.r 0$ a.e. 但是并不 a.u., 因为 $mu\(X\)= oo$.
 
 ]
 #theorem(
-  title: [Lusin's Theorem],
-  id: "thm-05-integration-of-real-and-complex-functions-lusin-s-theorem",
-  concepts: ("lusin-s-theorem",),
-  depends: (),
-  aliases: ("Lusin’s Theorem",),
+  title: [#kn[Lusin's Theorem]],
 )[
 If $f :\[a\,b\]arrow.r bb(C)$ 是 Leb. mble 的, 那么 $forall epsilon > 0$, 都存在 compact $K subset.eq\[a\,b\]$ s.t. $m\(K^c\)< epsilon$ 并且 $f\|_K$ ctn.
 

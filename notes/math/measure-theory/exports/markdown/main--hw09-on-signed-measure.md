@@ -14,7 +14,7 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
+qlnotes-schema: qlnotes-v2
 semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks

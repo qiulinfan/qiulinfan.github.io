@@ -51,3 +51,6 @@ node_modules/
 _site/
 dist/
 .astro/
+
+# Local knowledge search index and agent deltas
+knowledge/build/

@@ -12,21 +12,13 @@
 Recall:
 
 #definition(
-  title: [semi-norm, norm],
-  id: "def-09-l-p-space-and-inequalities-semi-norm-norm",
-  concepts: ("semi-norm-norm",),
-  depends: (),
-  aliases: ("semi-norm, norm",),
+  title: [#kn[semi-norm, norm]],
 )[
 一个#strong[semi norm] 是一个函数 $\|\|dot.op\|\|: V arrow.r\[0\,oo\)$ starting from a vector space $V$. 其满足 (1): tri eq 和 (2): homogeneity. \ 如果一个 semi-norm 满足 (3): $\|\|v\|\|= 0$ iff $v = 0$, 则称它为一个 #strong[norm].
 
 ]
 #definition(
-  title: [Banach space],
-  id: "def-09-l-p-space-and-inequalities-banach-space",
-  concepts: ("banach-space",),
-  depends: (),
-  aliases: ("Banach space",),
+  title: [#kn[Banach space]],
 )[
 一个 normed vector space $\(V\,\|\|dot.op\|\|\)$ 的 induced metric space 如果是 complete 的, 它就被称为一个 #strong[Banach space]. \
 
@@ -38,18 +30,12 @@ By tri ineq 容易证明: 在 genral normed VS 中, convergent imply Cauchy, 反
 
 ]
 #example(
-  id: "ex-09-l-p-space-and-inequalities-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 $bb(R)^n\,bb(C)^n$ with Euclidean norm is a Banach space. \ $C^0\(\[0\,1\]\)$: space of ctn functions on $\[0\,1\]$ equipped with $sup$ norm #strong[is Banach]. $ \|\|f - g\|\|:= sup_(x in\[0\,1\])\|f\(x\)- g\(x\)\| $
 $C_c^0\(bb(R)\)$: space of ctn functions with cpt supp on $bb(R)$ equipped with $sup$ norm #strong[is not Banach]! 这是因为, 一个有 cpt supp 的 function seq 的极限未必有 cpt supp. 比如 $\(chi_(\[- n\,n\])\)_(n in bb(N))$.
 
 ]
 #lemma(
-  id: "lem-09-l-p-space-and-inequalities-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 A metric space $\(X\,rho\)$ is #strong[complete] iff #strong[every Cauchy seq has a subseq that converges.]
 
@@ -63,11 +49,7 @@ Trivial. \ $arrow.r.double.long$: Clear. \ $arrow.l.double.long$: subseq conv di
 === every Cachy seq conv (complete) $arrow.l.r.double$ every abs conv series convs
 <every-cachy-seq-conv-complete-iff-every-abs-conv-series-convs>
 #definition(
-  title: [series: convergence 和 absolute convergence],
-  id: "def-09-l-p-space-and-inequalities-series-convergence-absolute-convergence",
-  concepts: ("series-convergence-absolute-convergence",),
-  depends: (),
-  aliases: ("series: convergence 和 absolute convergence",),
+  title: [#kn[series: convergence 和 absolute convergence]],
 )[
 对于一个 normed VS $\(V\,\|\|dot.op\|\|\)$ 中的 seq $\(v_n\)$, 我们称 $sum_(n = 1)^oo v_n$ #strong[converges], 如果存在 $v in V$ s.t. $ lim_(N arrow.r oo) sum_(n = 1)^N v_n = v $
 即 $ lim_(N arrow.r oo) parallel v - sum_(n = 1)^N v_n parallel = 0 $
@@ -76,11 +58,8 @@ Trivial. \ $arrow.r.double.long$: Clear. \ $arrow.l.double.long$: subseq conv di
 
 ]
 #theorem(
-  title: [another criterion for Banach space],
+  title: [#kn[another criterion for Banach space]],
   id: "thm-09-l-p-space-and-inequalities-another-criterion-for-banach-space",
-  concepts: ("another-criterion-for-banach-space",),
-  depends: (),
-  aliases: ("another criterion for Banach space",),
 )[
 A normed VS $\(V\,\|\|dot.op\|\|\)$ is a Banach space iff every absolutely convergent series converges.
 
@@ -107,9 +86,6 @@ $ sum_(k = 1)^oo parallel x_k parallel < oo arrow.r.double.long S_N upright(" Ca
 Note, 我们知道在 $bb(R)^n$, $bb(C)^n$ 上, abs conv 一定 imply con; 但是在 general (infinite dimension) 的 normed VS 上, #strong[absolutely converge 并不 imply converge.] \ 1. As is known to all, $bb(R)^n\,bb(C)^n$ 上 Euclidean norm 的 induced metric 就是 Euclidean metric, making it complete metric space, 从而是 Banach space. \ 2. recall in elementary functional analysis:
 
 #definition(
-  id: "def-09-l-p-space-and-inequalities-definition-004",
-  concepts: ("definition-004",),
-  depends: (),
 )[
 我们称两个 norms $parallel dot.op parallel_a\,parallel dot.op parallel_b$ on a vector space 是 equivalent, 如果存在常数 $C_1\,C_2 > 0$ 使得对于任意 $x$ 都有 $ C_1 parallel x parallel_a lt.eq parallel x parallel_b lt.eq C_2 parallel x parallel_a $
 这一定义即 topologically equivalent. 因为 equivalent norms define #strong[equivalent metric, 从而 same topology.]
@@ -118,9 +94,6 @@ Note, 我们知道在 $bb(R)^n$, $bb(C)^n$ 上, abs conv 一定 imply con; 但�
 以及这个经典的定理:
 
 #theorem(
-  id: "thm-09-l-p-space-and-inequalities-theorem-002",
-  concepts: ("theorem-002",),
-  depends: (),
 )[
 finite dimensional vector space $X$ 上, 所有 norms 都 equivalent.
 
@@ -136,11 +109,7 @@ $bb(R)\[x\]$ 是无限维的, 因为多项式的次数可以任意提高. \ $\(b
 === $L^p$ spaces
 <lp-spaces>
 #definition(
-  title: [$L_p$ spaces],
-  id: "def-09-l-p-space-and-inequalities-l-p-spaces",
-  concepts: ("l-p-spaces",),
-  depends: (),
-  aliases: ("L_p spaces",),
+  title: [#kn[$L_p$ spaces]],
 )[
 Consider $p in\(0\,oo\)$. \ Let $\(X\,cal(A)\,mu\)$ 为一个 measure space. \ Define for $f : X arrow.r bb(R)$ measurable: $ \|\|f\|\|_p: = \( integral\|f\|^p#h(0em) d mu \)^(1 / p) #h(0em) #h(0em) in\[0\,oo\] $
 Define $ L^p\(mu\): = { f :\|\|f\|\|_p< oo }\/tilde.op $ where $f tilde.op g$ if $f = g$ a.e.
@@ -159,20 +128,13 @@ Define $ L^p\(mu\): = { f :\|\|f\|\|_p< oo }\/tilde.op $ where $f tilde.op g$ if
 
 ]
 #example(
-  id: "ex-09-l-p-space-and-inequalities-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 $\(X\,cal(A)\,mu\):=\(bb(R)\,cal(L)\,m\)$, $ f\(x\): = 1 / x^alpha chi_(\(0\,1\))\,#h(0em) #h(0em) f in L^p\(m\)arrow.l.r.double alpha p < 1 $ $ f\(x\): = 1 / x^alpha chi_(\(1\,oo\))\,#h(0em) #h(0em) f in L^p\(m\)arrow.l.r.double alpha p > 1 $
 $\(X\,cal(A)\,mu\):=\(bb(N)\,cal(P)\(bb(N)\)\,mu_(c o u n t i n g)\)$, $ L^p\(mu_(c o u n t i n g)\)= {\(a_n\)_(n in bb(N)): sum_(n = 1)^oo\|a_n\|^p< oo } $
 
 ]
 #lemma(
-  title: [$L_p$ space is a vector space],
-  id: "lem-09-l-p-space-and-inequalities-l-p-space-is-a-vector-space",
-  concepts: ("l-p-space-is-a-vector-space",),
-  depends: (),
-  aliases: ("L_p space is a vector space",),
+  title: [#kn[$L_p$ space is a vector space]],
 )[
 $L_p$ space is a $bb(C)$-vector space.
 
@@ -197,11 +159,7 @@ $ \|\|f + g\|\|_p lt.eq\|\|f\|\|_p+\|\|g\|\|_p $
 === Hölder's ineq
 <hölders-ineq>
 #theorem(
-  title: [Hölder's ineq],
-  id: "thm-09-l-p-space-and-inequalities-h-lder-s-ineq",
-  concepts: ("h-lder-s-ineq",),
-  depends: (),
-  aliases: ("Hölder’s ineq",),
+  title: [#kn[Hölder's ineq]],
 )[
 Consider conjugate pair: $p\,q in\[1\,oo\)$ s.t. $ 1 / p + 1 / q = 1 $
 则对于任意两个 measurable function $f\,g : X arrow.r bb(C)$, 一定有: $ parallel f g parallel_1 lt.eq parallel f parallel_p dot.op parallel g parallel_q $特别地, 如果 $f in L^p\(mu\)$, $g in L^q\(mu\)$, 则 $f g in L^1\(mu\)$, 并且 equality holds iff $ parallel g parallel_q^q\|f\|^p= parallel f parallel_p^p\|g\|^q quad mu upright("-a.e.") $
@@ -217,11 +175,7 @@ Trivial Case 1: 如果 $parallel f parallel_p = 0$ (或者$parallel g parallel_q
 因而我们只需要考虑 $parallel f parallel_p$ and $parallel g parallel_q$ are in $\(0\,oo\)$ 的情况就好了. \ Main case: 我们需要一个 Lemma:
 
 #lemma(
-  title: [Young's inequality for products],
-  id: "lem-09-l-p-space-and-inequalities-young-s-inequality-for-products",
-  concepts: ("young-s-inequality-for-products",),
-  depends: (),
-  aliases: ("Young’s inequality for products",),
+  title: [#kn[Young's inequality for products]],
 )[
 Whenever $p\,q in\(1\,oo\)$ with $1 / p + 1 / q = 1$, 都有
 $ a b lt.eq a^p / p + b^q / q\,quad forall a\,b gt.eq 0 $
@@ -262,11 +216,7 @@ This generalization will be proved in hw8.
 Minkowski's ineq 即 $L^p$ space 上的 tri ineq.
 
 #corollary(
-  title: [Mincowski's ineq],
-  id: "cor-09-l-p-space-and-inequalities-mincowski-s-ineq",
-  concepts: ("mincowski-s-ineq",),
-  depends: (),
-  aliases: ("Mincowski’s ineq",),
+  title: [#kn[Minkowski inequality]],
 )[
 对于任意 $1 lt.eq p < oo$, 都有: $ parallel f + g parallel lt.eq parallel f parallel_p + parallel g parallel_p $
 
@@ -300,11 +250,7 @@ Minkowski 不等式证明的是 $1 lt.eq p < oo$ 时的 $p$-norm 的三角不等
 === $L^p$ ($1 lt.eq p < oo$) is Banach
 <lp-1leq-p-infty-is-banach>
 #theorem(
-  title: [$L^p$ space ($1 lt.eq p < oo$) is Banach],
-  id: "thm-09-l-p-space-and-inequalities-l-p-space-1-leq-p-infty-is-banach",
-  concepts: ("l-p-space-1-leq-p-infty-is-banach",),
-  depends: (),
-  aliases: ("L^p space (1\\leq p < \\infty) is Banach",),
+  title: [#kn[$L^p$ space ($1 lt.eq p < oo$) is Banach]],
 )[
 $L^p$ ($1 lt.eq p < oo$) is Banach.
 
@@ -331,11 +277,7 @@ in $p$-norm induced metric sense, 即, for some $f in L^p$, 有 $ lim_(n arrow.r
 我们刚才 mention: DCT 对于 function seq $L^p$ convergence 的证明有很大作用. 这里我们就提供一个 DCT 推出的 $L^p$ convergence 的判断准则:
 
 #theorem(
-  title: [Criterion for $L^p$ convergence],
-  id: "thm-09-l-p-space-and-inequalities-criterion-for-l-p-convergence",
-  concepts: ("criterion-for-l-p-convergence",),
-  depends: (),
-  aliases: ("Criterion for L^p convergence",),
+  title: [#kn[Criterion for $L^p$ convergence]],
 )[
 if $f_n arrow.r f$ a.e. and $parallel f_n parallel_p arrow.r parallel f parallel_p$, then $parallel f_n - f parallel_p arrow.r 0$.
 
@@ -350,9 +292,6 @@ In Hw 8.
 === dense subsets of $L^p$, and specially $L^p\(bb(R)\,m\)$
 <dense-subsets-of-lp-and-specially-lpmathbbrm>
 #proposition(
-  id: "prop-09-l-p-space-and-inequalities-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 对于任意 $1 lt.eq p < oo$, the set of ${$simple functions$}$, is dense in $L^p$. \ 即: $ { f : X arrow.r bb(C) divides f = sum_1^n a_j chi_(E_j)\,mu\(E_j\)< oo } $是 $L^p$ 的 dense subset.
 
@@ -366,11 +305,7 @@ In Hw 8.
 
 ]
 #theorem(
-  title: [$C_c^0\(bb(R)^n\)$ is dense in $L^p\(bb(R)\,m\)$ for $1 lt.eq p < oo$],
-  id: "thm-09-l-p-space-and-inequalities-c-c-0-mathbb-r-n-is-dense-in-l-p-mathbb-r-m-for-1-leq-p-infty",
-  concepts: ("c-c-0-mathbb-r-n-is-dense-in-l-p-mathbb-r-m-for-1-leq-p-infty",),
-  depends: (),
-  aliases: ("C_c^0(\\mathbb{R}^n) is dense in L^p(\\mathbb{R},m) for 1\\leq p < \\infty",),
+  title: [#kn[$C_c^0\(bb(R)^n\)$ is dense in $L^p\(bb(R)\,m\)$ for $1 lt.eq p < oo$]],
 )[
 $C_c^0\(bb(R)^n\)$ is dense in $L^p\(bb(R)\,m\)$ for $1 lt.eq p < oo$
 
@@ -392,11 +327,7 @@ exercise. Similar to the proof for $L^1$, 只需要使用加入 $p$ power 的 fu
 实际上我们有更好的定义方式:
 
 #definition(
-  title: [essential supremum],
-  id: "def-09-l-p-space-and-inequalities-essential-supremum",
-  concepts: ("essential-supremum",),
-  depends: (),
-  aliases: ("essential supremum",),
+  title: [#kn[essential supremum]],
 )[
 $ parallel f parallel_oo : = inf { a gt.eq 0 : mu { x :\|f\(x\)\|> a } = 0 } $
 也可以写作: $ upright("ess") sup_(x in X)\|f\(x\)\| $
@@ -411,11 +342,7 @@ essential sup 是一个比较容易搞错的定义. \ 一个 function 的 essent
 
 ]
 #definition(
-  title: [$L^oo$ space],
-  id: "def-09-l-p-space-and-inequalities-l-infty-space",
-  concepts: ("l-infty-space",),
-  depends: (),
-  aliases: ("L^\\infty space",),
+  title: [#kn[$L^oo$ space]],
 )[
 $ L^oo\(mu\): = { f : X arrow.r bb(C) upright(" measurable") : parallel f parallel_oo < oo }\/tilde.op $
 where $tilde.op$ 表示 a.e. 相等的函数的 equiv class.
@@ -436,19 +363,12 @@ for 任意的 $p gt.eq q$. \ 这表明的是, 在一定要求下, $L^oo$ 是要�
 === $ell^oo$ space
 <ellinfty-space>
 #definition(
-  title: [$ell^oo$],
-  id: "def-09-l-p-space-and-inequalities-ell-infty",
-  concepts: ("ell-infty",),
-  depends: (),
-  aliases: ("\\ell^\\infty",),
+  title: [#kn[$ell^oo$]],
 )[
 $ ell^oo : = {\(a_j\)_1^oo: parallel\(a_j\)parallel_oo : = sup_j\|a_j\|< oo } $
 
 ]
 #example(
-  id: "ex-09-l-p-space-and-inequalities-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 $ f = x chi_(bb(Q)) in L^oo\(m\) $with $ parallel f parallel_oo = 0 $
 因为整个 $bb(Q)$ 都是零测的.
@@ -462,9 +382,6 @@ $ell^oo$ 其实就是: $ X : = bb(N)\,quad cal(A) : = cal(P)\(X\)\,quad mu = mu_
 === $L^oo$ 的基本性质: as a NVS; Hölder's ineq on it; dense subsets
 <linfty-的基本性质-as-a-nvs-hölders-ineq-on-it-dense-subsets>
 #lemma(
-  id: "lem-09-l-p-space-and-inequalities-lemma-004",
-  concepts: ("lemma-004",),
-  depends: (),
 )[
 如果 $f in L^oo\(mu\)$ 则:
 
@@ -483,9 +400,6 @@ $ell^oo$ 其实就是: $ X : = bb(N)\,quad cal(A) : = cal(P)\(X\)\,quad mu = mu_
 
 ]
 #theorem(
-  id: "thm-09-l-p-space-and-inequalities-theorem-007",
-  concepts: ("theorem-007",),
-  depends: (),
 )[
 - $ parallel f g parallel_oo lt.eq parallel f parallel_1 parallel g parallel_oo $
   可以把它看作 #strong[Hölder 的一部分特殊情况], 因为可以看作 $ 1 / 1 + 1 / oo = 1 $ 从而补充完整了 Hölder ineq for $1 lt.eq p\,q lt.eq oo$
@@ -506,11 +420,7 @@ $ell^oo$ 其实就是: $ X : = bb(N)\,quad cal(A) : = cal(P)\(X\)\,quad mu = mu_
 === $L^oo$-convergence 作为 (finite measure space 下) 最强的 $L^p$ convergence: 等价于 uni. conv a.e.
 <linfty-convergence-作为-finite-measure-space-下-最强的-lp-convergence-等价于-uni.-conv-a.e.>
 #theorem(
-  title: [convergence in $L^oo$ $arrow.l.r.double$uniform convergence a.e.],
-  id: "thm-09-l-p-space-and-inequalities-convergence-in-l-infty-iffuniform-convergence-a-e",
-  concepts: ("convergence-in-l-infty-iffuniform-convergence-a-e",),
-  depends: (),
-  aliases: ("convergence in L^\\infty \\iffuniform convergence a.e.",),
+  title: [#kn[convergence in $L^oo$ $arrow.l.r.double$uniform convergence a.e.]],
 )[
 $ f_n arrow.r f #h(0em) upright(" in ") L^oo arrow.l.r.double upright("exists null set ") E subset X #h(0em) s . t . f_n arrow.r f upright(" uniformly on ") E^c $
 (注意, 这#strong[不是 conv almost uniformly], 而是一个比 almost uniformly #strong[更强]的条件: #strong[conv uniformly almost everywhere], 因为 almost uniformly 只要求对于任意的 $epsilon.alt$, 都存在一个 measure 小于 $epsilon.alt$ 的 $E$, 使得在 $E^c$ 上 uni conv 即可.)
@@ -542,11 +452,7 @@ whenever $p > q$. (可证明) \ 但是对于无限测度空间, 这种推论未�
 === $L^oo$ as Banach space
 <linfty-as-banach-space>
 #theorem(
-  title: [$L^p$ ($1 lt.eq p lt.eq oo$) is Banach],
-  id: "thm-09-l-p-space-and-inequalities-l-p-1-leq-p-leq-infty-is-banach",
-  concepts: ("l-p-1-leq-p-leq-infty-is-banach",),
-  depends: (),
-  aliases: ("L^p (1\\leq p \\leq \\infty) is Banach",),
+  title: [#kn[$L^p$ ($1 lt.eq p lt.eq oo$) is Banach]],
 )[
 For any measure space $\(X\,cal(A)\,mu\)$, $L^p\(mu\)$ is Banach for all $1 lt.eq p lt.eq oo$
 
@@ -583,12 +489,8 @@ $L^p$ space 的 Banach 性表示了其#strong[极限存在的稳定性]. recall,
 刚才我们已经 state 了, 但还没有证明:
 
 #theorem(
-  title: [inclusion relation between $L^p$ spaces (when base space is finite
-measure)],
-  id: "thm-09-l-p-space-and-inequalities-inclusion-relation-between-l-p-spaces-when-base-space-is-finite",
-  concepts: ("inclusion-relation-between-l-p-spaces-when-base-space-is-finite",),
-  depends: (),
-  aliases: ("inclusion relation between L^p spaces (when base space is finite measure)",),
+  title: [#kn[inclusion relation between $L^p$ spaces (when base space is finite
+measure)]],
 )[
 如果 measure space $X$ has finite measure, 那么有 $ L^oo\(X\)subset dots.h.c subset L^m\(X\)subset dots.h.c subset L^n\(X\)subset dots.h.c $
 for 任意的 $m gt.eq n$.
@@ -620,9 +522,6 @@ $ integral\|f\|^n & = integral\|f\|^n dot.op 1\
 以下是一个经典的例子:
 
 #example(
-  id: "ex-09-l-p-space-and-inequalities-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 考虑 #strong[measure finite 的 measure space $\(0\,1\)$]: 通过经典的 Calculus 我们知道:
 $ f\(x\)= 1 / x^m in L^p\(0\,1\)quad upright(" for all ") p < 1 / m $
@@ -640,9 +539,6 @@ $ f\(x\)= 1 / x^m\,quad x in\(1\,oo\) $
 两边开 $p$ 方, 可以得到一个不等式:
 
 #theorem(
-  id: "thm-09-l-p-space-and-inequalities-theorem-011",
-  concepts: ("theorem-011",),
-  depends: (),
 )[
 对于 measure finite space $X$, 对于任意的 $0 < n lt.eq m lt.eq oo$, 有: $ parallel f parallel_n lt.eq parallel f parallel_m thin mu\(X\)^(1 / n - 1 / m) $
 
@@ -653,9 +549,6 @@ $ f\(x\)= 1 / x^m\,quad x in\(1\,oo\) $
 === $\(L^n inter L^r\)subset L^m subset\(L^n + L^r\)$, 对任意 $0 < n < m < r lt.eq oo$
 <lncap-lr-subset-lm-subset-ln-lr-对任意-0-n-m-r-leq-infty>
 #proposition(
-  id: "prop-09-l-p-space-and-inequalities-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 对于 measurable $f : X arrow.r bb(C)$, $ t mapsto parallel f parallel_(1 / t) $is #strong[log-convex]. \ equivalently 即: 对于任意的 $0 < n < m < r lt.eq oo$, 都有 $ parallel f parallel_m lt.eq parallel f parallel_n^lambda dot.op parallel f parallel_r^(1 - lambda) $
 where $ lambda := frac(1 / m - 1 / r, 1 / n - 1 / r) in\(0\,1\)\,quad i . e . \( 1 / m \) = lambda \( 1 / n \) +\(1 - lambda\)\( 1 / r \) $
@@ -686,18 +579,12 @@ Hölder's ineq 仍然是这里重要的一步. 我们这里需要利用 convexit
 此处我们可以由这个 proposition 直接得到一个推论: ~
 
 #corollary(
-  id: "cor-09-l-p-space-and-inequalities-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 对于任意的 $0 < n < m < r lt.eq oo$, 都有 $ \(L^n inter L^r\)subset L^m $
 
 ]
 ]
 #example(
-  id: "ex-09-l-p-space-and-inequalities-example-005",
-  concepts: ("example-005",),
-  depends: (),
 )[
 令 $A$ 为任意集合, $0 lt.eq p < q lt.eq oo$, 有: $ parallel f parallel_q lt.eq parallel f parallel_p quad upright("and thus") quad ell^p\(A\)subset ell^q\(A\) $
 这是因为 $ parallel f parallel_oo^p = sup_alpha\|f\(alpha\)\|^p lt.eq sum_alpha\|f\(alpha\)\|^p= parallel f parallel_p^p $
@@ -708,12 +595,8 @@ Hölder's ineq 仍然是这里重要的一步. 我们这里需要利用 convexit
 相对于这个inclusion 关系, 我们还有另外一个 inclusion 关系:
 
 #proposition(
-  title: [每个 $L^m$ 函数都是一个 $L^n$ 函数和一个 $L^r$ 函数的和
-($0 < n < m < r lt.eq oo$)],
-  id: "prop-09-l-p-space-and-inequalities-l-m-l-n-l-r-0-n-m-r-leq-infty",
-  concepts: ("l-m-l-n-l-r-0-n-m-r-leq-infty",),
-  depends: (),
-  aliases: ("每个 L^m 函数都是一个 L^n 函数和一个 L^r 函数的和 (0< n < m < r \\leq \\infty)",),
+  title: [#kn[每个 $L^m$ 函数都是一个 $L^n$ 函数和一个 $L^r$ 函数的和
+($0 < n < m < r lt.eq oo$)]],
 )[
 对于任意的 $0 < n < m < r lt.eq oo$, 都有 $ L^m subset\(L^n + L^r\) $
 

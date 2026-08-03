@@ -6,11 +6,7 @@
 == complete measure space and outer measure \[Fol 1.3, finished; 1.4\]
 <complete-measure-space-and-outer-measure-fol-1.3-finished-1.4>
 #definition(
-  title: [nul set, subnull set, almost everywhere],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-nul-set-subnull-set-almost-everywhere",
-  concepts: ("nul-set-subnull-set-almost-everywhere",),
-  depends: (),
-  aliases: ("nul set, subnull set, almost everywhere",),
+  title: [#kn[nul set, subnull set, almost everywhere]],
 )[
 对于 measure space $\(X\,cal(M)\,mu\)$
 
@@ -22,11 +18,7 @@
 
 ]
 #definition(
-  title: [complete measure space],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-complete-measure-space",
-  concepts: ("complete-measure-space",),
-  depends: (),
-  aliases: ("complete measure space",),
+  title: [#kn[complete measure space]],
 )[
 我们称 $\(X\,cal(M)\,mu\)$ 是一个 complete measure space, 如果它其中的任意 subnull set 都是 null set. (即它 measurable)
 
@@ -36,9 +28,6 @@
 
 ]
 #example(
-  id: "ex-02-outer-measure-completion-of-a-measurable-space-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 一个 not complete 的 measure space 的例子:
 $ X = { 1\,2 }\,cal(M) = nothing\,X\,mu\(forall\)= 0 . $
@@ -46,11 +35,7 @@ $ X = { 1\,2 }\,cal(M) = nothing\,X\,mu\(forall\)= 0 . $
 
 ]
 #theorem(
-  title: [every measure space can be completed],
-  id: "thm-02-outer-measure-completion-of-a-measurable-space-every-measure-space-can-be-completed",
-  concepts: ("every-measure-space-can-be-completed",),
-  depends: (),
-  aliases: ("every measure space can be completed",),
+  title: [#kn[every measure space can be completed]],
 )[
 Suppose $\(X\,cal(M)\,mu\)$ is a measure space. \ Let
 $ cal(N) := { upright("all null sets in ") cal(M) } $
@@ -66,11 +51,7 @@ is a $sigma$-algebra, 并且在 $accent(cal(M), macron)$ 上存在一个 unique 
 === outer measure
 <outer-measure>
 #definition(
-  title: [outer measure],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-outer-measure",
-  concepts: ("outer-measure",),
-  depends: (),
-  aliases: ("outer measure",),
+  title: [#kn[outer measure]],
 )[
 An outer measure on $X$ is a function $mu^(*) : cal(P)\(X\)arrow.r\[0\,oo\)$ such that
 
@@ -95,11 +76,8 @@ measure 的条件比 outer measure 强在:
 === induce outer measure out of a \"elementary length function\"
 <induce-outer-measure-out-of-a-elementary-length-function>
 #theorem(
-  title: [construct outer measure out of an \"elementary length function\"],
+  title: [#kn[construct outer measure out of an \"elementary length function\"]],
   id: "thm-02-outer-measure-completion-of-a-measurable-space-construct-outer-measure-out-of-an-elementary-length-function",
-  concepts: ("construct-outer-measure-out-of-an-elementary-length-function",),
-  depends: (),
-  aliases: ("construct outer measure out of an \"elementary length function\" ",),
 )[
 另 $cal(E) subset.eq cal(P)\(X\)$ 为一个包含 $diameter\,X$ 的集合, 并定义 $rho : cal(E) arrow.r\[0\,oo\)$ 为一个满足 $rho\(diameter\)= 0$ 的函数, 则
 $ mu^(*)\(A\)= inf { sum_(i = 1)^oo rho\(E_i\)divides E_i in cal(E) upright(" for each i and ") A subset.eq union.big_(i = 1)^oo E_i } $
@@ -116,9 +94,6 @@ is an outer measure.
 
 ]
 #example(
-  id: "ex-02-outer-measure-completion-of-a-measurable-space-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 我们取 $cal(E)$ 为 $bb(R)$ 上所有的 intervals, 并取 $rho$ 为 interval 的 length, 就得到了一个外测度. (也就是 Lebesgue outer measure)
 
@@ -128,11 +103,7 @@ is an outer measure.
 === $mu^(*)$-measurable
 <mu-measurable>
 #definition(
-  title: [$mu^(*)$-measurable],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-mu-measurable",
-  concepts: ("mu-measurable",),
-  depends: (),
-  aliases: ("\\mu^*-measurable",),
+  title: [#kn[$mu^(*)$-measurable]],
 )[
 Given outer measure $mu^(*)$, 我们称 $A subset.eq X$ 是 $mu^(*)$-measurable 的, if:
 $ mu^(*)\(E\)= mu^(*)\(E inter A\)+ mu^(*)\(E inter A^c\) $
@@ -150,9 +121,8 @@ outer measure 是对于整个 power set 中每一个集合都赋予的, 并且�
 === Carathéodory's Theorem
 <carathéodorys-theorem>
 #theorem(
+  title: [#kn[Carathéodory theorem]],
   id: "thm-02-outer-measure-completion-of-a-measurable-space-theorem-003",
-  concepts: ("theorem-003",),
-  depends: (),
 )[
 对于任意的 outer measure $mu^(*)$,
 $ cal(M) := { upright("all ") mu^(*) upright("-measurable sets") } $#strong[is a $sigma$-algebra]. \ 并且, $mu^(*)\|_(cal(M))$ #strong[is a complete measure.]
@@ -213,9 +183,6 @@ $ mu^(*)\(E inter B_n\)= sum_(i = 1)^n mu^(*)\(E inter A_i\) $
 我们发现: 有些子集簇上的 \"length\" 很明显, 并且也符合 measure 的定义, 但是这个子集簇却并不构成一个 $sigma$-algebra. 比如:
 
 #example(
-  id: "ex-02-outer-measure-completion-of-a-measurable-space-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 ${ upright("all half-open, half-closed intervals") } subset.eq bb(R)$ 上, 以 interval 的 length 作为 measure, 很显然符合 measure function 的定义, 但是 ${ upright("all half-open, half-closed intervals") } subset.eq bb(R)$ 并不是一个 $sigma$-algebra, 因为它可以通过 ctbl union 出 open interval, 并不在这个子集簇中. 不过, 这是一个 algebra. \
 
@@ -223,11 +190,7 @@ ${ upright("all half-open, half-closed intervals") } subset.eq bb(R)$ 上, 以 i
 因此, 我们想要一个方法来 #strong[extend a \"measure\" function on an algebra, to a measure on a $sigma$-algebra.]
 
 #definition(
-  title: [premeasure],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-premeasure",
-  concepts: ("premeasure",),
-  depends: (),
-  aliases: ("premeasure",),
+  title: [#kn[premeasure]],
 )[
 给定 $cal(P)\(X\)$ 上的一个 #strong[algebra] $cal(A)_0$, 我们称 $mu_0 : cal(A)_0 arrow.r\[0\,+ oo\]$ 为一个 premeasure, if
 
@@ -243,9 +206,8 @@ premeasure 就是定义在 algebra instead of $sigma$-algebra 上的 measure. �
 === induce outer measure out of a premeasure: preserving $mu_0$ on $cal(A)_0$
 <induce-outer-measure-out-of-a-premeasure-preserving-mu_0-on-mathcala_0>
 #proposition(
+  title: [#kn[premeasure extension via induced outer measure]],
   id: "prop-02-outer-measure-completion-of-a-measurable-space-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 Any premeasure can induce an outer measure:
 $ mu^(*)\(E\)= inf { sum_(i = 1)^oo mu_0\(A_i\)divides A_i in cal(A)_0\,E subset.eq union.big_(i = 1)^oo A_i } $
@@ -266,11 +228,7 @@ Let $epsilon.alt > 0$, by def of the outer measure, 存在一个 seq ${ B_i }_(i
 === Hahn-Kolmogrov Theorem
 <hahn-kolmogrov-theorem>
 #definition(
-  title: [$sigma$-finite measure],
-  id: "def-02-outer-measure-completion-of-a-measurable-space-sigma-finite-measure",
-  concepts: ("sigma-finite-measure",),
-  depends: (),
-  aliases: ("\\sigma-finite measure",),
+  title: [#kn[$sigma$-finite measure]],
 )[
 Let $\(X\,cal(M)\,mu\)$ be a measure space. \ 如果 $mu\(X\)< oo$, 则称 $mu$ 是 finite 的. \ 如果存在一个 sequence $\(E_i\)$ in $cal(M)$ 使得 $union.big_i E_i = X$ 并且每个 $mu\(E_i\)< oo$, 则称 $mu$ 是 $sigma$-finite 的.
 
@@ -280,11 +238,7 @@ Let $\(X\,cal(M)\,mu\)$ be a measure space. \ 如果 $mu\(X\)< oo$, 则称 $mu$ 
 
 ]
 #theorem(
-  title: [Hahn-Kolmogrov Theorem],
-  id: "thm-02-outer-measure-completion-of-a-measurable-space-hahn-kolmogrov-theorem",
-  concepts: ("hahn-kolmogrov-theorem",),
-  depends: (),
-  aliases: ("Hahn-Kolmogrov Theorem",),
+  title: [#kn[Hahn–Kolmogorov theorem]],
 )[
 给定一个 premeasure $mu_0$ on algebra $cal(M)_0$ of $X$, 以及其 induced outer measure $mu *$, 我们令
 $ cal(M) := < cal(M)_0 > $

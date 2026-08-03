@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 14
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -24,7 +24,7 @@ title: "MATH 597: Measure Theory"
 
 ## complete measure space and outer measure \[Fol 1.3, finished; 1.4\]
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-nul-set-subnull-set-almost-everywhere .definition concepts="nul-set-subnull-set-almost-everywhere" aliases="nul set, subnull set, almost everywhere"}
+::: definition
 **Definition: nul set, subnull set, almost everywhere**
 
 对于 measure space $(X,\mathcal{M},\mu)$
@@ -36,7 +36,7 @@ title: "MATH 597: Measure Theory"
 3.  我们称一个 statement about $X$ 是 **almost everywhere (a.e.)** 的, 如果这个 statement 除了在某个 null set 上之外, 在 $X$ 上处处成立.
 :::
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-complete-measure-space .definition concepts="complete-measure-space" aliases="complete measure space"}
+::: definition
 **Definition: complete measure space**
 
 我们称 $(X,\mathcal{M},\mu)$ 是一个 complete measure space, 如果它其中的任意 subnull set 都是 null set. (即它 measurable)
@@ -48,7 +48,7 @@ title: "MATH 597: Measure Theory"
 我们知道, 根据 measure 的 monotonicity, subnull set 的 measure, 如果存在, 一定是 $\leq$ 它所在的 null set 的, 即一定 $= 0$. 所以 complete measure space 的实际意思是： 这个 measure space 里, 任意 null set 的所有子集都是 measurable 的, 即所有足够小的集合都在这个 $\sigma$-algebra 里.
 :::
 
-::: {#ex-02-outer-measure-completion-of-a-measurable-space-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 一个 not complete 的 measure space 的例子:
@@ -58,7 +58,7 @@ $$X = \left\{ {1,2} \right\},\mathcal{M} = \varnothing,X,\mu(\forall) = 0.$$
 这个例子中, $\left\{ 1 \right\},\left\{ 2 \right\}$ 这两个集合不是 measurable 的, 但是却是 nullset (全集) 的子集.
 :::
 
-::: {#thm-02-outer-measure-completion-of-a-measurable-space-every-measure-space-can-be-completed .theorem concepts="every-measure-space-can-be-completed" aliases="every measure space can be completed"}
+::: theorem
 **Theorem: every measure space can be completed**
 
 Suppose $(X,\mathcal{M},\mu)$ is a measure space.\
@@ -81,7 +81,7 @@ is a $\sigma$-algebra, 并且在 $\bar{\mathcal{M}}$ 上存在一个 unique 的 
 
 ### outer measure
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-outer-measure .definition concepts="outer-measure" aliases="outer measure"}
+::: definition
 **Definition: outer measure**
 
 An outer measure on $X$ is a function $\mu^{\ast}:\mathcal{P}(X)\rightarrow\lbrack 0,\infty)$ such that
@@ -108,7 +108,7 @@ outer measure 的意义在于, 我们的 measure 只定义在 $\sigma$-algebra �
 
 ### induce outer measure out of a \"elementary length function\"
 
-::: {#thm-02-outer-measure-completion-of-a-measurable-space-construct-outer-measure-out-of-an-elementary-length-function .theorem concepts="construct-outer-measure-out-of-an-elementary-length-function" aliases="construct outer measure out of an \"elementary length function\" "}
+::: {#thm-02-outer-measure-completion-of-a-measurable-space-construct-outer-measure-out-of-an-elementary-length-function .theorem}
 **Theorem: construct outer measure out of an \"elementary length function\"**
 
 另 $\mathcal{E} \subseteq \mathcal{P}(X)$ 为一个包含 $\varnothing,X$ 的集合, 并定义 $\rho:\mathcal{E}\rightarrow\lbrack 0,\infty)$ 为一个满足 $\rho(\varnothing) = 0$ 的函数, 则
@@ -128,7 +128,7 @@ is an outer measure.
 3.  证明 ctbl subadditivity, 我们使用经典的 $\epsilon/2^{i}$ argument. 这个 statement 直观上是显然的, 因为对一个 seq of sets, 每一个里面都有一个 seq of covering, 那么这个 seq of seq of covering 总体也是这个 seq union 的一个 covering. 不过我们不能这么说, 因为这里有一个 inf 操作的换序. 所以我们令 $\epsilon > 0$, 对于每个 $A_{i}$ 的 covering $(E_{i,k})_{k \in {\mathbb{N}}}$, 我们令 $\sum_{k}\rho(E_{i,k}) \leq \mu^{\ast}(A_{i}) + \epsilon/2^{i}$, 最后可以得到 $\mu^{\ast}(\bigcup_{i}A_{i}) \leq \sum_{i}\mu^{\ast}(A_{i})$. 由于 $\epsilon$ arbitrary, 得证.
 :::
 
-::: {#ex-02-outer-measure-completion-of-a-measurable-space-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 我们取 $\mathcal{E}$ 为 $\mathbb{R}$ 上所有的 intervals, 并取 $\rho$ 为 interval 的 length, 就得到了一个外测度. (也就是 Lebesgue outer measure)
@@ -138,7 +138,7 @@ is an outer measure.
 
 ### $\mu^{\ast}$-measurable
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-mu-measurable .definition concepts="mu-measurable" aliases="\\mu^*-measurable"}
+::: definition
 **Definition: \\mu\^{\\ast}-measurable**
 
 Given outer measure $\mu^{\ast}$, 我们称 $A \subseteq X$ 是 $\mu^{\ast}$-measurable 的, if:
@@ -164,8 +164,8 @@ outer measure 是对于整个 power set 中每一个集合都赋予的, 并且�
 
 ### Carathéodory's Theorem
 
-::: {#thm-02-outer-measure-completion-of-a-measurable-space-theorem-003 .theorem concepts="theorem-003"}
-**Theorem**
+::: {#thm-02-outer-measure-completion-of-a-measurable-space-theorem-003 .theorem}
+**Theorem: Carathéodory theorem**
 
 对于任意的 outer measure $\mu^{\ast}$,
 
@@ -260,7 +260,7 @@ $$\mu^{\ast}(E \cap B_{n}) = \sum\limits_{i = 1}^{n}\mu^{\ast}(E \cap A_{i})$$
 
 我们发现: 有些子集簇上的 \"length\" 很明显, 并且也符合 measure 的定义, 但是这个子集簇却并不构成一个 $\sigma$-algebra. 比如:
 
-::: {#ex-02-outer-measure-completion-of-a-measurable-space-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 $\left\{ \text{all half-open, half-closed intervals} \right\} \subseteq {\mathbb{R}}$ 上, 以 interval 的 length 作为 measure, 很显然符合 measure function 的定义, 但是 $\left\{ \text{all half-open, half-closed intervals} \right\} \subseteq {\mathbb{R}}$ 并不是一个 $\sigma$-algebra, 因为它可以通过 ctbl union 出 open interval, 并不在这个子集簇中. 不过, 这是一个 algebra.\
@@ -268,7 +268,7 @@ $\left\{ \text{all half-open, half-closed intervals} \right\} \subseteq {\mathbb
 
 因此, 我们想要一个方法来 **extend a \"measure\" function on an algebra, to a measure on a $\sigma$-algebra.**
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-premeasure .definition concepts="premeasure" aliases="premeasure"}
+::: definition
 **Definition: premeasure**
 
 给定 $\mathcal{P}(X)$ 上的一个 **algebra** $\mathcal{A}_{0}$, 我们称 $\mu_{0}:\mathcal{A}_{0}\rightarrow\lbrack 0, + \infty\rbrack$ 为一个 premeasure, if
@@ -286,8 +286,8 @@ premeasure 就是定义在 algebra instead of $\sigma$-algebra 上的 measure. �
 
 ### induce outer measure out of a premeasure: preserving $\mu_{0}$ on $\mathcal{A}_{0}$
 
-::: {#prop-02-outer-measure-completion-of-a-measurable-space-proposition-001 .proposition concepts="proposition-001"}
-**Proposition**
+::: {#prop-02-outer-measure-completion-of-a-measurable-space-proposition-001 .proposition}
+**Proposition: premeasure extension via induced outer measure**
 
 Any premeasure can induce an outer measure:
 
@@ -316,7 +316,7 @@ $$\left. \mu^{\ast} \middle| {}_{\mathcal{A}_{0}} = \mu_{0} \right.$$
 
 ### Hahn-Kolmogrov Theorem
 
-::: {#def-02-outer-measure-completion-of-a-measurable-space-sigma-finite-measure .definition concepts="sigma-finite-measure" aliases="\\sigma-finite measure"}
+::: definition
 **Definition: \\sigma-finite measure**
 
 Let $(X,\mathcal{M},\mu)$ be a measure space.\
@@ -330,8 +330,8 @@ Let $(X,\mathcal{M},\mu)$ be a measure space.\
 一个 finite measure 说明 $\mathcal{M}$ 中的所有集合的 measure 都 finite.
 :::
 
-::: {#thm-02-outer-measure-completion-of-a-measurable-space-hahn-kolmogrov-theorem .theorem concepts="hahn-kolmogrov-theorem" aliases="Hahn-Kolmogrov Theorem"}
-**Theorem: Hahn-Kolmogrov Theorem**
+::: theorem
+**Theorem: Hahn--Kolmogorov theorem**
 
 给定一个 premeasure $\mu_{0}$ on algebra $\mathcal{M}_{0}$ of $X$, 以及其 induced outer measure $\mu \ast$, 我们令
 

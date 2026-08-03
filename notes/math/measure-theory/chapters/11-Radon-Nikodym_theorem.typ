@@ -16,11 +16,7 @@ Question 2: 给定一个任意的 p.m. $mu$, 以及一个任意的 s.m. $nu$ on 
 ===  absolutely continuous: $nu lt.double mu$
 <absolutely-continuous-nu-ll-mu>
 #definition(
-  title: [a s.m. absolutely continuous w.r.t. a p.m.],
-  id: "def-11-radon-nikodym-theorem-a-s-m-absolutely-continuous-w-r-t-a-p-m",
-  concepts: ("a-s-m-absolutely-continuous-w-r-t-a-p-m",),
-  depends: (),
-  aliases: ("a s.m. absolutely continuous w.r.t. a p.m.",),
+  title: [#kn[absolute continuity of signed measures]],
 )[
 给定 p.m. $mu$ 和 s.m. $nu$ on $\(X\,cal(A)\)$, 我们称 $nu$ is absolutely continuous w.r.t. $mu$, 如果 $ forall E in cal(A)\,quad mu\(E\)= 0 arrow.r.double.long nu\(E\)= 0 $
 即: $nu$ 的 null sets 包含了 $mu$ 的所有 null sets. ($nu$ 拥有比 $mu$ 严格更多的 null sets) \ 写作 $ nu lt.double mu $
@@ -36,17 +32,11 @@ Question 2: 给定一个任意的 p.m. $mu$, 以及一个任意的 s.m. $nu$ on 
 #strong[$nu tack.t mu$ 表示的是 $nu$ 和 $mu$ 出现变化的区域完全不同], 而 #strong[$nu lt.double mu$ 表示的是 $nu$ 出现变化的区域完全包括在 $mu$ 出现变化的区域里] (因为 $mu$ 不变化的区域被包括在 $nu$ 不变化的区域里).
 
 #example(
-  id: "ex-11-radon-nikodym-theorem-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 $f in L^1\(mu\)$, $nu\(E\): = integral_E f thin d mu$, 由积分定义出的 s.m., 总是满足 $ nu lt.double mu $
 
 ]
 #example(
-  id: "ex-11-radon-nikodym-theorem-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 $ nu_1 : = m\,quad nu_2 := sum_(j = 1)^oo c_j delta_(x_j)\,quad nu_3 : = mu_(C a n t o r) $
 这三个 measure 有 $ nu_i ≪̸ nu_j quad forall i eq.not j $
@@ -54,11 +44,7 @@ $ nu_1 : = m\,quad nu_2 := sum_(j = 1)^oo c_j delta_(x_j)\,quad nu_3 : = mu_(C a
 
 ]
 #proposition(
-  title: [absolutely continuous 的性质],
-  id: "prop-11-radon-nikodym-theorem-absolutely-continuous",
-  concepts: ("absolutely-continuous",),
-  depends: (),
-  aliases: ("absolutely continuous 的性质",),
+  title: [#kn[absolutely continuous 的性质]],
 )[
 - $ \|nu\|lt.double mu arrow.l.r.double nu^(+) lt.double mu upright(" and ") nu^(-) lt.double mu $\(容易证明)
 
@@ -73,11 +59,7 @@ $ nu_1 : = m\,quad nu_2 := sum_(j = 1)^oo c_j delta_(x_j)\,quad nu_3 : = mu_(C a
 question: 为什么这个定义要叫做 absolutely continuous, 它和 continuous 这个词到底有什么关系. 下面这个 theorem 说明了这一点.
 
 #theorem(
-  title: [why it is called \"absolutely continuous\"],
-  id: "thm-11-radon-nikodym-theorem-why-it-is-called-absolutely-continuous",
-  concepts: ("why-it-is-called-absolutely-continuous",),
-  depends: (),
-  aliases: ("why it is called \"absolutely continuous\"",),
+  title: [#kn[why it is called \"absolutely continuous\"]],
 )[
 令 $nu$ 为一个 #strong[finite s.m.], $mu$ 为一个 #strong[p.m.] on $\(X\,cal(A)\)$. \ Claim: $ nu lt.double mu arrow.l.r.double forall thin epsilon.alt > 0\,thin exists thin delta > 0 #h(0em) upright("s.t.") #h(0em)\|nu\(E\)\|< epsilon.alt upright(" whenever ") mu\(E\)< delta $
 
@@ -99,11 +81,7 @@ question: 为什么这个定义要叫做 absolutely continuous, 它和 continuou
 === RN derivative: (if exist) express how $nu$ can be induced from $mu$
 <rn-derivative-if-exist-express-how-nu-can-be-induced-from-mu>
 #definition(
-  title: [Radon-Nikodym derivative],
-  id: "def-11-radon-nikodym-theorem-radon-nikodym-derivative",
-  concepts: ("radon-nikodym-derivative",),
-  depends: (),
-  aliases: ("Radon-Nikodym derivative",),
+  title: [#kn[Radon-Nikodym derivative]],
 )[
 对于 ${upright("p.m. ") mu\
 upright("s.m. ") nu$ on $\(X\,cal(A)\)$, 如果存在一个 $cal(A)$-measurable $f$, 使得 $nu$ 为 the #strong[signed measure $nu$ induced by $mu$ and $f$:] $ nu\(E\)= integral_E f thin d mu\,quad forall E in cal(A) $
@@ -113,9 +91,6 @@ upright("s.m. ") nu$ on $\(X\,cal(A)\)$, 如果存在一个 $cal(A)$-measurable 
 Radon-Nikodym derivative $f$ 刻画的是#strong[在每一点 $x in X$ 上, signed 测度 $nu$ 相对于测度 $mu$ 的变化速率.] \ We sometimes call $nu$ #strong[the signed measure $f thin d mu$.] \
 
 #example(
-  id: "ex-11-radon-nikodym-theorem-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 取 LS measure $mu_F$ on $\(bb(R)\,cal(B)\(bb(R)\)\)$, with $F = e^(2 x)$. \ 那么: $ mu_F\(\(a\,b\)\)= e^(2 b) - e^(2 a) = integral_a^b 2 e^(2 x) thin d x $
 我们可以 check: $ mu_F\(E\)= integral_E 2 e^(2 x) thin d x\,quad forall E in cal(B)\(bb(R)\) $
@@ -123,9 +98,6 @@ Radon-Nikodym derivative $f$ 刻画的是#strong[在每一点 $x in X$ 上, sign
 
 ]
 #proposition(
-  id: "prop-11-radon-nikodym-theorem-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 任取 measure $mu$, 以及 extended $mu$-integrable function $f$, 那么the #strong[signed measure $nu$ induced by $mu$ and $f$] 即 $nu\(E\): = integral_E f thin d mu$ 一定有: $ nu lt.double mu $
 
@@ -139,11 +111,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 === RN Thm: $sigma$-finite $nu lt.double mu arrow.l.r.double$ 存在 RN derivative
 <rn-thm-sigma-finite-nu-ll-mu-iff-存在-rn-derivative>
 #theorem(
-  title: [Radon-Nikodym Theorem],
-  id: "thm-11-radon-nikodym-theorem-radon-nikodym-theorem",
-  concepts: ("radon-nikodym-theorem",),
-  depends: (),
-  aliases: ("Radon-Nikodym Theorem",),
+  title: [#kn[Radon-Nikodym Theorem]],
 )[
 对于 #strong[$sigma$-finite] ${upright("p.m. ") mu\
 upright("s.m. ") nu$ on $\(X\,cal(A)\)$, $ nu lt.double mu arrow.l.r.double exists upright(" ext. ") mu upright("-intble ") f = frac(d nu, d mu) $
@@ -153,9 +121,6 @@ upright("s.m. ") nu$ on $\(X\,cal(A)\)$, $ nu lt.double mu arrow.l.r.double exis
 Radon Nikodym Theorem 表示, 对于 $sigma$-finite 的 $nu$ 和 $mu$, RN derivative 存在(并且一定唯一)当且仅当 $nu lt.double mu$. 即对于任意两个 abs ctn 的 measure, 只要它们 $sigma$-finite, 就可以用一个具体的函数 $f$ 来表达它们之间的关系. \ 要证明 RN Theorem, 我们还需要一些 Lemma.
 
 #lemma(
-  id: "lem-11-radon-nikodym-theorem-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 如果 $nu\,mu$ 都是 #strong[finite positive] measure on $\(X\,cal(A)\)$ 并且 $mu ⟂̸ nu$, 那么一定存在 $epsilon.alt > 0$ 以及 $E in cal(A)$ with $mu\(E\)> 0$ s.t. $ nu gt.eq epsilon.alt mu quad upright("on ") E $
 
@@ -199,9 +164,6 @@ d nu = f d mu $
 我们称 $f$ 为 Radon-Nikodym Derivative:$ nu\(E\)= integral_E f #h(0em) d mu $
 
 #example(
-  id: "ex-11-radon-nikodym-theorem-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 Application: conditional expectation. \ $ \(X\,cal(A)\,mu\):= \(\[0\,1\)\,cal(B)\(\[0\,1\)\)\,m \) $
 $f :\[0\,1\)arrow.r bb(R)$ Borel measurable. \ Define: $ B : = { diameter\,\[0\,1 / 2\)\,\[1 / 2\,1\)\,X } $
@@ -211,11 +173,7 @@ $f$ 并非一定是 $B$-measurable 的.
 === LRNT: 任意 $sigma$-finite $nu\,mu$, 可将 $nu$ 拆解成 $lambda tack.t mu$ 和 $rho lt.double mu$
 <lrnt-任意-sigma-finite-numu-可将-nu-拆解成-lambda-bot-mu-和-rho-ll-mu>
 #theorem(
-  title: [Lebesgue-Radon-Nikodym Theorem],
-  id: "thm-11-radon-nikodym-theorem-lebesgue-radon-nikodym-theorem",
-  concepts: ("lebesgue-radon-nikodym-theorem",),
-  depends: (),
-  aliases: ("Lebesgue-Radon-Nikodym Theorem",),
+  title: [#kn[Lebesgue-Radon-Nikodym Theorem]],
 )[
 如果 ${mu #h(0em) sigma upright("-finite p.m.")\
 nu #h(0em) sigma upright("-finite s.m.")$ on $\(X\,cal(A)\)$, 那么存在唯一的 decomposition $ nu = lambda + rho $where $lambda\,rho$ 是 $sigma$-finite 的 signed measure s.t. ${lambda tack.t mu\
@@ -247,19 +205,12 @@ $mu$-a.e. = $nu$-a.e.
 === complex measure 以及 complex version of LRNT
 <complex-measure-以及-complex-version-of-lrnt>
 #definition(
-  title: [complex measure],
-  id: "def-11-radon-nikodym-theorem-complex-measure",
-  concepts: ("complex-measure",),
-  depends: (),
-  aliases: ("complex measure",),
+  title: [#kn[complex measure]],
 )[
 一个 complex measure on a measurable space $\(X\,cal(A)\)$ 是一个 map $nu : cal(A) arrow.r bb(C)$ satisfying $nu\(diameter\)= 0$ 以及 ctbl disjoint additivity.
 
 ]
 #example(
-  id: "ex-11-radon-nikodym-theorem-example-005",
-  concepts: ("example-005",),
-  depends: (),
 )[
 simple complex measures:
 

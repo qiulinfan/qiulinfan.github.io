@@ -30,8 +30,8 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 
 \subsection{\texorpdfstring{absolutely continuous: \(\nu \ll \mu\)}{absolutely continuous: \textbackslash nu \textbackslash ll \textbackslash mu}}\label{absolutely-continuous-nu-ll-mu}
 
-% qlnotes: kind=definition; id=def-11-radon-nikodym-theorem-a-s-m-absolutely-continuous-w-r-t-a-p-m; concepts=a-s-m-absolutely-continuous-w-r-t-a-p-m; aliases=a s.m. absolutely continuous w.r.t. a p.m.
-\begin{definition}{a s.m. absolutely continuous w.r.t. a p.m.}\label{def-11-radon-nikodym-theorem-a-s-m-absolutely-continuous-w-r-t-a-p-m}
+\begin{definition}{\protect\phantomsection\label{kn-absolute-continuity-of-signed-measures}{\textbf{absolute
+continuity of signed measures}}}
 
 给定 p.m. \(\mu\) 和 s.m. \(\nu\) on \((X,\mathcal{A})\), 我们称 \(\nu\) is absolutely continuous w.r.t. \(\mu\), 如果
 
@@ -52,8 +52,7 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 
 \textbf{\(\nu\bot\mu\) 表示的是 \(\nu\) 和 \(\mu\) 出现变化的区域完全不同}, 而 \textbf{\(\nu \ll \mu\) 表示的是 \(\nu\) 出现变化的区域完全包括在 \(\mu\) 出现变化的区域里} (因为 \(\mu\) 不变化的区域被包括在 \(\nu\) 不变化的区域里).
 
-% qlnotes: kind=example; id=ex-11-radon-nikodym-theorem-example-001; concepts=example-001
-\begin{example}\label{ex-11-radon-nikodym-theorem-example-001}
+\begin{example}
 
 \(f \in L^{1}(\mu)\), \(\nu(E): = \int_{E}f\, d\mu\), 由积分定义出的 s.m., 总是满足
 
@@ -61,8 +60,7 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 
 \end{example}
 
-% qlnotes: kind=example; id=ex-11-radon-nikodym-theorem-example-002; concepts=example-002
-\begin{example}\label{ex-11-radon-nikodym-theorem-example-002}
+\begin{example}
 
 \[\nu_{1}: = m,\quad\nu_{2} := \sum\limits_{j = 1}^{\infty}c_{j}\delta_{x_{j}},\quad\nu_{3}: = \mu_{Cantor}\]
 
@@ -75,8 +73,8 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 
 \end{example}
 
-% qlnotes: kind=proposition; id=prop-11-radon-nikodym-theorem-absolutely-continuous; concepts=absolutely-continuous; aliases=absolutely continuous 的性质
-\begin{proposition}{absolutely continuous 的性质}\label{prop-11-radon-nikodym-theorem-absolutely-continuous}
+\begin{proposition}{\protect\phantomsection\label{kn-absolutely-continuous}{\textbf{absolutely
+continuous 的性质}}}
 
 \begin{itemize}
 \item
@@ -101,8 +99,8 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 
 question: 为什么这个定义要叫做 absolutely continuous, 它和 continuous 这个词到底有什么关系. 下面这个 theorem 说明了这一点.
 
-% qlnotes: kind=theorem; id=thm-11-radon-nikodym-theorem-why-it-is-called-absolutely-continuous; concepts=why-it-is-called-absolutely-continuous; aliases=why it is called "absolutely continuous"
-\begin{theorem}{why it is called "absolutely continuous"}\label{thm-11-radon-nikodym-theorem-why-it-is-called-absolutely-continuous}
+\begin{theorem}{\protect\phantomsection\label{kn-why-it-is-called-absolutely-continuous}{\textbf{why
+it is called "absolutely continuous"}}}
 
 令 \(\nu\) 为一个 \textbf{finite s.m.}, \(\mu\) 为一个 \textbf{p.m.} on \((X,\mathcal{A})\).\\
 Claim:
@@ -153,8 +151,8 @@ Set
 
 \subsection{\texorpdfstring{RN derivative: (if exist) express how \(\nu\) can be induced from \(\mu\)}{RN derivative: (if exist) express how \textbackslash nu can be induced from \textbackslash mu}}\label{rn-derivative-if-exist-express-how-nu-can-be-induced-from-mu}
 
-% qlnotes: kind=definition; id=def-11-radon-nikodym-theorem-radon-nikodym-derivative; concepts=radon-nikodym-derivative; aliases=Radon-Nikodym derivative
-\begin{definition}{Radon-Nikodym derivative}\label{def-11-radon-nikodym-theorem-radon-nikodym-derivative}
+\begin{definition}{\protect\phantomsection\label{kn-radon-nikodym-derivative}{\textbf{Radon-Nikodym
+derivative}}}
 
 对于 \(\begin{matrix}
 {\{\text{p.m.}\ \mu} \\
@@ -176,8 +174,7 @@ Set
 Radon-Nikodym derivative \(f\) 刻画的是\textbf{在每一点 \(x \in X\) 上, signed 测度 \(\nu\) 相对于测度 \(\mu\) 的变化速率.}\\
 We sometimes call \(\nu\) \textbf{the signed measure \(f\, d\mu\).}\\
 
-% qlnotes: kind=example; id=ex-11-radon-nikodym-theorem-example-003; concepts=example-003
-\begin{example}\label{ex-11-radon-nikodym-theorem-example-003}
+\begin{example}
 
 取 LS measure \(\mu_{F}\) on \(({\mathbb{R}},\mathcal{B}({\mathbb{R}}))\), with \(F = e^{2x}\).\\
 那么:
@@ -194,8 +191,7 @@ We sometimes call \(\nu\) \textbf{the signed measure \(f\, d\mu\).}\\
 
 \end{example}
 
-% qlnotes: kind=proposition; id=prop-11-radon-nikodym-theorem-proposition-002; concepts=proposition-002
-\begin{proposition}\label{prop-11-radon-nikodym-theorem-proposition-002}
+\begin{proposition}
 
 任取 measure \(\mu\), 以及 extended \(\mu\)-integrable function \(f\), 那么the \textbf{signed measure \(\nu\) induced by \(\mu\) and \(f\)} 即 \(\nu(E): = \int_{E}f\, d\mu\) 一定有:
 
@@ -213,8 +209,8 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 
 \subsection{\texorpdfstring{RN Thm: \(\sigma\)-finite \(\nu \ll \mu\Leftrightarrow\) 存在 RN derivative}{RN Thm: \textbackslash sigma-finite \textbackslash nu \textbackslash ll \textbackslash mu\textbackslash Leftrightarrow 存在 RN derivative}}\label{rn-thm-sigma-finite-nu-ll-muleftrightarrow-ux5b58ux5728-rn-derivative}
 
-% qlnotes: kind=theorem; id=thm-11-radon-nikodym-theorem-radon-nikodym-theorem; concepts=radon-nikodym-theorem; aliases=Radon-Nikodym Theorem
-\begin{theorem}{Radon-Nikodym Theorem}\label{thm-11-radon-nikodym-theorem-radon-nikodym-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-radon-nikodym-theorem}{\textbf{Radon-Nikodym
+Theorem}}}
 
 对于 \textbf{\(\sigma\)-finite} \(\begin{matrix}
 {\{\text{p.m.}\ \mu} \\
@@ -230,8 +226,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 Radon Nikodym Theorem 表示, 对于 \(\sigma\)-finite 的 \(\nu\) 和 \(\mu\), RN derivative 存在(并且一定唯一)当且仅当 \(\nu \ll \mu\). 即对于任意两个 abs ctn 的 measure, 只要它们 \(\sigma\)-finite, 就可以用一个具体的函数 \(f\) 来表达它们之间的关系.\\
 要证明 RN Theorem, 我们还需要一些 Lemma.
 
-% qlnotes: kind=lemma; id=lem-11-radon-nikodym-theorem-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-11-radon-nikodym-theorem-lemma-001}
+\begin{lemma}
 
 如果 \(\nu,\mu\) 都是 \textbf{finite positive} measure on \((X,\mathcal{A})\) 并且 \(\mu\operatorname{\perp\not{}}\nu\), 那么一定存在 \(\epsilon > 0\) 以及 \(E \in \mathcal{A}\) with \(\mu(E) > 0\) s.t.
 
@@ -399,8 +394,7 @@ recall Radon-Nikodym Theorem:
 
 \[\nu(E) = \int_{E}f d\mu\]
 
-% qlnotes: kind=example; id=ex-11-radon-nikodym-theorem-example-004; concepts=example-004
-\begin{example}\label{ex-11-radon-nikodym-theorem-example-004}
+\begin{example}
 
 Application: conditional expectation.\\
 
@@ -417,8 +411,8 @@ Define:
 
 \subsection{\texorpdfstring{LRNT: 任意 \(\sigma\)-finite \(\nu,\mu\), 可将 \(\nu\) 拆解成 \(\lambda\bot\mu\) 和 \(\rho \ll \mu\)}{LRNT: 任意 \textbackslash sigma-finite \textbackslash nu,\textbackslash mu, 可将 \textbackslash nu 拆解成 \textbackslash lambda\textbackslash bot\textbackslash mu 和 \textbackslash rho \textbackslash ll \textbackslash mu}}\label{lrnt-ux4efbux610f-sigma-finite-numu-ux53efux5c06-nu-ux62c6ux89e3ux6210-lambdabotmu-ux548c-rho-ll-mu}
 
-% qlnotes: kind=theorem; id=thm-11-radon-nikodym-theorem-lebesgue-radon-nikodym-theorem; concepts=lebesgue-radon-nikodym-theorem; aliases=Lebesgue-Radon-Nikodym Theorem
-\begin{theorem}{Lebesgue-Radon-Nikodym Theorem}\label{thm-11-radon-nikodym-theorem-lebesgue-radon-nikodym-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-lebesgue-radon-nikodym-theorem}{\textbf{Lebesgue-Radon-Nikodym
+Theorem}}}
 
 如果 \(\begin{matrix}
 {\{\mu\sigma\ \text{-finite p.m.}} \\
@@ -494,15 +488,14 @@ Properties of the RN derivative: (P91 in Folland)
 
 \subsection{complex measure 以及 complex version of LRNT}\label{complex-measure-ux4ee5ux53ca-complex-version-of-lrnt}
 
-% qlnotes: kind=definition; id=def-11-radon-nikodym-theorem-complex-measure; concepts=complex-measure; aliases=complex measure
-\begin{definition}{complex measure}\label{def-11-radon-nikodym-theorem-complex-measure}
+\begin{definition}{\protect\phantomsection\label{kn-complex-measure}{\textbf{complex
+measure}}}
 
 一个 complex measure on a measurable space \((X,\mathcal{A})\) 是一个 map \(\nu:\mathcal{A}\rightarrow{\mathbb{C}}\) satisfying \(\nu(\varnothing) = 0\) 以及 ctbl disjoint additivity.
 
 \end{definition}
 
-% qlnotes: kind=example; id=ex-11-radon-nikodym-theorem-example-005; concepts=example-005
-\begin{example}\label{ex-11-radon-nikodym-theorem-example-005}
+\begin{example}
 
 simple complex measures:
 

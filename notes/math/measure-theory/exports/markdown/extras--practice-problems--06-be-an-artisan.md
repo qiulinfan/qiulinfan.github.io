@@ -12,8 +12,8 @@ keywords:
 - problem solving
 - practice problems
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 0
+qlnotes-schema: qlnotes-v2
+semantic-node-count: "0"
 source: extras.typ
 subtitle: Homework 0, problem-solving lectures, and practice problems
 title: "MATH 597: Measure Theory --- Supplementary Material"

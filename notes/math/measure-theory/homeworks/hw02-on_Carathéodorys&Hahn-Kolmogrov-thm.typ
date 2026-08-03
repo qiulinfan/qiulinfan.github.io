@@ -18,11 +18,7 @@ $ limsup_i A_i = { x in X divides x in A_i upright(" for infinitely many ") i } 
 
 #remark[
 #theorem(
-  title: [Borel--Cantelli Lemma],
-  id: "thm-hw02-on-carath-odorys-hahn-kolmogrov-thm-borel-cantelli-lemma",
-  concepts: ("borel-cantelli-lemma",),
-  depends: (),
-  aliases: ("Borel–Cantelli Lemma",),
+  title: [#kn[Borel--Cantelli Lemma]],
 )[
 一个 measure 和有限的 set seq, 其 $lim sup$ (出现 infinitely many times 的元素) 是零测的.
 

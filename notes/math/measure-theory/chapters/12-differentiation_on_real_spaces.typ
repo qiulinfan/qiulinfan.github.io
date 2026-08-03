@@ -6,21 +6,13 @@
 == differentiation of regular Borel measures on $bb(R)^n$ \[Fol 3.4, finished\]
 <differentiation-of-regular-borel-measures-on-mathbbrn-fol-3.4-finished>
 #definition(
-  title: [regular Borel measure],
-  id: "def-12-differentiation-on-real-spaces-regular-borel-measure",
-  concepts: ("regular-borel-measure",),
-  depends: (),
-  aliases: ("regular Borel measure",),
+  title: [#kn[regular Borel measure]],
 )[
 一个 Borel measure $nu$ on $bb(R)^n$ 被称为 regular 的, if $nu$ is locally finite (finite on every compact set).
 
 ]
 #theorem(
-  title: [regular Borel measure: 蕴含了 regularity],
-  id: "thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity",
-  concepts: ("regular-borel-measure-regularity",),
-  depends: (),
-  aliases: ("regular Borel measure: 蕴含了 regularity",),
+  title: [#kn[regular Borel measure: 蕴含了 regularity]],
 )[
 一个 regular Borel measure $nu$ on $bb(R)^n$ 一定满足:
 
@@ -35,9 +27,6 @@ regular 和 inner regularity $arrow.r.double.long$ outer regularity: 这个简�
 
 ]
 #example(
-  id: "ex-12-differentiation-on-real-spaces-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 任何 LS measure on $bb(R)$ (restrict to Borel sets) 都是 regular measure.
 Lebesgue measure $m$ on $bb(R)^n$ (restrict to Borel sets) 是 regular measure.
@@ -46,19 +35,12 @@ Lebesgue measure $m$ on $bb(R)^n$ (restrict to Borel sets) 是 regular measure.
 当然, 这个概念也可以推广至 signed/coplex measure 上.
 
 #definition(
-  title: [regular signed/complex measure],
-  id: "def-12-differentiation-on-real-spaces-regular-signed-complex-measure",
-  concepts: ("regular-signed-complex-measure",),
-  depends: (),
-  aliases: ("regular signed/complex measure",),
+  title: [#kn[regular signed/complex measure]],
 )[
 一个 signed/complex measure $nu$ on $bb(R)^n$ 被称为 regular measure, if $\|nu\|$ is regular 的.
 
 ]
 #lemma(
-  id: "lem-12-differentiation-on-real-spaces-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 如果 $f in L_(l o c)^1\(bb(R)^n\)$, 则 $f thin d m$ 是一个 regular measure.
 如果 $f : bb(R)^n arrow.r bb(R)$ 是 extended-integrable 的, 则 $ f in L_(l o c)^1\(m\)arrow.l.r.double f thin d m upright(" is a regular measure") $
@@ -69,9 +51,6 @@ Folland p99. 这显然, 因为 $f$ locally integrable 就说明 $f thin d m$ 是
 
 ]
 #lemma(
-  id: "lem-12-differentiation-on-real-spaces-lemma-002",
-  concepts: ("lemma-002",),
-  depends: (),
 )[
 如果 $rho\,lambda$ 是 signed/complex measure 并且 $rho tack.t lambda$, 那么 $ rho\,lambda upright(" are regular measures") arrow.l.r.double rho + lambda upright(" is a regular measure") $
 
@@ -85,11 +64,7 @@ Folland p99. 这显然, 因为 $f$ locally integrable 就说明 $f thin d m$ 是
 === LDT meets LRNT: 任何 regular Borel measure $nu$ on $bb(R)^n$ 对于 $m$ 的 RN-derivative $=$ relative density
 <ldt-meets-lrnt-任何-regular-borel-measure-nu-on-mathbbrn-对于-m-的-rn-derivative-relative-density>
 #theorem(
-  title: [LDT meets LRNT: computing RN derivative on $bb(R)^n$],
-  id: "thm-12-differentiation-on-real-spaces-ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n",
-  concepts: ("ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n",),
-  depends: (),
-  aliases: ("LDT meets LRNT: computing RN derivative on \\mathbb{R}^n",),
+  title: [#kn[LDT meets LRNT: computing RN derivative on $bb(R)^n$]],
 )[
 Let $nu$ be a regular Borel measure on $bb(R)^n$, with LRN decomposition $ nu = lambda + rho\,quad d rho = f thin d m\,quad lambda tack.t m $即$ d nu = d lambda + f thin d m $
 那么: 对于 $m$-a.e. $x in bb(R)^n$, 都有: $ lim_(r arrow.r 0) frac(nu\(B\(x\,r\)\), m\(B\(x\,r\)\)) = f\(x\) $
@@ -140,11 +115,7 @@ distribution function 和 regular measure 之间的对应关系, 关键用处在
 我们 recall 刚刚才证明的定理, 不过使用一个更 general 的 version (can easily be extended from what we proved):
 
 #theorem(
-  title: [slightly more general version of LRNT meets LDT],
-  id: "thm-12-differentiation-on-real-spaces-slightly-more-general-version-of-lrnt-meets-ldt",
-  concepts: ("slightly-more-general-version-of-lrnt-meets-ldt",),
-  depends: (),
-  aliases: ("slightly more general version of LRNT meets LDT",),
+  title: [#kn[slightly more general version of LRNT meets LDT]],
 )[
 Let $nu$ be a regular Borel measure on $bb(R)^n$, with LRN decomposition $ nu = lambda + rho\,quad d rho = f thin d m\,quad lambda tack.t m $那么: 对于 $m$-a.e. $x in bb(R)^n$, 取任意 nicely shrinking ${ E_r }$ to $x$, 都有: $ lim_(r arrow.r 0) frac(nu\(E_r\), m\(E_r\)) = f\(x\) $
 
@@ -158,11 +129,7 @@ $ frac(mu_G\(E_r\), m\(E_r\)) = frac(G\(x + r\)- G\(x\), r) $
 === Monotone Differentiation Theorem
 <monotone-differentiation-theorem>
 #theorem(
-  title: [Monotone Differentiation Theorem],
-  id: "thm-12-differentiation-on-real-spaces-monotone-differentiation-theorem",
-  concepts: ("monotone-differentiation-theorem",),
-  depends: (),
-  aliases: ("Monotone Differentiation Theorem",),
+  title: [#kn[Monotone Differentiation Theorem]],
 )[
 令 $F : bb(R) arrow.r bb(R)$ 为一个 increasing (nondecreasing) function, set: $ G\(x\): = F\(x +\) $即 $F$ 的右极限函数. (note: $G$ 一定是 #strong[increasing] 且 #strong[right ctn] 的, 因而是一个 distribution function) \ 则有:
 
@@ -201,11 +168,7 @@ finishing the proof.
 === total variation function $T_F$ of a function $F$
 <total-variation-function-t_f-of-a-function-f>
 #definition(
-  title: [total variation function],
-  id: "def-12-differentiation-on-real-spaces-total-variation-function",
-  concepts: ("total-variation-function",),
-  depends: (),
-  aliases: ("total variation function",),
+  title: [#kn[total variation function]],
 )[
 给定一个 function $F : bb(R) arrow.r bb(C)$, 我们定义它的 total variation function $T_F$ 为:$ T_F : bb(R) & arrow.r\[0\,oo\]\
 x & mapsto sup { sum_(j = 1)^n\|F\(x_j\)- F\(x_(j + 1)\)\|: - oo < x_0 < dots.h.c < x_n = x } $
@@ -221,9 +184,6 @@ Total variation 是一个很形象的定义. $T_F\(x\)$ 表示的是 $F$ 从 $- 
 
 ]
 #lemma(
-  id: "lem-12-differentiation-on-real-spaces-lemma-003",
-  concepts: ("lemma-003",),
-  depends: (),
 )[
 对于任意的 $F : bb(R) arrow.r bb(C)$, $T_F$ 都是 increasing 的; 并且对于任意 $a < b$, 有: $ T_F\(b\)= T_F\(a\)+ T_F\(a\;b\) $
 where $ T_F\(a\;b\)= sup { sum_(j = 1)^n\|F\(x_j\)- F\(x_(j + 1)\)\|: b = x_0 < dots.h.c < x_n = a } $
@@ -237,21 +197,13 @@ where $ T_F\(a\;b\)= sup { sum_(j = 1)^n\|F\(x_j\)- F\(x_(j + 1)\)\|: b = x_0 < 
 === space of functions of bounded variation: $B V$ 的基本性质
 <space-of-functions-of-bounded-variation-bv-的基本性质>
 #definition(
-  title: [function of bounded variation],
-  id: "def-12-differentiation-on-real-spaces-function-of-bounded-variation",
-  concepts: ("function-of-bounded-variation",),
-  depends: (),
-  aliases: ("function of bounded variation",),
+  title: [#kn[function of bounded variation]],
 )[
 如果 $T_F\(oo\)< oo$, 我们称 $F : bb(R) arrow.r bb(C)$ is #strong[of bounded variation] 的, 写作 $F in B V$.
 
 ]
 #definition(
-  title: [function of bounded variation on an interval],
-  id: "def-12-differentiation-on-real-spaces-function-of-bounded-variation-on-an-interval",
-  concepts: ("function-of-bounded-variation-on-an-interval",),
-  depends: (),
-  aliases: ("function of bounded variation on an interval",),
+  title: [#kn[function of bounded variation on an interval]],
 )[
 如果 $T_F\(a\;b\)< oo$, 我们称 $F : bb(R) arrow.r bb(C)$ is #strong[of bounded variation] on $\[a\,b\]$, 写成 $F in B V\(\[a\,b\]\)$.
 
@@ -259,9 +211,6 @@ where $ T_F\(a\;b\)= sup { sum_(j = 1)^n\|F\(x_j\)- F\(x_(j + 1)\)\|: b = x_0 < 
 首先显然, $F in B V$ 可以 reduce to real-valued 的情况来讨论.
 
 #proposition(
-  id: "prop-12-differentiation-on-real-spaces-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 $ F in B V arrow.l.r.double Re f in B V upright(" and ") Im f in B V $
 
@@ -269,11 +218,7 @@ $ F in B V arrow.l.r.double Re f in B V upright(" and ") Im f in B V $
 === $B V$ as a vector space
 <bv-as-a-vector-space>
 #lemma(
-  title: [$B V$ 是一个 complex vector space],
-  id: "lem-12-differentiation-on-real-spaces-bv-complex-vector-space",
-  concepts: ("bv-complex-vector-space",),
-  depends: (),
-  aliases: ("BV 是一个 complex vector space",),
+  title: [#kn[$B V$ 是一个 complex vector space]],
 )[
 如果 $F\,G in B V$, 那么对于任意的 $a\,b in bb(C)$, we have $ T_(a F + b G) lt.eq\|a\|T_F +\|b\|T_G $
 从而$ a F + b G in B V $
@@ -288,9 +233,6 @@ $ F in B V arrow.l.r.double Re f in B V upright(" and ") Im f in B V $
 我们知道，$F in B V$ if $T_F\(oo\)< oo$. 而关于 $T_F\(- oo\)$, 同样有强结论:
 
 #proposition(
-  id: "prop-12-differentiation-on-real-spaces-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 $ F in B V arrow.r.double.long T_F\(- oo\)= 0 $
 
@@ -305,11 +247,7 @@ $F$ bounded variation 的必要条件是它在 $x arrow.r oo$ 时, 截止 $x$ �
 
 ]
 #lemma(
-  title: [$F in B V$ right ctn $arrow.r.double.long T_F$ right ctn],
-  id: "lem-12-differentiation-on-real-spaces-f-in-bv-right-ctn-implies-t-f-right-ctn",
-  concepts: ("f-in-bv-right-ctn-implies-t-f-right-ctn",),
-  depends: (),
-  aliases: ("F\\in BV right ctn \\implies T_F right ctn",),
+  title: [#kn[$F in B V$ right ctn $arrow.r.double.long T_F$ right ctn]],
 )[
 $F in B V$ right ctn $arrow.r.double.long T_F$ 也 right ctn
 
@@ -321,11 +259,7 @@ Let $x in bb(R)\,epsilon.alt > 0$. \ Let $ alpha : = T_F\(x +\)- T_F\(x\) $WTS: 
 === 属于 $B V\,B V\(I\)$ 的函数
 <属于-bvbvi-的函数>
 #lemma(
-  title: [哪些函数一定 $B V$ or $B V\(I\)$],
-  id: "lem-12-differentiation-on-real-spaces-bv-or-bv-i",
-  concepts: ("bv-or-bv-i",),
-  depends: (),
-  aliases: ("哪些函数一定 BV or BV(I)",),
+  title: [#kn[哪些函数一定 $B V$ or $B V\(I\)$]],
 )[
 + 如果 $F : bb(R) arrow.r bb(R)$ bounded 且 increasing, 那么 $F in B V$ 且 $T_F\(x\)= F\(x\)- F\(- oo\)$. \
 
@@ -339,9 +273,6 @@ Let $x in bb(R)\,epsilon.alt > 0$. \ Let $ alpha : = T_F\(x +\)- T_F\(x\) $WTS: 
 
 ]
 #proposition(
-  id: "prop-12-differentiation-on-real-spaces-proposition-003",
-  concepts: ("proposition-003",),
-  depends: (),
 )[
 以下是一些经典的函数的 variational behavior:
 
@@ -367,9 +298,6 @@ As $N arrow.r oo$, this sum $sum_(n = 1)^(N + 2)\|F\(x_j\)- F\(x_(j - 1)\)\|arro
 === Jordan decomposition for $f in B V$: $f = 1 / 2\(T_F + F\)- 1 / 2\(T_F - F\)$
 <jordan-decomposition-for-fin-bv-f-frac12t_ff---frac12t_f-f>
 #lemma(
-  id: "lem-12-differentiation-on-real-spaces-lemma-007",
-  concepts: ("lemma-007",),
-  depends: (),
 )[
 如果 real-valued $F in B V$, 那么 $T_F + F\,T_F - F$ 都是 increasing 的.
 
@@ -392,11 +320,7 @@ $ T_F\(y\) & gt.eq sum_1^N\|F\(x_j\)- F\(x_(j - 1)\)\|+\|F\(y\)- F\(x\)\|\
 
 ]
 #theorem(
-  title: [Jordan decomposition for $F in B V$],
-  id: "thm-12-differentiation-on-real-spaces-jordan-decomposition-for-f-in-bv",
-  concepts: ("jordan-decomposition-for-f-in-bv",),
-  depends: (),
-  aliases: ("Jordan decomposition for F \\in BV",),
+  title: [#kn[Jordan decomposition for $F in B V$]],
 )[
 对于 $F : bb(R) arrow.r bb(R)$ (注意是 real-valued): $ F in B V arrow.l.r.double F upright(" 等于两个 bounded increasing functions 的差") $ Specially, $ F in B V arrow.l.r.double T_F plus.minus F upright(" bounded") $
 因而 for $F in B V$, 我们总是可以把它写作 $ F = 1 / 2\(T_F + F\)- 1 / 2\(T_F - F\) $
@@ -427,9 +351,6 @@ $F$ 的 #strong[positive variation], #strong[negative variation] 和 total varia
 === corollaries of Jordan decomposition
 <corollaries-of-jordan-decomposition>
 #corollary(
-  id: "cor-12-differentiation-on-real-spaces-corollary-001",
-  concepts: ("corollary-001",),
-  depends: (),
 )[
 Let $F in B V$. By Jordan decomposition, $F$ 等于两个 bounded increasing functions 的差.从而我们 #strong[by MDT 得]:
 
@@ -447,11 +368,7 @@ Let $F in B V$. By Jordan decomposition, $F$ 等于两个 bounded increasing fun
 === $N B V$ 及其性质
 <nbv-及其性质>
 #definition(
-  title: [NBV],
-  id: "def-12-differentiation-on-real-spaces-nbv",
-  concepts: ("nbv",),
-  depends: (),
-  aliases: ("NBV",),
+  title: [#kn[NBV]],
 )[
 For $F : bb(R) arrow.r bb(C)$, 我们定义: $F in N B V$, if $F in B V$ 且 $F$ right ctn, $F\(- oo\)= 0$.
 
@@ -462,9 +379,6 @@ $F in N B V$ 的
 
 ]
 #proposition(
-  id: "prop-12-differentiation-on-real-spaces-proposition-004",
-  concepts: ("proposition-004",),
-  depends: (),
 )[
 $N B V subset B V$ 是一个 linear subspace.
 
@@ -486,11 +400,7 @@ $ F_mu\(x\):= {mu\(\(0\,x\]\)quad\,x gt.eq 0\
 注意: 一个 complex Borel measure 和一个 $F in N B V$ 都是 finite 的.
 
 #theorem(
-  title: [${ upright("complex Borel measures on ") bb(R) } tilde.eq N B V$],
-  id: "thm-12-differentiation-on-real-spaces-text-complex-borel-measures-on-mathbb-r-simeq-nbv",
-  concepts: ("text-complex-borel-measures-on-mathbb-r-simeq-nbv",),
-  depends: (),
-  aliases: ("\\{\\text{complex Borel measures on }\\mathbb{R}\\} \\simeq NBV",),
+  title: [#kn[${ upright("complex Borel measures on ") bb(R) } tilde.eq N B V$]],
 )[
 + 对于 $bb(R)$ 上的 complex measure $mu$, defining $ F\(x\): = mu\(\(- oo\,x\]\) $ 则有: $ F in N B V $
 
@@ -509,11 +419,7 @@ $ F_mu\(x\):= {mu\(\(0\,x\]\)quad\,x gt.eq 0\
 
 ]
 #theorem(
-  title: [$mu_F$ 的 total variation measure $=$ $mu_(T_F)$],
-  id: "thm-12-differentiation-on-real-spaces-mu-f-total-variation-measure-mu-t-f",
-  concepts: ("mu-f-total-variation-measure-mu-t-f",),
-  depends: (),
-  aliases: ("\\mu_F 的 total variation measure = \\mu_{T_F}",),
+  title: [#kn[$mu_F$ 的 total variation measure $=$ $mu_(T_F)$]],
 )[
 对于任意的 $F in N B V$, 我们有: $ \|mu_F\|= mu_(T_F) $ Specially when $F$ 是 real-valued 情况下, 那么 $mu_F$ 是一个 finite positive measure, 且有 $ mu_plus.minus = mu_(F_plus.minus) $
 
@@ -521,12 +427,8 @@ $ F_mu\(x\):= {mu\(\(0\,x\]\)quad\,x gt.eq 0\
 Now: Given $F in N B V$ with associated c.m. $mu_F$, 什么时候 $mu_F perp m$, 什么时候 $mu_F lt.double m$?
 
 #theorem(
-  title: [characterization of $mu_F perp m$ 和 $mu_F lt.double m$, for
-$F in N B V$],
-  id: "thm-12-differentiation-on-real-spaces-characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv",
-  concepts: ("characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv",),
-  depends: (),
-  aliases: ("characterization of \\mu_F \\perp m 和 \\mu_F \\ll m, for F\\in NBV ",),
+  title: [#kn[characterization of $mu_F perp m$ 和 $mu_F lt.double m$, for
+$F in N B V$]],
 )[
 对于 $F in N B V$, 我们已经知道: $F'$ $m$-a.e. 存在, 且 $F' in L^1\(m\)$. \ Now we claim, 有: $ mu_F perp m arrow.l.r.double F' = 0 quad m upright("-a.e.") $以及 $ mu_F lt.double m arrow.l.r.double F\(x\)= integral_(- oo)^x F'\(t\)thin d t quad forall x $
 
@@ -542,11 +444,7 @@ where $lambda perp m\,rho lt.double m$, 我们有: $ F\(x\): = mu_F\(\(- oo\,x\]
 === $A C$ 及其性质
 <ac-及其性质>
 #definition(
-  title: [absolutely continuous function],
-  id: "def-12-differentiation-on-real-spaces-absolutely-continuous-function",
-  concepts: ("absolutely-continuous-function",),
-  depends: (),
-  aliases: ("absolutely continuous function",),
+  title: [#kn[absolutely continuous function]],
 )[
 我们定义 $F : bb(R) arrow.r bb(C)$ 是 absolutely ctn 的, if 对于任意 $epsilon.alt > 0$ 都存在 $delta > 0$ 使得对于任意的 disjoint intervals $\(a_1\,b_1\)\,dots.h.c\,\(a_N\,b_N\)$, 都有: $ sum_1^N\|F\(b_j\)- F\(a_j\)\|< epsilon.alt quad upright("whenever") quad sum_1^N\|b_j - a_j\|< delta $
 
@@ -556,21 +454,13 @@ absolutely continuous 是比 uniformly continuous 严格更强的条件: 我们�
 
 ]
 #definition(
-  title: [absolutely continuous function on a cpt interval],
-  id: "def-12-differentiation-on-real-spaces-absolutely-continuous-function-on-a-cpt-interval",
-  concepts: ("absolutely-continuous-function-on-a-cpt-interval",),
-  depends: (),
-  aliases: ("absolutely continuous function on a cpt interval",),
+  title: [#kn[absolutely continuous function on a cpt interval]],
 )[
 我们定义 $F : I arrow.r bb(C)$ 是 absolutely ctn 的, if 对于任意 $epsilon.alt > 0$ 都存在 $delta > 0$ 使得对于任意的 disjoint intervals $\(a_1\,b_1\)\,dots.h.c\,\(a_N\,b_N\)subset I$, 都有: $ sum_1^N\|F\(b_j\)- F\(a_j\)\|< epsilon.alt quad upright("whenever") quad sum_1^N\|b_j - a_j\|< delta $
 
 ]
 #lemma(
-  title: [$F in N B V$ abs ctn $arrow.l.r.double$ $mu_F lt.double m$],
-  id: "lem-12-differentiation-on-real-spaces-f-in-nbv-abs-ctn-iff-mu-f-ll-m",
-  concepts: ("f-in-nbv-abs-ctn-iff-mu-f-ll-m",),
-  depends: (),
-  aliases: ("F\\in NBV abs ctn \\iff \\mu_F \\ll m",),
+  title: [#kn[$F in N B V$ abs ctn $arrow.l.r.double$ $mu_F lt.double m$]],
 )[
 对于 $F in N B V$, $ F in A C arrow.l.r.double mu_F lt.double m $
 
@@ -583,9 +473,6 @@ absolutely continuous 是比 uniformly continuous 严格更强的条件: 我们�
 === FTC for Lebesgue integral on $bb(R)$: requires $N B V + A C$
 <ftc-for-lebesgue-integral-on-mathbbr-requires-nbv-ac>
 #corollary(
-  id: "cor-12-differentiation-on-real-spaces-corollary-002",
-  concepts: ("corollary-002",),
-  depends: (),
 )[
 如果 $f in L^1\(m\)$, 那么 $ F\(x\): = integral_(- oo)^x f\(t\)thin d t in N B V inter A C\,quad f = F' quad a . e . $
 Conversely, 如果 $F in N B V inter A C$, 那么 $ F' in L^1\(m\)\,quad F\(x\)= integral_(- oo)^x F'\(t\)thin d t $
@@ -604,9 +491,6 @@ backward 方向即: 如果 $F$ 具有良好的连续性和变差有界性, 那�
 比起刚才的 FTC-I, FTC-II 的条件要宽松很多, 只需要 $F$ 在它需要被用到的 compact interval 上 AC 即可以. 这是因为, 我们不需要用到 NBV 只需要 BV, 并且在 cpt interval 上, AC 本身就可以推出 BV.
 
 #lemma(
-  id: "lem-12-differentiation-on-real-spaces-lemma-009",
-  concepts: ("lemma-009",),
-  depends: (),
 )[
 如果 $F in A C\(\[a\,b\]\)$, 那么 $F in B V\(\[a\,b\]\)$. \ 即 $ A C\(\[a\,b\]\)subset B V\(\[a\,b\]\) $
 
@@ -621,11 +505,7 @@ backward 方向即: 如果 $F$ 具有良好的连续性和变差有界性, 那�
 
 ]
 #theorem(
-  title: [FTC-II for Lebesgue integral on a cpt interval],
-  id: "thm-12-differentiation-on-real-spaces-ftc-ii-for-lebesgue-integral-on-a-cpt-interval",
-  concepts: ("ftc-ii-for-lebesgue-integral-on-a-cpt-interval",),
-  depends: (),
-  aliases: ("FTC-II for Lebesgue integral on a cpt interval",),
+  title: [#kn[FTC-II for Lebesgue integral on a cpt interval]],
 )[
 TFAE:
 
@@ -641,11 +521,7 @@ TFAE:
 === characterization for Lipschitz ctn
 <characterization-for-lipschitz-ctn>
 #theorem(
-  title: [characterization for Lipschitz ctn],
-  id: "thm-12-differentiation-on-real-spaces-characterization-for-lipschitz-ctn",
-  concepts: ("characterization-for-lipschitz-ctn",),
-  depends: (),
-  aliases: ("characterization for Lipschitz ctn",),
+  title: [#kn[characterization for Lipschitz ctn]],
 )[
 对于 $F : bb(R) arrow.r bb(C)$, we have: $ F upright(" Lipschitz ctn with const ") M arrow.l.r.double F in A C upright(" and ")\|F'\(x\)\|lt.eq M upright(" a.e.") $
 

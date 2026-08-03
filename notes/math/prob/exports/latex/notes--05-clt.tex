@@ -12,8 +12,8 @@
 
 \section{convergence in distribution}\label{convergence-in-distribution}
 
-% qlnotes: kind=definition; id=def-05-clt-convergence-in-distribution; concepts=convergence-in-distribution; aliases=convergence in distribution
-\begin{definition}{convergence in distribution}\label{def-05-clt-convergence-in-distribution}
+\begin{definition}{\protect\phantomsection\label{kn-convergence-in-distribution}{\textbf{convergence
+in distribution}}}
 
 我们称一个 seq of random variables \(\left\{ X_{n} \right\}\) converge in distribution to a random variable \(X\), 写作 \(X_{n}\overset{d}{\rightarrow}X\), 如果 \(X\) 的 分布函数 \(F_{X}\) 下所有 右连续的 \(x\) (即 \(F_{X}(x) = F_{X}(x - )\) ), 都有
 
@@ -39,8 +39,8 @@ Convergence in distribution 的意思就是: 随着 \(n\) 越来越大, \(X_{n}\
 
 \subsection{moment generating function}\label{moment-generating-function}
 
-% qlnotes: kind=definition; id=def-05-clt-moment-generating-function; concepts=moment-generating-function; aliases=moment generating function
-\begin{definition}{moment generating function}\label{def-05-clt-moment-generating-function}
+\begin{definition}{\protect\phantomsection\label{kn-moment-generating-function}{\textbf{moment
+generating function}}}
 
 对于一个随机变量 \(X\), 其 moment generating function (MGF) 定义为
 
@@ -54,8 +54,7 @@ Convergence in distribution 的意思就是: 随着 \(n\) 越来越大, \(X_{n}\
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-05-clt-proposition-001; concepts=proposition-001
-\begin{proposition}\label{prop-05-clt-proposition-001}
+\begin{proposition}
 
 如果 \(M_{X}(t)\) 在 \(t = 0\) 的某个 neighborhood 内存在, 则 \(X\) 的 \(n\) 阶矩可以表示为
 
@@ -69,8 +68,8 @@ Convergence in distribution 的意思就是: 随着 \(n\) 越来越大, \(X_{n}\
 
 \section{Central Limit Theorem}\label{central-limit-theorem-1}
 
-% qlnotes: kind=theorem; id=thm-05-clt-lindeberg-levy-central-limit-theorem; concepts=lindeberg-levy-central-limit-theorem; aliases=Lindeberg-Levy Central Limit Theorem
-\begin{theorem}{Lindeberg-Levy Central Limit Theorem}\label{thm-05-clt-lindeberg-levy-central-limit-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-lindeberg-levy-central-limit-theorem}{\textbf{Lindeberg-Levy
+Central Limit Theorem}}}
 
 对于任意一个 seq of i.i.d. random variables \(\left\{ X_{i} \right\}\) with mean \(\mu\) and variance \(\sigma^{2} < \infty\), set \(S_{n} = X_{1} + X_{2} + \cdots + X_{n}\) for each \(n\).
 
@@ -103,8 +102,7 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 \subsection{applications of CLT}\label{applications-of-clt}
 
-% qlnotes: kind=example; id=ex-05-clt-coin-fair; concepts=-coin-fair; aliases=(判断 coin 是否 fair)
-\begin{example}[(判断 coin 是否 fair)]\label{ex-05-clt-coin-fair}
+\begin{example}[(判断 coin 是否 fair)]
 
 我们有两个 coins, 想要判断它们是否是 fair coin. 我们可以 toss 这个 coin \(n\) 次, 记录下每次 toss 的结果, 记为 \(X_{1},X_{2},\cdots,X_{n}\), 其中 \(X_{i} = 1\) if the \(i\)-th toss is heads.
 
@@ -122,8 +120,7 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 \end{example}
 
-% qlnotes: kind=example; id=ex-05-clt; aliases=(样本量需求的计算)
-\begin{example}[(样本量需求的计算)]\label{ex-05-clt}
+\begin{example}[(样本量需求的计算)]
 
 工厂生产了一批电线, 我们想知道它们的平均断裂强度 \(\mu\) 是多少. 遂抽取 \(n\) 根电线进行测量, 得到 \(X_{1},...,X_{n}\), 然后计算它们的样本平均值 \({\bar{X}}_{n}\) 来估计 \(\mu\).
 
@@ -173,8 +170,8 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 下面有一个 theorem 刻画了这件事.
 
-% qlnotes: kind=theorem; id=thm-05-clt-berry-esseen-theorem; concepts=berry-esseen-theorem; aliases=Berry-Esseen Theorem
-\begin{theorem}{Berry-Esseen Theorem}\label{thm-05-clt-berry-esseen-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-berry-esseen-theorem}{\textbf{Berry-Esseen
+Theorem}}}
 
 给定一个 seq of i.i.d. random variables \(\left\{ X_{i} \right\}\) with mean \(\mu\) and variance \(\sigma^{2} < \infty\), 以及 \(\left. {\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{3}\rbrack = \rho < \infty \right.\), set \(S_{n} = X_{1} + X_{2} + \cdots + X_{n}\), 我们有: 对于任意 \(x \in {\mathbb{R}}\),
 
@@ -198,8 +195,7 @@ CLT 的一个主要的应用价值, 就是可以用来估计 由多个 i.i.d. �
 
 \end{proof}
 
-% qlnotes: kind=example; id=ex-05-clt-example-003; concepts=example-003
-\begin{example}\label{ex-05-clt-example-003}
+\begin{example}
 
 一个工厂生产电子元件, 每个原件有概率是有缺陷的.
 

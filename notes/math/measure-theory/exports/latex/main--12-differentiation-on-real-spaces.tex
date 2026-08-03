@@ -12,15 +12,15 @@
 
 \section{\texorpdfstring{differentiation of regular Borel measures on \({\mathbb{R}}^{n}\) {[}Fol 3.4, finished{]}}{differentiation of regular Borel measures on \{\textbackslash mathbb\{R\}\}\^{}\{n\} {[}Fol 3.4, finished{]}}}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-regular-borel-measure; concepts=regular-borel-measure; aliases=regular Borel measure
-\begin{definition}{regular Borel measure}\label{def-12-differentiation-on-real-spaces-regular-borel-measure}
+\begin{definition}{\protect\phantomsection\label{kn-regular-borel-measure}{\textbf{regular
+Borel measure}}}
 
 一个 Borel measure \(\nu\) on \({\mathbb{R}}^{n}\) 被称为 regular 的, if \(\nu\) is locally finite (finite on every compact set).
 
 \end{definition}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity; concepts=regular-borel-measure-regularity; aliases=regular Borel measure: 蕴含了 regularity
-\begin{theorem}{regular Borel measure: 蕴含了 regularity}\label{thm-12-differentiation-on-real-spaces-regular-borel-measure-regularity}
+\begin{theorem}{\protect\phantomsection\label{kn-regular-borel-measure-regularity}{\textbf{regular
+Borel measure: 蕴含了 regularity}}}
 
 一个 regular Borel measure \(\nu\) on \({\mathbb{R}}^{n}\) 一定满足:
 
@@ -44,8 +44,7 @@ regular \(\Longrightarrow\) outer regularity: Hard, 其推导需要 Ch7 regular 
 
 \end{qlremark}
 
-% qlnotes: kind=example; id=ex-12-differentiation-on-real-spaces-example-001; concepts=example-001
-\begin{example}\label{ex-12-differentiation-on-real-spaces-example-001}
+\begin{example}
 
 任何 LS measure on \(\mathbb{R}\) (restrict to Borel sets) 都是 regular measure. Lebesgue measure \(m\) on \({\mathbb{R}}^{n}\) (restrict to Borel sets) 是 regular measure.
 
@@ -53,15 +52,14 @@ regular \(\Longrightarrow\) outer regularity: Hard, 其推导需要 Ch7 regular 
 
 当然, 这个概念也可以推广至 signed/coplex measure 上.
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-regular-signed-complex-measure; concepts=regular-signed-complex-measure; aliases=regular signed/complex measure
-\begin{definition}{regular signed/complex measure}\label{def-12-differentiation-on-real-spaces-regular-signed-complex-measure}
+\begin{definition}{\protect\phantomsection\label{kn-regular-signed-complex-measure}{\textbf{regular
+signed/complex measure}}}
 
 一个 signed/complex measure \(\nu\) on \({\mathbb{R}}^{n}\) 被称为 regular measure, if \(|\nu|\) is regular 的.
 
 \end{definition}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-lemma-001; concepts=lemma-001
-\begin{lemma}\label{lem-12-differentiation-on-real-spaces-lemma-001}
+\begin{lemma}
 
 如果 \(f \in L_{loc}^{1}({\mathbb{R}}^{n})\), 则 \(f\, dm\) 是一个 regular measure. 如果 \(f:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}\) 是 extended-integrable 的, 则
 
@@ -75,8 +73,7 @@ Folland p99. 这显然, 因为 \(f\) locally integrable 就说明 \(f\, dm\) 是
 
 \end{proof}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-lemma-002; concepts=lemma-002
-\begin{lemma}\label{lem-12-differentiation-on-real-spaces-lemma-002}
+\begin{lemma}
 
 如果 \(\rho,\lambda\) 是 signed/complex measure 并且 \(\rho\bot\lambda\), 那么
 
@@ -101,8 +98,8 @@ Note: STS it for positive measure, 这是因为对于 regular signed / complex m
 
 \subsection{\texorpdfstring{LDT meets LRNT: 任何 regular Borel measure \(\nu\) on \({\mathbb{R}}^{n}\) 对于 \(m\) 的 RN-derivative \(=\) relative density}{LDT meets LRNT: 任何 regular Borel measure \textbackslash nu on \{\textbackslash mathbb\{R\}\}\^{}\{n\} 对于 m 的 RN-derivative = relative density}}\label{ldt-meets-lrnt-ux4efbux4f55-regular-borel-measure-nu-on-mathbbrn-ux5bf9ux4e8e-m-ux7684-rn-derivative-relative-density}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n; concepts=ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n; aliases=LDT meets LRNT: computing RN derivative on \mathbb{R}^n
-\begin{theorem}{LDT meets LRNT: computing RN derivative on \({\mathbb{R}}^{n}\)}\label{thm-12-differentiation-on-real-spaces-ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n}
+\begin{theorem}{\protect\phantomsection\label{kn-ldt-meets-lrnt-computing-rn-derivative-on-mathbb-r-n}{\textbf{LDT
+meets LRNT: computing RN derivative on \({\mathbb{R}}^{n}\)}}}
 
 Let \(\nu\) be a regular Borel measure on \({\mathbb{R}}^{n}\), with LRN decomposition
 
@@ -229,8 +226,8 @@ Recall that: \textbf{每个 distribution function (非严格 increasing, right c
 
 distribution function 和 regular measure 之间的对应关系, 关键用处在于什么呢? 我们 recall 刚刚才证明的定理, 不过使用一个更 general 的 version (can easily be extended from what we proved):
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-slightly-more-general-version-of-lrnt-meets-ldt; concepts=slightly-more-general-version-of-lrnt-meets-ldt; aliases=slightly more general version of LRNT meets LDT
-\begin{theorem}{slightly more general version of LRNT meets LDT}\label{thm-12-differentiation-on-real-spaces-slightly-more-general-version-of-lrnt-meets-ldt}
+\begin{theorem}{\protect\phantomsection\label{kn-slightly-more-general-version-of-lrnt-meets-ldt}{\textbf{slightly
+more general version of LRNT meets LDT}}}
 
 Let \(\nu\) be a regular Borel measure on \({\mathbb{R}}^{n}\), with LRN decomposition
 
@@ -255,8 +252,8 @@ Let \(\nu\) be a regular Borel measure on \({\mathbb{R}}^{n}\), with LRN decompo
 
 \subsection{Monotone Differentiation Theorem}\label{monotone-differentiation-theorem}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-monotone-differentiation-theorem; concepts=monotone-differentiation-theorem; aliases=Monotone Differentiation Theorem
-\begin{theorem}{Monotone Differentiation Theorem}\label{thm-12-differentiation-on-real-spaces-monotone-differentiation-theorem}
+\begin{theorem}{\protect\phantomsection\label{kn-monotone-differentiation-theorem}{\textbf{Monotone
+Differentiation Theorem}}}
 
 令 \(F:{\mathbb{R}}\rightarrow{\mathbb{R}}\) 为一个 increasing (nondecreasing) function, set:
 
@@ -352,8 +349,8 @@ Question: 如果一个函数在 \(\lbrack a,b\rbrack\) 上 differentiable a.e., 
 
 \subsection{\texorpdfstring{total variation function \(T_{F}\) of a function \(F\)}{total variation function T\_\{F\} of a function F}}\label{total-variation-function-t_f-of-a-function-f}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-total-variation-function; concepts=total-variation-function; aliases=total variation function
-\begin{definition}{total variation function}\label{def-12-differentiation-on-real-spaces-total-variation-function}
+\begin{definition}{\protect\phantomsection\label{kn-total-variation-function}{\textbf{total
+variation function}}}
 
 给定一个 function \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\), 我们定义它的 total variation function \(T_{F}\) 为:
 
@@ -376,8 +373,7 @@ Total variation 是一个很形象的定义. \(T_{F}(x)\) 表示的是 \(F\) 从
 
 \end{qlremark}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-lemma-003; concepts=lemma-003
-\begin{lemma}\label{lem-12-differentiation-on-real-spaces-lemma-003}
+\begin{lemma}
 
 对于任意的 \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\), \(T_{F}\) 都是 increasing 的; 并且对于任意 \(a < b\), 有:
 
@@ -399,15 +395,15 @@ where
 
 \subsection{\texorpdfstring{space of functions of bounded variation: \(BV\) 的基本性质}{space of functions of bounded variation: BV 的基本性质}}\label{space-of-functions-of-bounded-variation-bv-ux7684ux57faux672cux6027ux8d28}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-function-of-bounded-variation; concepts=function-of-bounded-variation; aliases=function of bounded variation
-\begin{definition}{function of bounded variation}\label{def-12-differentiation-on-real-spaces-function-of-bounded-variation}
+\begin{definition}{\protect\phantomsection\label{kn-function-of-bounded-variation}{\textbf{function
+of bounded variation}}}
 
 如果 \(T_{F}(\infty) < \infty\), 我们称 \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\) is \textbf{of bounded variation} 的, 写作 \(F \in BV\).
 
 \end{definition}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-function-of-bounded-variation-on-an-interval; concepts=function-of-bounded-variation-on-an-interval; aliases=function of bounded variation on an interval
-\begin{definition}{function of bounded variation on an interval}\label{def-12-differentiation-on-real-spaces-function-of-bounded-variation-on-an-interval}
+\begin{definition}{\protect\phantomsection\label{kn-function-of-bounded-variation-on-an-interval}{\textbf{function
+of bounded variation on an interval}}}
 
 如果 \(T_{F}(a;b) < \infty\), 我们称 \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\) is \textbf{of bounded variation} on \(\lbrack a,b\rbrack\), 写成 \(F \in BV(\lbrack a,b\rbrack)\).
 
@@ -415,8 +411,7 @@ where
 
 首先显然, \(F \in BV\) 可以 reduce to real-valued 的情况来讨论.
 
-% qlnotes: kind=proposition; id=prop-12-differentiation-on-real-spaces-proposition-001; concepts=proposition-001
-\begin{proposition}\label{prop-12-differentiation-on-real-spaces-proposition-001}
+\begin{proposition}
 
 \[F \in BV\Leftrightarrow\Re f \in BV\ \text{and}\ \Im f \in BV\]
 
@@ -424,8 +419,8 @@ where
 
 \subsection{\texorpdfstring{\(BV\) as a vector space}{BV as a vector space}}\label{bv-as-a-vector-space}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-bv-complex-vector-space; concepts=bv-complex-vector-space; aliases=BV 是一个 complex vector space
-\begin{lemma}{\(BV\) 是一个 complex vector space}\label{lem-12-differentiation-on-real-spaces-bv-complex-vector-space}
+\begin{lemma}{\protect\phantomsection\label{kn-bv-complex-vector-space}{\textbf{\(BV\)
+是一个 complex vector space}}}
 
 如果 \(F,G \in BV\), 那么对于任意的 \(a,b \in {\mathbb{C}}\), we have
 
@@ -447,8 +442,7 @@ where
 
 我们知道，\(F \in BV\) if \(T_{F}(\infty) < \infty\). 而关于 \(T_{F}( - \infty)\), 同样有强结论:
 
-% qlnotes: kind=proposition; id=prop-12-differentiation-on-real-spaces-proposition-002; concepts=proposition-002
-\begin{proposition}\label{prop-12-differentiation-on-real-spaces-proposition-002}
+\begin{proposition}
 
 \[F \in BV\Longrightarrow T_{F}( - \infty) = 0\]
 
@@ -480,8 +474,8 @@ Since \(\epsilon > 0\) arbitrary, 这证明了 \(T_{F}( - \infty) = 0\)
 
 \end{qlremark}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-f-in-bv-right-ctn-implies-t-f-right-ctn; concepts=f-in-bv-right-ctn-implies-t-f-right-ctn; aliases=F\in BV right ctn \implies T_F right ctn
-\begin{lemma}{\(F \in BV\) right ctn \(\Longrightarrow T_{F}\) right ctn}\label{lem-12-differentiation-on-real-spaces-f-in-bv-right-ctn-implies-t-f-right-ctn}
+\begin{lemma}{\protect\phantomsection\label{kn-f-in-bv-right-ctn-implies-t-f-right-ctn}{\textbf{\(F \in BV\)
+right ctn \(\Longrightarrow T_{F}\) right ctn}}}
 
 \(F \in BV\) right ctn \(\Longrightarrow T_{F}\) 也 right ctn
 
@@ -502,8 +496,8 @@ Fix 一个满足 \(0 < h < \delta\) 的 \(h\). 其后的证明见 Folland 104.
 
 \subsection{\texorpdfstring{属于 \(BV,BV(I)\) 的函数}{属于 BV,BV(I) 的函数}}\label{ux5c5eux4e8e-bvbvi-ux7684ux51fdux6570}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-bv-or-bv-i; concepts=bv-or-bv-i; aliases=哪些函数一定 BV or BV(I)
-\begin{lemma}{哪些函数一定 \(BV\) or \(BV(I)\)}\label{lem-12-differentiation-on-real-spaces-bv-or-bv-i}
+\begin{lemma}{\protect\phantomsection\label{kn-bv-or-bv-i}{\textbf{哪些函数一定 \(BV\)
+or \(BV(I)\)}}}
 
 \begin{enumerate}
 \item
@@ -524,8 +518,7 @@ Fix 一个满足 \(0 < h < \delta\) 的 \(h\). 其后的证明见 Folland 104.
 
 \end{proof}
 
-% qlnotes: kind=proposition; id=prop-12-differentiation-on-real-spaces-proposition-003; concepts=proposition-003
-\begin{proposition}\label{prop-12-differentiation-on-real-spaces-proposition-003}
+\begin{proposition}
 
 以下是一些经典的函数的 variational behavior:
 
@@ -568,8 +561,7 @@ As \(N\rightarrow\infty\), this sum \(\left. \sum_{n = 1}^{N + 2} \middle| F(x_{
 
 \subsection{\texorpdfstring{Jordan decomposition for \(f \in BV\): \(f = \frac{1}{2}(T_{F} + F) - \frac{1}{2}(T_{F} - F)\)}{Jordan decomposition for f \textbackslash in BV: f = \textbackslash frac\{1\}\{2\}(T\_\{F\} + F) - \textbackslash frac\{1\}\{2\}(T\_\{F\} - F)}}\label{jordan-decomposition-for-f-in-bv-f-frac12t_f-f---frac12t_f---f}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-lemma-007; concepts=lemma-007
-\begin{lemma}\label{lem-12-differentiation-on-real-spaces-lemma-007}
+\begin{lemma}
 
 如果 real-valued \(F \in BV\), 那么 \(T_{F} + F,T_{F} - F\) 都是 increasing 的.
 
@@ -613,8 +605,8 @@ Can find \(x_{0} < x_{1} < \cdots < x_{N} = x\), s.t.
 
 \end{proof}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-jordan-decomposition-for-f-in-bv; concepts=jordan-decomposition-for-f-in-bv; aliases=Jordan decomposition for F \in BV
-\begin{theorem}{Jordan decomposition for \(F \in BV\)}\label{thm-12-differentiation-on-real-spaces-jordan-decomposition-for-f-in-bv}
+\begin{theorem}{\protect\phantomsection\label{kn-jordan-decomposition-for-f-in-bv}{\textbf{Jordan
+decomposition for \(F \in BV\)}}}
 
 对于 \(F:{\mathbb{R}}\rightarrow{\mathbb{R}}\) (注意是 real-valued):
 
@@ -675,8 +667,7 @@ For \(F \in BV\), we have \(T_{F}(\infty) < \infty, T_{F}( - \infty) = 0\).\\
 
 \subsection{corollaries of Jordan decomposition}\label{corollaries-of-jordan-decomposition}
 
-% qlnotes: kind=corollary; id=cor-12-differentiation-on-real-spaces-corollary-001; concepts=corollary-001
-\begin{corollary}\label{cor-12-differentiation-on-real-spaces-corollary-001}
+\begin{corollary}
 
 Let \(F \in BV\). By Jordan decomposition, \(F\) 等于两个 bounded increasing functions 的差.从而我们 \textbf{by MDT 得}:
 
@@ -699,8 +690,7 @@ Let \(F \in BV\). By Jordan decomposition, \(F\) 等于两个 bounded increasing
 
 \subsection{\texorpdfstring{\(NBV\) 及其性质}{NBV 及其性质}}\label{nbv-ux53caux5176ux6027ux8d28}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-nbv; concepts=nbv; aliases=NBV
-\begin{definition}{NBV}\label{def-12-differentiation-on-real-spaces-nbv}
+\begin{definition}{\protect\phantomsection\label{kn-nbv}{\textbf{NBV}}}
 
 For \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\), 我们定义: \(F \in NBV\), if \(F \in BV\) 且 \(F\) right ctn, \(F( - \infty) = 0\).
 
@@ -712,8 +702,7 @@ For \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\), 我们定义: \(F \in NBV\), if \
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-12-differentiation-on-real-spaces-proposition-004; concepts=proposition-004
-\begin{proposition}\label{prop-12-differentiation-on-real-spaces-proposition-004}
+\begin{proposition}
 
 \(NBV \subset BV\) 是一个 linear subspace.
 
@@ -753,8 +742,7 @@ Notice: 这一点 is achieved by
 
 注意: 一个 complex Borel measure 和一个 \(F \in NBV\) 都是 finite 的.
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-text-complex-borel-measures-on-mathbb-r-simeq-nbv; concepts=text-complex-borel-measures-on-mathbb-r-simeq-nbv; aliases=\{\text{complex Borel measures on }\mathbb{R}\} \simeq NBV
-\begin{theorem}{\(\left\{ {\text{complex Borel measures on}\ {\mathbb{R}}} \right\} \simeq NBV\)}\label{thm-12-differentiation-on-real-spaces-text-complex-borel-measures-on-mathbb-r-simeq-nbv}
+\begin{theorem}{\protect\phantomsection\label{kn-text-complex-borel-measures-on-mathbb-r-simeq-nbv}{\textbf{\(\left\{ {\text{complex Borel measures on}\ {\mathbb{R}}} \right\} \simeq NBV\)}}}
 
 \begin{enumerate}
 \item
@@ -809,8 +797,8 @@ Notice: 这一点 is achieved by
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-mu-f-total-variation-measure-mu-t-f; concepts=mu-f-total-variation-measure-mu-t-f; aliases=\mu_F 的 total variation measure = \mu_{T_F}
-\begin{theorem}{\(\mu_{F}\) 的 total variation measure \(=\) \(\mu_{T_{F}}\)}\label{thm-12-differentiation-on-real-spaces-mu-f-total-variation-measure-mu-t-f}
+\begin{theorem}{\protect\phantomsection\label{kn-mu-f-total-variation-measure-mu-t-f}{\textbf{\(\mu_{F}\)
+的 total variation measure \(=\) \(\mu_{T_{F}}\)}}}
 
 对于任意的 \(F \in NBV\), 我们有:
 
@@ -824,9 +812,8 @@ Specially when \(F\) 是 real-valued 情况下, 那么 \(\mu_{F}\) 是一个 fin
 
 Now: Given \(F \in NBV\) with associated c.m. \(\mu_{F}\), 什么时候 \(\mu_{F} \perp m\), 什么时候 \(\mu_{F} \ll m\)?
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv; concepts=characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv; aliases=characterization of \mu_F \perp m 和 \mu_F \ll m, for F\in NBV
-\begin{theorem}{characterization of \(\mu_{F} \perp m\) 和 \(\mu_{F} \ll m\), for
-\(F \in NBV\)}\label{thm-12-differentiation-on-real-spaces-characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv}
+\begin{theorem}{\protect\phantomsection\label{kn-characterization-of-mu-f-perp-m-mu-f-ll-m-for-f-in-nbv}{\textbf{characterization
+of \(\mu_{F} \perp m\) 和 \(\mu_{F} \ll m\), for \(F \in NBV\)}}}
 
 对于 \(F \in NBV\), 我们已经知道: \(F'\) \(m\)-a.e. 存在, 且 \(F' \in L^{1}(m)\).\\
 Now we claim, 有:
@@ -865,8 +852,8 @@ where \(\lambda \perp m,\rho \ll m\), 我们有:
 
 \subsection{\texorpdfstring{\(AC\) 及其性质}{AC 及其性质}}\label{ac-ux53caux5176ux6027ux8d28}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-absolutely-continuous-function; concepts=absolutely-continuous-function; aliases=absolutely continuous function
-\begin{definition}{absolutely continuous function}\label{def-12-differentiation-on-real-spaces-absolutely-continuous-function}
+\begin{definition}{\protect\phantomsection\label{kn-absolutely-continuous-function}{\textbf{absolutely
+continuous function}}}
 
 我们定义 \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\) 是 absolutely ctn 的, if 对于任意 \(\epsilon > 0\) 都存在 \(\delta > 0\) 使得对于任意的 disjoint intervals \((a_{1},b_{1}),\cdots,(a_{N},b_{N})\), 都有:
 
@@ -882,8 +869,8 @@ absolutely continuous 表示了一种更强的控制性: 选取任意一些地�
 
 \end{qlremark}
 
-% qlnotes: kind=definition; id=def-12-differentiation-on-real-spaces-absolutely-continuous-function-on-a-cpt-interval; concepts=absolutely-continuous-function-on-a-cpt-interval; aliases=absolutely continuous function on a cpt interval
-\begin{definition}{absolutely continuous function on a cpt interval}\label{def-12-differentiation-on-real-spaces-absolutely-continuous-function-on-a-cpt-interval}
+\begin{definition}{\protect\phantomsection\label{kn-absolutely-continuous-function-on-a-cpt-interval}{\textbf{absolutely
+continuous function on a cpt interval}}}
 
 我们定义 \(F:I\rightarrow{\mathbb{C}}\) 是 absolutely ctn 的, if 对于任意 \(\epsilon > 0\) 都存在 \(\delta > 0\) 使得对于任意的 disjoint intervals \((a_{1},b_{1}),\cdots,(a_{N},b_{N}) \subset I\), 都有:
 
@@ -891,8 +878,8 @@ absolutely continuous 表示了一种更强的控制性: 选取任意一些地�
 
 \end{definition}
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-f-in-nbv-abs-ctn-iff-mu-f-ll-m; concepts=f-in-nbv-abs-ctn-iff-mu-f-ll-m; aliases=F\in NBV abs ctn \iff \mu_F \ll m
-\begin{lemma}{\(F \in NBV\) abs ctn \(\Leftrightarrow\) \(\mu_{F} \ll m\)}\label{lem-12-differentiation-on-real-spaces-f-in-nbv-abs-ctn-iff-mu-f-ll-m}
+\begin{lemma}{\protect\phantomsection\label{kn-f-in-nbv-abs-ctn-iff-mu-f-ll-m}{\textbf{\(F \in NBV\)
+abs ctn \(\Leftrightarrow\) \(\mu_{F} \ll m\)}}}
 
 对于 \(F \in NBV\),
 
@@ -918,8 +905,7 @@ for all \(j\), 从而 \(\mu_{F}(E) \leq \epsilon\). 从而得证, since \(\epsil
 
 \subsection{\texorpdfstring{FTC for Lebesgue integral on \(\mathbb{R}\): requires \(NBV + AC\)}{FTC for Lebesgue integral on \textbackslash mathbb\{R\}: requires NBV + AC}}\label{ftc-for-lebesgue-integral-on-mathbbr-requires-nbv-ac}
 
-% qlnotes: kind=corollary; id=cor-12-differentiation-on-real-spaces-corollary-002; concepts=corollary-002
-\begin{corollary}\label{cor-12-differentiation-on-real-spaces-corollary-002}
+\begin{corollary}
 
 如果 \(f \in L^{1}(m)\), 那么
 
@@ -953,8 +939,7 @@ backward 方向即: 如果 \(F\) 具有良好的连续性和变差有界性, 那
 
 比起刚才的 FTC-I, FTC-II 的条件要宽松很多, 只需要 \(F\) 在它需要被用到的 compact interval 上 AC 即可以. 这是因为, 我们不需要用到 NBV 只需要 BV, 并且在 cpt interval 上, AC 本身就可以推出 BV.
 
-% qlnotes: kind=lemma; id=lem-12-differentiation-on-real-spaces-lemma-009; concepts=lemma-009
-\begin{lemma}\label{lem-12-differentiation-on-real-spaces-lemma-009}
+\begin{lemma}
 
 如果 \(F \in AC(\lbrack a,b\rbrack)\), 那么 \(F \in BV(\lbrack a,b\rbrack)\).\\
 即
@@ -980,8 +965,8 @@ backward 方向即: 如果 \(F\) 具有良好的连续性和变差有界性, 那
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-ftc-ii-for-lebesgue-integral-on-a-cpt-interval; concepts=ftc-ii-for-lebesgue-integral-on-a-cpt-interval; aliases=FTC-II for Lebesgue integral on a cpt interval
-\begin{theorem}{FTC-II for Lebesgue integral on a cpt interval}\label{thm-12-differentiation-on-real-spaces-ftc-ii-for-lebesgue-integral-on-a-cpt-interval}
+\begin{theorem}{\protect\phantomsection\label{kn-ftc-ii-for-lebesgue-integral-on-a-cpt-interval}{\textbf{FTC-II
+for Lebesgue integral on a cpt interval}}}
 
 TFAE:
 
@@ -1008,8 +993,8 @@ Notice that: 这里我们只考虑 \(F|_{\lbrack a,b\rbrack}\), 于是我们可�
 
 \subsection{characterization for Lipschitz ctn}\label{characterization-for-lipschitz-ctn}
 
-% qlnotes: kind=theorem; id=thm-12-differentiation-on-real-spaces-characterization-for-lipschitz-ctn; concepts=characterization-for-lipschitz-ctn; aliases=characterization for Lipschitz ctn
-\begin{theorem}{characterization for Lipschitz ctn}\label{thm-12-differentiation-on-real-spaces-characterization-for-lipschitz-ctn}
+\begin{theorem}{\protect\phantomsection\label{kn-characterization-for-lipschitz-ctn}{\textbf{characterization
+for Lipschitz ctn}}}
 
 对于 \(F:{\mathbb{R}}\rightarrow{\mathbb{C}}\), we have:
 

@@ -80,6 +80,7 @@ local function title_from_head(head, kind)
     theorem = "Theorem",
     lemma = "Lemma",
     corollary = "Corollary",
+    axiom = "Axiom",
     proposition = "Proposition",
     example = "Example",
   }
@@ -335,6 +336,9 @@ local function normalize_div(element)
   if has_class(element, "ql-main") then
     return element.content
   end
+  if has_class(element, "ql-statement-anchor") then
+    return element.content
+  end
   if has_class(element, "ql-callout--definition") then
     return convert_callout(element, "definition")
   end
@@ -346,6 +350,9 @@ local function normalize_div(element)
   end
   if has_class(element, "ql-callout--corollary") then
     return convert_callout(element, "corollary")
+  end
+  if has_class(element, "ql-callout--axiom") then
+    return convert_callout(element, "axiom")
   end
   if has_class(element, "ql-callout--proposition") then
     return convert_callout(element, "proposition")
@@ -461,6 +468,7 @@ local function normalize_link(element)
     "Theorem",
     "Lemma",
     "Corollary",
+    "Axiom",
     "Proposition",
     "Example",
     "Figure",

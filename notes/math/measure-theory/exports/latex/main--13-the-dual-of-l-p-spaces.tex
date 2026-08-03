@@ -23,8 +23,7 @@ recall Hölder's ineq: for \(1 \leq p,q \leq \infty,\frac{1}{p} + \frac{1}{q} = 
 
 \[\left. | \middle| fg \middle| \middle| {}_{1} \leq \middle| \middle| f \middle| \middle| {}_{p} \middle| \middle| g \middle| |_{q} \right.\]
 
-% qlnotes: kind=example; id=ex-13-the-dual-of-l-p-spaces-example-001; concepts=example-001
-\begin{example}\label{ex-13-the-dual-of-l-p-spaces-example-001}
+\begin{example}
 
 Prove:
 
@@ -51,8 +50,8 @@ recall, 对于一个 \(\mathbb{K}\)-vector space \(V\), 一个 linear functional
 
 对于作为 NVS 的 \(V\), 我们还可以定义一个 linear functional 的 boundedness.
 
-% qlnotes: kind=definition; id=def-13-the-dual-of-l-p-spaces-bounded-linear-functional; concepts=bounded-linear-functional; aliases=bounded linear functional
-\begin{definition}{bounded linear functional}\label{def-13-the-dual-of-l-p-spaces-bounded-linear-functional}
+\begin{definition}{\protect\phantomsection\label{kn-bounded-linear-functional}{\textbf{bounded
+linear functional}}}
 
 Let \(V\) be a \(\mathbb{K}\)-NVS, \(f:V\rightarrow{\mathbb{K}}\) be a linear functional.\\
 我们称 \(f\) bounded, if exist \(C > 0\) s.t.
@@ -68,8 +67,8 @@ Let \(V\) be a \(\mathbb{K}\)-NVS, \(f:V\rightarrow{\mathbb{K}}\) be a linear fu
 
 \end{qlremark}
 
-% qlnotes: kind=proposition; id=prop-13-the-dual-of-l-p-spaces-linear-functional-bounded-iff-ctn-at-0; concepts=linear-functional-bounded-iff-ctn-at-0; aliases=linear functional bounded \iff ctn at 0
-\begin{proposition}{linear functional bounded \(\Leftrightarrow\) ctn at \(0\)}\label{prop-13-the-dual-of-l-p-spaces-linear-functional-bounded-iff-ctn-at-0}
+\begin{proposition}{\protect\phantomsection\label{kn-linear-functional-bounded-iff-ctn-at-0}{\textbf{linear
+functional bounded \(\Leftrightarrow\) ctn at \(0\)}}}
 
 if \(f:V\rightarrow{\mathbb{K}}\) is a linear functional, TFAE:
 
@@ -111,8 +110,7 @@ recall in 395: 实际上这个性质应该对所有的 linear map 都成立, 不
 
 \end{qlremark}
 
-% qlnotes: kind=definition; id=def-13-the-dual-of-l-p-spaces-dual-space; concepts=dual-space; aliases=dual space
-\begin{definition}{dual space}\label{def-13-the-dual-of-l-p-spaces-dual-space}
+\begin{definition}{\protect\phantomsection\label{kn-dual-space}{\textbf{dual space}}}
 
 If \(V\) is a NVS, 我们定义它的 \textbf{dual space} as:
 
@@ -120,8 +118,8 @@ If \(V\) is a NVS, 我们定义它的 \textbf{dual space} as:
 
 \end{definition}
 
-% qlnotes: kind=definition; id=def-13-the-dual-of-l-p-spaces-norm-of-dual-space-dual-norm; concepts=norm-of-dual-space-dual-norm; aliases=norm of dual space: 即 dual norm
-\begin{definition}{norm of dual space: 即 \textbf{dual norm}}\label{def-13-the-dual-of-l-p-spaces-norm-of-dual-space-dual-norm}
+\begin{definition}{\protect\phantomsection\label{kn-norm-of-dual-space-dual-norm}{\textbf{norm
+of dual space: 即 \textbf{dual norm}}}}
 
 Given \(f \in V^{\ast}\), set
 
@@ -143,8 +141,8 @@ where \(\parallel v \parallel\) 表示的是 \(V\) 上使用的 norm. 这个 nor
 
 \subsection{\texorpdfstring{\(V^{\ast}\) being a Banach space}{V\^{}\{\textbackslash ast\} being a Banach space}}\label{vast-being-a-banach-space}
 
-% qlnotes: kind=theorem; id=thm-13-the-dual-of-l-p-spaces-dual-space-is-always-banach; concepts=dual-space-is-always-banach; aliases=dual space is always Banach
-\begin{theorem}{dual space is always Banach}\label{thm-13-the-dual-of-l-p-spaces-dual-space-is-always-banach}
+\begin{theorem}{\protect\phantomsection\label{kn-dual-space-is-always-banach}{\textbf{dual
+space is always Banach}}}
 
 对于\textbf{任意的 NVS} \(V\): \(V^{\ast}\) 都是一个 Banach space. (not assuming \(V\) Banach).
 
@@ -208,8 +206,7 @@ Hence \(f\) is bounded (continuous), and \(\parallel f\underset{\ast}{\parallel}
 
 Actually 这个 Theorem 有更 general 的形式:
 
-% qlnotes: kind=theorem; id=thm-13-the-dual-of-l-p-spaces-theorem-002; concepts=theorem-002
-\begin{theorem}\label{thm-13-the-dual-of-l-p-spaces-theorem-002}
+\begin{theorem}
 
 对于任意 nvm \(V\) 和 Banach \(W\), \(\mathcal{L}(V,W)\) 一定是 Banach 的.
 
@@ -219,9 +216,8 @@ Proof 见 Folland 5.4.
 
 \subsection{\texorpdfstring{\((L^{p})^{\ast} = L^{q}\), \(\frac{1}{p} + \frac{1}{q} = 1\)}{(L\^{}\{p\})\^{}\{\textbackslash ast\} = L\^{}\{q\}, \textbackslash frac\{1\}\{p\} + \textbackslash frac\{1\}\{q\} = 1}}\label{lpast-lq-frac1p-frac1q-1}
 
-% qlnotes: kind=theorem; id=thm-13-the-dual-of-l-p-spaces-conjugate-exponent-p-q-l-p-l-q-dual-space; concepts=conjugate-exponent-p-q-l-p-l-q-dual-space; aliases=对于互为 conjugate exponent 的 p,q, L^p 是 L^q 的 dual space
-\begin{theorem}{对于互为 conjugate exponent 的 \(p,q\), \(L^{p}\) 是 \(L^{q}\) 的 dual
-space}\label{thm-13-the-dual-of-l-p-spaces-conjugate-exponent-p-q-l-p-l-q-dual-space}
+\begin{theorem}{\protect\phantomsection\label{kn-conjugate-exponent-p-q-l-p-l-q-dual-space}{\textbf{对于互为
+conjugate exponent 的 \(p,q\), \(L^{p}\) 是 \(L^{q}\) 的 dual space}}}
 
 For \(1 < p,q < \infty\) with \(\frac{1}{p} + \frac{1}{q} = 1\), we have:
 

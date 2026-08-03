@@ -324,9 +324,6 @@ So $integral_(bb(R)) f < oo$. This proves $f in L^1\(bb(R)\)$. \ \
 #strong[of (c):]
 
 #lemma(
-  id: "lem-hw05-on-integration-lemma-001",
-  concepts: ("lemma-001",),
-  depends: (),
 )[
 For $f in L^(+)\(mu\)$, if $f\(x\)= + oo$ on a set $S$ where $mu\(S\)> 0$, then $integral f = oo$
 

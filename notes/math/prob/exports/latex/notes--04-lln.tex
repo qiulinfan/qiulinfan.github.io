@@ -16,8 +16,8 @@
 
 \subsection{Markov's ineqaulity and Chebyshev's inequality}\label{markovs-ineqaulity-and-chebyshevs-inequality}
 
-% qlnotes: kind=theorem; id=thm-04-lln-markovs-inequality; concepts=markovs-inequality; aliases=Markov’s inequality
-\begin{theorem}{Markov's inequality}\label{thm-04-lln-markovs-inequality}
+\begin{theorem}{\protect\phantomsection\label{kn-markov-inequality}{\textbf{Markov's
+inequality}}}
 
 对于一个 non-negative random variable \(X\) (即 \(X \geq 0\) a.s.), 任取 \(t > 0\), 都有
 
@@ -55,8 +55,8 @@
 
 \end{proof}
 
-% qlnotes: kind=corollary; id=cor-04-lln-chebyshevs-inequality; concepts=chebyshevs-inequality; aliases=Chebyshev’s inequality
-\begin{corollary}{Chebyshev's inequality}\label{cor-04-lln-chebyshevs-inequality}
+\begin{corollary}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-chebyshev-inequality}{Chebyshev's
+inequality}}
 
 对于一个 random variable \(X\) 和任意的 \(t > 0\), 如果它的方差 \(\text{Var}(X)\) 是有限的, 那么 有
 
@@ -82,8 +82,8 @@ Chebyshev's ineq 则是通过方差来 bound 任意随机变量 偏离均值达�
 
 \subsection{Cauchy-Schwarz and Jensen's ineq}\label{cauchy-schwarz-and-jensens-ineq}
 
-% qlnotes: kind=theorem; id=thm-04-lln-cauchy-schwarz-inequality; concepts=cauchy-schwarz-inequality; aliases=Cauchy-Schwarz inequality
-\begin{theorem}{Cauchy-Schwarz inequality}\label{thm-04-lln-cauchy-schwarz-inequality}
+\begin{theorem}{\protect\phantomsection\label{kn-cauchy-schwarz-inequality}{\textbf{Cauchy-Schwarz
+inequality}}}
 
 对于任意的 random variables \(X\) 和 \(Y\), 都有
 
@@ -93,8 +93,8 @@ Chebyshev's ineq 则是通过方差来 bound 任意随机变量 偏离均值达�
 
 这是 prob space 作为一个 measure space, 其上的函数空间 \(L^{2}(\Omega,\mathcal{F},{\mathbb{P}})\) 作为一个 Hilbert space, 自然的 Cauchy-Schwarz inequality. 不赘述了.
 
-% qlnotes: kind=theorem; id=thm-04-lln-jensens-inequality; concepts=jensens-inequality; aliases=Jensen’s inequality
-\begin{theorem}{Jensen's inequality}\label{thm-04-lln-jensens-inequality}
+\begin{theorem}{\protect\phantomsection\label{kn-jensen-inequality}{\textbf{Jensen's
+inequality}}}
 
 对于一个 convex function \(\phi\) 和 任意的 random variable \(X\), 只要 \({\mathbb{E}}\lbrack X\rbrack\) 和 \({\mathbb{E}}\lbrack\phi(X)\rbrack\) 都是 well-defined 的 (即 finite), 都有
 
@@ -124,8 +124,8 @@ Since \(\phi\) is convex, for any \(x\), there exists a supporting line to the g
 
 我们在 measure theory 中最熟悉的三个定理. 复习一下. 这里不 prove 了. proof 请左转 measure theory notes.
 
-% qlnotes: kind=theorem; id=thm-04-lln-fatous-lemma; concepts=fatous-lemma; aliases=Fatou’s Lemma
-\begin{theorem}{Fatou's Lemma}\label{thm-04-lln-fatous-lemma}
+\begin{theorem}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-fatou-lemma}{Fatou's
+Lemma}}
 
 令 \(\left\{ X_{n} \right\}\) 是一列 non-negative random variables, 那么
 
@@ -145,8 +145,8 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-04-lln-monotone-convergence-theorem-mct; concepts=monotone-convergence-theorem-mct; aliases=Monotone Convergence Theorem (MCT)
-\begin{theorem}{Monotone Convergence Theorem (MCT)}\label{thm-04-lln-monotone-convergence-theorem-mct}
+\begin{theorem}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-monotone-convergence-theorem}{monotone
+convergence theorem}}
 
 令 \(\left\{ X_{n} \right\}\) 是一列递增的 non-negative random variables (即 \(X_{n} \uparrow X\) a.s.), 那么 suppose \(X := \lim_{n\rightarrow\infty}X_{n}\) a.e. exists, 那么 a.s. 有
 
@@ -160,8 +160,8 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 
 \end{qlremark}
 
-% qlnotes: kind=theorem; id=thm-04-lln-dominated-convergence-theorem-dct; concepts=dominated-convergence-theorem-dct; aliases=Dominated Convergence Theorem (DCT)
-\begin{theorem}{Dominated Convergence Theorem (DCT)}\label{thm-04-lln-dominated-convergence-theorem-dct}
+\begin{theorem}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-dominated-convergence-theorem}{dominated
+convergence theorem}}
 
 令 \(\left\{ X_{n} \right\}\) 是一列 random variables, 并且存在一个 a.e. pointwise limit \(X\) (即 \(X_{n}\rightarrow X\) a.s.), 并且存在一个 integrable random variable \(Y\) 作为一个 bound: 使得 \(\left. |X_{n} \middle| \leq Y \right.\) a.s. 对所有的 \(n\) 成立,
 
@@ -179,8 +179,7 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 
 \subsection{Tonneli and fubini}\label{tonneli-and-fubini}
 
-% qlnotes: kind=theorem; id=thm-04-lln-tonnelis-theorem; concepts=tonnelis-theorem; aliases=Tonneli’s Theorem
-\begin{theorem}{Tonneli's Theorem}\label{thm-04-lln-tonnelis-theorem}
+\begin{theorem}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-tonelli-theorem}{Tonelli}}
 
 对于一列 non-negative random variables \(\left\{ X_{n} \right\}\), 累加和积分(求期望)的顺序可以交换:
 
@@ -188,8 +187,8 @@ pointwise 下极限的积分, 得到的结果不会大于每个函数积分的�
 
 \end{theorem}
 
-% qlnotes: kind=theorem; id=thm-04-lln-fubinis-theorem; concepts=fubinis-theorem; aliases=Fubini’s Theorem
-\begin{theorem}{Fubini's Theorem}\label{thm-04-lln-fubinis-theorem}
+\begin{theorem}{\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-fubini-theorem}{Fubini's
+Theorem}}
 
 对于一列任意的 random variables \(\left\{ X_{n} \right\}\), 只要其绝对值的 sum 的 expectation 是 finite 的 (或者绝对值的 expectation 的 sum 是 finite 的, by Tonneli 都是一样的), 那么就有 linearity of expectation 的推广:
 
@@ -209,8 +208,8 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 
 首先, 我们对 pointwise limit 和 uniform limit 的定义已经很熟悉了, 这里就不赘述了. (算了 uniform 还是提一嘴, 意思是我们需要 pointwise limit 的 收敛速度也是 uniform 的, 即对任意的 \(\epsilon > 0\), 都存在一个 \(N\) 使得对于所有的 \(n \geq N\) 和所有的 \(\omega\), 都有 \(\left. |X_{n}(\omega) - X(\omega) \middle| < \epsilon \right.\), 是一个严格强于 pointwise 的收敛方式. )
 
-% qlnotes: kind=definition; id=def-04-lln-rv; concepts=rv; aliases=RV 序列的三种收敛方式
-\begin{definition}{RV 序列的三种收敛方式}\label{def-04-lln-rv}
+\begin{definition}{\protect\phantomsection\label{kn-modes-of-convergence-for-random-variables}{\textbf{RV
+序列的三种收敛方式}}}
 
 \begin{itemize}
 \item
@@ -253,8 +252,9 @@ Fubini 和 Tonelli 即: 把 linearity of expectation 推广到 countable sum 的
 例如最经典的例子就是抛硬币: 我们连续抛 \(n\) 次一个公平的硬币, 记录每次抛出正面 (记为 1) 或者反面 (记为 0), 然后计算这些结果的平均值, 随着 \(n\) 的增加, 这个平均值会趋近于 0.5, 等于 理论的 expectation (这是个 Bernouli random variable, expectation = \(p\)).\\
 LLN 有两个阶段, weak LLN 和 strong LLN, weak LLN 证明的是这个 convergence 是 in probability 的, 而 strong LLN 证明的是这个 convergence 是 a.s. 的. 就是说 strong LLN 是严格强于 weak LLN 的.
 
-% qlnotes: kind=theorem; id=thm-04-lln-weak-law-of-large-numbers; concepts=weak-law-of-large-numbers; aliases=weak Law of Large Numbers
-\begin{theorem}{weak Law of Large Numbers}\label{thm-04-lln-weak-law-of-large-numbers}
+% qlnotes: kind=theorem; id=thm-04-lln-weak-law-of-large-numbers
+\begin{theorem}{\protect\phantomsection\label{kn-weak-law-of-large-numbers}{\textbf{weak
+Law of Large Numbers}}}\label{thm-04-lln-weak-law-of-large-numbers}
 
 对于一列 i.i.d. 的 random variables \(\left\{ X_{i} \right\}\), 只要这个 random variable 的 expectation 是 finite 的 \({\mathbb{E}}\lbrack X_{1}^{2}\rbrack < \infty\), 那么就有:
 
@@ -281,8 +281,8 @@ notice: 由于每个 \(X_{i}\) 都是 i.i.d. 的, independence \(\Longrightarrow
 
 \end{proof}
 
-% qlnotes: kind=theorem; id=thm-04-lln-strong-law-of-large-numbers; concepts=strong-law-of-large-numbers; aliases=strong Law of Large Numbers
-\begin{theorem}{strong Law of Large Numbers}\label{thm-04-lln-strong-law-of-large-numbers}
+\begin{theorem}{\protect\phantomsection\label{kn-strong-law-of-large-numbers}{\textbf{strong
+Law of Large Numbers}}}
 
 在 weak LLN\hyperref[thm-04-lln-weak-law-of-large-numbers]{Theorem~\ref*{thm-04-lln-weak-law-of-large-numbers}} 的相同条件 (其实可以更弱, 让 \(E\lbrack X_{1}\rbrack < \infty\) 即可) 下, 我们其实可以得到一个更强的结论:
 
@@ -365,8 +365,7 @@ General case:
   我们可以用 Chebyshev's inequality 来给出这个近似的误差 bound.
 \end{itemize}
 
-% qlnotes: kind=example; id=ex-04-lln-pi; concepts=-pi; aliases=估算 \pi
-\begin{example}[估算 \(\pi\)]\label{ex-04-lln-pi}
+\begin{example}[估算 \(\pi\)]
 
 我们令 \(X,Y \sim U(\lbrack - 1,1\rbrack)\)
 

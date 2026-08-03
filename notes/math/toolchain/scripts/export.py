@@ -101,6 +101,16 @@ def clean_generated_assets(directory: Path, suffixes: set[str]) -> None:
             path.unlink()
 
 
+def remove_stale_assets(
+    directory: Path,
+    suffix: str,
+    active_stems: set[str],
+) -> None:
+    for path in directory.iterdir():
+        if path.is_file() and path.suffix.lower() == suffix and path.stem not in active_stems:
+            path.unlink()
+
+
 def typst_input_args(inputs: list[str]) -> list[str]:
     arguments: list[str] = []
     for value in inputs:
@@ -140,14 +150,14 @@ def typst_metadata(
     documents = [
         record for record in records if record.get("schema") == "qlnotes-document-v1"
     ]
-    nodes = [record for record in records if record.get("schema") == "qlnotes-v1"]
+    nodes = [record for record in records if record.get("schema") == "qlkg-node-v2"]
     if len(documents) != 1:
         raise ExportError(
             f"expected exactly one qlnotes-document-v1 record, found {len(documents)}"
         )
     missing_ids = [record for record in nodes if not record.get("id")]
     if missing_ids:
-        raise ExportError("every semantic qlnotes-v1 record must have a stable id")
+        raise ExportError("every qlkg-node-v2 record must have a stable global id")
     return documents[0], nodes
 
 
@@ -170,8 +180,8 @@ def extract_diagrams(
     markdown_assets: Path,
     latex_assets: Path,
 ) -> tuple[str, list[str]]:
-    clean_generated_assets(markdown_assets, {".svg"})
-    clean_generated_assets(latex_assets, {".pdf"})
+    markdown_assets.mkdir(parents=True, exist_ok=True)
+    latex_assets.mkdir(parents=True, exist_ok=True)
     names: list[str] = []
     used: set[str] = set()
     figure_index = 0
@@ -201,17 +211,24 @@ def extract_diagrams(
         svg_text = svg_match.group(0)
         svg_path = markdown_assets / f"{name}.svg"
         pdf_path = latex_assets / f"{name}.pdf"
-        svg_path.write_text(svg_text + "\n", encoding="utf-8")
-        run(
-            [
-                "rsvg-convert",
-                "--format",
-                "pdf",
-                "--output",
-                str(pdf_path),
-                str(svg_path),
-            ]
+        rendered_svg = svg_text + "\n"
+        unchanged = (
+            svg_path.is_file()
+            and svg_path.read_text(encoding="utf-8") == rendered_svg
+            and pdf_path.is_file()
         )
+        if not unchanged:
+            svg_path.write_text(rendered_svg, encoding="utf-8")
+            run(
+                [
+                    "rsvg-convert",
+                    "--format",
+                    "pdf",
+                    "--output",
+                    str(pdf_path),
+                    str(svg_path),
+                ]
+            )
 
         alt = attrs.get("aria-label", "")
         image_tag = (
@@ -226,7 +243,11 @@ def extract_diagrams(
         figure_attrs = f' id="{html.escape(identifier, quote=True)}"' if identifier else ""
         return f"<figure{figure_attrs}>{replacement_body}</figure>"
 
-    return FIGURE_RE.sub(replace, source_html), names
+    converted = FIGURE_RE.sub(replace, source_html)
+    active = set(names)
+    remove_stale_assets(markdown_assets, ".svg", active)
+    remove_stale_assets(latex_assets, ".pdf", active)
+    return converted, names
 
 
 def extract_raster_images(
@@ -300,7 +321,7 @@ def pandoc_metadata(
         "qlnotes-language": document.get("language") or "zh-CN",
         "source": source.name,
         "authority": "typst",
-        "qlnotes-schema": "qlnotes-v1",
+        "qlnotes-schema": "qlnotes-v2",
         "semantic-node-count": len(nodes),
     }
     if has_bibliography:
@@ -450,7 +471,7 @@ def export(
         print(f"Editable LaTeX: {latex_dir / 'main.tex'}")
         print(f"Editable Markdown: {markdown_dir / 'main.md'}")
         print(
-            f"Semantic nodes: {len(nodes)}; diagrams: {len(diagrams)}; "
+            f"Knowledge nodes: {len(nodes)}; diagrams: {len(diagrams)}; "
             f"raster images: {len(raster_images)}"
         )
 

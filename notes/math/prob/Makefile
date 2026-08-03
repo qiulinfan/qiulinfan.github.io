@@ -3,7 +3,7 @@
 TYPST := typst
 TOOLCHAIN := ../toolchain
 SKILL := ../../../skills/export-typst-math-notes
-KNOWLEDGE := ../knowledge/scripts/knowledge.py
+KNOWLEDGE := ../../../knowledge/scripts/knowledge.py
 REPO_ROOT := ../../..
 BUILD := build/typst
 EXPORTS := exports
@@ -13,16 +13,16 @@ all: release
 release: export web-check homeworks-web-check
 
 export:
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course probability
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document notes=main.typ \
 		--document homeworks=homeworks.typ \
 		--root ../.. \
 		--output $(EXPORTS) \
 		--build $(BUILD)/export
-	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
 knowledge-sync:
-	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course probability
 
 web:
 	@mkdir -p $(BUILD)
@@ -32,7 +32,7 @@ web:
 
 web-check: web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/index.html \
-		--expected-nodes 161 --expected-diagrams 14
+		--expected-nodes 84 --expected-diagrams 14
 
 homeworks-web:
 	@mkdir -p $(BUILD)

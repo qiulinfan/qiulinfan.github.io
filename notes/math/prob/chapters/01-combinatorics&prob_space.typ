@@ -9,19 +9,12 @@
 === permutations
 <permutations>
 #definition(
-  title: [permutations],
-  id: "def-01-combinatorics-prob-space-permutations",
-  concepts: ("permutations",),
-  depends: (),
-  aliases: ("permutations",),
+  title: [#kn[permutations]],
 )[
 一个 permutation 就是对一组 objects 的一个 #strong[rearrangement] (这些 objects 中可以有 same 的也可以有 distinct 的). \ 对于 $n$ 个 #strong[distinct objects], 一共存在 $ n ! = n\(n - 1\)\(n - 2\)dots.h.c $ 个 permutations.
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-001",
-  concepts: ("example-001",),
-  depends: (),
 )[
 求 \"STATISTICS\" 的 \# distinct permutations.
 
@@ -37,20 +30,13 @@
 其中 $n_1\,n_2\,dots.h.c\,n_k$ 是每个 object 的重复数量. \ 这个式子又叫做 multinomial coefficient.
 
 #definition(
-  title: [multinomial coefficient],
-  id: "def-01-combinatorics-prob-space-multinomial-coefficient",
-  concepts: ("multinomial-coefficient",),
-  depends: (),
-  aliases: ("multinomial coefficient",),
+  title: [#kn[multinomial coefficient]],
 )[
 令 $n in bb(N)\,n_1\,n_2\,dots.h.c\,n_k in bb(N)\,n_1 + n_2 + dots.h.c + n_k = n$, 我们定义 multinomial coefficient:
 $ binom(n, n_1\,n_2\,dots.h.c\,n_k) = frac(n !, n_1 ! n_2 ! dots.h.c n_k !) $
 
 ]
 #proposition(
-  id: "prop-01-combinatorics-prob-space-proposition-001",
-  concepts: ("proposition-001",),
-  depends: (),
 )[
 如果我们需要 $n_1$ 个 object 1, $n_2$ 个 object 2, $dots.h.c$, $n_k$ 个 object $k$, 那么它们的 distinct permutations 的数量为:
 $ binom(n_1 + n_2 + dots.h.c + n_k, n_1\,n_2\,dots.h.c\,n_k) $
@@ -60,19 +46,12 @@ $ binom(n_1 + n_2 + dots.h.c + n_k, n_1\,n_2\,dots.h.c\,n_k) $
 === combinations
 <combinations>
 #definition(
-  title: [combinations],
-  id: "def-01-combinatorics-prob-space-combinations",
-  concepts: ("combinations",),
-  depends: (),
-  aliases: ("combinations",),
+  title: [#kn[combinations]],
 )[
 一个 combination 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序.
 
 ]
 #proposition(
-  id: "prop-01-combinatorics-prob-space-proposition-002",
-  concepts: ("proposition-002",),
-  depends: (),
 )[
 从 $n$ 个 #strong[distinct objects] 中选取 $k$ 个的 combinations 的数量为: $ binom(n, k) = frac(n !, k !\(n - k\)!) $
 
@@ -87,11 +66,7 @@ $ binom(n_1 + n_2 + dots.h.c + n_k, n_1\,n_2\,dots.h.c\,n_k) $
 === binomial theorem
 <binomial-theorem>
 #theorem(
-  title: [Binomial Theorem],
-  id: "thm-01-combinatorics-prob-space-binomial-theorem",
-  concepts: ("binomial-theorem",),
-  depends: (),
-  aliases: ("Binomial Theorem",),
+  title: [#kn[Binomial Theorem]],
 )[
 令 $x\,y in bb(R)\,n in bb(N)$, 则有: $ \(x + y\)^n= sum_(k = 0)^n binom(n, k) x^(n - k) y^k $
 
@@ -105,9 +80,6 @@ $ binom(n_1 + n_2 + dots.h.c + n_k, n_1\,n_2\,dots.h.c\,n_k) $
 另外一种更轮椅的思路是 prove by induction. 这需要一个辅助的 proposition:
 
 #proposition(
-  id: "prop-01-combinatorics-prob-space-proposition-003",
-  concepts: ("proposition-003",),
-  depends: (),
 )[
 $ binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k) $
 
@@ -119,9 +91,6 @@ $ binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k) $
 - 这个 object 不被选中的情况, combinations 的数量: $binom(n - 1, k)$ (从其他里面选 $k$ 个).
 
 #example(
-  id: "ex-01-combinatorics-prob-space-example-002",
-  concepts: ("example-002",),
-  depends: (),
 )[
 一个 52-card deck, 取 5 张随机牌, 我们获得:
 
@@ -143,9 +112,6 @@ $ binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k) $
 ]
 
 #example(
-  id: "ex-01-combinatorics-prob-space-example-003",
-  concepts: ("example-003",),
-  depends: (),
 )[
 我们有 $n$ 把钥匙, 其中有一把是正确的. 尝试 $k$ 次, 能够成功开门的概率是多少?
 
@@ -177,9 +143,6 @@ $ bb(P)\(A\)= 1 - (1 - 1 / n)^k $
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-004",
-  concepts: ("example-004",),
-  depends: (),
 )[
 一个篮子里有 $10$ 个 red balls 和 $5$ 个 blue balls. 我们随机从中取出 $3$ 个 balls, exactly 其中 $1$ 个是 blue ball 的概率是多少? 如果每次都放回呢?
 
@@ -195,19 +158,12 @@ $ bb(P)\(upright("exactly one blue ball")\)= 3 dot.op frac(3 dot.op 10^2, 15^3) 
 === combinations with repetition
 <combinations-with-repetition>
 #definition(
-  title: [combinations with repetition],
-  id: "def-01-combinatorics-prob-space-combinations-with-repetition",
-  concepts: ("combinations-with-repetition",),
-  depends: (),
-  aliases: ("combinations with repetition",),
+  title: [#kn[combinations with repetition]],
 )[
 一个 combination with repetition 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序, 并且#strong[允许重复选取].
 
 ]
 #proposition(
-  id: "prop-01-combinatorics-prob-space-proposition-004",
-  concepts: ("proposition-004",),
-  depends: (),
 )[
 从 $n$ 个 #strong[distinct objects] 中选取 $k$ 个的 combinations with repetition 的数量为: $ binom(n + k - 1, k) $
 
@@ -229,9 +185,6 @@ $ { y =\(x'_1\,x'_2\,dots.h.c\,x'_n\)in bb(Z)_(gt.eq 1)^n : x'_1 + x'_2 + dots.h
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-005",
-  concepts: ("example-005",),
-  depends: (),
 )[
 有 5 种口味的 ice creams. 一个人随机选择 20 个 scoops. 求: 每种口味至少被选中一次的 probability.
 
@@ -245,11 +198,7 @@ $ bb(P)\(upright("each flavor is selected at least once")\)= binom(19, 15) / bin
 === inclusion-exclusion principle
 <inclusion-exclusion-principle>
 #proposition(
-  title: [inclusion-exclusion principle],
-  id: "prop-01-combinatorics-prob-space-inclusion-exclusion-principle",
-  concepts: ("inclusion-exclusion-principle",),
-  depends: (),
-  aliases: ("inclusion-exclusion principle",),
+  title: [#kn[inclusion-exclusion principle]],
 )[
 如果 $Omega$ 是一个 finite measure space, 那么对于任意 $A_1\,dots.h\,A_n subset.eq Omega$ 的, 有:
 $ lr(|union_(i = 1)^n A_i|) = sum_(i = 1)^n lr(|A_i|) - sum_(i < j) lr(|A_i inter A_j|) + sum_(i < j < k) lr(|A_i inter A_j inter A_k|) - dots.h +\(- 1\)^(n + 1)lr(|A_1 inter dots.h inter A_n|) . $
@@ -261,9 +210,6 @@ $ lr(|union_(i = 1)^n A_i|) = sum_(i = 1)^n lr(|A_i|) - sum_(i < j) lr(|A_i inte
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-006",
-  concepts: ("example-006",),
-  depends: (),
 )[
 \(Divisibility) 令 $n in bb(N)$, 我们随机取一个 $x in { 1\,2\,dots.h.c\,n }$, 求 $x$ is divisible by 2 or 3 or 5 的概率.
 
@@ -279,10 +225,6 @@ $ bb(P)\(A_2 union A_3 union A_5\) & = bb(P)\(A_2\)+ bb(P)\(A_3\)+ bb(P)\(A_5\)-
 
 #example(
   title: [\(matching problem)],
-  id: "ex-01-combinatorics-prob-space-matching-problem",
-  concepts: ("matching-problem",),
-  depends: (),
-  aliases: ("(matching problem)",),
 )[
 假设有 $n$ 个人参加一个 event, 每个人都上交了一顶帽子; 现在再把帽子随机地发给每个人, 求没有人拿回自己的帽子的概率.
 
@@ -309,11 +251,7 @@ $ bb(P)\(inter.big_(i = 1)^n A_i^c\)= sum_(k = 2)^n frac(\(- 1\)^k, k !) $
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory. \
 
 #definition(
-  title: [prob space, prob measure, sample space, event space],
-  id: "def-01-combinatorics-prob-space-prob-space-prob-measure-sample-space-event-space",
-  concepts: ("prob-space-prob-measure-sample-space-event-space",),
-  depends: (),
-  aliases: ("prob space, prob measure, sample space, event space",),
+  title: [#kn[probability space, probability measure, sample space, event space]],
 )[
 一个 probability space 就是一个 measure space $\(Omega\,cal(F)\,bb(P)\)$, 其中 $bb(P)\(nothing\)= 0\,bb(P)\(Omega\)= 1$. \ 对于这样的 measure $bb(P)$, 我们称之为 #strong[probability measure (概率测度, 即概率)]. \ 而这里的 $Omega$ 我们称之为 #strong[sample space (样本空间)]\; 这里的 $sigma$-algebra $cal(F)$, 我们称之为 #strong[event space (事件空间)]. \ 任意的 $A subset Omega$ 都是一个 #strong[event], 但是概率论中只考虑 $A in cal(F)$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
 
@@ -342,9 +280,6 @@ bb(P)\(omega\) & = upright(" 结果 ") omega upright(" 的可能性") $
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-008",
-  concepts: ("example-008",),
-  depends: (),
 )[
 \(dice roll)
 如果我们掷一个 6 面的骰子, 那么样本空间 $Omega = { 1\,2\,3\,4\,5\,6 }$. 一个可能的事件是 $A = { 1\,2 }$. 如果假设骰子是公平的 (所有结果都是等可能的), 那么事件 $A$ 的概率是
@@ -353,9 +288,6 @@ $ bb(P)\(A\)= upright(" Number of favorable outcomes ") / upright(" Total number
 
 ]
 #example(
-  id: "ex-01-combinatorics-prob-space-example-009",
-  concepts: ("example-009",),
-  depends: (),
 )[
 三个人独立地掷一个 6 面的骰子, 求第三个人掷出的点数等于前两个人的点数之和的概率.
 
@@ -368,9 +300,6 @@ event: $E = { omega in Omega divides omega_3 = omega_1 + omega_2 }$. \ 这个 ev
 ]
 
 #example(
-  id: "ex-01-combinatorics-prob-space-example-010",
-  concepts: ("example-010",),
-  depends: (),
 )[
 两个人计划在 12:00 到 1:00 之间碰面. 他们各自都会在期间的某个时间点到达. 求: 他们彼此不会等待对方超过 10 分钟的概率. \
 
@@ -394,22 +323,14 @@ $ bb(P)\(E\)= frac(m\(E\), m\(Omega\)) = frac(3600 - 2500, 3600) = 11 / 36 $
 === conditional probability and Bayes' theorem
 <conditional-probability-and-bayes-theorem>
 #definition(
-  title: [conditional probability],
-  id: "def-01-combinatorics-prob-space-conditional-probability",
-  concepts: ("conditional-probability",),
-  depends: (),
-  aliases: ("conditional probability",),
+  title: [#kn[conditional probability]],
 )[
 对于 probability space $\(Omega\,cal(F)\,bb(P)\)$, 给定一个 event $B in cal(F)$, 如果 $bb(P)\(B\)> 0$, 我们定义 conditional probability of an event $A in cal(F)$ given $B$ 为:
 $ bb(P)\(A divides B\)= frac(bb(P)\(A inter B\), bb(P)\(B\)) $
 
 ]
 #proposition(
-  title: [decomposing probability of intersection of events],
-  id: "prop-01-combinatorics-prob-space-decomposing-probability-of-intersection-of-events",
-  concepts: ("decomposing-probability-of-intersection-of-events",),
-  depends: (),
-  aliases: ("decomposing probability of intersection of events",),
+  title: [#kn[decomposing probability of intersection of events]],
 )[
 令 $(A_i)_(i in bb(N))$ 为一个 seq of events, 对于任意 $n in bb(N)$:
 $ bb(P) (A_1 inter A_2 inter dots.h inter A_n) = bb(P) (A_1) dot.op bb(P) (A_2 divides A_1) dot.op bb(P) (A_3 divides A_1 inter A_2) dots.h dot.op bb(P) (A_n divides A_1 inter dots.h inter A_(n - 1)) $
@@ -420,11 +341,7 @@ Naturally follows from the def.
 
 ]
 #theorem(
-  title: [law of total probability],
-  id: "thm-01-combinatorics-prob-space-law-of-total-probability",
-  concepts: ("law-of-total-probability",),
-  depends: (),
-  aliases: ("law of total probability",),
+  title: [#kn[law of total probability]],
 )[
 令 $(A_i)_(i in bb(N))$ 为一个 seq of #strong[pairwise disjoint] events, 如果 $union.sq_(i = 1)^oo A_i = Omega$, 那么对于任意 event $E subset.eq Omega$:
 $ bb(P)\(E\)= sum_(i = 1)^oo bb(P) (A_i) bb(P) (E divides A_i) $
@@ -439,11 +356,7 @@ $P\(A_i\)P\(E divides A_i\)$ 就等于 $P\(E inter A_i\)$, 也就是在 $A_i$ �
 
 ]
 #theorem(
-  title: [Bayes theorem],
-  id: "thm-01-combinatorics-prob-space-bayes-theorem",
-  concepts: ("bayes-theorem",),
-  depends: (),
-  aliases: ("Bayes theorem",),
+  title: [#kn[Bayes theorem]],
 )[
 If $A\,B subset.eq Omega$ such that $bb(P)\(B\)eq.not 0$, then
 $ bb(P)\(A divides B\)= frac(bb(P)\(A\)dot.op bb(P)\(B divides A\), bb(P)\(B\)) $
@@ -455,10 +368,6 @@ $ bb(P)\(A divides B\)= frac(bb(P)\(A\)dot.op bb(P)\(B divides A\), bb(P)\(B\)) 
 ]
 #example(
   title: [\(Medical testing)],
-  id: "ex-01-combinatorics-prob-space-medical-testing",
-  concepts: ("medical-testing",),
-  depends: (),
-  aliases: ("(Medical testing)",),
 )[
 在一个群体中, 随机选取一个人患有某种罕见疾病的概率是 0.001. 该疾病有一个诊断测试, 其性质如下: 给定个体患病, 测试呈阳性的概率 (真正阳性率) 是 0.99. 给定个体健康, 测试呈阳性的概率 (假阳性率) 是 0.02. 从群体中随机选取的一个人测试呈阳性. 该个体实际上患有该疾病的概率是多少?
 于是
@@ -473,10 +382,6 @@ $ bb(P)\(upright("sick") divides upright("positive")\)= frac(0.99 dot.op 0.001, 
 ]
 #example(
   title: [\(Monty Hall problem)],
-  id: "ex-01-combinatorics-prob-space-monty-hall-problem",
-  concepts: ("monty-hall-problem",),
-  depends: (),
-  aliases: ("(Monty Hall problem)",),
 )[
 假设你参加一个游戏节目, 面前有三扇门: 一扇门后面有一辆车; 其他两扇门后面是山羊. 你选择了一扇门, 比如说是 1 号门, 然后主持人打开了另一扇门, 比如说是 3 号门, 里面有一只山羊. 然后他说 \"你想换成 2 号门吗?\". 换门对你有利吗?
 
@@ -551,10 +456,6 @@ def monty_hall_sim(trials=10000):
 ]
 #example(
   title: [\(Wizards)],
-  id: "ex-01-combinatorics-prob-space-wizards",
-  concepts: ("wizards",),
-  depends: (),
-  aliases: ("(Wizards)",),
 )[
 两个巫师 $A$ 和 $B$ 进行决斗, 他们轮流射击对方. 巫师 $A$ 每次射击命中 $B$ 的概率是 $bb(P)\(A\)= 1 / 2$, 而巫师 $B$ 每次射击命中 $A$ 的概率是 $bb(P)\(B\)= 2 / 3$. 巫师 $A$ 先开枪. 求: 巫师 $A$ 获胜的概率是多少? \
 
@@ -576,11 +477,7 @@ Solving the system, we find $bb(P) (W_A) = 0.6$.
 我们通过 $bb(P)\(A divides B\)= frac(bb(P)\(A inter B\), bb(P)\(B\))$ 定义出来的 conditional probability 有一个限制, 就是 enforce $bb(P)\(B\)> 0$. \ 但是, 难道 $bb(P)\(B\)= 0$ 就不能定义条件概率了吗? 我们考虑一个连续情况: 在 $bb(R)^3$ 中任意选择一个点, 求: 该点位于单位球面上的概率. 显然, 这个概率是 0. 但是, 如果我们知道该点位于单位球内, 那么该点距离原点的距离为 $1$ 的概率应当为 $1$. 也就是说, 即使在 $bb(P)\(B\)= 0$ 的情况下, 我们也希望定义 $bb(P)\(A divides B\)$. \ 在考虑这个定义之前, 首先我们发现: 基于我们先前定义的 conditional probability, 我们可以获得一个新的 probability space:
 
 #definition(
-  title: [conditional probability space and trace $sigma$-algebra],
-  id: "def-01-combinatorics-prob-space-conditional-probability-space-and-trace-sigma-algebra",
-  concepts: ("conditional-probability-space-and-trace-sigma-algebra",),
-  depends: (),
-  aliases: ("conditional probability space and trace \\sigma-algebra",),
+  title: [#kn[conditional probability space and trace $sigma$-algebra]],
 )[
 对于给定的 prob space $\(Omega\,cal(F)\,bb(P)\)$, 给定一个 event $B in cal(F)$ 且 $bb(P)\(B\)> 0$, 我们定义 conditional probability space as the triplet $\(B\,cal(F)_B\,bb(P)\(dot.op divides B\)\)$, 其中:
 $ F_B := { A inter B divides A in cal(F) } $
@@ -596,11 +493,7 @@ $ bb(P)\(A divides B\)= integral_A f thin d bb(P) $
 既然这样, 我们能否直接从一个新的 prob space $\(B\,cal(F)_B\,bb(P)\(dot.op divides B\)\)$ 出发, 来定义条件概率呢? 这就是 Kolmogorov 的定义:
 
 #definition(
-  title: [Kolmogorov definition of conditional probability],
-  id: "def-01-combinatorics-prob-space-kolmogorov-definition-of-conditional-probability",
-  concepts: ("kolmogorov-definition-of-conditional-probability",),
-  depends: (),
-  aliases: ("Kolmogorov definition of conditional probability",),
+  title: [#kn[Kolmogorov definition of conditional probability]],
 )[
 对于给定的 prob space $\(Omega\,cal(F)\,bb(P)\)$,
 设 $cal(G) subset.eq cal(F)$ 是一个 sub-$sigma$-algebra. 对于 event $A in cal(F)$, 条件概率 $bb(P)\(A divides cal(G)\)$ 是一个 $cal(G)$-measurable 的随机变量, 其满足对于任意 $G in cal(G)$, 有:
@@ -626,11 +519,7 @@ Further issue: #strong[Borel-Kolmogorov paradox]. \ 即便是这个定义, 也�
 === independence of events
 <independence-of-events>
 #definition(
-  title: [independence of events],
-  id: "def-01-combinatorics-prob-space-independence-of-events",
-  concepts: ("independence-of-events",),
-  depends: (),
-  aliases: ("independence of events",),
+  title: [#kn[independence of events]],
 )[
 对于 prob space $\(Omega\,cal(F)\,bb(P)\)$, 两个 events $A\,B in cal(F)$ 如果有
 $ bb(P)\(A inter B\)= bb(P)\(A\)dot.op bb(P)\(B\) $
@@ -645,11 +534,7 @@ $ bb(P) (inter.big_(j in J) A_j) = product_(j in J) bb(P)\(A_j\) $
 的定义#strong[等价于 $bb(P)\(A divides B\)= bb(P)\(A\)$], 即事件 $B$ 的发生与否不影响事件 $A$ 发生的概率. \
 
 #proposition(
-  title: [independence of two events 的等价定义],
-  id: "prop-01-combinatorics-prob-space-independence-of-two-events",
-  concepts: ("independence-of-two-events",),
-  depends: (),
-  aliases: ("independence of two events 的等价定义",),
+  title: [#kn[independence of two events 的等价定义]],
 )[
 对于 prob space $\(Omega\,cal(F)\,bb(P)\)$,
 两个 events $A\,B in cal(F)$
@@ -682,9 +567,6 @@ $ frac(bb(P)\(A inter B\), bb(P)\(B\)) = frac(bb(P)\(A\), bb(P)\(Omega\)) $
 
 ]
 #proposition(
-  id: "prop-01-combinatorics-prob-space-proposition-008",
-  concepts: ("proposition-008",),
-  depends: (),
 )[
 如果 events $A$ 和 $B$ independent, 则 $A$ 和 $B^c$ 也是 independent 的.
 
@@ -697,10 +579,6 @@ $ bb(P) (A^c inter B^c) & = bb(P) (\( A union B \)^c) = 1 - bb(P)\(A union B\)= 
 ]
 #example(
   title: [\(Pairwise Independence vs. Mutual Independence)],
-  id: "ex-01-combinatorics-prob-space-pairwise-independence-vs-mutual-independence",
-  concepts: ("pairwise-independence-vs-mutual-independence",),
-  depends: (),
-  aliases: ("(Pairwise Independence vs. Mutual Independence)",),
 )[
 一组事件 $A_1\,A_2\,dots.h in cal(F)$ 如果是 mutually independent 的, 则它们两两 independent. #strong[但是反过来不成立]. \ 即: #strong[即便对于任意 $i eq.not j$, 有 $bb(P)\(A_i inter A_j\)= bb(P)\(A_i\)bb(P)\(A_j\)$, 也并不意味着这些事件是 mutually independent 的]. \ 下面为一个 counterexample: 考虑掷两个骰子. 令事件
 $ A := { upright("first roll is ") 4 }\,quad B := { upright("second roll is ") 3 }\,quad C := { upright("the sum of the two outcomes is ") 7 } $
@@ -725,10 +603,6 @@ $ A := { upright("first roll is ") 4 }\,quad B := { upright("second roll is ") 3
 ]
 #example(
   title: [\(coin tossing)],
-  id: "ex-01-combinatorics-prob-space-coin-tossing",
-  concepts: ("coin-tossing",),
-  depends: (),
-  aliases: ("(coin tossing)",),
 )[
 假设我们有一枚不均匀的硬币, 掷出正面的概率是 $p in\[0\,1\]$, 反面的概率是 $1 - p$. 我们不断地掷这枚硬币, 直到第一次掷出正面为止, 并记录所需的掷币次数. 求: 掷币次数为奇数的概率是多少?
 

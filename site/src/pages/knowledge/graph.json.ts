@@ -6,7 +6,7 @@ export const prerender = true;
 
 const graphDirectory = resolve(
 	process.cwd(),
-	"../notes/math/knowledge/graph",
+	"../knowledge/graph",
 );
 
 function readJson(name: string) {
@@ -26,6 +26,7 @@ export const GET: APIRoute = () => {
 		diagnostics: readJson("diagnostics.json"),
 		nodes: readJsonLines("nodes.jsonl"),
 		edges: readJsonLines("edges.jsonl"),
+		references: readJsonLines("references.jsonl"),
 	};
 
 	return new Response(JSON.stringify(payload), {

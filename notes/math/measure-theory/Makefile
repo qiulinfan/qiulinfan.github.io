@@ -3,7 +3,7 @@
 TYPST := typst
 TOOLCHAIN := ../toolchain
 SKILL := ../../../skills/export-typst-math-notes
-KNOWLEDGE := ../knowledge/scripts/knowledge.py
+KNOWLEDGE := ../../../knowledge/scripts/knowledge.py
 REPO_ROOT := ../../..
 BUILD := build/typst
 EXPORTS := exports
@@ -13,16 +13,16 @@ all: release
 release: export web-check extras-web-check
 
 export:
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course measure-theory
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document main=main.typ \
 		--document extras=extras.typ \
 		--root ../.. \
 		--output $(EXPORTS) \
 		--build $(BUILD)/export
-	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
 knowledge-sync:
-	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course measure-theory
 
 web:
 	@mkdir -p $(BUILD)
@@ -32,7 +32,7 @@ web:
 
 web-check: web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/index.html \
-		--expected-nodes 302 --expected-diagrams 0
+		--expected-nodes 173 --expected-diagrams 0
 
 extras-web:
 	@mkdir -p $(BUILD)
@@ -42,7 +42,7 @@ extras-web:
 
 extras-web-check: extras-web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/extras.html \
-		--expected-nodes 7 --expected-diagrams 0
+		--expected-nodes 0 --expected-diagrams 0
 
 pdf:
 	@mkdir -p $(BUILD)

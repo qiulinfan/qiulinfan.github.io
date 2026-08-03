@@ -17,11 +17,7 @@ from export import ExportError, export as export_authority
 INCLUDE_RE = re.compile(r'^\s*#include\s+"([^"]+)"', re.MULTILINE)
 MARKDOWN_HEADING_RE = re.compile(r"^#\s+(.+?)(?:\s+\{#[^}]+\})?\s*$", re.MULTILINE)
 LATEX_CHAPTER_RE = re.compile(r"^\\chapter(?:\[[^\]]*\])?\{", re.MULTILINE)
-SEMANTIC_DIV_RE = re.compile(
-    r"^:{3,}\s+\{#[^}\s]+\s+\."
-    r"(?:definition|theorem|lemma|corollary|proposition|example)(?:\s|})",
-    re.MULTILINE,
-)
+KN_MARKER_RE = re.compile(r'data-ql-kn="[^"]+"')
 SEMANTIC_COUNT_RE = re.compile(r"^semantic-node-count:\s*\d+\s*$", re.MULTILINE)
 TYPST_CHAPTER_RE = re.compile(
     r"^(?:=\s+(.+?)\s*|#heading\(level:\s*1[^)]*\)\[(.+?)\])$",
@@ -253,7 +249,7 @@ def export_course(
             if page_stem in seen_stems:
                 raise ExportError(f"duplicate chapter export name: {page_stem}")
             seen_stems.add(page_stem)
-            count = len(SEMANTIC_DIV_RE.findall(markdown_page))
+            count = len(KN_MARKER_RE.findall(markdown_page))
             page_frontmatter = SEMANTIC_COUNT_RE.sub(
                 f"semantic-node-count: {count}", markdown_frontmatter
             )

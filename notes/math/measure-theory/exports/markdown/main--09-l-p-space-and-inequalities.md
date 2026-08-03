@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 33
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -30,14 +30,14 @@ title: "MATH 597: Measure Theory"
 
 Recall:
 
-::: {#def-09-l-p-space-and-inequalities-semi-norm-norm .definition concepts="semi-norm-norm" aliases="semi-norm, norm"}
+::: definition
 **Definition: semi-norm, norm**
 
 一个**semi norm** 是一个函数 $\left. | \middle| \cdot \middle| \middle| :V\rightarrow\lbrack 0,\infty) \right.$ starting from a vector space $V$. 其满足 (1): tri eq 和 (2): homogeneity.\
 如果一个 semi-norm 满足 (3): $\left. | \middle| v \middle| \middle| = 0 \right.$ iff $v = 0$, 则称它为一个 **norm**.
 :::
 
-::: {#def-09-l-p-space-and-inequalities-banach-space .definition concepts="banach-space" aliases="Banach space"}
+::: definition
 **Definition: Banach space**
 
 一个 normed vector space $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ 的 induced metric space 如果是 complete 的, 它就被称为一个 **Banach space**.\
@@ -57,7 +57,7 @@ $$\parallel v_{n} - v \parallel \leq \epsilon$$
 By tri ineq 容易证明: 在 genral normed VS 中, convergent imply Cauchy, 反之未必. convergent 是更强的条件. (interestingly, convergence in measure 却不 imply Cauchy in measure)
 :::
 
-::: {#ex-09-l-p-space-and-inequalities-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 ${\mathbb{R}}^{n},{\mathbb{C}}^{n}$ with Euclidean norm is a Banach space.\
@@ -68,7 +68,7 @@ $$\left. | \middle| f - g \middle| \middle| := \sup\limits_{x \in \lbrack 0,1\rb
 $C_{c}^{0}({\mathbb{R}})$: space of ctn functions with cpt supp on $\mathbb{R}$ equipped with $\sup$ norm **is not Banach**! 这是因为, 一个有 cpt supp 的 function seq 的极限未必有 cpt supp. 比如 $(\chi_{\lbrack - n,n\rbrack})_{n \in {\mathbb{N}}}$.
 :::
 
-::: {#lem-09-l-p-space-and-inequalities-lemma-001 .lemma concepts="lemma-001"}
+::: lemma
 **Lemma**
 
 A metric space $(X,\rho)$ is **complete** iff **every Cauchy seq has a subseq that converges.**
@@ -86,7 +86,7 @@ $\Longleftarrow$: subseq conv dist bound + Cauchy dist bound can bound the whole
 
 ### every Cachy seq conv (complete) $\Leftrightarrow$ every abs conv series convs
 
-::: {#def-09-l-p-space-and-inequalities-series-convergence-absolute-convergence .definition concepts="series-convergence-absolute-convergence" aliases="series: convergence 和 absolute convergence"}
+::: definition
 **Definition: series: convergence 和 absolute convergence**
 
 对于一个 normed VS $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ 中的 seq $(v_{n})$, 我们称 $\sum_{n = 1}^{\infty}v_{n}$ **converges**, 如果存在 $v \in V$ s.t.
@@ -104,7 +104,7 @@ $$\left. \sum\limits_{n = 1}^{\infty} \middle| \middle| v_{n} \middle| \middle| 
 即这个 series 对应的 norm series converges to some real number.
 :::
 
-::: {#thm-09-l-p-space-and-inequalities-another-criterion-for-banach-space .theorem concepts="another-criterion-for-banach-space" aliases="another criterion for Banach space"}
+::: {#thm-09-l-p-space-and-inequalities-another-criterion-for-banach-space .theorem}
 **Theorem: another criterion for Banach space**
 
 A normed VS $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ is a Banach space iff every absolutely convergent series converges.
@@ -162,7 +162,7 @@ Note, 我们知道在 ${\mathbb{R}}^{n}$, ${\mathbb{C}}^{n}$ 上, abs conv 一�
 1. As is known to all, ${\mathbb{R}}^{n},{\mathbb{C}}^{n}$ 上 Euclidean norm 的 induced metric 就是 Euclidean metric, making it complete metric space, 从而是 Banach space.\
 2. recall in elementary functional analysis:
 
-::: {#def-09-l-p-space-and-inequalities-definition-004 .definition concepts="definition-004"}
+::: definition
 **Definition**
 
 我们称两个 norms $\parallel \cdot \underset{a}{\parallel}, \parallel \cdot \underset{b}{\parallel}$ on a vector space 是 equivalent, 如果存在常数 $C_{1},C_{2} > 0$ 使得对于任意 $x$ 都有
@@ -174,7 +174,7 @@ $$C_{1} \parallel x\underset{a}{\parallel} \leq \parallel x\underset{b}{\paralle
 
 以及这个经典的定理:
 
-::: {#thm-09-l-p-space-and-inequalities-theorem-002 .theorem concepts="theorem-002"}
+::: theorem
 **Theorem**
 
 finite dimensional vector space $X$ 上, 所有 norms 都 equivalent.
@@ -200,7 +200,7 @@ $({\mathbb{R}}\lbrack x\rbrack, \parallel p\underset{\sup}{\parallel})$ 不是 c
 
 ### $L^{p}$ spaces
 
-::: {#def-09-l-p-space-and-inequalities-l-p-spaces .definition concepts="l-p-spaces" aliases="L_p spaces"}
+::: definition
 **Definition: L\_{p} spaces**
 
 Consider $p \in (0,\infty)$.\
@@ -230,7 +230,7 @@ where $f \sim g$ if $f = g$ a.e.
 - $\left. |f \middle| {}_{p} \in L^{1} \right.$
 :::
 
-::: {#ex-09-l-p-space-and-inequalities-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 $(X,\mathcal{A},\mu) := ({\mathbb{R}},\mathcal{L},m)$,
@@ -242,7 +242,7 @@ $(X,\mathcal{A},\mu) := ({\mathbb{N}},\mathcal{P}({\mathbb{N}}),\mu_{counting})$
 $$L^{p}(\mu_{counting}) = \left\{ (a_{n})_{n \in {\mathbb{N}}}:\sum\limits_{n = 1}^{\infty} \middle| a_{n} \middle| {}_{p} < \infty \right\}$$
 :::
 
-::: {#lem-09-l-p-space-and-inequalities-l-p-space-is-a-vector-space .lemma concepts="l-p-space-is-a-vector-space" aliases="L_p space is a vector space"}
+::: lemma
 **Lemma: L\_{p} space is a vector space**
 
 $L_{p}$ space is a $\mathbb{C}$-vector space.
@@ -281,7 +281,7 @@ $$\left. | \middle| f + g \middle| \middle| {}_{p} \leq \middle| \middle| f \mid
 
 ### Hölder's ineq
 
-::: {#thm-09-l-p-space-and-inequalities-h-lder-s-ineq .theorem concepts="h-lder-s-ineq" aliases="Hölder’s ineq"}
+::: theorem
 **Theorem: Hölder's ineq**
 
 Consider conjugate pair: $p,q \in \lbrack 1,\infty)$ s.t.
@@ -316,7 +316,7 @@ Trivial Case 1: 如果 $\parallel f\underset{p}{\parallel} = 0$ (或者$\paralle
 Trivial Case 2: 如果 $\parallel f\underset{p}{\parallel} = \infty$ or $\parallel g\underset{q}{\parallel} = \infty$, 则右边 infinite, ineq trivially true. 因而我们只需要考虑 $\parallel f\underset{p}{\parallel}$ and $\parallel g\underset{q}{\parallel}$ are in $(0,\infty)$ 的情况就好了.\
 Main case: 我们需要一个 Lemma:
 
-::: {#lem-09-l-p-space-and-inequalities-young-s-inequality-for-products .lemma concepts="young-s-inequality-for-products" aliases="Young’s inequality for products"}
+::: lemma
 **Lemma: Young's inequality for products**
 
 Whenever $p,q \in (1,\infty)$ with $\frac{1}{p} + \frac{1}{q} = 1$, 都有
@@ -384,8 +384,8 @@ This generalization will be proved in hw8.
 
 Minkowski's ineq 即 $L^{p}$ space 上的 tri ineq.
 
-::: {#cor-09-l-p-space-and-inequalities-mincowski-s-ineq .corollary concepts="mincowski-s-ineq" aliases="Mincowski’s ineq"}
-**Corollary: Mincowski's ineq**
+::: corollary
+**Corollary: Minkowski inequality**
 
 对于任意 $1 \leq p < \infty$, 都有:
 
@@ -466,7 +466,7 @@ $$\left. |a + b \middle| {}_{p} > \middle| a \middle| {}_{p} + \middle| b|^{p} \
 
 ### $L^{p}$ ($1 \leq p < \infty$) is Banach
 
-::: {#thm-09-l-p-space-and-inequalities-l-p-space-1-leq-p-infty-is-banach .theorem concepts="l-p-space-1-leq-p-infty-is-banach" aliases="L^p space (1\\leq p < \\infty) is Banach"}
+::: theorem
 **Theorem: L\^{p} space (1 \\leq p \< \\infty) is Banach**
 
 $L^{p}$ ($1 \leq p < \infty$) is Banach.
@@ -551,7 +551,7 @@ $$\left. \lim\limits_{n}\int \middle| g_{n} - g \middle| {}_{p} = 0 \right.$$
 
 我们刚才 mention: DCT 对于 function seq $L^{p}$ convergence 的证明有很大作用. 这里我们就提供一个 DCT 推出的 $L^{p}$ convergence 的判断准则:
 
-::: {#thm-09-l-p-space-and-inequalities-criterion-for-l-p-convergence .theorem concepts="criterion-for-l-p-convergence" aliases="Criterion for L^p convergence"}
+::: theorem
 **Theorem: Criterion for L\^{p} convergence**
 
 if $f_{n}\rightarrow f$ a.e. and $\parallel f_{n}\underset{p}{\parallel}\rightarrow \parallel f\underset{p}{\parallel}$, then $\parallel f_{n} - f\underset{p}{\parallel}\rightarrow 0$.
@@ -571,7 +571,7 @@ In Hw 8.
 
 ### dense subsets of $L^{p}$, and specially $L^{p}({\mathbb{R}},m)$
 
-::: {#prop-09-l-p-space-and-inequalities-proposition-001 .proposition concepts="proposition-001"}
+::: proposition
 **Proposition**
 
 对于任意 $1 \leq p < \infty$, the set of $\{$simple functions$\}$, is dense in $L^{p}$.\
@@ -594,7 +594,7 @@ $$\left\{ {f:X\rightarrow{\mathbb{C}} \mid f = \sum\limits_{1}^{n}a_{j}\chi_{E_{
 对 $f$ 使用 simple function seq 逼近, 使用 $\left. 2^{p} \middle| f|^{p} \right.$ 作为 dominating function of $|f_{k} - f|^{p}$; 而后使用 DCT 得证.
 :::
 
-::: {#thm-09-l-p-space-and-inequalities-c-c-0-mathbb-r-n-is-dense-in-l-p-mathbb-r-m-for-1-leq-p-infty .theorem concepts="c-c-0-mathbb-r-n-is-dense-in-l-p-mathbb-r-m-for-1-leq-p-infty" aliases="C_c^0(\\mathbb{R}^n) is dense in L^p(\\mathbb{R},m) for 1\\leq p < \\infty"}
+::: theorem
 **Theorem: C\_{c}\^{0}({\\mathbb{R}}\^{n}) is dense in L\^{p}({\\mathbb{R}},m) for 1 \\leq p \< \\infty**
 
 $C_{c}^{0}({\mathbb{R}}^{n})$ is dense in $L^{p}({\mathbb{R}},m)$ for $1 \leq p < \infty$
@@ -634,7 +634,7 @@ $$\left. \parallel f\underset{\infty}{\parallel}: = \sup\limits_{x \in X} \middl
 
 实际上我们有更好的定义方式:
 
-::: {#def-09-l-p-space-and-inequalities-essential-supremum .definition concepts="essential-supremum" aliases="essential supremum"}
+::: definition
 **Definition: essential supremum**
 
 $$\parallel f\underset{\infty}{\parallel}: = \inf\left\{ {a \geq 0:\mu\left\{ x: \middle| f(x) \middle| > a \right\} = 0} \right\}$$
@@ -666,7 +666,7 @@ $$\left. \sup\limits_{x \in X} \middle| f(x)| \right.$$
 $$\left. \parallel f\underset{u}{\parallel} := \sup\limits_{x \in X} \middle| f(x)| \right.$$
 :::
 
-::: {#def-09-l-p-space-and-inequalities-l-infty-space .definition concepts="l-infty-space" aliases="L^\\infty space"}
+::: definition
 **Definition: L\^{\\infty} space**
 
 $$L^{\infty}(\mu): = \left\{ {f:X\rightarrow{\mathbb{C}}\ \text{measurable}: \parallel f\underset{\infty}{\parallel} < \infty} \right\}/ \sim$$
@@ -700,13 +700,13 @@ for 任意的 $p \geq q$.\
 
 ### $\ell^{\infty}$ space
 
-::: {#def-09-l-p-space-and-inequalities-ell-infty .definition concepts="ell-infty" aliases="\\ell^\\infty"}
+::: definition
 **Definition: \\ell\^{\\infty}**
 
 $$\ell^{\infty}: = \left\{ (a_{j})_{1}^{\infty}: \parallel (a_{j})\underset{\infty}{\parallel}: = \sup\limits_{j} \middle| a_{j} \middle| < \infty \right\}$$
 :::
 
-::: {#ex-09-l-p-space-and-inequalities-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 $$f = x\chi_{\mathbb{Q}} \in L^{\infty}(m)$$
@@ -740,7 +740,7 @@ $${\mathbb{C}}^{1},{\mathbb{C}}^{2},{\mathbb{C}}^{3},\cdots,\ell^{\infty}$$
 
 ### $L^{\infty}$ 的基本性质: as a NVS; Hölder's ineq on it; dense subsets
 
-::: {#lem-09-l-p-space-and-inequalities-lemma-004 .lemma concepts="lemma-004"}
+::: lemma
 **Lemma**
 
 如果 $f \in L^{\infty}(\mu)$ 则:
@@ -769,7 +769,7 @@ $$f(x) = \left\{ \begin{matrix}
 有 $\parallel f\underset{\infty}{\parallel} = 0$.
 :::
 
-::: {#thm-09-l-p-space-and-inequalities-theorem-007 .theorem concepts="theorem-007"}
+::: theorem
 **Theorem**
 
 - $$\parallel fg\underset{\infty}{\parallel} \leq \parallel f\underset{1}{\parallel} \parallel g\underset{\infty}{\parallel}$$
@@ -799,7 +799,7 @@ $$f(x) = \left\{ \begin{matrix}
 
 ### $L^{\infty}$-convergence 作为 (finite measure space 下) 最强的 $L^{p}$ convergence: 等价于 uni. conv a.e.
 
-::: {#thm-09-l-p-space-and-inequalities-convergence-in-l-infty-iffuniform-convergence-a-e .theorem concepts="convergence-in-l-infty-iffuniform-convergence-a-e" aliases="convergence in L^\\infty \\iffuniform convergence a.e."}
+::: theorem
 **Theorem: convergence in L\^{\\infty} \\Leftrightarrowuniform convergence a.e.**
 
 $$f_{n}\rightarrow f\text{in}\ L^{\infty}\Leftrightarrow\text{exists null set}\ E \subset X s.t.f_{n}\rightarrow f\ \text{uniformly on}\ E^{c}$$
@@ -862,7 +862,7 @@ whenever $p > q$. (可证明)\
 
 ### $L^{\infty}$ as Banach space
 
-::: {#thm-09-l-p-space-and-inequalities-l-p-1-leq-p-leq-infty-is-banach .theorem concepts="l-p-1-leq-p-leq-infty-is-banach" aliases="L^p (1\\leq p \\leq \\infty) is Banach"}
+::: theorem
 **Theorem: L\^{p} (1 \\leq p \\leq \\infty) is Banach**
 
 For any measure space $(X,\mathcal{A},\mu)$, $L^{p}(\mu)$ is Banach for all $1 \leq p \leq \infty$
@@ -954,7 +954,7 @@ $L^{p}$ space 的 Banach 性表示了其**极限存在的稳定性**. recall, Ba
 
 刚才我们已经 state 了, 但还没有证明:
 
-::: {#thm-09-l-p-space-and-inequalities-inclusion-relation-between-l-p-spaces-when-base-space-is-finite .theorem concepts="inclusion-relation-between-l-p-spaces-when-base-space-is-finite" aliases="inclusion relation between L^p spaces (when base space is finite measure)"}
+::: theorem
 **Theorem: inclusion relation between L\^{p} spaces (when base space is finite measure)**
 
 如果 measure space $X$ has finite measure, 那么有
@@ -1011,7 +1011,7 @@ $$\parallel f\underset{m}{\parallel} < \infty\Longrightarrow \parallel f\underse
 
 以下是一个经典的例子:
 
-::: {#ex-09-l-p-space-and-inequalities-example-004 .example concepts="example-004"}
+::: example
 **Example**
 
 考虑 **measure finite 的 measure space $(0,1)$**: 通过经典的 Calculus 我们知道:
@@ -1045,7 +1045,7 @@ $$\left. \int \middle| f \middle| {}_{n} \leq \parallel f\underset{m}{\overset{n
 
 两边开 $p$ 方, 可以得到一个不等式:
 
-::: {#thm-09-l-p-space-and-inequalities-theorem-011 .theorem concepts="theorem-011"}
+::: theorem
 **Theorem**
 
 对于 measure finite space $X$, 对于任意的 $0 < n \leq m \leq \infty$, 有:
@@ -1058,7 +1058,7 @@ $$\parallel f\underset{n}{\parallel} \leq \parallel f\underset{m}{\parallel}\,\m
 
 ### $(L^{n} \cap L^{r}) \subset L^{m} \subset (L^{n} + L^{r})$, 对任意 $0 < n < m < r \leq \infty$
 
-::: {#prop-09-l-p-space-and-inequalities-proposition-002 .proposition concepts="proposition-002"}
+::: proposition
 **Proposition**
 
 对于 measurable $f:X\rightarrow{\mathbb{C}}$,
@@ -1138,7 +1138,7 @@ Hölder's ineq 仍然是这里重要的一步. 我们这里需要利用 convexit
 
 此处我们可以由这个 proposition 直接得到一个推论:
 
-::: {#cor-09-l-p-space-and-inequalities-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 对于任意的 $0 < n < m < r \leq \infty$, 都有
@@ -1147,7 +1147,7 @@ $$(L^{n} \cap L^{r}) \subset L^{m}$$
 :::
 ::::
 
-::: {#ex-09-l-p-space-and-inequalities-example-005 .example concepts="example-005"}
+::: example
 **Example**
 
 令 $A$ 为任意集合, $0 \leq p < q \leq \infty$, 有:
@@ -1171,7 +1171,7 @@ $$\parallel f\underset{q}{\parallel} \leq \parallel f\underset{p}{\overset{\lamb
 
 相对于这个inclusion 关系, 我们还有另外一个 inclusion 关系:
 
-::: {#prop-09-l-p-space-and-inequalities-l-m-l-n-l-r-0-n-m-r-leq-infty .proposition concepts="l-m-l-n-l-r-0-n-m-r-leq-infty" aliases="每个 L^m 函数都是一个 L^n 函数和一个 L^r 函数的和 (0< n < m < r \\leq \\infty)"}
+::: proposition
 **Proposition: 每个 L\^{m} 函数都是一个 L\^{n} 函数和一个 L\^{r} 函数的和 (0 \< n \< m \< r \\leq \\infty)**
 
 对于任意的 $0 < n < m < r \leq \infty$, 都有

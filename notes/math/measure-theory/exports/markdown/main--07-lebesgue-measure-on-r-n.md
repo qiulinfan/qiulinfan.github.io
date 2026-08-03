@@ -14,8 +14,8 @@ keywords:
 - Radon--Nikodym theorem
 - Lp spaces
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 17
+qlnotes-schema: qlnotes-v2
+semantic-node-count: 0
 source: main.typ
 subtitle: Typst-first course notes and worked homeworks
 title: "MATH 597: Measure Theory"
@@ -36,7 +36,7 @@ title: "MATH 597: Measure Theory"
 
 这是 product measure 最常见的应用和例子.
 
-::: {#def-07-lebesgue-measure-on-r-n-definition-001 .definition concepts="definition-001"}
+::: definition
 **Definition**
 
 $({\mathbb{R}}^{n},\mathcal{L}^{n},m)$ Lebesgue measure is **completion of** $\left. ({\mathbb{R}}^{n},\mathcal{B}_{{\mathbb{R}}^{n}},m \middle| {}_{borel}) \right.$.
@@ -46,7 +46,7 @@ where $\mathcal{B}_{{\mathbb{R}}^{n}} = \mathcal{B}_{\mathbb{R}} \otimes \cdots 
 
 $$\int f dm^{n}\quad$$
 
-::: {#thm-07-lebesgue-measure-on-r-n-fubini-tonelli-for-m-n .theorem concepts="fubini-tonelli-for-m-n" aliases="Fubini-Tonelli for m^n"}
+::: theorem
 **Theorem: Fubini-Tonelli for m\^{n}**
 
 Suppose $f \in L^{+}({\mathbb{R}}^{n})$ or $L^{1}({\mathbb{R}}^{n})$
@@ -57,7 +57,7 @@ $$\begin{matrix}
 \end{matrix}$$
 :::
 
-::: {#ex-07-lebesgue-measure-on-r-n-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 Show:
@@ -82,7 +82,7 @@ by integration by part for twice.
 
 ### regularities of Lebesgue measure in ${\mathbb{R}}^{n}$
 
-::: {#thm-07-lebesgue-measure-on-r-n-regularities-of-mathcal-l-n .theorem concepts="regularities-of-mathcal-l-n" aliases="regularities of \\mathcal{L}^n"}
+::: theorem
 **Theorem: regularities of \\mathcal{L}\^{n}**
 
 If $E \subset \mathcal{L}^{n}$, 则有:
@@ -132,7 +132,7 @@ $$m(U_{j}\backslash V_{j}) < \epsilon/2^{j}$$
 Now pick $R_{1},\cdots,R_{N}$ from honest rectangles (即 sides 都是 intervals 的 rectangle) insides $V_{j}$ (DIY). (完整 Pf 可见 395 笔记, 此略)
 :::
 
-::: {#cor-07-lebesgue-measure-on-r-n-corollary-001 .corollary concepts="corollary-001"}
+::: corollary
 **Corollary**
 
 For $f \in L^{1}(m)$, if $f \in L^{1}(m)$ and $\epsilon > 0$ then
@@ -178,7 +178,7 @@ $$\bar{\kappa}(E) = m(\bar{A}(E)),\quad\underset{¯}{\kappa}(E) = m(\underset{¯
 
 Note: 这里的 $\underset{¯}{A}(E,k),\bar{A}(E,k),\underset{¯}{A}(E),\bar{A}(E)$ 都是 union of cubes with disjoint interiors.
 
-::: {#lem-07-lebesgue-measure-on-r-n-approximate-an-open-set-by-disjoint-interior-cubes .lemma concepts="approximate-an-open-set-by-disjoint-interior-cubes" aliases="approximate an open set by disjoint interior cubes"}
+::: lemma
 **Lemma: approximate an open set by disjoint interior cubes**
 
 Let $E \subset {\mathbb{R}}^{n}$ be open.\
@@ -191,7 +191,7 @@ Claim: $E = \underset{¯}{A}(E)$
 Folland 2.43.
 :::
 
-::: {#cor-07-lebesgue-measure-on-r-n-corollary-002 .corollary concepts="corollary-002"}
+::: corollary
 **Corollary**
 
 $E \subset {\mathbb{R}}^{n}$ 是 Lebesuge measurable 的 $\Leftrightarrow$ $\bar{\kappa}(E) = \underset{¯}{\kappa}(E)$
@@ -207,7 +207,7 @@ Affine transformation 即 linear transformation + translation.
 
 $$t_{a}^{- 1} = t_{- a}$$
 
-::: {#thm-07-lebesgue-measure-on-r-n-lebesgue-measure-and-integral-is-invariant-under-translation .theorem concepts="lebesgue-measure-and-integral-is-invariant-under-translation" aliases="Lebesgue measure and integral is invariant under translation"}
+::: theorem
 **Theorem: Lebesgue measure and integral is invariant under translation**
 
 \(a\) 任取 $a \in {\mathbb{R}}^{n}$,
@@ -260,7 +260,7 @@ also holds for simple $f$, by linearity.\
 
 ### Lebesgue measure and integration is scaled $|\det T|$ under linear map
 
-::: {#thm-07-lebesgue-measure-on-r-n-lebesgue-measure-and-integration-is-scaled-det-t-by-linear-map .theorem concepts="lebesgue-measure-and-integration-is-scaled-det-t-by-linear-map" aliases="Lebesgue measure and integration is scaled , \\det T,  by linear map"}
+::: theorem
 **Theorem: Lebesgue measure and integration is scaled \|\\det T\| by linear map**
 
 For $T \in GL(n,{\mathbb{R}})$ (即 linear map $T:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}^{n}$ 且可逆) (a) 如果 $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ is Lebesgue measurable, then so is $f \circ T$.\
@@ -287,7 +287,7 @@ $$\left. \int f = \middle| \det(T \circ S) \middle| \int f \circ (T \circ S)(x) 
 which trivially follows from computation. (and $\det(S \circ T) = \det S \times \det T$ for any linear map $S,T$.)\
 recall that:
 
-::: {#lem-07-lebesgue-measure-on-r-n-row-reduction .lemma concepts="row-reduction" aliases="row reduction"}
+::: lemma
 **Lemma: row reduction**
 
 **任意 invertible linear map 可以被拆分为 finite 个 elementary linear maps.** ( $T_{1}$: scale 一行; $T_{2}$: 交换两行; $T_{3}$: 一行加上另一行的倍数).
@@ -314,7 +314,7 @@ $$\int f(t + a) dt = \int f(t) dt$$
 
 ### Lebesgue measure is invariant under rotation (and reflection)
 
-::: {#cor-07-lebesgue-measure-on-r-n-lebesgue-measure-is-invariant-under-rotation .corollary concepts="lebesgue-measure-is-invariant-under-rotation" aliases="Lebesgue measure is invariant under rotation"}
+::: corollary
 **Corollary: Lebesgue measure is invariant under rotation**
 
 对于 rotation 和 reflection (即 orthogonal transformation), 即 $TT^{\ast} = I_{n}$ 的 linear map $T$, 有 $m(T(E)) = m(E)$.
@@ -338,7 +338,7 @@ $A \in GL(n,{\mathbb{R}})$ 为一个 orthogonal transformation (可写作 $A \in
 
 ### COV
 
-::: {#thm-07-lebesgue-measure-on-r-n-general-change-of-variable-theorem .theorem concepts="general-change-of-variable-theorem" aliases="general change of variable theorem"}
+::: theorem
 **Theorem: general change of variable theorem**
 
 Suppose $\Omega \subset {\mathbb{R}}^{n}$ **open**, $G:\Omega\rightarrow{\mathbb{R}}^{n}$ 为一个 $C^{1}$ **diffeomorphism**.\
@@ -432,7 +432,7 @@ simple function 的 case reduces to measure, 而 $L^{+}$ 的 case follows from M
 
 ### application of COV: polar coordinate
 
-::: {#def-07-lebesgue-measure-on-r-n-mapping-from-euclidean-coord-to-polar-coord .definition concepts="mapping-from-euclidean-coord-to-polar-coord" aliases="mapping from Euclidean coord to polar coord"}
+::: definition
 **Definition: mapping from Euclidean coord to polar coord**
 
 我们定义:
@@ -450,7 +450,7 @@ $$\left. r = \middle| x \middle| ,\quad\theta = \frac{x}{|x|} \in S^{n - 1} \rig
 
 这是一个很直观的坐标变换, 即一个 diffeomorphism.\
 
-::: {#def-07-lebesgue-measure-on-r-n-a-borel-measure-on-0-infty-times-s-n-1 .definition concepts="a-borel-measure-on-0-infty-times-s-n-1" aliases="a Borel measure on (0,\\infty) \\times S^{n-1}"}
+::: definition
 **Definition: a Borel measure on (0,\\infty) \\times S\^{n - 1}**
 
 我们定义
@@ -460,7 +460,7 @@ $$m_{\ast}(E) := m(\Phi^{- 1}(E))$$
 
 这是一个通过坐标变换的 preimage 的 Borel measure 定义的新的 Borel measure.\
 
-::: {#thm-07-lebesgue-measure-on-r-n-theorem-006 .theorem concepts="theorem-006"}
+::: theorem
 **Theorem**
 
 Define Borel measure $\rho$ on $(0,\infty)$ by:
@@ -505,13 +505,13 @@ $$\sigma(E) = n \cdot m(\Phi^{- 1}((0,1) \times E)) = n \cdot m\left\{ {r\theta 
 $$\sigma(S^{n - 1}) = \frac{2\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2})}$$
 :::
 
-::: {#ex-07-lebesgue-measure-on-r-n-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 $\sigma(S^{1}) = 2\pi$, $\sigma(S^{2}) = 4\pi$.
 :::
 
-::: {#ex-07-lebesgue-measure-on-r-n-example-003 .example concepts="example-003"}
+::: example
 **Example**
 
 使用 polar coordinate 计算积分:

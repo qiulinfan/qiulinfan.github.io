@@ -12,15 +12,15 @@ keywords:
 - problem solving
 - practice problems
 lang: zh-CN
-qlnotes-schema: qlnotes-v1
-semantic-node-count: 2
+qlnotes-schema: qlnotes-v2
+semantic-node-count: "0"
 source: extras.typ
 subtitle: Homework 0, problem-solving lectures, and practice problems
 title: "MATH 597: Measure Theory --- Supplementary Material"
 ---
 # problem solving-III
 
-::: {#ex-lec37-problem-solving-iii-example-001 .example concepts="example-001"}
+::: example
 **Example**
 
 Let $f \in L_{loc}^{2}({\mathbb{R}})$.\
@@ -68,7 +68,7 @@ $$f(x)^{2} \geq 1\,\quad\text{for a.e.}\ x$$
 $$\left. |f(x) \middle| \geq 1\,\quad\text{for a.e.}\ x \right.$$
 :::
 
-::: {#ex-lec37-problem-solving-iii-example-002 .example concepts="example-002"}
+::: example
 **Example**
 
 Prove or disprove: 对于 bounded open set $E \subset {\mathbb{R}}$, 它的 boundary 是否一定满足 $m(\partial E) = 0$ ?\
