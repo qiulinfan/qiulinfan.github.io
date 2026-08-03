@@ -7,6 +7,7 @@ local label_map = {}
 
 local statements = {
   definition = "def",
+  axiom = "ax",
   theorem = "thm",
   lemma = "lem",
   corollary = "cor",

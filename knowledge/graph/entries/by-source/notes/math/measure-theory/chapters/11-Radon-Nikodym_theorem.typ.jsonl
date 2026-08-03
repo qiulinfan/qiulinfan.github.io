@@ -1,0 +1,7 @@
+{"id":"absolute-continuity-of-signed-measures","text":"对同一 measurable space 上的 positive measure μ 和 signed measure ν，若每个 measurable set E 都满足 μ(E)=0 推出 ν(E)=0，则称 ν 对 μ absolutely continuous，记为 ν≪μ。"}
+{"id":"absolutely-continuous","text":"signed measure ν 满足 |ν|≪μ 当且仅当其 Jordan components ν⁺,ν⁻ 都对 μ absolutely continuous。若 ν 同时与 μ mutually singular 且对 μ absolutely continuous，则 ν 必为零 measure。"}
+{"id":"complex-measure","text":"measurable space (X,A) 上的 complex measure 是映射 ν:A→ℂ，满足 ν(∅)=0，并对任意两两不交的 measurable sets 具有 countable additivity。"}
+{"id":"lebesgue-radon-nikodym-theorem","text":"对 σ-finite positive measure μ 和 σ-finite signed measure ν，存在唯一分解 ν=λ+ρ，其中 λ 与 μ singular，ρ≪μ。Radon–Nikodym theorem 进一步给出 ρ=f dμ，且 f 在 μ-almost everywhere 意义下唯一。"}
+{"id":"radon-nikodym-derivative","text":"若 measurable function f 对每个 measurable set E 都满足 ν(E)=∫_E f dμ，则 f 称为 ν 对 μ 的 Radon–Nikodym derivative，记为 dν/dμ。它描述 signed measure ν 相对于 μ 的局部变化率。"}
+{"id":"radon-nikodym-theorem","text":"设 μ 是 σ-finite positive measure，ν 是 σ-finite signed measure，则 ν≪μ 当且仅当存在 extended μ-integrable function f，使 ν(E)=∫_E f dμ 对每个 measurable set E 成立。该 f 在 μ-almost everywhere 意义下唯一。"}
+{"id":"why-it-is-called-absolutely-continuous","text":"对 finite signed measure ν 和 positive measure μ，ν≪μ 等价于：对任意 ε>0，存在 δ>0，使得对每个 measurable set E，μ(E)<δ 都推出 |ν(E)|<ε。"}

@@ -10,7 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from migrate_latex import MigrationError, migrate
+from convert_latex_project import LatexProjectError, convert_latex_project, inspect_project
+from migrate_latex import MigrationError
 
 
 class LatexWebError(RuntimeError):
@@ -21,20 +22,7 @@ LATEX_KN_RE = re.compile(r"\\kn\s*\{")
 LATEX_REF_RE = re.compile(r"\\knref\s*\{")
 
 
-def typst_string(value: str) -> str:
-    return value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
-
-
-def sync_knowledge_sources(sources: list[Path], repo_root: Path) -> None:
-    command = [
-        sys.executable,
-        str(repo_root / "knowledge/scripts/knowledge.py"),
-        "--repo-root",
-        str(repo_root),
-        "sync",
-    ]
-    for source in sources:
-        command.extend(["--file", str(source)])
+def run_knowledge_command(command: list[str], *, purpose: str) -> None:
     result = subprocess.run(
         command,
         check=False,
@@ -44,7 +32,36 @@ def sync_knowledge_sources(sources: list[Path], repo_root: Path) -> None:
     )
     if result.returncode:
         detail = result.stderr.strip() or result.stdout.strip()
-        raise LatexWebError(f"knowledge synchronization failed before LaTeX export:\n{detail}")
+        raise LatexWebError(f"{purpose}:\n{detail}")
+
+
+def sync_knowledge_sources(sources: list[Path], repo_root: Path) -> None:
+    base = [
+        sys.executable,
+        str(repo_root / "knowledge/scripts/knowledge.py"),
+        "--repo-root",
+        str(repo_root),
+    ]
+    command = [
+        *base,
+        "sync",
+    ]
+    for source in sources:
+        command.extend(["--file", str(source)])
+    run_knowledge_command(
+        command,
+        purpose="knowledge synchronization failed before LaTeX export",
+    )
+    curation_command = [*base, "curate-check"]
+    for source in sources:
+        curation_command.extend(["--file", str(source)])
+    run_knowledge_command(
+        curation_command,
+        purpose=(
+            "LaTeX knowledge curation is incomplete; use the export skill to write "
+            "source-grounded entries and semantic edges before publishing"
+        ),
+    )
 
 
 def export_latex_web(
@@ -53,7 +70,7 @@ def export_latex_web(
     build: Path,
     output: Path,
     *,
-    title: str,
+    title: str | None,
     course: str | None,
     author: str | None,
     sync_graph: bool = True,
@@ -74,41 +91,18 @@ def export_latex_web(
             source.relative_to(repo_root)
         except ValueError as error:
             raise LatexWebError(f"LaTeX authority must stay inside repo root: {source}") from error
+    project = inspect_project(resolved_sources)
+    sync_sources = list(dict.fromkeys([*project.requested, *project.content_sources]))
     if sync_graph:
-        sync_knowledge_sources(resolved_sources, repo_root)
-    expected_kn = sum(len(LATEX_KN_RE.findall(source.read_text(encoding="utf-8"))) for source in resolved_sources)
-    expected_refs = sum(len(LATEX_REF_RE.findall(source.read_text(encoding="utf-8"))) for source in resolved_sources)
-    chapters = build / "chapters"
-    migrate(resolved_sources, chapters, build / "diagrams", None)
-    module_imports = (
-        '#import "/notes/math/toolchain/qlnotes.typ": *\n'
-        '#import "/notes/math/toolchain/math-aliases.typ": *\n\n'
-    )
-    for source in resolved_sources:
-        chapter = chapters / f"{source.stem}.typ"
-        chapter.write_text(
-            module_imports + chapter.read_text(encoding="utf-8"),
-            encoding="utf-8",
-        )
-    arguments = [f'  title: "{typst_string(title)}"']
-    if course:
-        arguments.append(f'  course: "{typst_string(course)}"')
-    if author:
-        arguments.append(f'  author: "{typst_string(author)}"')
-    arguments.append("  bibliography: none")
-    wrapper = build / "main.typ"
-    includes = "\n".join(
-        f'#include "chapters/{path.stem}.typ"' for path in resolved_sources
-    )
-    wrapper.write_text(
-        '#import "/notes/math/toolchain/qlnotes.typ": *\n'
-        '#import "/notes/math/toolchain/math-aliases.typ": *\n\n'
-        "#show: qlnotes.with(\n"
-        + ",\n".join(arguments)
-        + ",\n)\n\n"
-        + includes
-        + "\n",
-        encoding="utf-8",
+        sync_knowledge_sources(sync_sources, repo_root)
+    expected_kn = sum(len(LATEX_KN_RE.findall(source.read_text(encoding="utf-8"))) for source in project.content_sources)
+    expected_refs = sum(len(LATEX_REF_RE.findall(source.read_text(encoding="utf-8"))) for source in project.content_sources)
+    wrapper = convert_latex_project(
+        project,
+        build,
+        title=title,
+        course=course,
+        author=author,
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     result = subprocess.run(
@@ -116,7 +110,7 @@ def export_latex_web(
             "typst",
             "compile",
             "--root",
-            str(repo_root),
+            str(build),
             "--features",
             "html",
             "--format",
@@ -141,7 +135,7 @@ def export_latex_web(
             f"(kn {actual_kn}/{expected_kn}, refs {actual_refs}/{expected_refs}); "
             "synchronize the configured LaTeX authority before export"
         )
-    print(f"LaTeX -> Typst -> HTML: {len(resolved_sources)} source(s) -> {output}")
+    print(f"LaTeX -> Typst -> HTML: {len(project.content_sources)} source(s) -> {output}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -150,7 +144,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo-root", required=True, type=Path)
     parser.add_argument("--build", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--title", required=True)
+    parser.add_argument("--title")
     parser.add_argument("--course")
     parser.add_argument("--author")
     return parser.parse_args()
@@ -168,7 +162,7 @@ def main() -> int:
             course=args.course,
             author=args.author,
         )
-    except (LatexWebError, MigrationError, OSError) as error:
+    except (LatexWebError, LatexProjectError, MigrationError, OSError) as error:
         print(f"LaTeX web export failed: {error}", file=sys.stderr)
         return 1
     return 0

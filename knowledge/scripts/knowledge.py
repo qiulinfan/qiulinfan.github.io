@@ -24,6 +24,9 @@ from urllib.parse import quote
 GRAPH_SCHEMA = "qlkg-v2"
 SOURCE_SCHEMA = "qlkg-sources-v2"
 DELTA_SCHEMA = "qlkg-agent-delta-v2"
+ENTRY_STORE_SCHEMA = "qlkg-entry-shards-v1"
+ENTRY_SHARD_LIMIT = 48 * 1024 * 1024
+KNOWLEDGE_ORIGINS = {"personal-note", "research"}
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 KN_RE = re.compile(r"#kn\s*\[")
 REF_RE = re.compile(r"#ref\s*\[")
@@ -69,6 +72,14 @@ class KnowledgeError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class FieldSpec:
+    id: str
+    label: str
+    text: str
+    aliases: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class SourceSpec:
     id: str
     subject: str
@@ -76,7 +87,9 @@ class SourceSpec:
     root: Path
     patterns: tuple[str, ...]
     web: str
-    topic_patterns: tuple[tuple[str, str, str], ...]
+    knowledge_origin: str
+    fields: tuple[str, ...]
+    topic_patterns: tuple[tuple[str, str, str, tuple[str, ...]], ...]
 
 
 @dataclass(frozen=True)
@@ -100,7 +113,9 @@ class DefinitionOccurrence:
     source_id: str
     subject: str
     course: str
+    knowledge_origin: str
     topic: str | None
+    fields: tuple[str, ...]
     position: int
     statement: StatementRange | None
 
@@ -208,6 +223,31 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
 
 
+def load_fields(registry: Path) -> list[FieldSpec]:
+    payload = read_json(registry, {})
+    if payload.get("schema") != SOURCE_SCHEMA:
+        raise KnowledgeError(f"expected {SOURCE_SCHEMA} source registry: {registry}")
+    result: list[FieldSpec] = []
+    seen: set[str] = set()
+    for raw in payload.get("fields", []):
+        field_id = str(raw.get("id", ""))
+        if not ID_RE.fullmatch(field_id) or field_id in seen:
+            raise KnowledgeError(f"duplicate or invalid field id: {field_id!r}")
+        seen.add(field_id)
+        label = str(raw.get("label", "")).strip()
+        if not label:
+            raise KnowledgeError(f"field {field_id} has no label")
+        result.append(
+            FieldSpec(
+                id=field_id,
+                label=label,
+                text=str(raw.get("text", "")).strip(),
+                aliases=tuple(str(item) for item in raw.get("aliases", [])),
+            )
+        )
+    return result
+
+
 def load_sources(repo_root: Path, registry: Path) -> list[SourceSpec]:
     payload = read_json(registry, {})
     if payload.get("schema") != SOURCE_SCHEMA:
@@ -225,14 +265,21 @@ def load_sources(repo_root: Path, registry: Path) -> list[SourceSpec]:
         patterns = tuple(str(item) for item in raw.get("files", []))
         if not patterns:
             raise KnowledgeError(f"source {source_id} has no bounded file patterns")
+        source_fields = tuple(dict.fromkeys(str(item) for item in raw.get("fields", [])))
         topics = tuple(
             (
                 str(item["glob"]),
                 str(item["id"]),
                 str(item["label"]),
+                tuple(dict.fromkeys(str(field) for field in item.get("fields", []))),
             )
             for item in raw.get("topics", [])
         )
+        knowledge_origin = str(raw.get("knowledge_origin", "personal-note"))
+        if knowledge_origin not in KNOWLEDGE_ORIGINS:
+            raise KnowledgeError(
+                f"source {source_id} has invalid knowledge_origin: {knowledge_origin!r}"
+            )
         result.append(
             SourceSpec(
                 id=source_id,
@@ -241,6 +288,8 @@ def load_sources(repo_root: Path, registry: Path) -> list[SourceSpec]:
                 root=root,
                 patterns=patterns,
                 web=str(raw.get("web", "")).rstrip("/"),
+                knowledge_origin=knowledge_origin,
+                fields=source_fields,
                 topic_patterns=topics,
             )
         )
@@ -254,11 +303,11 @@ def expand_source(spec: SourceSpec) -> list[Path]:
     return sorted(files, key=lambda item: item.as_posix())
 
 
-def topic_for(spec: SourceSpec, path: Path) -> tuple[str, str] | None:
+def topic_for(spec: SourceSpec, path: Path) -> tuple[str, str, tuple[str, ...]] | None:
     relative = path.resolve().relative_to(spec.root).as_posix()
-    for pattern, topic_id, label in spec.topic_patterns:
+    for pattern, topic_id, label, topic_fields in spec.topic_patterns:
         if path.match(str(spec.root / pattern)) or Path(relative).match(pattern):
-            return topic_id, label
+            return topic_id, label, tuple(dict.fromkeys((*spec.fields, *topic_fields)))
     return None
 
 
@@ -484,7 +533,9 @@ def scan_typst(
                 source_id=spec.id,
                 subject=spec.subject,
                 course=spec.course,
+                knowledge_origin=spec.knowledge_origin,
                 topic=topic[0] if topic else None,
+                fields=topic[2] if topic else spec.fields,
                 position=match.start(),
                 statement=statement,
             )
@@ -595,7 +646,9 @@ def scan_markdown(
                 source_id=spec.id,
                 subject=spec.subject,
                 course=spec.course,
+                knowledge_origin=spec.knowledge_origin,
                 topic=topic[0] if topic else None,
+                fields=topic[2] if topic else spec.fields,
                 position=match.start(),
                 statement=None,
             )
@@ -692,7 +745,9 @@ def scan_latex(
                 source_id=spec.id,
                 subject=spec.subject,
                 course=spec.course,
+                knowledge_origin=spec.knowledge_origin,
                 topic=topic[0] if topic else None,
+                fields=topic[2] if topic else spec.fields,
                 position=match.start(),
                 statement=statement,
             )
@@ -762,6 +817,41 @@ def load_state(graph_dir: Path) -> GraphState:
     if manifest.get("schema") != GRAPH_SCHEMA:
         return GraphState({}, {}, [], {})
     nodes = {item["id"]: item for item in read_jsonl(graph_dir / "nodes.jsonl")}
+    entry_store = manifest.get("entry_store") or {}
+    if entry_store:
+        if entry_store.get("schema") != ENTRY_STORE_SCHEMA:
+            raise KnowledgeError("unsupported knowledge entry store schema")
+        entries: dict[str, dict[str, Any]] = {}
+        for shard in entry_store.get("shards", []):
+            relative = Path(str(shard.get("path", "")))
+            if relative.is_absolute() or ".." in relative.parts:
+                raise KnowledgeError(f"unsafe knowledge entry shard path: {relative}")
+            path = graph_dir / relative
+            if not path.is_file():
+                raise KnowledgeError(f"missing knowledge entry shard: {relative}")
+            content = path.read_text(encoding="utf-8")
+            size = len(content.encode("utf-8"))
+            if size > ENTRY_SHARD_LIMIT:
+                raise KnowledgeError(f"knowledge entry shard exceeds 48 MiB: {relative}")
+            if shard.get("bytes") is not None and int(shard["bytes"]) != size:
+                raise KnowledgeError(f"knowledge entry shard size mismatch: {relative}")
+            if shard.get("sha256") and sha256_text(content) != shard["sha256"]:
+                raise KnowledgeError(f"stale knowledge entry shard: {relative}")
+            records = [json.loads(line) for line in content.splitlines() if line]
+            if int(shard.get("count", len(records))) != len(records):
+                raise KnowledgeError(f"knowledge entry shard count mismatch: {relative}")
+            for record in records:
+                node_id = str(record.get("id", ""))
+                if not node_id or node_id in entries:
+                    raise KnowledgeError(f"duplicate or empty sharded entry id: {node_id!r}")
+                entries[node_id] = record
+        for node_id, record in entries.items():
+            node = nodes.get(node_id)
+            if node is None:
+                raise KnowledgeError(f"entry shard references unknown node: {node_id}")
+            node["text"] = str(record.get("text", ""))
+            if isinstance(record.get("entry"), dict) and record["entry"]:
+                node["entry"] = record["entry"]
     edges = {
         (item["source"], item["relation"], item["target"]): item
         for item in read_jsonl(graph_dir / "edges.jsonl")
@@ -858,6 +948,9 @@ def source_node(definition: DefinitionOccurrence, existing: dict[str, Any] | Non
     previous = copy.deepcopy(existing) if existing else {}
     properties = dict(previous.get("properties") or {})
     aliases = list(dict.fromkeys(str(item) for item in properties.get("aliases", [])))
+    additional_fields = list(
+        dict.fromkeys(str(item) for item in properties.get("additional_fields", []))
+    )
     old_label = str(previous.get("label", ""))
     if old_label and old_label != definition.label and old_label not in aliases:
         aliases.append(old_label)
@@ -869,6 +962,9 @@ def source_node(definition: DefinitionOccurrence, existing: dict[str, Any] | Non
             "source_status": "active",
             "subject": definition.subject,
             "course": definition.course,
+            "fields": list(dict.fromkeys((*definition.fields, *additional_fields))),
+            "additional_fields": additional_fields,
+            "knowledge_origin": definition.knowledge_origin,
             "source_format": definition.source_format,
             "source_name": definition.label_markup,
         }
@@ -881,7 +977,7 @@ def source_node(definition: DefinitionOccurrence, existing: dict[str, Any] | Non
     if definition.topic:
         properties["topic"] = definition.topic
     properties.pop("orphaned_from", None)
-    return {
+    node = {
         "id": definition.id,
         "type": "knowledge",
         "label": definition.label,
@@ -895,6 +991,9 @@ def source_node(definition: DefinitionOccurrence, existing: dict[str, Any] | Non
             "active": True,
         },
     }
+    if previous.get("entry"):
+        node["entry"] = copy.deepcopy(previous["entry"])
+    return node
 
 
 def orphan_node(node: dict[str, Any]) -> dict[str, Any]:
@@ -930,40 +1029,167 @@ def reference_record(item: ReferenceOccurrence) -> dict[str, Any]:
     return value
 
 
-def ensure_topic_nodes_and_edges(
+def ensure_taxonomy_nodes_and_edges(
     state: GraphState,
+    fields: list[FieldSpec],
     specs: list[SourceSpec],
     definitions: list[DefinitionOccurrence],
+    selected_knowledge_ids: set[str],
+    *,
+    prune: bool,
 ) -> None:
-    for spec in specs:
-        for _, topic_id, label in spec.topic_patterns:
-            if topic_id not in state.nodes:
-                state.nodes[topic_id] = {
-                    "id": topic_id,
-                    "type": "topic",
-                    "label": label,
-                    "text": "",
-                    "properties": {
-                        "kind": "topic",
-                        "aliases": [],
-                        "origin": "agent",
-                        "source_status": "meta",
-                        "subject": spec.subject,
-                        "course": spec.course,
-                    },
-                }
-    for definition in definitions:
-        if not definition.topic:
-            continue
-        edge = {
-            "source": definition.topic,
-            "relation": "contains",
-            "target": definition.id,
-            "origin": "agent-taxonomy",
-            "confidence": "high",
-            "evidence": f"canonical definition is authored in {definition.authority}",
+    field_index = {field.id: field for field in fields}
+    referenced_fields = {
+        field_id
+        for spec in specs
+        for field_id in (
+            *spec.fields,
+            *(
+                field_id
+                for _, _, _, topic_fields in spec.topic_patterns
+                for field_id in topic_fields
+            ),
+        )
+    }
+    missing_fields = sorted(referenced_fields - set(field_index))
+    if missing_fields:
+        raise KnowledgeError(
+            f"source registry references undefined fields: {', '.join(missing_fields)}"
+        )
+
+    for field in fields:
+        previous = copy.deepcopy(state.nodes.get(field.id) or {})
+        properties = dict(previous.get("properties") or {})
+        properties.update(
+            {
+                "kind": "field",
+                "aliases": list(field.aliases),
+                "origin": "registry-taxonomy",
+                "source_status": "meta",
+            }
+        )
+        for source_key in ("subject", "course", "fields", "knowledge_origin"):
+            properties.pop(source_key, None)
+        state.nodes[field.id] = {
+            "id": field.id,
+            "type": "field",
+            "label": field.label,
+            "text": field.text or str(previous.get("text", "")),
+            "properties": properties,
         }
-        state.edges[edge_key(edge)] = edge
+
+    configured_topics: dict[str, tuple[str, tuple[str, ...], SourceSpec]] = {}
+    for spec in specs:
+        for _, topic_id, label, topic_fields in spec.topic_patterns:
+            effective_fields = tuple(dict.fromkeys((*spec.fields, *topic_fields)))
+            previous_topic = configured_topics.get(topic_id)
+            if previous_topic and previous_topic[:2] != (label, effective_fields):
+                raise KnowledgeError(f"conflicting configured topic: {topic_id}")
+            configured_topics[topic_id] = (label, effective_fields, spec)
+
+    taxonomy_collisions = sorted(set(field_index) & set(configured_topics))
+    if taxonomy_collisions:
+        raise KnowledgeError(
+            f"field and topic ids must be distinct: {', '.join(taxonomy_collisions)}"
+        )
+    knowledge_collisions = sorted(
+        {definition.id for definition in definitions}
+        & (set(field_index) | set(configured_topics))
+    )
+    if knowledge_collisions:
+        raise KnowledgeError(
+            f"knowledge ids collide with configured taxonomy: {', '.join(knowledge_collisions)}"
+        )
+    if prune:
+        configured_ids = set(field_index) | set(configured_topics)
+        stale_ids = {
+            node_id
+            for node_id, node in state.nodes.items()
+            if node_id not in configured_ids
+            and node.get("type") in {"field", "topic"}
+            and (node.get("properties") or {}).get("origin") == "registry-taxonomy"
+        }
+        for node_id in stale_ids:
+            state.nodes.pop(node_id, None)
+        if stale_ids:
+            state.edges = {
+                key: edge
+                for key, edge in state.edges.items()
+                if edge.get("source") not in stale_ids and edge.get("target") not in stale_ids
+            }
+
+    for topic_id, (label, topic_fields, spec) in configured_topics.items():
+        previous = copy.deepcopy(state.nodes.get(topic_id) or {})
+        properties = dict(previous.get("properties") or {})
+        properties.update(
+            {
+                "kind": "topic",
+                "aliases": list(properties.get("aliases", [])),
+                "origin": "registry-taxonomy",
+                "source_status": "meta",
+                "subject": spec.subject,
+                "course": spec.course,
+                "fields": list(topic_fields),
+            }
+        )
+        state.nodes[topic_id] = {
+            "id": topic_id,
+            "type": "topic",
+            "label": label,
+            "text": str(previous.get("text", "")),
+            "properties": properties,
+        }
+
+    configured_topic_ids = set(configured_topics)
+    for key, edge in list(state.edges.items()):
+        if edge.get("relation") != "contains":
+            continue
+        source_type = (state.nodes.get(str(edge.get("source"))) or {}).get("type")
+        target = str(edge.get("target", ""))
+        if (
+            (target in configured_topic_ids and source_type == "field")
+            or (target in selected_knowledge_ids and source_type in {"field", "topic"})
+        ):
+            state.edges.pop(key)
+
+    for topic_id, (_, topic_fields, _) in configured_topics.items():
+        for field_id in topic_fields:
+            edge = {
+                "source": field_id,
+                "relation": "contains",
+                "target": topic_id,
+                "origin": "registry-taxonomy",
+                "confidence": "high",
+                "evidence": f"configured topic {topic_id} is classified in field {field_id}",
+            }
+            state.edges[edge_key(edge)] = edge
+
+    for definition in definitions:
+        node_properties = (state.nodes.get(definition.id) or {}).get("properties") or {}
+        additional_fields = tuple(
+            dict.fromkeys(str(item) for item in node_properties.get("additional_fields", []))
+        )
+        unknown_additional = sorted(set(additional_fields) - set(field_index))
+        if unknown_additional:
+            raise KnowledgeError(
+                f"knowledge node {definition.id} references undefined additional fields: "
+                + ", ".join(unknown_additional)
+            )
+        parents = (
+            tuple(dict.fromkeys((definition.topic, *additional_fields)))
+            if definition.topic
+            else tuple(dict.fromkeys((*definition.fields, *additional_fields)))
+        )
+        for parent in parents:
+            edge = {
+                "source": parent,
+                "relation": "contains",
+                "target": definition.id,
+                "origin": "registry-taxonomy",
+                "confidence": "high",
+                "evidence": f"canonical definition is authored in {definition.authority}",
+            }
+            state.edges[edge_key(edge)] = edge
 
 
 def graph_cycles(nodes: set[str], edges: Iterable[dict[str, Any]], relation: str) -> list[list[str]]:
@@ -999,10 +1225,46 @@ def graph_cycles(nodes: set[str], edges: Iterable[dict[str, Any]], relation: str
     return cycles
 
 
+def knowledge_field_memberships(state: GraphState) -> dict[str, set[str]]:
+    field_ids = {
+        node_id for node_id, node in state.nodes.items() if node.get("type") == "field"
+    }
+    topic_fields: dict[str, set[str]] = defaultdict(set)
+    memberships: dict[str, set[str]] = defaultdict(set)
+    for edge in state.edges.values():
+        if edge.get("relation") != "contains":
+            continue
+        source = str(edge.get("source", ""))
+        target = str(edge.get("target", ""))
+        target_type = (state.nodes.get(target) or {}).get("type")
+        if source in field_ids and target_type == "topic":
+            topic_fields[target].add(source)
+        elif source in field_ids and target_type == "knowledge":
+            memberships[target].add(source)
+    for edge in state.edges.values():
+        if edge.get("relation") != "contains":
+            continue
+        source = str(edge.get("source", ""))
+        target = str(edge.get("target", ""))
+        if (state.nodes.get(source) or {}).get("type") == "topic":
+            memberships[target].update(topic_fields.get(source, set()))
+    return memberships
+
+
 def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
     node_ids = set(state.nodes)
+    allowed_node_types = {"field", "topic", "knowledge"}
+    for node in state.nodes.values():
+        if node.get("type") not in allowed_node_types:
+            errors.append(
+                diagnostic(
+                    "unknown-node-type",
+                    f"unsupported node type in field-facet graph: {node.get('type')}",
+                    node=str(node.get("id", "")),
+                )
+            )
     for edge in state.edges.values():
         if edge.get("relation") not in SEMANTIC_RELATIONS:
             errors.append(diagnostic("unknown-relation", f"unknown relation: {edge.get('relation')}"))
@@ -1015,6 +1277,21 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
                         node=str(edge.get(endpoint, "")),
                     )
                 )
+        if edge.get("relation") == "contains":
+            source_type = (state.nodes.get(str(edge.get("source"))) or {}).get("type")
+            target_type = (state.nodes.get(str(edge.get("target"))) or {}).get("type")
+            if (source_type, target_type) not in {
+                ("field", "topic"),
+                ("field", "knowledge"),
+                ("topic", "knowledge"),
+            }:
+                errors.append(
+                    diagnostic(
+                        "invalid-taxonomy-edge",
+                        f"contains must be field -> topic/knowledge or topic -> knowledge, got {source_type} -> {target_type}",
+                        node=str(edge.get("target", "")),
+                    )
+                )
     for relation in ACYCLIC_RELATIONS:
         for cycle in graph_cycles(node_ids, state.edges.values(), relation):
             errors.append(
@@ -1024,6 +1301,7 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
                     node=cycle[0],
                 )
             )
+    field_memberships = knowledge_field_memberships(state)
     for node in state.nodes.values():
         properties = node.get("properties") or {}
         if node.get("type") == "knowledge" and properties.get("typst_name") and not properties.get("label_html"):
@@ -1032,6 +1310,19 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
                     "missing-label-html",
                     "Typst-authored knowledge node has no math-aware HTML label",
                     node=node["id"],
+                )
+            )
+        if (
+            node.get("type") == "knowledge"
+            and (node.get("provenance") or {}).get("active")
+            and not field_memberships.get(str(node.get("id", "")))
+        ):
+            errors.append(
+                diagnostic(
+                    "unclassified-knowledge",
+                    "active knowledge node has no field membership",
+                    source=(node.get("provenance") or {}).get("authority"),
+                    node=str(node.get("id", "")),
                 )
             )
         if properties.get("source_status") == "orphaned":
@@ -1073,14 +1364,68 @@ def make_artifacts(
         key=lambda item: (item.get("authority", ""), item.get("line", 0), item["target"]),
     )
     diagnostics = validate_state(state)
-    nodes_text = jsonl(nodes)
+    entry_groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    serialized_nodes: list[dict[str, Any]] = []
+    for node in nodes:
+        serialized = copy.deepcopy(node)
+        text_value = str(serialized.pop("text", ""))
+        structured_entry = serialized.pop("entry", None)
+        properties = dict(serialized.get("properties") or {})
+        if text_value or structured_entry:
+            authority = str((node.get("provenance") or {}).get("authority", ""))
+            if authority:
+                authority_path = Path(authority)
+                shard_path = (
+                    Path("entries/by-source")
+                    / authority_path.parent
+                    / f"{authority_path.name}.jsonl"
+                ).as_posix()
+            else:
+                subject = generated_id(str(properties.get("subject") or "global"))
+                course = generated_id(str(properties.get("course") or "unscoped"))
+                shard_path = f"entries/meta/{subject}/{course}.jsonl"
+            record: dict[str, Any] = {"id": node["id"], "text": text_value}
+            if isinstance(structured_entry, dict) and structured_entry:
+                record["entry"] = structured_entry
+            entry_groups[shard_path].append(record)
+            properties["entry_path"] = shard_path
+        else:
+            properties.pop("entry_path", None)
+        serialized["properties"] = properties
+        serialized_nodes.append(serialized)
+    nodes_text = jsonl(serialized_nodes)
     edges_text = jsonl(edges)
     references_text = jsonl(references)
     diagnostics_text = pretty_json(diagnostics)
-    digest = sha256_text(nodes_text + edges_text + references_text)
+    entry_artifacts: dict[str, str] = {}
+    entry_shards: list[dict[str, Any]] = []
+    for path, records in sorted(entry_groups.items()):
+        content = jsonl(sorted(records, key=lambda item: item["id"]))
+        size = len(content.encode("utf-8"))
+        if size > ENTRY_SHARD_LIMIT:
+            raise KnowledgeError(
+                f"knowledge entry shard exceeds 48 MiB; split the authority file: {path}"
+            )
+        entry_artifacts[path] = content
+        entry_shards.append(
+            {
+                "path": path,
+                "count": len(records),
+                "bytes": size,
+                "sha256": sha256_text(content),
+            }
+        )
+    digest_input = nodes_text + edges_text + references_text
+    digest_input += "".join(path + entry_artifacts[path] for path in sorted(entry_artifacts))
+    digest = sha256_text(digest_input)
     node_types = Counter(item["type"] for item in nodes)
     relations = Counter(item["relation"] for item in edges)
     statuses = Counter((item.get("properties") or {}).get("source_status", "") for item in nodes)
+    knowledge_origins = Counter(
+        (item.get("properties") or {}).get("knowledge_origin", "personal-note")
+        for item in nodes
+        if item.get("type") == "knowledge"
+    )
     manifest = {
         "schema": GRAPH_SCHEMA,
         "generator": "knowledge/scripts/knowledge.py",
@@ -1093,7 +1438,13 @@ def make_artifacts(
         "node_types": dict(sorted(node_types.items())),
         "relations": dict(sorted(relations.items())),
         "statuses": dict(sorted(statuses.items())),
+        "knowledge_origins": dict(sorted(knowledge_origins.items())),
         "source_hashes": dict(sorted(source_hashes.items())),
+        "entry_store": {
+            "schema": ENTRY_STORE_SCHEMA,
+            "entries": sum(item["count"] for item in entry_shards),
+            "shards": entry_shards,
+        },
     }
     return {
         "manifest.json": pretty_json(manifest),
@@ -1101,13 +1452,27 @@ def make_artifacts(
         "edges.jsonl": edges_text,
         "references.jsonl": references_text,
         "diagnostics.json": diagnostics_text,
-    }
+    } | entry_artifacts
 
 
 def write_artifacts(graph_dir: Path, artifacts: dict[str, str]) -> None:
     graph_dir.mkdir(parents=True, exist_ok=True)
+    previous_manifest = read_json(graph_dir / "manifest.json", {})
+    previous_shards = {
+        str(item.get("path", ""))
+        for item in ((previous_manifest.get("entry_store") or {}).get("shards", []))
+        if item.get("path")
+    }
+    current_shards = {name for name in artifacts if name.startswith("entries/")}
     for name, content in artifacts.items():
         atomic_write(graph_dir / name, content)
+    for name in sorted(previous_shards - current_shards):
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise KnowledgeError(f"unsafe stale knowledge entry shard path: {name}")
+        path = graph_dir / relative
+        if path.is_file():
+            path.unlink()
 
 
 def typst_string(value: str) -> str:
@@ -1264,6 +1629,7 @@ def synchronize(
     subject: str | None,
     write: bool,
 ) -> tuple[GraphState, dict[str, str], dict[str, Any]]:
+    fields = load_fields(registry)
     specs = load_sources(repo_root, registry)
     pairs, selected_keys, full = select_scope(repo_root, specs, files, course, subject)
     previous = load_state(graph_dir)
@@ -1296,7 +1662,14 @@ def synchronize(
     state.references = [
         item for item in state.references if item.get("authority") not in selected_keys
     ] + [reference_record(item) for item in scan.references]
-    ensure_topic_nodes_and_edges(state, specs, scan.definitions)
+    ensure_taxonomy_nodes_and_edges(
+        state,
+        fields,
+        specs,
+        scan.definitions,
+        found_ids | set(orphaned),
+        prune=full,
+    )
     source_hashes = dict(previous.manifest.get("source_hashes") or {})
     if full:
         source_hashes = {}
@@ -1345,6 +1718,24 @@ def apply_delta(
         raise KnowledgeError(f"expected {DELTA_SCHEMA} delta: {delta_path}")
     state = load_state(graph_dir)
     before = dict(state.manifest.get("counts") or {})
+    removed_nodes = 0
+    for raw_id in delta.get("remove_nodes", []):
+        node_id = str(raw_id)
+        existing = state.nodes.get(node_id)
+        if existing is None:
+            continue
+        if existing.get("type") == "knowledge" and (existing.get("provenance") or {}).get("active"):
+            raise KnowledgeError(f"cannot remove active authored knowledge node: {node_id}")
+        state.nodes.pop(node_id)
+        removed_nodes += 1
+        state.edges = {
+            key: edge
+            for key, edge in state.edges.items()
+            if edge.get("source") != node_id and edge.get("target") != node_id
+        }
+        state.references = [
+            reference for reference in state.references if reference.get("target") != node_id
+        ]
     for raw in delta.get("nodes", []):
         node_id = str(raw.get("id", ""))
         if not ID_RE.fullmatch(node_id):
@@ -1352,16 +1743,36 @@ def apply_delta(
         existing = copy.deepcopy(state.nodes.get(node_id) or {})
         properties = dict(existing.get("properties") or {})
         properties.update(raw.get("properties") or {})
+        node_type = str(raw.get("type") or existing.get("type") or "knowledge")
+        if node_type == "knowledge":
+            knowledge_origin = str(properties.get("knowledge_origin", "personal-note"))
+            if knowledge_origin not in KNOWLEDGE_ORIGINS:
+                raise KnowledgeError(
+                    f"invalid knowledge_origin for delta node {node_id}: {knowledge_origin!r}"
+                )
+            properties["knowledge_origin"] = knowledge_origin
+        else:
+            properties.pop("knowledge_origin", None)
         properties.setdefault("aliases", [])
         properties.setdefault("origin", "agent")
         properties.setdefault("source_status", "meta")
+        raw_entry = raw.get("entry") if "entry" in raw else existing.get("entry")
+        if raw_entry is not None and not isinstance(raw_entry, dict):
+            raise KnowledgeError(f"structured entry must be an object: {node_id}")
+        text_value = str(
+            raw.get("text")
+            if "text" in raw
+            else (raw_entry or {}).get("summary", existing.get("text", ""))
+        )
         node = {
             "id": node_id,
-            "type": str(raw.get("type") or existing.get("type") or "knowledge"),
+            "type": node_type,
             "label": str(raw.get("label") or existing.get("label") or node_id.replace("-", " ")),
-            "text": str(raw.get("text") if "text" in raw else existing.get("text", "")),
+            "text": text_value,
             "properties": properties,
         }
+        if raw_entry:
+            node["entry"] = copy.deepcopy(raw_entry)
         if existing.get("provenance"):
             node["provenance"] = existing["provenance"]
         state.nodes[node_id] = node
@@ -1390,6 +1801,7 @@ def apply_delta(
     write_database(database, state)
     after = json.loads(artifacts["manifest.json"])["counts"]
     return {
+        "nodes_removed": removed_nodes,
         "nodes_upserted": len(delta.get("nodes", [])),
         "edges_upserted": len(delta.get("edges", [])),
         "edges_removed": len(delta.get("remove_edges", [])),
@@ -1639,12 +2051,19 @@ def audit_report(state: GraphState) -> dict[str, Any]:
             ),
         }
 
-    hierarchy_parents: Counter[str] = Counter()
+    taxonomy_parents: Counter[str] = Counter()
     for edge in state.edges.values():
         if edge.get("relation") == "contains" and edge.get("target") in active:
-            hierarchy_parents[str(edge["target"])] += 1
-    invalid_hierarchy_parents = sorted(
-        node_id for node_id in active if hierarchy_parents[node_id] != 1
+            taxonomy_parents[str(edge["target"])] += 1
+    field_memberships = knowledge_field_memberships(state)
+    field_counts: Counter[str] = Counter()
+    for node_id in active:
+        field_counts.update(field_memberships.get(node_id, set()))
+    unclassified_nodes = sorted(
+        node_id for node_id in active if not field_memberships.get(node_id)
+    )
+    multiply_classified_nodes = sorted(
+        node_id for node_id in active if len(field_memberships.get(node_id, set())) > 1
     )
     entry_count = sum(bool(str(node.get("text", "")).strip()) for node in active.values())
     relation_counts = Counter(str(edge.get("relation", "")) for edge in state.edges.values())
@@ -1674,6 +2093,12 @@ def audit_report(state: GraphState) -> dict[str, Any]:
                 for size, count in sorted(Counter(component_sizes).items())
             },
             "cross_course_edges": cross_course_edges,
+            "field_membership_histogram": {
+                str(count): occurrences
+                for count, occurrences in sorted(
+                    Counter(len(field_memberships.get(node_id, set())) for node_id in active).items()
+                )
+            },
             "top_hubs": [
                 {"id": node_id, "degree": degree}
                 for node_id, degree in sorted(
@@ -1686,6 +2111,11 @@ def audit_report(state: GraphState) -> dict[str, Any]:
             relation: relation_counts[relation]
             for relation in sorted(relation_counts)
         },
+        "fields": {
+            field_id: field_counts[field_id]
+            for field_id, node in sorted(state.nodes.items())
+            if node.get("type") == "field"
+        },
         "courses": courses,
         "quality": {
             "semantic_edges_missing_evidence": sum(
@@ -1694,7 +2124,11 @@ def audit_report(state: GraphState) -> dict[str, Any]:
             "semantic_edges_missing_confidence": sum(
                 not str(edge.get("confidence", "")).strip() for edge in semantic_edges
             ),
-            "knowledge_nodes_without_one_hierarchy_parent": invalid_hierarchy_parents,
+            "knowledge_nodes_without_taxonomy_parent": sorted(
+                node_id for node_id in active if not taxonomy_parents[node_id]
+            ),
+            "knowledge_nodes_without_field": unclassified_nodes,
+            "knowledge_nodes_with_multiple_fields": len(multiply_classified_nodes),
         },
     }
 
@@ -1733,6 +2167,13 @@ def parse_args() -> argparse.Namespace:
     show_command.add_argument("id")
     curate_command = commands.add_parser("curate-check")
     curate_command.add_argument("--file", action="append", required=True, type=Path)
+    publish_command = commands.add_parser("publish")
+    publish_command.add_argument(
+        "--format",
+        required=True,
+        choices=("typst", "markdown", "latex"),
+        dest="source_format",
+    )
     commands.add_parser("audit")
     commands.add_parser("stats")
     return parser.parse_args()
@@ -1816,6 +2257,43 @@ def main() -> int:
                 raise KnowledgeError(f"stale graph artifacts: {', '.join(stale)}")
             print(f"OK: {GRAPH_SCHEMA}; {json_text(report['counts'])}; warnings={report['warnings']}")
             return 0
+        if args.command == "publish":
+            specs = load_sources(repo_root, registry)
+            pairs, _, _ = select_scope(repo_root, specs, [], None, None)
+            selected_paths = [
+                path for _, path in pairs if source_format(path) == args.source_format
+            ]
+            missing = [
+                relative_path(repo_root, path)
+                for path in selected_paths
+                if not path.is_file()
+            ]
+            if missing:
+                raise KnowledgeError(f"publication source does not exist: {', '.join(missing)}")
+            sync_report: dict[str, Any] | None = None
+            if selected_paths:
+                _, _, sync_report = synchronize(
+                    repo_root,
+                    registry,
+                    graph_dir,
+                    database,
+                    typst_registry,
+                    files=selected_paths,
+                    course=None,
+                    subject=None,
+                    write=True,
+                )
+            state = load_state(graph_dir)
+            authorities = {
+                relative_path(repo_root, path) for path in selected_paths
+            }
+            report = curation_report(state, authorities)
+            report["source_format"] = args.source_format
+            report["synchronized_files"] = len(selected_paths)
+            if sync_report is not None:
+                report["graph_counts"] = sync_report["counts"]
+            print(pretty_json(report), end="")
+            return 1 if report["errors"] else 0
         state = load_state(graph_dir)
         if args.command == "search":
             print(pretty_json(search_graph(state, args.query, args.limit)), end="")

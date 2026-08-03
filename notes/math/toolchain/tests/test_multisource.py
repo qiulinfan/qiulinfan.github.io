@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -26,6 +28,14 @@ WEB_SPEC.loader.exec_module(export_latex_web)
 
 
 class MultiSourceExportTest(unittest.TestCase):
+    def test_starter_and_export_elegantbook_surfaces_are_synchronized(self) -> None:
+        export_class = (TOOLCHAIN / "latex/elegantbook.cls").read_text(encoding="utf-8")
+        starter_class = (
+            REPO_ROOT / "skills/create-latex-math-notes/assets/course/elegantbook.cls"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("".join(export_class.split()), "".join(starter_class.split()))
+
     def test_latex_markers_are_rewritten_without_losing_nested_markup(self) -> None:
         source = r"\kn{$L^p$ \textbf{space}} and \knref{$L^p$ \textbf{space}}"
         rewritten, count = migrate_latex.rewrite_knowledge_macros(source)
@@ -83,6 +93,65 @@ class MultiSourceExportTest(unittest.TestCase):
             'href="https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-measure-space"',
             rendered,
         )
+
+    @unittest.skipUnless(
+        shutil.which("lualatex"),
+        "LuaLaTeX is required for the source preview fixture",
+    )
+    def test_elegantbook_source_preview_supports_knowledge_macros(self) -> None:
+        fixture_root = Path(__file__).parent / "fixtures/latex-project"
+        build_parent = REPO_ROOT / "knowledge/build"
+        build_parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="qlnotes-latex-source-", dir=build_parent) as temporary:
+            result = subprocess.run(
+                [
+                    "lualatex",
+                    "-interaction=nonstopmode",
+                    "-halt-on-error",
+                    f"-output-directory={temporary}",
+                    "main.tex",
+                ],
+                cwd=fixture_root,
+                env={
+                    **os.environ,
+                    "TEXINPUTS": f"{TOOLCHAIN / 'latex'}:",
+                },
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(0, result.returncode, result.stdout[-4000:] + result.stderr)
+            self.assertTrue((Path(temporary) / "main.pdf").is_file())
+
+    @unittest.skipUnless(
+        shutil.which("pandoc") and shutil.which("typst"),
+        "Pandoc and Typst are required for the project integration fixture",
+    )
+    def test_elegantbook_entrypoint_becomes_self_contained_previewable_typst(self) -> None:
+        fixture = Path(__file__).parent / "fixtures/latex-project/main.tex"
+        build_parent = REPO_ROOT / "knowledge/build"
+        build_parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="qlnotes-latex-project-", dir=build_parent) as temporary:
+            root = Path(temporary)
+            project = export_latex_web.inspect_project([fixture])
+            main = export_latex_web.convert_latex_project(project, root / "typst")
+            preview = root / "typst/preview.pdf"
+            result = subprocess.run(
+                ["typst", "compile", "--root", str(root / "typst"), str(main), str(preview)],
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertTrue(preview.is_file())
+            self.assertTrue((root / "typst/Makefile").is_file())
+            self.assertTrue((root / "typst/toolchain/qlnotes.typ").is_file())
+            rendered_main = main.read_text(encoding="utf-8")
+
+        self.assertIn('title: "Measure Preview"', rendered_main)
+        self.assertIn('#include "chapters/01-measure.typ"', rendered_main)
 
     @unittest.skipUnless(
         shutil.which("pandoc") and shutil.which("typst"),

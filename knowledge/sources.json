@@ -1,10 +1,39 @@
 {
   "schema": "qlkg-sources-v2",
+  "fields": [
+    {
+      "id": "analysis",
+      "label": "Analysis",
+      "text": "The field studying limiting processes, continuity, measure, integration, and function spaces."
+    },
+    {
+      "id": "measure-theory",
+      "label": "Measure Theory",
+      "text": "The field of measurable structures, measures, integration, and differentiation of measures."
+    },
+    {
+      "id": "probability-theory",
+      "label": "Probability Theory",
+      "text": "The field studying random phenomena through probability spaces, distributions, and stochastic limits."
+    },
+    {
+      "id": "combinatorics",
+      "label": "Combinatorics",
+      "text": "The field studying discrete structures, counting principles, and finite configurations."
+    },
+    {
+      "id": "computer-architecture",
+      "label": "Computer Architecture",
+      "text": "The field connecting instruction sets, processors, memory systems, digital organization, and performance."
+    }
+  ],
   "sources": [
     {
       "id": "math:measure-theory",
       "subject": "math",
       "course": "measure-theory",
+      "knowledge_origin": "personal-note",
+      "fields": ["analysis", "measure-theory"],
       "root": "notes/math/measure-theory",
       "files": [
         "main.typ",
@@ -34,6 +63,8 @@
       "id": "math:probability",
       "subject": "math",
       "course": "probability",
+      "knowledge_origin": "personal-note",
+      "fields": ["probability-theory"],
       "root": "notes/math/prob",
       "files": [
         "main.typ",
@@ -43,17 +74,19 @@
       ],
       "web": "https://qiulinfan.github.io/qlblog/notes/math/probability",
       "topics": [
-        {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics"},
-        {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions"},
-        {"glob": "chapters/03-*.typ", "id": "joint-and-conditional-distributions", "label": "Joint and Conditional Distributions"},
-        {"glob": "chapters/04-*.typ", "id": "laws-of-large-numbers", "label": "Laws of Large Numbers"},
-        {"glob": "chapters/05-*.typ", "id": "central-limit-theorems", "label": "Central Limit Theorems"}
+        {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics", "fields": ["combinatorics"]},
+        {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions", "fields": ["measure-theory"]},
+        {"glob": "chapters/03-*.typ", "id": "joint-and-conditional-distributions", "label": "Joint and Conditional Distributions", "fields": ["analysis", "measure-theory"]},
+        {"glob": "chapters/04-*.typ", "id": "laws-of-large-numbers", "label": "Laws of Large Numbers", "fields": ["analysis"]},
+        {"glob": "chapters/05-*.typ", "id": "central-limit-theorems", "label": "Central Limit Theorems", "fields": ["analysis"]}
       ]
     },
     {
       "id": "cs:computer-organization",
       "subject": "cs",
       "course": "computer-organization",
+      "knowledge_origin": "personal-note",
+      "fields": ["computer-architecture"],
       "root": "notes/cs/computer-organization",
       "files": [
         "*.md"

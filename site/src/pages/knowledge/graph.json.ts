@@ -21,10 +21,21 @@ function readJsonLines(name: string) {
 }
 
 export const GET: APIRoute = () => {
+	const manifest = readJson("manifest.json");
+	const nodes = readJsonLines("nodes.jsonl").map((node) => ({ ...node, text: "" }));
+	const nodeIndex = new Map(nodes.map((node) => [String(node.id), node]));
+	for (const shard of manifest.entry_store?.shards ?? []) {
+		for (const record of readJsonLines(String(shard.path))) {
+			const node = nodeIndex.get(String(record.id));
+			if (!node) throw new Error(`Entry shard references unknown node: ${record.id}`);
+			node.text = String(record.text ?? "");
+			if (record.entry) node.entry = record.entry;
+		}
+	}
 	const payload = {
-		manifest: readJson("manifest.json"),
+		manifest,
 		diagnostics: readJson("diagnostics.json"),
-		nodes: readJsonLines("nodes.jsonl"),
+		nodes,
 		edges: readJsonLines("edges.jsonl"),
 		references: readJsonLines("references.jsonl"),
 	};

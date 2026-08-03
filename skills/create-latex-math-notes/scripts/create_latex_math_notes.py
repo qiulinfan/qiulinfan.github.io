@@ -156,7 +156,10 @@ def main() -> int:
     print(f"created: {destination}")
     if not args.dry_run:
         print(f"workspace: {workspace}")
-        print(f"validate: make -C {destination} doctor && make -C {destination} pdf")
+        print(
+            f"validate: make -C {destination} doctor && "
+            f"make -C {destination} pdf && make -C {destination} typst-preview"
+        )
     return 0
 
 

@@ -7,11 +7,16 @@ This is a local-first LuaLaTeX mathematics notebook based on
 make edit    # open the configured VS Code workspace
 make pdf     # compile build/main.pdf once
 make watch   # continuously rebuild build/main.pdf
+make typst-preview # convert main.tex and chapters, then compile Typst preview
+make typst-watch   # continuously preview the generated Typst projection
 make clean   # remove local compiler output
 ```
 
 LaTeX Workshop recompiles the root document on save and refreshes its internal
-PDF tab; Ultra Math Preview renders the formula at the cursor. This project has
-no HTML, MkDocs, or deployment path. Migrate it to Typst before publishing a
-website or adding it to the knowledge graph.
-
+PDF tab; Ultra Math Preview renders the formula at the cursor. The synchronized
+ElegantBook adapter writes a self-contained projection under `build/typst/`.
+Use `\kn{canonical concept}` for the one authoritative graph occurrence and
+`\knref{canonical concept}` elsewhere; both remain valid in the LuaLaTeX PDF
+and convert to Typst graph markers.
+Publishing and knowledge-graph ingestion are handled later by the repository's
+multi-source export skill; this project has no direct LaTeX-to-HTML path.

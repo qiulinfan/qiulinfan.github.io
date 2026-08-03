@@ -1,6 +1,6 @@
 ---
 name: export-typst-math-notes
-description: Maintain, semantically curate, and publish repository notes whose authoritative files may be Typst, Markdown, LaTeX, or any mixture of the three. Use at repository, subject, course, directory, or file scope when Codex needs to author or export QLNotes; preserve explicit knowledge nodes and backlinks; extract node entries and typed graph edges; convert LaTeX through Typst; publish Markdown directly; validate the global knowledge graph; or update the notes website.
+description: Maintain, semantically curate, and publish repository notes whose authoritative files may be Typst, Markdown, LaTeX, or any mixture of the three. Use at repository, subject, course, directory, or file scope when Codex needs to author or export QLNotes; preserve explicit knowledge nodes and backlinks; extract contextual node entries and typed graph edges; classify interdisciplinary knowledge under overlapping field facets without coarse discipline roots; compare distilled papers against the existing external-brain graph; convert ElegantBook LaTeX into a previewable Typst project before web export; publish Markdown directly; validate the sharded global knowledge graph; or update the notes website.
 ---
 
 # Export Multi-Source Knowledge Notes
@@ -20,6 +20,9 @@ In `qlblog`, read these before acting:
 - [references/export-contract.md](references/export-contract.md);
 - [references/validation.md](references/validation.md).
 
+For a paper distillation, literature note, or the author's own research, also
+read [references/research-ingestion.md](references/research-ingestion.md).
+
 For a legacy LaTeX migration, also read
 [references/migration.md](references/migration.md). Keep shared conversion and
 presentation code in `notes/math/toolchain/`, graph adapters in `knowledge/`,
@@ -33,9 +36,22 @@ mixed patterns such as:
 ```json
 {
   "root": "notes/demo",
-  "files": ["chapters/*.typ", "chapters/*.md", "chapters/*.tex"]
+  "files": ["chapters/*.typ", "chapters/*.md", "chapters/*.tex"],
+  "fields": ["analysis", "optimization"]
 }
 ```
+
+Register specific field facets in the registry and assign one or more to each
+source or topic. Keep `subject`/`course` only for selecting files. Never create
+coarse `Mathematics` or `Computer Science` nodes, never connect fields into a
+forced tree, and never infer a single field from a directory name. A topic or
+knowledge node may belong to several fields; add fields such as geometry,
+algebra, deep learning theory, architecture, programming languages, or
+optimization only when actual content enters that field.
+
+Set `knowledge_origin` to `personal-note` for the author's ordinary notes and
+to `research` for paper-derived or original-research entries. The website
+renders the former as circles and the latter as squares.
 
 Infer the adapter from each file suffix. Never ingest a Typst-generated
 Markdown snapshot as a second authority. Keep every file within one configured
@@ -96,6 +112,11 @@ Before export:
 6. apply one reviewed `qlkg-agent-delta-v2`;
 7. synchronize the same file and run `curate-check`.
 
+For research Markdown, search the existing graph for every candidate first.
+Known concepts become refs and are not regenerated; unknown concepts receive
+one authority plus a contextual structured entry. Entry bodies are written to
+per-authority shards, while `nodes.jsonl` stores only their paths.
+
 ```sh
 python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/file.md
 python3 knowledge/scripts/knowledge.py --repo-root . apply knowledge/build/reviewed-delta.json
@@ -140,9 +161,16 @@ copies only referenced static assets:
 
 ```sh
 cd site
-node scripts/sync-note-assets.mjs
+python3 ../knowledge/scripts/knowledge.py --repo-root .. publish --format markdown
 node tests/note-sources.test.mjs
+corepack pnpm build
 ```
+
+`pnpm dev`, `pnpm start`, and `pnpm build` already run this format-scoped
+publication command. It synchronizes configured Markdown authorities and then
+fails if an explicit node still lacks its agent-authored entry or a confirmed
+direct external dependency lacks its ref. The command does not invent entries
+or edges.
 
 Do not ingest generated Typst Markdown exports as direct Markdown authorities.
 The canonical path is `source.web/<relative-stem>`; a terminal `README` or
@@ -152,21 +180,36 @@ base.
 
 ### LaTeX
 
-Scan the authoritative `.tex` file directly for `\kn{}` and `\knref{}`. The
-export command synchronizes every selected, configured LaTeX authority first;
-this registry step is required for `data-ql-kn`, anchors, and canonical ref
-links. It then converts into an ignored Typst build directory and compiles with
-QLNotes:
+Convert the synchronized ElegantBook `main.tex` into a self-contained Typst
+project before any web compilation. The converter discovers the template's
+direct `\input` chapters, extracts title metadata, copies the shared QLNotes
+runtime and course assets, and emits `main.typ` plus a Makefile that can be
+previewed without the LaTeX environment:
 
 ```sh
-python3 notes/math/toolchain/scripts/export_latex_web.py chapter.tex \
+python3 notes/math/toolchain/scripts/convert_latex_project.py main.tex \
+  --build notes/<subject>/<course>/build/typst
+make -C notes/<subject>/<course>/build/typst preview
+```
+
+Scan the authoritative `.tex` files directly for `\kn{}` and `\knref{}`. The
+export command synchronizes every selected, configured LaTeX authority first;
+it also runs the same per-file curation gate before compilation. This registry
+step is required for `data-ql-kn`, anchors, canonical ref links, and contextual
+entries. It then converts into an ignored Typst build directory and compiles
+with QLNotes:
+
+```sh
+python3 notes/math/toolchain/scripts/export_latex_web.py main.tex \
   --repo-root . \
   --build notes/<subject>/<course>/build/typst \
   --output notes/<subject>/<course>/build/index.html \
   --title "Course Notes"
 ```
 
-The converter preserves both knowledge macros as Typst `#kn`/`#ref`. Commit the
+There is no direct LaTeX-to-web renderer: the web command compiles the generated
+Typst project. The converter preserves both knowledge macros as Typst
+`#kn`/`#ref`. Commit the
 LaTeX authority, not the generated Typst or HTML. `--output` is only a local
 artifact path; node provenance still uses the source's configured `web` route.
 Wire that same route into the Pages artifact when the course is ready to

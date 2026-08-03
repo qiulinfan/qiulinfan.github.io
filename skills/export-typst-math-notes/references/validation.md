@@ -23,14 +23,22 @@ make -C .. blog-check
 make -C .. blog-build
 ```
 
+The site's dev and build commands first run `knowledge.py publish --format
+markdown`. That pass synchronizes configured Markdown files and rejects missing
+agent-authored entries or required direct cross-file refs; it does not perform
+semantic extraction itself.
+
 For a LaTeX authority, test the maintained conversion path before the owning
 Typst web check:
 
 ```sh
 python3 -m unittest notes.math.toolchain.tests.test_multisource
-python3 notes/math/toolchain/scripts/export_latex_web.py path/to/file.tex \
+python3 notes/math/toolchain/scripts/convert_latex_project.py path/to/main.tex \
+  --build knowledge/build/file-typst
+make -C knowledge/build/file-typst preview
+python3 notes/math/toolchain/scripts/export_latex_web.py path/to/main.tex \
   --repo-root . --build knowledge/build/file-typst \
-  --output knowledge/build/file.html --title "File notes"
+  --output knowledge/build/file.html
 ```
 
 Do not compile, render, or visually inspect PDFs; generate page PNGs or contact
@@ -61,8 +69,13 @@ Experimental Typst HTML warnings are acceptable when compile and check succeed.
 The graph check requires deterministic `knowledge/graph/*.json*`, globally
 unique active authority names, valid semantic edge endpoints, acyclic hierarchy/direct
 prerequisites, math-aware `label_html` for Typst nodes, and no stale source
-hashes. Orphans and dangling refs are visible warnings rather than silent
+hashes. Manifest-listed entry shards must exist, match their digests, remain
+below 48 MiB, and hydrate every `entry_path`. Orphans and dangling refs are visible warnings rather than silent
 deletions.
+
+The taxonomy check rejects discipline/root nodes, field-to-field `contains`
+edges, and active knowledge without an effective field. Multiple field parents
+are valid and expected for interdisciplinary topics.
 
 For a changed-file workflow, preview first:
 
@@ -91,6 +104,12 @@ This deterministic check covers only explicit, already curated knowledge: every
 node defined by the selected file needs a nonempty entry, and every confirmed
 cross-file direct dependency needs a file-level ref marker. It never promotes
 titles, splits concepts, or infers relations.
+
+For a format-wide Markdown publication gate, use:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
+```
 
 ## Repository boundary
 

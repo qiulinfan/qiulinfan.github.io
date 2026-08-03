@@ -13,6 +13,8 @@ statement into a node.
   notes written directly in Markdown, and LaTeX when it is configured as a
   maintained source rather than a one-time migration input.
 - `knowledge/graph/*.json*` is the deterministic, committed graph snapshot.
+- Contextual entry bodies live in deterministic per-authority shards under
+  `knowledge/graph/entries/`; `nodes.jsonl` stores only `entry_path` locators.
 - `knowledge/build/knowledge.sqlite` is an ignored local search index.
 - Agent-created metadata and semantic edges are durable graph knowledge. A source
   edit does not silently delete them.
@@ -21,6 +23,17 @@ Generated Markdown from a Typst authority is never ingested again as a second
 authority. Its markers are a portable graph-facing projection. Source type is
 inferred per file, and every adapter preserves the same global node identity
 and single canonical authority rule.
+
+Each source declares `knowledge_origin`: `personal-note` for the author's
+ordinary notes, or `research` for paper-derived and original-research entries.
+The website renders personal knowledge as circles and research knowledge as
+squares.
+
+`subject` and `course` are source-selection metadata only. Values such as
+`math` and `cs` never become graph nodes. The visible taxonomy begins with
+specific fields such as Analysis, Measure Theory, Probability Theory,
+Combinatorics, Computer Architecture, Optimization, or Deep Learning Theory.
+Create a field only when at least one configured source or topic belongs to it.
 
 ## What is a knowledge node?
 
@@ -97,6 +110,11 @@ On the notes website, a Markdown `kn` renders as emphasized text with the stable
 `kn-<id>` anchor and no hyperlink. A Markdown `ref` renders as a hyperlink to
 the canonical authority. The renderer resolves occurrences from the committed
 graph by authority, line, and source name; it does not reconstruct identity.
+Before Astro starts or builds, `knowledge.py publish --format markdown`
+synchronizes every configured Markdown authority and then requires every local
+node to have its agent-authored entry and every confirmed direct cross-file
+dependency to have its ref. The deterministic publisher never writes semantic
+prose or edges on the agent's behalf.
 
 ### LaTeX
 
@@ -110,7 +128,10 @@ By \knref{cache line}, spatial locality can reuse one transfer.
 The graph scanner reads these macros from LaTeX. Web export deterministically
 maps them to `#kn[...]` and `#ref[...]` during LaTeX-to-Typst conversion, then
 uses the Typst HTML pipeline. Generated Typst is an ignored build intermediate,
-not a second authority.
+not a second authority. An ElegantBook `main.tex` expands its synchronized
+chapter inputs into a self-contained Typst project containing `main.typ`, the
+QLNotes runtime, assets, and preview commands. HTML is compiled only from that
+Typst project; LaTeX has no independent web renderer.
 
 Every active knowledge node in a curation-complete authority has a concise
 `text` entry distilled by the agent from its authoritative statement, proof,
@@ -121,6 +142,12 @@ authorities may remain entry-pending until their first pass through the new
 file workflow; `audit` exposes that rollout state, and a newly curated file may
 not return to pending.
 
+Research entries may additionally carry a structured dossier with `summary`,
+`context`, `role`, `prerequisites`, `confusions`, `open_questions`, and
+`sources`. Before creating one, the agent searches canonical names and aliases
+in the existing graph. A known concept becomes a ref; only a genuinely missing
+concept receives a new authority and dossier.
+
 Formal-statement components may still carry local Typst labels for document-local
 cross-references. Their legacy `id`, `concepts`, `depends`, and `aliases` fields do
 not define graph identity.
@@ -129,14 +156,54 @@ not define graph identity.
 
 Node types:
 
-- `discipline`: the broadest hierarchy, such as mathematics;
-- `field`: a major area, such as measure theory;
+- `field`: a top-level semantic facet, such as analysis, geometry, algebra,
+  optimization, programming languages, or computer architecture;
 - `topic`: a curated course-level cluster, never an imported section heading;
 - `knowledge`: an authored or agent-extracted concept.
 
+Fields form a flat, overlapping facet layer, not a discipline tree. There is no
+`Mathematics`, `Computer Science`, or other universal root, and `contains`
+never links one field to another. A topic may be contained by several fields;
+therefore every knowledge node inherits one or more field memberships through
+its topic. A source file without a topic may attach its knowledge nodes directly
+to several fields. Multiple field memberships are expected and express
+interdisciplinary content rather than a taxonomy conflict.
+
+The source registry owns this explicit classification:
+
+```json
+{
+  "fields": [
+    {"id": "analysis", "label": "Analysis", "text": "..."},
+    {"id": "optimization", "label": "Optimization", "text": "..."}
+  ],
+  "sources": [{
+    "subject": "math",
+    "fields": ["analysis"],
+    "topics": [{
+      "glob": "papers/*.md",
+      "id": "diffusion-training-dynamics",
+      "label": "Diffusion Training Dynamics",
+      "fields": ["optimization"]
+    }]
+  }]
+}
+```
+
+Topic fields are additive to source fields. The synchronizer records the
+effective field IDs on topic and knowledge properties and materializes all
+corresponding `contains` paths. Field creation and classification are explicit
+agent decisions stored in this registry; the scanner does not infer them from
+paths or prose.
+
+When only one knowledge node crosses an additional boundary, the reviewed agent
+delta sets `properties.additional_fields` rather than broadening its whole
+topic. The next scoped sync unions those explicit facets with the registry
+baseline and creates direct field-to-knowledge classification edges.
+
 Semantic relations:
 
-- `contains`: hierarchy only;
+- `contains`: field-facet/topic classification only;
 - `prerequisite-for`: direct learning dependency;
 - `implies`, `generalizes`, `contrasts-with`, `derived-from`: explicit semantic
   claims when supported by the source.
@@ -213,6 +280,7 @@ An agent delta has this shape:
 ```json
 {
   "schema": "qlkg-agent-delta-v2",
+  "remove_nodes": [],
   "nodes": [],
   "edges": [
     {
@@ -239,7 +307,10 @@ knowledge/
 │   ├── nodes.jsonl
 │   ├── edges.jsonl
 │   ├── references.jsonl
-│   └── diagnostics.json
+│   ├── diagnostics.json
+│   └── entries/
+│       ├── by-source/<authority-filename-with-extension>.jsonl
+│       └── meta/<subject>/<course>.jsonl
 ├── tests/
 └── build/knowledge.sqlite       # ignored
 ```
@@ -248,11 +319,16 @@ Required invariants:
 
 - one active authority marker per authored name at most, across all formats;
 - stable deterministic artifacts;
+- entry bodies are hydrated from manifest-listed shards, each capped below
+  48 MiB; `nodes.jsonl` never duplicates their text;
 - every Typst-authored knowledge node has deterministic, active-content-free
   `label_html` generated from its original `typst_name`; other formats use the
   escaped plain-label fallback;
 - no dangling semantic edge endpoints;
 - no cycles in `contains` or `prerequisite-for`;
+- no discipline/root nodes and no field-to-field `contains` edges;
+- every active knowledge node resolves to at least one configured field, while
+  any number of additional field memberships is valid;
 - unresolved references and orphaned nodes are visible warnings;
 - a scoped sync never rewrites unrelated source state;
 - examples and section headings create zero implicit nodes.
@@ -265,10 +341,12 @@ python3 knowledge/scripts/knowledge.py --repo-root . audit
 make knowledge-search QUERY="conditional expectation"
 python3 knowledge/scripts/knowledge.py --repo-root . show "Dominated convergence theorem"
 python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.md
+python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
 ```
 
 `audit` is a deterministic readiness report: it measures entry coverage by
-authority, semantic connectedness, relation counts, cross-course bridges, and
-edge metadata completeness. Isolated nodes and pending authorities are rollout
-signals, not automatic semantic errors; only an agent reading the authority may
-decide whether to add a node, ref, entry, or edge.
+authority, semantic connectedness, relation counts, cross-course bridges,
+effective field memberships, and edge metadata completeness. Isolated nodes
+and pending authorities are rollout signals, not automatic semantic errors;
+only an agent reading the authority may decide whether to add a node, ref,
+entry, field, or edge.

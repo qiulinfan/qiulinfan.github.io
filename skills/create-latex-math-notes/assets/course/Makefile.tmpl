@@ -1,8 +1,10 @@
-.PHONY: all pdf watch edit doctor clean
+.PHONY: all pdf watch typst typst-preview typst-watch edit doctor clean
 
 LATEXMK := latexmk
 MAIN := main.tex
 BUILD := build
+REPO_ROOT := $(abspath ../../..)
+TYPST_BUILD := $(BUILD)/typst
 LATEXMK_FLAGS := -lualatex -interaction=nonstopmode -synctex=1 -file-line-error -halt-on-error -outdir=$(BUILD)
 
 all: pdf
@@ -15,15 +17,26 @@ watch:
 	@mkdir -p $(BUILD)
 	@$(LATEXMK) -pvc -view=none $(LATEXMK_FLAGS) $(MAIN)
 
+typst:
+	@python3 $(REPO_ROOT)/notes/math/toolchain/scripts/convert_latex_project.py \
+		$(MAIN) --build $(TYPST_BUILD)
+
+typst-preview: typst
+	@$(MAKE) -C $(TYPST_BUILD) preview
+
+typst-watch: typst
+	@$(MAKE) -C $(TYPST_BUILD) watch
+
 edit:
 	@code -r {{SLUG}}.code-workspace main.tex
 
 doctor:
 	@command -v lualatex >/dev/null
 	@command -v latexmk >/dev/null
+	@command -v pandoc >/dev/null
+	@command -v typst >/dev/null
 	@command -v code >/dev/null
 	@echo "LuaLaTeX live-preview toolchain is ready."
 
 clean:
 	@$(LATEXMK) -C -outdir=$(BUILD) $(MAIN)
-

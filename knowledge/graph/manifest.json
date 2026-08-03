@@ -1,19 +1,75 @@
 {
   "counts": {
-    "edges": 496,
-    "nodes": 296,
+    "edges": 513,
+    "nodes": 295,
     "references": 44
   },
+  "entry_store": {
+    "entries": 101,
+    "schema": "qlkg-entry-shards-v1",
+    "shards": [
+      {
+        "bytes": 2395,
+        "count": 13,
+        "path": "entries/by-source/notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ.jsonl",
+        "sha256": "c8a2e8e049d4eb1f9e432f56baaeed74a0961c610d2934677a66b255b00aaa2d"
+      },
+      {
+        "bytes": 2601,
+        "count": 13,
+        "path": "entries/by-source/notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ.jsonl",
+        "sha256": "598ec265d46bf2122e12f52eb981e79d0cbc00e3eb2eb7eb157215a474891c8f"
+      },
+      {
+        "bytes": 1776,
+        "count": 7,
+        "path": "entries/by-source/notes/math/measure-theory/chapters/11-Radon-Nikodym_theorem.typ.jsonl",
+        "sha256": "34795a85c9e692bc99ec771459b4108175178b4447ab8069785f3704b7517559"
+      },
+      {
+        "bytes": 4135,
+        "count": 19,
+        "path": "entries/by-source/notes/math/prob/chapters/01-combinatorics&prob_space.typ.jsonl",
+        "sha256": "03df5651eecc773909eeb5eed418e8b9a85a4ca3ac4cb48de397e7675e8f3b58"
+      },
+      {
+        "bytes": 5473,
+        "count": 26,
+        "path": "entries/by-source/notes/math/prob/chapters/03-joint&conditional-distribution.typ.jsonl",
+        "sha256": "a55e1e98a805c142ecbf5959d7839d5dd17bea36dd8649bad7518b0e88a35c5f"
+      },
+      {
+        "bytes": 651,
+        "count": 5,
+        "path": "entries/meta/global/unscoped.jsonl",
+        "sha256": "634dd8932fe3f2fdffadc5649c34432addd4b7c7cbbd2ee1982f6dc1ccc5f165"
+      },
+      {
+        "bytes": 2129,
+        "count": 13,
+        "path": "entries/meta/math/measure-theory.jsonl",
+        "sha256": "13e6afd3f48f6eaba0ccf2a69e30d0b39bf6cfbf5520f97d906c2b1a2ca9291f"
+      },
+      {
+        "bytes": 837,
+        "count": 5,
+        "path": "entries/meta/math/probability.jsonl",
+        "sha256": "e8c9b83b690f592b986d7018559bdbbee069e3603f78d2f845186f164057cedd"
+      }
+    ]
+  },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "015fda15d6f51a550d788644e97a0a58ee9a8092aa5be53ccc9ffce746b0e799",
+  "graph_sha256": "6e47c653130d03948b15488a923c63ab4f868a6e6f3a66b9af4e46d452a7d358",
+  "knowledge_origins": {
+    "personal-note": 271
+  },
   "node_types": {
-    "discipline": 2,
-    "field": 4,
+    "field": 5,
     "knowledge": 271,
     "topic": 19
   },
   "relations": {
-    "contains": 294,
+    "contains": 311,
     "contrasts-with": 2,
     "derived-from": 61,
     "generalizes": 6,
@@ -77,6 +133,6 @@
   },
   "statuses": {
     "active": 271,
-    "meta": 25
+    "meta": 24
   }
 }

@@ -21,6 +21,11 @@ terminal `README` and `index` stems fold into their parent route. A LaTeX
 authority's local HTML output is an ignored artifact, while its canonical node
 URLs use the source registry's `web` value.
 
+The ElegantBook LaTeX pass always emits a self-contained preview project before
+HTML: `main.typ`, converted chapter modules, a copied QLNotes runtime, assets,
+and preview commands. Unsupported template constructs fail explicitly so the
+LaTeX and Typst adapters can be updated together; they never disappear silently.
+
 ## Semantic authoring API
 
 Formal statement components are `definition`, `axiom`, `theorem`, `lemma`,
@@ -97,9 +102,14 @@ than reconstructing identity from a downstream export.
 `knowledge/SPEC.md` is authoritative for `qlkg-v2`. The graph distinguishes:
 
 - source-defined knowledge nodes (the format-appropriate authority marker);
-- agent-created discipline/field/topic nodes;
+- registry-curated field facets and topics, with multiple field membership;
 - semantic edges with evidence;
 - authored ref occurrences used as backlinks.
+
+There are no discipline roots. Source `subject` and `course` values remain
+operational metadata and never appear as `Mathematics` or `Computer Science`
+nodes. `contains` is limited to field-to-topic/knowledge and
+topic-to-knowledge classification.
 
 For each changed file, the agent also writes a concise source-grounded `text`
 entry for every locally authoritative node. A direct immediate prerequisite
@@ -111,6 +121,10 @@ Source synchronization may target a repository, subject, course, or file. A
 missing definition in the selected scope makes its node orphaned; it does not
 delete metadata or semantic edges. A semantic edge changes only through an
 explicit agent delta.
+
+Node entry bodies are not stored inline in `nodes.jsonl`. The graph manifest
+lists per-authority entry shards, and each node with an entry stores only its
+`properties.entry_path`. Consumers hydrate the shards before search or display.
 
 ## Citations and references
 

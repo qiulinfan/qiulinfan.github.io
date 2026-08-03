@@ -1,4 +1,4 @@
 interface:
   display_name: "Export Multi-Source Notes"
-  short_description: "Curate and publish Typst, Markdown, and LaTeX notes"
-  default_prompt: "Use $export-typst-math-notes to curate and publish changed Typst, Markdown, or LaTeX note sources into the shared knowledge graph and website."
+  short_description: "Curate multi-source notes into a cross-field graph"
+  default_prompt: "Use $export-typst-math-notes to curate and publish Typst, Markdown, or LaTeX sources into the overlapping field-facet knowledge graph and notes website."

@@ -1,0 +1,13 @@
+{"id":"almost-everywhere","text":"若一个关于 X 的 statement 除了在某个 null set 上之外处处成立，则称它 almost everywhere（a.e.）成立。"}
+{"id":"caratheodory-theorem","text":"对任意 outer measure μ*，所有 μ*-measurable sets 组成一个 σ-algebra M，且 restriction μ*|_M 是 complete measure。"}
+{"id":"complete-measure-space","text":"complete measure space 是每个 subnull set 都 measurable（因而是 null set）的 measure space；等价地，每个 null set 的所有子集都属于它的 σ-algebra。"}
+{"id":"construct-outer-measure-out-of-an-elementary-length-function","text":"若集合族 E 含空集与 X，且 ρ:E→[0,∞] 满足 ρ(∅)=0，则用 countable E-coverings 的 ρ-总和取 infimum 定义的 μ* 是 outer measure。"}
+{"id":"every-measure-space-can-be-completed","text":"任意 measure space (X,M,μ) 都可通过把 measurable sets 与 null sets 的子集加入 M，得到完备的 σ-algebra M̄；μ 在 M̄ 上有唯一的 completion μ̄。"}
+{"id":"hahn-kolmogorov-theorem","text":"algebra A_0 上的 premeasure μ_0 可扩张为 generated σ-algebra <A_0> 上的 measure μ，且该扩张是所有扩张中最大的；若 μ_0 是 σ-finite，则扩张唯一。"}
+{"id":"mu-measurable","text":"给定 outer measure μ*，若对所有 E⊆X 都有 μ*(E)=μ*(E∩A)+μ*(E∩A^c)，则称 A 是 μ*-measurable；这是 Carathéodory measurability condition。"}
+{"id":"nul-set-subnull-set-almost-everywhere","text":"measure space (X,M,μ) 中的 null set 是满足 μ(A)=0 的 measurable set A。"}
+{"id":"outer-measure","text":"集合 X 上的 outer measure 是定义在整个 power set P(X) 上的函数 μ*:P(X)→[0,∞]，满足 μ*(∅)=0、monotonicity 和 countable subadditivity。"}
+{"id":"premeasure","text":"premeasure 是定义在 algebra of sets A_0 上的非负集函数 μ_0，满足 μ_0(∅)=0，并对 A_0 中并集仍属于 A_0 的 disjoint sequences countably additive。"}
+{"id":"premeasure-extension-via-induced-outer-measure","text":"premeasure μ_0 通过 algebra coverings 的 measure 和取 infimum 可诱导 outer measure μ*；该 outer measure 在原 algebra 上等于 μ_0，且 algebra 中每个集合都是 μ*-measurable。"}
+{"id":"sigma-finite-measure","text":"measure μ 是 σ-finite 的，若整个空间 X 可写成一列 measurable sets E_i 的并，且每个 μ(E_i)<∞；finite measure 是特别情形。"}
+{"id":"subnull-set","text":"subnull set 是某个 null set 的任意子集；它不一定 measurable，但若 measurable，则由 monotonicity 可知其 measure 为零。"}

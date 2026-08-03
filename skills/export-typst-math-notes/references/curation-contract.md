@@ -82,6 +82,13 @@ Use the node's existing provenance as the authority link. Set
 `properties.entry_origin` to `agent-extracted` for an agent-written entry. The
 source synchronizer must preserve `text` and agent properties.
 
+For ordinary personal notes, the compact `text` entry is sufficient. For a
+paper-derived or original-research authority, also write the structured
+`entry` fields defined in `research-ingestion.md` so that the definition is
+preserved together with its paper context, role, confusions, open questions,
+and precise source locations. The graph writer shards these bodies by authority;
+never place a full dossier inside node properties.
+
 An untouched legacy authority may still appear as pending in the global audit.
 That is migration state, not permission to leave a selected file incomplete:
 once an authority is processed by this workflow, all of its active nodes must
@@ -142,8 +149,19 @@ generic substitute for every association.
 - `contrasts-with`: store one edge for an explicit conceptual contrast. Because
   the relation is symmetric, order the two node IDs lexicographically for a
   deterministic representation.
-- `contains`: reserve for discipline/field/topic hierarchy; do not use it for
-  theorem ingredients or document layout.
+- `contains`: reserve for configured `field -> topic/knowledge` and
+  `topic -> knowledge` classification; do not use it for theorem ingredients,
+  document layout, field-to-field nesting, or coarse discipline roots.
+
+Field classification is deliberately many-to-many. Preserve every directly
+relevant field facet supported by the source; do not force an interdisciplinary
+topic into one exclusive parent. `subject=math` and `subject=cs` are file-scope
+metadata, not semantic nodes. New field names require an explicit registry
+entry and real content; never pre-populate empty umbrella fields.
+Use registry source/topic `fields` for shared classification. If only one node
+has another directly relevant facet, set its reviewed
+`properties.additional_fields`; do not misclassify the whole source merely to
+obtain one cross-field edge.
 
 Choose a relation in this order before falling back to `prerequisite-for`:
 

@@ -13,6 +13,7 @@ toolchain/
 ├── scripts/
 │   ├── export.py           # one complete Typst entry -> temporary snapshots
 │   ├── export_course.py    # split entry snapshots into chapter files
+│   ├── convert_latex_project.py # ElegantBook -> previewable Typst project
 │   ├── export_latex_web.py # maintained LaTeX -> synced graph -> Typst HTML
 │   ├── migrate_knowledge_markers.py # one-time metadata migration
 │   └── migrate_latex.py    # legacy migration helper
@@ -86,6 +87,12 @@ Direct Markdown authorities use `--[[Name]]--` for the canonical `kn` and
 `#kn`/`#ref` during web conversion. A configured directory or file scope may
 mix all three suffixes.
 
+For an ElegantBook LaTeX course, pass its `main.tex` to
+`convert_latex_project.py`. The synchronized adapter expands direct chapter
+inputs and creates an ignored self-contained Typst project with `main.typ`,
+local QLNotes runtime, copied assets, and preview Makefile. Web export always
+compiles that project; there is no independent LaTeX-to-HTML renderer.
+
 The agent reads one complete changed file, preserves explicit markers, extracts
 a concise source-grounded entry for every local node, and chooses direct typed
 semantic edges. Scripts only scan and synchronize explicit markers, apply the
@@ -103,6 +110,16 @@ python3 knowledge/scripts/knowledge.py --repo-root . apply knowledge/build/revie
 python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/chapter.typ
 python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/chapter.typ
 ```
+
+Direct Markdown site publication runs a format-wide version automatically:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
+```
+
+It synchronizes every configured Markdown authority before checking entries and
+required refs. Semantic entries and edges still come only from an agent that has
+read the source and existing graph.
 
 The graph can also be synchronized at repository, subject, course, or
 individual-file granularity:

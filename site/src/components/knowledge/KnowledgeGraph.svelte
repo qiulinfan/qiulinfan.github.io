@@ -3,7 +3,7 @@
 
 	export let dataUrl: string;
 
-	type NodeType = "discipline" | "field" | "topic" | "knowledge";
+	type NodeType = "field" | "topic" | "knowledge";
 
 	type Properties = Record<string, unknown>;
 
@@ -12,6 +12,7 @@
 		type: NodeType;
 		label: string;
 		text: string;
+		entry?: Record<string, unknown>;
 		properties?: Properties;
 		provenance?: {
 			authority?: string;
@@ -78,10 +79,9 @@
 		ring: number;
 	}
 
-	const typeOrder: NodeType[] = ["discipline", "field", "topic", "knowledge"];
+	const typeOrder: NodeType[] = ["field", "topic", "knowledge"];
 
 	const typeLabels: Record<NodeType, string> = {
-		discipline: "学科",
 		field: "领域",
 		topic: "主题",
 		knowledge: "知识",
@@ -134,6 +134,10 @@
 		return value === undefined || value === null ? "" : String(value);
 	}
 
+	function fieldLabels(node: GraphNode): string[] {
+		return stringList(node, "fields").map((id) => nodeIndex.get(id)?.label ?? id);
+	}
+
 	function escapeHtml(value: string): string {
 		return value
 			.replaceAll("&", "&amp;")
@@ -153,9 +157,11 @@
 				node.label,
 				node.id,
 				node.text,
+				JSON.stringify(node.entry ?? {}),
 				...stringList(node, "aliases"),
 				propertyText(node, "course"),
 				propertyText(node, "topic"),
+				...stringList(node, "fields"),
 			].join(" "),
 		);
 	}
@@ -261,12 +267,31 @@
 
 	function nodeColor(type: NodeType, alpha = 1) {
 		const colors: Record<NodeType, string> = {
-			discipline: `oklch(0.60 0.16 270 / ${alpha})`,
 			field: `oklch(0.65 0.17 230 / ${alpha})`,
 			topic: `oklch(0.72 0.14 150 / ${alpha})`,
 			knowledge: `oklch(0.69 0.16 45 / ${alpha})`,
 		};
 		return colors[type];
+	}
+
+	function isResearchNode(node: GraphNode) {
+		return node.type === "knowledge" && propertyText(node, "knowledge_origin") === "research";
+	}
+
+	function knowledgeOriginLabel(node: GraphNode) {
+		return isResearchNode(node) ? "论文与研究" : "个人笔记";
+	}
+
+	function traceNode(context: CanvasRenderingContext2D, node: GraphNode, position: PositionedNode, radius: number) {
+		context.beginPath();
+		if (isResearchNode(node)) context.rect(position.x - radius, position.y - radius, radius * 2, radius * 2);
+		else context.arc(position.x, position.y, radius, 0, Math.PI * 2);
+	}
+
+	function entryValue(node: GraphNode, key: string): string {
+		const value = node.entry?.[key];
+		if (Array.isArray(value)) return value.map(String).join("\n");
+		return value === undefined || value === null ? "" : String(value);
 	}
 
 	function relationColor(relation: string) {
@@ -406,12 +431,10 @@
 		for (const node of nodes.sort((left, right) => (ring.get(right.id) ?? 0) - (ring.get(left.id) ?? 0))) {
 			const position = positions.get(node.id);
 			if (!position) continue;
-			context.beginPath();
-			context.arc(position.x, position.y, position.radius + 3, 0, Math.PI * 2);
+			traceNode(context, node, position, position.radius + 3);
 			context.fillStyle = haloColor;
 			context.fill();
-			context.beginPath();
-			context.arc(position.x, position.y, position.radius, 0, Math.PI * 2);
+			traceNode(context, node, position, position.radius);
 			context.fillStyle = nodeColor(node.type, position.ring === 2 ? 0.72 : 1);
 			context.fill();
 			if (node.id === hoveredId) {
@@ -536,7 +559,7 @@
 		{#if payload}
 			<div class="stat-grid" aria-label="Graph summary">
 				<div><strong>{payload.manifest.node_types.knowledge ?? 0}</strong><span>知识节点</span></div>
-				<div><strong>{(payload.manifest.node_types.topic ?? 0) + (payload.manifest.node_types.field ?? 0) + (payload.manifest.node_types.discipline ?? 0)}</strong><span>层级节点</span></div>
+				<div><strong>{(payload.manifest.node_types.topic ?? 0) + (payload.manifest.node_types.field ?? 0)}</strong><span>领域与主题</span></div>
 				<div><strong>{payload.manifest.counts.edges}</strong><span>关系</span></div>
 				<div class:warning={payload.diagnostics.warnings.length > 0}>
 					<strong>{payload.diagnostics.warnings.length}</strong><span>待整理</span>
@@ -576,8 +599,8 @@
 				<div class="result-list">
 					{#each results as node}
 						<button type="button" class="result-item" class:selected={node.id === selectedId} on:click={() => selectNode(node.id)}>
-							<span class="node-dot" style={`--node-color:${nodeColor(node.type)}`}></span>
-							<span class="result-copy"><strong class="math-label">{@html nodeLabelHtml(node)}</strong><small>{typeLabel(node.type)} · {truncate(node.id, 48)}</small></span>
+							<span class="node-dot" class:research={isResearchNode(node)} style={`--node-color:${nodeColor(node.type)}`}></span>
+							<span class="result-copy"><strong class="math-label">{@html nodeLabelHtml(node)}</strong><small>{typeLabel(node.type)} · {node.type === "knowledge" ? knowledgeOriginLabel(node) : truncate(node.id, 48)}</small></span>
 						</button>
 					{:else}
 						<div class="empty-list"><strong>没有匹配项</strong><span>换一个名称、别名或正文关键词试试。</span></div>
@@ -589,7 +612,7 @@
 				<div class="panel-heading graph-heading">
 					<div><span class="kicker">LOCAL GRAPH</span><h2>两跳关系</h2></div>
 					<div class="graph-legend">
-						<span><i class="about"></i>语义</span><span><i class="structure"></i>结构</span>
+						<span><i class="personal-node"></i>个人</span><span><i class="research-node"></i>论文/研究</span><span><i class="about"></i>语义边</span><span><i class="structure"></i>结构边</span>
 					</div>
 				</div>
 				<div class="canvas-host" bind:this={canvasHost}>
@@ -628,7 +651,7 @@
 				{#if activePanel === "detail" && selectedNode}
 					<div class="detail-scroll">
 						<div class="node-heading">
-							<span class="type-pill" style={`--node-color:${nodeColor(selectedNode.type)}`}>{typeLabel(selectedNode.type)}</span>
+							<span class="type-pill" class:research={isResearchNode(selectedNode)} style={`--node-color:${nodeColor(selectedNode.type)}`}>{typeLabel(selectedNode.type)}</span>
 							<h2 class="math-label">{@html nodeLabelHtml(selectedNode)}</h2>
 							<code>{selectedNode.id}</code>
 						</div>
@@ -645,13 +668,31 @@
 						{#if propertyText(selectedNode, "source_format")}
 							<div class="attribute-row"><span>源格式</span><strong>{propertyText(selectedNode, "source_format")}</strong></div>
 						{/if}
+						{#if selectedNode.type === "knowledge"}
+							<div class="attribute-row"><span>知识来源</span><strong>{knowledgeOriginLabel(selectedNode)}</strong></div>
+						{/if}
 						{#if propertyText(selectedNode, "course")}
 							<div class="attribute-row"><span>课程</span><strong>{propertyText(selectedNode, "course")}</strong></div>
+						{/if}
+						{#if fieldLabels(selectedNode).length}
+							<div class="attribute-row"><span>所属领域</span><strong>{fieldLabels(selectedNode).join(" · ")}</strong></div>
 						{/if}
 
 						{#if selectedNode.text}
 							<div class="detail-block"><h3>词条</h3><div class="evidence-text">{selectedNode.text}</div></div>
 						{/if}
+						{#each [
+							["context", "上下文"],
+							["role", "在来源中的作用"],
+							["prerequisites", "直接前置"],
+							["confusions", "易混淆"],
+							["open_questions", "开放问题"],
+							["sources", "来源位置"],
+						] as field}
+							{#if entryValue(selectedNode, field[0])}
+								<div class="detail-block"><h3>{field[1]}</h3><div class="evidence-text compact">{entryValue(selectedNode, field[0])}</div></div>
+							{/if}
+						{/each}
 
 						{#if neighbors.length}
 							<div class="detail-block"><h3>关系 <span>{neighbors.length}</span></h3><div class="neighbor-list">
@@ -742,6 +783,7 @@
 	.result-item:hover { background: var(--btn-plain-bg-hover); }
 	.result-item.selected { background: color-mix(in oklch, var(--primary) 9%, transparent); border-color: color-mix(in oklch, var(--primary) 18%, transparent); }
 	.node-dot { flex: none; width: .5rem; height: .5rem; margin-top: .3rem; border-radius: 50%; background: var(--node-color); box-shadow: 0 0 0 3px color-mix(in oklch, var(--node-color) 16%, transparent); }
+	.node-dot.research { border-radius: .08rem; }
 	.result-copy { min-width: 0; display: flex; flex-direction: column; gap: .32rem; }
 	.result-copy strong { font-size: .79rem; line-height: 1.35; color: color-mix(in oklch, currentColor 78%, transparent); overflow-wrap: anywhere; }
 	.result-copy small { font: 500 .62rem/1.35 "JetBrains Mono Variable", monospace; color: color-mix(in oklch, currentColor 36%, transparent); overflow-wrap: anywhere; }
@@ -755,6 +797,9 @@
 	.graph-legend i { width: 1.3rem; height: 2px; border-radius: 1rem; }
 	.graph-legend .about { background: oklch(.68 .17 218 / .65); }
 	.graph-legend .structure { background: oklch(.58 .03 250 / .35); }
+	.graph-legend .personal-node, .graph-legend .research-node { width: .48rem; height: .48rem; background: oklch(.69 .16 45); }
+	.graph-legend .personal-node { border-radius: 50%; }
+	.graph-legend .research-node { border-radius: .08rem; }
 	.canvas-host { flex: 1; min-height: 0; position: relative; overflow: hidden; background-image: radial-gradient(circle at center, color-mix(in oklch, var(--primary) 7%, transparent) 0, transparent 52%), radial-gradient(color-mix(in oklch, currentColor 9%, transparent) .7px, transparent .7px); background-size: auto, 18px 18px; }
 	.canvas-host canvas { display: block; }
 	.graph-node-label { position: absolute; z-index: 2; width: max-content; max-width: 8.5rem; padding: .1rem .25rem; transform: translateX(-50%); border: 0; border-radius: .3rem; background: color-mix(in oklch, var(--card-bg) 82%, transparent); color: color-mix(in oklch, currentColor 72%, transparent); font-size: .61rem; font-weight: 520; line-height: 1.25; text-align: center; cursor: pointer; backdrop-filter: blur(3px); }
@@ -775,6 +820,7 @@
 	.node-heading { padding-bottom: 1.05rem; border-bottom: 1px solid var(--panel-border); }
 	.type-pill { display: inline-flex; align-items: center; height: 1.5rem; padding: 0 .5rem 0 1.05rem; border-radius: 999px; position: relative; background: color-mix(in oklch, var(--node-color) 12%, transparent); color: var(--node-color); font-size: .64rem; font-weight: 700; }
 	.type-pill::before { content: ""; position: absolute; left: .48rem; width: .35rem; height: .35rem; border-radius: 50%; background: var(--node-color); }
+	.type-pill.research::before { border-radius: .06rem; }
 	.node-heading h2 { margin: .72rem 0 .55rem; font-size: 1.15rem; line-height: 1.32; color: color-mix(in oklch, currentColor 86%, transparent); overflow-wrap: anywhere; }
 	.node-heading code, .source-path { font: 500 .61rem/1.45 "JetBrains Mono Variable", monospace; color: color-mix(in oklch, currentColor 34%, transparent); overflow-wrap: anywhere; }
 	.attribute-row { min-height: 2.8rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--panel-border); font-size: .72rem; }
@@ -789,6 +835,7 @@
 	.chip-list button:hover { border-color: color-mix(in oklch, var(--primary) 40%, transparent); color: var(--primary); }
 	.chip-list.dependencies button { border-color: oklch(.7 .17 25 / .2); background: oklch(.7 .17 25 / .07); }
 	.evidence-text { max-height: 16rem; overflow-y: auto; padding: .72rem; border-radius: .65rem; white-space: pre-wrap; overflow-wrap: anywhere; background: color-mix(in oklch, var(--page-bg) 58%, transparent); font-size: .73rem; line-height: 1.62; color: color-mix(in oklch, currentColor 64%, transparent); }
+	.evidence-text.compact { max-height: 11rem; }
 	.neighbor-list { display: flex; flex-direction: column; gap: .3rem; }
 	.neighbor-list button, .neighbor-list .backlink-item { width: 100%; padding: .52rem; display: grid; grid-template-columns: 1.5rem 1fr; gap: .25rem; align-items: center; text-align: left; border: 0; border-radius: .55rem; background: transparent; color: inherit; cursor: pointer; text-decoration: none; }
 	.neighbor-list button:hover, .neighbor-list .backlink-item:hover { background: var(--btn-plain-bg-hover); }
