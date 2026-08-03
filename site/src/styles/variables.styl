@@ -1,18 +1,35 @@
-/* utils */
+/*
+ * QL site design contract
+ *
+ * This is the single source of truth for the visual identity shared by the
+ * homepage, blog, notes, and knowledge graph. Components consume semantic
+ * variables from this file; changing the palette or surface treatment here
+ * changes the whole site.
+ */
+
 white(a)
   rgba(255, 255, 255, a)
 
 black(a)
   rgba(0, 0, 0, a)
 
-rainbow-light = linear-gradient(to right, oklch(0.80 0.10 0), oklch(0.80 0.10 30), oklch(0.80 0.10 60), oklch(0.80 0.10 90), oklch(0.80 0.10 120), oklch(0.80 0.10 150), oklch(0.80 0.10 180), oklch(0.80 0.10 210), oklch(0.80 0.10 240), oklch(0.80 0.10 270), oklch(0.80 0.10 300), oklch(0.80 0.10 330), oklch(0.80 0.10 360))
-rainbow-dark = linear-gradient(to right, oklch(0.70 0.10 0), oklch(0.70 0.10 30), oklch(0.70 0.10 60), oklch(0.70 0.10 90), oklch(0.70 0.10 120), oklch(0.70 0.10 150), oklch(0.70 0.10 180), oklch(0.70 0.10 210), oklch(0.70 0.10 240), oklch(0.70 0.10 270), oklch(0.70 0.10 300), oklch(0.70 0.10 330), oklch(0.70 0.10 360))
-
 :root
-  --radius-large 1rem
+  --radius-small .55rem
+  --radius-medium .75rem
+  --radius-large .875rem
   --content-delay 150ms
+  --font-sans -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif
+  --font-mono "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace
+  --card-shadow 0 18px 50px rgba(9, 14, 25, .10)
+  --site-backdrop-opacity .09
+  --site-backdrop-filter saturate(.72) contrast(.92)
 
-/* An util to define variables that vary with light and dark mode */
+:root.dark
+  --card-shadow 0 20px 55px rgba(7, 10, 16, .24)
+  --site-backdrop-opacity .30
+  --site-backdrop-filter saturate(.78) contrast(.92) brightness(.72)
+
+/* An util to define variables that vary with light and dark mode. */
 define(vars)
   :root
     for key, value in vars
@@ -23,76 +40,86 @@ define(vars)
         {key}: value[1]
 
 define({
-  --primary: oklch(0.70 0.14 var(--hue)) oklch(0.75 0.14 var(--hue))
-  --page-bg: oklch(0.95 0.01 var(--hue)) oklch(0.16 0.014 var(--hue))
-  --card-bg: white oklch(0.23 0.015 var(--hue))
+  /* Brand palette: GitHub Light / One Dark Pro. */
+  --primary: #0969da #61afef
+  --primary-contrast: #ffffff #17202a
+  --page-bg: #f6f8fa #21252b
+  --card-bg: rgba(255, 255, 255, .90) rgba(40, 44, 52, .90)
+  --surface-deep: #eaeef2 #21252b
+  --surface-hover: rgba(9, 105, 218, .07) rgba(97, 175, 239, .10)
+  --text-strong: #24292f #e5e9f0
+  --text: #424a53 #abb2bf
+  --text-muted: #57606a #8f98a7
+  --muted: #6e7781 #697180
+  --border: #d0d7de rgba(171, 178, 191, .17)
+  --violet: #8250df #c678dd
+  --cyan: #1b7c83 #56b6c2
+  --green: #1a7f37 #98c379
+  --yellow: #9a6700 #e5c07b
+  --red: #cf222e #e06c75
+  --warning: #9a6700 #e5c07b
+  --status-ok: #1a7f37 #98c379
+  --media-overlay-bg: rgba(33, 37, 43, .78) rgba(33, 37, 43, .78)
+  --media-overlay-text: #abb2bf #abb2bf
+  --media-overlay-link: #61afef #61afef
 
-  --btn-content: oklch(0.55 0.12 var(--hue)) oklch(0.75 0.1 var(--hue))
+  /* Knowledge graph and data-visualization roles. */
+  --graph-field: #0969da #61afef
+  --graph-topic: #1a7f37 #98c379
+  --graph-knowledge: #9a6700 #e5c07b
+  --graph-prerequisite: #cf222e #e06c75
+  --graph-semantic: #1b7c83 #56b6c2
+  --graph-structure: #57606a #697180
 
-  --btn-regular-bg: oklch(0.95 0.025 var(--hue)) oklch(0.33 0.035 var(--hue))
-  --btn-regular-bg-hover: oklch(0.9 0.05 var(--hue)) oklch(0.38 0.04 var(--hue))
-  --btn-regular-bg-active: oklch(0.85 0.08 var(--hue)) oklch(0.43 0.045 var(--hue))
-
-  --btn-plain-bg-hover: oklch(0.95 0.025 var(--hue)) oklch(0.30 0.035 var(--hue))
-  --btn-plain-bg-active: oklch(0.98 0.01 var(--hue)) oklch(0.27 0.025 var(--hue))
-
-  --btn-card-bg-hover: oklch(0.98 0.005 var(--hue)) oklch(0.3 0.03 var(--hue))
-  --btn-card-bg-active: oklch(0.9 0.03 var(--hue)) oklch(0.35 0.035 var(--hue))
-
-  --enter-btn-bg: var(--btn-regular-bg)
-  --enter-btn-bg-hover: var(--btn-regular-bg-hover)
-  --enter-btn-bg-active: var(--btn-regular-bg-active)
-
-  --deep-text: oklch(0.25 0.02 var(--hue))
-
-  --title-active: oklch(0.6 0.1 var(--hue))
-
-  --line-divider: black(0.08) white(0.08)
-
-  --line-color: black(0.1) white(0.1)
-  --meta-divider: black(0.2) white(0.2)
-
-  --inline-code-bg: var(--btn-regular-bg)
-  --inline-code-color: var(--btn-content)
-  --selection-bg: oklch(0.90 0.05 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --codeblock-selection: oklch(0.40 0.08 var(--hue))
-  --codeblock-bg: oklch(0.17 0.015 var(--hue)) oklch(0.17 0.015 var(--hue))
-  --codeblock-topbar-bg: oklch(0.3 0.02 var(--hue)) oklch(0.12 0.015 var(--hue))
-
-  --license-block-bg: black(0.03) var(--codeblock-bg)
-
-  --link-underline: oklch(0.93 0.04 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --link-hover: oklch(0.95 0.025 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --link-active: oklch(0.90 0.05 var(--hue)) oklch(0.35 0.07 var(--hue))
-
-  --float-panel-bg: white oklch(0.19 0.015 var(--hue))
-
-  --scrollbar-bg-light: black(0.4)
-  --scrollbar-bg-hover-light: black(0.5)
-  --scrollbar-bg-active-light: black(0.6)
-
-  --scrollbar-bg-dark: white(0.4)
-  --scrollbar-bg-hover-dark: white(0.5)
-  --scrollbar-bg-active-dark: white(0.6)
-
-  --scrollbar-bg: var(--scrollbar-bg-light) var(--scrollbar-bg-dark)
-  --scrollbar-bg-hover: var(--scrollbar-bg-hover-light) var(--scrollbar-bg-hover-dark)
-  --scrollbar-bg-active: var(--scrollbar-bg-active-light) var(--scrollbar-bg-active-dark)
-
-  --color-selection-bar: rainbow-light rainbow-dark
-
+  /* Fuwari semantic surfaces mapped onto the shared brand palette. */
+  --btn-content: #0969da #78b9ef
+  --btn-regular-bg: #eef4fb #333946
+  --btn-regular-bg-hover: #deebf8 #3b4351
+  --btn-regular-bg-active: #cbdff3 #454e5e
+  --btn-plain-bg-hover: rgba(9, 105, 218, .07) rgba(97, 175, 239, .10)
+  --btn-plain-bg-active: rgba(9, 105, 218, .12) rgba(97, 175, 239, .16)
+  --btn-card-bg-hover: #f8fbfe #303640
+  --btn-card-bg-active: #e7f0f9 #39414e
+  --enter-btn-bg: #eef4fb #333946
+  --enter-btn-bg-hover: #deebf8 #3b4351
+  --enter-btn-bg-active: #cbdff3 #454e5e
+  --deep-text: #24292f #e5e9f0
+  --title-active: #0969da #61afef
+  --line-divider: rgba(31, 35, 40, .10) rgba(171, 178, 191, .12)
+  --line-color: rgba(31, 35, 40, .12) rgba(171, 178, 191, .14)
+  --meta-divider: rgba(31, 35, 40, .24) rgba(171, 178, 191, .24)
+  --inline-code-bg: #eef4fb #333946
+  --inline-code-color: #0969da #78b9ef
+  --selection-bg: rgba(9, 105, 218, .20) rgba(97, 175, 239, .24)
+  --codeblock-selection: rgba(97, 175, 239, .24) rgba(97, 175, 239, .24)
+  --codeblock-bg: #20242b #20242b
+  --codeblock-topbar-bg: #303640 #191c21
+  --control-dark-bg: #57606a #303640
+  --control-dark-bg-hover: #424a53 #39414e
+  --control-dark-bg-active: #343b43 #454e5e
+  --license-block-bg: rgba(31, 35, 40, .04) #20242b
+  --link-underline: rgba(9, 105, 218, .22) rgba(97, 175, 239, .28)
+  --link-hover: rgba(9, 105, 218, .08) rgba(97, 175, 239, .14)
+  --link-active: rgba(9, 105, 218, .14) rgba(97, 175, 239, .20)
+  --float-panel-bg: rgba(255, 255, 255, .96) rgba(33, 37, 43, .96)
+  --scrollbar-bg: rgba(31, 35, 40, .40) rgba(229, 233, 240, .40)
+  --scrollbar-bg-hover: rgba(31, 35, 40, .52) rgba(229, 233, 240, .52)
+  --scrollbar-bg-active: rgba(31, 35, 40, .64) rgba(229, 233, 240, .64)
   --display-light-icon: 1 0
   --display-dark-icon: 0 1
 
-  --admonitions-color-tip: oklch(0.7 0.14 180) oklch(0.75 0.14 180)
-  --admonitions-color-note: oklch(0.7 0.14 250) oklch(0.75 0.14 250)
-  --admonitions-color-important: oklch(0.7 0.14 310) oklch(0.75 0.14 310)
-  --admonitions-color-warning: oklch(0.7 0.14 60) oklch(0.75 0.14 60)
-  --admonitions-color-caution: oklch(0.6 0.2 25) oklch(0.65 0.2 25)
+  --admonitions-color-tip: #1b7c83 #56b6c2
+  --admonitions-color-note: #0969da #61afef
+  --admonitions-color-important: #8250df #c678dd
+  --admonitions-color-warning: #9a6700 #e5c07b
+  --admonitions-color-caution: #cf222e #e06c75
 
-  --toc-badge-bg: oklch(0.89 0.050 var(--hue)) var(--btn-regular-bg)
-  --toc-btn-hover: oklch(0.926 0.015 var(--hue)) oklch(0.22 0.02 var(--hue))
-  --toc-btn-active: oklch(0.90 0.015 var(--hue)) oklch(0.25 0.02 var(--hue))
-  --toc-width: calc((100vw - var(--page-width)) / 2 - 1rem)
-  --toc-item-active: oklch(0.70 0.13 var(--hue)) oklch(0.35 0.07 var(--hue))
+  --toc-badge-bg: #deebf8 #333946
+  --toc-btn-hover: #eef4fb #2d333d
+  --toc-btn-active: #deebf8 #353c48
+  --toc-item-active: rgba(9, 105, 218, .14) rgba(97, 175, 239, .18)
 })
+
+:root
+  --toc-width calc((100vw - var(--page-width)) / 2 - 1rem)
+  --color-selection-bar linear-gradient(to right, #e06c75, #e5c07b, #98c379, #56b6c2, #61afef, #c678dd)

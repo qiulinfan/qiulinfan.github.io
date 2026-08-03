@@ -42,7 +42,7 @@
         "homeworks/*.typ",
         "extras/*.typ"
       ],
-      "web": "https://qiulinfan.github.io/qlblog/notes/math/measure-theory",
+      "web": "https://qiulinfan.github.io/notes/math/measure-theory",
       "topics": [
         {"glob": "chapters/01-*.typ", "id": "measurable-spaces-and-measures", "label": "Measurable Spaces and Measures"},
         {"glob": "chapters/02-*.typ", "id": "outer-measure-and-extension", "label": "Outer Measure and Measure Extension"},
@@ -72,7 +72,7 @@
         "chapters/*.typ",
         "homeworks/*.typ"
       ],
-      "web": "https://qiulinfan.github.io/qlblog/notes/math/probability",
+      "web": "https://qiulinfan.github.io/notes/math/probability",
       "topics": [
         {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics", "fields": ["combinatorics"]},
         {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions", "fields": ["measure-theory"]},
@@ -91,7 +91,7 @@
       "files": [
         "*.md"
       ],
-      "web": "https://qiulinfan.github.io/qlblog/notes/cs/computer-organization",
+      "web": "https://qiulinfan.github.io/notes/cs/computer-organization",
       "topics": [
         {"glob": "*.md", "id": "computer-organization", "label": "Computer Organization"}
       ]

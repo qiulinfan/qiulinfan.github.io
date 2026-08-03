@@ -33,7 +33,7 @@ Question 2: 给定一个任意的 p.m. \(\mu\), 以及一个任意的 s.m. \(\nu
 \begin{definition}{\protect\phantomsection\label{kn-absolute-continuity-of-signed-measures}{\textbf{absolute
 continuity of signed measures}}}
 
-给定 p.m. \(\mu\) 和 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-signed-measure}{signed measure} \(\nu\) on \((X,\mathcal{A})\), 我们称 \(\nu\) is absolutely continuous w.r.t. \(\mu\), 如果
+给定 p.m. \(\mu\) 和 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-signed-measure}{signed measure} \(\nu\) on \((X,\mathcal{A})\), 我们称 \(\nu\) is absolutely continuous w.r.t. \(\mu\), 如果
 
 \[\forall E \in \mathcal{A},\quad\mu(E) = 0\Longrightarrow\nu(E) = 0\]
 
@@ -50,7 +50,7 @@ continuity of signed measures}}}
 
 \end{center}
 
-\href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-mutually-singular}{mutually singular} 的记号 \textbf{\(\nu\bot\mu\) 表示的是 \(\nu\) 和 \(\mu\) 出现变化的区域完全不同}, 而 \textbf{\(\nu \ll \mu\) 表示的是 \(\nu\) 出现变化的区域完全包括在 \(\mu\) 出现变化的区域里} (因为 \(\mu\) 不变化的区域被包括在 \(\nu\) 不变化的区域里).
+\href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-mutually-singular}{mutually singular} 的记号 \textbf{\(\nu\bot\mu\) 表示的是 \(\nu\) 和 \(\mu\) 出现变化的区域完全不同}, 而 \textbf{\(\nu \ll \mu\) 表示的是 \(\nu\) 出现变化的区域完全包括在 \(\mu\) 出现变化的区域里} (因为 \(\mu\) 不变化的区域被包括在 \(\nu\) 不变化的区域里).
 
 \begin{example}
 
@@ -78,7 +78,7 @@ continuous 的性质}}}
 
 \begin{itemize}
 \item
-  对 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-total-variation-measure}{total variation measure},
+  对 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-total-variation-measure}{total variation measure},
 
   \[\left. |\nu \middle| \ll \mu\Leftrightarrow\nu^{+} \ll \mu\ \text{and}\ \nu^{-} \ll \mu \right.\]
 
@@ -214,7 +214,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 \begin{theorem}{\protect\phantomsection\label{kn-radon-nikodym-theorem}{\textbf{Radon-Nikodym
 Theorem}}}
 
-对于 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-sigma-finite-measure}{\(\sigma\)-finite measure} \(\begin{matrix}
+对于 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-sigma-finite-measure}{\(\sigma\)-finite measure} \(\begin{matrix}
 {\{\text{p.m.}\ \mu} \\
 {\text{s.m.}\ \nu}
 \end{matrix}\) on \((X,\mathcal{A})\),
@@ -239,7 +239,7 @@ Radon Nikodym Theorem 表示, 对于 \(\sigma\)-finite 的 \(\nu\) 和 \(\mu\), 
 \begin{proof}
 
 We look at \(\nu - \frac{1}{n}\mu\) for each \(n \in {\mathbb{N}}\). 它们都是 finite signed measure for sure.\\
-考虑 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-hahn-decomposition-theorem}{Hahn Decomposition Theorem} 给出的 \(P_{n} \sqcup N_{n}\) for each \(n\). 并 set:
+考虑 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-hahn-decomposition-theorem}{Hahn Decomposition Theorem} 给出的 \(P_{n} \sqcup N_{n}\) for each \(n\). 并 set:
 
 \[P: = \bigcup\limits_{n}P_{n},\quad N: = \bigcap\limits_{n}N_{n} = P^{c}\]
 
@@ -315,7 +315,7 @@ for each \(n\).\\
 
 \[\exists f: = \lim\limits_{n}f_{n} \in L^{+}(\mu),\text{and} \in L^{1}(\mu)\text{(since}\ \mu\ \text{finite)}\]
 
-并且根据 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-monotone-convergence-theorem}{monotone convergence theorem}（MCT）,
+并且根据 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-monotone-convergence-theorem}{monotone convergence theorem}（MCT）,
 
 \[\int f\, d\mu = \lim\limits_{n\rightarrow\infty}\int f_{n}\, d\mu = a\]
 
@@ -348,7 +348,7 @@ Suppose for contradictin that \(\widetilde{\nu}\operatorname{\perp\not{}}\mu\), 
 这和 \(g \in \mathcal{F}\) 冲突 (否则它的积分一定小于等于 \(a\)).\\
 \textbf{从而, \(\mu,\nu\) 是 finite p.m. 的情况得证.}\\
 \textbf{Step 5: 推广至 \(\nu\) finite s.m., \(\mu\) finite p.m. 的情况.}\\
-由 \href{https://qiulinfan.github.io/qlblog/notes/math/measure-theory/\#kn-jordan-decomposition-theorem}{Jordan decomposition theorem} 写出 \(\nu^{+},\nu^{-}\), 再直接 Apply Step 1 即得证.\\
+由 \href{https://qiulinfan.github.io/notes/math/measure-theory/\#kn-jordan-decomposition-theorem}{Jordan decomposition theorem} 写出 \(\nu^{+},\nu^{-}\), 再直接 Apply Step 1 即得证.\\
 \textbf{Step 6: 推广至 \(\nu,\mu\) \(\sigma\)-finite 的情况.}\\
 Proof: By \(\sigma\)-finite 的定义, 我们可以 decompose
 

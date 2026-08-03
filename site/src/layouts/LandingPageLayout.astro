@@ -1,0 +1,41 @@
+---
+import BackToTop from "@components/control/BackToTop.astro";
+import Footer from "@components/Footer.astro";
+import Navbar from "@components/Navbar.astro";
+import { url } from "@utils/url-utils";
+import Layout from "./Layout.astro";
+
+interface Props {
+	title?: string;
+	description?: string;
+	lang?: string;
+}
+
+const { title, description, lang } = Astro.props;
+const backdrop = `url("${url("/assets/observatory-night.webp")}")`;
+---
+
+<Layout title={title} description={description} lang={lang}>
+	<div class="site-backdrop" style={`--site-backdrop-image: ${backdrop}`}></div>
+
+	<div
+		id="top-row"
+		class="relative z-50 mx-auto max-w-[92rem] px-0 md:px-4"
+	>
+		<div id="navbar-wrapper" class="pointer-events-auto sticky top-0 transition-all">
+			<Navbar />
+		</div>
+	</div>
+
+	<main id="swup-container" class="transition-swup-fade mx-auto w-full max-w-[92rem] overflow-hidden px-2 md:px-4">
+		<div id="content-wrapper" class="onload-animation">
+			<slot />
+			<Footer />
+		</div>
+	</main>
+
+	<div class="relative mx-auto max-w-[92rem]">
+		<BackToTop />
+	</div>
+	<div id="toc"></div>
+</Layout>

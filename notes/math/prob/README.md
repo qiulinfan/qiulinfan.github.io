@@ -23,4 +23,4 @@ exports/
 `.assets/*.svg`；LaTeX 图形依赖位于 `exports/latex/assets/`。本地 HTML、
 PDF 和所有中间文件只写入忽略的 `build/`。
 
-网页：<https://qiulinfan.github.io/qlblog/notes/math/probability/>
+网页：<https://qiulinfan.github.io/notes/math/probability/>

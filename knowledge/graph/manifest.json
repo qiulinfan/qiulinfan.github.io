@@ -59,7 +59,7 @@
     ]
   },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "6e47c653130d03948b15488a923c63ab4f868a6e6f3a66b9af4e46d452a7d358",
+  "graph_sha256": "83e22fa3340a10623312df26855bd403245a3e399beba543482f8d346dc745bc",
   "knowledge_origins": {
     "personal-note": 271
   },

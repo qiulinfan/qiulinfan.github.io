@@ -1,8 +1,36 @@
 @tailwind components;
 
+html {
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--page-bg);
+}
+
+.site-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--site-backdrop-image);
+    background-position: center;
+    background-size: cover;
+    opacity: var(--site-backdrop-opacity);
+    filter: var(--site-backdrop-filter);
+    transform: scale(1.015);
+}
+
 @layer components {
     .card-base {
         @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
+        border: 1px solid var(--border);
+        box-shadow: var(--card-shadow);
+        backdrop-filter: blur(20px) saturate(1.08);
     }
     h1, h2, h3, h4, h5, h6, p, a, span, li, ul, ol, blockquote, code, pre, table, th, td, strong {
         @apply transition;
@@ -103,12 +131,10 @@
     }
 
     .btn-regular-dark {
-        @apply flex items-center justify-center
-        bg-[oklch(0.45_0.01_var(--hue))] hover:bg-[oklch(0.50_0.01_var(--hue))] active:bg-[oklch(0.55_0.01_var(--hue))]
-        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))]
+        @apply flex items-center justify-center bg-[var(--control-dark-bg)] hover:bg-[var(--control-dark-bg-hover)] active:bg-[var(--control-dark-bg-active)]
     }
     .btn-regular-dark.success {
-        @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))]
+        @apply bg-[var(--status-ok)]
     }
 }
 

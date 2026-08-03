@@ -38,8 +38,8 @@ make web-check
 课程本地 HTML、PDF、编译中间文件和 `site/` 均被忽略。GitHub Actions 从
 Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
 
-- Probability: <https://qiulinfan.github.io/qlblog/notes/math/probability/>
-- Measure Theory: <https://qiulinfan.github.io/qlblog/notes/math/measure-theory/>
+- Probability: <https://qiulinfan.github.io/notes/math/probability/>
+- Measure Theory: <https://qiulinfan.github.io/notes/math/measure-theory/>
 
 ## 尚未迁移的 LaTeX 课程
 

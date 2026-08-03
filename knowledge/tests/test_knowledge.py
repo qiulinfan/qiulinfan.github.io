@@ -122,6 +122,25 @@ class KnowledgeGraphTest(unittest.TestCase):
         self.assertIn('id: "sigma-algebra"', registry)
         self.assertIn("<math>", state.nodes["sigma-algebra"]["properties"]["label_html"])
 
+    def test_graph_entry_url_is_derived_from_registered_note_web(self) -> None:
+        state = knowledge.GraphState(
+            nodes={
+                "known": {
+                    "id": "known",
+                    "provenance": {
+                        "web": "https://example.test/custom/notes/math/demo/#kn-known"
+                    },
+                }
+            },
+            edges={},
+            references=[],
+            manifest={},
+        )
+        self.assertEqual(
+            "https://example.test/custom/knowledge/#node=orphan",
+            knowledge.graph_entry_url(state, "orphan"),
+        )
+
     def test_artifacts_are_deterministic(self) -> None:
         _, first, _ = self.sync()
         _, second, report = self.sync()

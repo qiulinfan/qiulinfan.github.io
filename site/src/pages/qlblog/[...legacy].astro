@@ -1,0 +1,62 @@
+---
+import { loadMarkdownNotes } from "@utils/note-sources";
+import { getSortedPostsList } from "@utils/content-utils";
+import { url } from "@utils/url-utils";
+
+interface RedirectRoute {
+	legacy?: string;
+	target: string;
+}
+
+export async function getStaticPaths() {
+	// Emit legacy project-site redirects only from the root user site. An
+	// explicit /qlblog/ compatibility build must not emit /qlblog/qlblog/.
+	if (import.meta.env.BASE_URL !== "/") return [];
+
+	const notes = loadMarkdownNotes();
+	const posts = await getSortedPostsList();
+	const routes: RedirectRoute[] = [
+		{ target: "/blog/" },
+		{ legacy: "archive", target: "/archive/" },
+		{ legacy: "about", target: "/about/" },
+		{ legacy: "knowledge", target: "/knowledge/" },
+		{ legacy: "notes", target: "/notes/" },
+		{ legacy: "notes/math/measure-theory", target: "/notes/math/measure-theory/" },
+		{ legacy: "notes/math/measure-theory/extras", target: "/notes/math/measure-theory/extras/" },
+		{ legacy: "notes/math/probability", target: "/notes/math/probability/" },
+		{ legacy: "notes/math/probability/homeworks", target: "/notes/math/probability/homeworks/" },
+		...notes.map((note) => ({
+			legacy: `notes/${note.slug}`,
+			target: `/notes/${note.slug}/`,
+		})),
+		...posts.map((post) => ({
+			legacy: `posts/${post.slug}`,
+			target: `/posts/${post.slug}/`,
+		})),
+	];
+
+	return routes.map((route) => ({
+		params: { legacy: route.legacy },
+		props: { target: url(route.target) },
+	}));
+}
+
+const { target } = Astro.props as { target: string };
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="refresh" content={`0; url=${target}`} />
+		<link rel="canonical" href={new URL(target, Astro.site)} />
+		<title>页面已迁移</title>
+	</head>
+	<body>
+		<p>页面已迁移至 <a href={target}>{target}</a>。</p>
+		<script is:inline define:vars={{ target }}>
+			window.location.replace(`${target}${window.location.search}${window.location.hash}`);
+		</script>
+	</body>
+</html>

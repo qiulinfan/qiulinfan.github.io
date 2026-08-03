@@ -16,10 +16,6 @@ export type SiteConfig = {
 		| "tr"
 		| "id";
 
-	themeColor: {
-		hue: number;
-		fixed: boolean;
-	};
 	banner: {
 		enable: boolean;
 		src: string;

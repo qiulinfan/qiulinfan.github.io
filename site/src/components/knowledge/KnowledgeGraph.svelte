@@ -116,6 +116,7 @@
 	let tooltipX = 0;
 	let tooltipY = 0;
 	let resizeObserver: ResizeObserver | null = null;
+	let themeObserver: MutationObserver | null = null;
 
 	function normalize(value: string) {
 		return value.toLocaleLowerCase().normalize("NFKC");
@@ -265,13 +266,20 @@
 		return relationLabels[relation] ?? relation;
 	}
 
+	function resolvedThemeColor(token: string, alpha = 1) {
+		if (typeof document === "undefined") return `var(${token})`;
+		const color = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+		if (alpha >= 1) return color;
+		const hex = color.match(/^#([0-9a-f]{6})$/i)?.[1];
+		if (!hex) return color;
+		const red = Number.parseInt(hex.slice(0, 2), 16);
+		const green = Number.parseInt(hex.slice(2, 4), 16);
+		const blue = Number.parseInt(hex.slice(4, 6), 16);
+		return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+	}
+
 	function nodeColor(type: NodeType, alpha = 1) {
-		const colors: Record<NodeType, string> = {
-			field: `oklch(0.65 0.17 230 / ${alpha})`,
-			topic: `oklch(0.72 0.14 150 / ${alpha})`,
-			knowledge: `oklch(0.69 0.16 45 / ${alpha})`,
-		};
-		return colors[type];
+		return resolvedThemeColor(`--graph-${type}`, alpha);
 	}
 
 	function isResearchNode(node: GraphNode) {
@@ -296,10 +304,10 @@
 
 	function relationColor(relation: string) {
 		if (relation === "prerequisite-for") {
-			return "oklch(0.7 0.17 25 / 0.58)";
+			return resolvedThemeColor("--graph-prerequisite", 0.58);
 		}
-		if (relation !== "contains") return "oklch(0.68 0.17 218 / 0.54)";
-		return "oklch(0.58 0.03 250 / 0.28)";
+		if (relation !== "contains") return resolvedThemeColor("--graph-semantic", 0.54);
+		return resolvedThemeColor("--graph-structure", 0.28);
 	}
 
 	function buildGraphSlice() {
@@ -490,7 +498,7 @@
 
 	function sourceCodeUrl(node: GraphNode) {
 		const path = node.provenance?.authority;
-		return path ? `https://github.com/qiulinfan/qlblog/blob/main/${path}` : "";
+		return path ? `https://github.com/qiulinfan/qiulinfan.github.io/blob/main/${path}` : "";
 	}
 
 	$: {
@@ -541,9 +549,12 @@
 
 		void load();
 		window.addEventListener("hashchange", selectFromHash);
+		themeObserver = new MutationObserver(drawGraph);
+		themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 		return () => {
 			cancelled = true;
 			resizeObserver?.disconnect();
+			themeObserver?.disconnect();
 			window.removeEventListener("hashchange", selectFromHash);
 		};
 	});
@@ -708,7 +719,7 @@
 						{#if backlinks.length}
 							<div class="detail-block"><h3>反向引用 <span>{backlinks.length}</span></h3><div class="neighbor-list">
 								{#each backlinks as backlink}
-									<a class="backlink-item" href={backlink.web || `https://github.com/qiulinfan/qlblog/blob/main/${backlink.authority}#L${backlink.line}`} target="_blank" rel="noreferrer">
+									<a class="backlink-item" href={backlink.web || `https://github.com/qiulinfan/qiulinfan.github.io/blob/main/${backlink.authority}#L${backlink.line}`} target="_blank" rel="noreferrer">
 										<span class="relation-arrow">↩</span><span><small>{backlink.label}</small><strong>{backlink.authority}:{backlink.line}</strong></span>
 									</a>
 								{/each}
@@ -758,7 +769,7 @@
 	.stat-grid div { min-height: 4.5rem; border-radius: .85rem; padding: .8rem .9rem; display: flex; flex-direction: column; justify-content: center; background: color-mix(in oklch, var(--page-bg) 58%, transparent); border: 1px solid var(--panel-border); }
 	.stat-grid strong { font: 650 1.25rem/1 "JetBrains Mono Variable", monospace; color: color-mix(in oklch, currentColor 86%, transparent); }
 	.stat-grid span { margin-top: .4rem; font-size: .72rem; color: color-mix(in oklch, currentColor 42%, transparent); }
-	.stat-grid .warning strong { color: oklch(.69 .15 60); }
+	.stat-grid .warning strong { color: var(--warning); }
 	.stat-grid.skeleton div { animation: pulse 1.4s infinite alternate; }
 	.toolbar-card { border-radius: 1rem; padding: .75rem; display: flex; align-items: center; gap: .75rem; }
 	.search-field { flex: 1 1 25rem; height: 3rem; position: relative; display: flex; align-items: center; border-radius: .75rem; background: color-mix(in oklch, var(--page-bg) 62%, transparent); border: 1px solid transparent; transition: border-color .2s, background .2s; }
@@ -795,9 +806,9 @@
 	.graph-legend { display: flex; gap: .75rem; font-size: .64rem; color: color-mix(in oklch, currentColor 38%, transparent); }
 	.graph-legend span { display: flex; align-items: center; gap: .3rem; }
 	.graph-legend i { width: 1.3rem; height: 2px; border-radius: 1rem; }
-	.graph-legend .about { background: oklch(.68 .17 218 / .65); }
-	.graph-legend .structure { background: oklch(.58 .03 250 / .35); }
-	.graph-legend .personal-node, .graph-legend .research-node { width: .48rem; height: .48rem; background: oklch(.69 .16 45); }
+	.graph-legend .about { background: color-mix(in srgb, var(--graph-semantic) 65%, transparent); }
+	.graph-legend .structure { background: color-mix(in srgb, var(--graph-structure) 35%, transparent); }
+	.graph-legend .personal-node, .graph-legend .research-node { width: .48rem; height: .48rem; background: var(--graph-knowledge); }
 	.graph-legend .personal-node { border-radius: 50%; }
 	.graph-legend .research-node { border-radius: .08rem; }
 	.canvas-host { flex: 1; min-height: 0; position: relative; overflow: hidden; background-image: radial-gradient(circle at center, color-mix(in oklch, var(--primary) 7%, transparent) 0, transparent 52%), radial-gradient(color-mix(in oklch, currentColor 9%, transparent) .7px, transparent .7px); background-size: auto, 18px 18px; }
@@ -833,7 +844,7 @@
 	.chip-list span, .chip-list button { min-height: 1.7rem; padding: .25rem .5rem; border: 1px solid var(--panel-border); border-radius: .45rem; background: color-mix(in oklch, var(--page-bg) 52%, transparent); color: color-mix(in oklch, currentColor 64%, transparent); font-size: .65rem; line-height: 1.2; }
 	.chip-list button { cursor: pointer; }
 	.chip-list button:hover { border-color: color-mix(in oklch, var(--primary) 40%, transparent); color: var(--primary); }
-	.chip-list.dependencies button { border-color: oklch(.7 .17 25 / .2); background: oklch(.7 .17 25 / .07); }
+	.chip-list.dependencies button { border-color: color-mix(in srgb, var(--graph-prerequisite) 20%, transparent); background: color-mix(in srgb, var(--graph-prerequisite) 7%, transparent); }
 	.evidence-text { max-height: 16rem; overflow-y: auto; padding: .72rem; border-radius: .65rem; white-space: pre-wrap; overflow-wrap: anywhere; background: color-mix(in oklch, var(--page-bg) 58%, transparent); font-size: .73rem; line-height: 1.62; color: color-mix(in oklch, currentColor 64%, transparent); }
 	.evidence-text.compact { max-height: 11rem; }
 	.neighbor-list { display: flex; flex-direction: column; gap: .3rem; }
@@ -848,24 +859,24 @@
 	.source-actions a { background: transparent; color: color-mix(in oklch, currentColor 58%, transparent); }
 	.source-path { margin: .65rem 0 0; }
 	.diagnostic-scroll { display: flex; flex-direction: column; gap: .45rem; }
-	.diagnostic-summary { margin-bottom: .5rem; padding: 1rem; border-radius: .75rem; background: oklch(.72 .14 70 / .09); border: 1px solid oklch(.72 .14 70 / .2); }
-	.diagnostic-summary strong { display: block; font: 650 1.7rem/1 "JetBrains Mono Variable", monospace; color: oklch(.69 .15 60); }
+	.diagnostic-summary { margin-bottom: .5rem; padding: 1rem; border-radius: .75rem; background: color-mix(in srgb, var(--warning) 9%, transparent); border: 1px solid color-mix(in srgb, var(--warning) 20%, transparent); }
+	.diagnostic-summary strong { display: block; font: 650 1.7rem/1 "JetBrains Mono Variable", monospace; color: var(--warning); }
 	.diagnostic-summary span { display: block; margin-top: .35rem; font-size: .74rem; font-weight: 650; }
 	.diagnostic-summary p { margin: .55rem 0 0; font-size: .68rem; line-height: 1.5; color: color-mix(in oklch, currentColor 46%, transparent); }
 	.diagnostic-item { width: 100%; padding: .72rem; display: flex; flex-direction: column; gap: .28rem; text-align: left; border: 1px solid var(--panel-border); border-radius: .65rem; background: transparent; color: inherit; }
 	.diagnostic-item:not(:disabled) { cursor: pointer; }
 	.diagnostic-item:not(:disabled):hover { background: var(--btn-plain-bg-hover); }
-	.diagnostic-item span { font: 600 .57rem/1.2 "JetBrains Mono Variable", monospace; color: oklch(.69 .15 60); }
+	.diagnostic-item span { font: 600 .57rem/1.2 "JetBrains Mono Variable", monospace; color: var(--warning); }
 	.diagnostic-item strong { font-size: .68rem; line-height: 1.4; color: color-mix(in oklch, currentColor 66%, transparent); }
 	.diagnostic-item small { font-size: .58rem; color: color-mix(in oklch, currentColor 34%, transparent); }
 	.graph-meta { height: 2.25rem; padding: 0 .25rem; display: flex; align-items: center; justify-content: space-between; color: color-mix(in oklch, currentColor 34%, transparent); font-size: .64rem; }
 	.graph-meta span { display: flex; align-items: center; gap: .42rem; }
-	.graph-meta i { width: .4rem; height: .4rem; border-radius: 50%; background: oklch(.72 .16 150); box-shadow: 0 0 0 3px oklch(.72 .16 150 / .12); }
+	.graph-meta i { width: .4rem; height: .4rem; border-radius: 50%; background: var(--status-ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-ok) 12%, transparent); }
 	.graph-meta code { font-family: "JetBrains Mono Variable", monospace; }
 	.state-card { min-height: 28rem; border-radius: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; color: color-mix(in oklch, currentColor 48%, transparent); }
 	.state-card p { margin: 0; font-size: .82rem; }
 	.loader { width: 1.5rem; height: 1.5rem; border: 2px solid color-mix(in oklch, var(--primary) 18%, transparent); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; }
-	.error-state strong { color: oklch(.65 .18 25); }
+	.error-state strong { color: var(--red); }
 	.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 	@keyframes spin { to { transform: rotate(360deg); } }
 	@keyframes pulse { from { opacity: .42; } to { opacity: .78; } }

@@ -11,7 +11,8 @@ authorities. The repository graph is one semantic index shared by all formats.
 
 ## Load the contracts
 
-In `qlblog`, read these before acting:
+From the authoritative repository root (`git rev-parse --show-toplevel`), read
+these before acting:
 
 - `knowledge/SPEC.md` and `knowledge/sources.json`;
 - `notes/math/toolchain/README.md` when Typst or LaTeX is in scope;
@@ -235,6 +236,13 @@ source evidence.
 GitHub Actions builds Astro, compiles configured Typst/LaTeX note HTML, and
 uploads only the Pages artifact. Keep HTML, PDFs, generated Typst, copied note
 assets, SQLite, compiler logs, and agent deltas ignored.
+
+Treat each source's `knowledge/sources.json` `web` value as the only canonical
+public route. Never hardcode a repository name, Pages subpath, or deployment
+base in the skill or graph adapters. When the public site moves, update the
+registry and repository deployment configuration together, run a full graph
+sync to regenerate provenance, refs, and the Typst registry, then verify legacy
+redirects separately.
 
 Report the selected authority files and formats, exported routes, node/entry/
 reference/edge deltas, diagnostics, and whether the HTML is local or deployed.
