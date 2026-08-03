@@ -1,11 +1,11 @@
 site_name: Numerical Linear Algebra
 site_author: qiulinfan
-site_url: https://qiulinfan.github.io/qlblog/
+site_url: https://qiulinfan.github.io/
 use_directory_urls: false
 remote_branch: gh-deploy
 
 repo_name: qlblog
-repo_url: https://github.com/qiulinfan/qlblog
+repo_url: https://github.com/qiulinfan/qiulinfan.github.io
 
 theme:
   name: material

@@ -71,17 +71,27 @@ def validate_repo(repo: Path) -> None:
     )
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
-        raise CreateError("not a complete qlblog checkout; missing: " + ", ".join(missing))
+        raise CreateError("not a complete knowledge-site checkout; missing: " + ", ".join(missing))
 
 
-def new_source(slug: str) -> dict[str, object]:
+def canonical_site_root(registry: Path) -> str:
+    data = json.loads(registry.read_text(encoding="utf-8"))
+    for source in data.get("sources", []):
+        web = str(source.get("web", "")).rstrip("/")
+        marker = "/notes/"
+        if marker in web:
+            return web.split(marker, 1)[0]
+    raise CreateError("cannot derive the canonical site root from knowledge/sources.json")
+
+
+def new_source(slug: str, site_root: str) -> dict[str, object]:
     return {
         "id": f"math:{slug}",
         "subject": "math",
         "course": slug,
         "root": f"notes/math/{slug}",
         "files": ["main.typ", "chapters/*.typ"],
-        "web": f"https://qiulinfan.github.io/qlblog/notes/math/{slug}",
+        "web": f"{site_root}/notes/math/{slug}",
         "topics": [],
     }
 
@@ -146,13 +156,14 @@ def create_course(args: argparse.Namespace) -> tuple[Path, Path]:
         "FIRST_CHAPTER": args.first_chapter,
     }
 
-    source = new_source(args.slug)
     registry = repo / "knowledge/sources.json"
+    source = new_source(args.slug, canonical_site_root(registry))
     _, original_registry = load_registry(registry, source)
     workspace = destination / f"{args.slug}.code-workspace"
     if args.dry_run:
         print(f"would create: {destination}")
         print(f"would register: {source['id']}")
+        print(f"would publish: {source['web']}")
         return destination, workspace
 
     templates = Path(__file__).resolve().parents[1] / "assets/course"

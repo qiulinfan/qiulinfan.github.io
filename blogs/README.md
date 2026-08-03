@@ -13,7 +13,7 @@ make blog-dev
 
 然后编辑 `blogs/posts/my-first-post.md`，浏览器打开：
 
-<http://localhost:4321/qlblog/>
+<http://localhost:4321/>
 
 文章头部格式：
 

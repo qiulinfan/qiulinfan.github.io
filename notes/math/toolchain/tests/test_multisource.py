@@ -90,7 +90,7 @@ class MultiSourceExportTest(unittest.TestCase):
         self.assertIn('id="kn-measure-space"', rendered)
         self.assertIn('data-ql-ref="measure-space"', rendered)
         self.assertIn(
-            'href="https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-measure-space"',
+			'href="https://qiulinfan.github.io/notes/math/measure-theory/#kn-measure-space"',
             rendered,
         )
 

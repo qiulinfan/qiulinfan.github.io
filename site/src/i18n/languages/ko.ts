@@ -24,7 +24,6 @@ export const ko: Translation = {
 	[Key.postCount]: "게시물",
 	[Key.postsCount]: "게시물",
 
-	[Key.themeColor]: "테마 색상",
 
 	[Key.lightMode]: "밝은 모드",
 	[Key.darkMode]: "어두운 모드",

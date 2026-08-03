@@ -10,4 +10,4 @@
 
 博客界面基于 [Fuwari](https://github.com/saicaca/fuwari) 构建。
 
-::github{repo="qiulinfan/qlblog"}
+::github{repo="qiulinfan/qiulinfan.github.io"}

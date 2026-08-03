@@ -8,13 +8,9 @@ import type {
 import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "Qiulin's Blog",
-	subtitle: "数学、计算机与创造",
+	title: "Qiulin Fan",
+	subtitle: "Mathematics, systems, research, and games",
 	lang: "zh_CN", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
-	themeColor: {
-		hue: 210, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
-		fixed: false, // Hide the theme color picker for visitors
-	},
 	banner: {
 		enable: false,
 		src: "assets/images/demo-banner.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
@@ -41,8 +37,14 @@ export const siteConfig: SiteConfig = {
 
 export const navBarConfig: NavBarConfig = {
 	links: [
-		LinkPreset.Home,
-		LinkPreset.Archive,
+		{
+			name: "Blog",
+			url: "/blog/",
+		},
+		{
+			name: "Projects",
+			url: "/projects/",
+		},
 		{
 			name: "Notes",
 			url: "/notes/",
@@ -54,7 +56,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.About,
 		{
 			name: "GitHub",
-			url: "https://github.com/qiulinfan/qlblog", // Internal links should not include the base path, as it is automatically added
+			url: "https://github.com/qiulinfan/qiulinfan.github.io", // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab
 		},
 	],

@@ -1,0 +1,291 @@
+---
+import { featuredNotes, homepageLinks, projects } from "@/data/home";
+import LandingPageLayout from "@layouts/LandingPageLayout.astro";
+import { url } from "@utils/url-utils";
+
+interface Props {
+	lang?: "en" | "zh";
+}
+
+const { lang = "en" } = Astro.props;
+const zh = lang === "zh";
+const copy = zh
+	? {
+			eyebrow: "MATHEMATICS · SYSTEMS · GAMES",
+			hello: "你好，我是 Qiulin。",
+			headline: "我研究结构，也把它们做成可以运行的东西。",
+			intro:
+				"我的兴趣横跨分析学、概率论、计算机系统、视觉计算与游戏开发。我喜欢把复杂问题拆成清晰结构，再通过笔记、代码和可交互作品重新组合起来。",
+			notesCta: "阅读笔记",
+			workCta: "查看项目",
+			language: "English",
+			available: "CURRENT FOCUS",
+			focus: "分析学 · 图学习 · 游戏引擎",
+			workKicker: "01 / SELECTED WORK",
+			workTitle: "项目与实验",
+			workCopy: "游戏系统、引擎工具与交互机制。",
+			allProjects: "项目详情",
+			engineCopy:
+				"基于 SDL2、Lua、Box2D、Dear ImGui 与 JSON scene assets 的 2D engine/editor，包含场景视图、运行时视口、层级、检查器以及实时 play mode 工作流。",
+			page: "项目页面",
+			repo: "源代码",
+			notesKicker: "02 / EXTERNAL BRAIN",
+			notesTitle: "笔记与知识图谱",
+			notesCopy: "不同源格式最终进入同一套可追踪的知识系统。",
+			researchKicker: "03 / RESEARCH",
+			researchTitle: "研究方向",
+			researchCopy:
+				"从模型结构到外部记忆：关注架构、表示与可验证知识之间的联系。",
+			graphTitle: "Source-backed Knowledge Graph",
+			graphCopy:
+				"由 Typst、Markdown 与 LaTeX 权威源持续生成的知识图谱，保存定义、前置关系、语义边与反向引用。",
+			nlCopy:
+				"使用图增强 schema 表示微调 3–8B 小模型，探索更强的自然语言到 SQL 泛化能力。",
+			aboutKicker: "PERSONAL LAYER",
+			aboutTitle: "严肃做研究，也认真保留喜欢的东西。",
+			aboutCopy:
+				"数学给我抽象结构，系统与游戏让我验证这些结构如何在现实约束下运行。这个站点既是作品索引，也是我的外界大脑。",
+		}
+	: {
+			eyebrow: "MATHEMATICS · SYSTEMS · GAMES",
+			hello: "Hi, I’m Qiulin.",
+			headline: "I study structure, then build things that make it run.",
+			intro:
+				"My work moves between analysis, probability, computer systems, visual computing, and games. I like turning complicated problems into clear structures—then rebuilding them as notes, code, and interactive systems.",
+			notesCta: "Read the notes",
+			workCta: "See selected work",
+			language: "中文",
+			available: "CURRENT FOCUS",
+			focus: "Analysis · Graph learning · Game engines",
+			workKicker: "01 / SELECTED WORK",
+			workTitle: "Projects & experiments",
+			workCopy: "Game systems, engine tooling, and interaction mechanics.",
+			allProjects: "Project details",
+			engineCopy:
+				"A 2D engine and editor built on SDL2, Lua, Box2D, Dear ImGui, and JSON scene assets, with a scene view, embedded runtime, hierarchy, inspector, and live play-mode workflow.",
+			page: "Project page",
+			repo: "Repository",
+			notesKicker: "02 / EXTERNAL BRAIN",
+			notesTitle: "Notes & knowledge graph",
+			notesCopy:
+				"Different source formats converge into one traceable knowledge system.",
+			researchKicker: "03 / RESEARCH",
+			researchTitle: "Research threads",
+			researchCopy:
+				"From model architecture to external memory: representations that stay inspectable and useful.",
+			graphTitle: "Source-backed Knowledge Graph",
+			graphCopy:
+				"A living graph generated from Typst, Markdown, and LaTeX authority sources, preserving definitions, prerequisites, semantic edges, and backlinks.",
+			nlCopy:
+				"Graph-enhanced schema representations for fine-tuning compact 3–8B language models toward stronger natural-language-to-SQL generalization.",
+			aboutKicker: "PERSONAL LAYER",
+			aboutTitle:
+				"Serious about research. Equally serious about keeping the things I love visible.",
+			aboutCopy:
+				"Mathematics gives me abstract structure; systems and games test how structure behaves under real constraints. This site is both a portfolio and an external brain.",
+		};
+---
+
+<LandingPageLayout
+	lang={zh ? "zh-CN" : "en"}
+	description={zh ? "Qiulin 的个人主页、笔记与知识图谱。" : "Qiulin's portfolio, notes, and knowledge graph."}
+>
+	<div class="homepage">
+		<section class="hero card" aria-labelledby="hero-title">
+			<div class="hero-copy">
+				<span class="eyebrow">{copy.eyebrow}</span>
+				<p class="hello">{copy.hello}</p>
+				<h1 id="hero-title">{copy.headline}</h1>
+				<p class="intro">{copy.intro}</p>
+				<div class="hero-actions">
+					<a class="button primary" href={url("/notes/")}>{copy.notesCta}<span>→</span></a>
+					<a class="button" href="#work">{copy.workCta}<span>↓</span></a>
+					<a class="button language" href={url(zh ? "/" : "/zh/")}>{copy.language}<span>↗</span></a>
+				</div>
+			</div>
+			<aside class="hero-aside">
+				<div class="avatar-row">
+					<img src="https://github.com/qiulinfan.png" alt="Qiulin's GitHub avatar" />
+					<div><strong>Qiulin Fan</strong><span>Mathematics × Computer Science</span></div>
+				</div>
+				<div class="focus-row">
+					<span><i></i>{copy.available}</span><strong>{copy.focus}</strong>
+				</div>
+				<div class="coordinate">ANN ARBOR / SHANGHAI<br />42.2808° N · 83.7430° W</div>
+			</aside>
+		</section>
+
+		<section class="section" id="work">
+			<header class="section-heading">
+				<div><span>{copy.workKicker}</span><h2>{copy.workTitle}</h2></div>
+				<div><p>{copy.workCopy}</p><a href={url(zh ? "/zh/projects/" : "/projects/")}>{copy.allProjects} ↗</a></div>
+			</header>
+			<div class="project-grid">
+				{projects.map((project) => (
+					<a class="project-card card" href={project.href} target="_blank" rel="noreferrer">
+						<div class="project-image"><img src={url(project.image)} alt={`${project.title} screenshot`} loading="lazy" /></div>
+						<div class="project-copy">
+							<span>{project.tags.join(" · ")}</span>
+							<h3>{project.title}</h3>
+							<p>{zh ? project.descriptionZh : project.description}</p>
+							<strong>OPEN PROJECT ↗</strong>
+						</div>
+					</a>
+				))}
+			</div>
+			<article class="engine-card card">
+				<div class="engine-copy">
+					<span>C++17 · ENGINE / EDITOR</span><h3>PocketEngine</h3><p>{copy.engineCopy}</p>
+					<div>
+						<a class="button primary" href={homepageLinks.pocketEngine}>{copy.page} ↗</a>
+						<a class="button" href={homepageLinks.pocketEngineRepository}>{copy.repo} ↗</a>
+					</div>
+				</div>
+				<a class="engine-media" href={homepageLinks.pocketEngine}><img src={`${homepageLinks.pocketEngine}show.gif`} alt="PocketEngine editor preview" loading="lazy" /></a>
+			</article>
+		</section>
+
+		<section class="section" id="notes">
+			<header class="section-heading">
+				<div><span>{copy.notesKicker}</span><h2>{copy.notesTitle}</h2></div>
+				<div><p>{copy.notesCopy}</p></div>
+			</header>
+			<div class="note-grid">
+				{featuredNotes.map((note, index) => (
+					<a class="note-card card" href={url(note.href)}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
+				))}
+			</div>
+		</section>
+
+		<section class="section" id="research">
+			<header class="section-heading">
+				<div><span>{copy.researchKicker}</span><h2>{copy.researchTitle}</h2></div>
+				<div><p>{copy.researchCopy}</p></div>
+			</header>
+			<div class="research-grid">
+				<a class="research-card card graph-card" href={url("/knowledge/")}>
+					<span>QLKG · EXTERNAL MEMORY</span><h3>{copy.graphTitle}</h3><p>{copy.graphCopy}</p><strong>EXPLORE THE GRAPH →</strong>
+					<div class="orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+				</a>
+				<a class="research-card card" href={homepageLinks.graphNl2Sql}>
+					<span>GRAPH LEARNING · NL2SQL</span><h3>graphNL2SQL</h3><p>{copy.nlCopy}</p><strong>VIEW REPOSITORY ↗</strong>
+				</a>
+			</div>
+		</section>
+
+		<section class="about-card card">
+			<div class="about-copy">
+				<span>{copy.aboutKicker}</span><h2>{copy.aboutTitle}</h2><p>{copy.aboutCopy}</p>
+				<div><a href={homepageLinks.github}>GitHub ↗</a><a href={url("/blog/")}>Blog ↗</a></div>
+			</div>
+			<figure>
+				<img src={url("/assets/tohka.webp")} alt="Tohka in cherry blossoms" loading="lazy" />
+				<figcaption>Tohka · artwork by <a href="https://www.pixiv.net/artworks/74140599">Bison倉鼠 ↗</a></figcaption>
+			</figure>
+		</section>
+	</div>
+</LandingPageLayout>
+
+<style>
+	.homepage { display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; }
+	.card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+	.button { min-height: 2.8rem; padding: 0 1rem; display: inline-flex; align-items: center; justify-content: space-between; gap: .9rem; border: 1px solid var(--border); border-radius: var(--radius-small); color: var(--text-strong); background: color-mix(in srgb, var(--card-bg) 78%, transparent); font-size: .75rem; font-weight: 650; text-decoration: none; backdrop-filter: blur(12px); }
+	.button:hover { border-color: color-mix(in srgb, var(--primary) 46%, var(--border)); transform: translateY(-2px); }
+	.button.primary { border-color: transparent; background: var(--primary); color: var(--primary-contrast); }
+	.button.language { margin-left: auto; }
+	.hero { position: relative; min-height: calc(100vh - 7rem); padding: clamp(1.5rem, 5vw, 4.5rem); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(17rem, .6fr); align-items: end; gap: 4rem; overflow: hidden; }
+	.hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--violet) 18%, transparent), transparent 26%), linear-gradient(110deg, color-mix(in srgb, var(--card-bg) 92%, transparent), color-mix(in srgb, var(--card-bg) 52%, transparent)); }
+	.hero::after { content: "QIULIN / 2026"; position: absolute; top: 2rem; right: 2.5rem; color: var(--muted); font: 600 .6rem/1 var(--font-mono); letter-spacing: .18em; }
+	.hero-copy, .hero-aside { position: relative; z-index: 1; }
+	.eyebrow, .section-heading span, .project-copy > span, .engine-copy > span, .research-card > span, .about-copy > span { color: var(--primary); font: 700 .66rem/1.2 var(--font-mono); letter-spacing: .16em; }
+	.hello { margin: 1.2rem 0 .25rem; color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.35rem); }
+	h1 { max-width: 13ch; margin: 0; color: var(--text-strong); font-size: clamp(3.2rem, 8vw, 7.8rem); font-weight: 760; line-height: .89; letter-spacing: -.078em; }
+	.intro { max-width: 46rem; margin: 1.6rem 0 0; color: var(--text-muted); font-size: clamp(.95rem, 1.5vw, 1.08rem); line-height: 1.8; }
+	.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 2rem; }
+	.hero-aside { align-self: stretch; display: flex; flex-direction: column; justify-content: flex-end; border-left: 1px solid var(--border); padding-left: 1.5rem; }
+	.avatar-row { display: flex; align-items: center; gap: .85rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+	.avatar-row img { width: 3.2rem; height: 3.2rem; border-radius: var(--radius-medium); object-fit: cover; }
+	.avatar-row div { display: flex; flex-direction: column; gap: .22rem; }
+	.avatar-row strong { color: var(--text-strong); }
+	.avatar-row span { color: var(--muted); font: .61rem/1.4 var(--font-mono); }
+	.focus-row { padding: 1.25rem 0; display: flex; flex-direction: column; gap: .55rem; border-bottom: 1px solid var(--border); }
+	.focus-row span { display: flex; align-items: center; gap: .5rem; color: var(--muted); font: 600 .58rem/1 var(--font-mono); letter-spacing: .12em; }
+	.focus-row i { width: .42rem; height: .42rem; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 15%, transparent); }
+	.focus-row strong { font-size: .8rem; line-height: 1.5; }
+	.coordinate { padding-top: 1.25rem; color: var(--muted); font: 500 .56rem/1.7 var(--font-mono); letter-spacing: .08em; }
+	.section { scroll-margin-top: 6rem; }
+	.section-heading { display: grid; grid-template-columns: 1fr minmax(18rem, .7fr); align-items: end; gap: 2rem; margin-bottom: 1.5rem; }
+	.section-heading h2 { margin: .45rem 0 0; color: var(--text-strong); font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 720; line-height: .95; letter-spacing: -.058em; }
+	.section-heading > div:last-child { justify-self: end; max-width: 28rem; }
+	.section-heading p { margin: 0; color: var(--text-muted); line-height: 1.65; }
+	.section-heading a { display: inline-block; margin-top: .65rem; color: var(--primary); font: 650 .7rem/1 var(--font-mono); text-decoration: none; }
+	.project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.project-card { min-width: 0; color: inherit; text-decoration: none; overflow: hidden; }
+	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
+	.project-image { aspect-ratio: 16 / 11; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
+	.project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+	.project-card:hover img { transform: scale(1.025); }
+	.project-copy { min-height: 15rem; padding: 1.3rem; display: flex; flex-direction: column; }
+	.project-copy h3, .engine-copy h3, .research-card h3, .note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
+	.project-copy p, .engine-copy p, .research-card p { margin: 0; color: var(--text-muted); font-size: .83rem; line-height: 1.68; }
+	.project-copy > strong, .research-card > strong { margin-top: auto; padding-top: 1.4rem; color: var(--primary); font: 650 .6rem/1 var(--font-mono); letter-spacing: .1em; }
+	.engine-card { margin-top: 1rem; padding: 1rem; display: grid; grid-template-columns: minmax(0, .8fr) minmax(22rem, 1.2fr); gap: 1rem; }
+	.engine-copy { padding: clamp(1rem, 3vw, 2.4rem); display: flex; flex-direction: column; justify-content: center; }
+	.engine-copy h3 { font-size: clamp(2rem, 4vw, 3.4rem); }
+	.engine-copy > div { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
+	.engine-media { min-height: 23rem; border-radius: var(--radius-medium); overflow: hidden; background: var(--surface-deep); }
+	.engine-media img { width: 100%; height: 100%; object-fit: cover; }
+	.note-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+	.note-card { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
+	.note-card > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-mono); text-transform: uppercase; }
+	.note-card h3 { margin-top: auto; }
+	.note-card > strong { position: absolute; right: 1.2rem; bottom: 1.2rem; color: var(--primary); }
+	.note-card:hover { background: var(--surface-hover); transform: translateY(-3px); }
+	.research-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1rem; }
+	.research-card { position: relative; min-height: 23rem; padding: clamp(1.4rem, 4vw, 3rem); display: flex; flex-direction: column; overflow: hidden; color: inherit; text-decoration: none; }
+	.research-card h3 { max-width: 14ch; font-size: clamp(1.8rem, 4vw, 3.1rem); }
+	.research-card p { max-width: 38rem; }
+	.graph-card { background: linear-gradient(145deg, color-mix(in srgb, var(--primary) 11%, var(--card-bg)), var(--card-bg)); }
+	.orbit { position: absolute; right: -5rem; bottom: -6rem; width: 22rem; height: 22rem; border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent); border-radius: 50%; box-shadow: 0 0 0 3rem color-mix(in srgb, var(--primary) 4%, transparent), 0 0 0 6rem color-mix(in srgb, var(--violet) 3%, transparent); }
+	.orbit i { position: absolute; width: .65rem; height: .65rem; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 16px color-mix(in srgb, var(--yellow) 70%, transparent); }
+	.orbit i:nth-child(1) { left: 12%; top: 27%; }
+	.orbit i:nth-child(2) { right: 15%; top: 18%; background: var(--violet); }
+	.orbit i:nth-child(3) { left: 35%; bottom: 9%; background: var(--cyan); }
+	.about-card { padding: clamp(1rem, 3vw, 1.5rem); display: grid; grid-template-columns: 1.25fr minmax(16rem, .55fr); gap: 1.5rem; }
+	.about-copy { padding: clamp(1rem, 4vw, 3.2rem); display: flex; flex-direction: column; justify-content: center; }
+	.about-copy h2 { max-width: 18ch; margin: .75rem 0 1rem; color: var(--text-strong); font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 720; line-height: .98; letter-spacing: -.06em; }
+	.about-copy p { max-width: 46rem; margin: 0; color: var(--text-muted); line-height: 1.8; }
+	.about-copy > div { display: flex; gap: 1.2rem; margin-top: 1.5rem; }
+	.about-copy a { color: var(--primary); font: 650 .68rem/1 var(--font-mono); text-decoration: none; }
+	.about-card figure { position: relative; margin: 0; min-height: 30rem; border-radius: var(--radius-medium); overflow: hidden; background: var(--surface-deep); }
+	.about-card figure img { width: 100%; height: 100%; object-fit: cover; }
+	.about-card figcaption { position: absolute; left: .7rem; right: .7rem; bottom: .7rem; padding: .6rem .7rem; border: 1px solid rgba(255, 255, 255, .16); border-radius: var(--radius-small); background: var(--media-overlay-bg); backdrop-filter: blur(12px); color: var(--media-overlay-text); font: 500 .55rem/1.4 var(--font-mono); }
+	.about-card figcaption a { color: var(--media-overlay-link); text-decoration: none; }
+	@media (max-width: 900px) {
+		.hero { grid-template-columns: 1fr; }
+		.hero-aside { align-self: auto; border-left: 0; border-top: 1px solid var(--border); padding: 1.5rem 0 0; }
+		.section-heading { grid-template-columns: 1fr; }
+		.section-heading > div:last-child { justify-self: start; }
+		.project-grid { grid-template-columns: 1fr 1fr; }
+		.project-card:last-child { grid-column: 1 / -1; }
+		.engine-card, .about-card { grid-template-columns: 1fr; }
+		.note-grid { grid-template-columns: 1fr 1fr; }
+		.research-grid { grid-template-columns: 1fr; }
+		.about-card figure { min-height: 36rem; }
+	}
+	@media (max-width: 600px) {
+		.homepage { padding-top: .4rem; gap: 5rem; }
+		.hero { min-height: calc(100vh - 6rem); border-radius: .65rem; padding: 1.3rem; }
+		.hero::after { display: none; }
+		h1 { font-size: clamp(3rem, 16vw, 5rem); }
+		.button.language { margin-left: 0; }
+		.project-grid, .note-grid { grid-template-columns: 1fr; }
+		.project-card:last-child { grid-column: auto; }
+		.engine-card { padding: .7rem; }
+		.engine-media { min-height: 15rem; }
+		.about-card figure { min-height: 30rem; }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		*, *::before, *::after { transition-duration: .01ms !important; }
+	}
+</style>

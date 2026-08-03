@@ -24,4 +24,4 @@ There is no committed whole-book export. Local HTML, PDFs, and intermediates are
 written only under ignored `build/`; GitHub Actions publishes the HTML directly
 to Pages.
 
-Published notes: <https://qiulinfan.github.io/qlblog/notes/math/measure-theory/>
+Published notes: <https://qiulinfan.github.io/notes/math/measure-theory/>

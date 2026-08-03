@@ -14,7 +14,7 @@ a new field only when this source supplies real content for it.
 ## Compare against the external brain first
 
 For every candidate concept, derive its canonical English name and aliases,
-then search the existing qlblog graph before authoring markers:
+then search the current repository graph before authoring markers:
 
 ```sh
 python3 knowledge/scripts/knowledge.py --repo-root . search "canonical term"

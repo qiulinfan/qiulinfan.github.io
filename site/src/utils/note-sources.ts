@@ -118,7 +118,7 @@ function noteSlug(spec: SourceSpec, path: string): string {
 }
 
 function sitePath(path: string): string {
-	const base = import.meta.env?.BASE_URL ?? "/qlblog/";
+	const base = import.meta.env?.BASE_URL ?? "/";
 	return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 }
 

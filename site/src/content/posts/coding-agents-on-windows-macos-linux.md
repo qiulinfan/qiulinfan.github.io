@@ -504,11 +504,11 @@ Harness 时代，一个合理的期待是：用户不必手动复制本文几十
 ### 1. Clone 这份 runbook
 
 ```bash
-git clone https://github.com/qiulinfan/qlblog.git
+git clone https://github.com/qiulinfan/qiulinfan.github.io.git
 cd qlblog
 ```
 
-仓库中的 [`install/agent-stack.md`](https://github.com/qiulinfan/qlblog/blob/main/install/agent-stack.md) 是给人和 agent 共同阅读的安装说明。`AGENTS.md` 与 `CLAUDE.md` 会引导 Codex、OpenCode、Claude Code 找到它。
+仓库中的 [`install/agent-stack.md`](https://github.com/qiulinfan/qiulinfan.github.io/blob/main/install/agent-stack.md) 是给人和 agent 共同阅读的安装说明。`AGENTS.md` 与 `CLAUDE.md` 会引导 Codex、OpenCode、Claude Code 找到它。
 
 ### 2. 用你已有的 agent 打开仓库
 
