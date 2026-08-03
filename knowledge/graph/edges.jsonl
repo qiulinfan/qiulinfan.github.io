@@ -462,6 +462,7 @@
 {"confidence":"high","evidence":"local integrability is integrability on compact subsets","origin":"agent","relation":"prerequisite-for","source":"real-valued-integrable-function","target":"locally-integrable"}
 {"confidence":"high","evidence":"simple measurable functions are the basic measurable approximants","origin":"agent","relation":"prerequisite-for","source":"real-valued-measurable-functions","target":"simple-function"}
 {"confidence":"high","evidence":"Lp spaces are organized by their p-norms","origin":"agent","relation":"prerequisite-for","source":"semi-norm-norm","target":"l-p-spaces"}
+{"confidence":"high","evidence":"The theorem proves that the class of mu-star-measurable sets satisfies the defining sigma-algebra closure conditions.","origin":"agent","relation":"prerequisite-for","source":"sigma-algebra","target":"caratheodory-theorem"}
 {"confidence":"high","evidence":"The definition conditions on a sub-sigma-algebra G and requires G-measurability.","origin":"agent","relation":"prerequisite-for","source":"sigma-algebra","target":"kolmogorov-definition-of-conditional-probability"}
 {"confidence":"high","evidence":"the product sigma-algebra is generated from factor sigma-algebras","origin":"agent","relation":"prerequisite-for","source":"sigma-algebra","target":"product-sigma-algebra"}
 {"confidence":"high","evidence":"Every listed closure property is proved directly from the defining sigma-algebra axioms.","origin":"agent","relation":"derived-from","source":"sigma-algebra-closure-properties","target":"sigma-algebra"}

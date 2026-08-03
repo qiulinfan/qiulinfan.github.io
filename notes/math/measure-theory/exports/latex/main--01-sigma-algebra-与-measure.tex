@@ -40,7 +40,7 @@
   \textbf{closed under countable union}: if \(E_{1},E_{2},\cdots \in S\) then \(\bigcup_{k = 1}^{\infty}E_{k} \in S\).
 \end{enumerate}
 
-如果第三条并不满足, 而是只满足 \textbf{closed under finite union}, 则称 \(S\) 是 \(X\) 上的一个 algebra. 当然, \(\sigma\)-algebra 是比 algebra 严格更强的条件.
+如果第三条并不满足, 而是只满足 \textbf{closed under finite union}, 则称 \(S\) 是 \(X\) 上的一个 \protect\phantomsection\label{kn-algebra-of-sets}{\textbf{algebra of sets}} . 当然, \(\sigma\)-algebra 是比 algebra 严格更强的条件.
 
 \end{definition}
 
@@ -219,10 +219,11 @@ Lindelöf property 的一个推论就是, 在具有 Lindelöf property 的 metri
 \subsection{measure}\label{measure}
 
 \begin{definition}{\protect\phantomsection\label{kn-measurable-space-and-measure-space}{\textbf{measurable
-space and measure space}}}
+space}} and
+\protect\phantomsection\label{kn-measure-space}{\textbf{measure space}}}
 
-Let \(X\) be a set, \(\mathcal{M}\) be a \(\sigma\)-algebra on \(X\).\\
-A measure on \((X,A)\) is a function \(\mu:\mathcal{M}\rightarrow\lbrack 0,\infty)\) satisfying:
+Let \(X\) be a set, \(\mathcal{M}\) be a \(\sigma\)-algebra on \(X\). We call \((X,\mathcal{M})\) a measurable space.\\
+A \protect\phantomsection\label{kn-measure}{\textbf{measure}} on this measurable space is a function \(\mu:\mathcal{M}\rightarrow\lbrack 0,\infty)\) satisfying:
 
 \begin{enumerate}
 \item
@@ -235,7 +236,7 @@ A measure on \((X,A)\) is a function \(\mu:\mathcal{M}\rightarrow\lbrack 0,\inft
   for disjoint seq of \(E_{i} \in \mathcal{M}\).
 \end{enumerate}
 
-如果这样的 \(\mu\) 存在, 我们则称 \((X,\mathcal{M})\) 为一个 measurable space, 并称 \((X,\mathcal{M},\mu)\) 为一个 measure space.
+我们称 \((X,\mathcal{M},\mu)\) 为一个 measure space.
 
 \end{definition}
 

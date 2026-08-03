@@ -1199,6 +1199,162 @@ def curation_report(
     }
 
 
+def audit_report(state: GraphState) -> dict[str, Any]:
+    """Summarize deterministic graph and curation coverage without inferring semantics."""
+    active = {
+        node_id: node
+        for node_id, node in state.nodes.items()
+        if node.get("type") == "knowledge"
+        and (node.get("provenance") or {}).get("active")
+    }
+    semantic_edges = [
+        edge
+        for edge in state.edges.values()
+        if edge.get("relation") != "contains"
+    ]
+    adjacency: dict[str, set[str]] = defaultdict(set)
+    semantic_degree: Counter[str] = Counter()
+    cross_course_edges = 0
+    for edge in semantic_edges:
+        source = str(edge.get("source", ""))
+        target = str(edge.get("target", ""))
+        if source in active and target in active:
+            adjacency[source].add(target)
+            adjacency[target].add(source)
+            semantic_degree[source] += 1
+            semantic_degree[target] += 1
+            source_course = str((active[source].get("properties") or {}).get("course", ""))
+            target_course = str((active[target].get("properties") or {}).get("course", ""))
+            if source_course and target_course and source_course != target_course:
+                cross_course_edges += 1
+
+    unseen = set(active)
+    component_sizes: list[int] = []
+    while unseen:
+        start = min(unseen)
+        unseen.remove(start)
+        stack = [start]
+        size = 0
+        while stack:
+            current = stack.pop()
+            size += 1
+            for neighbor in sorted(adjacency[current]):
+                if neighbor in unseen:
+                    unseen.remove(neighbor)
+                    stack.append(neighbor)
+        component_sizes.append(size)
+    component_sizes.sort(reverse=True)
+
+    authorities: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for node in active.values():
+        authority = str((node.get("provenance") or {}).get("authority", ""))
+        authorities[authority].append(node)
+    complete_authorities: list[str] = []
+    partial_authorities: list[str] = []
+    pending_authorities: list[str] = []
+    for authority, nodes in sorted(authorities.items()):
+        entries = sum(bool(str(node.get("text", "")).strip()) for node in nodes)
+        if entries == len(nodes):
+            complete_authorities.append(authority)
+        elif entries:
+            partial_authorities.append(authority)
+        else:
+            pending_authorities.append(authority)
+
+    reference_authorities = Counter(
+        str(reference.get("authority", ""))
+        for reference in state.references
+    )
+    authority_course = {
+        authority: str((nodes[0].get("properties") or {}).get("course", "unknown"))
+        for authority, nodes in authorities.items()
+        if nodes
+    }
+    courses: dict[str, dict[str, Any]] = {}
+    for course in sorted(
+        {str((node.get("properties") or {}).get("course", "unknown")) for node in active.values()}
+    ):
+        course_nodes = {
+            node_id: node
+            for node_id, node in active.items()
+            if str((node.get("properties") or {}).get("course", "unknown")) == course
+        }
+        course_entries = sum(
+            bool(str(node.get("text", "")).strip()) for node in course_nodes.values()
+        )
+        courses[course] = {
+            "nodes": len(course_nodes),
+            "entries": course_entries,
+            "entry_ratio": round(course_entries / len(course_nodes), 6) if course_nodes else 1.0,
+            "semantic_nodes": sum(bool(adjacency[node_id]) for node_id in course_nodes),
+            "isolated_nodes": sum(not adjacency[node_id] for node_id in course_nodes),
+            "references": sum(
+                count
+                for authority, count in reference_authorities.items()
+                if authority_course.get(authority) == course
+            ),
+        }
+
+    hierarchy_parents: Counter[str] = Counter()
+    for edge in state.edges.values():
+        if edge.get("relation") == "contains" and edge.get("target") in active:
+            hierarchy_parents[str(edge["target"])] += 1
+    invalid_hierarchy_parents = sorted(
+        node_id for node_id in active if hierarchy_parents[node_id] != 1
+    )
+    entry_count = sum(bool(str(node.get("text", "")).strip()) for node in active.values())
+    relation_counts = Counter(str(edge.get("relation", "")) for edge in state.edges.values())
+    return {
+        "schema": "qlkg-audit-v1",
+        "counts": {
+            "nodes": len(state.nodes),
+            "active_knowledge": len(active),
+            "entries": entry_count,
+            "edges": len(state.edges),
+            "semantic_edges": len(semantic_edges),
+            "references": len(state.references),
+        },
+        "curation": {
+            "entry_ratio": round(entry_count / len(active), 6) if active else 1.0,
+            "authorities": len(authorities),
+            "complete_authorities": complete_authorities,
+            "partial_authorities": partial_authorities,
+            "pending_authorities": pending_authorities,
+        },
+        "topology": {
+            "semantic_components": len(component_sizes),
+            "largest_component": component_sizes[0] if component_sizes else 0,
+            "isolated_nodes": sum(size == 1 for size in component_sizes),
+            "component_size_histogram": {
+                str(size): count
+                for size, count in sorted(Counter(component_sizes).items())
+            },
+            "cross_course_edges": cross_course_edges,
+            "top_hubs": [
+                {"id": node_id, "degree": degree}
+                for node_id, degree in sorted(
+                    semantic_degree.items(),
+                    key=lambda item: (-item[1], item[0]),
+                )[:12]
+            ],
+        },
+        "relations": {
+            relation: relation_counts[relation]
+            for relation in sorted(relation_counts)
+        },
+        "courses": courses,
+        "quality": {
+            "semantic_edges_missing_evidence": sum(
+                not str(edge.get("evidence", "")).strip() for edge in semantic_edges
+            ),
+            "semantic_edges_missing_confidence": sum(
+                not str(edge.get("confidence", "")).strip() for edge in semantic_edges
+            ),
+            "knowledge_nodes_without_one_hierarchy_parent": invalid_hierarchy_parents,
+        },
+    }
+
+
 def defaults(repo_root: Path, value: str) -> Path:
     return (repo_root / value).resolve()
 
@@ -1233,6 +1389,7 @@ def parse_args() -> argparse.Namespace:
     show_command.add_argument("id")
     curate_command = commands.add_parser("curate-check")
     curate_command.add_argument("--file", action="append", required=True, type=Path)
+    commands.add_parser("audit")
     commands.add_parser("stats")
     return parser.parse_args()
 
@@ -1339,6 +1496,8 @@ def main() -> int:
             report = curation_report(state, authorities)
             print(pretty_json(report), end="")
             return 1 if report["errors"] else 0
+        elif args.command == "audit":
+            print(pretty_json(audit_report(state)), end="")
         elif args.command == "stats":
             print(pretty_json(state.manifest), end="")
         return 0

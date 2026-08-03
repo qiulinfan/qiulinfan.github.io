@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Fix $1 < p < \infty$. Let $f \in L^{p}(E)$, where $E$ is a measurable subset of ${\mathbb{R}}^{d}$. Assume that
 
-$$\int_{E}f(x)g(x)dx = 0$$
+$$
+\int_{E}f(x)g(x)dx = 0
+$$
 
 for all compactly supported continuous functions $g:{\mathbb{R}}^{d}\rightarrow{\mathbb{R}}$. Is $f(x) = 0$ for almost every $x$ in $E$ ? If your answer is positive, prove it. Otherwise, given a counterexample.
 

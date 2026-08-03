@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $f \in L^{2}(I)$, for any finite interval $I \subset {\mathbb{R}}$. Assume that
 
-$$\left. \int_{- a}^{a} \middle| t \middle| \middle| f(x + t) \middle| dt \geq \frac{2}{\sqrt{3}}a^{2} \right.$$
+$$
+\left. \int_{- a}^{a} \middle| t \middle| \middle| f(x + t) \middle| dt \geq \frac{2}{\sqrt{3}}a^{2} \right.
+$$
 
 for all $a > 0$ and $x \in {\mathbb{R}}$. Show that $\left. |f(x) \middle| \geq 1 \right.$ for a.e. $x \in {\mathbb{R}}$.
 

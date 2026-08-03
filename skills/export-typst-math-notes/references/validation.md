@@ -19,6 +19,13 @@ sheets; compile exported LaTeX independently; inspect every image; or rerun all
 courses by default. Use deeper diagnostics only after a failure or explicit user
 request.
 
+## Markdown snapshot check
+
+The exporter itself rejects semantic fenced divs, leaked `.ql-kn/.ql-ref`
+attributes, and display formulas whose opening and closing `$$` remain on one
+line. A successful `make export` is sufficient; do not run a Markdown renderer
+or inspect every formula afterward.
+
 ## Basic web check
 
 The checker rejects:
@@ -43,6 +50,16 @@ For a changed-file workflow, preview first:
 ```sh
 python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/file.typ
 ```
+
+For a global foundation review, also run:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . audit
+```
+
+The audit reports deterministic curation coverage and topology without failing
+on legacy pending files or isolated nodes. Treat those values as routing data
+for agent reading, never as permission to synthesize nodes or edges by script.
 
 After applying the reviewed agent delta and synchronizing the file, require:
 

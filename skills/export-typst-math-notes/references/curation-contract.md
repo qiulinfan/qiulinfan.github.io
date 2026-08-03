@@ -71,6 +71,11 @@ Use the node's existing provenance as the authority link. Set
 `properties.entry_origin` to `agent-extracted` for an agent-written entry. The
 source synchronizer must preserve `text` and agent properties.
 
+An untouched legacy authority may still appear as pending in the global audit.
+That is migration state, not permission to leave a selected file incomplete:
+once an authority is processed by this workflow, all of its active nodes must
+have entries and it must remain curation-complete on later exports.
+
 Example delta node:
 
 ```json

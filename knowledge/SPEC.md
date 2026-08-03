@@ -14,6 +14,13 @@ statement into a node.
 - Agent-created metadata and semantic edges are durable graph knowledge. A source
   edit does not silently delete them.
 
+Generated Markdown from a Typst authority is never ingested again as a second
+authority. Its Obsidian `[[wikilinks]]` are a portable graph-facing projection,
+not enough by themselves to distinguish a definition from a reference. Future
+Markdown and LaTeX source adapters must declare their source type and recover
+definition/reference roles from that authority's own explicit syntax while
+preserving the same global node identity and single canonical authority rule.
+
 ## What is a knowledge node?
 
 A node should be independently teachable, searchable, reusable across documents,
@@ -66,11 +73,14 @@ around each concept. Synonyms and abbreviations remain aliases of one node. A
 script may scan explicit markers, but must never split a title or promote an
 unmarked title into knowledge automatically.
 
-Every active knowledge node has a concise `text` entry distilled by the agent
-from its authoritative statement, proof, and explanation. The entry is
-source-grounded searchable prose, not a second authority; provenance continues
-to point to the canonical Typst location. Source synchronization preserves the
-entry and its agent metadata.
+Every active knowledge node in a curation-complete authority has a concise
+`text` entry distilled by the agent from its authoritative statement, proof,
+and explanation. The entry is source-grounded searchable prose, not a second
+authority; provenance continues to point to the canonical Typst location.
+Source synchronization preserves the entry and its agent metadata. Legacy
+authorities may remain entry-pending until their first pass through the new
+file workflow; `audit` exposes that rollout state, and a newly curated file may
+not return to pending.
 
 Formal-statement components may still carry local Typst labels for document-local
 cross-references. Their legacy `id`, `concepts`, `depends`, and `aliases` fields do
@@ -204,7 +214,14 @@ Run:
 
 ```sh
 make knowledge-check
+python3 knowledge/scripts/knowledge.py --repo-root . audit
 make knowledge-search QUERY="conditional expectation"
 python3 knowledge/scripts/knowledge.py --repo-root . show "Dominated convergence theorem"
 python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.typ
 ```
+
+`audit` is a deterministic readiness report: it measures entry coverage by
+authority, semantic connectedness, relation counts, cross-course bridges, and
+edge metadata completeness. Isolated nodes and pending authorities are rollout
+signals, not automatic semantic errors; only an agent reading the authority may
+decide whether to add a node, ref, entry, or edge.

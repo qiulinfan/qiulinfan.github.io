@@ -138,6 +138,17 @@ Do not infer edges from proximity, section order, or keyword co-occurrence. Do
 not materialize transitive closure. `#ref` is a backlink occurrence, not a
 semantic edge; inspect its context before asserting a relation.
 
+For a repository-level foundation review, run the deterministic structural
+audit before selecting semantic fixes:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . audit
+```
+
+Use its coverage, component, hub, and relation counts to locate files worth
+reading. An isolated node or pending file is not itself evidence for an edge or
+entry; never repair an audit number without reading the relevant authority.
+
 Scripts may parse, synchronize, and validate explicit markers and reviewed
 deltas. They must not decide that a title is a node, split a concept, choose a
 direct prerequisite, write a node entry, or select a semantic relation. Those
@@ -162,6 +173,12 @@ each entry once, discovers included modules, and writes flat per-chapter LaTeX
 and Markdown. Markdown diagrams use Typora-compatible `.assets/*.svg`; LaTeX
 uses vector `assets/*.pdf`. CeTZ remains the editable diagram authority. Never
 reconstruct TikZ and never emit page PNGs.
+
+Treat Markdown as a deliberately lossy graph-ingestion snapshot. Emit semantic
+environments as ordinary blockquotes, render both `#kn` and `#ref` names as
+Obsidian `[[wikilinks]]`, keep inline math in `$...$`, and put every display
+formula between `$$` delimiters on their own lines. Do not preserve fenced-div
+classes or hidden knowledge IDs in Markdown.
 
 If export succeeds, accept it. Do not compile or inspect PDFs, render pages,
 inspect every image, or independently compile generated LaTeX unless a command

@@ -1,11 +1,11 @@
 {
   "counts": {
-    "edges": 493,
+    "edges": 494,
     "nodes": 293,
     "references": 44
   },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "7578546efea0ca777c6107011c3a0f87f23c2d38ae1571b7753225acd4f37bd7",
+  "graph_sha256": "d8ce2f08e4228e9a56f4b52064c346cb5f24c6c311efa278a44c168a476b281f",
   "node_types": {
     "discipline": 1,
     "field": 3,
@@ -18,7 +18,7 @@
     "derived-from": 61,
     "generalizes": 6,
     "implies": 15,
-    "prerequisite-for": 117
+    "prerequisite-for": 118
   },
   "schema": "qlkg-v2",
   "source_hashes": {

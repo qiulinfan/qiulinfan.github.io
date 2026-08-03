@@ -22,6 +22,8 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $f:{\mathbb{R}}\rightarrow{\mathbb{R}}$ be a measurable function which has the property that
 
-$$\left. m( \middle| f \middle| > \alpha) \leq \frac{1}{1 + \alpha^{3}}\quad\text{for}\ \alpha > 0 \right.$$
+$$
+\left. m( \middle| f \middle| > \alpha) \leq \frac{1}{1 + \alpha^{3}}\quad\text{for}\ \alpha > 0 \right.
+$$
 
 \(a\) Show that $|f|^{p}$ is integrable for $p < 3$. (b) Give an example of a function satisfying the above for which $|f|^{3}$ is not integrable.

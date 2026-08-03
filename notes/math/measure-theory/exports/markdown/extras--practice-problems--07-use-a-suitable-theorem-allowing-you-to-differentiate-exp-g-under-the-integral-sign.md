@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $f$ be a real Lebesgue measurable function on the interval $\lbrack 0,1\rbrack$ such that $\parallel f\underset{\infty}{\parallel} < \infty$. For $\alpha \in {\mathbb{R}}$ define a function $g(\alpha)$ by
 
-$$g(\alpha) = \log\left\lbrack {\int_{0}^{1}\exp\lbrack\alpha f(x)\rbrack dx} \right\rbrack$$
+$$
+g(\alpha) = \log\left\lbrack {\int_{0}^{1}\exp\lbrack\alpha f(x)\rbrack dx} \right\rbrack
+$$
 
 
 

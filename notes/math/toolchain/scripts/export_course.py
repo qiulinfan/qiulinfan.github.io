@@ -17,7 +17,7 @@ from export import ExportError, export as export_authority
 INCLUDE_RE = re.compile(r'^\s*#include\s+"([^"]+)"', re.MULTILINE)
 MARKDOWN_HEADING_RE = re.compile(r"^#\s+(.+?)(?:\s+\{#[^}]+\})?\s*$", re.MULTILINE)
 LATEX_CHAPTER_RE = re.compile(r"^\\chapter(?:\[[^\]]*\])?\{", re.MULTILINE)
-KN_MARKER_RE = re.compile(r'data-ql-kn="[^"]+"')
+KN_SOURCE_RE = re.compile(r"#kn\s*\[")
 SEMANTIC_COUNT_RE = re.compile(r"^semantic-node-count:\s*\d+\s*$", re.MULTILINE)
 TYPST_CHAPTER_RE = re.compile(
     r"^(?:=\s+(.+?)\s*|#heading\(level:\s*1[^)]*\)\[(.+?)\])$",
@@ -37,6 +37,13 @@ class Page:
     authority: str
     stem: str
     label: str
+
+
+@dataclass(frozen=True)
+class Chapter:
+    authority: str
+    stem: str
+    knowledge_count: int
 
 
 def slug(value: str) -> str:
@@ -69,23 +76,28 @@ def included_parts(source: Path) -> list[str]:
     return parts
 
 
-def source_chapters(source: Path) -> list[tuple[str, str]]:
-    chapters: list[tuple[str, str]] = []
+def source_chapters(source: Path) -> list[Chapter]:
+    chapters: list[Chapter] = []
     for part in included_parts(source):
-        headings = [
-            next(value for value in match.groups() if value is not None)
-            for match in TYPST_CHAPTER_RE.finditer(
-                (source.parent / part).read_text(encoding="utf-8")
-            )
-        ]
-        if not headings:
+        content = (source.parent / part).read_text(encoding="utf-8")
+        heading_matches = list(TYPST_CHAPTER_RE.finditer(content))
+        if not heading_matches:
             raise ExportError(f"included Typst source has no level-one heading: {part}")
         base = slug(Path(part).stem)
-        if len(headings) == 1:
-            chapters.append((part, base))
-            continue
-        for index, heading in enumerate(headings, start=1):
-            chapters.append((part, f"{base}--{index:02d}-{slug(heading)}"))
+        for index, match in enumerate(heading_matches, start=1):
+            heading = next(value for value in match.groups() if value is not None)
+            end = (
+                heading_matches[index].start()
+                if index < len(heading_matches)
+                else len(content)
+            )
+            count = len(KN_SOURCE_RE.findall(content[match.start() : end]))
+            stem = (
+                base
+                if len(heading_matches) == 1
+                else f"{base}--{index:02d}-{slug(heading)}"
+            )
+            chapters.append(Chapter(part, stem, count))
     return chapters
 
 
@@ -244,14 +256,13 @@ def export_course(
         for chapter, markdown_page, latex_page in zip(
             chapters, markdown_pages, latex_pages
         ):
-            part, chapter_stem = chapter
-            page_stem = f"{document.name}--{chapter_stem}"
+            page_stem = f"{document.name}--{chapter.stem}"
             if page_stem in seen_stems:
                 raise ExportError(f"duplicate chapter export name: {page_stem}")
             seen_stems.add(page_stem)
-            count = len(KN_MARKER_RE.findall(markdown_page))
             page_frontmatter = SEMANTIC_COUNT_RE.sub(
-                f"semantic-node-count: {count}", markdown_frontmatter
+                f"semantic-node-count: {chapter.knowledge_count}",
+                markdown_frontmatter,
             )
             markdown_page = replace_paths(markdown_page, markdown_assets, ".assets")
             markdown_output = page_frontmatter + markdown_page.lstrip("\n")
@@ -269,7 +280,7 @@ def export_course(
                 + "\n\\end{document}\n"
             )
             (latex / f"{page_stem}.tex").write_text(latex_output, encoding="utf-8")
-            pages.append(Page(document.name, part, page_stem, label))
+            pages.append(Page(document.name, chapter.authority, page_stem, label))
 
         copy_shared(snapshot / "markdown" / "reference.bib", markdown)
         for name in ("reference.bib", "qlnotes-export.cls", "elegantbook.cls"):

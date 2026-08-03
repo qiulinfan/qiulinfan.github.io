@@ -177,6 +177,75 @@ local function latex_escape_title(title)
   return rendered
 end
 
+local function markdown_title_from_head(head, kind)
+  if head == nil or #head.content == 0 then
+    return pandoc.List()
+  end
+  local block = head.content[1]
+  local inlines = block.content or {}
+  if #inlines == 1 and inlines[1].t == "Strong" then
+    inlines = inlines[1].content
+  end
+
+  local result = pandoc.List()
+  local index = 1
+  local label = string.upper(string.sub(kind, 1, 1)) .. string.sub(kind, 2)
+  if inlines[index] ~= nil
+      and inlines[index].t == "Str"
+      and inlines[index].text == label then
+    index = index + 1
+    if inlines[index] ~= nil and inlines[index].t == "Space" then
+      index = index + 1
+    end
+    if inlines[index] ~= nil
+        and inlines[index].t == "Str"
+        and string.match(inlines[index].text, "^%d+[%.%d]*$") then
+      index = index + 1
+      if inlines[index] ~= nil and inlines[index].t == "Space" then
+        index = index + 1
+      end
+    end
+    if inlines[index] ~= nil
+        and inlines[index].t == "Str"
+        and inlines[index].text == ":" then
+      index = index + 1
+      if inlines[index] ~= nil and inlines[index].t == "Space" then
+        index = index + 1
+      end
+    end
+  end
+  while index <= #inlines do
+    result:insert(inlines[index])
+    index = index + 1
+  end
+  return result
+end
+
+local function markdown_inlines(text)
+  if text == nil or text == "" then
+    return pandoc.List()
+  end
+  local document = pandoc.read(text, "markdown")
+  if #document.blocks == 0 then
+    return pandoc.List()
+  end
+  return document.blocks[1].content or pandoc.List()
+end
+
+local function markdown_wikilink(inlines)
+  if #inlines == 1 and inlines[1].t == "Strong" then
+    inlines = inlines[1].content
+  end
+  local rendered = pandoc.write(
+    pandoc.Pandoc({ pandoc.Plain(inlines) }),
+    "markdown+tex_math_dollars"
+  )
+  rendered = string.gsub(rendered, "^%s+", "")
+  rendered = string.gsub(rendered, "%s+$", "")
+  rendered = string.gsub(rendered, "[\r\n]+", " ")
+  return pandoc.RawInline("markdown", "[[" .. rendered .. "]]")
+end
+
 local function blocks_from_named_parts(element, head_class, body_class)
   local head = nil
   local body = {}
@@ -192,31 +261,24 @@ local function blocks_from_named_parts(element, head_class, body_class)
   return head, body
 end
 
-local function markdown_semantic_div(element, kind, title, body)
-  local attributes = {}
-  for key, value in pairs(element.attributes) do
-    if
-      value ~= ""
-      and key ~= "role"
-      and key ~= "kind"
-      and string.sub(key, 1, 5) ~= "data-"
-    then
-      attributes[key] = value
-    end
-  end
-
+local function markdown_semantic_quote(kind, title, body)
   local blocks = pandoc.List()
   local label = string.upper(string.sub(kind, 1, 1)) .. string.sub(kind, 2)
-  local heading = label
-  if title ~= "" and string.lower(title) ~= string.lower(label) then
-    heading = heading .. ": " .. title
+  local heading = pandoc.List({ pandoc.Str(label) })
+  if type(title) == "string" then
+    title = markdown_inlines(title)
   end
-  blocks:insert(pandoc.Para({ pandoc.Strong({ pandoc.Str(heading) }) }))
+  local title_text = title ~= nil and pandoc.utils.stringify(title) or ""
+  if title ~= nil
+      and #title > 0
+      and string.lower(title_text) ~= string.lower(label) then
+    heading:insert(pandoc.Str(":"))
+    heading:insert(pandoc.Space())
+    heading:extend(title)
+  end
+  blocks:insert(pandoc.Para({ pandoc.Strong(heading) }))
   blocks:extend(body)
-  return pandoc.Div(
-    blocks,
-    pandoc.Attr(element.identifier, { kind }, attributes)
-  )
+  return pandoc.BlockQuote(blocks)
 end
 
 local function latex_environment(element, kind, title, body, title_is_latex)
@@ -260,7 +322,6 @@ local function convert_callout(element, kind)
     "ql-callout__head",
     "ql-callout__body"
   )
-  local title = head and title_from_head(head, kind) or ""
   if FORMAT:match("latex") then
     return latex_environment(
       element,
@@ -270,7 +331,11 @@ local function convert_callout(element, kind)
       true
     )
   end
-  return markdown_semantic_div(element, kind, title, body)
+  return markdown_semantic_quote(
+    kind,
+    markdown_title_from_head(head, kind),
+    body
+  )
 end
 
 local function convert_note(element)
@@ -288,7 +353,7 @@ local function convert_note(element)
     blocks:insert(pandoc.RawBlock("latex", "\\end{qlnote}"))
     return blocks
   end
-  return markdown_semantic_div(element, "note", title, body)
+  return markdown_semantic_quote("note", title, body)
 end
 
 local function convert_proof(element)
@@ -303,7 +368,7 @@ local function convert_proof(element)
     blocks:insert(pandoc.RawBlock("latex", "\\end{proof}"))
     return blocks
   end
-  return markdown_semantic_div(element, "proof", "", body)
+  return markdown_semantic_quote("proof", "", body)
 end
 
 local function convert_titled_simple(
@@ -329,7 +394,7 @@ local function convert_titled_simple(
     )
     return blocks
   end
-  return markdown_semantic_div(element, kind, title, body)
+  return markdown_semantic_quote(kind, title, body)
 end
 
 local function normalize_div(element)
@@ -402,6 +467,9 @@ local function normalize_span(element)
   if has_class(element, "ql-proof__qed") then
     return {}
   end
+  if not FORMAT:match("latex") and has_class(element, "ql-kn") then
+    return markdown_wikilink(element.content)
+  end
   if not has_class(element, "ql-citation") then
     return nil
   end
@@ -450,6 +518,9 @@ local function normalize_meta(meta)
 end
 
 local function normalize_link(element)
+  if not FORMAT:match("latex") and has_class(element, "ql-ref") then
+    return markdown_wikilink(element.content)
+  end
   if not FORMAT:match("latex") then
     return nil
   end
@@ -530,6 +601,60 @@ local function normalize_figure(element)
   return nil
 end
 
+local function trim_inline_space(inlines)
+  while #inlines > 0 and (
+      inlines[1].t == "Space"
+      or inlines[1].t == "SoftBreak"
+      or inlines[1].t == "LineBreak"
+  ) do
+    table.remove(inlines, 1)
+  end
+  while #inlines > 0 and (
+      inlines[#inlines].t == "Space"
+      or inlines[#inlines].t == "SoftBreak"
+      or inlines[#inlines].t == "LineBreak"
+  ) do
+    table.remove(inlines, #inlines)
+  end
+end
+
+local function split_display_math(block)
+  if FORMAT:match("latex") then
+    return nil
+  end
+
+  local blocks = pandoc.List()
+  local current = pandoc.List()
+  local found = false
+
+  local function flush()
+    trim_inline_space(current)
+    if #current > 0 then
+      blocks:insert(pandoc.Para(current))
+    end
+    current = pandoc.List()
+  end
+
+  for _, inline in ipairs(block.content) do
+    if inline.t == "Math" and inline.mathtype == "DisplayMath" then
+      found = true
+      flush()
+      blocks:insert(pandoc.RawBlock(
+        "markdown",
+        "$$\n" .. inline.text .. "\n$$"
+      ))
+    else
+      current:insert(inline)
+    end
+  end
+
+  if not found then
+    return nil
+  end
+  flush()
+  return blocks
+end
+
 return {
   {
     Div = flatten_semantic,
@@ -543,5 +668,9 @@ return {
     Image = normalize_image,
     Figure = normalize_figure,
     Meta = normalize_meta,
+  },
+  {
+    Para = split_display_math,
+    Plain = split_display_math,
   },
 }

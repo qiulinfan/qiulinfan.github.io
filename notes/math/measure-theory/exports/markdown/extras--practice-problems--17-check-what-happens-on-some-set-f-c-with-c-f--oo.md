@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $E$ be a measurable subset of $\mathbb{R}$ such that $m(E) < \infty$. Let $f \in L^{\infty}(E)$ with $\parallel f\underset{\infty}{\parallel} > 0$. Show that
 
-$$\lim\limits_{n\rightarrow\infty}\frac{\parallel f\underset{n + 1}{\overset{n + 1}{\parallel}}}{\parallel f\underset{n}{\overset{n}{\parallel}}} = \parallel f\underset{\infty}{\parallel}$$
+$$
+\lim\limits_{n\rightarrow\infty}\frac{\parallel f\underset{n + 1}{\overset{n + 1}{\parallel}}}{\parallel f\underset{n}{\overset{n}{\parallel}}} = \parallel f\underset{\infty}{\parallel}
+$$
 
 Here $\parallel f\underset{n}{\parallel} := \parallel f\underset{L^{n}(E)}{\parallel}, \parallel f\underset{n + 1}{\parallel} := \parallel f\underset{L^{n + 1}(E)}{\parallel}$.
 

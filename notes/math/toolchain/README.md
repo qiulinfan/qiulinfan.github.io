@@ -54,6 +54,12 @@ No whole-book `main.tex` or `main.md` is committed. HTML, PDFs, and exporter
 intermediates stay under the ignored course `build/` directory. GitHub Actions
 builds HTML from Typst and publishes only the Pages artifact.
 
+Markdown is intentionally graph-oriented and lossy. Semantic statements,
+examples, proofs, remarks, notes, and solutions become ordinary `>` blockquotes;
+both knowledge definitions and references become Obsidian wikilinks such as
+`[[Dominated convergence theorem]]`. Inline math uses `$...$`; every display
+formula uses line-delimited `$$` blocks.
+
 Knowledge markers are authored directly in Typst:
 
 ```typst

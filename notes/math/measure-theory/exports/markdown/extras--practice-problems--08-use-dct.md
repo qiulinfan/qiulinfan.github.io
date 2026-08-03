@@ -22,11 +22,15 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let
 
-$$f \in L_{1}(\lbrack 0,1\rbrack,dx)$$
+$$
+f \in L_{1}(\lbrack 0,1\rbrack,dx)
+$$
 
 Find:
 
-$$\lim\limits_{n\rightarrow\infty}\frac{1}{n}\int_{0}^{1}\log\left( {1 + e^{nf(x)}} \right)dx$$
+$$
+\lim\limits_{n\rightarrow\infty}\frac{1}{n}\int_{0}^{1}\log\left( {1 + e^{nf(x)}} \right)dx
+$$
 
 
 

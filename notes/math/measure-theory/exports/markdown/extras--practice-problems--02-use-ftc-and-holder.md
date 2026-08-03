@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $f:\lbrack 0,1\rbrack\rightarrow R$ be absolutely continuous, satisfy $f(0) = 0$ and $f' \in L^{2}(\lbrack 0,1\rbrack)$. Show that
 
-$$\lim\limits_{x\rightarrow 0 +}x^{- 1/2}f(x)$$
+$$
+\lim\limits_{x\rightarrow 0 +}x^{- 1/2}f(x)
+$$
 
 exists and determine the value of this limit.
 

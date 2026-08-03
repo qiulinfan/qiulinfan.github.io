@@ -46,6 +46,17 @@ RASTER_SUFFIX = {
     "webp": ".webp",
     "gif": ".gif",
 }
+SINGLE_LINE_DISPLAY_MATH_RE = re.compile(
+    r"^(?P<prefix>(?:[ \t]*>[ \t]*)*[ \t]*)"
+    r"\$\$(?P<body>.+)\$\$[ \t]*$",
+    flags=re.MULTILINE,
+)
+ANY_SINGLE_LINE_DISPLAY_MATH_RE = re.compile(r"\$\$[^\n]+\$\$")
+SEMANTIC_FENCED_DIV_RE = re.compile(
+    r"^:{3,}\s+(?:definition|axiom|theorem|lemma|corollary|proposition|"
+    r"example|proof|solution|remark|note)\s*$",
+    flags=re.MULTILINE,
+)
 
 
 class ExportError(RuntimeError):
@@ -67,6 +78,22 @@ def normalize_snapshot_text(value: str) -> str:
     text = "".join(normalized)
     cleaned = "\n".join(line.rstrip() for line in text.splitlines())
     return cleaned + ("\n" if text.endswith("\n") else "")
+
+
+def normalize_markdown_snapshot_text(value: str) -> str:
+    """Use Obsidian-friendly line-delimited display-math blocks."""
+
+    text = normalize_snapshot_text(value)
+
+    def expand(match: re.Match[str]) -> str:
+        prefix = match.group("prefix")
+        return (
+            f"{prefix}$$\n"
+            f"{prefix}{match.group('body')}\n"
+            f"{prefix}$$"
+        )
+
+    return SINGLE_LINE_DISPLAY_MATH_RE.sub(expand, text)
 
 
 def run(command: list[str], *, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
@@ -447,10 +474,18 @@ def export(
 
     markdown_path = markdown_dir / "main.md"
     latex_path = latex_dir / "main.tex"
-    markdown = normalize_snapshot_text(markdown_path.read_text(encoding="utf-8"))
+    markdown = normalize_markdown_snapshot_text(
+        markdown_path.read_text(encoding="utf-8")
+    )
     latex = normalize_snapshot_text(latex_path.read_text(encoding="utf-8"))
     markdown_path.write_text(markdown, encoding="utf-8")
     latex_path.write_text(latex, encoding="utf-8")
+    if ANY_SINGLE_LINE_DISPLAY_MATH_RE.search(markdown):
+        raise ExportError("Markdown contains display math without line-delimited $$")
+    if SEMANTIC_FENCED_DIV_RE.search(markdown):
+        raise ExportError("Markdown contains a semantic fenced div instead of a blockquote")
+    if any(marker in markdown for marker in (".ql-kn", "ql-kn=", ".ql-ref", "ql-ref=")):
+        raise ExportError("Markdown contains HTML knowledge markers instead of wikilinks")
     if "data:image/" in markdown or "data:image/" in latex:
         raise ExportError("embedded data URI leaked into an editable export")
     if diagrams and any(

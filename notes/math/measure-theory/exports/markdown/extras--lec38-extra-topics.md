@@ -26,7 +26,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 我们已经证明了, for $1 \leq p < \infty$,
 
-$$C_{c}^{0}({\mathbb{R}}^{n}) \subset L^{p}({\mathbb{R}}^{n})\quad\text{dense subset}$$
+$$
+C_{c}^{0}({\mathbb{R}}^{n}) \subset L^{p}({\mathbb{R}}^{n})\quad\text{dense subset}
+$$
 
 What about for $p = \infty$? 答案也是 true 的, 我们需要用到 convolution 来证明.\
 

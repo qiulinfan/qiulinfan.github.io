@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $\left\{ {f_{n}(x)} \right\}$ be a sequence of continuous, strictly positive functions on $\mathbb{R}$ which converges uniformly to the function $f(x)$. Suppose that all the functions $\left\{ f_{n} \right\},f$ are integrable. Is
 
-$$\lim\limits_{n\rightarrow\infty}\int f_{n}(x)dx = \int f(x)dx$$
+$$
+\lim\limits_{n\rightarrow\infty}\int f_{n}(x)dx = \int f(x)dx
+$$
 
 Justify your answer.
 

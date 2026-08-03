@@ -22,7 +22,9 @@ title: "MATH 597: Measure Theory --- Supplementary Material"
 
 Let $\left\{ f_{n} \right\}$ be a sequence of functions in $L^{p}\left( {\mathbb{R}}^{n} \right),1 < p < \infty$, which converge almost everywhere to a function $f \in L^{p}\left( {\mathbb{R}}^{n} \right)$, and suppose that there is a constant $M$ such that $\parallel f_{n}\underset{p}{\parallel} \leq M$ for all $n$. Show that for every $g \in L^{q}\left( {\mathbb{R}}^{n} \right),q$ the conjugate of $p$,
 
-$$\int fg = \lim\limits_{n\rightarrow\infty}\int f_{n}g$$
+$$
+\int fg = \lim\limits_{n\rightarrow\infty}\int f_{n}g
+$$
 
 Is the statement true for $p = 1$ ? (Hint: you may want to use Egorov's Theorem.)
 

@@ -176,6 +176,52 @@ class KnowledgeGraphTest(unittest.TestCase):
             state.nodes["seminorm"]["provenance"]["line"],
         )
 
+    def test_global_audit_reports_topology_and_file_curation_coverage(self) -> None:
+        state, _, _ = self.sync()
+        report = knowledge.audit_report(state)
+
+        self.assertEqual("qlkg-audit-v1", report["schema"])
+        self.assertEqual(2, report["counts"]["active_knowledge"])
+        self.assertEqual(0, report["counts"]["entries"])
+        self.assertEqual(2, report["topology"]["isolated_nodes"])
+        self.assertEqual(
+            ["notes/math/demo/chapters/01-foundations.typ"],
+            report["curation"]["pending_authorities"],
+        )
+
+        delta = self.repo / "knowledge/build/audit.json"
+        delta.parent.mkdir(parents=True, exist_ok=True)
+        delta.write_text(
+            json.dumps(
+                {
+                    "schema": "qlkg-agent-delta-v2",
+                    "nodes": [
+                        {"id": "sigma-algebra", "text": "Closed under the defining operations."},
+                        {"id": "measure-space", "text": "A measurable space with a measure."},
+                    ],
+                    "edges": [
+                        {
+                            "source": "sigma-algebra",
+                            "relation": "prerequisite-for",
+                            "target": "measure-space",
+                            "evidence": "a measure space is built on a sigma-algebra",
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        knowledge.apply_delta(self.graph, self.database, self.typst_registry, delta)
+        report = knowledge.audit_report(knowledge.load_state(self.graph))
+
+        self.assertEqual(2, report["counts"]["entries"])
+        self.assertEqual(0, report["topology"]["isolated_nodes"])
+        self.assertEqual(2, report["topology"]["largest_component"])
+        self.assertEqual(
+            ["notes/math/demo/chapters/01-foundations.typ"],
+            report["curation"]["complete_authorities"],
+        )
+
     def test_duplicate_active_kn_is_rejected(self) -> None:
         duplicate = self.source_root / "chapters/02-duplicate.typ"
         duplicate.write_text(

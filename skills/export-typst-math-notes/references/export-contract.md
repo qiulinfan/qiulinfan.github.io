@@ -40,7 +40,8 @@ By #ref[σ-algebra], ...
 - `#kn` displays the authored name as black bold text;
 - the graph stores searchable plain `label` plus Typst-rendered inline MathML in
   `properties.label_html`; web views prefer the latter and escape fallback text;
-- `#ref` emits `data-ql-ref` and remains a readable hyperlink in snapshots;
+- `#ref` emits `data-ql-ref` in HTML; Markdown renders both `#kn` and `#ref` as
+  Obsidian `[[wikilinks]]` so backlinks remain useful without hidden IDs;
 - a title defining several independent concepts contains several `#kn`
   occurrences rather than one bundled node;
 - statement-local labels may coexist, but do not create graph nodes;
@@ -50,20 +51,22 @@ By #ref[σ-algebra], ...
 
 | Typst | HTML | Markdown | LaTeX |
 |---|---|---|---|
-| `definition` | `ql-callout--definition` | `definition` div | `definition` |
-| `axiom` | `ql-callout--axiom` | `axiom` div | `axiom` |
-| `theorem` | `ql-callout--theorem` | `theorem` div | `theorem` |
-| `lemma` | `ql-callout--lemma` | `lemma` div | `lemma` |
-| `corollary` | `ql-callout--corollary` | `corollary` div | `corollary` |
-| `proposition` | `ql-callout--proposition` | `proposition` div | `proposition` |
-| `example` | `ql-callout--example` | `example` div | `example` |
-| `proof` | `ql-proof` | `proof` div | `proof` |
-| `solution` | `ql-solution` | `solution` div | `qlsolution` |
+| `definition` | `ql-callout--definition` | blockquote | `definition` |
+| `axiom` | `ql-callout--axiom` | blockquote | `axiom` |
+| `theorem` | `ql-callout--theorem` | blockquote | `theorem` |
+| `lemma` | `ql-callout--lemma` | blockquote | `lemma` |
+| `corollary` | `ql-callout--corollary` | blockquote | `corollary` |
+| `proposition` | `ql-callout--proposition` | blockquote | `proposition` |
+| `example` | `ql-callout--example` | blockquote | `example` |
+| `proof` | `ql-proof` | blockquote | `proof` |
+| `solution` | `ql-solution` | blockquote | `qlsolution` |
 
 Each chapter Markdown frontmatter uses `qlnotes-schema: qlnotes-v2` and records
-its knowledge-node count. Exported LaTeX/Markdown preserve readable knowledge
-labels, hidden IDs, and links, but `knowledge/scripts/knowledge.py` scans authority
-Typst rather than reconstructing identity from an export.
+its knowledge-node count. Markdown deliberately drops fenced-div classes and
+hidden IDs; statement type remains as the bold first line of a blockquote.
+Inline math uses `$...$`, while display math always uses `$$` delimiters on
+separate lines. `knowledge/scripts/knowledge.py` scans authority Typst rather
+than reconstructing identity from an export.
 
 ## Knowledge graph
 
