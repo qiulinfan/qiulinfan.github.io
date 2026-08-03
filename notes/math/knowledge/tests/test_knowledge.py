@@ -28,11 +28,10 @@ class KnowledgeGraphTest(unittest.TestCase):
         markdown.parent.mkdir(parents=True)
         authority.write_text("= fixture\n", encoding="utf-8")
         shutil.copyfile(
-            REPO_ROOT
-            / "notes/math/toolchain/typst-template/exports/roundtrip/markdown/main.md",
+            REPO_ROOT / "notes/math/knowledge/tests/fixtures/roundtrip.md",
             markdown,
         )
-        self.source = knowledge.SourceSpec("math:demo:main", authority, markdown)
+        self.source = knowledge.SourceSpec("math:demo:main", authority, (markdown,))
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -79,8 +78,8 @@ class KnowledgeGraphTest(unittest.TestCase):
         self.assertTrue(any(item["id"] == "concept:probability-bound" for item in results))
 
     def test_semantic_count_mismatch_is_rejected(self) -> None:
-        text = self.source.markdown.read_text(encoding="utf-8")
-        self.source.markdown.write_text(
+        text = self.source.markdown[0].read_text(encoding="utf-8")
+        self.source.markdown[0].write_text(
             text.replace("semantic-node-count: 3", "semantic-node-count: 4"),
             encoding="utf-8",
         )
@@ -94,6 +93,30 @@ class KnowledgeGraphTest(unittest.TestCase):
         self.assertEqual("qlkg-v1", manifest["schema"])
         self.assertRegex(manifest["graph_sha256"], r"^[0-9a-f]{64}$")
         self.assertNotIn("generated_at", manifest)
+
+    def test_source_registry_expands_bounded_markdown_glob(self) -> None:
+        registry = self.repo / "notes/math/knowledge/sources.json"
+        registry.parent.mkdir(parents=True)
+        registry.write_text(
+            json.dumps(
+                {
+                    "schema": "qlkg-sources-v1",
+                    "sources": [
+                        {
+                            "id": "math:demo:main",
+                            "authority": "notes/math/demo/typst/main.typ",
+                            "markdown": "notes/math/demo/exports/main/markdown/*.md",
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        sources = knowledge.load_sources(self.repo, registry)
+        self.assertEqual(
+            (self.source.markdown[0].resolve(),),
+            tuple(path.resolve() for path in sources[0].markdown),
+        )
 
 
 if __name__ == "__main__":

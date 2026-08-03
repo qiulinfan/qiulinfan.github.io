@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import collections
 import dataclasses
+import glob
 import hashlib
 import json
 import re
@@ -48,7 +49,7 @@ class KnowledgeError(RuntimeError):
 class SourceSpec:
     id: str
     authority: Path
-    markdown: Path
+    markdown: tuple[Path, ...]
 
 
 @dataclasses.dataclass
@@ -122,19 +123,49 @@ def load_sources(repo_root: Path, config_path: Path) -> list[SourceSpec]:
         source_id = entry.get("id")
         authority = entry.get("authority")
         markdown = entry.get("markdown")
-        if not all(isinstance(value, str) and value for value in (source_id, authority, markdown)):
+        if not all(isinstance(value, str) and value for value in (source_id, authority)):
             raise KnowledgeError(
-                f"sources[{index}] requires non-empty id, authority, and markdown strings"
+                f"sources[{index}] requires non-empty id and authority strings"
+            )
+        markdown_values = markdown if isinstance(markdown, list) else [markdown]
+        if not markdown_values or not all(
+            isinstance(value, str) and value for value in markdown_values
+        ):
+            raise KnowledgeError(
+                f"sources[{index}].markdown must be a non-empty string or string list"
             )
         if source_id in ids:
             raise KnowledgeError(f"duplicate source id: {source_id}")
         authority_path = repository_path(repo_root, authority, field="authority")
-        markdown_path = repository_path(repo_root, markdown, field="markdown")
-        if markdown_path in markdown_paths:
-            raise KnowledgeError(f"duplicate Markdown source: {markdown}")
+        resolved_markdown: list[Path] = []
+        for value in markdown_values:
+            if glob.has_magic(value):
+                pattern = Path(value)
+                if pattern.is_absolute() or ".." in pattern.parts:
+                    raise KnowledgeError(
+                        f"markdown glob must stay inside the repository: {value}"
+                    )
+                matches = sorted(
+                    path.resolve()
+                    for path in repo_root.glob(value)
+                    if path.is_file()
+                )
+                if not matches:
+                    raise KnowledgeError(f"markdown glob matched no files: {value}")
+                resolved_markdown.extend(matches)
+            else:
+                resolved_markdown.append(
+                    repository_path(repo_root, value, field="markdown")
+                )
+        resolved_markdown = list(dict.fromkeys(resolved_markdown))
+        for markdown_path in resolved_markdown:
+            if markdown_path in markdown_paths:
+                raise KnowledgeError(
+                    f"duplicate Markdown source: {relative_path(repo_root, markdown_path)}"
+                )
+            markdown_paths.add(markdown_path)
         ids.add(source_id)
-        markdown_paths.add(markdown_path)
-        sources.append(SourceSpec(source_id, authority_path, markdown_path))
+        sources.append(SourceSpec(source_id, authority_path, tuple(resolved_markdown)))
     return sorted(sources, key=lambda source: source.id)
 
 
@@ -410,6 +441,7 @@ class GraphCompiler:
         )
         self.pending_links: list[tuple[str, str, str]] = []
         self.anchor_maps: dict[str, dict[str, str]] = {}
+        self.provenance_markdown: dict[tuple[str, str], Path] = {}
 
     def error(self, code: str, message: str, *, source: str | None = None, node: str | None = None) -> None:
         self.errors.append(Diagnostic(code, message, source, node))
@@ -442,9 +474,13 @@ class GraphCompiler:
         }
 
     def provenance(self, source: SourceSpec, anchor: str = "") -> dict[str, str]:
+        markdown = self.provenance_markdown.get(
+            (source.id, anchor),
+            source.markdown[0],
+        )
         result = {
             "authority": relative_path(self.repo_root, source.authority),
-            "markdown": relative_path(self.repo_root, source.markdown),
+            "markdown": relative_path(self.repo_root, markdown),
         }
         if anchor:
             result["anchor"] = anchor
@@ -470,37 +506,73 @@ class GraphCompiler:
 
     def compile_source(self, source: SourceSpec) -> None:
         authority_rel = relative_path(self.repo_root, source.authority)
-        markdown_rel = relative_path(self.repo_root, source.markdown)
         if not source.authority.is_file():
             self.error("missing-authority", f"missing authority {authority_rel}", source=source.id)
             return
-        if not source.markdown.is_file():
-            self.error("missing-markdown", f"missing Markdown snapshot {markdown_rel}", source=source.id)
+        missing = [path for path in source.markdown if not path.is_file()]
+        if missing:
+            for path in missing:
+                markdown_rel = relative_path(self.repo_root, path)
+                self.error(
+                    "missing-markdown",
+                    f"missing Markdown snapshot {markdown_rel}",
+                    source=source.id,
+                )
             return
 
-        document = run_pandoc(source.markdown)
-        meta = metadata(document)
-        if meta.get("authority") != "typst":
-            self.error(
-                "invalid-authority",
-                f"Markdown authority must be 'typst', got {meta.get('authority')!r}",
-                source=source.id,
-            )
-        if meta.get("qlnotes-schema") != "qlnotes-v1":
-            self.error(
-                "invalid-source-schema",
-                f"Markdown schema must be 'qlnotes-v1', got {meta.get('qlnotes-schema')!r}",
-                source=source.id,
-            )
-        try:
-            expected_count = int(str(meta.get("semantic-node-count", "")))
-        except ValueError:
+        documents: list[tuple[Path, dict[str, Any], dict[str, Any]]] = []
+        combined_blocks: list[Any] = []
+        expected_count = 0
+        expected_count_valid = True
+        for markdown_path in source.markdown:
+            page = run_pandoc(markdown_path)
+            page_meta = metadata(page)
+            documents.append((markdown_path, page, page_meta))
+            combined_blocks.extend(page.get("blocks", []))
+            if page_meta.get("authority") != "typst":
+                self.error(
+                    "invalid-authority",
+                    f"Markdown authority must be 'typst', got {page_meta.get('authority')!r}",
+                    source=source.id,
+                )
+            if page_meta.get("qlnotes-schema") != "qlnotes-v1":
+                self.error(
+                    "invalid-source-schema",
+                    f"Markdown schema must be 'qlnotes-v1', got {page_meta.get('qlnotes-schema')!r}",
+                    source=source.id,
+                )
+            try:
+                expected_count += int(str(page_meta.get("semantic-node-count", "")))
+            except ValueError:
+                expected_count_valid = False
+                self.error(
+                    "invalid-semantic-count",
+                    "semantic-node-count must be an integer",
+                    source=source.id,
+                )
+
+            for block in page.get("blocks", []):
+                if isinstance(block, dict) and block.get("t") == "Header":
+                    content = block.get("c")
+                    if isinstance(content, list) and len(content) == 3:
+                        local_id, _, _ = attributes(content[1])
+                        if local_id:
+                            self.provenance_markdown.setdefault(
+                                (source.id, local_id), markdown_path
+                            )
+                for local_id, _, _, _ in find_semantic_divs(block):
+                    self.provenance_markdown.setdefault(
+                        (source.id, local_id), markdown_path
+                    )
+                for local_id, _, _ in find_figures(block):
+                    self.provenance_markdown.setdefault(
+                        (source.id, local_id), markdown_path
+                    )
+
+        document = {"blocks": combined_blocks}
+        meta = documents[0][2]
+        if not expected_count_valid:
             expected_count = -1
-            self.error(
-                "invalid-semantic-count",
-                "semantic-node-count must be an integer",
-                source=source.id,
-            )
 
         document_id = source_node_id(source.id)
         document_text_parts = [
@@ -763,8 +835,13 @@ class GraphCompiler:
                 "id": source.id,
                 "authority": authority_rel,
                 "authority_sha256": file_sha256(source.authority),
-                "markdown": markdown_rel,
-                "markdown_sha256": file_sha256(source.markdown),
+                "markdown": [
+                    {
+                        "path": relative_path(self.repo_root, markdown),
+                        "sha256": file_sha256(markdown),
+                    }
+                    for markdown in source.markdown
+                ],
                 "semantic_nodes": parsed_count,
             }
         )

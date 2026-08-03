@@ -4,7 +4,7 @@
     "nodes": 1230
   },
   "generator": "notes/math/knowledge/scripts/knowledge.py",
-  "graph_sha256": "e35ed614bc3fe50d1ba8f774c75019cd9767bd41a176550b66522fd8e6ac6daa",
+  "graph_sha256": "a9d95ceb060a182794582ece607e2f5f022f24566403954bbb4976b5515ea4ea",
   "node_types": {
     "concept": 329,
     "document": 4,
@@ -20,35 +20,267 @@
   "schema": "qlkg-v1",
   "sources": [
     {
-      "authority": "notes/math/measure-theory/typst/extras.typ",
-      "authority_sha256": "ae2d05c73845f620fae9b61a6b596b9af2205fd1dc96446e3fb26ab167070991",
+      "authority": "notes/math/measure-theory/extras.typ",
+      "authority_sha256": "cec589036c2318f597ae2b921022bbf82d18a75408f362c967ee93a013be6996",
       "id": "math:measure-theory:extras",
-      "markdown": "notes/math/measure-theory/exports/extras/markdown/main.md",
-      "markdown_sha256": "dd97e0acdfc7e8c85a5540cb2dad4baa44290f5bc9ee16faad73c4288b8f2913",
+      "markdown": [
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--hw00.md",
+          "sha256": "40c142ffcca3ee27275315b697c24f0aca6f8f608cc8ead2b8f716c82c1ef671"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--lec36-problem-solving.md",
+          "sha256": "23cdc39946f72727c448e8b18275d2437a68dbeecbb8aac168e725d2f933d355"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--lec37-problem-solving-iii.md",
+          "sha256": "96415274a626378e771dc5674614be45dfb92b3d6fa9e7f352aee14f56f532a7"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--lec38-extra-topics.md",
+          "sha256": "c13836ca865fbd094014c089d90714d16e57f1a19ad4a8eee36273d7d21862f2"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--01-use-ftc-and-tonelli-for-series.md",
+          "sha256": "c4b8207e2ea29059e1c0c768ca42b40734e103efdc2d7b9708183d9d33e82078"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--02-use-ftc-and-holder.md",
+          "sha256": "506d7761b4e7fe73b762d1e3846bf1a2be739123715a8266c9e2b4df6043cdec"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--03-use-density-of-compactly-supported-continuous-functions-in-a-suitable-space.md",
+          "sha256": "b91bd113f4d9a9c470215f0ed7356f77874c470882d3719ed02cc768bd1ce2e7"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--04-use-one-of-the-convergence-theorems.md",
+          "sha256": "4b3414cbd155fe89af7685c72453b849717bf15c06f53ed8cb0a84490c07b320"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--05-how-can-we-recover-e-from-its-indicator-function.md",
+          "sha256": "7f279671b9dfa43c1e486c2eb159b4a61f496a2ccb52217f4bdd2577f6cae7b0"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--06-be-an-artisan.md",
+          "sha256": "35986c640bd858ba29a01bac5cf81c88f31fd241bfd791abe466c66bc4c59111"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--07-use-a-suitable-theorem-allowing-you-to-differentiate-exp-g-under-the-integral-sign.md",
+          "sha256": "288430f298a989d3c4ca2ef02508f46330aa27dc3ff3ebeff2b66d27000cae54"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--08-use-dct.md",
+          "sha256": "dc8a3d2534ab62441eea4159b61a68368095bce715fe55c1d929c4f40554333c"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--09-use-egoroff-and-hölder.md",
+          "sha256": "eb6a1dbad32ebc30e286dbd1ce7496a7d9b600c680393eee7f039d59be423c8c"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--10-read-up-on-hl.md",
+          "sha256": "ca62366c9901ce416f4aeb15d7c368a16b40c56c2da6b9c396a3054339cce6c8"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--11-use-density-of-such-functions-g-somewhere-and-then-hölder.md",
+          "sha256": "d0f77a5e67615e76f3c489a0f23cb56e77f27162610d77dac63363ad4c5732f6"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--12-fubini-and-tonelli.md",
+          "sha256": "71fd811f43b83511a652ee4300bb6a0212664ae14672fa130492b065e8c9df64"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--13-try-a-very-nice-function-f-first.md",
+          "sha256": "d363edf45bbfa3e489f3a278a89178caf52bfc8d7312b58233ad4aa9271d0787"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--14-use-lebesgue.-can-you-get-the-same-equality-for-more-sets-e.md",
+          "sha256": "64a635bb05ffdc8472fdc071ff74582d2b9d8ba78c7e8f8fa98b28e7ca84b37a"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--15-lebesgue.md",
+          "sha256": "25615a0bf4022208459aaae3ff908a9c8975c4743c4ac99fbc7fc35a1055f77b"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--16-integration-can-be-a-trick-to-prove-that-a-nonnegative-function-can-t-be-identically-zero.md",
+          "sha256": "28ddfa50fdf5413f478d7917e3d2dad8d9d926a7bfcb4144c6e534542b4c8578"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--17-check-what-happens-on-some-set-f-c-with-c-f--oo.md",
+          "sha256": "faab985b649f4b0c894e066b5b0e9a1ba6a69b81011465369bfefd9e7c6bba32"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/extras--practice-problems--18-use-distribution-functions.md",
+          "sha256": "fe1de555684d7ab48fda4a1a7864c52369df98651c7b1d7d4061cf629f612982"
+        }
+      ],
       "semantic_nodes": 7
     },
     {
-      "authority": "notes/math/measure-theory/typst/main.typ",
-      "authority_sha256": "5d99503676f5be962f2e4240c26615465adb1c55a81eccd3142d4a2ed1775423",
+      "authority": "notes/math/measure-theory/main.typ",
+      "authority_sha256": "73744ef631a5c9980b1fccb048d965d57518697a3d40a0cb38b359bde5e5d6a3",
       "id": "math:measure-theory:main",
-      "markdown": "notes/math/measure-theory/exports/main/markdown/main.md",
-      "markdown_sha256": "9461eff118662451d19f13a5611bcd4080348341ab6a95f2b7d066c6fb7b6bc2",
+      "markdown": [
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--01-sigma-algebra-与-measure.md",
+          "sha256": "d86300898e738736c84a5609819adc743dab51cf2d1a7d5f29f1bd30fc39d41e"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--02-outer-measure-与-completion-of-a-measurable-space.md",
+          "sha256": "fb9c2c2d1fbe9b74dee59cb1bf32b3706c520078185ae87cabd136adfa7b4b2a"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--03-distribution-function-与-lebesgue-stieltjes-measures.md",
+          "sha256": "dc4e0b208c9d2f153dccb5a3b420330b13c89d31e2d6d1a45d3f88e975582b48"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--04-measurable-functions-and-integration-on-l-mu.md",
+          "sha256": "d07cf8a9f4fd9a22af80ad325d0a68ea2496c450f450841fd47e513bf580cc1e"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--05-integration-of-real-and-complex-functions.md",
+          "sha256": "4c37ae9643273262831cc90b4d5e65b36d31b79c7f064521cb33a11479f75a0c"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--06-product-measure-fubini-tonelli.md",
+          "sha256": "a4c9eae62b8b587228ebb3f6ccd6eb01c2dbd8509eb5d20397cff9c430bf90b1"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--07-lebesgue-measure-on-r-n.md",
+          "sha256": "2deaaea04c5b285bef140a89f2d9acddf97c72ac18a55c23b77de83c425afe3a"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--08-hardy-littlewood-ldt.md",
+          "sha256": "0ffcd88fc0cd1e56924b8d0f2e1f29727d8647420722e8b783ca9c55f030e463"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--09-l-p-space-and-inequalities.md",
+          "sha256": "81a61a57b958c481ff202d35e400fc90ca28a6c5c0b7c209fa0f5c20a204b5e2"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--10-signed-measure-jordan-decomposition.md",
+          "sha256": "faae2dea34c7e95adc015332842b4bc0490710dc68a9e339209e6bebb3eee922"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--11-radon-nikodym-theorem.md",
+          "sha256": "4b5fbc6ec96cd53b238f60126d90474c9edd328047ffde7b67b3a694693bfb97"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--12-differentiation-on-real-spaces.md",
+          "sha256": "dcf2ef562edae69e3e1feecf2498db9e79b5248ffd5b62f90ae5a183e3248442"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--13-the-dual-of-l-p-spaces.md",
+          "sha256": "a45a6cebc6b31912425097070ba3dbda79c0eeb2d60bbc5ee65304dd85de662c"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw01-on-sigma-algebra.md",
+          "sha256": "ab556f8902d3ed760c87536dd5fa1297523f19c20ee470bffce4c531d5d1d29b"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw02-on-carathéodorys-hahn-kolmogrov-thm.md",
+          "sha256": "3849001333f709f2e742561bab989735210e1a4e5a22bde757aa9c5242195582"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw03-on-lebesgue-stieljes-measures.md",
+          "sha256": "1be56ceb319ccaa18495f138848120c5ecd5ff6f70d4734e7f9d7b93495473f1"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw04-on-measurable-functions.md",
+          "sha256": "aff039702146fb20f430072c8ad29f27c01977c5f03db2c61802a7d46c65eb30"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw05-on-integration.md",
+          "sha256": "5c007015b2d4250e09f0637e1ba3ab00aa96bcbd9cd30acf0a475111ea0dd4ef"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw06-on-product-measure-mode-of-convergence.md",
+          "sha256": "7a2aa4b794873f7d0cc60e798917a317af9032d8b1a1db1d3b23e6eef458b41c"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw07-on-differentiaion.md",
+          "sha256": "50108d0a9ad86625110ac031d75b66ba408a59a7b6d8a6abab896b768cf00a29"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw08-on-l-p-spacecs.md",
+          "sha256": "0a659a8b211f6985d9206c27a406ba73be03147e663fb63b15637e0bd51c60f2"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw09-on-signed-measure.md",
+          "sha256": "116c1d6cd7f5fe18955db1530378dc3a70c4ea739ba6d17e066f0ea0c9b13541"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw10-on-lrn-theorem-complex-measure.md",
+          "sha256": "f09670bbea4b19b1964346cb02288574200d68d6d182d84bf3b29a5df93f6602"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw11-on-regular-borel-measure-bv.md",
+          "sha256": "f23e9eab5a1de9b7b7b1572f7f81b4ec7dadf61d6cc938eb95f5ccb801febf53"
+        },
+        {
+          "path": "notes/math/measure-theory/exports/markdown/main--hw12-on-absolutely-continuous-functions.md",
+          "sha256": "54d6919e9c126b5a4f4b933df93bd974b69fb9d4657c3f5e11f5041710629598"
+        }
+      ],
       "semantic_nodes": 302
     },
     {
-      "authority": "notes/math/prob/typst/homeworks.typ",
-      "authority_sha256": "5da0a481022427b016b4c3863a707715b595eac92ec7ed97961b6d41882bc3e1",
+      "authority": "notes/math/prob/homeworks.typ",
+      "authority_sha256": "afd29a23d0793016a219fdd2e2c216c79bc853a2db176ff7cadf161f46474845",
       "id": "math:probability:homeworks",
-      "markdown": "notes/math/prob/exports/homeworks/markdown/main.md",
-      "markdown_sha256": "be195d2cf642554f0c5bc4a816769011d7460b26b27427521f819010c7a4d9a8",
+      "markdown": [
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw01.md",
+          "sha256": "64fdaf1080b694dedde56f6e5f609f779663d40211a276b25f46022542c9d3fc"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw02.md",
+          "sha256": "9388f44bc19c8aabb5df63023a56abffd32f69d160ab4e1dba2f41add5e4839e"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw03.md",
+          "sha256": "419d623c6433c2eed42927560db4ff68127fe368b8aca1fc91eeb9487abd1f31"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw04.md",
+          "sha256": "0943285f828ef85f059497a4fb6b0426e2c6de385f6ceaaed231b7c9d8f01a16"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw05.md",
+          "sha256": "eef7a1b220fd0b91fd98d32e9cd57f83cd8a93e34304da3ee2c66a9b7d7991e5"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/homeworks--hw06.md",
+          "sha256": "0a47a4b62eee52d6b5faadc3e11dee45422030cc8a44e96f63f061f57ce030c1"
+        }
+      ],
       "semantic_nodes": 0
     },
     {
-      "authority": "notes/math/prob/typst/main.typ",
-      "authority_sha256": "082e588a08877f0caf71e64a5e6f1e9006ae3574151084c524703af15bed50e1",
+      "authority": "notes/math/prob/main.typ",
+      "authority_sha256": "49c2e69c915c2641146e03e9355f018eb75949629d46184588bff0b7c2f804d6",
       "id": "math:probability:notes",
-      "markdown": "notes/math/prob/exports/notes/markdown/main.md",
-      "markdown_sha256": "d45583a357174e428da339db9b59c5a69bf119cc52670f880e77b6fba5c9c321",
+      "markdown": [
+        {
+          "path": "notes/math/prob/exports/markdown/notes--01-combinatorics-prob-space.md",
+          "sha256": "57dcd2af528a4dfc6f4909449fb9e89c535d7f53d900c081dc1cf25fb5f233a5"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/notes--02-random-variables.md",
+          "sha256": "5a27362f3d3ea71e4c091124590365176097cd5e35f02d2fee77b31309f797b6"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/notes--03-joint-conditional-distribution.md",
+          "sha256": "5d7ad9a14fd63ce02b7f0f338ca316b8b84abdb1ab1e45d99751bd12b42816d2"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/notes--04-lln.md",
+          "sha256": "d67bf07bcbcd0c7aaacd38d15a0c1eb5ac2f3286ef8e6bbae46e3fe7e02c910f"
+        },
+        {
+          "path": "notes/math/prob/exports/markdown/notes--05-clt.md",
+          "sha256": "5738a262c60ec484c1e1efe9f77be24a6ce40891edf48370eecf5d70d58ac152"
+        }
+      ],
       "semantic_nodes": 147
     }
   ]

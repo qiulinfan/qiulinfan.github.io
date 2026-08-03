@@ -3,23 +3,23 @@
   "sources": [
     {
       "id": "math:measure-theory:main",
-      "authority": "notes/math/measure-theory/typst/main.typ",
-      "markdown": "notes/math/measure-theory/exports/main/markdown/main.md"
+      "authority": "notes/math/measure-theory/main.typ",
+      "markdown": "notes/math/measure-theory/exports/markdown/main--*.md"
     },
     {
       "id": "math:measure-theory:extras",
-      "authority": "notes/math/measure-theory/typst/extras.typ",
-      "markdown": "notes/math/measure-theory/exports/extras/markdown/main.md"
+      "authority": "notes/math/measure-theory/extras.typ",
+      "markdown": "notes/math/measure-theory/exports/markdown/extras--*.md"
     },
     {
       "id": "math:probability:notes",
-      "authority": "notes/math/prob/typst/main.typ",
-      "markdown": "notes/math/prob/exports/notes/markdown/main.md"
+      "authority": "notes/math/prob/main.typ",
+      "markdown": "notes/math/prob/exports/markdown/notes--*.md"
     },
     {
       "id": "math:probability:homeworks",
-      "authority": "notes/math/prob/typst/homeworks.typ",
-      "markdown": "notes/math/prob/exports/homeworks/markdown/main.md"
+      "authority": "notes/math/prob/homeworks.typ",
+      "markdown": "notes/math/prob/exports/markdown/homeworks--*.md"
     }
   ]
 }

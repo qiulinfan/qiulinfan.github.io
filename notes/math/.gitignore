@@ -1,5 +1,6 @@
 # Shared LaTeX build products
 **/build/
+# Course-local HTML is disposable. GitHub Actions publishes it to Pages.
 **/site/
 **/*.aux
 **/*.log

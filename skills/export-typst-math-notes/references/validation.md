@@ -46,11 +46,12 @@ Commit:
 - authoritative `.typ` files;
 - editable `.tex` and `.md` snapshots;
 - bibliography and authored/diagram assets that those sources require;
-- the GitHub Pages workflow.
+- the GitHub Pages workflow;
 - deterministic `notes/math/knowledge/graph/*.json*` snapshots.
 
 Never commit generated whole-book or chapter PDFs, rendered PDF pages, contact
 sheets, local HTML builds, the SQLite search index, or compiler intermediates.
+Vector PDF files used only as LaTeX figure assets are allowed.
 GitHub Actions must build HTML from the committed Typst source and deploy the
 static artifact directly.
 

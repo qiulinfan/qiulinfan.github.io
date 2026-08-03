@@ -1,30 +1,58 @@
-.PHONY: all main chapters docs clean clean-all
+.PHONY: all release export web web-check extras-web extras-web-check pdf extras-pdf watch knowledge-sync
 
-PYTHON := python3
-ifeq ($(OS),Windows_NT)
-PYTHON := python
-endif
+TYPST := typst
+TOOLCHAIN := ../toolchain
+SKILL := ../../../skills/export-typst-math-notes
+KNOWLEDGE := ../knowledge/scripts/knowledge.py
+REPO_ROOT := ../../..
+BUILD := build/typst
+EXPORTS := exports
 
-all: chapters
+all: release
 
-main:
-	@mkdir -p build
-	@latexmk -lualatex -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build main.tex
-	@mv build/main.pdf main.pdf
+release: export web-check extras-web-check
 
-chapters:
-	@$(PYTHON) scripts/build_chapters.py
+export:
+	@python3 $(TOOLCHAIN)/scripts/export_course.py \
+		--document main=main.typ \
+		--document extras=extras.typ \
+		--root ../.. \
+		--output $(EXPORTS) \
+		--build $(BUILD)/export
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
-docs:
-	@$(PYTHON) scripts/generate_docs_pages.py
-	@$(PYTHON) scripts/generate_mkdocs_config.py
-	@mkdocs build
+knowledge-sync:
+	@python3 $(KNOWLEDGE) build --repo-root $(REPO_ROOT)
 
-clean:
-	-@rm -f build/*.aux build/*.log build/*.out build/*.toc
-	-@rm -f build/*.fdb_latexmk build/*.fls build/*.synctex.gz
-	-@rm -f build/*.bcf build/*.run.xml build/*.bbl build/*.blg
-	-@rm -f build/*_main.tex
+web:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. --features html --format html \
+		main.typ $(BUILD)/index.html 2>$(BUILD)/index.log || \
+		{ cat $(BUILD)/index.log >&2; exit 1; }
 
-clean-all: clean
-	-@rm -f build/*.pdf main.pdf docs/*.pdf
+web-check: web
+	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/index.html \
+		--expected-nodes 302 --expected-diagrams 0
+
+extras-web:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. --features html --format html \
+		extras.typ $(BUILD)/extras.html 2>$(BUILD)/extras.log || \
+		{ cat $(BUILD)/extras.log >&2; exit 1; }
+
+extras-web-check: extras-web
+	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/extras.html \
+		--expected-nodes 7 --expected-diagrams 0
+
+pdf:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. main.typ $(BUILD)/main.pdf
+
+extras-pdf:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. extras.typ $(BUILD)/extras.pdf
+
+watch:
+	@mkdir -p $(BUILD)
+	@$(TYPST) watch --root ../.. --features html --format html \
+		main.typ $(BUILD)/index.html

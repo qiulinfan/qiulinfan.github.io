@@ -8,7 +8,7 @@ This repository owns the complete knowledge workflow:
 
 ```text
 authoritative Typst
-    -> semantic Markdown snapshot
+    -> per-chapter semantic Markdown snapshots
     -> deterministic graph compiler
     -> committed JSONL graph + local SQLite search index
     -> Codex skills that inspect, query, and revise the authority
@@ -58,6 +58,12 @@ Search returns graph IDs. `show` returns the selected node and its incoming and
 outgoing evidence edges, including the authoritative Typst path and Markdown
 anchor needed to inspect or revise the source.
 
+The repository website also exposes a read-only browser at `/knowledge/`. Its
+static `graph.json` route is generated during the Astro build directly from the
+committed `qlkg-v1` files. The UI supports full-text recall, node-type filters,
+two-hop neighborhood exploration, source evidence, and graph diagnostics. It
+does not write graph state or introduce a server-side database.
+
 ### Learn from a paper or another subject
 
 The MVP exposes a stable graph and query boundary, but does not yet mutate the
@@ -89,9 +95,15 @@ notes/math/knowledge/
 └── build/knowledge.sqlite   # ignored, locally rebuildable search index
 ```
 
+The Web UI lives under `site/src/pages/knowledge/` with its interactive Svelte
+component under `site/src/components/knowledge/`. This preserves the repository
+boundary: graph data remains under `notes/`, while presentation remains under
+`site/`.
+
 `sources.json` is maintained by humans/Codex when a new authoritative entry
-point is added. Discovery is therefore bounded and reviewable; the compiler does
-not ingest arbitrary Markdown from the repository.
+point is added. Each entry may name one Markdown path or a repository-relative
+glob for its chapter snapshots. Discovery is therefore bounded and reviewable;
+the compiler does not ingest arbitrary Markdown from the repository.
 
 ## 4. Graph model (`qlkg-v1`)
 
@@ -99,7 +111,7 @@ not ingest arbitrary Markdown from the repository.
 
 | Type | Stable identity | Purpose |
 |---|---|---|
-| `document` | configured source ID | One exported authoritative entry point |
+| `document` | configured source ID | One authoritative entry point spanning its chapter snapshots |
 | `section` | document ID + Markdown heading anchor | Searchable prose chunk and hierarchy |
 | `statement` | document ID + authored semantic ID | Definition, theorem, lemma, proposition, corollary, or example |
 | `concept` | percent-encoded authored concept key | Cross-document entity used for recall |
@@ -139,7 +151,7 @@ ambiguous and is not guessed.
 
 The compiler uses Pandoc's JSON AST rather than regex extraction. It rejects:
 
-- a missing configured authority or Markdown snapshot;
+- a missing configured authority, Markdown snapshot, or an empty configured glob;
 - non-Typst authority or a schema other than `qlnotes-v1`;
 - a mismatch between `semantic-node-count` and parsed stable statement IDs;
 - duplicate statement IDs within one document;

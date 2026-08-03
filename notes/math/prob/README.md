@@ -1,40 +1,26 @@
 # Probability notes
 
-Math 525 概率论课程笔记现以 [`typst/`](typst/README.md) 为唯一日常权威源。
-五章课程讲义和六份作业解答都已迁移；原 `chapters/*.tex` 与 `main.tex`
-保留为只读迁移基线。
+Math 525 概率论课程笔记以课程根目录的 [`main.typ`](main.typ) 与
+[`homeworks.typ`](homeworks.typ) 为入口；正文分别位于 `chapters/` 和
+`homeworks/`。这里不再保留一套并行的 LaTeX 权威源。
 
-## Typst 构建与导出
-
-```bash
-cd typst
-make                 # 导出 LaTeX/Markdown，并检查两份 HTML
-make export          # 只生成讲义、作业的 LaTeX/Markdown
-make web-check       # 检查讲义网页的 UTF-8 与基本结构
-make homeworks-web-check
+```sh
+make export                 # 分章导出 LaTeX / Markdown，并刷新知识图谱
+make web-check              # 检查讲义网页的 UTF-8 与基本结构
+make homeworks-web-check    # 检查作业网页
+make                        # 运行以上发布流程
 ```
 
-本地 PDF、HTML 和中间文件写入忽略的 `build/typst/`。可提交、可直接编辑的
-快照写入：
+可提交导出统一位于：
 
 ```text
 exports/
-├── notes/{latex,markdown}/
-└── homeworks/{latex,markdown}/
+├── latex/<entry>--<chapter>.tex
+└── markdown/<entry>--<chapter>.md
 ```
 
-Markdown 图使用 Typora 可直接显示的 `main.assets/*.svg`；LaTeX 使用对应的
-图形依赖。重新导出会覆盖快照，需长期保留的修改必须回到 Typst。
+`exports/markdown/index.md` 是轻量目录，不包含整本正文。Markdown 图形使用
+`.assets/*.svg`；LaTeX 图形依赖位于 `exports/latex/assets/`。本地 HTML、
+PDF 和所有中间文件只写入忽略的 `build/`。
 
-发布页面：<https://qiulinfan.github.io/qlblog/notes/math/probability/>
-
-## 旧 LaTeX 基线
-
-旧工作流仍可用于迁移对照：
-
-```bash
-make main
-```
-
-整书 PDF、章节 PDF、分页预览图和所有中间产物都不提交。
-旧 `scripts/convert_notes.py` 仅作历史工具，不再承担权威格式转换。
+网页：<https://qiulinfan.github.io/qlblog/notes/math/probability/>

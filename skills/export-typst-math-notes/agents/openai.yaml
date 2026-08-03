@@ -1,4 +1,4 @@
 interface:
   display_name: "Export Typst Math Notes"
-  short_description: "Publish Typst math notes and sync the knowledge graph"
-  default_prompt: "Use $export-typst-math-notes to inspect and migrate or export this math note, synchronize the repository knowledge graph, run the fast graph and HTML checks, and publish its web output when requested."
+  short_description: "Export chaptered Typst notes and sync graph"
+  default_prompt: "Use $export-typst-math-notes to publish this Typst-first math course as per-chapter LaTeX and Markdown, check its web output, and refresh the knowledge graph."

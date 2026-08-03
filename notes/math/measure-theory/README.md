@@ -1,16 +1,27 @@
 # Measure theory notes
 
-MATH 597: Real Analysis, Winter 2025. This is a first-year PhD course for
-the qualifying exam. It mainly follows Folland and covers measure theory,
-advanced real analysis, and introductions to functional and Fourier analysis.
+MATH 597: Real Analysis, Winter 2025. The Typst authority now lives directly in
+this course directory: [`main.typ`](main.typ) contains the course sequence and
+[`extras.typ`](extras.typ) contains supplementary material. Chapters, homeworks,
+and extras remain independently readable `.typ` files.
 
-The authoritative source is now [`typst/main.typ`](typst/main.typ), with the
-legacy-only supplementary material collected in
-[`typst/extras.typ`](typst/extras.typ). The Typst sources generate published HTML
-plus complete, editable LaTeX and Markdown snapshots; see
-[`typst/README.md`](typst/README.md) for commands.
+```sh
+make export              # split LaTeX / Markdown exports + graph refresh
+make web-check           # main HTML UTF-8 and structure check
+make extras-web-check    # supplementary HTML check
+make                     # complete lightweight publication workflow
+```
+
+All committed snapshots share one `exports/` directory:
+
+```text
+exports/
+├── latex/<entry>--<chapter>.tex
+└── markdown/<entry>--<chapter>.md
+```
+
+There is no committed whole-book export. Local HTML, PDFs, and intermediates are
+written only under ignored `build/`; GitHub Actions publishes the HTML directly
+to Pages.
 
 Published notes: <https://qiulinfan.github.io/qlblog/notes/math/measure-theory/>
-
-The previous LaTeX source remains as the migration baseline. Generated PDFs and
-page-render images are local-only and are not versioned.

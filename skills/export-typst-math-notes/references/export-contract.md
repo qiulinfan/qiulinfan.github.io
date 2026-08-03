@@ -22,8 +22,8 @@ authoritative .typ
 ├── Typst HTML target ────────────────> web output
 └── semantic HTML + metadata
     └── Pandoc AST + qlnotes.lua
-        ├── editable LaTeX snapshot
-        └── graph-oriented Markdown snapshot
+        ├── per-chapter editable LaTeX snapshots
+        └── per-chapter graph-oriented Markdown snapshots
             └── deterministic qlkg compiler
                 ├── committed JSONL graph
                 └── ignored SQLite search index
@@ -124,7 +124,7 @@ normal centered layout.
 
 ## 4. Knowledge-graph schema
 
-The Markdown YAML block must include:
+Every chapter Markdown YAML block must include:
 
 ```yaml
 authority: typst
@@ -181,7 +181,7 @@ Keep CeTZ source authoritative in Typst:
 For HTML, evaluate a zero-argument drawing function inside `html.frame` so
 Typst emits inline SVG. The exporter must:
 
-1. extract that SVG to `markdown/main.assets/<id>.svg`;
+1. extract that SVG to `markdown/.assets/<entry>--<id>.svg`;
 2. convert it with `rsvg-convert` to `latex/assets/<id>.pdf`;
 3. emit normal relative image references in both snapshots.
 
@@ -200,8 +200,8 @@ the default workflow.
 This vector rule applies to authored CeTZ diagrams. Legacy screenshots,
 scanned work, and other raster figures may remain PNG/JPEG. Typst can embed
 those authored images in its self-contained HTML; the exporter extracts and
-deduplicates them as deterministic `main.assets/figure-raster-*` files for
-Markdown and matching `assets/figure-raster-*` files for LaTeX. It must never
+deduplicates them as deterministic `.assets/<entry>--figure-raster-*` files for
+Markdown and matching `assets/<entry>--figure-raster-*` files for LaTeX. It must never
 leak `data:image/` URIs into either text snapshot.
 
 ## 7. Math aliases

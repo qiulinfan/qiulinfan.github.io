@@ -6,7 +6,7 @@
 2. Generate a migration draft
 3. Normalize semantics and modules
 4. Port TikZ to CeTZ
-5. Prove migration completeness
+5. Accept the migration
 
 ## 1. Inventory the authority baseline
 
@@ -27,7 +27,7 @@ read-only comparison baseline.
 ## 2. Generate a migration draft
 
 Use the canonical migrator in
-`notes/math/toolchain/typst-template/scripts/migrate_latex.py`:
+`notes/math/toolchain/scripts/migrate_latex.py`:
 
 ```sh
 python3 scripts/migrate_latex.py chapters/*.tex \
@@ -79,23 +79,25 @@ Every diagram needs:
 - a stable `fig-` ID;
 - a meaningful caption;
 - non-empty alt text describing the relationship shown;
-- successful PDF and HTML rendering.
+- successful Typst export and basic HTML checking.
 
-Keep CeTZ authoritative. Markdown receives SVG in `main.assets/`; LaTeX receives
+Keep CeTZ authoritative. Markdown receives SVG in `.assets/`; LaTeX receives
 the corresponding vector PDF. Do not regenerate TikZ.
 
-## 5. Prove migration completeness
+## 5. Accept the migration
 
-Accept a migration only after:
+Before the first export, compare source inventories and environment counts so
+no chapter or active diagram is silently omitted. Then use the normal fast
+acceptance path:
 
 - the LaTeX and Typst source-file inventories match;
 - every environment count matches by kind;
-- active TikZ count equals the number of CeTZ diagram calls and exported assets;
-- lecture and homework Typst entries compile;
-- HTML and metadata queries succeed;
-- exported Markdown reparses and exported LaTeX compiles independently;
-- PDF contact sheets and representative full-size pages show no overflow,
-  clipping, missing continuation, or unreadable table/diagram.
+- every enabled and supplementary source is included exactly once;
+- active TikZ count equals the number of authored CeTZ diagrams;
+- `make export` succeeds and emits one `.tex` and `.md` per level-one chapter;
+- the main and secondary web checks succeed;
+- the knowledge graph freshness check succeeds.
 
-Compare the migrated PDF against the old main PDF by chapter sequence and
-representative content, not by exact page count. Template pagination will differ.
+Stop after these commands pass. Do not compile or inspect PDFs, create contact
+sheets, independently compile exported LaTeX, or run broad visual regressions
+unless the user explicitly requests them or an export command fails.

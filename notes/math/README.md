@@ -1,69 +1,50 @@
 # Mathematics notes
 
-课程讲义型 LaTeX 工程统一采用
-[`qiulinfan/localLatexenv`](https://github.com/qiulinfan/localLatexenv)
-的 ElegantBook 与 LuaLaTeX/latexmk 工作流。当前同步基准为提交
-`f62053086eec079f6c7db99eac23d9c66e28b63f`（2026-04-17）。
+数学笔记按课程独立维护。已迁移课程采用 Typst-first；尚未迁移的历史课程继续
+保留原 LaTeX 工程，直到逐门完成转换。
 
-本地构建依赖 TeX Live（包含 `lualatex`、`latexmk` 与 `biber`）、
-Python 3，以及 MkDocs Material。
+## Typst-first 课程
 
-## 标准目录
+Probability 与 Measure Theory 的课程根目录就是可直接编辑的 Typst 工程：
 
 ```text
 course/
-├── assets/                 # 图片与其他静态资源
-├── chapters/               # 每个顶层章节一个 .tex 文件
-├── docs/                   # 章节 PDF 与 MkDocs 页面
-├── scripts/                # 章节和文档构建脚本
-├── .vscode/settings.json   # LaTeX Workshop / LuaLaTeX
-├── elegantbook.cls         # 与根模板同步的文档类
-├── main.tex                # 唯一的整书入口
+├── main.typ / secondary.typ
+├── chapters/*.typ
+├── homeworks/*.typ
+├── assets/
+├── reference.bib
 ├── Makefile
-└── reference.bib
+└── exports/
+    ├── latex/*.tex
+    └── markdown/*.md
 ```
 
-`main.tex` 只保存课程元数据、课程特有宏包和章节顺序；正文放在
-`chapters/`。图片路径始终相对于课程工程根目录。
+模板、数学 alias、网页样式和导出程序只维护一份，位于
+[`toolchain/`](toolchain/README.md)。Typst 是唯一权威源；LaTeX 与 Markdown
+按一级章节生成可编辑快照，不提交整本导出文件。
 
-## 统一命令
-
-```bash
-make          # 为 main.tex 中启用的章节生成独立 PDF
-make main     # 生成整书 main.pdf
-make docs     # 生成 MkDocs 页面并构建本地站点
-make clean    # 清理 LaTeX 中间文件
-make clean-all
+```sh
+make export
+make web-check
 ```
 
-`make docs` 只构建本地站点。这个仓库统一由根目录的 Astro 工程发布，
-课程子目录不应单独执行 `mkdocs gh-deploy`。
-
-版本控制只保留可编辑源文件、导出快照和必要的原始图片资源。整书 PDF、
-章节 PDF、分页预览图以及 `build/`、`site/` 等中间产物都不提交到 Git。
-
-## 当前课程讲义工程
-
-- `advanced-linear-algebra/latex-note/`
-- `measure-theory/`
-- `multivariate-analysis/lec-note/`
-- `numerical-linear-algebra/notes/`
-- `pde-boundary-problems/latex-note/`
-- `prob/`
-- `topological-manifolds/latex-note/`
-
-作业、考试速查表和项目 proposal 属于不同文档类型，不要求使用本目录结构。
-
-## Typst-first toolchain
-
-新的单向导出工具链位于
-[`toolchain/typst-template/`](toolchain/typst-template/README.md)。它以 Typst
-为唯一权威源，并生成完整、可直接编辑的 LaTeX 与 Markdown 快照。
-
-`prob/` 已完成首个全量迁移：五章讲义、六份作业、147 个知识图谱节点和
-14 张 CeTZ 图均由 Typst 维护。`measure-theory/` 也已迁移为 Typst 权威源；
-其他课程仍应按课程逐一清点和迁移。发布流程只运行导出与 HTML 乱码/结构
-检查，网页由 GitHub Pages 自动构建发布。
+课程本地 HTML、PDF、编译中间文件和 `site/` 均被忽略。GitHub Actions 从
+Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
 
 - Probability: <https://qiulinfan.github.io/qlblog/notes/math/probability/>
 - Measure Theory: <https://qiulinfan.github.io/qlblog/notes/math/measure-theory/>
+
+## 尚未迁移的 LaTeX 课程
+
+现有 LaTeX 工程继续使用 ElegantBook 与 LuaLaTeX/latexmk；迁移前不要机械
+套用 Typst 目录。当前主要历史工程包括：
+
+- `advanced-linear-algebra/latex-note/`
+- `multivariate-analysis/lec-note/`
+- `numerical-linear-algebra/notes/`
+- `pde-boundary-problems/latex-note/`
+- `topological-manifolds/latex-note/`
+
+所有课程都只提交可编辑源与必要原始资源；整本 PDF、章节 PDF、分页预览、
+`build/` 和课程本地 `site/` 不进入版本控制。

@@ -43,8 +43,8 @@ jobs:
 
       - name: Export and check math-note HTML
         run: |
-          make -C notes/math/prob/typst web-check homeworks-web-check
-          make -C notes/math/measure-theory/typst web-check extras-web-check
+          make -C notes/math/prob web-check homeworks-web-check
+          make -C notes/math/measure-theory web-check extras-web-check
 
       - name: Add math notes to Pages artifact
         run: |
