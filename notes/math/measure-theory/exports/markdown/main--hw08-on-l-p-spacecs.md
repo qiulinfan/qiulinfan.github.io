@@ -572,7 +572,7 @@ Suppose that $1 \leq p < \infty$ and that $f_{n},f \in L^{p}$ for some measure s
 >
 > Recall we have proved
 >
-> > **Theorem: [[Generalized DCT]]**
+> > **Theorem: --[[Generalized DCT]]--**
 > >
 > > Let $(X,\mathcal{A},\mu)$ be a measure space, and $f_{n},g_{n},f,g \in L^{1}$, $n \in {\mathbb{N}}$. Suppose that
 > >

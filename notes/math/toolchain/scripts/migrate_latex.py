@@ -28,6 +28,7 @@ CODE_RE = re.compile(
 PIC_RE = re.compile(
     r"\\pic(?:\[(?P<scale>[^\]]+)\])?\{(?P<path>[^}]+)\}"
 )
+KNOWLEDGE_MACRO_RE = re.compile(r"\\(?P<kind>knref|kn)\s*\{")
 
 
 class MigrationError(RuntimeError):
@@ -113,6 +114,26 @@ def normalize_nested_math_text(source: str) -> str:
         source,
     )
     return source
+
+
+def rewrite_knowledge_macros(source: str) -> tuple[str, int]:
+    r"""Preserve ``\kn``/``\knref`` through Pandoc as typed pseudo-links."""
+
+    cursor = 0
+    parts: list[str] = []
+    changes = 0
+    while match := KNOWLEDGE_MACRO_RE.search(source, cursor):
+        body_start = match.end() - 1
+        body_end = _matching_delimiter(source, body_start, "{", "}")
+        body = source[body_start + 1 : body_end]
+        target = "qlkn:" if match.group("kind") == "kn" else "qlknref:"
+        parts.extend((source[cursor : match.start()], rf"\href{{{target}}}{{{body}}}"))
+        cursor = body_end + 1
+        changes += 1
+    if not changes:
+        return source, 0
+    parts.append(source[cursor:])
+    return "".join(parts), changes
 
 
 def extract_code(source: str) -> str:
@@ -364,6 +385,7 @@ def migrate(
             raise MigrationError(f"source does not exist: {source_path}")
         chapter = slug(source_path.stem)
         text = source_path.read_text(encoding="utf-8")
+        text, knowledge_markers = rewrite_knowledge_macros(text)
         text, diagrams = extract_diagrams(text, chapter, diagram_dir)
         text = extract_code(text)
         text = expand_picture_aliases(text)
@@ -381,6 +403,7 @@ def migrate(
         print(
             f"Migrated {source_path.name} -> {output} "
             f"({len(diagrams)} diagram(s), "
+            f"{knowledge_markers} knowledge marker(s), "
             f"{hoisted} supporting block(s) hoisted, "
             f"{normalized} HTML-safe math normalization(s))"
         )

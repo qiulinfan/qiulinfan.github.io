@@ -41,7 +41,12 @@ class KnowledgeGraphTest(unittest.TestCase):
                             "subject": "math",
                             "course": "demo",
                             "root": "notes/math/demo",
-                            "files": ["chapters/*.typ"],
+                            "files": [
+                                "chapters/*.typ",
+                                "chapters/*.md",
+                                "chapters/*.tex",
+                                "appendix/*.md",
+                            ],
                             "web": "https://example.test/demo",
                             "topics": [
                                 {
@@ -175,6 +180,104 @@ class KnowledgeGraphTest(unittest.TestCase):
             state.nodes["norm"]["provenance"]["line"],
             state.nodes["seminorm"]["provenance"]["line"],
         )
+
+    def test_typst_registry_includes_authored_reference_spellings(self) -> None:
+        self.chapter.write_text(
+            "#definition(title: [#kn[concept #strong[one,\ntwo]]])[Authority.]\n"
+            "By #ref[concept #strong[one, two]], continue.\n",
+            encoding="utf-8",
+        )
+
+        self.sync()
+
+        registry = self.typst_registry.read_text(encoding="utf-8")
+        self.assertIn("names: (", registry)
+        self.assertIn("[concept #strong[one,\ntwo]]", registry)
+        self.assertIn("[concept #strong[one, two]]", registry)
+
+    def test_mixed_markdown_and_latex_sources_share_one_graph(self) -> None:
+        markdown = self.source_root / "chapters/02-cache.md"
+        markdown.write_text(
+            "# Cache\n\n"
+            "> **Definition: --[[cache line]]--**\n>\n"
+            "> A cache line is the transfer unit. It may depend on [[σ-algebra]].\n\n"
+            "An ordinary [[cache line|line]] occurrence is a backlink, not a definition.\n",
+            encoding="utf-8",
+        )
+        latex = self.source_root / "chapters/03-cache.tex"
+        latex.write_text(
+            "\\begin{theorem}\n"
+            "\\kn{cache locality theorem}\n"
+            "By \\knref{cache line}, nearby accesses are cheaper.\n"
+            "\\end{theorem}\n",
+            encoding="utf-8",
+        )
+
+        state, _, report = self.sync()
+
+        self.assertEqual(4, report["definitions"])
+        self.assertEqual(4, report["references"])
+        self.assertEqual("markdown", state.nodes["cache-line"]["properties"]["source_format"])
+        self.assertEqual("latex", state.nodes["cache-locality-theorem"]["properties"]["source_format"])
+        self.assertNotIn("typst_name", state.nodes["cache-line"]["properties"])
+        self.assertEqual(
+            "https://example.test/demo/chapters/02-cache/#kn-cache-line",
+            state.nodes["cache-line"]["provenance"]["web"],
+        )
+        cache_refs = [item for item in state.references if item["target"] == "cache-line"]
+        self.assertEqual(2, len(cache_refs))
+        self.assertEqual({"markdown", "latex"}, {item["source_format"] for item in cache_refs})
+        registry = self.typst_registry.read_text(encoding="utf-8")
+        self.assertIn('name: [#text("cache line")]', registry)
+
+    def test_markdown_requires_explicit_authority_dashes(self) -> None:
+        markdown = self.source_root / "chapters/02-links.md"
+        markdown.write_text(
+            "# Links\n\n[[new reference]] and --[[canonical concept]]--.\n",
+            encoding="utf-8",
+        )
+
+        state, _, report = self.sync()
+
+        self.assertEqual(3, report["definitions"])
+        self.assertNotIn("new-reference", state.nodes)
+        self.assertIn("canonical-concept", state.nodes)
+        self.assertEqual("new-reference", next(
+            item["target"] for item in state.references if item["label"] == "new reference"
+        ))
+
+    def test_markdown_escaped_double_brackets_are_literal_text(self) -> None:
+        markdown = self.source_root / "chapters/02-escaped.md"
+        markdown.write_text(
+            "# Literal syntax\n\n"
+            "\\--[[not an authority]]-- and \\[[not a reference]].\n",
+            encoding="utf-8",
+        )
+
+        state, _, report = self.sync()
+
+        self.assertEqual(2, report["definitions"])
+        self.assertEqual(1, report["references"])
+        self.assertNotIn("not-an-authority", state.nodes)
+        self.assertFalse(any(item["label"].startswith("not a") for item in state.references))
+
+    def test_directory_scope_expands_configured_mixed_sources_only(self) -> None:
+        markdown = self.source_root / "chapters/02-cache.md"
+        markdown.write_text("--[[cache line]]--\n", encoding="utf-8")
+        latex = self.source_root / "chapters/03-locality.tex"
+        latex.write_text("\\kn{locality theorem}\n", encoding="utf-8")
+        outside = self.source_root / "appendix/01-outside.md"
+        outside.parent.mkdir(parents=True)
+        outside.write_text("--[[outside concept]]--\n", encoding="utf-8")
+        self.sync()
+
+        outside.write_text("The authority marker was removed.\n", encoding="utf-8")
+        state, _, report = self.sync(files=[Path("notes/math/demo/chapters")])
+
+        self.assertEqual(4, report["definitions"])
+        self.assertEqual("active", state.nodes["outside-concept"]["properties"]["source_status"])
+        self.assertIn("cache-line", state.nodes)
+        self.assertIn("locality-theorem", state.nodes)
 
     def test_global_audit_reports_topology_and_file_curation_coverage(self) -> None:
         state, _, _ = self.sync()

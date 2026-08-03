@@ -232,7 +232,7 @@ local function markdown_inlines(text)
   return document.blocks[1].content or pandoc.List()
 end
 
-local function markdown_wikilink(inlines)
+local function markdown_wikilink(inlines, authoritative)
   if #inlines == 1 and inlines[1].t == "Strong" then
     inlines = inlines[1].content
   end
@@ -243,7 +243,9 @@ local function markdown_wikilink(inlines)
   rendered = string.gsub(rendered, "^%s+", "")
   rendered = string.gsub(rendered, "%s+$", "")
   rendered = string.gsub(rendered, "[\r\n]+", " ")
-  return pandoc.RawInline("markdown", "[[" .. rendered .. "]]")
+  local opening = authoritative and "--[[" or "[["
+  local closing = authoritative and "]]--" or "]]"
+  return pandoc.RawInline("markdown", opening .. rendered .. closing)
 end
 
 local function blocks_from_named_parts(element, head_class, body_class)
@@ -468,7 +470,7 @@ local function normalize_span(element)
     return {}
   end
   if not FORMAT:match("latex") and has_class(element, "ql-kn") then
-    return markdown_wikilink(element.content)
+    return markdown_wikilink(element.content, true)
   end
   if not has_class(element, "ql-citation") then
     return nil
@@ -519,7 +521,7 @@ end
 
 local function normalize_link(element)
   if not FORMAT:match("latex") and has_class(element, "ql-ref") then
-    return markdown_wikilink(element.content)
+    return markdown_wikilink(element.content, false)
   end
   if not FORMAT:match("latex") then
     return nil

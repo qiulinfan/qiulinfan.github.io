@@ -34,7 +34,7 @@ So that we can do Fubini (iterated integration) like that in Riemann integral.
 
 ### product $\sigma$-algebra
 
-> **Definition: [[product $\sigma$-algebra]]**
+> **Definition: --[[product $\sigma$-algebra]]--**
 >
 > Suppose $(X_{i},\mathcal{A}_{i})$ mble, $1 \leq i \leq n$, the product $\sigma$-algebra $A_{1} \otimes \cdots \otimes A_{n}$ on $X_{1} \times \cdots \times X_{n}$ is the smallest $\sigma$-algebra s.t. the **coordinate map**
 >
@@ -215,7 +215,7 @@ Claim 2:
 
 ### associativity of product $\sigma$-algebra and $\sigma$-finite product measure
 
-> **Corollary: [[associativity of product measure]]**
+> **Corollary: --[[associativity of product measure]]--**
 >
 > 总有
 >
@@ -251,7 +251,7 @@ Claim 2:
 
 对于特殊的函数, 比如两个 measurable function 的乘积, 其一定是 product measurable 的.
 
-> **Lemma: [[easier Fubini]]**
+> **Lemma: --[[easier Fubini]]--**
 >
 > 条件: $(X,\mathcal{A},\mu)$, $(Y,\mathcal{B},\nu)$ 为 arbitrary measure space (不需要 $\sigma$-finite.), $f:X\rightarrow{\mathbb{C}}$, $g:Y\rightarrow{\mathbb{C}}$ 为 measurable functions.\
 > 结论:
@@ -282,7 +282,7 @@ $$
 
 ### $E \subset X \times Y$ 的 section
 
-> **Definition: [[$x$-section, $y$-section]]**
+> **Definition: --[[$x$-section, $y$-section]]--**
 >
 > 给定 product space 上的集合 $E \subset X \times Y$, 对于 $x \in X$, $y \in Y$, 我们定义:
 >
@@ -373,7 +373,7 @@ $$
 > 记录一下这里的证明方法, 以前见的比较少. 这里**证明条件 A 推出条件 B** 的方法: **证明所有满足条件 B 的元素构成的集合 包含了 所有满足条件 A 得元素构成的集合.**\
 > 这一方法的好处在于: 可以运用所有满足条件 B 的元素构成的集合的整体性质, 比如是 $\sigma$-algebra 等.
 
-> **Definition: [[monotone class]]**
+> **Definition: --[[monotone class]]--**
 >
 > Given a set $X$, a collection $C \subset \mathcal{P}(X)$ is called a monotone class, if it is closed under **countable increasing unions** and **countable decreasing intersections**
 
@@ -381,7 +381,7 @@ $$
 
 ### tool needed to show Tonelli: Monotone Class Lemma
 
-> **Lemma: [[monotone class lemma]]**
+> **Lemma: --[[monotone class lemma]]--**
 >
 > Let $\mathcal{A} \subset \mathcal{P}(X)$ be an algebra.\
 > Define $\mathcal{C}$ 为包含 $\mathcal{A}$ 的最小的 montone class.\
@@ -417,7 +417,7 @@ $$
 
 ### Tonelli for sets: integrating a section to get product measure
 
-> **Theorem: [[Tonelli for sets]]**
+> **Theorem: --[[Tonelli for sets]]--**
 >
 > Let $(X,\mathcal{A},\mu)$, $(Y,\mathcal{B},\nu)$ be **$\sigma$-finite** measure spaces.\
 > Take $E \in \mathcal{A} \otimes \mathcal{B}$. Then:
@@ -510,7 +510,7 @@ $$
 
 ### Tonelli's Theorem
 
-> **Theorem: [[Tonelli]]**
+> **Theorem: --[[Tonelli]]--**
 >
 > Let $(X,\mathcal{A},\mu)$, $(Y,\mathcal{B},\nu)$ be $\sigma$-finite measure spaces.\
 > 条件: 令 $f \in L^{+}(X \times Y)$,\
@@ -587,7 +587,7 @@ Fubini's Theorem 是 Tonelli's Theorem 对 $\mathbb{C}$-valued 函数 (instead o
 
 ### Fubini's Theorem
 
-> **Theorem: [[Fubini's Theorem]]**
+> **Theorem: --[[Fubini's Theorem]]--**
 >
 > 条件: $f \in L^{1}(\mu \times \nu)$,\
 > 结论:
@@ -657,7 +657,7 @@ $$
 (X \times Y,\bar{\mathcal{A}\otimes\mathcal{B}},\bar{\mu\times\nu})
 $$
 
-> **Theorem: [[complete Fubini-Tonelli]]**
+> **Theorem: --[[complete Fubini-Tonelli]]--**
 >
 > 对于 complete measure space $(X,\mathcal{A},\mu)$, $(Y,\mathcal{B},\nu)$, 取它们的 product measure space 的 completion:
 >

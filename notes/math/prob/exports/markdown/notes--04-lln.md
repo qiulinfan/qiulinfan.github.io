@@ -27,7 +27,7 @@ title: "Math 525: Probability"
 
 ### Markov's ineqaulity and Chebyshev's inequality
 
-> **Theorem: [[Markov's inequality]]**
+> **Theorem: --[[Markov's inequality]]--**
 >
 > 对于一个 non-negative random variable $X$ (即 $X \geq 0$ a.s.), 任取 $t > 0$, 都有
 >
@@ -85,7 +85,7 @@ title: "Math 525: Probability"
 
 ### Cauchy-Schwarz and Jensen's ineq
 
-> **Theorem: [[Cauchy-Schwarz inequality]]**
+> **Theorem: --[[Cauchy-Schwarz inequality]]--**
 >
 > 对于任意的 random variables $X$ 和 $Y$, 都有
 >
@@ -95,7 +95,7 @@ title: "Math 525: Probability"
 
 这是 prob space 作为一个 measure space, 其上的函数空间 $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ 作为一个 Hilbert space, 自然的 Cauchy-Schwarz inequality. 不赘述了.
 
-> **Theorem: [[Jensen's inequality]]**
+> **Theorem: --[[Jensen's inequality]]--**
 >
 > 对于一个 convex function $\phi$ 和 任意的 random variable $X$, 只要 ${\mathbb{E}}\lbrack X\rbrack$ 和 ${\mathbb{E}}\lbrack\phi(X)\rbrack$ 都是 well-defined 的 (即 finite), 都有
 >
@@ -201,7 +201,7 @@ title: "Math 525: Probability"
 
 首先, 我们对 pointwise limit 和 uniform limit 的定义已经很熟悉了, 这里就不赘述了. (算了 uniform 还是提一嘴, 意思是我们需要 pointwise limit 的 收敛速度也是 uniform 的, 即对任意的 $\epsilon > 0$, 都存在一个 $N$ 使得对于所有的 $n \geq N$ 和所有的 $\omega$, 都有 $\left. |X_{n}(\omega) - X(\omega) \middle| < \epsilon \right.$, 是一个严格强于 pointwise 的收敛方式. )
 
-> **Definition: [[RV 序列的三种收敛方式]]**
+> **Definition: --[[RV 序列的三种收敛方式]]--**
 >
 > - **converge a.s. (almost surely)** 或称 converge with probability 1:
 >
@@ -247,7 +247,7 @@ title: "Math 525: Probability"
 例如最经典的例子就是抛硬币: 我们连续抛 $n$ 次一个公平的硬币, 记录每次抛出正面 (记为 1) 或者反面 (记为 0), 然后计算这些结果的平均值, 随着 $n$ 的增加, 这个平均值会趋近于 0.5, 等于 理论的 expectation (这是个 Bernouli random variable, expectation = $p$).\
 LLN 有两个阶段, weak LLN 和 strong LLN, weak LLN 证明的是这个 convergence 是 in probability 的, 而 strong LLN 证明的是这个 convergence 是 a.s. 的. 就是说 strong LLN 是严格强于 weak LLN 的.
 
-> **Theorem: [[weak Law of Large Numbers]]**
+> **Theorem: --[[weak Law of Large Numbers]]--**
 >
 > 对于一列 i.i.d. 的 random variables $\left\{ X_{i} \right\}$, 只要这个 random variable 的 expectation 是 finite 的 ${\mathbb{E}}\lbrack X_{1}^{2}\rbrack < \infty$, 那么就有:
 >
@@ -276,7 +276,7 @@ LLN 有两个阶段, weak LLN 和 strong LLN, weak LLN 证明的是这个 conver
 > \left. {\mathbb{P}}\left( {\left| {S_{n}/n - \mu} \right| > \varepsilon} \right) = \frac{1}{\varepsilon^{2}n^{2}}\sum\limits_{n = 1}^{n}{\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{2}\rbrack = \frac{1}{\varepsilon^{2}n} \cdot n\ \text{Var}(X_{1})\overset{n\rightarrow\infty}{\rightarrow}0 \right.
 > $$
 
-> **Theorem: [[strong Law of Large Numbers]]**
+> **Theorem: --[[strong Law of Large Numbers]]--**
 >
 > 在 weak LLN[Theorem 4.28](#thm-04-lln-weak-law-of-large-numbers) 的相同条件 (其实可以更弱, 让 $E\lbrack X_{1}\rbrack < \infty$ 即可) 下, 我们其实可以得到一个更强的结论:
 >

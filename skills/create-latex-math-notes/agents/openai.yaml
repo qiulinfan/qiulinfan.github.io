@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create LaTeX Math Notes"
+  short_description: "Scaffold live-preview LuaLaTeX mathematics notes"
+  default_prompt: "Use $create-latex-math-notes to create a new LuaLaTeX mathematics notes project with live VS Code preview."

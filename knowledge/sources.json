@@ -49,6 +49,19 @@
         {"glob": "chapters/04-*.typ", "id": "laws-of-large-numbers", "label": "Laws of Large Numbers"},
         {"glob": "chapters/05-*.typ", "id": "central-limit-theorems", "label": "Central Limit Theorems"}
       ]
+    },
+    {
+      "id": "cs:computer-organization",
+      "subject": "cs",
+      "course": "computer-organization",
+      "root": "notes/cs/computer-organization",
+      "files": [
+        "*.md"
+      ],
+      "web": "https://qiulinfan.github.io/qlblog/notes/cs/computer-organization",
+      "topics": [
+        {"glob": "*.md", "id": "computer-organization", "label": "Computer Organization"}
+      ]
     }
   ]
 }

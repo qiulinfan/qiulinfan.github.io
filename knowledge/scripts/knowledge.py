@@ -18,6 +18,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
+from urllib.parse import quote
 
 
 GRAPH_SCHEMA = "qlkg-v2"
@@ -26,6 +27,15 @@ DELTA_SCHEMA = "qlkg-agent-delta-v2"
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 KN_RE = re.compile(r"#kn\s*\[")
 REF_RE = re.compile(r"#ref\s*\[")
+LATEX_KN_RE = re.compile(r"\\kn\s*\{")
+LATEX_REF_RE = re.compile(r"\\knref\s*\{")
+MARKDOWN_WIKILINK_RE = re.compile(
+    r"(?P<definition>(?<![!\\])--\[\[(?P<definition_body>[^\]\n]+)\]\]--)"
+    r"|(?P<reference>(?<![!\-\\])\[\[(?P<reference_body>[^\]\n]+)\]\](?!--))"
+)
+LATEX_STATEMENT_RE = re.compile(
+    r"\\begin\{(?P<kind>definition|theorem|lemma|corollary|proposition|axiom|example)\}"
+)
 LABEL_HTML_RE = re.compile(
     r'<ql-label data-node-id="(?P<id>[a-z0-9-]+)">(?P<html>.*?)</ql-label>',
     re.DOTALL,
@@ -80,7 +90,8 @@ class StatementRange:
 class DefinitionOccurrence:
     id: str
     label: str
-    label_typst: str
+    label_markup: str
+    source_format: str
     kind: str
     authority: str
     line: int
@@ -103,6 +114,9 @@ class ReferenceOccurrence:
     line: int
     web: str
     context: str | None
+    source_format: str
+    source_name: str
+    display_markup: str
 
 
 @dataclass
@@ -248,6 +262,35 @@ def topic_for(spec: SourceSpec, path: Path) -> tuple[str, str] | None:
     return None
 
 
+def source_format(path: Path) -> str:
+    formats = {
+        ".typ": "typst",
+        ".md": "markdown",
+        ".tex": "latex",
+    }
+    try:
+        return formats[path.suffix.lower()]
+    except KeyError as error:
+        raise KnowledgeError(f"unsupported knowledge source format: {path}") from error
+
+
+def markdown_web_path(spec: SourceSpec, path: Path) -> str:
+    """Map one Markdown authority to its static note route."""
+    relative = path.resolve().relative_to(spec.root).with_suffix("")
+    parts = list(relative.parts)
+    if parts and parts[-1].casefold() in {"index", "readme"}:
+        parts.pop()
+    suffix = "/".join(quote(part, safe="-._~") for part in parts)
+    return f"{spec.web}/{suffix}".rstrip("/") if suffix else spec.web
+
+
+def definition_web(spec: SourceSpec, path: Path, node_id: str) -> str:
+    base = markdown_web_path(spec, path) if path.suffix.lower() == ".md" else spec.web
+    if not base:
+        return f"/knowledge/#node={node_id}"
+    return f"{base}/#kn-{node_id}"
+
+
 def find_matching(text: str, start: int, opening: str, closing: str) -> int:
     if start >= len(text) or text[start] != opening:
         raise KnowledgeError(f"expected {opening!r} at offset {start}")
@@ -308,6 +351,49 @@ def strip_typst(value: str) -> str:
     text = re.sub(r"\bpi\b", "π", text)
     text = re.sub(r"\s+", " ", text).strip(" ,:;")
     return text
+
+
+def strip_latex(value: str) -> str:
+    text = unicodedata.normalize("NFKC", value)
+    replacements = {
+        r"\sigma": "σ",
+        r"\pi": "π",
+        r"\lambda": "λ",
+        r"\mu": "μ",
+        r"\rho": "ρ",
+        r"\Omega": "Ω",
+    }
+    for source, replacement in replacements.items():
+        text = text.replace(source, replacement)
+    text = re.sub(r"\\(?:text|mathrm|mathbf|mathbb|mathcal|operatorname)\s*\{([^{}]*)\}", r"\1", text)
+    text = re.sub(r"\\[A-Za-z]+\*?", " ", text)
+    text = text.replace("$", "").replace("\\", "")
+    text = re.sub(r"[{}]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip(" ,:;")
+    return text
+
+
+def strip_markdown(value: str) -> str:
+    text = re.sub(r"^\s*<|>\s*$", "", value.strip())
+    text = re.sub(r"[*_`~]", "", text)
+    return strip_latex(text)
+
+
+def wikilink_parts(value: str) -> tuple[str, str]:
+    target, separator, alias = value.partition("|")
+    target = target.strip()
+    display = alias.strip() if separator and alias.strip() else target
+    return target, display
+
+
+def latex_statement_ranges(text: str) -> list[StatementRange]:
+    result: list[StatementRange] = []
+    for match in LATEX_STATEMENT_RE.finditer(text):
+        closing = re.compile(rf"\\end\{{{re.escape(match.group('kind'))}\}}")
+        end_match = closing.search(text, match.end())
+        end = end_match.end() if end_match else len(text)
+        result.append(StatementRange(match.start(), end, match.group("kind")))
+    return result
 
 
 def identity_key(value: str) -> str:
@@ -384,17 +470,17 @@ def scan_typst(
         statement = containing_statement(ranges, match.start())
         line = text.count("\n", 0, match.start()) + 1
         anchor = f"kn-{node_id}"
-        web = f"{spec.web}/#{anchor}" if spec.web else f"/knowledge/#node={node_id}"
         definitions.append(
             DefinitionOccurrence(
                 id=node_id,
                 label=label,
-                label_typst=label_typst,
+                label_markup=label_typst,
+                source_format="typst",
                 kind=statement.kind if statement else "concept",
                 authority=authority,
                 line=line,
                 anchor=anchor,
-                web=web,
+                web=definition_web(spec, path, node_id),
                 source_id=spec.id,
                 subject=spec.subject,
                 course=spec.course,
@@ -441,9 +527,234 @@ def scan_typst(
                 line=line,
                 web=spec.web,
                 context=context,
+                source_format="typst",
+                source_name=text[match.end() : close],
+                display_markup=text[match.end() : close],
             )
         )
     return ScanResult(definitions, references, errors)
+
+
+def markdown_kind_at(text: str, position: int) -> str:
+    start = text.rfind("\n", 0, position) + 1
+    end = text.find("\n", position)
+    line = text[start : len(text) if end < 0 else end]
+    line = re.sub(r"^\s*(?:>\s*)*#{0,6}\s*", "", line)
+    line = re.sub(r"^[*_`\s]+", "", line)
+    match = re.match(
+        r"(?i)(definition|theorem|lemma|corollary|proposition|axiom|example)\b",
+        line,
+    )
+    return match.group(1).lower() if match else "concept"
+
+
+def scan_markdown(
+    repo_root: Path,
+    spec: SourceSpec,
+    path: Path,
+    identities: dict[str, str],
+) -> ScanResult:
+    authority = relative_path(repo_root, path)
+    text = path.read_text(encoding="utf-8")
+    topic = topic_for(spec, path)
+    definitions: list[DefinitionOccurrence] = []
+    references: list[ReferenceOccurrence] = []
+    errors: list[dict[str, Any]] = []
+    matches = list(MARKDOWN_WIKILINK_RE.finditer(text))
+
+    for match in matches:
+        body = match.group("definition_body")
+        if body is None:
+            continue
+        target_markup, _ = wikilink_parts(body)
+        label = strip_markdown(target_markup)
+        if not label:
+            errors.append(
+                diagnostic(
+                    "empty-knowledge-name",
+                    "--[[...]]-- must contain a non-empty semantic name",
+                    source=authority,
+                )
+            )
+            continue
+        key = identity_key(label)
+        node_id = identities.get(key) or generated_id(label)
+        identities.setdefault(key, node_id)
+        line = text.count("\n", 0, match.start()) + 1
+        definitions.append(
+            DefinitionOccurrence(
+                id=node_id,
+                label=label,
+                label_markup=target_markup,
+                source_format="markdown",
+                kind=markdown_kind_at(text, match.start()),
+                authority=authority,
+                line=line,
+                anchor=f"kn-{node_id}",
+                web=definition_web(spec, path, node_id),
+                source_id=spec.id,
+                subject=spec.subject,
+                course=spec.course,
+                topic=topic[0] if topic else None,
+                position=match.start(),
+                statement=None,
+            )
+        )
+
+    definitions_by_line: dict[int, list[str]] = defaultdict(list)
+    for item in definitions:
+        definitions_by_line[item.line].append(item.id)
+    for match in matches:
+        body = match.group("reference_body")
+        if body is None:
+            continue
+        target_markup, _ = wikilink_parts(body)
+        label = strip_markdown(target_markup)
+        if not label:
+            errors.append(
+                diagnostic(
+                    "empty-reference-name",
+                    "[[...]] must contain a non-empty semantic name",
+                    source=authority,
+                )
+            )
+            continue
+        target = identities.get(identity_key(label)) or generated_id(label)
+        line = text.count("\n", 0, match.start()) + 1
+        contexts = definitions_by_line.get(line, [])
+        context = contexts[0] if len(contexts) == 1 else None
+        references.append(
+            ReferenceOccurrence(
+                id=sha256_text(
+                    f"{authority}:{line}:{match.start()}:{target}:{context or ''}"
+                )[:20],
+                target=target,
+                label=label,
+                authority=authority,
+                line=line,
+                web=markdown_web_path(spec, path),
+                context=context,
+                source_format="markdown",
+                source_name=target_markup,
+                display_markup=wikilink_parts(body)[1],
+            )
+        )
+    return ScanResult(definitions, references, errors)
+
+
+def scan_latex(
+    repo_root: Path,
+    spec: SourceSpec,
+    path: Path,
+    identities: dict[str, str],
+) -> ScanResult:
+    authority = relative_path(repo_root, path)
+    text = path.read_text(encoding="utf-8")
+    ranges = latex_statement_ranges(text)
+    topic = topic_for(spec, path)
+    definitions: list[DefinitionOccurrence] = []
+    references: list[ReferenceOccurrence] = []
+    errors: list[dict[str, Any]] = []
+
+    for match in LATEX_KN_RE.finditer(text):
+        try:
+            close = find_matching(text, match.end() - 1, "{", "}")
+        except KnowledgeError as error:
+            errors.append(diagnostic("latex-parse", str(error), source=authority))
+            continue
+        label_markup = text[match.end() : close]
+        label = strip_latex(label_markup)
+        if not label:
+            errors.append(
+                diagnostic(
+                    "empty-knowledge-name",
+                    r"\kn{...} must contain a non-empty semantic name",
+                    source=authority,
+                )
+            )
+            continue
+        key = identity_key(label)
+        node_id = identities.get(key) or generated_id(label)
+        identities.setdefault(key, node_id)
+        statement = containing_statement(ranges, match.start())
+        line = text.count("\n", 0, match.start()) + 1
+        definitions.append(
+            DefinitionOccurrence(
+                id=node_id,
+                label=label,
+                label_markup=label_markup,
+                source_format="latex",
+                kind=statement.kind if statement else "concept",
+                authority=authority,
+                line=line,
+                anchor=f"kn-{node_id}",
+                web=definition_web(spec, path, node_id),
+                source_id=spec.id,
+                subject=spec.subject,
+                course=spec.course,
+                topic=topic[0] if topic else None,
+                position=match.start(),
+                statement=statement,
+            )
+        )
+
+    statement_nodes: dict[tuple[int, int], list[str]] = defaultdict(list)
+    for item in definitions:
+        if item.statement:
+            statement_nodes[(item.statement.start, item.statement.end)].append(item.id)
+    for match in LATEX_REF_RE.finditer(text):
+        try:
+            close = find_matching(text, match.end() - 1, "{", "}")
+        except KnowledgeError as error:
+            errors.append(diagnostic("latex-parse", str(error), source=authority))
+            continue
+        label = strip_latex(text[match.end() : close])
+        if not label:
+            errors.append(
+                diagnostic(
+                    "empty-reference-name",
+                    r"\knref{...} must contain a non-empty semantic name",
+                    source=authority,
+                )
+            )
+            continue
+        target = identities.get(identity_key(label)) or generated_id(label)
+        statement = containing_statement(ranges, match.start())
+        context = None
+        if statement:
+            candidates = statement_nodes.get((statement.start, statement.end), [])
+            if len(candidates) == 1:
+                context = candidates[0]
+        line = text.count("\n", 0, match.start()) + 1
+        references.append(
+            ReferenceOccurrence(
+                id=sha256_text(f"{authority}:{line}:{target}:{context or ''}")[:20],
+                target=target,
+                label=label,
+                authority=authority,
+                line=line,
+                web=spec.web,
+                context=context,
+                source_format="latex",
+                source_name=text[match.end() : close],
+                display_markup=text[match.end() : close],
+            )
+        )
+    return ScanResult(definitions, references, errors)
+
+
+def scan_source(
+    repo_root: Path,
+    spec: SourceSpec,
+    path: Path,
+    identities: dict[str, str],
+) -> ScanResult:
+    scanner = {
+        "typst": scan_typst,
+        "markdown": scan_markdown,
+        "latex": scan_latex,
+    }[source_format(path)]
+    return scanner(repo_root, spec, path, identities)
 
 
 def load_state(graph_dir: Path) -> GraphState:
@@ -489,8 +800,14 @@ def select_scope(
                 raise KnowledgeError(f"file is outside configured source roots: {raw}")
             if path.is_file():
                 pairs.append((owner, path))
+            elif path.is_dir():
+                pairs.extend(
+                    (owner, candidate)
+                    for candidate in expand_source(owner)
+                    if path == candidate.parent or path in candidate.parents
+                )
             elif path.exists():
-                raise KnowledgeError(f"scope path is not a file: {raw}")
+                raise KnowledgeError(f"scope path is not a file or directory: {raw}")
             else:
                 pairs.append((owner, path))
     else:
@@ -513,7 +830,7 @@ def scan_scope(
     for spec, path in pairs:
         if not path.is_file():
             continue
-        result = scan_typst(repo_root, spec, path, identities)
+        result = scan_source(repo_root, spec, path, identities)
         definitions.extend(result.definitions)
         references.extend(result.references)
         errors.extend(result.errors)
@@ -552,9 +869,15 @@ def source_node(definition: DefinitionOccurrence, existing: dict[str, Any] | Non
             "source_status": "active",
             "subject": definition.subject,
             "course": definition.course,
-            "typst_name": definition.label_typst,
+            "source_format": definition.source_format,
+            "source_name": definition.label_markup,
         }
     )
+    if definition.source_format == "typst":
+        properties["typst_name"] = definition.label_markup
+    else:
+        properties.pop("typst_name", None)
+        properties.pop("label_html", None)
     if definition.topic:
         properties["topic"] = definition.topic
     properties.pop("orphaned_from", None)
@@ -596,6 +919,9 @@ def reference_record(item: ReferenceOccurrence) -> dict[str, Any]:
         "authority": item.authority,
         "line": item.line,
         "origin": "authored",
+        "source_format": item.source_format,
+        "source_name": item.source_name,
+        "display_markup": item.display_markup,
     }
     if item.web:
         value["web"] = item.web
@@ -712,7 +1038,7 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
             warnings.append(
                 diagnostic(
                     "orphaned-node",
-                    "knowledge metadata and semantic edges are retained, but no active #kn defines this node",
+                    "knowledge metadata and semantic edges are retained, but no active source marker defines this node",
                     source=(node.get("provenance") or {}).get("authority"),
                     node=node["id"],
                 )
@@ -722,7 +1048,7 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
             warnings.append(
                 diagnostic(
                     "dangling-ref",
-                    f"#ref target does not exist: {reference.get('target')}",
+                    f"knowledge reference target does not exist: {reference.get('target')}",
                     source=reference.get("authority"),
                     node=reference.get("target"),
                 )
@@ -850,12 +1176,27 @@ def render_typst_labels(state: GraphState) -> None:
 
 def write_registry(path: Path, state: GraphState) -> None:
     lines = ["// Generated by knowledge/scripts/knowledge.py. Do not edit by hand.", "#let knowledge-registry = ("]
+    typst_reference_names: dict[str, list[str]] = defaultdict(list)
+    for reference in state.references:
+        if reference.get("source_format") != "typst":
+            continue
+        target = str(reference.get("target", ""))
+        source_name = str(reference.get("source_name", ""))
+        if source_name and source_name not in typst_reference_names[target]:
+            typst_reference_names[target].append(source_name)
     for node in sorted(state.nodes.values(), key=lambda item: item["id"]):
         node_id = node["id"]
         properties = node.get("properties") or {}
         typst_name = properties.get("typst_name")
-        if node.get("type") != "knowledge" or not typst_name:
+        if node.get("type") != "knowledge":
             continue
+        registry_name = str(typst_name) if typst_name else (
+            f'#text("{typst_string(str(node.get("label", node_id)))}")'
+        )
+        names = [registry_name]
+        names.extend(
+            name for name in typst_reference_names.get(node_id, []) if name not in names
+        )
         provenance = node.get("provenance") or {}
         if properties.get("source_status") == "active" and provenance.get("web"):
             url = str(provenance["web"])
@@ -864,7 +1205,10 @@ def write_registry(path: Path, state: GraphState) -> None:
         lines.extend(
             [
                 "  (",
-                f"    name: [{typst_name}],",
+                f"    name: [{registry_name}],",
+                "    names: (",
+                *(f"      [{name}]," for name in names),
+                "    ),",
                 f'    id: "{typst_string(node_id)}",',
                 f'    title: "{typst_string(str(node.get("label", node_id)))}",',
                 f'    url: "{typst_string(url)}",',

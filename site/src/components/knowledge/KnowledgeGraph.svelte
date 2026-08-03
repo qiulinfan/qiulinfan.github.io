@@ -642,6 +642,9 @@
 						{#if propertyText(selectedNode, "source_status")}
 							<div class="attribute-row"><span>来源状态</span><strong>{propertyText(selectedNode, "source_status")}</strong></div>
 						{/if}
+						{#if propertyText(selectedNode, "source_format")}
+							<div class="attribute-row"><span>源格式</span><strong>{propertyText(selectedNode, "source_format")}</strong></div>
+						{/if}
 						{#if propertyText(selectedNode, "course")}
 							<div class="attribute-row"><span>课程</span><strong>{propertyText(selectedNode, "course")}</strong></div>
 						{/if}
@@ -674,7 +677,7 @@
 						<div class="source-actions">
 							<button type="button" on:click={copyNodeReference}>{copied ? "已复制" : "复制引用"}</button>
 							{#if sourceUrl(selectedNode)}<a href={sourceUrl(selectedNode)} target="_blank" rel="noreferrer">打开原定义 ↗</a>{/if}
-							{#if sourceCodeUrl(selectedNode)}<a href={sourceCodeUrl(selectedNode)} target="_blank" rel="noreferrer">查看 Typst 源码 ↗</a>{/if}
+							{#if sourceCodeUrl(selectedNode)}<a href={sourceCodeUrl(selectedNode)} target="_blank" rel="noreferrer">查看源文件 ↗</a>{/if}
 						</div>
 						{#if selectedNode.provenance?.authority}<p class="source-path">{selectedNode.provenance.authority}</p>{/if}
 					</div>
@@ -692,7 +695,7 @@
 		</div>
 
 		<footer class="graph-meta">
-			<span><i></i> Typst authority · qlkg-v2</span>
+			<span><i></i> Typst / Markdown / LaTeX authority · qlkg-v2</span>
 			<code>{payload.manifest.graph_sha256.slice(0, 12)}</code>
 		</footer>
 	{/if}

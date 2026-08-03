@@ -1,4 +1,4 @@
 interface:
-  display_name: "Export Typst Math Notes"
-  short_description: "Curate and export Typst-first math knowledge"
-  default_prompt: "Use $export-typst-math-notes to curate one changed Typst file into nodes, entries, refs, and typed edges, then export and validate it."
+  display_name: "Export Multi-Source Notes"
+  short_description: "Curate and publish Typst, Markdown, and LaTeX notes"
+  default_prompt: "Use $export-typst-math-notes to curate and publish changed Typst, Markdown, or LaTeX note sources into the shared knowledge graph and website."

@@ -28,7 +28,7 @@ This lecture: 1. distribution function 是 increasing 且 right continuous 的, 
 
 ### distribution function of a locally finite (i.e. regular) Borel measure
 
-> **Definition: [[distribution function of $\mu$]]**
+> **Definition: --[[distribution function of $\mu$]]--**
 >
 > 给定一个 **locally finite (finite on all compact sets)** 的 **Borel measure** on $\mathbb{R}$ (即 $({\mathbb{R}},\mathcal{B}(bR),\mu)$), 我们定义:
 >
@@ -52,7 +52,7 @@ This lecture: 1. distribution function 是 increasing 且 right continuous 的, 
 
 这两个定义是等价的.
 
-> **Theorem: [[distribution function is increasing and right ctn]]**
+> **Theorem: --[[distribution function is increasing and right ctn]]--**
 >
 > 对于 $\mathbb{R}$ 上的任意 locally finite Borel measure $\mu$, 其 distribution function $F_{\mu}$ 都是 increasing 且 right continuous 的. (right ctn:
 >
@@ -71,7 +71,7 @@ This lecture: 1. distribution function 是 increasing 且 right continuous 的, 
 
 ### any increasing and right ctn function is a unique distribution function
 
-> **Definition: [[h-interval]]**
+> **Definition: --[[h-interval]]--**
 >
 > 我么定义形如 $(a,b\rbrack$, $( - \infty,b\rbrack$ 的 $\mathbb{R}$ 的子集, 以及 $\varnothing$, $\mathbb{R}$, 为 h-intervals.
 
@@ -79,7 +79,7 @@ h-intervals 即**所有的左开右闭区间.**
 
 ![Figure 6:[ ]{style="white-space: pre-wrap"}](.assets/main--figure-raster-006.png){width="20%"}
 
-> **Lemma: [[h-intervals form an algebra and generate borel set]]**
+> **Lemma: --[[h-intervals form an algebra and generate borel set]]--**
 >
 > $$
 > \mathcal{A}_{0} := \left\{ \text{finite (disjoint) unions of h-intervals} \right\}
@@ -95,7 +95,7 @@ h-intervals 即**所有的左开右闭区间.**
 >
 > trivial. follows from lec 2 的 generating set of borel set on $\mathbb{R}$.
 
-> **Theorem: [[**任意 increasing 且 right ctn 函数都是某个 regular Borel measure 的 distribution 函数**]]**
+> **Theorem: --[[**任意 increasing 且 right ctn 函数都是某个 regular Borel measure 的 distribution 函数**]]--**
 >
 > 取 lemma 中的 $\mathcal{A}_{0}$. 对于**任意的 increasing 且 right ctn 的 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$,** 我们 define $\mu_{0}:\mathcal{A}_{0}\rightarrow\lbrack 0,\infty\rbrack$, by:
 >
@@ -211,7 +211,7 @@ $$
 \text{Regular Borel measure}\overset{\text{completion}}{\rightarrow}\text{LS measure}
 $$
 
-> **Definition: [[Lebesgue-Stieltjes measure associated with $F$]]**
+> **Definition: --[[Lebesgue-Stieltjes measure associated with $F$]]--**
 >
 > 给定一个 distribution function $F$, 我们使用它来定义 h-intervals 的 premeasure $\mu_{0}$, 并把这个 premeasure induce 出的 outer measure $\mu^{\ast}$ 限制在
 >
@@ -239,7 +239,7 @@ $$
 
 虽然我们使用 h-intervals 来 induce 了这个 measure, 但是实际上我们在表示 measure 时,可以用 open intervals 来代替 h-intervals:
 
-> **Lemma: [[open-interval covers for Lebesgue--Stieltjes measure]]**
+> **Lemma: --[[open-interval covers for Lebesgue--Stieltjes measure]]--**
 >
 > 固定一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
 >
@@ -251,7 +251,7 @@ $$
 >
 > 每个 open interval 都等于 a ctbl disjoint union of h-intervals, 从而是在这个被取 inf 集合内的; 所以只需要证明能取到这个 inf 即可. Fix $\epsilon > 0$, 我们根据定义可以取到一个 seq $(a_{i},b_{i}\rbrack$ 使得它 measure sum $\leq \mu(E) + \epsilon/2$, 而我们对于每个 $i$, 在 interval 的右边再取一个 $< \epsilon/2^{i + 1}$ 的 $\delta_{i}$, 就变成了一个 open interval, 并且最后距离这个 h-interval seq 的 measure sum 差距至多 $\epsilon/2$. 从而得证.
 
-> **Theorem: [[**outer regularity**]]**
+> **Theorem: --[[**outer regularity**]]--**
 >
 > 对于一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
 >
@@ -263,7 +263,7 @@ $$
 >
 > Directly follows from lemma. 首先, by monotonicity, 一个包含 $E$ 的开集 $U$ 的 $\mu_{F}$ 一定比 $E$ 的大. 并且, 对于任意的 $\epsilon > 0$, 都可以找到一个 open covering 使得 measure sum $< \mu_{F}(E) + \epsilon$, by def.\
 
-> **Theorem: [[**inner regularity**]]**
+> **Theorem: --[[**inner regularity**]]--**
 >
 > 对于一个 Lebesgue-Stieltjes measure associated with $F$, 任意 $E \in \mathcal{M}_{\mu}$, 它的 measure 等于:
 >
@@ -301,7 +301,7 @@ $$
 
 ### Lebesgue-Stieltjes measurable 的等价条件
 
-> **Definition: [[$G_{\delta},F_{\sigma}$ sets]]**
+> **Definition: --[[$G_{\delta},F_{\sigma}$ sets]]--**
 >
 > Topological space 中, 一个 **coutable intersection of open sets 被称为一个 $G_{\delta}$ set**, 一个 **countable union of closed sets 被称为一个 $F_{\sigma}$ set**.
 
@@ -310,7 +310,7 @@ $$
 > topological space 中, finite intersection of open sets 还是 open set, 但是 countable intersection 则未必; finite union of closed sets 还是 closed set, 但是 countable union 则未必.\
 > $G_{\delta}$ sets 包括了所有的 open sets, 以及一部分扩充; $F_{\sigma}$ sets 包括了所有的 closed sets, 以及一部分扩充.
 
-> **Theorem: [[Lebesgue-Stieltjes measurable 的等价条件]]**
+> **Theorem: --[[Lebesgue-Stieltjes measurable 的等价条件]]--**
 >
 > TFAE:
 >
@@ -352,7 +352,7 @@ $$
 
 ### Lebesgue measure and its invariance properties
 
-> **Definition: [[Lebesgue measure]]**
+> **Definition: --[[Lebesgue measure]]--**
 >
 > Lebesgue measure 即 Lebesgue-Stieltjes measure associated with $F(x) = x$. 我们用 $m := \mu_{F}$ 来表示它, 并用 $\mathcal{L} := \mathcal{M}_{m}$ 来表示所有的 Lebesgue measurable sets.\
 > 从而 $\mathbb{R}$ 上的 Lebesgue measure space 表示为:
@@ -369,7 +369,7 @@ $$
 > m((a,b\rbrack) = b - a
 > $$
 
-> **Theorem: [[$\mathcal{L}$ preserves translation and scaling]]**
+> **Theorem: --[[$\mathcal{L}$ preserves translation and scaling]]--**
 >
 > if $E \in \mathcal{L}$ $\Rightarrow$ $E + s,rE \in \mathcal{L}$ $\forall s,r \in {\mathbb{R}}$.\
 > 并且, $\left. m(E + s) = m(E),m(rE) = \middle| r \middle| m(E) \right.$

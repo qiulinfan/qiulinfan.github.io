@@ -1,0 +1,27 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[lang=cn,11pt,chinesefont=nofont]{elegantbook}
+
+\usepackage[UTF8,scheme=plain]{ctex}
+
+\title{{{TITLE}}}
+{{SUBTITLE_LINE}}
+\author{{{AUTHOR}}}
+\date{{{DATE}}}
+
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+\maketitle
+\frontmatter
+\tableofcontents
+\mainmatter
+
+\input{chapters/01-introduction}
+
+% Uncomment after adding bibliography entries and citations.
+% \printbibliography
+
+\end{document}
+

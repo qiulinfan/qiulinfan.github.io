@@ -44,7 +44,7 @@ $$
 
 > **Remark**
 >
-> > **Theorem: [[Borel--Cantelli Lemma]]**
+> > **Theorem: --[[Borel--Cantelli Lemma]]--**
 > >
 > > 一个 measure 和有限的 set seq, 其 $\lim\sup$ (出现 infinitely many times 的元素) 是零测的.
 >

@@ -1,0 +1,29 @@
+.PHONY: all pdf watch edit doctor clean
+
+LATEXMK := latexmk
+MAIN := main.tex
+BUILD := build
+LATEXMK_FLAGS := -lualatex -interaction=nonstopmode -synctex=1 -file-line-error -halt-on-error -outdir=$(BUILD)
+
+all: pdf
+
+pdf:
+	@mkdir -p $(BUILD)
+	@$(LATEXMK) $(LATEXMK_FLAGS) $(MAIN)
+
+watch:
+	@mkdir -p $(BUILD)
+	@$(LATEXMK) -pvc -view=none $(LATEXMK_FLAGS) $(MAIN)
+
+edit:
+	@code -r {{SLUG}}.code-workspace main.tex
+
+doctor:
+	@command -v lualatex >/dev/null
+	@command -v latexmk >/dev/null
+	@command -v code >/dev/null
+	@echo "LuaLaTeX live-preview toolchain is ready."
+
+clean:
+	@$(LATEXMK) -C -outdir=$(BUILD) $(MAIN)
+

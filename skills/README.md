@@ -19,6 +19,7 @@ skills。本目录是 skill 文件的权威副本；`~/.codex/skills` 通过软�
 
 - [build-unity-scene](./build-unity-scene/)
 - [configure-unity-mcp](./configure-unity-mcp/)
+- [create-latex-math-notes](./create-latex-math-notes/)
 - [create-math-notes](./create-math-notes/)
 - [discuss-game-design](./discuss-game-design/)
 - [export-typst-math-notes](./export-typst-math-notes/)

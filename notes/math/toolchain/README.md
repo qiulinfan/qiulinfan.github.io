@@ -1,8 +1,9 @@
 # QLNotes toolchain
 
-This is the single shared build and presentation layer for Typst-first math
-notes. Course directories contain only authority content, authored assets,
-bibliography data, a small Makefile, and committed chapter exports.
+This is the shared build and presentation layer for Typst-first math notes.
+The repository-wide graph also accepts maintained Markdown and LaTeX authority;
+those format adapters live in `knowledge/scripts/knowledge.py`, while LaTeX web
+output reuses this toolchain through an ignored Typst intermediate.
 
 ```text
 toolchain/
@@ -12,6 +13,7 @@ toolchain/
 ├── scripts/
 │   ├── export.py           # one complete Typst entry -> temporary snapshots
 │   ├── export_course.py    # split entry snapshots into chapter files
+│   ├── export_latex_web.py # maintained LaTeX -> synced graph -> Typst HTML
 │   ├── migrate_knowledge_markers.py # one-time metadata migration
 │   └── migrate_latex.py    # legacy migration helper
 ├── filters/qlnotes.lua     # semantic Pandoc mapping
@@ -33,9 +35,9 @@ make web-check           # local ignored HTML + basic UTF-8/structure check
 make                     # both of the above, plus secondary web entries
 ```
 
-Typst is the only authority. `export_course.py` compiles each entry once, splits
-the semantic Markdown and LaTeX at real level-one chapters, and writes a flat,
-browsable result:
+For a Typst-first course, Typst is its authority. `export_course.py` compiles
+each entry once, splits the semantic Markdown and LaTeX at real level-one
+chapters, and writes a flat, browsable result:
 
 ```text
 course/exports/
@@ -56,9 +58,9 @@ builds HTML from Typst and publishes only the Pages artifact.
 
 Markdown is intentionally graph-oriented and lossy. Semantic statements,
 examples, proofs, remarks, notes, and solutions become ordinary `>` blockquotes;
-both knowledge definitions and references become Obsidian wikilinks such as
-`[[Dominated convergence theorem]]`. Inline math uses `$...$`; every display
-formula uses line-delimited `$$` blocks.
+knowledge definitions become `--[[Dominated convergence theorem]]--` and
+references become `[[Dominated convergence theorem]]`. Inline math uses
+`$...$`; every display formula uses line-delimited `$$` blocks.
 
 Knowledge markers are authored directly in Typst:
 
@@ -77,6 +79,12 @@ markers. `#ref` may occur anywhere and uses the same name. A file gets a
 meaningful `#ref` when it directly uses an immediate prerequisite whose
 authority is another file; same-file concepts and transitive ancestors do not
 need one.
+
+Direct Markdown authorities use `--[[Name]]--` for the canonical `kn` and
+`[[Name]]` or `[[Name|display]]` for refs. Direct LaTeX authorities use
+`\kn{Name}` and `\knref{Name}`; `migrate_latex.py` preserves these as Typst
+`#kn`/`#ref` during web conversion. A configured directory or file scope may
+mix all three suffixes.
 
 The agent reads one complete changed file, preserves explicit markers, extracts
 a concise source-grounded entry for every local node, and chooses direct typed

@@ -59,7 +59,7 @@ $$
 
 ### $\widetilde{L}(X,\mu,{\mathbb{C}})$ and $L^{1}(X,\mu,{\mathbb{C}}$)
 
-> **Definition: [[real-valued integrable function]]**
+> **Definition: --[[real-valued integrable function]]--**
 >
 > Given measure space $(X,\mathcal{M},\mu)$, **measurable $f:X\rightarrow\bar{\mathbb{R}}$ 被称为 integrable** 的, 如果它满足
 >
@@ -73,7 +73,7 @@ $$
 > \int f = \int f^{+} - \int f^{-}
 > $$
 
-> **Definition: [[complex-valued integrable function]]**
+> **Definition: --[[complex-valued integrable function]]--**
 >
 > Further, 我们定义 **measurable $f:X\rightarrow{\mathbb{C}}$ 是 integrable 的**, 如果它同样满足:
 >
@@ -109,7 +109,7 @@ $$
 
 下面我们可以定义这个 vector space 并在上面进行一定研究. 此处为一个 temporary 的记号:
 
-> **Definition: [[$\widetilde{L}(X,\mu,{\mathbb{R}})$ 以及$\widetilde{L}(X,\mu,{\mathbb{C}})$ space]]**
+> **Definition: --[[$\widetilde{L}(X,\mu,{\mathbb{R}})$ 以及$\widetilde{L}(X,\mu,{\mathbb{C}})$ space]]--**
 >
 > 给定 measure space $(X,\mathcal{M},\mu)$ 我们定义
 >
@@ -174,7 +174,7 @@ $$
 > \left. |\int f\  \middle| = \int\bar{\alpha}f = \int\text{Re}(\bar{\alpha}f) \leq \int \middle| \text{Re}(\bar{\alpha}f) \middle| \leq \int \middle| \bar{\alpha}f \middle| = \int \middle| f| \right.
 > $$
 
-> **Definition: [[integral restricted to a measurable set]]**
+> **Definition: --[[integral restricted to a measurable set]]--**
 >
 > if $f \in \widetilde{L}(X,\mu,{\mathbb{C}})$, $E \in \mathcal{A}$ ($\mu$ 的 $\sigma$-algebra), 我们 define:
 >
@@ -234,7 +234,7 @@ $$
 
 并且我们发现, a.e. 相等的两个可积函数 $f,g \in \widetilde{L}(X,\mu,{\mathbb{C}})$ 在任意可测集上的积分都相等. 于是这两个函数在 $\widetilde{L}(X,\mu,{\mathbb{C}})$ 中的表现是相等的. 因而我们可以把 a.e. 相等的这种关系 quotient 掉, 简化这个空间:
 
-> **Definition: [[$L^{1}(\mu)$ space]]**
+> **Definition: --[[$L^{1}(\mu)$ space]]--**
 >
 > 我们定义 $L^{1}(X,\mu,{\mathbb{C}})$, 或简称为 $L^{1}(\mu)$, 为:
 >
@@ -269,7 +269,7 @@ $$
 >
 > Measurability is well preserved by taking limit, 并且更改一个零测集上函数的 definedness 不会改变这个 behavior. (这是一个很宽的条件了)
 
-> **Theorem: [[dominated convergence theorem]]**
+> **Theorem: --[[dominated convergence theorem]]--**
 >
 > Let $(f_{n})$ be a seq of functions in $L^{1}(\mu)$, s.t.
 >
@@ -378,7 +378,7 @@ $$
 
 ### Fubini for series and integral
 
-> **Corollary: [[Fubini for series and integral]]**
+> **Corollary: --[[Fubini for series and integral]]--**
 >
 > 对于 $L^{1}(\mu)$ 中的 sequence $(f_{n})$, 如果 $\left. \sum_{n = 1}^{\infty}\int \middle| f_{n} \middle| < \infty \right.$, 则
 >
@@ -510,7 +510,7 @@ $$
 
 ### $L^{1}$ as a Banach space
 
-> **Theorem: [[$L^{1}(\mu)$ 以 integral w.r.t. $\mu$ 作为 norm 是一个 normed VS]]**
+> **Theorem: --[[$L^{1}(\mu)$ 以 integral w.r.t. $\mu$ 作为 norm 是一个 normed VS]]--**
 >
 > 在 $L^{1}(\mu)$ 上, 我们 set
 >
@@ -544,7 +544,7 @@ $$
 >
 > 前两条是积分的 linearity 的下位推论. 后一条 by def.
 
-> **Corollary: [[$\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.$ 是一个 Banach space]]**
+> **Corollary: --[[$\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.$ 是一个 Banach space]]--**
 >
 > $\left. (L^{1}(\mu), \middle| \middle| \cdot \middle| \middle| ) \right.$ 的 induced metric space 是 complete 的. 即, every Cauchy seq converges.\
 > (**从而这是一个 Banach space**. )
@@ -598,7 +598,7 @@ $$
 
 ### density of simple function of $L^{1}(\mu)$
 
-> **Theorem: [[density of simple functions in $L^{1}(\mu)$]]**
+> **Theorem: --[[density of simple functions in $L^{1}(\mu)$]]--**
 >
 > 令 $(X,\mathcal{A},\mu)$ 为一个 measure space, 令 $f \in L^{1}(\mu)$,\
 > 对于任意 $\epsilon > 0$, 都存在 simple $\phi:X\rightarrow{\mathbb{C}}$ in $L^{1}(\mu)$, 使得
@@ -631,7 +631,7 @@ $$
 
 ### density of step functions in $L^{1}(m)$
 
-> **Theorem: [[LS measure space 的 $L^{1}$ space 上的 density of step functions]]**
+> **Theorem: --[[LS measure space 的 $L^{1}$ space 上的 density of step functions]]--**
 >
 > 考虑 $({\mathbb{R}},\mathcal{L},m_{s})$ where $m_{s}$ 为一个 Lebesgue-Stieljes measure on $\mathbb{R}$, let $f \in L^{1}(\mu)$,\
 > 对于任意 $\epsilon > 0$, 都存在 step function $\phi = \sum_{j = 1}^{N}c_{j}\chi_{I_{j}}$, 使得
@@ -656,7 +656,7 @@ $$
 
 也就是说, **任意的 Lebesgue intble function 都可以用 ctn function with compact supp 来近似.** 一个可积函数可以是 supp 非常怪异的以及非常 unctn 的, 但是却可以用 ctn and cpt supp functions 来逼近, in $L^{1}$ sense. 当然这是一种弱逼近. 函数可以差异很大.
 
-> **Definition: [[$C_{c}(X)$]]**
+> **Definition: --[[$C_{c}(X)$]]--**
 >
 > 令 $X$ be a metric space, 我们定义:
 >
@@ -664,7 +664,7 @@ $$
 > C_{c}(X) := \left\{ {\text{all ctn functions}\ f:X\rightarrow{\mathbb{C}}\ \text{with cpt supp}} \right\}
 > $$
 
-> **Theorem: [[$C_{c}(X) \subset L^{1}(\mu)$ 是一个 dense linear subspace]]**
+> **Theorem: --[[$C_{c}(X) \subset L^{1}(\mu)$ 是一个 dense linear subspace]]--**
 >
 > $C_{c}({\mathbb{R}}) \subset L^{1}(\mu_{m})$ 为一个 dense linear subspace.
 
@@ -731,7 +731,7 @@ Recall Riemann integral 的定义:
 
 ### Riemann intble $\Longrightarrow$ Lebesgue intble
 
-> **Theorem: [[Riemann integral 是 Lebesgue integral 的特殊情况]]**
+> **Theorem: --[[Riemann integral 是 Lebesgue integral 的特殊情况]]--**
 >
 > $$
 > \begin{matrix}
@@ -816,7 +816,7 @@ Recall Riemann integral 的定义:
 
 ### Lebesgue's criterion for Riemann integrability
 
-> **Theorem: [[Lebesgue's characterization of Riemann integrability]]**
+> **Theorem: --[[Lebesgue's characterization of Riemann integrability]]--**
 >
 > 定义
 >
@@ -931,7 +931,7 @@ $$
 
 ### 3 new modes of convergence: fast $L^{1}$-conv, conv measure and subseq a.e. conv
 
-> **Definition: [[modes of convergence for measurable functions]]**
+> **Definition: --[[modes of convergence for measurable functions]]--**
 >
 > 对于 $f_{n},f:X\rightarrow{\mathbb{C}}$, 我们定义以下三种 convergence:
 >
@@ -995,7 +995,7 @@ $$
 \left. g \in L^{1}\Longrightarrow\mu(\left\{ |g \middle| \geq c \right\}) \leq \frac{1}{c}\int \middle| g| \right.
 $$
 
-> **Proposition: [[**fast $L^{1}$-conv $\Longrightarrow$ a.e. conv.**]]**
+> **Proposition: --[[**fast $L^{1}$-conv $\Longrightarrow$ a.e. conv.**]]--**
 >
 > $$
 > \left. \sum\limits_{j = 1}^{\infty}\int \middle| f_{n} - f \middle| < \infty\Longrightarrow f_{n}\rightarrow f a.e. \right.
@@ -1043,7 +1043,7 @@ $$
 >
 > 我们知道, $L^{1}$-convergence 和 a.e. convergence 互不能推, 因为这一个是逐点的性质, 一个是整体的性质. 但是 $L^{1}$-convergence 作为一个整体的性质又不够强大 (它允许用函数的纵深来换取宽度, 从而在收敛的情况下保持积分不变.). 然而, fast $L^{1}$-convergence 则是一个足够强大的整体性质. 因而它可以 imply a.e. convergence.
 
-> **Corollary: [[$L^{1}$-convergence ($\Longrightarrow$conv. in measure) $\Longrightarrow$ subseq a.e. conv.]]**
+> **Corollary: --[[$L^{1}$-convergence ($\Longrightarrow$conv. in measure) $\Longrightarrow$ subseq a.e. conv.]]--**
 >
 > if $f_{n}\rightarrow f$ in $L^{1}$, then there exists subseq $(f_{n_{j}})_{j \in {\mathbb{N}}}$ s.t. $f_{n_{j}}\rightarrow f$ a.e.\
 > (即 **$L^{1}$ convergence implies subseq a.e. convergence**)
@@ -1077,7 +1077,7 @@ $$
 > 也有更强的一种 convergence: **uniform convergence a.e.**, 表示在一个零测集外都 uniform convergence, 其强度在 uni. conv. 和 a.u. conv. 中间. 但在这里, 对于我们即将介绍的 Egoroff's Theorem 而言不需要这么强的 convergence.\
 > 我们将在 $L^{p}$ space 的部分讨论 uniform convergence a.e. 这个 convergence mode, 并表示它等价于 $L^{\infty}$ convergence.
 
-> **Theorem: [[Egoroff's Theorem]]**
+> **Theorem: --[[Egoroff's Theorem]]--**
 >
 > 如果 $\mu$ 是个 finite measure ($\mu(X) < \infty$), 那么
 >
@@ -1136,7 +1136,7 @@ $$
 > $\mu = \infty$ 时的反例: 考虑 escape to hat function $f_{n} := \chi_{(n,n + 1)}$ on $({\mathbb{R}},{\mathfrak{L}},m)$.\
 > $f_{n}\rightarrow 0$ a.e. 但是并不 a.u., 因为 $\mu(X) = \infty$.
 
-> **Theorem: [[Lusin's Theorem]]**
+> **Theorem: --[[Lusin's Theorem]]--**
 >
 > If $f:\lbrack a,b\rbrack\rightarrow{\mathbb{C}}$ 是 Leb. mble 的, 那么 $\forall\varepsilon > 0$, 都存在 compact $K \subseteq \lbrack a,b\rbrack$ s.t. $m(K^{c}) < \varepsilon$ 并且 $f|_{K}$ ctn.
 

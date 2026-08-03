@@ -3,15 +3,23 @@
 ## Data flow and authority
 
 ```text
-authoritative Typst
-├── Typst paged target ───────────────> optional local PDF
-├── Typst HTML target ────────────────> ignored HTML / GitHub Pages
-├── semantic HTML + Pandoc filter ────> per-chapter LaTeX and Markdown
-└── #kn / #ref source scan + agent ───> qlkg-v2 graph and backlinks
+authoritative .typ ───────────────────> Typst HTML / snapshots
+authoritative .md  ───────────────────> Markdown HTML
+authoritative .tex ── maintained pass ─> generated .typ ──> Typst HTML
+all configured source suffixes + agent ────────────────> qlkg-v2 + backlinks
 ```
 
-Never convert from PDF. Generated snapshots may be edited for downstream use,
-but durable corrections return to Typst before regeneration.
+Never convert from PDF. A course or selected directory may mix `.typ`, `.md`,
+and `.tex`; scan each configured file in its native syntax. Generated Markdown
+snapshots remain downstream artifacts, while a configured Markdown source is
+an authority. Durable corrections return to the configured authority before
+regeneration.
+
+A directory scope expands only files admitted by its owning source's configured
+patterns. A Markdown authority publishes at `source.web/<relative-stem>`;
+terminal `README` and `index` stems fold into their parent route. A LaTeX
+authority's local HTML output is an ignored artifact, while its canonical node
+URLs use the source registry's `web` value.
 
 ## Semantic authoring API
 
@@ -23,7 +31,7 @@ Keep proofs and solutions immediately after, not inside, their statement. Keep
 ordinary prose and callouts left-aligned; only display math and intentional
 figures use centered layout.
 
-Knowledge identity is independent of the statement wrapper:
+Knowledge identity is independent of the statement wrapper and source format:
 
 ```typst
 #definition(title: [#kn[σ-algebra]])[
@@ -33,16 +41,32 @@ Knowledge identity is independent of the statement wrapper:
 By #ref[σ-algebra], ...
 ```
 
-- `#kn` has one globally unique authored name and one authority location;
-- `#ref` has any number of occurrences and links to that authority;
+```markdown
+--[[σ-algebra]]--
+
+By [[σ-algebra]], ...
+```
+
+```latex
+\kn{σ-algebra}
+
+By \knref{σ-algebra}, ...
+```
+
+- an authority marker (`#kn[...]`, `--[[...]]--`, or `\kn{...}`) has one
+  globally unique authored name and one authority location;
+- a ref marker (`#ref[...]`, `[[...]]`, or `\knref{...}`) may occur any number
+  of times and links to that authority;
 - the synchronizer assigns a hidden stable machine ID and emits `data-ql-kn`
   plus a stable `kn-<id>` anchor; authors never maintain that ID;
-- `#kn` displays the authored name as black bold text;
+- an authority marker displays the authored name as non-link emphasized text;
 - the graph stores searchable plain `label` plus Typst-rendered inline MathML in
   `properties.label_html`; web views prefer the latter and escape fallback text;
-- `#ref` emits `data-ql-ref` in HTML; Markdown renders both `#kn` and `#ref` as
-  Obsidian `[[wikilinks]]` so backlinks remain useful without hidden IDs;
-- a title defining several independent concepts contains several `#kn`
+- a ref emits `data-ql-ref` or an equivalent canonical hyperlink in HTML;
+- Typst-to-Markdown renders authority as `--[[name]]--` and refs as `[[name]]`;
+  direct Markdown uses the same unambiguous syntax, with `[[name|display]]`
+  available for ref display text;
+- a title defining several independent concepts contains several authority
   occurrences rather than one bundled node;
 - statement-local labels may coexist, but do not create graph nodes;
 - examples and sections have no automatic graph meaning.
@@ -61,26 +85,26 @@ By #ref[σ-algebra], ...
 | `proof` | `ql-proof` | blockquote | `proof` |
 | `solution` | `ql-solution` | blockquote | `qlsolution` |
 
-Each chapter Markdown frontmatter uses `qlnotes-schema: qlnotes-v2` and records
+Generated chapter Markdown frontmatter uses `qlnotes-schema: qlnotes-v2` and records
 its knowledge-node count. Markdown deliberately drops fenced-div classes and
 hidden IDs; statement type remains as the bold first line of a blockquote.
 Inline math uses `$...$`, while display math always uses `$$` delimiters on
-separate lines. `knowledge/scripts/knowledge.py` scans authority Typst rather
-than reconstructing identity from an export.
+separate lines. The graph scanner reads configured authorities directly rather
+than reconstructing identity from a downstream export.
 
 ## Knowledge graph
 
 `knowledge/SPEC.md` is authoritative for `qlkg-v2`. The graph distinguishes:
 
-- source-defined knowledge nodes (`#kn`);
+- source-defined knowledge nodes (the format-appropriate authority marker);
 - agent-created discipline/field/topic nodes;
 - semantic edges with evidence;
-- authored `#ref` occurrences used as backlinks.
+- authored ref occurrences used as backlinks.
 
 For each changed file, the agent also writes a concise source-grounded `text`
 entry for every locally authoritative node. A direct immediate prerequisite
-defined in another file requires a meaningful file-level `#ref`; same-file and
-transitive ancestors do not. Scripts validate these reviewed decisions but do
+defined in another file requires a meaningful file-level ref marker; same-file
+and transitive ancestors do not. Scripts validate these reviewed decisions but do
 not infer them.
 
 Source synchronization may target a repository, subject, course, or file. A
@@ -92,7 +116,7 @@ explicit agent delta.
 
 Use `#cite-key("folland1999")`, preserved as `[@folland1999]` in Markdown and
 `\autocite{folland1999}` in LaTeX. Copy `reference.bib` into both export roots.
-Preserve document-local Typst references independently from global `#ref`.
+Preserve document-local references independently from global graph refs.
 
 ## Diagrams
 
@@ -118,7 +142,7 @@ When adding a construct, update:
 - accessible HTML class and CSS;
 - the Pandoc/Lua Markdown mapping;
 - the native LaTeX mapping and class;
-- relevant graph scanning only if `#kn/#ref` semantics change;
+- relevant graph scanning when any authority/ref syntax changes;
 - graph-label MathML rendering and its focused fixture when name presentation
   changes;
 - focused fixture coverage.

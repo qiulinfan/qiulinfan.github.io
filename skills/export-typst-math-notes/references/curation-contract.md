@@ -1,12 +1,13 @@
 # QLNotes semantic curation contract
 
-Use this contract for every changed Typst file that defines or uses knowledge.
+Use this contract for every changed Typst, Markdown, or LaTeX file that defines
+or uses knowledge.
 Semantic judgment belongs to the agent. Scripts only inspect explicit markers,
 apply reviewed deltas, and validate deterministic invariants.
 
 ## File-scoped authority
 
-Treat one `.typ` file as the curation unit. Read the entire file, including
+Treat one source file as the curation unit. Read the entire file, including
 statements, adjacent proofs, explanatory prose, and comparisons. Query the
 existing graph before editing:
 
@@ -15,16 +16,25 @@ python3 knowledge/scripts/knowledge.py --repo-root . search "candidate"
 python3 knowledge/scripts/knowledge.py --repo-root . show "Candidate"
 ```
 
-Preserve a user-authored `#kn` as an accepted identity unless it conflicts with
+Preserve a user-authored authority marker as an accepted identity unless it conflicts with
 an existing canonical node or bundles several independent concepts. Do not
 rename or remove it merely to improve style.
+
+The explicit marker spellings are format-specific:
+
+- Typst: `#kn[Concept]` and `#ref[Concept]`;
+- Markdown: `--[[Concept]]--` and `[[Concept]]` (optionally
+  `[[Concept|display text]]` for a ref);
+- LaTeX: `\kn{Concept}` and `\knref{Concept}`.
+
+In Markdown, bare `[[Concept]]` is always a reference, never an authority.
 For unmarked prose, decide semantically whether it defines an independently
 teachable, searchable, reusable concept. Never promote every formal title by
 regex, position, or wrapper type.
 
 ## One concept per node
 
-One `#kn` denotes one concept. If a title defines several independently reusable
+One authority marker denotes one concept. If a title defines several independently reusable
 concepts, keep the readable title but mark each identity separately:
 
 ```typst
@@ -37,8 +47,8 @@ Split comma lists, conjunctions, paired constructions, and a concept bundled
 with one of its properties when the parts can be taught or reused separately.
 Do not split genuine aliases, translations, abbreviations, or two notations for
 the same concept; keep one canonical node and add aliases through the node
-delta. If an item already has a canonical node elsewhere, use `#ref`, not a
-second `#kn`.
+delta. If an item already has a canonical node elsewhere, use the native ref
+marker, not a second authority marker.
 
 Multiple nodes may share the same authoritative statement and source line. Add
 semantic edges between them only when the source supports a real relation; do
@@ -47,14 +57,15 @@ not connect them solely because they share a title.
 When splitting an already-synchronized composite node, preserve its stable ID
 for the primary concept. If the primary name does not already resolve to that
 ID, first apply a reviewed alias upsert to the old node, then edit and scan so
-the identity index reuses it. Add the remaining concepts as new `#kn` nodes.
+the identity index reuses it. Add the remaining concepts as new authority
+markers.
 Do not leave the old bundle orphaned or delete its accumulated edges merely
 because its public label became more precise; review and redirect any edge whose
 meaning belonged to a different component.
 
 ## Source-grounded node entries
 
-For every `#kn` whose authority is in the selected file, upsert a nonempty
+For every authority marker whose authority is in the selected file, upsert a nonempty
 `text` entry through `qlkg-agent-delta-v2`. Write one to three compact sentences
 that let a reader recognize the concept without opening the full note:
 
@@ -91,13 +102,13 @@ Example delta node:
 
 ## Direct cross-file references
 
-Add at least one `#ref[Canonical name]` in the selected file when all of the
+Add at least one format-appropriate ref marker in the selected file when all of the
 following hold:
 
 1. the file semantically uses an existing concept;
 2. that concept is a direct, immediate prerequisite of a definition, theorem,
    proof, or explanation in the file;
-3. its canonical `#kn` authority is a different `.typ` file.
+3. its canonical authority is a different source file, regardless of format.
 
 Place the ref at the first meaningful use, or in the title when the file restates
 an externally defined result. One file-level occurrence per directly used
@@ -111,7 +122,7 @@ Do not require a global ref for:
 - generic mathematical vocabulary that is not represented by a repository node;
 - proximity, keyword overlap, or a passing mention unrelated to the argument.
 
-`#ref` records source usage and creates a backlink. It does not create a semantic
+A ref marker records source usage and creates a backlink. It does not create a semantic
 edge. Conversely, a cross-file direct `prerequisite-for` edge whose consumer is
 defined in the selected file must have file-level ref coverage.
 
@@ -149,7 +160,7 @@ Choose a relation in this order before falling back to `prerequisite-for`:
 
 If an explicit comparison introduces an independently reusable counterpart only
 in prose, first decide whether that occurrence is its authoritative definition
-and deserves its own `#kn`. A comparison theorem or proposition node does not
+and deserves its own authority marker. A comparison theorem or proposition node does not
 replace either concept endpoint. Create `contrasts-with` only after both
 endpoints have source-grounded identities; do not invent a placeholder node just
 to make every file contain every relation type.
@@ -173,7 +184,8 @@ For each selected file:
 
 1. read the source and run scoped `scan`;
 2. search/show candidate existing nodes and their neighborhoods;
-3. edit only semantically justified `#kn` and `#ref` occurrences;
+3. edit only semantically justified authority and ref occurrences, using the
+   selected file's native syntax;
 4. rerun scoped `scan` and inspect every node identity;
 5. prepare one delta with entries, aliases, edge upserts, and explicit removals;
 6. apply the delta and synchronize the same file;

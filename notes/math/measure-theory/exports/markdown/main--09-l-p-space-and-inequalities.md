@@ -30,12 +30,12 @@ title: "MATH 597: Measure Theory"
 
 Recall:
 
-> **Definition: [[semi-norm, norm]]**
+> **Definition: --[[semi-norm, norm]]--**
 >
 > 一个**semi norm** 是一个函数 $\left. | \middle| \cdot \middle| \middle| :V\rightarrow\lbrack 0,\infty) \right.$ starting from a vector space $V$. 其满足 (1): tri eq 和 (2): homogeneity.\
 > 如果一个 semi-norm 满足 (3): $\left. | \middle| v \middle| \middle| = 0 \right.$ iff $v = 0$, 则称它为一个 **norm**.
 
-> **Definition: [[Banach space]]**
+> **Definition: --[[Banach space]]--**
 >
 > 一个 normed vector space $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ 的 induced metric space 如果是 complete 的, 它就被称为一个 **Banach space**.\
 
@@ -80,7 +80,7 @@ Recall:
 
 ### every Cachy seq conv (complete) $\Leftrightarrow$ every abs conv series convs
 
-> **Definition: [[series: convergence 和 absolute convergence]]**
+> **Definition: --[[series: convergence 和 absolute convergence]]--**
 >
 > 对于一个 normed VS $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ 中的 seq $(v_{n})$, 我们称 $\sum_{n = 1}^{\infty}v_{n}$ **converges**, 如果存在 $v \in V$ s.t.
 >
@@ -102,7 +102,7 @@ Recall:
 >
 > 即这个 series 对应的 norm series converges to some real number.
 
-> **Theorem: [[another criterion for Banach space]]**
+> **Theorem: --[[another criterion for Banach space]]--**
 >
 > A normed VS $\left. (V, \middle| \middle| \cdot \middle| \middle| ) \right.$ is a Banach space iff every absolutely convergent series converges.
 
@@ -204,7 +204,7 @@ Recall:
 
 ### $L^{p}$ spaces
 
-> **Definition: [[$L_{p}$ spaces]]**
+> **Definition: --[[$L_{p}$ spaces]]--**
 >
 > Consider $p \in (0,\infty)$.\
 > Let $(X,\mathcal{A},\mu)$ 为一个 measure space.\
@@ -251,7 +251,7 @@ Recall:
 > L^{p}(\mu_{counting}) = \left\{ (a_{n})_{n \in {\mathbb{N}}}:\sum\limits_{n = 1}^{\infty} \middle| a_{n} \middle| {}_{p} < \infty \right\}
 > $$
 
-> **Lemma: [[$L_{p}$ space is a vector space]]**
+> **Lemma: --[[$L_{p}$ space is a vector space]]--**
 >
 > $L_{p}$ space is a $\mathbb{C}$-vector space.
 
@@ -292,7 +292,7 @@ $$
 
 ### Hölder's ineq
 
-> **Theorem: [[Hölder's ineq]]**
+> **Theorem: --[[Hölder's ineq]]--**
 >
 > Consider conjugate pair: $p,q \in \lbrack 1,\infty)$ s.t.
 >
@@ -332,7 +332,7 @@ $$
 > Trivial Case 2: 如果 $\parallel f\underset{p}{\parallel} = \infty$ or $\parallel g\underset{q}{\parallel} = \infty$, 则右边 infinite, ineq trivially true. 因而我们只需要考虑 $\parallel f\underset{p}{\parallel}$ and $\parallel g\underset{q}{\parallel}$ are in $(0,\infty)$ 的情况就好了.\
 > Main case: 我们需要一个 Lemma:
 >
-> > **Lemma: [[Young's inequality for products]]**
+> > **Lemma: --[[Young's inequality for products]]--**
 > >
 > > Whenever $p,q \in (1,\infty)$ with $\frac{1}{p} + \frac{1}{q} = 1$, 都有
 > >
@@ -409,7 +409,7 @@ $$
 
 Minkowski's ineq 即 $L^{p}$ space 上的 tri ineq.
 
-> **Corollary: [[Minkowski inequality]]**
+> **Corollary: --[[Minkowski inequality]]--**
 >
 > 对于任意 $1 \leq p < \infty$, 都有:
 >
@@ -507,7 +507,7 @@ Minkowski's ineq 即 $L^{p}$ space 上的 tri ineq.
 
 ### $L^{p}$ ($1 \leq p < \infty$) is Banach
 
-> **Theorem: [[$L^{p}$ space ($1 \leq p < \infty$) is Banach]]**
+> **Theorem: --[[$L^{p}$ space ($1 \leq p < \infty$) is Banach]]--**
 >
 > $L^{p}$ ($1 \leq p < \infty$) is Banach.
 
@@ -616,7 +616,7 @@ Minkowski's ineq 即 $L^{p}$ space 上的 tri ineq.
 
 我们刚才 mention: DCT 对于 function seq $L^{p}$ convergence 的证明有很大作用. 这里我们就提供一个 DCT 推出的 $L^{p}$ convergence 的判断准则:
 
-> **Theorem: [[Criterion for $L^{p}$ convergence]]**
+> **Theorem: --[[Criterion for $L^{p}$ convergence]]--**
 >
 > if $f_{n}\rightarrow f$ a.e. and $\parallel f_{n}\underset{p}{\parallel}\rightarrow \parallel f\underset{p}{\parallel}$, then $\parallel f_{n} - f\underset{p}{\parallel}\rightarrow 0$.
 
@@ -653,7 +653,7 @@ $$
 >
 > 对 $f$ 使用 simple function seq 逼近, 使用 $\left. 2^{p} \middle| f|^{p} \right.$ 作为 dominating function of $|f_{k} - f|^{p}$; 而后使用 DCT 得证.
 
-> **Theorem: [[$C_{c}^{0}({\mathbb{R}}^{n})$ is dense in $L^{p}({\mathbb{R}},m)$ for $1 \leq p < \infty$]]**
+> **Theorem: --[[$C_{c}^{0}({\mathbb{R}}^{n})$ is dense in $L^{p}({\mathbb{R}},m)$ for $1 \leq p < \infty$]]--**
 >
 > $C_{c}^{0}({\mathbb{R}}^{n})$ is dense in $L^{p}({\mathbb{R}},m)$ for $1 \leq p < \infty$
 
@@ -697,7 +697,7 @@ $$
 
 实际上我们有更好的定义方式:
 
-> **Definition: [[essential supremum]]**
+> **Definition: --[[essential supremum]]--**
 >
 > $$
 > \parallel f\underset{\infty}{\parallel}: = \inf\left\{ {a \geq 0:\mu\left\{ x: \middle| f(x) \middle| > a \right\} = 0} \right\}
@@ -731,7 +731,7 @@ $$
 > \left. \parallel f\underset{u}{\parallel} := \sup\limits_{x \in X} \middle| f(x)| \right.
 > $$
 
-> **Definition: [[$L^{\infty}$ space]]**
+> **Definition: --[[$L^{\infty}$ space]]--**
 >
 > $$
 > L^{\infty}(\mu): = \left\{ {f:X\rightarrow{\mathbb{C}}\ \text{measurable}: \parallel f\underset{\infty}{\parallel} < \infty} \right\}/ \sim
@@ -763,7 +763,7 @@ $$
 
 ### $\ell^{\infty}$ space
 
-> **Definition: [[$\ell^{\infty}$]]**
+> **Definition: --[[$\ell^{\infty}$]]--**
 >
 > $$
 > \ell^{\infty}: = \left\{ (a_{j})_{1}^{\infty}: \parallel (a_{j})\underset{\infty}{\parallel}: = \sup\limits_{j} \middle| a_{j} \middle| < \infty \right\}
@@ -862,7 +862,7 @@ $$
 
 ### $L^{\infty}$-convergence 作为 (finite measure space 下) 最强的 $L^{p}$ convergence: 等价于 uni. conv a.e.
 
-> **Theorem: [[convergence in $L^{\infty}$ $\Leftrightarrow$uniform convergence a.e.]]**
+> **Theorem: --[[convergence in $L^{\infty}$ $\Leftrightarrow$uniform convergence a.e.]]--**
 >
 > $$
 > f_{n}\rightarrow f\text{in}\ L^{\infty}\Leftrightarrow\text{exists null set}\ E \subset X s.t.f_{n}\rightarrow f\ \text{uniformly on}\ E^{c}
@@ -933,7 +933,7 @@ $$
 
 ### $L^{\infty}$ as Banach space
 
-> **Theorem: [[$L^{p}$ ($1 \leq p \leq \infty$) is Banach]]**
+> **Theorem: --[[$L^{p}$ ($1 \leq p \leq \infty$) is Banach]]--**
 >
 > For any measure space $(X,\mathcal{A},\mu)$, $L^{p}(\mu)$ is Banach for all $1 \leq p \leq \infty$
 
@@ -1047,7 +1047,7 @@ $$
 
 刚才我们已经 state 了, 但还没有证明:
 
-> **Theorem: [[inclusion relation between $L^{p}$ spaces (when base space is finite measure)]]**
+> **Theorem: --[[inclusion relation between $L^{p}$ spaces (when base space is finite measure)]]--**
 >
 > 如果 measure space $X$ has finite measure, 那么有
 >
@@ -1298,7 +1298,7 @@ My point: 虽然说 $|f(x)|^{large}$ 比起 $|f(x)|^{small}$ 是更大还是更�
 
 相对于这个inclusion 关系, 我们还有另外一个 inclusion 关系:
 
-> **Proposition: [[每个 $L^{m}$ 函数都是一个 $L^{n}$ 函数和一个 $L^{r}$ 函数的和 ($0 < n < m < r \leq \infty$)]]**
+> **Proposition: --[[每个 $L^{m}$ 函数都是一个 $L^{n}$ 函数和一个 $L^{r}$ 函数的和 ($0 < n < m < r \leq \infty$)]]--**
 >
 > 对于任意的 $0 < n < m < r \leq \infty$, 都有
 >

@@ -35,7 +35,9 @@
   }
 }
 
-#let knowledge-entry(name) = knowledge-registry.find(entry => entry.name == name)
+#let knowledge-entry(name) = knowledge-registry.find(
+  entry => entry.names.any(candidate => candidate == name)
+)
 
 // Define one globally unique knowledge name. Machine IDs stay in the generated
 // registry; authors write only #kn[Name].

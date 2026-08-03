@@ -49,7 +49,7 @@ $$
 通过 integration of the function with respect to some measure $\mu$ 定义出了另一个 measure $\nu$.\
 But what about $f \in L^{1}$?
 
-> **Definition: [[signed measure]]**
+> **Definition: --[[signed measure]]--**
 >
 > 一个 signed measure on a measurable space $(X,\mathcal{A})$ 是一个 function $\nu:\mathcal{A}\rightarrow\lbrack - \infty,\infty)$ 或者 $\nu:\mathcal{A}\rightarrow( - \infty,\infty\rbrack$, **和普通 meausre 一样满足 $\nu(\varnothing) = 0$ 以及 ctbl disjoint additivity**.\
 > Note: signed measure 只 admit $+ \infty$ 和 $- \infty$ 中的一个值 (**不可以同时存在两个集合 $\nu(A) = \infty$, $\nu(B) = - \infty$**)
@@ -91,7 +91,7 @@ But what about $f \in L^{1}$?
 
 ### signed measure 的 CFB, CFA
 
-> **Proposition: [[continuity from below and above for signed measures]]**
+> **Proposition: --[[continuity from below and above for signed measures]]--**
 >
 > 给定 signed measure $\nu$, 对于 increasing seq $E_{j}$, 有
 >
@@ -147,7 +147,7 @@ $$
 >
 > 这个性质表示了 signed measure 的稳定性: **一旦一个集合有无穷的 measure, 它外面的任何 superset 一定也有同向的无穷 measure**.
 
-> **Definition: [[positive set, negative set, null set]]**
+> **Definition: --[[positive set, negative set, null set]]--**
 >
 > 给定 signed measure $\nu$, 对于 $E \in \mathcal{A}$, 我们称 $E$ 是一个 **postive se**t, 如果对于对于任意的 $F \subset E$, 都有
 >
@@ -162,7 +162,7 @@ $$
 >
 > null set 既是 positive set, 又是 negative set.
 
-> **Lemma: [[measurable subset preserves sign]]**
+> **Lemma: --[[measurable subset preserves sign]]--**
 >
 > measurable subset of a measurable set $F \subset E$ preserves the sign of $E$.\
 > 即: $E$ 是一个 positive / null / negative $\Longrightarrow$任意 $F \subset E$ 是一个 positive / null / negative.
@@ -171,7 +171,7 @@ $$
 >
 > By def, 可以 by contradiction 得到.
 
-> **Lemma: [[positive, negative, null set 内的局部性质和普通的 measure space 一样]]**
+> **Lemma: --[[positive, negative, null set 内的局部性质和普通的 measure space 一样]]--**
 >
 > 如果 $E$ 是一个 **positive set** for signed measure $\nu$, 那么
 >
@@ -215,7 +215,7 @@ Hahn Decomposition Theorem 表示: **任意一个 signed measure 都把整个空
 
 ### Hahn Decomposition
 
-> **Theorem: [[Hahn Decomposition Theorem]]**
+> **Theorem: --[[Hahn Decomposition Theorem]]--**
 >
 > 对于任意 measurable space $(X,\mathcal{A})$ 上的任意 signed measure $\nu$, 都存在一个 positive set $P$ 和一个 negative set $N$ s.t.
 >
@@ -388,7 +388,7 @@ Hahn Decomposition Theorem 表示: **任意一个 signed measure 都把整个空
 
 ### mutually singular s.m.
 
-> **Definition: [[mutually singular]]**
+> **Definition: --[[mutually singular]]--**
 >
 > 我们称两个 signed measure $\nu_{1},\nu_{2}$ on $(X,\mathcal{A})$ 是 mutually singular 的, 如果 $X = E_{1} \sqcup E_{2}$, 其中 $E_{i}$ 是 $\nu_{i}$ 的 null set.\
 > 简单而言就是: 这两个 measure 可以把
@@ -548,7 +548,7 @@ $$
 
 下面我们证明 Jordan decomposition:
 
-> **Theorem: [[Jordan decomposition theorem]]**
+> **Theorem: --[[Jordan decomposition theorem]]--**
 >
 > 对于任意 s.m. $\nu$ on $(X,\mathcal{A})$, 都存在唯一的 positive measure $\nu^{+}$, $\nu^{-}$ s.t.
 >
@@ -597,7 +597,7 @@ $$
 
 ### total variation measure
 
-> **Definition: [[total variation measure]]**
+> **Definition: --[[total variation measure]]--**
 >
 > $$
 > \left. |\nu \middle| : = \nu^{+} + \nu^{-} \right.
@@ -623,7 +623,7 @@ $$
 
 ### integration w.r.t. s.m.
 
-> **Definition: [[integration w.r.t. signed measure]]**
+> **Definition: --[[integration w.r.t. signed measure]]--**
 >
 > 对于 signed measure $\nu$, 我们 set:
 >

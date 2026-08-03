@@ -51,6 +51,7 @@ node_modules/
 _site/
 dist/
 .astro/
+site/public/_notes-assets/
 
 # Local knowledge search index and agent deltas
 knowledge/build/

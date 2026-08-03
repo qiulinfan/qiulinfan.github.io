@@ -26,7 +26,7 @@ title: "MATH 597: Measure Theory"
 
 ### general measurable function
 
-> **Definition: [[$(\mathcal{M},\mathcal{N})$-measurable function]]**
+> **Definition: --[[$(\mathcal{M},\mathcal{N})$-measurable function]]--**
 >
 > Let $(X,\mathcal{M})$, $(Y,\mathcal{N})$ be measurable spaces, 如果 $f:X\rightarrow Y$ 满足:
 >
@@ -44,7 +44,7 @@ title: "MATH 597: Measure Theory"
 
 这两个定义都表示的是: 性质不好的集合不会被映射到性质良好的集合. (但是性质良好的集合有可能被映射到性质不好的集合.)
 
-> **Proposition: [[composition preserves measurability]]**
+> **Proposition: --[[composition preserves measurability]]--**
 >
 > 如果 $f$ 是 $(\mathcal{A},\mathcal{B})$-measurable 的, $g$ 是 $(\mathcal{B},\mathcal{C})$-measurable 的, 那么 $g \circ f$ 是 $(\mathcal{A},\mathcal{C})$-measurable 的.
 
@@ -88,7 +88,7 @@ title: "MATH 597: Measure Theory"
 
 ### real and complex-valued measurable function
 
-> **Definition: [[(real-valued) measurable functions]]**
+> **Definition: --[[(real-valued) measurable functions]]--**
 >
 > Let $(X,\mathcal{A})$ be a measurable space, 对于 $f:X\rightarrow\bar{\mathbb{R}}$ 如果它是 $(\mathcal{A},\mathcal{B}(\bar{\mathbb{R}}))$-measurable 的, 我们直接简称它是 $\mathcal{A}$-measurable 的, 或者简称为 measurable 的.
 
@@ -108,7 +108,7 @@ title: "MATH 597: Measure Theory"
 >
 > 以及, $\mathcal{B}(\bar{\mathbb{R}})$ 的 generating set 可以是所有的 $(a,\infty\rbrack$ 集合或者 $\lbrack - \infty,a)$ 集合**.** 所以**一个 map to $\bar{\mathbb{R}}$ 的函数是可测的, 当且仅当任意 $(a,\infty\rbrack$ 的 preimage 都可测**.\
 
-> **Definition: [[(complex-valued) measurable functions]]**
+> **Definition: --[[(complex-valued) measurable functions]]--**
 >
 > 如果 $f:X\rightarrow{\mathbb{C}}$ 满足: $\text{Re}\ f,\text{Im}\ f$ 都是 (real-valued) $X$-measurable 的, 那么也称 $f$ 是 $X$-measurable 的, 或者直接说是 measurable 的.
 
@@ -126,7 +126,7 @@ title: "MATH 597: Measure Theory"
 > \mathcal{B}({\mathbb{C}}) \equiv \mathcal{B}({\mathbb{R}}^{2}) = \mathcal{B}({\mathbb{R}}) \otimes \mathcal{B}({\mathbb{R}})
 > $$
 
-> **Definition: [[Lebesgue measurable functions, Borel measurable functions]]**
+> **Definition: --[[Lebesgue measurable functions, Borel measurable functions]]--**
 >
 > Naturally, 如果 $f:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是一个 $\mathfrak{L}$-measurable 的函数, 那么我们称 $f$ 是 **Lebesgue measurable** 的.
 >
@@ -146,7 +146,7 @@ title: "MATH 597: Measure Theory"
 
 ### arithmetic and sequential preservation of measurable functions
 
-> **Proposition: [[addition and multiplication preserve measurability]]**
+> **Proposition: --[[addition and multiplication preserve measurability]]--**
 >
 > 如果 $f,g$ 是 $\mathcal{M}$-measurable function, 那么 $f + g,fg$ 也是.
 
@@ -172,7 +172,7 @@ title: "MATH 597: Measure Theory"
 >
 > 于是也 finishes the proof, following 前一个 proposition.
 
-> **Lemma: [[sequential behavior of real-valued measurable function]]**
+> **Lemma: --[[sequential behavior of real-valued measurable function]]--**
 >
 > 如果 $\left\{ {f_{n}:X\rightarrow\bar{\mathbb{R}}} \right\}_{n \in {\mathbb{N}}}$ 是一个 seq of $\mathcal{M}$-measurable functions, 那么
 >
@@ -274,7 +274,7 @@ title: "MATH 597: Measure Theory"
 
 ### indicator and simple function
 
-> **Definition: [[characteristic (indicator) function]]**
+> **Definition: --[[characteristic (indicator) function]]--**
 >
 > Given $E \subseteq X$, 我们定义:
 >
@@ -293,13 +293,13 @@ title: "MATH 597: Measure Theory"
 
 indicator function measurable 当且仅当它 indicate 的集合是 measurable 的.
 
-> **Definition: [[simple function]]**
+> **Definition: --[[simple function]]--**
 >
 > 一个 simple function on measurable space $(X,\mathcal{A})$ 是一个 $\mathcal{A}$-measurable function $\phi:X\rightarrow{\mathbb{C}}$, taking only finitely many values.
 >
 > 即: $\phi(X) = \left\{ {c_{1},\cdots,c_{k}} \right\}$
 
-> **Proposition: [[使用 **a sum of indicator functions of measurable sets** 来定义 simple function]]**
+> **Proposition: --[[使用 **a sum of indicator functions of measurable sets** 来定义 simple function]]--**
 >
 > 对于 simple function $\phi:X\rightarrow{\mathbb{C}}$ s.t. $\phi(X) = \left\{ {c_{1},\cdots,c_{n}} \right\}$, 我们也可以定义它为:
 >
@@ -349,7 +349,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 
 ### measurable function is a limit of simple functions
 
-> **Theorem: [[approximating a nonneg measurable function by simple function]]**
+> **Theorem: --[[approximating a nonneg measurable function by simple function]]--**
 >
 > 任意的 measurable $f:X\rightarrow\lbrack 0,\infty\rbrack$ 都是 **pointwise limit** of an **increasing sequence of simple functions** $\left\{ {\phi_{n}:X\rightarrow\lbrack 0,\infty\rbrack} \right\}_{n \in {\mathbb{N}}}$.
 
@@ -403,7 +403,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 >
 > 我们在构造 simple function 的时候这样用到 measurability: 这里的每个 $\phi_{n}$ 是 simple function, 是由于 $f$ measurable, 以至于每个 **$E_{n}^{k},F_{n}$ 作为 interval 的 preimage, 都是 measurable sets.**
 
-> **Corollary: [[simple approximation of complex measurable functions]]**
+> **Corollary: --[[simple approximation of complex measurable functions]]--**
 >
 > 对于任意的 measurable $f:X\rightarrow{\mathbb{C}}$, 都存在 a seq of simple functions
 >
@@ -423,7 +423,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 
 ### integration of non-neg functions
 
-> **Definition: [[$L^{+}$ space and integration on it]]**
+> **Definition: --[[$L^{+}$ space and integration on it]]--**
 >
 > 给定一个 measure space $(X,\mathcal{M},\mu)$ 我们定义:
 >
@@ -459,7 +459,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 >
 > 笔者感觉积分理论就是在一个抽象空间上，通过一个抽象的密度函数(被积函数) 以及体积指标(measure function), 得到一个抽象质量。由于这个理念本身是从 ${\mathbb{R}}^{n}$ 上 generalize 的，因而各种不同的积分理论在 ${\mathbb{R}}^{n}$ 上的积分总是 coincide 的
 
-> **Definition: [[integration on a subset]]**
+> **Definition: --[[integration on a subset]]--**
 >
 > 对非负 **simple functions $\phi = \sum_{j = 1}^{n}a_{j}\chi_{E_{j}} \in L^{+}(\mu)$**, 我们定义 **the integral of $\phi$ on $A \in \mathcal{M}$ with respect to $\mu$** by:
 >
@@ -479,7 +479,7 @@ indicator function measurable 当且仅当它 indicate 的集合是 measurable �
 > \int_{A}\phi d\mu := \int\phi\chi_{A} d\mu = \sum\limits_{j}a_{j}\chi_{A \cap E_{j}}
 > $$
 
-> **Proposition: [[integral of simple functions 的性质]]**
+> **Proposition: --[[integral of simple functions 的性质]]--**
 >
 > Let $\phi,\psi$ be simple functions in $L^{+}(\mu)$, 有:
 >
@@ -537,7 +537,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 
 ### MCT
 
-> **Theorem: [[monotone convergence theorem]]**
+> **Theorem: --[[monotone convergence theorem]]--**
 >
 > Let $\left\{ f_{n} \right\}_{n \in {\mathbb{N}}}$ be a seq in $L^{+}(\mu)$, 并且有 $f_{n} \leq f_{n + 1}$ for each $n$.\
 > 我们 define:
@@ -706,7 +706,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 
 ### Tonelli for sum and integrals
 
-> **Corollary: [[Tonelli for sum and integrals]]**
+> **Corollary: --[[Tonelli for sum and integrals]]--**
 >
 > for $\left\{ f_{i} \right\}_{i \in {\mathbb{N}}}$ in $L^{+}(\mu)$, 有:
 >
@@ -733,7 +733,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 
 ### Fatou's Lemma
 
-> **Theorem: [[Fatou's Lemma]]**
+> **Theorem: --[[Fatou's Lemma]]--**
 >
 > 令 $(f_{n})$ be a seq of functions in $L^{+}(\mu)$, then
 >
@@ -823,7 +823,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 
 ### Chebyshev's inequality with corollaries
 
-> **Lemma: [[Chebyshev's inequality]]**
+> **Lemma: --[[Chebyshev's inequality]]--**
 >
 > 对于 measure space $(X,\mathcal{M},\mu)$, 如果 $f \in L^{+}(\mu)$ 并且 $c > 0$, 那么
 >
@@ -845,7 +845,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 >
 > 这是一个简单而常用的结论.
 
-> **Proposition: [[非负函数积分为 0 等价于几乎处处为 0]]**
+> **Proposition: --[[非负函数积分为 0 等价于几乎处处为 0]]--**
 >
 > 令 $f \in L^{+}(\mu)$, 有:
 >
@@ -873,7 +873,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 > \int f = \int_{D}f + \int_{D^{c}}f = 0 + \int_{D^{c}}g = \int g
 > $$
 
-> **Corollary: [[liminf version of MCT]]**
+> **Corollary: --[[liminf version of MCT]]--**
 >
 > suppose $(f_{n})_{n \in {\mathbb{N}}}$ 是一个 seq of functions in $L^{+}(\mu)$, 且 $f_{n}\rightarrow f \in L^{+}(\mu)$, 则:
 >
@@ -886,7 +886,7 @@ $\leq$ 是容易证明的, 但是 $\geq$ 有点困难. 为了证明 $\geq$ 这�
 > 这是一个条件稍微弱化的 MCT: 把 $f_{n}\operatorname{\nearrow ︎}f$ 的条件改成了 $f_{n}\rightarrow f$ a.e., 得到的结论也稍弱化.\
 > **modify $f_{n}$ and $f$ on a null set** (thus without chaning the integral) 后, follows directly from **Fatou's lemma**,
 
-> **Theorem: [[积分收敛 $\Longrightarrow$ 发散点集零测, 以及 support $\sigma$-finite]]**
+> **Theorem: --[[积分收敛 $\Longrightarrow$ 发散点集零测, 以及 support $\sigma$-finite]]--**
 >
 > 如果 $f \in L^{+}(\mu)$ 且 $\left. |\int f \middle| < \infty \right.$, 则有:
 >

@@ -318,6 +318,15 @@ local function remove_label_span(element)
 end
 
 local function rewrite_link(element)
+  if element.target == "qlkn:" or element.target == "qlknref:" then
+    local function_name = element.target == "qlkn:" and "kn" or "ref"
+    local inlines = pandoc.List({
+      pandoc.RawInline("typst", "#" .. function_name .. "["),
+    })
+    inlines:extend(element.content)
+    inlines:insert(pandoc.RawInline("typst", "]"))
+    return inlines
+  end
   if string.sub(element.target, 1, 1) ~= "#" then
     return nil
   end

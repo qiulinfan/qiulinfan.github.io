@@ -25,7 +25,7 @@ title: "Math 525: Probability"
 
 ### permutations
 
-> **Definition: [[permutations]]**
+> **Definition: --[[permutations]]--**
 >
 > 一个 permutation 就是对一组 objects 的一个 **rearrangement** (这些 objects 中可以有 same 的也可以有 distinct 的).\
 > 对于 $n$ 个 **distinct objects**, 一共存在
@@ -63,7 +63,7 @@ title: "Math 525: Probability"
 > 其中 $n_{1},n_{2},\cdots,n_{k}$ 是每个 object 的重复数量.\
 > 这个式子又叫做 multinomial coefficient.
 >
-> > **Definition: [[multinomial coefficient]]**
+> > **Definition: --[[multinomial coefficient]]--**
 > >
 > > 令 $n \in {\mathbb{N}},n_{1},n_{2},\cdots,n_{k} \in {\mathbb{N}},n_{1} + n_{2} + \cdots + n_{k} = n$, 我们定义 multinomial coefficient:
 > >
@@ -81,7 +81,7 @@ title: "Math 525: Probability"
 
 ### combinations
 
-> **Definition: [[combinations]]**
+> **Definition: --[[combinations]]--**
 >
 > 一个 combination 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序.
 
@@ -109,7 +109,7 @@ title: "Math 525: Probability"
 
 ### binomial theorem
 
-> **Theorem: [[Binomial Theorem]]**
+> **Theorem: --[[Binomial Theorem]]--**
 >
 > 令 $x,y \in {\mathbb{R}},n \in {\mathbb{N}}$, 则有:
 >
@@ -232,7 +232,7 @@ title: "Math 525: Probability"
 
 ### combinations with repetition
 
-> **Definition: [[combinations with repetition]]**
+> **Definition: --[[combinations with repetition]]--**
 >
 > 一个 combination with repetition 就是从一个 set 中选取若干个 elements, 而忽略它们的顺序, 并且**允许重复选取**.
 
@@ -291,7 +291,7 @@ title: "Math 525: Probability"
 
 ### inclusion-exclusion principle
 
-> **Proposition: [[inclusion-exclusion principle]]**
+> **Proposition: --[[inclusion-exclusion principle]]--**
 >
 > 如果 $\Omega$ 是 [[measure space]] 意义下的一个 finite measure space, 那么对于任意 $A_{1},\ldots,A_{n} \subseteq \Omega$ 的, 有:
 >
@@ -365,7 +365,7 @@ title: "Math 525: Probability"
 
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory.\
 
-> **Definition: [[probability space]] , [[probability measure]] , [[sample space]] , [[event space]]**
+> **Definition: --[[probability space]]-- , --[[probability measure]]-- , --[[sample space]]-- , --[[event space]]--**
 >
 > 按 [[measure space]] 的定义, 一个 probability space 是三元组 $(\Omega,\mathcal{F},{\mathbb{P}})$, 其中 ${\mathbb{P}}(\varnothing) = 0,{\mathbb{P}}(\Omega) = 1$.\
 > 对于这样的 [[measure]] $\mathbb{P}$, 我们称之为 **probability measure (概率测度, 即概率)**.\
@@ -459,7 +459,7 @@ title: "Math 525: Probability"
 
 ### conditional probability and Bayes' theorem
 
-> **Definition: [[conditional probability]]**
+> **Definition: --[[conditional probability]]--**
 >
 > 对于 probability space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$, 如果 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability of an event $A \in \mathcal{F}$ given $B$ 为:
 >
@@ -467,7 +467,7 @@ title: "Math 525: Probability"
 > {\mathbb{P}}(A \mid B) = \frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)}
 > $$
 
-> **Proposition: [[decomposing probability of intersection of events]]**
+> **Proposition: --[[decomposing probability of intersection of events]]--**
 >
 > 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of events, 对于任意 $n \in {\mathbb{N}}$:
 >
@@ -479,7 +479,7 @@ title: "Math 525: Probability"
 >
 > Naturally follows from the def.
 
-> **Theorem: [[law of total probability]]**
+> **Theorem: --[[law of total probability]]--**
 >
 > 令 $\left( A_{i} \right)_{i \in {\mathbb{N}}}$ 为一个 seq of **pairwise disjoint** events, 如果 $\sqcup_{i = 1}^{\infty}A_{i} = \Omega$, 那么对于任意 event $E \subseteq \Omega$:
 >
@@ -497,7 +497,7 @@ title: "Math 525: Probability"
 >
 > $P(A_{i})P(E \mid A_{i})$ 就等于 $P(E \cap A_{i})$, 也就是在 $A_{i}$ 这个区域上, $E$ 的 measure. 因而 disjoint union 之下就是 $E$ 的完整 measure.
 
-> **Theorem: [[Bayes theorem]]**
+> **Theorem: --[[Bayes theorem]]--**
 >
 > If $A,B \subseteq \Omega$ such that ${\mathbb{P}}(B) \neq 0$, then
 >
@@ -633,7 +633,7 @@ title: "Math 525: Probability"
 但是, 难道 ${\mathbb{P}}(B) = 0$ 就不能定义条件概率了吗? 我们考虑一个连续情况: 在 ${\mathbb{R}}^{3}$ 中任意选择一个点, 求: 该点位于单位球面上的概率. 显然, 这个概率是 0. 但是, 如果我们知道该点位于单位球内, 那么该点距离原点的距离为 $1$ 的概率应当为 $1$. 也就是说, 即使在 ${\mathbb{P}}(B) = 0$ 的情况下, 我们也希望定义 ${\mathbb{P}}(A \mid B)$.\
 在考虑这个定义之前, 首先我们发现: 基于我们先前定义的 conditional probability, 我们可以获得一个新的 probability space:
 
-> **Definition: [[conditional probability space]] and [[trace $\sigma$-algebra]]**
+> **Definition: --[[conditional probability space]]-- and --[[trace $\sigma$-algebra]]--**
 >
 > 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 给定一个 event $B \in \mathcal{F}$ 且 ${\mathbb{P}}(B) > 0$, 我们定义 conditional probability space as the triplet $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$, 其中:
 >
@@ -657,7 +657,7 @@ title: "Math 525: Probability"
 
 既然这样, 我们能否直接从一个新的 prob space $(B,\mathcal{F}_{B},{\mathbb{P}}( \cdot \mid B))$ 出发, 来定义条件概率呢? 这就是 Kolmogorov 的定义:
 
-> **Definition: [[Kolmogorov definition of conditional probability]]**
+> **Definition: --[[Kolmogorov definition of conditional probability]]--**
 >
 > 对于给定的 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 设 $\mathcal{G} \subseteq \mathcal{F}$ 是一个 sub-$\sigma$-algebra. 对于 event $A \in \mathcal{F}$, 条件概率 ${\mathbb{P}}(A \mid \mathcal{G})$ 是一个 $\mathcal{G}$-measurable 的随机变量, 其满足对于任意 $G \in \mathcal{G}$, 有:
 >
@@ -688,7 +688,7 @@ title: "Math 525: Probability"
 
 ### independence of events
 
-> **Definition: [[independence of events]]**
+> **Definition: --[[independence of events]]--**
 >
 > 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ 如果有
 >
@@ -709,7 +709,7 @@ title: "Math 525: Probability"
 >
 > 根据条件概率的定义, 容易得出: 两个 events $A,B$ independent 的定义**等价于 ${\mathbb{P}}(A \mid B) = {\mathbb{P}}(A)$**, 即事件 $B$ 的发生与否不影响事件 $A$ 发生的概率.\
 >
-> > **Proposition: [[independence of two events 的等价定义]]**
+> > **Proposition: --[[independence of two events 的等价定义]]--**
 > >
 > > 对于 prob space $(\Omega,\mathcal{F},{\mathbb{P}})$, 两个 events $A,B \in \mathcal{F}$ independent iff:
 > >

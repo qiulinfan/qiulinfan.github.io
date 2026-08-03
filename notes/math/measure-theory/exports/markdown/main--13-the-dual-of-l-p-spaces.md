@@ -68,7 +68,7 @@ $$
 
 对于作为 NVS 的 $V$, 我们还可以定义一个 linear functional 的 boundedness.
 
-> **Definition: [[bounded linear functional]]**
+> **Definition: --[[bounded linear functional]]--**
 >
 > Let $V$ be a $\mathbb{K}$-NVS, $f:V\rightarrow{\mathbb{K}}$ be a linear functional.\
 > 我们称 $f$ bounded, if exist $C > 0$ s.t.
@@ -82,7 +82,7 @@ $$
 > 注意, **linear functional 的 boundedness 和它作为函数的 boundedness 是不一样的概念.**\
 > 作为函数的 boundedness 表示函数值的有界性, 而**作为 linear map 的 boundedness (此处) 表示它的作用效果的 boundedness, 不会把一个 vector 放大太多倍.**
 
-> **Proposition: [[linear functional bounded $\Leftrightarrow$ ctn at $0$]]**
+> **Proposition: --[[linear functional bounded $\Leftrightarrow$ ctn at $0$]]--**
 >
 > if $f:V\rightarrow{\mathbb{K}}$ is a linear functional, TFAE:
 >
@@ -119,7 +119,7 @@ $$
 > 通常我们认为 linear map 总是 ctn 的, 但是其实它 ctn iff bounded, unbounded 的时候就不 ctn.\
 > 以及: **linear map between finite dim spaces 总是 bounded 的, 从而总是 ctn 的**. 不过这里我们要讨论的就是 infinite dim spaces. 比如 $L^{p}$.
 
-> **Definition: [[dual space]]**
+> **Definition: --[[dual space]]--**
 >
 > If $V$ is a NVS, 我们定义它的 **dual space** as:
 >
@@ -127,7 +127,7 @@ $$
 > V^{\ast} := \left\{ {\text{bounded linear functionals} f:V\rightarrow{\mathbb{K}}} \right\}
 > $$
 
-> **Definition: [[norm of dual space: 即 **dual norm**]]**
+> **Definition: --[[norm of dual space: 即 **dual norm**]]--**
 >
 > Given $f \in V^{\ast}$, set
 >
@@ -149,7 +149,7 @@ $$
 
 ### $V^{\ast}$ being a Banach space
 
-> **Theorem: [[dual space is always Banach]]**
+> **Theorem: --[[dual space is always Banach]]--**
 >
 > 对于**任意的 NVS** $V$: $V^{\ast}$ 都是一个 Banach space. (not assuming $V$ Banach).
 
@@ -237,7 +237,7 @@ Proof 见 Folland 5.4.
 
 ### $(L^{p})^{\ast} = L^{q}$, $\frac{1}{p} + \frac{1}{q} = 1$
 
-> **Theorem: [[对于互为 conjugate exponent 的 $p,q$, $L^{p}$ 是 $L^{q}$ 的 dual space]]**
+> **Theorem: --[[对于互为 conjugate exponent 的 $p,q$, $L^{p}$ 是 $L^{q}$ 的 dual space]]--**
 >
 > For $1 < p,q < \infty$ with $\frac{1}{p} + \frac{1}{q} = 1$, we have:
 >

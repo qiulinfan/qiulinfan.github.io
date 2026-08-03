@@ -46,7 +46,7 @@ $$
 \int f dm^{n}\quad
 $$
 
-> **Theorem: [[Fubini-Tonelli for $m^{n}$]]**
+> **Theorem: --[[Fubini-Tonelli for $m^{n}$]]--**
 >
 > Suppose $f \in L^{+}({\mathbb{R}}^{n})$ or $L^{1}({\mathbb{R}}^{n})$
 >
@@ -88,7 +88,7 @@ $$
 
 ### regularities of Lebesgue measure in ${\mathbb{R}}^{n}$
 
-> **Theorem: [[regularities of $\mathcal{L}^{n}$]]**
+> **Theorem: --[[regularities of $\mathcal{L}^{n}$]]--**
 >
 > If $E \subset \mathcal{L}^{n}$, 则有:
 >
@@ -200,7 +200,7 @@ $$
 
 Note: 这里的 $\underset{¯}{A}(E,k),\bar{A}(E,k),\underset{¯}{A}(E),\bar{A}(E)$ 都是 union of cubes with disjoint interiors.
 
-> **Lemma: [[approximate an open set by disjoint interior cubes]]**
+> **Lemma: --[[approximate an open set by disjoint interior cubes]]--**
 >
 > Let $E \subset {\mathbb{R}}^{n}$ be open.\
 > Claim: $E = \underset{¯}{A}(E)$
@@ -225,7 +225,7 @@ $$
 t_{a}^{- 1} = t_{- a}
 $$
 
-> **Theorem: [[Lebesgue measure and integral is invariant under translation]]**
+> **Theorem: --[[Lebesgue measure and integral is invariant under translation]]--**
 >
 > \(a\) 任取 $a \in {\mathbb{R}}^{n}$,
 >
@@ -286,7 +286,7 @@ $$
 
 ### Lebesgue measure and integration is scaled $|\det T|$ under linear map
 
-> **Theorem: [[Lebesgue measure and integration is scaled $|\det T|$ by linear map]]**
+> **Theorem: --[[Lebesgue measure and integration is scaled $|\det T|$ by linear map]]--**
 >
 > For $T \in GL(n,{\mathbb{R}})$ (即 linear map $T:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}^{n}$ 且可逆) (a) 如果 $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ is Lebesgue measurable, then so is $f \circ T$.\
 > Moreover if $f \in L^{+}$ or $f \in L^{1}$, then $f \circ T \in L^{+}$, $f \circ T \in L^{1}$ respectively. And
@@ -318,7 +318,7 @@ $$
 > which trivially follows from computation. (and $\det(S \circ T) = \det S \times \det T$ for any linear map $S,T$.)\
 > recall that:
 >
-> > **Lemma: [[row reduction]]**
+> > **Lemma: --[[row reduction]]--**
 > >
 > > **任意 invertible linear map 可以被拆分为 finite 个 elementary linear maps.** ( $T_{1}$: scale 一行; $T_{2}$: 交换两行; $T_{3}$: 一行加上另一行的倍数).
 >
@@ -346,7 +346,7 @@ $$
 
 ### Lebesgue measure is invariant under rotation (and reflection)
 
-> **Corollary: [[Lebesgue measure is invariant under rotation]]**
+> **Corollary: --[[Lebesgue measure is invariant under rotation]]--**
 >
 > 对于 rotation 和 reflection (即 orthogonal transformation), 即 $TT^{\ast} = I_{n}$ 的 linear map $T$, 有 $m(T(E)) = m(E)$.
 
@@ -364,7 +364,7 @@ $$
 
 ### COV
 
-> **Theorem: [[general change of variable theorem]]**
+> **Theorem: --[[general change of variable theorem]]--**
 >
 > Suppose $\Omega \subset {\mathbb{R}}^{n}$ **open**, $G:\Omega\rightarrow{\mathbb{R}}^{n}$ 为一个 $C^{1}$ **diffeomorphism**.\
 > Claim:
@@ -476,7 +476,7 @@ $$
 
 ### application of COV: polar coordinate
 
-> **Definition: [[mapping from Euclidean coord to polar coord]]**
+> **Definition: --[[mapping from Euclidean coord to polar coord]]--**
 >
 > 我们定义:
 >
@@ -498,7 +498,7 @@ $$
 
 这是一个很直观的坐标变换, 即一个 diffeomorphism.\
 
-> **Definition: [[a Borel measure on $(0,\infty) \times S^{n - 1}$]]**
+> **Definition: --[[a Borel measure on $(0,\infty) \times S^{n - 1}$]]--**
 >
 > 我们定义
 >

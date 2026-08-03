@@ -23,7 +23,7 @@ title: "Math 525: Probability"
 
 ## convergence in distribution
 
-> **Definition: [[convergence in distribution]]**
+> **Definition: --[[convergence in distribution]]--**
 >
 > 我们称一个 seq of random variables $\left\{ X_{n} \right\}$ converge in distribution to a random variable $X$, 写作 $X_{n}\overset{d}{\rightarrow}X$, 如果 $X$ 的 分布函数 $F_{X}$ 下所有 右连续的 $x$ (即 $F_{X}(x) = F_{X}(x - )$ ), 都有
 >
@@ -47,7 +47,7 @@ title: "Math 525: Probability"
 
 ### moment generating function
 
-> **Definition: [[moment generating function]]**
+> **Definition: --[[moment generating function]]--**
 >
 > 对于一个随机变量 $X$, 其 moment generating function (MGF) 定义为
 >
@@ -73,7 +73,7 @@ title: "Math 525: Probability"
 
 ## Central Limit Theorem
 
-> **Theorem: [[Lindeberg-Levy Central Limit Theorem]]**
+> **Theorem: --[[Lindeberg-Levy Central Limit Theorem]]--**
 >
 > 对于任意一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$ for each $n$.
 >
@@ -172,7 +172,7 @@ title: "Math 525: Probability"
 
 下面有一个 theorem 刻画了这件事.
 
-> **Theorem: [[Berry-Esseen Theorem]]**
+> **Theorem: --[[Berry-Esseen Theorem]]--**
 >
 > 给定一个 seq of i.i.d. random variables $\left\{ X_{i} \right\}$ with mean $\mu$ and variance $\sigma^{2} < \infty$, 以及 $\left. {\mathbb{E}}\lbrack \middle| X_{i} - \mu \middle| {}_{3}\rbrack = \rho < \infty \right.$, set $S_{n} = X_{1} + X_{2} + \cdots + X_{n}$, 我们有: 对于任意 $x \in {\mathbb{R}}$,
 >

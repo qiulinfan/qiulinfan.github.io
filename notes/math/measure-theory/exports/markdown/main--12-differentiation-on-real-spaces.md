@@ -24,11 +24,11 @@ title: "MATH 597: Measure Theory"
 
 ## differentiation of regular Borel measures on ${\mathbb{R}}^{n}$ \[Fol 3.4, finished\]
 
-> **Definition: [[regular Borel measure]]**
+> **Definition: --[[regular Borel measure]]--**
 >
 > 一个 Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 被称为 regular 的, if $\nu$ is locally finite (finite on every compact set).
 
-> **Theorem: [[regular Borel measure: 蕴含了 regularity]]**
+> **Theorem: --[[regular Borel measure: 蕴含了 regularity]]--**
 >
 > 一个 regular Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 一定满足:
 >
@@ -55,7 +55,7 @@ title: "MATH 597: Measure Theory"
 
 当然, 这个概念也可以推广至 signed/coplex measure 上.
 
-> **Definition: [[regular signed/complex measure]]**
+> **Definition: --[[regular signed/complex measure]]--**
 >
 > 一个 signed/complex measure $\nu$ on ${\mathbb{R}}^{n}$ 被称为 regular measure, if $|\nu|$ is regular 的.
 
@@ -98,7 +98,7 @@ title: "MATH 597: Measure Theory"
 
 ### LDT meets LRNT: 任何 regular Borel measure $\nu$ on ${\mathbb{R}}^{n}$ 对于 $m$ 的 RN-derivative $=$ relative density
 
-> **Theorem: [[LDT meets LRNT: computing RN derivative on ${\mathbb{R}}^{n}$]]**
+> **Theorem: --[[LDT meets LRNT: computing RN derivative on ${\mathbb{R}}^{n}$]]--**
 >
 > Let $\nu$ be a regular Borel measure on ${\mathbb{R}}^{n}$, with LRN decomposition
 >
@@ -255,7 +255,7 @@ $$
 
 distribution function 和 regular measure 之间的对应关系, 关键用处在于什么呢? 我们 recall 刚刚才证明的定理, 不过使用一个更 general 的 version (can easily be extended from what we proved):
 
-> **Theorem: [[slightly more general version of LRNT meets LDT]]**
+> **Theorem: --[[slightly more general version of LRNT meets LDT]]--**
 >
 > Let $\nu$ be a regular Borel measure on ${\mathbb{R}}^{n}$, with LRN decomposition
 >
@@ -286,7 +286,7 @@ $$
 
 ### Monotone Differentiation Theorem
 
-> **Theorem: [[Monotone Differentiation Theorem]]**
+> **Theorem: --[[Monotone Differentiation Theorem]]--**
 >
 > 令 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ 为一个 increasing (nondecreasing) function, set:
 >
@@ -395,7 +395,7 @@ $$
 
 ### total variation function $T_{F}$ of a function $F$
 
-> **Definition: [[total variation function]]**
+> **Definition: --[[total variation function]]--**
 >
 > 给定一个 function $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, 我们定义它的 total variation function $T_{F}$ 为:
 >
@@ -434,11 +434,11 @@ $$
 
 ### space of functions of bounded variation: $BV$ 的基本性质
 
-> **Definition: [[function of bounded variation]]**
+> **Definition: --[[function of bounded variation]]--**
 >
 > 如果 $T_{F}(\infty) < \infty$, 我们称 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ is **of bounded variation** 的, 写作 $F \in BV$.
 
-> **Definition: [[function of bounded variation on an interval]]**
+> **Definition: --[[function of bounded variation on an interval]]--**
 >
 > 如果 $T_{F}(a;b) < \infty$, 我们称 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ is **of bounded variation** on $\lbrack a,b\rbrack$, 写成 $F \in BV(\lbrack a,b\rbrack)$.
 
@@ -452,7 +452,7 @@ $$
 
 ### $BV$ as a vector space
 
-> **Lemma: [[$BV$ 是一个 complex vector space]]**
+> **Lemma: --[[$BV$ 是一个 complex vector space]]--**
 >
 > 如果 $F,G \in BV$, 那么对于任意的 $a,b \in {\mathbb{C}}$, we have
 >
@@ -508,7 +508,7 @@ $$
 >
 > $F$ bounded variation 的必要条件是它在 $x\rightarrow\infty$ 时, 截止 $x$ 处的 variation $\rightarrow 0$.
 
-> **Lemma: [[$F \in BV$ right ctn $\Longrightarrow T_{F}$ right ctn]]**
+> **Lemma: --[[$F \in BV$ right ctn $\Longrightarrow T_{F}$ right ctn]]--**
 >
 > $F \in BV$ right ctn $\Longrightarrow T_{F}$ 也 right ctn
 
@@ -527,7 +527,7 @@ $$
 
 ### 属于 $BV,BV(I)$ 的函数
 
-> **Lemma: [[哪些函数一定 $BV$ or $BV(I)$]]**
+> **Lemma: --[[哪些函数一定 $BV$ or $BV(I)$]]--**
 >
 > 1.  如果 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ bounded 且 increasing, 那么 $F \in BV$ 且 $T_{F}(x) = F(x) - F( - \infty)$.\
 >
@@ -627,7 +627,7 @@ $$
 > \left. (T_{F}(y) - F(y)) - (T_{F}(x) - F(x)) \geq \middle| F(y) - F(x) \middle| - (F(y) - F(x)) \geq 0 \right.
 > $$
 
-> **Theorem: [[Jordan decomposition for $F \in BV$]]**
+> **Theorem: --[[Jordan decomposition for $F \in BV$]]--**
 >
 > 对于 $F:{\mathbb{R}}\rightarrow{\mathbb{R}}$ (注意是 real-valued):
 >
@@ -714,7 +714,7 @@ $$
 
 ### $NBV$ 及其性质
 
-> **Definition: [[NBV]]**
+> **Definition: --[[NBV]]--**
 >
 > For $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, 我们定义: $F \in NBV$, if $F \in BV$ 且 $F$ right ctn, $F( - \infty) = 0$.
 
@@ -768,7 +768,7 @@ $$
 
 注意: 一个 complex Borel measure 和一个 $F \in NBV$ 都是 finite 的.
 
-> **Theorem: [[$\left\{ {\text{complex Borel measures on}\ {\mathbb{R}}} \right\} \simeq NBV$]]**
+> **Theorem: --[[$\left\{ {\text{complex Borel measures on}\ {\mathbb{R}}} \right\} \simeq NBV$]]--**
 >
 > 1.  对于 $\mathbb{R}$ 上的 complex measure $\mu$, defining
 >
@@ -830,7 +830,7 @@ $$
 > F(x): = \mu(( - \infty,x\rbrack)
 > $$
 
-> **Theorem: [[$\mu_{F}$ 的 total variation measure $=$ $\mu_{T_{F}}$]]**
+> **Theorem: --[[$\mu_{F}$ 的 total variation measure $=$ $\mu_{T_{F}}$]]--**
 >
 > 对于任意的 $F \in NBV$, 我们有:
 >
@@ -846,7 +846,7 @@ $$
 
 Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \perp m$, 什么时候 $\mu_{F} \ll m$?
 
-> **Theorem: [[characterization of $\mu_{F} \perp m$ 和 $\mu_{F} \ll m$, for $F \in NBV$]]**
+> **Theorem: --[[characterization of $\mu_{F} \perp m$ 和 $\mu_{F} \ll m$, for $F \in NBV$]]--**
 >
 > 对于 $F \in NBV$, 我们已经知道: $F'$ $m$-a.e. 存在, 且 $F' \in L^{1}(m)$.\
 > Now we claim, 有:
@@ -895,7 +895,7 @@ Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \pe
 
 ### $AC$ 及其性质
 
-> **Definition: [[absolutely continuous function]]**
+> **Definition: --[[absolutely continuous function]]--**
 >
 > 我们定义 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$ 是 absolutely ctn 的, if 对于任意 $\epsilon > 0$ 都存在 $\delta > 0$ 使得对于任意的 disjoint intervals $(a_{1},b_{1}),\cdots,(a_{N},b_{N})$, 都有:
 >
@@ -909,7 +909,7 @@ Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \pe
 > absolutely continuous 表示了一种更强的控制性: 选取任意一些地方的变化足够小的 $x$, 其引发的 $y$ 的变化一定可控. ($y$ 的变化的可控性完全由 $x$ 的变化量决定, 不由 $x$ 的位置决定)\
 > 这一看就和 measure 有关系.
 
-> **Definition: [[absolutely continuous function on a cpt interval]]**
+> **Definition: --[[absolutely continuous function on a cpt interval]]--**
 >
 > 我们定义 $F:I\rightarrow{\mathbb{C}}$ 是 absolutely ctn 的, if 对于任意 $\epsilon > 0$ 都存在 $\delta > 0$ 使得对于任意的 disjoint intervals $(a_{1},b_{1}),\cdots,(a_{N},b_{N}) \subset I$, 都有:
 >
@@ -917,7 +917,7 @@ Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \pe
 > \left. \sum\limits_{1}^{N} \middle| F(b_{j}) - F(a_{j}) \middle| < \epsilon\quad\text{whenever}\quad\sum\limits_{1}^{N} \middle| b_{j} - a_{j} \middle| < \delta \right.
 > $$
 
-> **Lemma: [[$F \in NBV$ abs ctn $\Leftrightarrow$ $\mu_{F} \ll m$]]**
+> **Lemma: --[[$F \in NBV$ abs ctn $\Leftrightarrow$ $\mu_{F} \ll m$]]--**
 >
 > 对于 $F \in NBV$,
 >
@@ -1009,7 +1009,7 @@ Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \pe
 >
 > 这里没有仔细证明, 但是理解这个 idea 即可. 这表现了 locally, $AC$ 是一个比 $BV$ 更强的条件, 因为 total variation 就是 sup of variations over 所有划分, 而 **$AC$ 的定义正好就是: 无视划分的方法, 只要这个集合的总长度小于 $\delta$, 它上面的 variation by partition 就要小于 $\epsilon$.**
 
-> **Theorem: [[FTC-II for Lebesgue integral on a cpt interval]]**
+> **Theorem: --[[FTC-II for Lebesgue integral on a cpt interval]]--**
 >
 > TFAE:
 >
@@ -1031,7 +1031,7 @@ Now: Given $F \in NBV$ with associated c.m. $\mu_{F}$, 什么时候 $\mu_{F} \pe
 
 ### characterization for Lipschitz ctn
 
-> **Theorem: [[characterization for Lipschitz ctn]]**
+> **Theorem: --[[characterization for Lipschitz ctn]]--**
 >
 > 对于 $F:{\mathbb{R}}\rightarrow{\mathbb{C}}$, we have:
 >

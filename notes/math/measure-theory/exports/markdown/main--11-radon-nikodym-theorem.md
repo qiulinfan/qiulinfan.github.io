@@ -48,7 +48,7 @@ $$
 
 ### absolutely continuous: $\nu \ll \mu$
 
-> **Definition: [[absolute continuity of signed measures]]**
+> **Definition: --[[absolute continuity of signed measures]]--**
 >
 > 给定 p.m. $\mu$ 和 [[signed measure]] $\nu$ on $(X,\mathcal{A})$, 我们称 $\nu$ is absolutely continuous w.r.t. $\mu$, 如果
 >
@@ -90,7 +90,7 @@ $$
 > 它们是 mutually singular 的. 对于其中任意两个 $\nu_{i},\nu_{j}$, 本身已经存在一个划分使得 $\nu_{i}$ 在 $E$ 上是 null 的而 $\nu_{j}$ 在 $E^{c}$ 上是 null 的. 那么如果 $\nu_{i} \ll \nu_{j}$, 则说明 $\nu_{i}$ 在 $E^{c}$ 上也是 null 的, 那么 $\nu_{i}$ 在整个 $X$ 上都是 null 的, 说明 $\nu_{i}$ 是一个 trivial measure.\
 > 显然, 这里三个 measure 都不是 trivial measure, 因而它们之间没有 abs ctn 的关系.
 
-> **Proposition: [[absolutely continuous 的性质]]**
+> **Proposition: --[[absolutely continuous 的性质]]--**
 >
 > - 对 [[total variation measure]],
 >
@@ -118,7 +118,7 @@ $$
 
 question: 为什么这个定义要叫做 absolutely continuous, 它和 continuous 这个词到底有什么关系. 下面这个 theorem 说明了这一点.
 
-> **Theorem: [[why it is called \"absolutely continuous\"]]**
+> **Theorem: --[[why it is called \"absolutely continuous\"]]--**
 >
 > 令 $\nu$ 为一个 **finite s.m.**, $\mu$ 为一个 **p.m.** on $(X,\mathcal{A})$.\
 > Claim:
@@ -175,7 +175,7 @@ question: 为什么这个定义要叫做 absolutely continuous, 它和 continuou
 
 ### RN derivative: (if exist) express how $\nu$ can be induced from $\mu$
 
-> **Definition: [[Radon-Nikodym derivative]]**
+> **Definition: --[[Radon-Nikodym derivative]]--**
 >
 > 对于 $\begin{matrix}
 > {\{\text{p.m.}\ \mu} \\
@@ -238,7 +238,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 
 ### RN Thm: $\sigma$-finite $\nu \ll \mu\Leftrightarrow$ 存在 RN derivative
 
-> **Theorem: [[Radon-Nikodym Theorem]]**
+> **Theorem: --[[Radon-Nikodym Theorem]]--**
 >
 > 对于 [[$\sigma$-finite measure]] $\begin{matrix}
 > {\{\text{p.m.}\ \mu} \\
@@ -485,7 +485,7 @@ $$
 
 ### LRNT: 任意 $\sigma$-finite $\nu,\mu$, 可将 $\nu$ 拆解成 $\lambda\bot\mu$ 和 $\rho \ll \mu$
 
-> **Theorem: [[Lebesgue-Radon-Nikodym Theorem]]**
+> **Theorem: --[[Lebesgue-Radon-Nikodym Theorem]]--**
 >
 > 如果 $\begin{matrix}
 > {\{\mu\sigma\ \text{-finite p.m.}} \\
@@ -586,7 +586,7 @@ $\mu$-a.e. = $\nu$-a.e.
 
 ### complex measure 以及 complex version of LRNT
 
-> **Definition: [[complex measure]]**
+> **Definition: --[[complex measure]]--**
 >
 > 一个 complex measure on a measurable space $(X,\mathcal{A})$ 是一个 map $\nu:\mathcal{A}\rightarrow{\mathbb{C}}$ satisfying $\nu(\varnothing) = 0$ 以及 ctbl disjoint additivity.
 

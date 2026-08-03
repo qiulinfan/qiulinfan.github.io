@@ -55,7 +55,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, **pdf/pmf 都是 cdf 
 
 ### $L_{loc}^{1}$ and local average
 
-> **Definition: [[locally integrable]]**
+> **Definition: --[[locally integrable]]--**
 >
 > 如果 measurable $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ 在任意 bounded subset of ${\mathbb{R}}^{n}$ 上的 integral 都 $< \infty$, 则称 function $f:{\mathbb{R}}^{n}\rightarrow{\mathbb{C}}$ 是 locally integrable 的, 写作 $f \in L_{loc}^{1}(m)$.
 
@@ -90,7 +90,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, **pdf/pmf 都是 cdf 
 > f \in L_{loc}^{1}(m)\quad\Leftrightarrow\quad p > - n
 > $$
 
-> **Definition: [[average]]**
+> **Definition: --[[average]]--**
 >
 > 对于 $f \in L_{loc}^{1}(m)$, 以及 bounded and Lebesgue measurable $E \subset {\mathbb{R}}^{n}$ with $m(E) > 0$, 我们定义:
 >
@@ -128,7 +128,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, **pdf/pmf 都是 cdf 
 
 ### Hardy-Littlewood maximal function
 
-> **Definition: [[Hardy-Littlewood maximal function]]**
+> **Definition: --[[Hardy-Littlewood maximal function]]--**
 >
 > 对于 $f \in L_{loc}^{1}$, 我们定义它的 HL maximal function 为:
 >
@@ -138,7 +138,7 @@ Radon Nikodym derivative 的应用: 比如在概率论中, **pdf/pmf 都是 cdf 
 
 HF maximal 函数 $Hf(x)$表示 $f$ 的绝对值函数在 $x$ 处能取到最大的 local average.
 
-> **Theorem: [[HL maximal function 是 measurable 的]]**
+> **Theorem: --[[HL maximal function 是 measurable 的]]--**
 >
 > 对于任意 $f \in L_{loc}^{1}$, $Hf$ 都是 measurable 的.
 
@@ -164,7 +164,7 @@ $$
 cB := B(x,cr)
 $$
 
-> **Lemma: [[Vitali-type covering lemma]]**
+> **Lemma: --[[Vitali-type covering lemma]]--**
 >
 > For given collection of balls $\left\{ {B_{j} \subset {\mathbb{R}}^{n}} \right\}_{j = 1}^{k}$, 存在 **disjoint** subcollection $\left\{ {B_{j_{1}},\cdots,B_{j_{m}}} \right\}$ 使得
 >
@@ -191,7 +191,7 @@ $$
 
 ### Hardy-Littlewood maximal theorem
 
-> **Theorem: [[HL maximal theorem]]**
+> **Theorem: --[[HL maximal theorem]]--**
 >
 > For $L^{1}(m^{n})$, take constant $C := 3^{n}$, 则对于任意 $f \in L^{1}(m^{n})$, 都有:
 >
@@ -247,7 +247,7 @@ $$
 
 对应: Folland 3.4(2)
 
-> **Definition: [[Lebesgue set]]**
+> **Definition: --[[Lebesgue set]]--**
 >
 > 我们定义一个函数 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$ 的 Lebesgue set 为:
 >
@@ -286,7 +286,7 @@ $$
 
 ### original LDT: locally $L^{1}$ 函数几乎每一点附近的函数均值都等于这一点上的值
 
-> **Theorem: [[Lebesgue differentiation theorem]]**
+> **Theorem: --[[Lebesgue differentiation theorem]]--**
 >
 > 对于任意的 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$, $L_{f}$ is Leb mble and $m(L_{f}^{c}) = 0$.
 
@@ -395,7 +395,7 @@ $$
 
 ### density of a set at a point
 
-> **Definition: [[density of a set at a point]]**
+> **Definition: --[[density of a set at a point]]--**
 >
 > 对于 $E \subset {\mathbb{R}}^{n}$ Lebesgue measurable (which implies: $\chi_{E} \in L_{loc}^{1}$), 我们定义:
 >
@@ -466,7 +466,7 @@ $$
 
 genralized LDT 表示**对形状不规则 (未必是 ball) 的收敛行为**, LDT 的 statement 仍然 stay true. 即, **只要 a family of Lebesgue mble sets $E_{r}$ shrink nicely to $x$, LDT 就满足.**
 
-> **Theorem: [[generalized LDT]]**
+> **Theorem: --[[generalized LDT]]--**
 >
 > 对于 $f \in L_{loc}^{1}({\mathbb{R}}^{n})$, 任意的 $x \in L_{f}$, 令 $\left\{ {E_{r}(x)} \right\}$ 为 a family of Lebesgue measurable sets, 其中对于每个 $E_{r}(x)$ 都有:
 >
@@ -497,7 +497,7 @@ $$
 >
 > LDT 最重要的作用是之一定义了在 **Lebesgue 积分理论下的一种形式的 FTC:**
 >
-> > **Theorem: [[FTC in Lebesgue]]**
+> > **Theorem: --[[FTC in Lebesgue]]--**
 > >
 > > 对于 $f \in L_{loc}^{1}({\mathbb{R}})$, 任取 $x \in L_{f}$, 都有
 > >

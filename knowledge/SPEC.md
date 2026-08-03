@@ -7,19 +7,20 @@ statement into a node.
 
 ## Authority model
 
-- Typst is authoritative for migrated mathematics notes.
-- Markdown is authoritative for subjects that are written directly in Markdown.
+- Each configured `.typ`, `.md`, or `.tex` file is authoritative in its own
+  source format; one directory and one synchronization scope may mix formats.
+- Typst remains authoritative for migrated mathematics notes, Markdown for
+  notes written directly in Markdown, and LaTeX when it is configured as a
+  maintained source rather than a one-time migration input.
 - `knowledge/graph/*.json*` is the deterministic, committed graph snapshot.
 - `knowledge/build/knowledge.sqlite` is an ignored local search index.
 - Agent-created metadata and semantic edges are durable graph knowledge. A source
   edit does not silently delete them.
 
 Generated Markdown from a Typst authority is never ingested again as a second
-authority. Its Obsidian `[[wikilinks]]` are a portable graph-facing projection,
-not enough by themselves to distinguish a definition from a reference. Future
-Markdown and LaTeX source adapters must declare their source type and recover
-definition/reference roles from that authority's own explicit syntax while
-preserving the same global node identity and single canonical authority rule.
+authority. Its markers are a portable graph-facing projection. Source type is
+inferred per file, and every adapter preserves the same global node identity
+and single canonical authority rule.
 
 ## What is a knowledge node?
 
@@ -36,9 +37,12 @@ the automatic candidates are only named:
 
 Sections, examples, exercises, remarks, proofs, equations, figures, and diagrams
 are not nodes merely because they exist. They become nodes only when an author or
-agent explicitly places `#kn` on a genuinely important concept.
+agent explicitly places that format's authority marker on a genuinely important
+concept.
 
-## Typst authoring API
+## Source authoring APIs
+
+### Typst
 
 Exactly one definition point owns a global knowledge name:
 
@@ -73,10 +77,45 @@ around each concept. Synonyms and abbreviations remain aliases of one node. A
 script may scan explicit markers, but must never split a title or promote an
 unmarked title into knowledge automatically.
 
+### Markdown
+
+Use a dashed double-bracket marker for the one canonical definition and an
+ordinary double-bracket marker for references:
+
+```markdown
+> **Definition: --[[cache line]]--**
+>
+> A cache is organized as a collection of [[cache line|lines]].
+```
+
+`--[[Name]]--` is a `kn`; the dashes are syntax and do not render. `[[Name]]`
+is a `ref` and produces a backlink. `[[Name|display text]]` uses `Name` for
+global identity and the alias only for display. These roles never depend on a
+heading, blockquote, first occurrence, or file ordering.
+
+On the notes website, a Markdown `kn` renders as emphasized text with the stable
+`kn-<id>` anchor and no hyperlink. A Markdown `ref` renders as a hyperlink to
+the canonical authority. The renderer resolves occurrences from the committed
+graph by authority, line, and source name; it does not reconstruct identity.
+
+### LaTeX
+
+Use explicit macros in the authoritative `.tex` file:
+
+```tex
+\kn{cache line}
+By \knref{cache line}, spatial locality can reuse one transfer.
+```
+
+The graph scanner reads these macros from LaTeX. Web export deterministically
+maps them to `#kn[...]` and `#ref[...]` during LaTeX-to-Typst conversion, then
+uses the Typst HTML pipeline. Generated Typst is an ignored build intermediate,
+not a second authority.
+
 Every active knowledge node in a curation-complete authority has a concise
 `text` entry distilled by the agent from its authoritative statement, proof,
 and explanation. The entry is source-grounded searchable prose, not a second
-authority; provenance continues to point to the canonical Typst location.
+authority; provenance continues to point to the canonical source location.
 Source synchronization preserves the entry and its agent metadata. Legacy
 authorities may remain entry-pending until their first pass through the new
 file workflow; `audit` exposes that rollout state, and a newly curated file may
@@ -114,30 +153,36 @@ ordered by ID. Do not use `prerequisite-for` as a generic association.
 
 The source file is the reference-curation unit. If a file directly uses an
 existing immediate prerequisite whose canonical authority is another file, the
-agent adds at least one `#ref` at a meaningful use. Same-file concepts and merely
-transitive foundational ancestors do not require global refs. This file-level
+agent adds at least one format-native reference marker at a meaningful use.
+Same-file concepts and merely transitive foundational ancestors do not require global refs. This file-level
 usage record is independent of the node-to-node semantic edge.
 
 ## Incremental synchronization
 
-The same compiler supports four scopes:
+The same compiler supports repository, subject, course, directory, and file
+scopes:
 
 ```sh
 python3 knowledge/scripts/knowledge.py --repo-root . sync
 python3 knowledge/scripts/knowledge.py --repo-root . sync --subject math
 python3 knowledge/scripts/knowledge.py --repo-root . sync --course measure-theory
 python3 knowledge/scripts/knowledge.py --repo-root . sync \
+  --file notes/cs/computer-organization
+python3 knowledge/scripts/knowledge.py --repo-root . sync \
   --file notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ
 ```
 
 `scan` accepts the same scope and previews definitions, references, errors, and
-nodes that would become orphaned without writing artifacts.
+nodes that would become orphaned without writing artifacts. File arguments and
+registry patterns may select `.typ`, `.md`, and `.tex` together.
+Directory selection expands only configured descendants; it does not ingest
+arbitrary files that merely share a supported suffix.
 
 For a selected file, synchronization replaces only that file's authored
 definition/reference occurrences. Everything outside the scope is retained. A
-duplicate active `#kn` is an error, so moving a canonical definition is normally:
+duplicate active authority marker is an error, so moving a canonical definition is normally:
 
-1. remove the old `#kn` and synchronize that changed file;
+1. remove the old authority marker and synchronize that changed file;
 2. the node becomes `source_status: orphaned`, while its metadata and semantic
    edges remain;
 3. add the same name at the new authority and synchronize the new file;
@@ -152,8 +197,9 @@ removed only by an explicit agent delta.
 During export, the agent:
 
 1. handles one changed file and reads its existing graph neighborhoods;
-2. preserves user-authored `#kn` markers and semantically decides any additional
-   nodes, splits, aliases, and cross-file `#ref` occurrences;
+2. preserves user-authored `#kn`, `--[[...]]--`, or `\kn{...}` markers and
+   semantically decides any additional nodes, splits, aliases, and cross-file
+   references in the selected format;
 3. runs a scoped scan and resolves duplicate or dangling names;
 4. extracts a source-grounded entry for every node defined in the file;
 5. extracts direct, correctly typed relations from statements, proofs, and
@@ -200,13 +246,14 @@ knowledge/
 
 Required invariants:
 
-- one active `#kn` per authored name at most;
+- one active authority marker per authored name at most, across all formats;
 - stable deterministic artifacts;
 - every Typst-authored knowledge node has deterministic, active-content-free
-  `label_html` generated from its original `typst_name`;
+  `label_html` generated from its original `typst_name`; other formats use the
+  escaped plain-label fallback;
 - no dangling semantic edge endpoints;
 - no cycles in `contains` or `prerequisite-for`;
-- unresolved `#ref` and orphaned nodes are visible warnings;
+- unresolved references and orphaned nodes are visible warnings;
 - a scoped sync never rewrites unrelated source state;
 - examples and section headings create zero implicit nodes.
 
@@ -217,7 +264,7 @@ make knowledge-check
 python3 knowledge/scripts/knowledge.py --repo-root . audit
 make knowledge-search QUERY="conditional expectation"
 python3 knowledge/scripts/knowledge.py --repo-root . show "Dominated convergence theorem"
-python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.typ
+python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.md
 ```
 
 `audit` is a deterministic readiness report: it measures entry coverage by

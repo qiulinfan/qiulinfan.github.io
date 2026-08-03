@@ -1,0 +1,45 @@
+---
+import Markdown from "@components/misc/Markdown.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { loadMarkdownNotes, type MarkdownNote } from "@utils/note-sources";
+import { url } from "@utils/url-utils";
+
+export function getStaticPaths() {
+	return loadMarkdownNotes().map((note) => ({
+		params: { slug: note.slug },
+		props: { note },
+	}));
+}
+
+const { note } = Astro.props as { note: MarkdownNote };
+---
+
+<MainGridLayout title={note.title} description={note.description} headings={note.headings}>
+	<article class="card-base overflow-hidden rounded-[var(--radius-large)]">
+		<header class="note-header">
+			<div>
+				<span>{note.subject} / {note.course}</span>
+				<h1>{note.title}</h1>
+			</div>
+			<nav aria-label="Note source actions">
+				<a href={url("/knowledge/")}>知识图谱</a>
+				<a href={`https://github.com/qiulinfan/qlblog/blob/main/${note.authority}`} target="_blank" rel="noreferrer">源文件 ↗</a>
+			</nav>
+		</header>
+		<Markdown class="px-7 py-8 md:px-10">
+			<div set:html={note.html} />
+		</Markdown>
+	</article>
+</MainGridLayout>
+
+<style>
+	.note-header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 1.75rem 2.5rem; border-bottom: 1px solid var(--line-divider); background: linear-gradient(135deg, color-mix(in oklch, var(--primary) 8%, transparent), transparent 58%); }
+	.note-header span { font: 650 .68rem/1.2 "JetBrains Mono Variable", monospace; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in oklch, currentColor 48%, transparent); }
+	.note-header h1 { margin: .5rem 0 0; font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; }
+	.note-header nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+	.note-header a { padding: .52rem .75rem; border: 1px solid var(--line-divider); border-radius: .65rem; color: inherit; font-size: .72rem; text-decoration: none; }
+	:global(.ql-kn) { color: inherit; font-weight: 750; scroll-margin-top: 6rem; }
+	:global(.ql-ref) { color: var(--primary); text-decoration: underline; text-decoration-color: color-mix(in oklch, var(--primary) 35%, transparent); text-underline-offset: .18em; }
+	:global(.ql-unresolved) { text-decoration-style: dashed; opacity: .7; }
+	@media (max-width: 640px) { .note-header { align-items: start; flex-direction: column; padding: 1.25rem 1.5rem; } }
+</style>

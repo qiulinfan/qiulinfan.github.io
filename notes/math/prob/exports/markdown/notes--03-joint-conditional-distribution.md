@@ -25,7 +25,7 @@ title: "Math 525: Probability"
 
 ### random vector
 
-> **Definition: [[random vector]]**
+> **Definition: --[[random vector]]--**
 >
 > 对于 prob space $(\Omega,\mathcal{F},P)$, 一个 function $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ 如果是一个 $(\mathcal{F},\mathcal{B}({\mathbb{R}}^{n}))$-measurable function (即 [[$(\mathcal{M},\mathcal{N})$-measurable function]] 在这两个 measurable spaces 上的情形), 则 称它为一个 $n$-dimensional [[random variable]], 或者 $n$-dimensional random vector.
 >
@@ -37,7 +37,7 @@ title: "Math 525: Probability"
 
 random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass 的方法, 并把它们并列起来.
 
-> **Proposition: [[由 $n$ 个 random variable 构成的 vector 是一个 random vector]]**
+> **Proposition: --[[由 $n$ 个 random variable 构成的 vector 是一个 random vector]]--**
 >
 > 令 $X_{1},X_{2},\cdots,X_{n}$ 是定义在**同一个 prob space** $(\Omega,\mathcal{F},{\mathbb{P}})$ 上的 $n$ 个 random variables. 则函数 $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ defined by
 >
@@ -51,7 +51,7 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 >
 > 我们在 measure theory 中证明过: 对于任意的 finite seq of Borel measureable functions $(f_{i}:\Omega\rightarrow{\mathbb{R}})_{i = 1}^{k}$, 其各作为一个维度组成的函数 $f = (f_{1},\cdots,f_{k})$ 也是一个 Borel measurable function (from $\Omega$ 到 ${\mathbb{R}}^{k}$).
 
-> **Proposition: [[一个 random vector 的每个分量都是一个 random variable]]**
+> **Proposition: --[[一个 random vector 的每个分量都是一个 random variable]]--**
 >
 > 令 $\mathbf{X} = (X_{1},X_{2},\cdots,X_{n})^{T}$ 是一个 random vector. 则对于任意 $i$, $X_{i}$ 都是一个 random variable.
 
@@ -82,9 +82,9 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 
 ### joint distribution
 
-> **Definition: [[joint distribution]] and [[joint cdf]]**
+> **Definition: --[[joint distribution]]-- and --[[joint cdf]]--**
 >
-> 令 $X_{1},\cdots,X_{n}$ 为 RV from the same prob space. 即 $\mathbf{X} := (X_{1},\cdots,X_{n})$ 是一个 random vector. 下面的两个对象分别将 [[probability distribution]] 和 distribution function (也称 **cumulative distribution function, cdf**) 推广到 random vector.
+> 令 $X_{1},\cdots,X_{n}$ 为 RV from the same prob space. 即 $\mathbf{X} := (X_{1},\cdots,X_{n})$ 是一个 random vector. 下面的两个对象分别将 [[probability distribution]] 和 [[distribution function (也称 **cumulative distribution function, cdf**)]] 推广到 random vector.
 >
 > 我们称 ${\mathbb{P}}^{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ defined by
 >
@@ -104,13 +104,13 @@ random vector 相当于在一个 prob space 上, 考虑多个重新分配 mass �
 
 joint distribution 的定义已经包括了如何从多个 random variables 的 distributions 得到一个 joint distribution. 而, 我们也可以从一个 joint distribution 的 limit behavior 得到每个 random variable 分量的 distributions, 称之为 marginal distribution:
 
-> **Definition: [[marginal distribution]]**
+> **Definition: --[[marginal distribution]]--**
 >
 > 令 $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 是一个 random vector. 则对于任意 $i$, $X_{i}$ 的 distribution ${\mathbb{P}}^{X_{i}}$ 被称为 $\mathbf{X}$ 的第 $i$ 个分量的 **marginal distribution**.
 
 我们以 ${\mathbb{R}}^{2}$ 为例. 得出的结论可以推广到 ${\mathbb{R}}^{n}$.
 
-> **Proposition: [[通过 joint distribution 的极限得到 marginal distribution]]**
+> **Proposition: --[[通过 joint distribution 的极限得到 marginal distribution]]--**
 >
 > 令 $\mathbf{X} = (X_{1},X_{2})^{T}$ 是一个 random vector. 则对于任意 $x \in {\mathbb{R}}$, 有
 >
@@ -158,7 +158,7 @@ $$
 
 这个定义可以 generalize 到 random vector 上.
 
-> **Definition: [[continuous random vector]] 和 [[continuous joint cdf]]**
+> **Definition: --[[continuous random vector]]-- 和 --[[continuous joint cdf]]--**
 >
 > 对于 random vector $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 如果 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$, 即它满足 [[absolute continuity of signed measures]] 中的绝对连续性条件, 即存在一个函数 $f_{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)$ 使得对于任意 Borel set $B \subseteq {\mathbb{R}}^{n}$, 有
 >
@@ -202,7 +202,7 @@ $$
 >
 > 注意: **多个 continuous random variables 的 joint distribution 不一定是 continuous 的.** 反例: 考虑 random vector $\mathbf{X} = (X,X)^{T}$ where $X \sim \text{Uniform}(0,1)$ 则 ${\mathbb{P}}((X,X) \in \left\{ {y = x} \right\}) = 1$. 而注意, $\left\{ {y = x} \right\}$ 在 ${\mathbb{R}}^{2}$ 中的 Lebesgue measure 为 0, 而 absolute continuity 要求: 对于一个零测集, 其 ${\mathbb{P}}^{\mathbf{X}}$ 测度也必须是 0 (这是 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$ 的标准定义), 因而 joint distribution 不是 continuous 的.
 
-> **Proposition: [[joint pdf 和 joint cdf 的性质]]**
+> **Proposition: --[[joint pdf 和 joint cdf 的性质]]--**
 >
 > 令 $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 是一个 continuous random vector, 则它的 joint pdf $f_{\mathbf{X}}$ 和 joint cdf $F_{\mathbf{X}}$ 有以下性质:
 >
@@ -399,7 +399,7 @@ $$
 
 ### independence of two random variables 的三种等价定义
 
-> **Definition: [[independence via product distribution of marginal distributions]]**
+> **Definition: --[[independence via product distribution of marginal distributions]]--**
 >
 > 两个 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$ 被称为 independent 的, 如果对于任意的 Borel sets $A,B \subseteq {\mathbb{R}}$, 都有
 >
@@ -423,7 +423,7 @@ $$
 
 这里离散情形沿用 [[discrete random variable]] 的定义. 详细而言:
 
-> **Theorem: [[independence via joint-density factorization marginal densities]]**
+> **Theorem: --[[independence via joint-density factorization marginal densities]]--**
 >
 > 令 $X,Y$ 是两个 random variables.
 >
@@ -475,7 +475,7 @@ $$
 >
 > 这个定义也当然等价于:
 >
-> > **Proposition: [[independence via conditional distribution: marginal distribution]]**
+> > **Proposition: --[[independence via conditional distribution: marginal distribution]]--**
 > >
 > > 两个 random variables $X,Y$ 是 independent 的, iff: 对于任意的 Borel sets $A,B$, 如果${\mathbb{P}}(Y \in B) > 0$, 则
 > >
@@ -493,7 +493,7 @@ $$
 >
 > Furthermore: 我们不难发现一件事情, 可以**在 independence of two events 和 independence of two random variables 之间建立一个桥梁:**
 >
-> > **Proposition: [[independence via generated sigma-algebras]]**
+> > **Proposition: --[[independence via generated sigma-algebras]]--**
 > >
 > > 令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 iff: $X$ 和 $Y$ 按 [[$\sigma$-algebra generated by a random variable (measurable function)]] 分别生成的 $\sigma(X)$ 和 $\sigma(Y)$ 中分别任取一个事件, 这两个事件都是 independent 的. 即:
 > >
@@ -511,7 +511,7 @@ $$
 
 我们定义了两个 random variables 的 independence, 但是这个定义可以推广到多个 (甚至 uncountably many) random variables 上.
 
-> **Definition: [[**mutual independence** of multiple random variables]]**
+> **Definition: --[[**mutual independence** of multiple random variables]]--**
 >
 > 令 $\left\{ {X_{i}:i \in I} \right\}$ 是一个 random variables 的 family, 其中 $I$ 是一个 index set. 则如果对于任意的 finite subset $J \subseteq I$, 以及对于任意的 Borel sets $\left\{ {A_{j}:j \in J} \right\}$, 都有
 >
@@ -557,9 +557,9 @@ $$
 \text{Cov}(X,Y) := {\mathbb{E}}\lbrack(X - {\mathbb{E}}\lbrack X\rbrack)(Y - {\mathbb{E}}\lbrack Y\rbrack)\rbrack = {\mathbb{E}}\lbrack XY\rbrack - {\mathbb{E}}\lbrack X\rbrack{\mathbb{E}}\lbrack Y\rbrack
 $$
 
-我们称 covariance 为 0 的两个 random variables 为 [[uncorrelated random variables]] . 我们容易发现: **independence 是一个比 uncorrelated 更强的概念:**
+我们称 covariance 为 0 的两个 random variables 为 --[[uncorrelated random variables]]-- . 我们容易发现: **independence 是一个比 uncorrelated 更强的概念:**
 
-> **Proposition: [[independent 严格强于 uncorrelated]]**
+> **Proposition: --[[independent 严格强于 uncorrelated]]--**
 >
 > 令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 $\Longrightarrow$ $\text{Cov}(X,Y) = 0$. 但是 $\text{Cov}(X,Y) = 0$ 不一定 $\Longrightarrow$ $X,Y$ 是 independent 的.
 
@@ -585,7 +585,7 @@ $$
 
 刚才说到, 两个 random variables 的 independence 显然 imply ${\mathbb{E}}\lbrack XY\rbrack = {\mathbb{E}}\lbrack X\rbrack{\mathbb{E}}\lbrack Y\rbrack$. 而 BTW: 这个性质其实**可以 generalize 到任意 finite number of independent random variables 的 product 上, 并且 我们可以在这些 random variables 上任意地施加 Borel measurable functions**, 只要保证这些函数的 expectation 是 finite 的,
 
-> **Theorem: [[independence $\Longrightarrow$ expectation is closed under product]]**
+> **Theorem: --[[independence $\Longrightarrow$ expectation is closed under product]]--**
 >
 > 令 $\left\{ {X_{i}:i \in I} \right\}$ 是一个 independent 的 random variables 的 family, 则对于任意的 finite subset $J \subseteq I$, 以及对于任意的 Borel measurable functions $\left\{ {g_{j}:j \in J} \right\}$, 如果 $\left. {\mathbb{E}}\lbrack \middle| g_{j}(X_{j}) \middle| \rbrack < \infty \right.$ for all $j \in J$, 则
 >
@@ -662,7 +662,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 >
 > 关于两个 discrete random variables $X,Y$ 是否 independent 的判断, 还有一个直观的方法.
 >
-> > **Proposition: [[discrete RV independence 的 characterization]]**
+> > **Proposition: --[[discrete RV independence 的 characterization]]--**
 > >
 > > 两个 discrete random variables $X,Y$ 是 independent 的 iff 它们的 joint pmf as a matrix 有 rank 1(每行每列都互为倍数).
 >
@@ -721,7 +721,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 ### conditional distribution and its distribution function
 
-> **Definition: [[conditional distribution]]**
+> **Definition: --[[conditional distribution]]--**
 >
 > 给定 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$, 其中下面极限里的条件概率按 [[conditional probability]] 理解. 我们定义 the conditional distribution of $X$ given $Y = y$ 为 the probability measure ${\mathbb{P}}^{X|Y = y}$:
 >
@@ -761,7 +761,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 ### conditional density for random variables jointly continuous
 
-> **Theorem: [[jointly continuous RVs 之间所有 defined 处总有 conditional density]]**
+> **Theorem: --[[jointly continuous RVs 之间所有 defined 处总有 conditional density]]--**
 >
 > 令 $\mathbf{X} = (X,Y)^{T}$ 是一个 continuous random vector, 则对于任意 $y$ 使得 $f_{Y}(y) > 0$, 都有 conditional distribution of $X$ given $Y = y$ 的 pdf:
 >
@@ -893,7 +893,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 ## conditional expectation
 
-> **Definition: [[conditional expectation]]**
+> **Definition: --[[conditional expectation]]--**
 >
 > 令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs. 这里沿用 [[expectation and variance of random variable]] 中 expectation 的积分定义. 对于 $y \in {\mathbb{R}}$ where $F_{X|Y} = {\mathbb{P}}^{X|Y = y}(X \leq x)$ is defined (这个条件对于 discrete 是筛选掉 ${\mathbb{P}}(y) = 0$ 的点, 对于 continuous 这是为了筛选掉 $f_{Y} = 0$ 的点), 我们定义 conditional expectation:
 >
@@ -925,7 +925,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 >
 > Notice: 这个函数是一个 random variable. 同理, 我们可以构造 conditional expectation given multiple random variables $\left. {\mathbb{E}}\lbrack X \middle| Y_{1},\cdots,Y_{n}\rbrack \right.$. 但是暂时不谈论这个.
 
-> **Proposition: [[independence 下 conditional distribution 不变]] , [[independence 下 conditional density 不变]] 和 [[independence 下 conditional expectation 不变]]**
+> **Proposition: --[[independence 下 conditional distribution 不变]]-- , --[[independence 下 conditional density 不变]]-- 和 --[[independence 下 conditional expectation 不变]]--**
 >
 > 如果 $X,Y$ 是 independent 的, 那么在任意 defined $y$ 上,
 >
@@ -1011,7 +1011,7 @@ OK. 以上是 pretty much general properties of independence. 最后我们看一
 
 ## law of total expectation
 
-> **Theorem: [[law of total expectation]]**
+> **Theorem: --[[law of total expectation]]--**
 >
 > 令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs, 我们知道它们的 conditional expectation $\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.$ 也是一个 $\Omega\rightarrow{\mathbb{R}}$ 的 RV.
 >
