@@ -1,29 +1,29 @@
 {
   "counts": {
-    "edges": 465,
-    "nodes": 288,
-    "references": 38
+    "edges": 493,
+    "nodes": 293,
+    "references": 44
   },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "28093a8b1174c9ab70811b69a7e4b334632a1121d68f9a2a1b84a699eb908698",
+  "graph_sha256": "7578546efea0ca777c6107011c3a0f87f23c2d38ae1571b7753225acd4f37bd7",
   "node_types": {
     "discipline": 1,
     "field": 3,
-    "knowledge": 266,
+    "knowledge": 271,
     "topic": 18
   },
   "relations": {
-    "contains": 287,
-    "contrasts-with": 1,
-    "derived-from": 28,
-    "generalizes": 5,
-    "implies": 14,
-    "prerequisite-for": 130
+    "contains": 292,
+    "contrasts-with": 2,
+    "derived-from": 61,
+    "generalizes": 6,
+    "implies": 15,
+    "prerequisite-for": 117
   },
   "schema": "qlkg-v2",
   "source_hashes": {
-    "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "0841aa6949c932fe90416ed6753070e6f4580479daf45feec2a9ecef703d81eb",
-    "notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ": "f82c730da07ba1a615b15a0fb85820bbe69d54126a315f8fe5eeb28c9215c838",
+    "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "ffa24a29a32bce31387e4b0f8053fb78e36e9b83494fb713b275476565ea5383",
+    "notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ": "8a3f8aa8efd167455ee91f76b928ffc881fdd1b3c1d5eb60cd96eb0bfdf78a8e",
     "notes/math/measure-theory/chapters/03-distribution-function-与-lebesgue-stieltjes-measures.typ": "30558efcc4e880fc58a37e4b09170511ae0067592bb7aceb7ee8d6befa0e330a",
     "notes/math/measure-theory/chapters/04-measurable_functions_and_integration_on_L^+(mu).typ": "0674b2312b177a4f957bbd61b0a455a069b87be33ff35ad8cd0d1eb8f3770752",
     "notes/math/measure-theory/chapters/05-integration_of_real_and_complex_functions.typ": "40783d315bcc1b5cb59cf96053a9944cbd907c071033efa804bb1718c817b2a3",
@@ -54,7 +54,7 @@
     "notes/math/measure-theory/homeworks/hw11-on_regular-borel-measure&BV.typ": "921b1a11659d85fe0680fadfadf2fcca15e70f3871619658cf97c0c5ef5d94d1",
     "notes/math/measure-theory/homeworks/hw12-on_absolutely-continuous-functions.typ": "c267f694d1095fd43e58d0518521406e4631d0ef966e7388cf6ea6d950831ee0",
     "notes/math/measure-theory/main.typ": "73744ef631a5c9980b1fccb048d965d57518697a3d40a0cb38b359bde5e5d6a3",
-    "notes/math/prob/chapters/01-combinatorics&prob_space.typ": "984b78e163d037bdbbbd8d4deb5347034eae3e786355ec70e9c73359b106c71d",
+    "notes/math/prob/chapters/01-combinatorics&prob_space.typ": "2b065b40bdde094e9d56eb430487104ef88b6f8b8c4b65d08654e3da312d2c93",
     "notes/math/prob/chapters/02-random-variables.typ": "ae29178c950e3a9bf05dbd5e81414c3c9b17705260ce8b01363a50b28f1f7e4f",
     "notes/math/prob/chapters/03-joint&conditional-distribution.typ": "d7f47fa5ac33e68543baeb615f1d624e3f1e85723d318c45bcde4b0f1ffcbf54",
     "notes/math/prob/chapters/04-LLN.typ": "cdd689838e6f08a4d1e6876b7f8a7225469aca3128ec9cc5e9c392521b2b5d78",
@@ -69,7 +69,7 @@
     "notes/math/prob/main.typ": "49c2e69c915c2641146e03e9355f018eb75949629d46184588bff0b7c2f804d6"
   },
   "statuses": {
-    "active": 266,
+    "active": 271,
     "meta": 22
   }
 }

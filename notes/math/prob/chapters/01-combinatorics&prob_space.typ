@@ -200,7 +200,7 @@ $ bb(P)\(upright("each flavor is selected at least once")\)= binom(19, 15) / bin
 #proposition(
   title: [#kn[inclusion-exclusion principle]],
 )[
-如果 $Omega$ 是 #ref[measurable space and measure space] 意义下的一个 finite measure space, 那么对于任意 $A_1\,dots.h\,A_n subset.eq Omega$ 的, 有:
+如果 $Omega$ 是 #ref[measure space] 意义下的一个 finite measure space, 那么对于任意 $A_1\,dots.h\,A_n subset.eq Omega$ 的, 有:
 $ lr(|union_(i = 1)^n A_i|) = sum_(i = 1)^n lr(|A_i|) - sum_(i < j) lr(|A_i inter A_j|) + sum_(i < j < k) lr(|A_i inter A_j inter A_k|) - dots.h +\(- 1\)^(n + 1)lr(|A_1 inter dots.h inter A_n|) . $
 
 ]
@@ -253,7 +253,7 @@ $ bb(P)\(inter.big_(i = 1)^n A_i^c\)= sum_(k = 2)^n frac(\(- 1\)^k, k !) $
 #definition(
   title: [#kn[probability space], #kn[probability measure], #kn[sample space], #kn[event space]],
 )[
-按 #ref[measurable space and measure space] 的定义, 一个 probability space 是三元组 $\(Omega\,cal(F)\,bb(P)\)$, 其中 $bb(P)\(nothing\)= 0\,bb(P)\(Omega\)= 1$. \ 对于这样的 measure $bb(P)$, 我们称之为 #strong[probability measure (概率测度, 即概率)]. \ 而这里的 $Omega$ 我们称之为 #strong[sample space (样本空间)]\; 这里的 #ref[$sigma$-algebra] $cal(F)$, 我们称之为 #strong[event space (事件空间)]. \ 任意的 $A subset Omega$ 都是一个 #strong[event], 但是概率论中只考虑 $A in cal(F)$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
+按 #ref[measure space] 的定义, 一个 probability space 是三元组 $\(Omega\,cal(F)\,bb(P)\)$, 其中 $bb(P)\(nothing\)= 0\,bb(P)\(Omega\)= 1$. \ 对于这样的 #ref[measure] $bb(P)$, 我们称之为 #strong[probability measure (概率测度, 即概率)]. \ 而这里的 $Omega$ 我们称之为 #strong[sample space (样本空间)]\; 这里的 #ref[$sigma$-algebra] $cal(F)$, 我们称之为 #strong[event space (事件空间)]. \ 任意的 $A subset Omega$ 都是一个 #strong[event], 但是概率论中只考虑 $A in cal(F)$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
 
 ]
 #remark[

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Math Notes"
+  short_description: "Scaffold editable Typst-first math course notes"
+  default_prompt: "Use $create-math-notes to create a new Typst-first mathematics notes course and open it in VS Code."

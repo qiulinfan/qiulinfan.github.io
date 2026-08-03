@@ -1,0 +1,16 @@
+#import "../toolchain/qlnotes.typ": *
+#import "../toolchain/math-aliases.typ": *
+
+#show: qlnotes.with(
+  title: {{TITLE}},
+  subtitle: "Typst-first mathematics notes",
+  course: {{COURSE}},
+  author: {{AUTHOR}},
+  date: {{DATE}},
+  description: {{DESCRIPTION}},
+  keywords: {{KEYWORDS}},
+  bibliography: "reference.bib",
+)
+
+#include "chapters/01-introduction.typ"
+

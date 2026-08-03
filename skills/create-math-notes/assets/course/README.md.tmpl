@@ -1,0 +1,15 @@
+# {{TITLE_TEXT}}
+
+`main.typ` is the authority. Chapter sources live in `chapters/`; shared
+presentation and export code lives in `../toolchain/`.
+
+```sh
+make edit       # open the ready-to-use VS Code/Tinymist workspace
+make export     # chaptered editable LaTeX and Markdown
+make web-check  # ignored local HTML plus basic integrity checks
+make pdf        # optional ignored local PDF
+```
+
+Committed exports are written to `exports/latex/` and `exports/markdown/`.
+Generated HTML, PDF, and intermediates stay under ignored `build/`.
+

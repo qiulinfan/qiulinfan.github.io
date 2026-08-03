@@ -26,7 +26,7 @@
 
 + #strong[closed under countable union]: if $E_1\,E_2\,dots.h.c in S$ then $union.big_(k = 1)^oo E_k in S$.
 
-如果第三条并不满足, 而是只满足 #strong[closed under finite union], 则称 $S$ 是 $X$ 上的一个 algebra. 当然, $sigma$-algebra 是比 algebra 严格更强的条件.
+如果第三条并不满足, 而是只满足 #strong[closed under finite union], 则称 $S$ 是 $X$ 上的一个 #kn[algebra of sets]. 当然, $sigma$-algebra 是比 algebra 严格更强的条件.
 
 ]
 我们定义 $X$ 的一个子集簇为一个 $sigma$-algebra 如果它包含空集并 closed under complement and countable union. 但这并不是 $sigma$-algebra 的全部性质. 这三个性质还蕴涵了: $sigma$-algebra 也一定包含 $X$, 且 #strong[closed under set difference], #strong[symmetric difference] 以及 #strong[countable intersection]. \ #strong[对于 algebra, 它也有以上的所有性质的 finite version.]
@@ -149,16 +149,18 @@ $cal(E)_1$: $bb(R)$ 上所有的 open intervals; \ $cal(E)_2$: $bb(R)$ 上所有
 === measure
 <measure>
 #definition(
-  title: [#kn[measurable space and measure space]],
+  title: [#kn[measurable space] and #kn[measure space]],
 )[
-Let $X$ be a set, $cal(M)$ be a $sigma$-algebra on $X$. \ A measure on $\(X\,A\)$ is a function $mu : cal(M) arrow.r\[0\,oo\)$ satisfying:
+Let $X$ be a set, $cal(M)$ be a $sigma$-algebra on $X$. We call
+$\(X\,cal(M)\)$ a measurable space. \ A #kn[measure] on this measurable
+space is a function $mu : cal(M) arrow.r\[0\,oo\)$ satisfying:
 
 + $mu\(nothing\)= 0$
 
 + countable additive:
   $ mu\(union.big_(i = 1)^oo E_i\)= sum_(i = 1)^oo mu\(E_i\) $ for disjoint seq of $E_i in cal(M)$.
 
-如果这样的 $mu$ 存在, 我们则称 $\(X\,cal(M)\)$ 为一个 measurable space, 并称 $\(X\,cal(M)\,mu\)$ 为一个 measure space.
+我们称 $\(X\,cal(M)\,mu\)$ 为一个 measure space.
 
 ]
 #remark[

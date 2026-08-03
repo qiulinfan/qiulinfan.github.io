@@ -1,0 +1,47 @@
+.PHONY: all release export web web-check pdf watch edit knowledge-sync
+
+TYPST := typst
+TOOLCHAIN := ../toolchain
+EXPORT_SKILL := ../../../skills/export-typst-math-notes
+KNOWLEDGE := ../../../knowledge/scripts/knowledge.py
+REPO_ROOT := ../../..
+BUILD := build/typst
+EXPORTS := exports
+COURSE_SLUG := {{SLUG}}
+
+all: release
+
+release: export web-check
+
+export:
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course $(COURSE_SLUG)
+	@python3 $(TOOLCHAIN)/scripts/export_course.py \
+		--document notes=main.typ \
+		--root ../.. \
+		--output $(EXPORTS) \
+		--build $(BUILD)/export
+
+knowledge-sync:
+	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course $(COURSE_SLUG)
+
+web:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. --features html --format html \
+		main.typ $(BUILD)/index.html 2>$(BUILD)/index.log || \
+		{ cat $(BUILD)/index.log >&2; exit 1; }
+
+web-check: web
+	@python3 $(EXPORT_SKILL)/scripts/check_web.py $(BUILD)/index.html
+
+pdf:
+	@mkdir -p $(BUILD)
+	@$(TYPST) compile --root ../.. main.typ $(BUILD)/main.pdf
+
+watch:
+	@mkdir -p $(BUILD)
+	@$(TYPST) watch --root ../.. --features html --format html \
+		main.typ $(BUILD)/index.html
+
+edit:
+	@code -r $(COURSE_SLUG).code-workspace main.typ
+
