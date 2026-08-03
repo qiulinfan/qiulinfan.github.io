@@ -1,4 +1,4 @@
 interface:
   display_name: "Export Typst Math Notes"
-  short_description: "Export scoped Typst notes and maintain qlkg-v2"
-  default_prompt: "Use $export-typst-math-notes to ingest changed Typst knowledge nodes and edges, export chapter snapshots, and validate the web output."
+  short_description: "Curate and export Typst-first math knowledge"
+  default_prompt: "Use $export-typst-math-notes to curate one changed Typst file into nodes, entries, refs, and typed edges, then export and validate it."

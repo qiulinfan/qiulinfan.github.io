@@ -28,7 +28,7 @@ title: "Math 525: Probability"
 ::: definition
 **Definition: random vector**
 
-对于 prob space $(\Omega,\mathcal{F},P)$, 一个 function $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ 如果是一个 $(\mathcal{F},\mathcal{B}({\mathbb{R}}^{n}))$-measurable function, 则 称它为一个 $n$-dimensional random variable, 或者 $n$-dimensional random vector.
+对于 prob space $(\Omega,\mathcal{F},P)$, 一个 function $\mathbf{X}:\Omega\rightarrow{\mathbb{R}}^{n}$ 如果是一个 $(\mathcal{F},\mathcal{B}({\mathbb{R}}^{n}))$-measurable function (即 [$(\mathcal{M},\mathcal{N})$-measurable function](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-mathcal-m-mathcal-n-measurable-function){.ql-ref ql-ref="mathcal-m-mathcal-n-measurable-function"} 在这两个 measurable spaces 上的情形), 则 称它为一个 $n$-dimensional [random variable](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-random-variable){.ql-ref ql-ref="random-variable"}, 或者 $n$-dimensional random vector.
 
 通常我们将 random vector 写成分量形式
 
@@ -91,7 +91,7 @@ $$X_{i} = \pi_{i} \circ \mathbf{X}$$
 ::: definition
 **Definition: joint distribution and joint cdf**
 
-令 $X_{1},\cdots,X_{n}$ 为 RV from the same prob space. 即 $\mathbf{X} := (X_{1},\cdots,X_{n})$ 是一个 random vector.
+令 $X_{1},\cdots,X_{n}$ 为 RV from the same prob space. 即 $\mathbf{X} := (X_{1},\cdots,X_{n})$ 是一个 random vector. 下面的两个对象分别将 [probability distribution](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-probability-distribution){.ql-ref ql-ref="probability-distribution"} 和 distribution function (也称 **cumulative distribution function, cdf**) 推广到 random vector.
 
 我们称 ${\mathbb{P}}^{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow{\mathbb{R}}$ defined by
 
@@ -150,7 +150,7 @@ discrete random vector 很容易处理. 我们可以直接定义 joint pmf. 而 
 
 ### condinuous joint cdf 与 joint pdf
 
-recall: 一个随机变量 $X$ 被称为一个 continuous random variable, 如果它的 cdf 是 absolutely continuous 的. 这个条件也等价于, 存在一个函数 $f_{X}:{\mathbb{R}}\rightarrow\lbrack 0,\infty)$ 使得
+recall: [continuous random variable](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-continuous-random-variable){.ql-ref ql-ref="continuous-random-variable"} $X$ 的 cdf 是 absolutely continuous 的. 这个条件也等价于, 存在一个函数 $f_{X}:{\mathbb{R}}\rightarrow\lbrack 0,\infty)$ 使得
 
 $$F_{X}(x) = \int_{- \infty}^{x}f_{X}(t)\, dt$$
 
@@ -159,7 +159,7 @@ $$F_{X}(x) = \int_{- \infty}^{x}f_{X}(t)\, dt$$
 ::: definition
 **Definition: continuous random vector 和 continuous joint cdf**
 
-对于 random vector $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 如果 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$, 即存在一个函数 $f_{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)$ 使得对于任意 Borel set $B \subseteq {\mathbb{R}}^{n}$, 有
+对于 random vector $\mathbf{X} = (X_{1},\cdots,X_{n})^{T}$ 如果 ${\mathbb{P}}^{\mathbf{X}} \ll \lambda^{n}$, 即它满足 [absolute continuity of signed measures](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-absolute-continuity-of-signed-measures){.ql-ref ql-ref="absolute-continuity-of-signed-measures"} 中的绝对连续性条件, 即存在一个函数 $f_{\mathbf{X}}:{\mathbb{R}}^{n}\rightarrow\lbrack 0,\infty)$ 使得对于任意 Borel set $B \subseteq {\mathbb{R}}^{n}$, 有
 
 $${\mathbb{P}}^{\mathbf{X}}(B) = \int_{B}f_{\mathbf{X}}(x_{1},\cdots,x_{n})\, d\lambda^{n}(x_{1},\cdots,x_{n})$$
 
@@ -173,7 +173,7 @@ $$F_{\mathbf{X}}(x_{1},\cdots,x_{n}) = \int_{- \infty}^{x_{1}}\cdots\int_{- \inf
 ::: remark
 **Remark**
 
-这个函数 $f_{\mathbf{X}}$ 就是 continuous random vector $\mathbf{X}$ 的 **joint probability density function (joint pdf).** 它是 joint distribution measure ${\mathbb{P}}^{\mathbf{X}}$ 对于 Lebesgue measure $\lambda^{n}$ 的 Radon-Nikodym derivative:
+这个函数 $f_{\mathbf{X}}$ 就是 continuous random vector $\mathbf{X}$ 的 **joint probability density function (joint pdf).** 它是 [probability density function (pdf)](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-probability-density-function-pdf){.ql-ref ql-ref="probability-density-function-pdf"} 在 random vector 上的对应概念. 它是 joint distribution measure ${\mathbb{P}}^{\mathbf{X}}$ 对于 Lebesgue measure $\lambda^{n}$ 的 [Radon-Nikodym derivative](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-radon-nikodym-derivative){.ql-ref ql-ref="radon-nikodym-derivative"}:
 
 $$\frac{d{\mathbb{P}}^{\mathbf{X}}}{d\lambda^{n}} = f_{\mathbf{X}}$$
 :::
@@ -185,7 +185,7 @@ $$\frac{d{\mathbb{P}}^{\mathbf{X}}}{d\lambda^{n}} = f_{\mathbf{X}}$$
 
 那么这个还原积分的计算可以任意换序吗?
 
-显然是可以的. 因为 recall **Fubini's theorem**: 只要 $f$ 绝对可积, 即 $\left. \int_{{\mathbb{R}}^{n}} \middle| f \middle| \, d\lambda^{n} < \infty \right.$, 那么对于任意的 permutation $\sigma$ of $\left\{ {1,2,\cdots,n} \right\}$, 我们都可以将积分的顺序换成
+显然是可以的. 因为 recall [Fubini's Theorem](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-fubini-theorem){.ql-ref ql-ref="fubini-theorem"}: 只要 $f$ 绝对可积, 即 $\left. \int_{{\mathbb{R}}^{n}} \middle| f \middle| \, d\lambda^{n} < \infty \right.$, 那么对于任意的 permutation $\sigma$ of $\left\{ {1,2,\cdots,n} \right\}$, 我们都可以将积分的顺序换成
 
 $$\int_{- \infty}^{x_{\sigma(1)}}\cdots\int_{- \infty}^{x_{\sigma(n)}}f(t_{1},\cdots,t_{n})\, dt_{\sigma(n)}\cdots dt_{\sigma(1)}$$
 
@@ -381,7 +381,7 @@ $$F_{X,Y}(x,y) = F_{X}(x)F_{Y}(y)$$
 
 - joint pdf 是 marginal pdfs 的 product, for continuous case.
 
-详细而言:
+这里离散情形沿用 [discrete random variable](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-discrete-random-variable){.ql-ref ql-ref="discrete-random-variable"} 的定义. 详细而言:
 
 ::: theorem
 **Theorem: independence via joint-density factorization marginal densities**
@@ -414,7 +414,7 @@ continuous case:
 :::: remark
 **Remark**
 
-Recall 两个事件 independence 的定义:
+Recall [independence of events](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-independence-of-events){.ql-ref ql-ref="independence-of-events"} 的定义:
 
 $${\mathbb{P}}(A \cap B) = {\mathbb{P}}(A) \cdot {\mathbb{P}}(B)$$
 
@@ -453,7 +453,7 @@ Furthermore: 我们不难发现一件事情, 可以**在 independence of two eve
 ::: proposition
 **Proposition: independence via generated sigma-algebras**
 
-令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 iff: $X$ 生成的 sigma-algebra $\sigma(X)$ 和 $Y$ 生成的 sigma-algebra $\sigma(Y)$ 中分别任取一个事件, 这两个事件都是 independent 的. 即:
+令 $X,Y$ 是两个 random variables. 则 $X,Y$ 是 independent 的 iff: $X$ 和 $Y$ 按 [$\sigma$-algebra generated by a random variable (measurable function)](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-sigma-algebra-generated-by-a-random-variable-measurable-function){.ql-ref ql-ref="sigma-algebra-generated-by-a-random-variable-measurable-function"} 分别生成的 $\sigma(X)$ 和 $\sigma(Y)$ 中分别任取一个事件, 这两个事件都是 independent 的. 即:
 
 $$\forall A \in \sigma(X),\forall B \in \sigma(Y),\quad{\mathbb{P}}(A \cap B) = {\mathbb{P}}(A) \cdot {\mathbb{P}}(B)$$
 :::
@@ -507,11 +507,11 @@ $$Z = X \cdot Y$$
 
 Independence 的概念会让我们回忆起另外一个刻画两个 random variables 之间关系的概念: covariance, 它丈量了**两个 random variables 之间的线性关系**.
 
-covariance 的定义:
+[covariance](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-covariance){.ql-ref ql-ref="covariance"} 的定义:
 
 $$\text{Cov}(X,Y) := {\mathbb{E}}\lbrack(X - {\mathbb{E}}\lbrack X\rbrack)(Y - {\mathbb{E}}\lbrack Y\rbrack)\rbrack = {\mathbb{E}}\lbrack XY\rbrack - {\mathbb{E}}\lbrack X\rbrack{\mathbb{E}}\lbrack Y\rbrack$$
 
-我们容易发现: **independence 是一个比 covariance 为 0 (即 uncorrelated) 更强的概念:**
+我们称 covariance 为 0 的两个 random variables 为 [**uncorrelated random variables**]{#kn-uncorrelated-random-variables .ql-kn ql-kn="uncorrelated-random-variables"} . 我们容易发现: **independence 是一个比 uncorrelated 更强的概念:**
 
 ::: proposition
 **Proposition: independent 严格强于 uncorrelated**
@@ -676,7 +676,7 @@ $$\begin{matrix}
 ::: definition
 **Definition: conditional distribution**
 
-给定 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$, 我们定义 the conditional distribution of $X$ given $Y = y$ 为 the probability measure ${\mathbb{P}}^{X|Y = y}$:
+给定 random variables $X,Y:\Omega\rightarrow{\mathbb{R}}$, 其中下面极限里的条件概率按 [conditional probability](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-conditional-probability){.ql-ref ql-ref="conditional-probability"} 理解. 我们定义 the conditional distribution of $X$ given $Y = y$ 为 the probability measure ${\mathbb{P}}^{X|Y = y}$:
 
 $${\mathbb{P}}^{X|Y = y}(A) := \lim\limits_{h\rightarrow 0^{+}}{\mathbb{P}}(X \in A \mid y \leq Y \leq y + h),\quad\forall A \in \mathcal{B}({\mathbb{R}})$$
 
@@ -836,7 +836,7 @@ $$f_{Y \mid X}(y \mid x) = \left\{ \begin{matrix}
 ::: {#def-03-joint-conditional-distribution-conditional-expectation .definition}
 **Definition: conditional expectation**
 
-令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs. 对于 $y \in {\mathbb{R}}$ where $F_{X|Y} = {\mathbb{P}}^{X|Y = y}(X \leq x)$ is defined (这个条件对于 discrete 是筛选掉 ${\mathbb{P}}(y) = 0$ 的点, 对于 continuous 这是为了筛选掉 $f_{Y} = 0$ 的点), 我们定义 conditional expectation:
+令 $X,Y:\Omega\rightarrow{\mathbb{R}}$ 为 RVs. 这里沿用 [expectation and variance of random variable](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-expectation-and-variance-of-random-variable){.ql-ref ql-ref="expectation-and-variance-of-random-variable"} 中 expectation 的积分定义. 对于 $y \in {\mathbb{R}}$ where $F_{X|Y} = {\mathbb{P}}^{X|Y = y}(X \leq x)$ is defined (这个条件对于 discrete 是筛选掉 ${\mathbb{P}}(y) = 0$ 的点, 对于 continuous 这是为了筛选掉 $f_{Y} = 0$ 的点), 我们定义 conditional expectation:
 
 $$\left. {\mathbb{E}}\lbrack X \middle| Y = y\rbrack := \int_{- \infty}^{\infty}x\, d{\mathbb{P}}^{X|Y = y}(x) \right.$$
 
@@ -862,7 +862,7 @@ Notice: 这个函数是一个 random variable. 同理, 我们可以构造 condit
 :::
 
 ::: proposition
-**Proposition: independence 让 conditional distribution, density 和 expectation 都退化**
+**Proposition: independence 下 conditional distribution 不变 , independence 下 conditional density 不变 和 independence 下 conditional expectation 不变**
 
 如果 $X,Y$ 是 independent 的, 那么在任意 defined $y$ 上,
 
@@ -954,7 +954,7 @@ $$\left. {\mathbb{E}}\lbrack X\rbrack = {\mathbb{E}}\lbrack{\mathbb{E}}\lbrack X
 ::: proof
 **Proof**
 
-对于更加严格的 conditional expectation 的定义而言 (as an orthogonal projection from $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ onto the subspace of $Y$-measurable functions), 这个定理是 trivial 的, 直接 follow from def. 在该定义中, $\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.$ 被定义为一个 $\sigma(Y)$-measurable function $Z$, 使得对于任意 $A \in \sigma(Y)$, 都有
+对于更加严格的 conditional expectation 的定义而言 (as an orthogonal projection from $L^{2}(\Omega,\mathcal{F},{\mathbb{P}})$ onto the subspace of $Y$-measurable functions), 这个定理是 trivial 的, 直接 follow from def. 这个定义在 indicator function 上也包含 [Kolmogorov definition of conditional probability](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-kolmogorov-definition-of-conditional-probability){.ql-ref ql-ref="kolmogorov-definition-of-conditional-probability"} 的情形. 在该定义中, $\left. {\mathbb{E}}\lbrack X \middle| Y\rbrack \right.$ 被定义为一个 $\sigma(Y)$-measurable function $Z$, 使得对于任意 $A \in \sigma(Y)$, 都有
 
 $$\int_{A}Z\, d{\mathbb{P}} = \int_{A}X\, d{\mathbb{P}}$$
 

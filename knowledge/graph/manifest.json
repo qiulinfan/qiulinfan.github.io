@@ -1,21 +1,24 @@
 {
   "counts": {
-    "edges": 363,
-    "nodes": 279,
-    "references": 9
+    "edges": 465,
+    "nodes": 288,
+    "references": 38
   },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "aa8b9abe4d1a69a1558d2d31e8a318788827e702ab9b3cd8de4155f18293fd51",
+  "graph_sha256": "28093a8b1174c9ab70811b69a7e4b334632a1121d68f9a2a1b84a699eb908698",
   "node_types": {
     "discipline": 1,
     "field": 3,
-    "knowledge": 257,
+    "knowledge": 266,
     "topic": 18
   },
   "relations": {
-    "contains": 278,
-    "generalizes": 1,
-    "prerequisite-for": 84
+    "contains": 287,
+    "contrasts-with": 1,
+    "derived-from": 28,
+    "generalizes": 5,
+    "implies": 14,
+    "prerequisite-for": 130
   },
   "schema": "qlkg-v2",
   "source_hashes": {
@@ -29,7 +32,7 @@
     "notes/math/measure-theory/chapters/08-Hardy-Littlewood&LDT.typ": "4e3c86301125dc49bf98c8309285d0762c5c006a84668822c61a3cbab5e31e05",
     "notes/math/measure-theory/chapters/09-L^P-space_and_inequalities.typ": "5e581859b57a1a52f18993fe3d20add484d54a81c17672edeb5da15b52d2f632",
     "notes/math/measure-theory/chapters/10-signed_measure&Jordan-decomposition.typ": "46cf4f23a45eb8328dcba6acc07411dac21c5eb6bd0ca6a5e9a84b806bb6fcf4",
-    "notes/math/measure-theory/chapters/11-Radon-Nikodym_theorem.typ": "09ee262131c14fd241e221e5304640250d7e48dea668ca2ed2485fff67b1774f",
+    "notes/math/measure-theory/chapters/11-Radon-Nikodym_theorem.typ": "c656b167d86d43789fdc810afedea4a44af55da75366abee66ad955c28e0e7b2",
     "notes/math/measure-theory/chapters/12-differentiation_on_real_spaces.typ": "3410bad6807dc169a7c8ea2a0ea11796b0e777266745e80e39c543fb85e9c29a",
     "notes/math/measure-theory/chapters/13-the_dual_of_L^p-spaces.typ": "3bcb65d134d38c89ef26ee01cef180d459307e87ef11600afcfaa4fa1c6b74a3",
     "notes/math/measure-theory/extras.typ": "cec589036c2318f597ae2b921022bbf82d18a75408f362c967ee93a013be6996",
@@ -51,9 +54,9 @@
     "notes/math/measure-theory/homeworks/hw11-on_regular-borel-measure&BV.typ": "921b1a11659d85fe0680fadfadf2fcca15e70f3871619658cf97c0c5ef5d94d1",
     "notes/math/measure-theory/homeworks/hw12-on_absolutely-continuous-functions.typ": "c267f694d1095fd43e58d0518521406e4631d0ef966e7388cf6ea6d950831ee0",
     "notes/math/measure-theory/main.typ": "73744ef631a5c9980b1fccb048d965d57518697a3d40a0cb38b359bde5e5d6a3",
-    "notes/math/prob/chapters/01-combinatorics&prob_space.typ": "b4858e3dc617b6c19718caecfa94246d97b30def80b20ff8b71b58f3cb9c11f3",
+    "notes/math/prob/chapters/01-combinatorics&prob_space.typ": "984b78e163d037bdbbbd8d4deb5347034eae3e786355ec70e9c73359b106c71d",
     "notes/math/prob/chapters/02-random-variables.typ": "ae29178c950e3a9bf05dbd5e81414c3c9b17705260ce8b01363a50b28f1f7e4f",
-    "notes/math/prob/chapters/03-joint&conditional-distribution.typ": "2c62dde6f7648109ef38ff767eec49396b8493d108261e67a0d275881b05b5dc",
+    "notes/math/prob/chapters/03-joint&conditional-distribution.typ": "d7f47fa5ac33e68543baeb615f1d624e3f1e85723d318c45bcde4b0f1ffcbf54",
     "notes/math/prob/chapters/04-LLN.typ": "cdd689838e6f08a4d1e6876b7f8a7225469aca3128ec9cc5e9c392521b2b5d78",
     "notes/math/prob/chapters/05-CLT.typ": "88d799268db0cc91a0a37db031d5e89034d3d441d7e3d5c617ddc8aa3ba01e5a",
     "notes/math/prob/homeworks.typ": "afd29a23d0793016a219fdd2e2c216c79bc853a2db176ff7cadf161f46474845",
@@ -66,7 +69,7 @@
     "notes/math/prob/main.typ": "49c2e69c915c2641146e03e9355f018eb75949629d46184588bff0b7c2f804d6"
   },
   "statuses": {
-    "active": 257,
+    "active": 266,
     "meta": 22
   }
 }

@@ -47,6 +47,11 @@ SEMANTIC_RELATIONS = {
     "derived-from",
 }
 ACYCLIC_RELATIONS = {"contains", "prerequisite-for"}
+CROSS_FILE_REF_ENDPOINTS = {
+    "prerequisite-for": ("target", "source"),
+    "generalizes": ("source", "target"),
+    "derived-from": ("source", "target"),
+}
 
 
 class KnowledgeError(RuntimeError):
@@ -1092,6 +1097,108 @@ def show_node(state: GraphState, node_id_or_name: str) -> dict[str, Any]:
     }
 
 
+def curation_report(
+    state: GraphState,
+    authorities: set[str],
+) -> dict[str, Any]:
+    """Validate deterministic consequences of prior agent curation decisions."""
+    selected = {
+        node_id: node
+        for node_id, node in state.nodes.items()
+        if node.get("type") == "knowledge"
+        and (node.get("provenance") or {}).get("active")
+        and (node.get("provenance") or {}).get("authority") in authorities
+    }
+    errors: list[dict[str, Any]] = []
+    entries = 0
+    for node_id, node in selected.items():
+        if str(node.get("text", "")).strip():
+            entries += 1
+            continue
+        errors.append(
+            diagnostic(
+                "missing-node-entry",
+                "active knowledge node has no source-grounded text entry",
+                source=(node.get("provenance") or {}).get("authority"),
+                node=node_id,
+            )
+        )
+
+    reference_pairs = {
+        (str(item.get("authority", "")), str(item.get("target", "")))
+        for item in state.references
+    }
+    grouped: dict[tuple[str, str], dict[str, Any]] = {}
+    for edge in state.edges.values():
+        relation = str(edge.get("relation", ""))
+        endpoints = CROSS_FILE_REF_ENDPOINTS.get(relation)
+        if endpoints is None:
+            continue
+        consumer_id = str(edge.get(endpoints[0], ""))
+        dependency_id = str(edge.get(endpoints[1], ""))
+        consumer = state.nodes.get(consumer_id) or {}
+        dependency = state.nodes.get(dependency_id) or {}
+        consumer_provenance = consumer.get("provenance") or {}
+        dependency_provenance = dependency.get("provenance") or {}
+        consumer_authority = str(consumer_provenance.get("authority", ""))
+        dependency_authority = str(dependency_provenance.get("authority", ""))
+        if (
+            consumer_id not in selected
+            or not dependency_authority
+            or not dependency_provenance.get("active")
+            or consumer_authority == dependency_authority
+        ):
+            continue
+        key = (consumer_authority, dependency_id)
+        requirement = grouped.setdefault(
+            key,
+            {
+                "authority": consumer_authority,
+                "target": dependency_id,
+                "target_authority": dependency_authority,
+                "consumer_nodes": set(),
+                "relations": set(),
+                "evidence": set(),
+            },
+        )
+        requirement["consumer_nodes"].add(consumer_id)
+        requirement["relations"].add(relation)
+        if edge.get("evidence"):
+            requirement["evidence"].add(str(edge["evidence"]))
+
+    requirements: list[dict[str, Any]] = []
+    for key, raw in sorted(grouped.items()):
+        covered = key in reference_pairs
+        requirement = {
+            "authority": raw["authority"],
+            "target": raw["target"],
+            "target_authority": raw["target_authority"],
+            "consumer_nodes": sorted(raw["consumer_nodes"]),
+            "relations": sorted(raw["relations"]),
+            "evidence": sorted(raw["evidence"]),
+            "covered": covered,
+        }
+        requirements.append(requirement)
+        if not covered:
+            errors.append(
+                diagnostic(
+                    "missing-cross-file-ref",
+                    f"direct external dependency has no file-level #ref: {raw['target']}",
+                    source=raw["authority"],
+                    node=raw["target"],
+                )
+            )
+
+    return {
+        "schema": "qlkg-curation-check-v1",
+        "files": sorted(authorities),
+        "nodes": len(selected),
+        "entries": entries,
+        "required_refs": requirements,
+        "errors": sorted(errors, key=json_text),
+    }
+
+
 def defaults(repo_root: Path, value: str) -> Path:
     return (repo_root / value).resolve()
 
@@ -1124,6 +1231,8 @@ def parse_args() -> argparse.Namespace:
     search_command.add_argument("--limit", type=int, default=20)
     show_command = commands.add_parser("show")
     show_command.add_argument("id")
+    curate_command = commands.add_parser("curate-check")
+    curate_command.add_argument("--file", action="append", required=True, type=Path)
     commands.add_parser("stats")
     return parser.parse_args()
 
@@ -1211,6 +1320,25 @@ def main() -> int:
             print(pretty_json(search_graph(state, args.query, args.limit)), end="")
         elif args.command == "show":
             print(pretty_json(show_node(state, args.id)), end="")
+        elif args.command == "curate-check":
+            specs = load_sources(repo_root, registry)
+            pairs, authorities, _ = select_scope(
+                repo_root,
+                specs,
+                list(args.file),
+                None,
+                None,
+            )
+            missing = [
+                relative_path(repo_root, path)
+                for _, path in pairs
+                if not path.is_file()
+            ]
+            if missing:
+                raise KnowledgeError(f"curation source does not exist: {', '.join(missing)}")
+            report = curation_report(state, authorities)
+            print(pretty_json(report), end="")
+            return 1 if report["errors"] else 0
         elif args.command == "stats":
             print(pretty_json(state.manifest), end="")
         return 0

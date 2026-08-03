@@ -647,7 +647,7 @@
 						{/if}
 
 						{#if selectedNode.text}
-							<div class="detail-block"><h3>证据正文</h3><div class="evidence-text">{selectedNode.text}</div></div>
+							<div class="detail-block"><h3>词条</h3><div class="evidence-text">{selectedNode.text}</div></div>
 						{/if}
 
 						{#if neighbors.length}

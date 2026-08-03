@@ -157,6 +157,25 @@ class KnowledgeGraphTest(unittest.TestCase):
         self.assertEqual("Durable agent summary.", node["text"])
         self.assertIn(("sigma-algebra", "prerequisite-for", "measure-space"), state.edges)
 
+    def test_multiple_explicit_kn_markers_in_one_title_create_multiple_nodes(self) -> None:
+        self.chapter.write_text(
+            "= Foundations\n"
+            "#definition(title: [#kn[norm] and #kn[seminorm]])[Two related definitions.]\n",
+            encoding="utf-8",
+        )
+
+        state, _, report = self.sync()
+
+        self.assertEqual(2, report["definitions"])
+        self.assertEqual(
+            {"norm", "seminorm"},
+            {node_id for node_id, node in state.nodes.items() if node["type"] == "knowledge"},
+        )
+        self.assertEqual(
+            state.nodes["norm"]["provenance"]["line"],
+            state.nodes["seminorm"]["provenance"]["line"],
+        )
+
     def test_duplicate_active_kn_is_rejected(self) -> None:
         duplicate = self.source_root / "chapters/02-duplicate.typ"
         duplicate.write_text(
@@ -183,6 +202,80 @@ class KnowledgeGraphTest(unittest.TestCase):
         )
         with self.assertRaisesRegex(knowledge.KnowledgeError, "prerequisite-for cycle"):
             knowledge.apply_delta(self.graph, self.database, self.typst_registry, delta)
+
+    def test_file_curation_requires_entries_and_cross_file_refs(self) -> None:
+        state, _, _ = self.sync()
+        authority = "notes/math/demo/chapters/01-foundations.typ"
+        report = knowledge.curation_report(state, {authority})
+        self.assertEqual(2, report["nodes"])
+        self.assertEqual(0, report["entries"])
+        self.assertEqual(
+            ["missing-node-entry", "missing-node-entry"],
+            [item["code"] for item in report["errors"]],
+        )
+
+        entries = self.repo / "knowledge/build/entries.json"
+        entries.parent.mkdir(parents=True, exist_ok=True)
+        entries.write_text(
+            json.dumps(
+                {
+                    "schema": "qlkg-agent-delta-v2",
+                    "nodes": [
+                        {"id": "sigma-algebra", "text": "A family of sets closed under the required operations."},
+                        {"id": "measure-space", "text": "A measurable space equipped with a measure."},
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        knowledge.apply_delta(self.graph, self.database, self.typst_registry, entries)
+
+        application = self.source_root / "chapters/02-application.typ"
+        application.write_text(
+            "= Application\n#theorem(title: [#kn[completion theorem]])[A completion exists.]\n",
+            encoding="utf-8",
+        )
+        self.sync(files=[Path("notes/math/demo/chapters/02-application.typ")])
+        relation = self.repo / "knowledge/build/relation.json"
+        relation.write_text(
+            json.dumps(
+                {
+                    "schema": "qlkg-agent-delta-v2",
+                    "nodes": [
+                        {"id": "completion-theorem", "text": "Every object in scope admits a completion."},
+                    ],
+                    "edges": [
+                        {
+                            "source": "sigma-algebra",
+                            "relation": "prerequisite-for",
+                            "target": "completion-theorem",
+                            "evidence": "the completion is constructed from the sigma-algebra",
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        knowledge.apply_delta(self.graph, self.database, self.typst_registry, relation)
+
+        application_authority = "notes/math/demo/chapters/02-application.typ"
+        state = knowledge.load_state(self.graph)
+        report = knowledge.curation_report(state, {application_authority})
+        self.assertEqual(
+            ["missing-cross-file-ref"],
+            [item["code"] for item in report["errors"]],
+        )
+        self.assertFalse(report["required_refs"][0]["covered"])
+
+        application.write_text(
+            "= Application\n#theorem(title: [#kn[completion theorem]])["
+            "By #ref[$sigma$-algebra], a completion exists.]\n",
+            encoding="utf-8",
+        )
+        state, _, _ = self.sync(files=[Path(application_authority)])
+        report = knowledge.curation_report(state, {application_authority})
+        self.assertEqual([], report["errors"])
+        self.assertTrue(report["required_refs"][0]["covered"])
 
 
 if __name__ == "__main__":

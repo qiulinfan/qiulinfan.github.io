@@ -32,7 +32,7 @@ web:
 
 web-check: web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/index.html \
-		--expected-nodes 84 --expected-diagrams 14
+		--expected-nodes 93 --expected-diagrams 14
 
 homeworks-web:
 	@mkdir -p $(BUILD)

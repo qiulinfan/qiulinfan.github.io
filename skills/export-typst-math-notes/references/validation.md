@@ -44,6 +44,18 @@ For a changed-file workflow, preview first:
 python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/file.typ
 ```
 
+After applying the reviewed agent delta and synchronizing the file, require:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . curate-check \
+  --file path/to/file.typ
+```
+
+This deterministic check covers only explicit, already curated knowledge: every
+node defined by the selected file needs a nonempty entry, and every confirmed
+cross-file direct dependency needs a file-level `#ref`. It never promotes
+titles, splits concepts, or infers relations.
+
 ## Repository boundary
 
 Commit authoritative `.typ`, per-chapter `.tex`/`.md`, required bibliography and

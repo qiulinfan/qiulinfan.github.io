@@ -18,7 +18,7 @@ Question 2: 给定一个任意的 p.m. $mu$, 以及一个任意的 s.m. $nu$ on 
 #definition(
   title: [#kn[absolute continuity of signed measures]],
 )[
-给定 p.m. $mu$ 和 s.m. $nu$ on $\(X\,cal(A)\)$, 我们称 $nu$ is absolutely continuous w.r.t. $mu$, 如果 $ forall E in cal(A)\,quad mu\(E\)= 0 arrow.r.double.long nu\(E\)= 0 $
+给定 p.m. $mu$ 和 #ref[signed measure] $nu$ on $\(X\,cal(A)\)$, 我们称 $nu$ is absolutely continuous w.r.t. $mu$, 如果 $ forall E in cal(A)\,quad mu\(E\)= 0 arrow.r.double.long nu\(E\)= 0 $
 即: $nu$ 的 null sets 包含了 $mu$ 的所有 null sets. ($nu$ 拥有比 $mu$ 严格更多的 null sets) \ 写作 $ nu lt.double mu $
 
 ]
@@ -29,7 +29,7 @@ Question 2: 给定一个任意的 p.m. $mu$, 以及一个任意的 s.m. $nu$ on 
 )
 #label("mutually singular and absolutely continuous")
 
-#strong[$nu tack.t mu$ 表示的是 $nu$ 和 $mu$ 出现变化的区域完全不同], 而 #strong[$nu lt.double mu$ 表示的是 $nu$ 出现变化的区域完全包括在 $mu$ 出现变化的区域里] (因为 $mu$ 不变化的区域被包括在 $nu$ 不变化的区域里).
+#ref[mutually singular] 的记号 #strong[$nu tack.t mu$ 表示的是 $nu$ 和 $mu$ 出现变化的区域完全不同], 而 #strong[$nu lt.double mu$ 表示的是 $nu$ 出现变化的区域完全包括在 $mu$ 出现变化的区域里] (因为 $mu$ 不变化的区域被包括在 $nu$ 不变化的区域里).
 
 #example(
 )[
@@ -46,7 +46,7 @@ $ nu_1 : = m\,quad nu_2 := sum_(j = 1)^oo c_j delta_(x_j)\,quad nu_3 : = mu_(C a
 #proposition(
   title: [#kn[absolutely continuous 的性质]],
 )[
-- $ \|nu\|lt.double mu arrow.l.r.double nu^(+) lt.double mu upright(" and ") nu^(-) lt.double mu $\(容易证明)
+- 对 #ref[total variation measure], $ \|nu\|lt.double mu arrow.l.r.double nu^(+) lt.double mu upright(" and ") nu^(-) lt.double mu $\(容易证明)
 
 - $ nu perp mu upright(" and ") nu lt.double mu arrow.r.double.long nu = 0 $\(刚才已经证明)
 
@@ -113,7 +113,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 #theorem(
   title: [#kn[Radon-Nikodym Theorem]],
 )[
-对于 #strong[$sigma$-finite] ${upright("p.m. ") mu\
+对于 #ref[$sigma$-finite measure] ${upright("p.m. ") mu\
 upright("s.m. ") nu$ on $\(X\,cal(A)\)$, $ nu lt.double mu arrow.l.r.double exists upright(" ext. ") mu upright("-intble ") f = frac(d nu, d mu) $
 并且这个 RN derivative #strong[$f$ 是 #strong[unique 的, in $mu$-a.e. sense.]] (即在 $mu$ 的一个 null set 之外唯一).
 
@@ -126,7 +126,7 @@ Radon Nikodym Theorem 表示, 对于 $sigma$-finite 的 $nu$ 和 $mu$, RN deriva
 
 ]
 #proof[
-We look at $nu - 1 / n mu$ for each $n in bb(N)$. 它们都是 finite signed measure for sure. \ 考虑 Hahn decomposition $P_n union.sq N_n$ for each $n$. 并 set: $ P : = union.big_n P_n\,quad N : = inter.big_n N_n = P^c $
+We look at $nu - 1 / n mu$ for each $n in bb(N)$. 它们都是 finite signed measure for sure. \ 考虑 #ref[Hahn Decomposition Theorem] 给出的 $P_n union.sq N_n$ for each $n$. 并 set: $ P : = union.big_n P_n\,quad N : = inter.big_n N_n = P^c $
 于是: $N$ 对于任意 $n$, 都是 $nu - 1 / n mu$ 的 negative set. \ 这说明: $ forall n\,thin thin 0 lt.eq nu\(N\)lt.eq 1 / n mu\(N\) $
 因而一定有: $ nu\(N\)= 0 $
 (这是显然的, 因为 $N$ intersect 了所有的 $nu - 1 / n mu$ 的负集, 在 $n$ 大的时候这个 diff measure 基本等于 $nu$, 而 $nu$ 本身是 positive 的, 那么显然 $nu\(N\)= 0$\.) \ Case 1: 如果 $mu\(P\)= 0$, 那么 $mu tack.t nu$. \ Case 2: Otherwise then 存在某个 $mu\(P_n\)> 0$, 说明 $P_n$ 是 $nu - 1 / n mu$ 的 positive set, 因而在 $P_n$ 上, $nu gt.eq 1 / n mu$.
@@ -141,10 +141,10 @@ We can define partial order on $cal(F)$: 称 $f_1 lt.eq f_2$ if $f_1\(x\)gt.eq f
 Idea: 我们想要得到 $cal(F)$ 中最大的元素 $f_(m a x)$, 看看是否能取到总是有 $ integral_E f_(m a x) d mu = nu\(E\) $#strong[Step 2: Claim] $f_1\,f_2 in cal(F) arrow.r.double.long f := max { f_1\,f_2 } in cal(F)$ \ Proof of Claim: for fixed $f_1\,f_2$, 考虑 $A : = { f_1 > f_2 }$. 任取 $E in cal(A)$, 有: $ integral_E f thin d mu = integral_(E inter A) f_1 thin d mu + integral_(E inter A^c) f_2 thin d mu lt.eq nu\(E inter A\)+ nu\(E inter A^c\)= nu\(E\) $
 Claim proved. \ #strong[Step 3: 构造出 potential RN derivative: 最大的元素 $f in cal(F)$]
 现在我们 set $ a : = sup { integral f thin d mu divides f in cal(F) } $
-显然有: $ 1 lt.eq a lt.eq nu\(X\) $ pick $g_n in cal(F)$ s.t. $integral g_n thin d mu arrow.tr a$, 并且 set$ f_n : = max { g_1\,dots.h.c\,g_n } $for each $n$. \ 显然有: $ f_n lt.eq f_(n + 1)\,quad integral f_n thin d mu arrow.tr a $ 并且根据我们的 claim, 所有 $f_n in cal(F)$. \ 根据可测函数的性质, $ exists f : = lim_n f_n in L^(+)\(mu\)\,upright(" and ") in L^1\(mu\)upright(" (since ") mu upright(" finite)") $并且根据 MCT, $ integral f thin d mu = lim_(n arrow.r oo) integral f_n thin d mu = a $
+显然有: $ 1 lt.eq a lt.eq nu\(X\) $ pick $g_n in cal(F)$ s.t. $integral g_n thin d mu arrow.tr a$, 并且 set$ f_n : = max { g_1\,dots.h.c\,g_n } $for each $n$. \ 显然有: $ f_n lt.eq f_(n + 1)\,quad integral f_n thin d mu arrow.tr a $ 并且根据我们的 claim, 所有 $f_n in cal(F)$. \ 根据可测函数的性质, $ exists f : = lim_n f_n in L^(+)\(mu\)\,upright(" and ") in L^1\(mu\)upright(" (since ") mu upright(" finite)") $并且根据 #ref[monotone convergence theorem]（MCT）, $ integral f thin d mu = lim_(n arrow.r oo) integral f_n thin d mu = a $
 并且, 对于任意 $E$ measurable, 根据 MCT 也有 $ integral_E f thin d mu = lim_(n arrow.r oo) integral_E f_n thin d mu lt.eq nu\(E\) $我们 set: $ nu'\(E\): = integral_E f thin d mu $
 #strong[Step 4: 证明 $nu' = nu$.] \ Proof: 首先我们知道 by def $nu' lt.eq nu$. \ Set: $ tilde(nu) : = nu - nu' gt.eq 0 $By our assumption $nu lt.double mu$, 从而也有 $tilde(nu) lt.double mu$. \ 因而只需要证明 $tilde(nu) tack.t mu$, 就可以得到 $tilde(nu) = 0$, 从而证明出 $nu' = nu$. \ 这个时候 Lemma 就起了作用: \ Suppose for contradictin that $tilde(nu) ⟂̸ mu$, 那么 by lemma, 由于 $tilde(nu)$ 是一个 finite positive measure, $mu$ 也是一个 finite positive measure, 则存在 $epsilon.alt > 0$ 和 nontrivial measurable $E$, 使得 $tilde(nu) gt.eq epsilon.alt mu$ on $E$. \ 于是: $ g : = f + epsilon.alt chi_E in cal(F) $
-而 $integral f thin d mu = a$, 因而 $ integral g thin d mu > a $这和 $g in cal(F)$ 冲突 (否则它的积分一定小于等于 $a$). \ #strong[从而, $mu\,nu$ 是 finite p.m. 的情况得证.] \ #strong[Step 5: 推广至 $nu$ finite s.m., $mu$ finite p.m. 的情况.] \ 直接 Apply Step 1 to $nu^(+)\,nu^(-)$ 即得证. \ #strong[Step 6: 推广至 $nu\,mu$ $sigma$-finite 的情况.] \ Proof: By $sigma$-finite 的定义, 我们可以 decompose $ X = union.sq.big_(n = 1)^oo X_n $
+而 $integral f thin d mu = a$, 因而 $ integral g thin d mu > a $这和 $g in cal(F)$ 冲突 (否则它的积分一定小于等于 $a$). \ #strong[从而, $mu\,nu$ 是 finite p.m. 的情况得证.] \ #strong[Step 5: 推广至 $nu$ finite s.m., $mu$ finite p.m. 的情况.] \ 由 #ref[Jordan decomposition theorem] 写出 $nu^(+)\,nu^(-)$, 再直接 Apply Step 1 即得证. \ #strong[Step 6: 推广至 $nu\,mu$ $sigma$-finite 的情况.] \ Proof: By $sigma$-finite 的定义, 我们可以 decompose $ X = union.sq.big_(n = 1)^oo X_n $
 那么 by finite case, $nu\|_(X_n)$, $mu\|_(X_n)$ is finite for each $n$. \ 因而 $ f_n : = frac(d\(nu\|_(X_n)\), d\(mu\|_(X_n)\)) thin thin exists quad upright(" for each ") n $
 于是, take $ f : = sum_(n = 1)^oo upright(bold(1))_(X_n) f_n $即可得证. \ #strong[Note: 这里的 $f$ 是 ext $mu$-intble 的, 即: $f^(+)\,f^(-)$ 至少有一个是 ext $mu$-intble 的. 这 follows from $nu$ 作为一个 signed measure 的定义: $nu$ 至多 admit $+ oo\,- oo$ 中的一个. \ Specially, 如果 $nu$ 是一个 positive measure, 那么 $f$ 一定也是非负的, 从而 $f^(-) = 0$.]
 

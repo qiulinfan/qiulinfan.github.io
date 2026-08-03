@@ -41,6 +41,8 @@ By #ref[σ-algebra], ...
 - the graph stores searchable plain `label` plus Typst-rendered inline MathML in
   `properties.label_html`; web views prefer the latter and escape fallback text;
 - `#ref` emits `data-ql-ref` and remains a readable hyperlink in snapshots;
+- a title defining several independent concepts contains several `#kn`
+  occurrences rather than one bundled node;
 - statement-local labels may coexist, but do not create graph nodes;
 - examples and sections have no automatic graph meaning.
 
@@ -71,6 +73,12 @@ Typst rather than reconstructing identity from an export.
 - agent-created discipline/field/topic nodes;
 - semantic edges with evidence;
 - authored `#ref` occurrences used as backlinks.
+
+For each changed file, the agent also writes a concise source-grounded `text`
+entry for every locally authoritative node. A direct immediate prerequisite
+defined in another file requires a meaningful file-level `#ref`; same-file and
+transitive ancestors do not. Scripts validate these reviewed decisions but do
+not infer them.
 
 Source synchronization may target a repository, subject, course, or file. A
 missing definition in the selected scope makes its node orphaned; it does not

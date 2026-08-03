@@ -1,6 +1,6 @@
 ---
 name: export-typst-math-notes
-description: Maintain and export Typst-first mathematics notes at repository, subject, course, or individual-file scope. Use when Codex authors or migrates QLNotes Typst; curates global #kn knowledge nodes and #ref backlinks; preserves orphaned node metadata during concept moves; extracts semantic graph edges; exports chaptered editable LaTeX and Markdown; checks semantic HTML; or publishes math notes to GitHub Pages.
+description: Maintain and export Typst-first mathematics notes at repository, subject, course, or individual-file scope. Use when Codex authors or migrates QLNotes Typst; semantically curates global #kn nodes, source-grounded node entries, cross-file #ref backlinks, and typed graph edges; preserves orphaned metadata during concept moves; exports chaptered editable LaTeX and Markdown; checks semantic HTML; or publishes math notes to GitHub Pages.
 ---
 
 # Export Typst Math Notes
@@ -15,6 +15,8 @@ In `qlblog`, read these before acting:
 
 - `notes/math/toolchain/README.md` and the affected course `Makefile`;
 - `knowledge/SPEC.md`;
+- [references/curation-contract.md](references/curation-contract.md) whenever
+  knowledge nodes, entries, references, or semantic edges are in scope;
 - [references/export-contract.md](references/export-contract.md);
 - [references/validation.md](references/validation.md).
 
@@ -47,7 +49,7 @@ GitHub Actions publishes HTML to Pages; never commit a generated course `site/`.
 
 ## Curate explicit knowledge identity
 
-Use exactly one global `#kn` for a concept's authoritative definition:
+Use exactly one global `#kn` for each concept's authoritative definition:
 
 ```typst
 #theorem(
@@ -82,6 +84,12 @@ Prefer stable conceptual names over statement numbers, source locations, or
 generic labels. Formal components without `#kn` remain readable statements and
 do not enter the graph.
 
+Treat every `#kn` occurrence as one identity. When a title defines several
+independently reusable concepts, place a separate `#kn` around each concept;
+do not store a comma- or conjunction-separated bundle as one node. Keep true
+synonyms and spelling variants as aliases of one node. Never use a migration
+script or title heuristic to make this semantic decision.
+
 Keep math inside the authored name as Typst math, for example
 `#kn[$L^p$ convergence]`. Synchronization preserves a plain label for search and
 batch-compiles the original name to MathML for graph lists, detail views,
@@ -105,18 +113,36 @@ python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/chapter
 python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/chapter.typ
 ```
 
-Before synchronization:
+Process changed sources one file at a time. Before synchronization:
 
-1. read the changed source and existing graph neighborhood;
-2. add or correct only high-confidence `#kn` and `#ref` markers in Typst;
-3. preview with scoped `scan` and resolve duplicate names;
-4. infer direct semantic relations from the statement and its proof/context;
-5. apply a `qlkg-agent-delta-v2` for high-confidence node/edge upserts;
-6. synchronize the source scope.
+1. read the complete changed file and existing graph neighborhoods;
+2. preserve user-authored `#kn` identities and semantically decide any new
+   `#kn`/`#ref` markers without automatic title promotion;
+3. split multi-concept definitions into separate nodes and preview with scoped
+   `scan` to resolve identity collisions;
+4. extract a concise source-grounded entry for every `#kn` defined in the file;
+5. infer direct typed relations from definitions, statements, proofs, and
+   explicit comparison language;
+6. add one `#ref` for each direct prerequisite whose canonical authority is a
+   different file, while omitting same-file and merely transitive foundations;
+7. apply one reviewed `qlkg-agent-delta-v2` containing node entries and edge
+   changes, then synchronize the file;
+8. run `curate-check` for that file before exporting the course.
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . curate-check \
+  --file path/to/changed.typ
+```
 
 Do not infer edges from proximity, section order, or keyword co-occurrence. Do
 not materialize transitive closure. `#ref` is a backlink occurrence, not a
 semantic edge; inspect its context before asserting a relation.
+
+Scripts may parse, synchronize, and validate explicit markers and reviewed
+deltas. They must not decide that a title is a node, split a concept, choose a
+direct prerequisite, write a node entry, or select a semantic relation. Those
+are agent judgments governed by the curation contract. Do not run
+`migrate_knowledge_markers.py` as part of daily ingestion.
 
 If a selected file loses a `#kn`, accept the resulting orphan. Its canonical
 source becomes inactive, but node metadata and all semantic edges remain. When
@@ -178,5 +204,5 @@ make -C "$repo_root" knowledge-check
 ```
 
 Then stop. Report the scope, Typst entries, chapter counts, export directories,
-knowledge-node/reference/edge deltas, diagnostics, and published route. State
-whether HTML is only local and ignored or already deployed.
+knowledge-node/entry/reference/edge deltas, diagnostics, and published route.
+State whether HTML is only local and ignored or already deployed.

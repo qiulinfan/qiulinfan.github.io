@@ -200,7 +200,7 @@ $ bb(P)\(upright("each flavor is selected at least once")\)= binom(19, 15) / bin
 #proposition(
   title: [#kn[inclusion-exclusion principle]],
 )[
-如果 $Omega$ 是一个 finite measure space, 那么对于任意 $A_1\,dots.h\,A_n subset.eq Omega$ 的, 有:
+如果 $Omega$ 是 #ref[measurable space and measure space] 意义下的一个 finite measure space, 那么对于任意 $A_1\,dots.h\,A_n subset.eq Omega$ 的, 有:
 $ lr(|union_(i = 1)^n A_i|) = sum_(i = 1)^n lr(|A_i|) - sum_(i < j) lr(|A_i inter A_j|) + sum_(i < j < k) lr(|A_i inter A_j inter A_k|) - dots.h +\(- 1\)^(n + 1)lr(|A_1 inter dots.h inter A_n|) . $
 
 ]
@@ -251,9 +251,9 @@ $ bb(P)\(inter.big_(i = 1)^n A_i^c\)= sum_(k = 2)^n frac(\(- 1\)^k, k !) $
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory. \
 
 #definition(
-  title: [#kn[probability space, probability measure, sample space, event space]],
+  title: [#kn[probability space], #kn[probability measure], #kn[sample space], #kn[event space]],
 )[
-一个 probability space 就是一个 measure space $\(Omega\,cal(F)\,bb(P)\)$, 其中 $bb(P)\(nothing\)= 0\,bb(P)\(Omega\)= 1$. \ 对于这样的 measure $bb(P)$, 我们称之为 #strong[probability measure (概率测度, 即概率)]. \ 而这里的 $Omega$ 我们称之为 #strong[sample space (样本空间)]\; 这里的 $sigma$-algebra $cal(F)$, 我们称之为 #strong[event space (事件空间)]. \ 任意的 $A subset Omega$ 都是一个 #strong[event], 但是概率论中只考虑 $A in cal(F)$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
+按 #ref[measurable space and measure space] 的定义, 一个 probability space 是三元组 $\(Omega\,cal(F)\,bb(P)\)$, 其中 $bb(P)\(nothing\)= 0\,bb(P)\(Omega\)= 1$. \ 对于这样的 measure $bb(P)$, 我们称之为 #strong[probability measure (概率测度, 即概率)]. \ 而这里的 $Omega$ 我们称之为 #strong[sample space (样本空间)]\; 这里的 #ref[$sigma$-algebra] $cal(F)$, 我们称之为 #strong[event space (事件空间)]. \ 任意的 $A subset Omega$ 都是一个 #strong[event], 但是概率论中只考虑 $A in cal(F)$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
 
 ]
 #remark[
@@ -477,15 +477,15 @@ Solving the system, we find $bb(P) (W_A) = 0.6$.
 我们通过 $bb(P)\(A divides B\)= frac(bb(P)\(A inter B\), bb(P)\(B\))$ 定义出来的 conditional probability 有一个限制, 就是 enforce $bb(P)\(B\)> 0$. \ 但是, 难道 $bb(P)\(B\)= 0$ 就不能定义条件概率了吗? 我们考虑一个连续情况: 在 $bb(R)^3$ 中任意选择一个点, 求: 该点位于单位球面上的概率. 显然, 这个概率是 0. 但是, 如果我们知道该点位于单位球内, 那么该点距离原点的距离为 $1$ 的概率应当为 $1$. 也就是说, 即使在 $bb(P)\(B\)= 0$ 的情况下, 我们也希望定义 $bb(P)\(A divides B\)$. \ 在考虑这个定义之前, 首先我们发现: 基于我们先前定义的 conditional probability, 我们可以获得一个新的 probability space:
 
 #definition(
-  title: [#kn[conditional probability space and trace $sigma$-algebra]],
+  title: [#kn[conditional probability space] and #kn[trace $sigma$-algebra]],
 )[
 对于给定的 prob space $\(Omega\,cal(F)\,bb(P)\)$, 给定一个 event $B in cal(F)$ 且 $bb(P)\(B\)> 0$, 我们定义 conditional probability space as the triplet $\(B\,cal(F)_B\,bb(P)\(dot.op divides B\)\)$, 其中:
 $ F_B := { A inter B divides A in cal(F) } $
-被称为 #strong[trace $sigma$-algebra on $B$]. \ 容易验证, 这个 triplet 是一个 prob space.
+继承自原空间的 #ref[$sigma$-algebra] $cal(F)$, 并被称为 #strong[trace $sigma$-algebra on $B$]. \ 容易验证, 这个 triplet 是一个 prob space.
 
 ]
 #remark[
-当我们把整个 prob space 限制在 event $B$ 上时, 本质上是在做一个 Radon-Nikodym derivative 的操作. \ 定义 $f := frac(bb(I)_B, bb(P)\(B\))$, 那么对于任意 event $A in cal(F_B)$, 有:
+当我们把整个 prob space 限制在 event $B$ 上时, 本质上是在做一个 #ref[Radon-Nikodym derivative] 的操作. \ 定义 $f := frac(bb(I)_B, bb(P)\(B\))$, 那么对于任意 event $A in cal(F_B)$, 有:
 $ bb(P)\(A divides B\)= integral_A f thin d bb(P) $
 因而和我们的直觉一样, 条件概率是通过一个 density function 来重新加权原本的概率测度.
 
@@ -508,7 +508,7 @@ $ integral_G bb(P)\(A divides cal(G)\)thin d bb(P) = bb(P)\(A inter G\) $
 
 - 既然 $bb(P)\(A divides sigma\(X\)\)$ 是关于 $sigma\(X\)$ 可测的, 那么它一定可以写成 $h\(X\)$ 的形式. 通过对 $X$ 的所有可能取值进行积分, 我们确定了函数 $h\(dot.op\)$ 的整体形态, 这时我们定义 $P\(A divides X = x\)$ 为函数 $h$ 在点 $x$ 处的值.
 
-- $bb(P)\(A divides cal(G)\)$ 实际就是条件期望 $bb(E)\[bb(I)_A divides cal(G)\]$. 当 $bb(P)\(B\)> 0$ 时, 它就退化回经典定义 $frac(bb(P)\(A inter B\), bb(P)\(B\))$.
+- $bb(P)\(A divides cal(G)\)$ 实际就是 #ref[conditional expectation] $bb(E)\[bb(I)_A divides cal(G)\]$. 当 $bb(P)\(B\)> 0$ 时, 它就退化回经典定义 $frac(bb(P)\(A inter B\), bb(P)\(B\))$.
 
 ]
 #remark[

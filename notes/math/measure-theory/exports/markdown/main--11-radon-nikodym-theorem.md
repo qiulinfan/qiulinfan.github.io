@@ -45,7 +45,7 @@ $$\nu(E) = \int_{E}f\, d\mu$$
 ::: definition
 **Definition: absolute continuity of signed measures**
 
-给定 p.m. $\mu$ 和 s.m. $\nu$ on $(X,\mathcal{A})$, 我们称 $\nu$ is absolutely continuous w.r.t. $\mu$, 如果
+给定 p.m. $\mu$ 和 [signed measure](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-signed-measure){.ql-ref ql-ref="signed-measure"} $\nu$ on $(X,\mathcal{A})$, 我们称 $\nu$ is absolutely continuous w.r.t. $\mu$, 如果
 
 $$\forall E \in \mathcal{A},\quad\mu(E) = 0\Longrightarrow\nu(E) = 0$$
 
@@ -57,7 +57,7 @@ $$\nu \ll \mu$$
 
 ![Figure 34:[ ]{style="white-space: pre-wrap"}mutually singular and absolutely continuous](.assets/main--figure-raster-033.png){width="50%"}
 
-**$\nu\bot\mu$ 表示的是 $\nu$ 和 $\mu$ 出现变化的区域完全不同**, 而 **$\nu \ll \mu$ 表示的是 $\nu$ 出现变化的区域完全包括在 $\mu$ 出现变化的区域里** (因为 $\mu$ 不变化的区域被包括在 $\nu$ 不变化的区域里).
+[mutually singular](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-mutually-singular){.ql-ref ql-ref="mutually-singular"} 的记号 **$\nu\bot\mu$ 表示的是 $\nu$ 和 $\mu$ 出现变化的区域完全不同**, 而 **$\nu \ll \mu$ 表示的是 $\nu$ 出现变化的区域完全包括在 $\mu$ 出现变化的区域里** (因为 $\mu$ 不变化的区域被包括在 $\nu$ 不变化的区域里).
 
 ::: example
 **Example**
@@ -83,7 +83,9 @@ $$\nu_{i}\ll\not{}\nu_{j}\quad\forall i \neq j$$
 ::: proposition
 **Proposition: absolutely continuous 的性质**
 
-- $$\left. |\nu \middle| \ll \mu\Leftrightarrow\nu^{+} \ll \mu\ \text{and}\ \nu^{-} \ll \mu \right.$$
+- 对 [total variation measure](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-total-variation-measure){.ql-ref ql-ref="total-variation-measure"},
+
+  $$\left. |\nu \middle| \ll \mu\Leftrightarrow\nu^{+} \ll \mu\ \text{and}\ \nu^{-} \ll \mu \right.$$
 
   (容易证明)
 
@@ -213,7 +215,7 @@ Question: 我们如何判断这个 RN derivative 是否存在呢? Radon Nikodym 
 ::: theorem
 **Theorem: Radon-Nikodym Theorem**
 
-对于 **$\sigma$-finite** $\begin{matrix}
+对于 [$\sigma$-finite measure](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-sigma-finite-measure){.ql-ref ql-ref="sigma-finite-measure"} $\begin{matrix}
 {\{\text{p.m.}\ \mu} \\
 {\text{s.m.}\ \nu}
 \end{matrix}$ on $(X,\mathcal{A})$,
@@ -238,7 +240,7 @@ $$\nu \geq \epsilon\mu\quad\text{on}\ E$$
 **Proof**
 
 We look at $\nu - \frac{1}{n}\mu$ for each $n \in {\mathbb{N}}$. 它们都是 finite signed measure for sure.\
-考虑 Hahn decomposition $P_{n} \sqcup N_{n}$ for each $n$. 并 set:
+考虑 [Hahn Decomposition Theorem](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-hahn-decomposition-theorem){.ql-ref ql-ref="hahn-decomposition-theorem"} 给出的 $P_{n} \sqcup N_{n}$ for each $n$. 并 set:
 
 $$P: = \bigcup\limits_{n}P_{n},\quad N: = \bigcap\limits_{n}N_{n} = P^{c}$$
 
@@ -314,7 +316,7 @@ $$f_{n} \leq f_{n + 1},\quad\int f_{n}\, d\mu\operatorname{\nearrow ︎}a$$
 
 $$\exists f: = \lim\limits_{n}f_{n} \in L^{+}(\mu),\text{and} \in L^{1}(\mu)\text{(since}\ \mu\ \text{finite)}$$
 
-并且根据 MCT,
+并且根据 [monotone convergence theorem](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-monotone-convergence-theorem){.ql-ref ql-ref="monotone-convergence-theorem"}（MCT）,
 
 $$\int f\, d\mu = \lim\limits_{n\rightarrow\infty}\int f_{n}\, d\mu = a$$
 
@@ -347,7 +349,7 @@ $$\int g\, d\mu > a$$
 这和 $g \in \mathcal{F}$ 冲突 (否则它的积分一定小于等于 $a$).\
 **从而, $\mu,\nu$ 是 finite p.m. 的情况得证.**\
 **Step 5: 推广至 $\nu$ finite s.m., $\mu$ finite p.m. 的情况.**\
-直接 Apply Step 1 to $\nu^{+},\nu^{-}$ 即得证.\
+由 [Jordan decomposition theorem](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-jordan-decomposition-theorem){.ql-ref ql-ref="jordan-decomposition-theorem"} 写出 $\nu^{+},\nu^{-}$, 再直接 Apply Step 1 即得证.\
 **Step 6: 推广至 $\nu,\mu$ $\sigma$-finite 的情况.**\
 Proof: By $\sigma$-finite 的定义, 我们可以 decompose
 

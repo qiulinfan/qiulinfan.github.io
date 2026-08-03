@@ -296,7 +296,7 @@ $${\mathbb{P}}(\text{each flavor is selected at least once}) = \frac{\left( \fra
 ::: proposition
 **Proposition: inclusion-exclusion principle**
 
-如果 $\Omega$ 是一个 finite measure space, 那么对于任意 $A_{1},\ldots,A_{n} \subseteq \Omega$ 的, 有:
+如果 $\Omega$ 是 [measurable space and measure space](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-measurable-space-and-measure-space){.ql-ref ql-ref="measurable-space-and-measure-space"} 意义下的一个 finite measure space, 那么对于任意 $A_{1},\ldots,A_{n} \subseteq \Omega$ 的, 有:
 
 $$\left| {\cup_{i = 1}^{n}A_{i}} \right| = \sum\limits_{i = 1}^{n}\left| A_{i} \right| - \sum\limits_{i < j}\left| {A_{i} \cap A_{j}} \right| + \sum\limits_{i < j < k}\left| {A_{i} \cap A_{j} \cap A_{k}} \right| - \ldots + ( - 1)^{n + 1}\left| {A_{1} \cap \ldots \cap A_{n}} \right|.$$
 :::
@@ -370,11 +370,11 @@ $${\mathbb{P}}(\bigcap\limits_{i = 1}^{n}A_{i}^{c}) = \sum\limits_{k = 2}^{n}\fr
 我们这里跳过所有 measure theory 的内容, 见 notes on measure theory.\
 
 ::: definition
-**Definition: probability space, probability measure, sample space, event space**
+**Definition: probability space , probability measure , sample space , event space**
 
-一个 probability space 就是一个 measure space $(\Omega,\mathcal{F},{\mathbb{P}})$, 其中 ${\mathbb{P}}(\varnothing) = 0,{\mathbb{P}}(\Omega) = 1$.\
+按 [measurable space and measure space](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-measurable-space-and-measure-space){.ql-ref ql-ref="measurable-space-and-measure-space"} 的定义, 一个 probability space 是三元组 $(\Omega,\mathcal{F},{\mathbb{P}})$, 其中 ${\mathbb{P}}(\varnothing) = 0,{\mathbb{P}}(\Omega) = 1$.\
 对于这样的 measure $\mathbb{P}$, 我们称之为 **probability measure (概率测度, 即概率)**.\
-而这里的 $\Omega$ 我们称之为 **sample space (样本空间)**; 这里的 $\sigma$-algebra $\mathcal{F}$, 我们称之为 **event space (事件空间)**.\
+而这里的 $\Omega$ 我们称之为 **sample space (样本空间)**; 这里的 [$\sigma$-algebra](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-sigma-algebra){.ql-ref ql-ref="sigma-algebra"} $\mathcal{F}$, 我们称之为 **event space (事件空间)**.\
 任意的 $A \subset \Omega$ 都是一个 **event**, 但是概率论中只考虑 $A \in \mathcal{F}$, 即 measurable event. 为简化, event 这个单词就指 measurable event.
 :::
 
@@ -662,14 +662,14 @@ Solving the system, we find ${\mathbb{P}}\left( W_{A} \right) = 0.6$.
 
 $$F_{B} := \left\{ {A \cap B \mid A \in \mathcal{F}} \right\}$$
 
-被称为 **trace $\sigma$-algebra on $B$**.\
+继承自原空间的 [$\sigma$-algebra](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-sigma-algebra){.ql-ref ql-ref="sigma-algebra"} $\mathcal{F}$, 并被称为 **trace $\sigma$-algebra on $B$**.\
 容易验证, 这个 triplet 是一个 prob space.
 :::
 
 ::: remark
 **Remark**
 
-当我们把整个 prob space 限制在 event $B$ 上时, 本质上是在做一个 Radon-Nikodym derivative 的操作.\
+当我们把整个 prob space 限制在 event $B$ 上时, 本质上是在做一个 [Radon-Nikodym derivative](https://qiulinfan.github.io/qlblog/notes/math/measure-theory/#kn-radon-nikodym-derivative){.ql-ref ql-ref="radon-nikodym-derivative"} 的操作.\
 定义 $f := \frac{{\mathbb{I}}_{B}}{{\mathbb{P}}(B)}$, 那么对于任意 event $A \in \mathcal{F}_{\mathcal{B}}$, 有:
 
 $${\mathbb{P}}(A \mid B) = \int_{A}f\, d{\mathbb{P}}$$
@@ -700,7 +700,7 @@ $$\int_{G}{\mathbb{P}}(A \mid \mathcal{G})\, d{\mathbb{P}} = {\mathbb{P}}(A \cap
 
 - 既然 ${\mathbb{P}}(A \mid \sigma(X))$ 是关于 $\sigma(X)$ 可测的, 那么它一定可以写成 $h(X)$ 的形式. 通过对 $X$ 的所有可能取值进行积分, 我们确定了函数 $h( \cdot )$ 的整体形态, 这时我们定义 $P(A \mid X = x)$ 为函数 $h$ 在点 $x$ 处的值.
 
-- ${\mathbb{P}}(A \mid \mathcal{G})$ 实际就是条件期望 ${\mathbb{E}}\lbrack{\mathbb{I}}_{A} \mid \mathcal{G}\rbrack$. 当 ${\mathbb{P}}(B) > 0$ 时, 它就退化回经典定义 $\frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)}$.
+- ${\mathbb{P}}(A \mid \mathcal{G})$ 实际就是 [conditional expectation](https://qiulinfan.github.io/qlblog/notes/math/probability/#kn-conditional-expectation){.ql-ref ql-ref="conditional-expectation"} ${\mathbb{E}}\lbrack{\mathbb{I}}_{A} \mid \mathcal{G}\rbrack$. 当 ${\mathbb{P}}(B) > 0$ 时, 它就退化回经典定义 $\frac{{\mathbb{P}}(A \cap B)}{{\mathbb{P}}(B)}$.
 :::
 
 ::: remark

@@ -57,20 +57,41 @@ builds HTML from Typst and publishes only the Pages artifact.
 Knowledge markers are authored directly in Typst:
 
 ```typst
-#definition(title: [#kn[Radon–Nikodym theorem]])[
+#definition(title: [#kn[Norm] and #kn[Semi-norm]])[
   ...
 ]
 
-Later, #ref[Radon–Nikodym theorem] links back to that unique
+Later, #ref[Norm] links back to that unique
 definition and becomes a backlink in the global graph.
 ```
 
-The authored `#kn` name is globally unique; `#ref` may occur anywhere and uses
-the same name. Stable machine IDs are generated and maintained outside the
-source. Graph synchronization also preserves plain searchable text and compiles
-the original Typst name to inline MathML for the knowledge website. Formal
-statements without `#kn` are not graph nodes. Synchronize the graph at
-repository, subject, course, or individual-file granularity:
+Each authored `#kn` identifies one independently reusable concept and is
+globally unique; a title that defines several concepts contains several `#kn`
+markers. `#ref` may occur anywhere and uses the same name. A file gets a
+meaningful `#ref` when it directly uses an immediate prerequisite whose
+authority is another file; same-file concepts and transitive ancestors do not
+need one.
+
+The agent reads one complete changed file, preserves explicit markers, extracts
+a concise source-grounded entry for every local node, and chooses direct typed
+semantic edges. Scripts only scan and synchronize explicit markers, apply the
+reviewed delta, and check deterministic invariants; the one-time
+`migrate_knowledge_markers.py` helper is not part of daily ingestion. Stable
+machine IDs are maintained outside the source. Synchronization preserves agent
+entries, plain searchable names, and Typst-compiled inline MathML for the
+knowledge website. Formal statements without `#kn` are not graph nodes.
+
+The changed-file workflow ends with scoped curation validation:
+
+```sh
+python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/chapter.typ
+python3 knowledge/scripts/knowledge.py --repo-root . apply knowledge/build/reviewed-delta.json
+python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/chapter.typ
+python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/chapter.typ
+```
+
+The graph can also be synchronized at repository, subject, course, or
+individual-file granularity:
 
 ```sh
 make knowledge-build

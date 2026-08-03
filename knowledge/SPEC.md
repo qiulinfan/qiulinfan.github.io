@@ -60,6 +60,18 @@ Any number of references may use the same name:
 is stored as a backlink occurrence. A reference is not itself a node and is not
 automatically a semantic edge.
 
+One `#kn` occurrence identifies one concept. If one authored title defines
+several independently reusable concepts, the agent places a separate `#kn`
+around each concept. Synonyms and abbreviations remain aliases of one node. A
+script may scan explicit markers, but must never split a title or promote an
+unmarked title into knowledge automatically.
+
+Every active knowledge node has a concise `text` entry distilled by the agent
+from its authoritative statement, proof, and explanation. The entry is
+source-grounded searchable prose, not a second authority; provenance continues
+to point to the canonical Typst location. Source synchronization preserves the
+entry and its agent metadata.
+
 Formal-statement components may still carry local Typst labels for document-local
 cross-references. Their legacy `id`, `concepts`, `depends`, and `aliases` fields do
 not define graph identity.
@@ -83,6 +95,18 @@ Semantic relations:
 Agents should store direct, high-confidence edges rather than transitive closure,
 document order, keyword co-occurrence, or “mentioned together” relationships.
 Every agent edge carries origin, confidence, and evidence.
+
+Relation directions are semantic: `A prerequisite-for B` means B directly
+requires A; `A implies B` means A logically entails B; `A generalizes B` means B
+is recovered as a special case; `A derived-from B` means A is directly built or
+proved from B. `contrasts-with` is symmetric and is stored once with endpoints
+ordered by ID. Do not use `prerequisite-for` as a generic association.
+
+The source file is the reference-curation unit. If a file directly uses an
+existing immediate prerequisite whose canonical authority is another file, the
+agent adds at least one `#ref` at a meaningful use. Same-file concepts and merely
+transitive foundational ancestors do not require global refs. This file-level
+usage record is independent of the node-to-node semantic edge.
 
 ## Incremental synchronization
 
@@ -117,14 +141,16 @@ removed only by an explicit agent delta.
 
 During export, the agent:
 
-1. reads the changed scope and the existing global graph;
-2. may add or correct high-confidence `#kn` and `#ref` markers in the authority;
+1. handles one changed file and reads its existing graph neighborhoods;
+2. preserves user-authored `#kn` markers and semantically decides any additional
+   nodes, splits, aliases, and cross-file `#ref` occurrences;
 3. runs a scoped scan and resolves duplicate or dangling names;
-4. extracts direct semantic relations from statement content and surrounding
-   context;
-5. applies a `qlkg-agent-delta-v2` containing node/edge upserts and any explicit
-   edge removals;
-6. synchronizes the selected source scope before document export.
+4. extracts a source-grounded entry for every node defined in the file;
+5. extracts direct, correctly typed relations from statements, proofs, and
+   explicit comparisons;
+6. applies a `qlkg-agent-delta-v2` containing node entries, edge upserts, and any
+   explicit removals;
+7. synchronizes and runs file-level curation validation before export.
 
 An agent delta has this shape:
 
@@ -180,4 +206,5 @@ Run:
 make knowledge-check
 make knowledge-search QUERY="conditional expectation"
 python3 knowledge/scripts/knowledge.py --repo-root . show "Dominated convergence theorem"
+python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.typ
 ```
