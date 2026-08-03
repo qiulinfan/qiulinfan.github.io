@@ -67,8 +67,10 @@ definition and becomes a backlink in the global graph.
 
 The authored `#kn` name is globally unique; `#ref` may occur anywhere and uses
 the same name. Stable machine IDs are generated and maintained outside the
-source. Formal statements without `#kn` are not graph nodes. Synchronize the
-graph at repository, subject, course, or individual-file granularity:
+source. Graph synchronization also preserves plain searchable text and compiles
+the original Typst name to inline MathML for the knowledge website. Formal
+statements without `#kn` are not graph nodes. Synchronize the graph at
+repository, subject, course, or individual-file granularity:
 
 ```sh
 make knowledge-build

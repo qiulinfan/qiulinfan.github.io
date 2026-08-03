@@ -134,6 +134,19 @@
 		return value === undefined || value === null ? "" : String(value);
 	}
 
+	function escapeHtml(value: string): string {
+		return value
+			.replaceAll("&", "&amp;")
+			.replaceAll("<", "&lt;")
+			.replaceAll(">", "&gt;")
+			.replaceAll('"', "&quot;")
+			.replaceAll("'", "&#39;");
+	}
+
+	function nodeLabelHtml(node: GraphNode): string {
+		return propertyText(node, "label_html") || escapeHtml(node.label);
+	}
+
 	function searchableText(node: GraphNode) {
 		return normalize(
 			[
@@ -388,9 +401,6 @@
 		}
 
 		const styles = getComputedStyle(document.documentElement);
-		const textColor = document.documentElement.classList.contains("dark")
-			? "rgba(255,255,255,.76)"
-			: "rgba(20,25,35,.74)";
 		const haloColor = styles.getPropertyValue("--card-bg").trim() || "white";
 
 		for (const node of nodes.sort((left, right) => (ring.get(right.id) ?? 0) - (ring.get(left.id) ?? 0))) {
@@ -408,17 +418,6 @@
 				context.strokeStyle = nodeColor(node.type, 1);
 				context.lineWidth = 2;
 				context.stroke();
-			}
-			if (position.ring <= 1) {
-				context.font = position.ring === 0 ? "600 12px Roboto" : "500 10px Roboto";
-				context.textAlign = "center";
-				context.textBaseline = "top";
-				context.fillStyle = textColor;
-				context.fillText(
-					truncate(node.label, position.ring === 0 ? 28 : 20),
-					position.x,
-					position.y + position.radius + 7,
-				);
 			}
 		}
 		hitNodes = Array.from(positions.values());
@@ -578,7 +577,7 @@
 					{#each results as node}
 						<button type="button" class="result-item" class:selected={node.id === selectedId} on:click={() => selectNode(node.id)}>
 							<span class="node-dot" style={`--node-color:${nodeColor(node.type)}`}></span>
-							<span class="result-copy"><strong>{node.label}</strong><small>{typeLabel(node.type)} · {truncate(node.id, 48)}</small></span>
+							<span class="result-copy"><strong class="math-label">{@html nodeLabelHtml(node)}</strong><small>{typeLabel(node.type)} · {truncate(node.id, 48)}</small></span>
 						</button>
 					{:else}
 						<div class="empty-list"><strong>没有匹配项</strong><span>换一个名称、别名或正文关键词试试。</span></div>
@@ -595,9 +594,25 @@
 				</div>
 				<div class="canvas-host" bind:this={canvasHost}>
 					<canvas bind:this={canvas} aria-label="Selected node and its two-hop neighborhood" on:mousemove={handleCanvasMove} on:mouseleave={() => { hoveredId = ""; drawGraph(); }} on:click={handleCanvasClick}></canvas>
+					{#each hitNodes.filter((position) => position.ring <= 1) as position (position.id)}
+						{@const graphNode = nodeIndex.get(position.id)}
+						{#if graphNode}
+							<button
+								type="button"
+								class="graph-node-label math-label"
+								class:selected={position.ring === 0}
+								style={`left:${position.x}px;top:${position.y + position.radius + 7}px`}
+								aria-label={graphNode.label}
+								on:mouseenter={() => { hoveredId = position.id; tooltipX = position.x + 12; tooltipY = position.y + 12; drawGraph(); }}
+								on:mouseleave={() => { hoveredId = ""; drawGraph(); }}
+								on:click={() => selectNode(position.id)}
+							>{@html nodeLabelHtml(graphNode)}</button>
+						{/if}
+					{/each}
 					{#if hoveredId}
+						{@const hoveredNode = nodeIndex.get(hoveredId)}
 						<div class="graph-tooltip" style={`left:${tooltipX}px;top:${tooltipY}px`}>
-							<strong>{nodeIndex.get(hoveredId)?.label}</strong><span>{typeLabel(nodeIndex.get(hoveredId)?.type ?? "knowledge")}</span>
+							{#if hoveredNode}<strong class="math-label">{@html nodeLabelHtml(hoveredNode)}</strong><span>{typeLabel(hoveredNode.type)}</span>{/if}
 						</div>
 					{/if}
 					<div class="canvas-note">点击节点继续追踪 · 外圈为第二跳</div>
@@ -614,7 +629,7 @@
 					<div class="detail-scroll">
 						<div class="node-heading">
 							<span class="type-pill" style={`--node-color:${nodeColor(selectedNode.type)}`}>{typeLabel(selectedNode.type)}</span>
-							<h2>{selectedNode.label}</h2>
+							<h2 class="math-label">{@html nodeLabelHtml(selectedNode)}</h2>
 							<code>{selectedNode.id}</code>
 						</div>
 
@@ -640,7 +655,7 @@
 								{#each neighbors.slice(0, 48) as neighbor}
 									<button type="button" on:click={() => selectNode(neighbor.node.id)}>
 										<span class="relation-arrow">{neighbor.direction === "outgoing" ? "→" : "←"}</span>
-										<span><small>{relationLabel(neighbor.edge.relation)}</small><strong>{neighbor.node.label}</strong></span>
+										<span><small>{relationLabel(neighbor.edge.relation)}</small><strong class="math-label">{@html nodeLabelHtml(neighbor.node)}</strong></span>
 									</button>
 								{/each}
 							</div></div>
@@ -739,10 +754,15 @@
 	.graph-legend .structure { background: oklch(.58 .03 250 / .35); }
 	.canvas-host { flex: 1; min-height: 0; position: relative; overflow: hidden; background-image: radial-gradient(circle at center, color-mix(in oklch, var(--primary) 7%, transparent) 0, transparent 52%), radial-gradient(color-mix(in oklch, currentColor 9%, transparent) .7px, transparent .7px); background-size: auto, 18px 18px; }
 	.canvas-host canvas { display: block; }
+	.graph-node-label { position: absolute; z-index: 2; width: max-content; max-width: 8.5rem; padding: .1rem .25rem; transform: translateX(-50%); border: 0; border-radius: .3rem; background: color-mix(in oklch, var(--card-bg) 82%, transparent); color: color-mix(in oklch, currentColor 72%, transparent); font-size: .61rem; font-weight: 520; line-height: 1.25; text-align: center; cursor: pointer; backdrop-filter: blur(3px); }
+	.graph-node-label.selected { z-index: 3; max-width: 12rem; color: color-mix(in oklch, currentColor 84%, transparent); font-size: .74rem; font-weight: 650; }
+	.graph-node-label:hover { color: var(--primary); }
 	.canvas-note { position: absolute; left: 50%; bottom: .8rem; transform: translateX(-50%); white-space: nowrap; padding: .4rem .65rem; border-radius: 999px; background: color-mix(in oklch, var(--card-bg) 86%, transparent); border: 1px solid var(--panel-border); backdrop-filter: blur(8px); color: color-mix(in oklch, currentColor 38%, transparent); font-size: .62rem; }
 	.graph-tooltip { position: absolute; z-index: 5; max-width: 13rem; padding: .48rem .58rem; display: flex; flex-direction: column; gap: .15rem; pointer-events: none; border-radius: .55rem; background: color-mix(in oklch, var(--card-bg) 92%, transparent); border: 1px solid var(--panel-border); box-shadow: 0 8px 24px rgba(15, 25, 45, .12); backdrop-filter: blur(10px); }
 	.graph-tooltip strong { font-size: .7rem; line-height: 1.3; }
 	.graph-tooltip span { font-size: .58rem; color: color-mix(in oklch, currentColor 42%, transparent); }
+	:global(.math-label math) { font-family: "KaTeX_Math", "STIX Two Math", "Cambria Math", serif; font-size: 1.04em; }
+	:global(.math-label math[display="block"]) { display: inline math; }
 	.detail-panel { display: flex; flex-direction: column; }
 	.panel-tabs { flex: none; height: 3.25rem; padding: .4rem; display: grid; grid-template-columns: 1fr 1fr; gap: .35rem; border-bottom: 1px solid var(--panel-border); }
 	.panel-tabs button { border: 0; border-radius: .58rem; background: transparent; color: color-mix(in oklch, currentColor 48%, transparent); font-size: .75rem; font-weight: 650; cursor: pointer; }

@@ -88,8 +88,9 @@ class KnowledgeGraphTest(unittest.TestCase):
         self.assertIn(("demo-foundations", "contains", "sigma-algebra"), state.edges)
         self.assertEqual("sigma-algebra", knowledge.show_node(state, "σ-algebra")["node"]["id"])
         registry = self.typst_registry.read_text(encoding="utf-8")
-        self.assertIn("name: [σ-algebra]", registry)
+        self.assertIn("name: [$sigma$-algebra]", registry)
         self.assertIn('id: "sigma-algebra"', registry)
+        self.assertIn("<math>", state.nodes["sigma-algebra"]["properties"]["label_html"])
 
     def test_artifacts_are_deterministic(self) -> None:
         _, first, _ = self.sync()
@@ -132,7 +133,7 @@ class KnowledgeGraphTest(unittest.TestCase):
 
         self.chapter.write_text(
             self.chapter.read_text(encoding="utf-8").replace(
-                "#kn[σ-algebra]", "σ-algebra"
+                "#kn[$sigma$-algebra]", "σ-algebra"
             ),
             encoding="utf-8",
         )
@@ -146,7 +147,7 @@ class KnowledgeGraphTest(unittest.TestCase):
 
         new_chapter = self.source_root / "chapters/02-rehomed.typ"
         new_chapter.write_text(
-            "= Rehomed\n#definition(title: [#kn[σ-algebra]])[New authority.]\n",
+            "= Rehomed\n#definition(title: [#kn[$sigma$-algebra]])[New authority.]\n",
             encoding="utf-8",
         )
         state, _, _ = self.sync(files=[Path("notes/math/demo/chapters/02-rehomed.typ")])
@@ -159,7 +160,7 @@ class KnowledgeGraphTest(unittest.TestCase):
     def test_duplicate_active_kn_is_rejected(self) -> None:
         duplicate = self.source_root / "chapters/02-duplicate.typ"
         duplicate.write_text(
-            "= Duplicate\n#theorem(title: [#kn[σ-algebra]])[No.]\n",
+            "= Duplicate\n#theorem(title: [#kn[$sigma$-algebra]])[No.]\n",
             encoding="utf-8",
         )
         with self.assertRaisesRegex(knowledge.KnowledgeError, "global knowledge name"):

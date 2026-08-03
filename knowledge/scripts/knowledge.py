@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sqlite3
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -25,6 +26,15 @@ DELTA_SCHEMA = "qlkg-agent-delta-v2"
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 KN_RE = re.compile(r"#kn\s*\[")
 REF_RE = re.compile(r"#ref\s*\[")
+LABEL_HTML_RE = re.compile(
+    r'<ql-label data-node-id="(?P<id>[a-z0-9-]+)">(?P<html>.*?)</ql-label>',
+    re.DOTALL,
+)
+UNSAFE_LABEL_HTML_RE = re.compile(
+    r"<(?:script|style|iframe|object|embed|link|meta|img|svg|form|input|button|a)\b"
+    r"|\son[a-z]+\s*=|javascript:",
+    re.IGNORECASE,
+)
 STATEMENT_RE = re.compile(
     r"#(?P<kind>definition|theorem|lemma|corollary|proposition|axiom|example)\s*\("
 )
@@ -684,7 +694,16 @@ def validate_state(state: GraphState) -> dict[str, list[dict[str, Any]]]:
                 )
             )
     for node in state.nodes.values():
-        if (node.get("properties") or {}).get("source_status") == "orphaned":
+        properties = node.get("properties") or {}
+        if node.get("type") == "knowledge" and properties.get("typst_name") and not properties.get("label_html"):
+            errors.append(
+                diagnostic(
+                    "missing-label-html",
+                    "Typst-authored knowledge node has no math-aware HTML label",
+                    node=node["id"],
+                )
+            )
+        if properties.get("source_status") == "orphaned":
             warnings.append(
                 diagnostic(
                     "orphaned-node",
@@ -762,6 +781,66 @@ def write_artifacts(graph_dir: Path, artifacts: dict[str, str]) -> None:
 
 def typst_string(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+
+
+def render_typst_labels(state: GraphState) -> None:
+    """Render authored knowledge names once with Typst's native HTML target."""
+    candidates = [
+        (node["id"], str((node.get("properties") or {}).get("typst_name", "")))
+        for node in sorted(state.nodes.values(), key=lambda item: item["id"])
+        if node.get("type") == "knowledge"
+        and (node.get("properties") or {}).get("typst_name")
+    ]
+    if not candidates:
+        return
+    lines = [
+        '#let graph-label(id, body) = html.elem("ql-label", attrs: (data-node-id: id))[#body]',
+        "",
+    ]
+    for node_id, typst_name in candidates:
+        lines.append(f'#graph-label("{typst_string(node_id)}")[{typst_name}]')
+    with tempfile.TemporaryDirectory(prefix="qlkg-labels-") as temporary:
+        source = Path(temporary) / "labels.typ"
+        output = Path(temporary) / "labels.html"
+        source.write_text("\n\n".join(lines) + "\n", encoding="utf-8")
+        try:
+            result = subprocess.run(
+                [
+                    "typst",
+                    "compile",
+                    "--features",
+                    "html",
+                    "--format",
+                    "html",
+                    str(source),
+                    str(output),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+        except FileNotFoundError as error:
+            raise KnowledgeError("Typst is required to render knowledge-node labels") from error
+        if result.returncode != 0:
+            detail = result.stderr.strip() or result.stdout.strip() or "unknown Typst error"
+            raise KnowledgeError(f"knowledge-label rendering failed: {detail}")
+        document = output.read_text(encoding="utf-8")
+    rendered = {
+        match.group("id"): match.group("html").strip()
+        for match in LABEL_HTML_RE.finditer(document)
+    }
+    expected = {node_id for node_id, _ in candidates}
+    if set(rendered) != expected:
+        missing = ", ".join(sorted(expected - set(rendered))) or "none"
+        raise KnowledgeError(f"Typst omitted knowledge labels: {missing}")
+    for node_id, label_html in rendered.items():
+        if UNSAFE_LABEL_HTML_RE.search(label_html):
+            raise KnowledgeError(f"unsafe HTML in rendered knowledge label: {node_id}")
+        node = state.nodes[node_id]
+        properties = dict(node.get("properties") or {})
+        properties["label_html"] = label_html
+        node["properties"] = properties
 
 
 def write_registry(path: Path, state: GraphState) -> None:
@@ -878,6 +957,7 @@ def synchronize(
             source_hashes[key] = sha256_file(path)
         else:
             source_hashes.pop(key, None)
+    render_typst_labels(state)
     artifacts = make_artifacts(state, source_hashes)
     diagnostics = json.loads(artifacts["diagnostics.json"])
     if diagnostics["errors"]:
@@ -951,6 +1031,7 @@ def apply_delta(
             "evidence": str(raw.get("evidence", "agent semantic extraction")),
         }
         state.edges[edge_key(edge)] = edge
+    render_typst_labels(state)
     artifacts = make_artifacts(state, dict(state.manifest.get("source_hashes") or {}))
     diagnostics = json.loads(artifacts["diagnostics.json"])
     if diagnostics["errors"]:

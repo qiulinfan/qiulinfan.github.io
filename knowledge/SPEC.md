@@ -46,7 +46,9 @@ Exactly one definition point owns a global knowledge name:
 `#kn` renders as black bold text and records the canonical authority location.
 The authored name is the public identity and must be unique across the
 repository. The synchronizer resolves it to a hidden stable machine ID, which
-authors never write or maintain.
+authors never write or maintain. It also compiles every authored name once with
+Typst's HTML target: `label` remains plain searchable text, while
+`properties.label_html` preserves exact inline MathML and emphasis for web UI.
 
 Any number of references may use the same name:
 
@@ -164,6 +166,8 @@ Required invariants:
 
 - one active `#kn` per authored name at most;
 - stable deterministic artifacts;
+- every Typst-authored knowledge node has deterministic, active-content-free
+  `label_html` generated from its original `typst_name`;
 - no dangling semantic edge endpoints;
 - no cycles in `contains` or `prerequisite-for`;
 - unresolved `#ref` and orphaned nodes are visible warnings;

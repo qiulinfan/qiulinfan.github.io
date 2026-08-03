@@ -1,7 +1,7 @@
 = Foundations
 
 #definition(
-  title: [#kn[σ-algebra]],
+  title: [#kn[$sigma$-algebra]],
 )[
   A family of sets closed under complement and countable union.
 ]

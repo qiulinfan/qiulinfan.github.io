@@ -5,7 +5,7 @@
     "references": 9
   },
   "generator": "knowledge/scripts/knowledge.py",
-  "graph_sha256": "bc579a37353fd53cebe49715cc42ad53bad5ea08f74bef09ae9c7105d0ff2f0c",
+  "graph_sha256": "aa8b9abe4d1a69a1558d2d31e8a318788827e702ab9b3cd8de4155f18293fd51",
   "node_types": {
     "discipline": 1,
     "field": 3,

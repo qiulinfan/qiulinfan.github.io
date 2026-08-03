@@ -34,8 +34,9 @@ Experimental Typst HTML warnings are acceptable when compile and check succeed.
 
 The graph check requires deterministic `knowledge/graph/*.json*`, globally
 unique active `#kn` names, valid semantic edge endpoints, acyclic hierarchy/direct
-prerequisites, and no stale source hashes. Orphans and dangling refs are visible
-warnings rather than silent deletions.
+prerequisites, math-aware `label_html` for Typst nodes, and no stale source
+hashes. Orphans and dangling refs are visible warnings rather than silent
+deletions.
 
 For a changed-file workflow, preview first:
 

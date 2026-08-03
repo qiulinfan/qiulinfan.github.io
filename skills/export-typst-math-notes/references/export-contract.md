@@ -38,6 +38,8 @@ By #ref[σ-algebra], ...
 - the synchronizer assigns a hidden stable machine ID and emits `data-ql-kn`
   plus a stable `kn-<id>` anchor; authors never maintain that ID;
 - `#kn` displays the authored name as black bold text;
+- the graph stores searchable plain `label` plus Typst-rendered inline MathML in
+  `properties.label_html`; web views prefer the latter and escape fallback text;
 - `#ref` emits `data-ql-ref` and remains a readable hyperlink in snapshots;
 - statement-local labels may coexist, but do not create graph nodes;
 - examples and sections have no automatic graph meaning.
@@ -106,6 +108,8 @@ When adding a construct, update:
 - the Pandoc/Lua Markdown mapping;
 - the native LaTeX mapping and class;
 - relevant graph scanning only if `#kn/#ref` semantics change;
+- graph-label MathML rendering and its focused fixture when name presentation
+  changes;
 - focused fixture coverage.
 
 Typst is never reconstructed from snapshots; CeTZ is never translated to TikZ;

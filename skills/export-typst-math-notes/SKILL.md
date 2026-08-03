@@ -82,6 +82,12 @@ Prefer stable conceptual names over statement numbers, source locations, or
 generic labels. Formal components without `#kn` remain readable statements and
 do not enter the graph.
 
+Keep math inside the authored name as Typst math, for example
+`#kn[$L^p$ convergence]`. Synchronization preserves a plain label for search and
+batch-compiles the original name to MathML for graph lists, detail views,
+tooltips, relations, and DOM labels over the graph canvas. Do not approximate
+Typst math with a client-side string converter.
+
 ## Ingest the changed scope agentically
 
 Choose the smallest complete scope:
@@ -150,6 +156,8 @@ warnings are acceptable when compilation and the checker succeed.
 
 GitHub Actions builds the same HTML from committed Typst and deploys only the
 Pages artifact. Update `.github/workflows/pages.yml` when adding a course route.
+The `/knowledge/` UI reads `properties.label_html` for math-aware node labels
+and falls back to escaped plain `label` for non-Typst hierarchy nodes.
 
 ## Extend mappings atomically
 
