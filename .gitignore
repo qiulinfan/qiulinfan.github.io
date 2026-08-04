@@ -60,3 +60,7 @@ site/public/_notes-assets/
 
 # Local knowledge search index and agent deltas
 knowledge/build/
+
+# Codex-managed state exposed through the repository-backed skills directory
+/skills/.system
+/skills/.skills_store_lock.json

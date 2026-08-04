@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Skill with Agent"
+  short_description: "Run isolated agent-based skill evaluations"
+  default_prompt: "Use $test-skill-with-agent to test a skill with an isolated external agent and report evidence."
