@@ -207,7 +207,7 @@ def main() -> int:
     print(f"created: {destination}")
     if not args.dry_run:
         print(f"workspace: {workspace}")
-        print(f"validate: make -C {destination} export && make -C {destination} web-check")
+        print(f"validate: make -C {destination}")
     return 0
 
 

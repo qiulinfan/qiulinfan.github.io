@@ -1,4 +1,4 @@
-.PHONY: all release export web web-check homeworks-web homeworks-web-check pdf watch knowledge-sync
+.PHONY: all release export web web-check homeworks-web homeworks-web-check watch knowledge-sync
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
@@ -10,7 +10,7 @@ EXPORTS := exports
 
 all: release
 
-release: export web-check homeworks-web-check
+release: knowledge-sync web-check homeworks-web-check
 
 export:
 	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course probability
@@ -43,10 +43,6 @@ homeworks-web:
 homeworks-web-check: homeworks-web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/homeworks.html \
 		--expected-nodes 0 --expected-diagrams 0
-
-pdf:
-	@mkdir -p $(BUILD)
-	@$(TYPST) compile --root ../.. main.typ $(BUILD)/main.pdf
 
 watch:
 	@mkdir -p $(BUILD)

@@ -1,4 +1,4 @@
-.PHONY: all release export web web-check extras-web extras-web-check pdf extras-pdf watch knowledge-sync
+.PHONY: all release export web web-check extras-web extras-web-check watch knowledge-sync
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
@@ -10,7 +10,7 @@ EXPORTS := exports
 
 all: release
 
-release: export web-check extras-web-check
+release: knowledge-sync web-check extras-web-check
 
 export:
 	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course measure-theory
@@ -43,14 +43,6 @@ extras-web:
 extras-web-check: extras-web
 	@python3 $(SKILL)/scripts/check_web.py $(BUILD)/extras.html \
 		--expected-nodes 0 --expected-diagrams 0
-
-pdf:
-	@mkdir -p $(BUILD)
-	@$(TYPST) compile --root ../.. main.typ $(BUILD)/main.pdf
-
-extras-pdf:
-	@mkdir -p $(BUILD)
-	@$(TYPST) compile --root ../.. extras.typ $(BUILD)/extras.pdf
 
 watch:
 	@mkdir -p $(BUILD)

@@ -5,14 +5,17 @@
 For an affected Typst course, run:
 
 ```sh
-make export
+make -C "$repo_root" notes-source-check
+make
 make web-check
 make <secondary>-web-check   # when present
 make -C "$repo_root" knowledge-check
 ```
 
-`make export` synchronizes the course graph before generating per-chapter
-snapshots. If these commands succeed, accept the result and stop.
+The default `make` synchronizes the course graph and checks HTML without
+generating snapshots. Run `make export` only when local LaTeX/Markdown
+projections are explicitly required. If these commands succeed, accept the
+result and stop.
 
 For a configured Markdown source, also run the note renderer test and site
 checks from the repository root:
@@ -41,10 +44,9 @@ python3 notes/math/toolchain/scripts/export_latex_web.py path/to/main.tex \
   --output knowledge/build/file.html
 ```
 
-Do not compile, render, or visually inspect PDFs; generate page PNGs or contact
-sheets; compile exported LaTeX independently; inspect every image; or rerun all
-courses by default. Use deeper diagnostics only after a failure or explicit user
-request.
+Do not compile or render PDFs below `notes/`; generate contact sheets; compile
+exported LaTeX independently; inspect every image; or rerun all courses by
+default. Use deeper diagnostics only after a failure or explicit user request.
 
 ## Markdown snapshot check
 
@@ -113,11 +115,11 @@ python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
 
 ## Repository boundary
 
-Commit authoritative `.typ`/`.md`/`.tex`, intentional generated snapshots,
-required bibliography and authored/vector assets, the Pages workflow, and
-deterministic graph snapshots.
-Never commit whole-book/chapter PDFs, rendered pages, local HTML, SQLite, or
-compiler intermediates.
+Commit authoritative `.typ`/`.md`/`.tex`, required bibliography and referenced
+authored assets, the Pages workflow, and deterministic graph snapshots. Never
+commit generated `exports/`, rendered pages, local HTML, SQLite, or compiler
+intermediates. Never place a PDF anywhere below `notes/`, even as an ignored
+preview or diagram asset.
 
 ## Failure routing
 

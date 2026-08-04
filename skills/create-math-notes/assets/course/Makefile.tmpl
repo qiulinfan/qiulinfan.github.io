@@ -1,4 +1,4 @@
-.PHONY: all release export web web-check pdf watch edit knowledge-sync
+.PHONY: all release export web web-check watch edit knowledge-sync
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
@@ -11,7 +11,7 @@ COURSE_SLUG := {{SLUG}}
 
 all: release
 
-release: export web-check
+release: knowledge-sync web-check
 
 export:
 	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course $(COURSE_SLUG)
@@ -33,10 +33,6 @@ web:
 web-check: web
 	@python3 $(EXPORT_SKILL)/scripts/check_web.py $(BUILD)/index.html
 
-pdf:
-	@mkdir -p $(BUILD)
-	@$(TYPST) compile --root ../.. main.typ $(BUILD)/main.pdf
-
 watch:
 	@mkdir -p $(BUILD)
 	@$(TYPST) watch --root ../.. --features html --format html \
@@ -44,4 +40,3 @@ watch:
 
 edit:
 	@code -r $(COURSE_SLUG).code-workspace main.typ
-

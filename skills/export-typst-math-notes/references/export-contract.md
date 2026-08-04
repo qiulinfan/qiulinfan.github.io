@@ -136,8 +136,9 @@ Preserve document-local references independently from global graph refs.
 
 Keep CeTZ source authoritative and call it through `#diagram(...)` with a stable
 figure ID, caption, and nonempty alt text. HTML uses inline SVG. Markdown uses
-`.assets/<entry>--<id>.svg`, supported by Typora. LaTeX uses a corresponding
-vector PDF asset. Do not reconstruct TikZ and do not default to PNG.
+`.assets/<entry>--<id>.svg`, supported by Typora. Editable LaTeX snapshots use a
+derived PNG asset so the export remains directly usable without placing any PDF
+below `notes/`. Do not reconstruct TikZ.
 
 Authored raster screenshots may remain raster; exporters must extract them to
 deterministic asset files and must never leak `data:image/` URIs into text.

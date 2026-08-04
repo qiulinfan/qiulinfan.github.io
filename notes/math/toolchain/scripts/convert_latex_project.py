@@ -16,6 +16,10 @@ from migrate_latex import MigrationError, migrate
 
 TOOLCHAIN = Path(__file__).resolve().parents[1]
 INCLUDE_RE = re.compile(r"\\(?:input|include)\s*\{(?P<path>[^}]+)\}")
+GRAPHIC_RE = re.compile(
+    r"\\(?:pic(?:\[[^\]]*\])?|includegraphics(?:\[[^\]]*\])?)"
+    r"\s*\{(?P<path>[^}]+)\}"
+)
 DOCUMENT_CLASS_RE = re.compile(r"\\documentclass(?:\[[^\]]*\])?\{elegantbook\}")
 UNSUPPORTED_RE = re.compile(r"\\begin\{(?P<name>tikzpicture|problemset|custom)\}")
 
@@ -161,6 +165,62 @@ def copy_support(project: LatexProject, build: Path) -> None:
         shutil.copy2(bibliography, build / "reference.bib")
 
 
+def detected_image_suffix(path: Path) -> str:
+    header = path.read_bytes()[:32]
+    if header.startswith(b"\x89PNG\r\n\x1a\n"):
+        return ".png"
+    if header.startswith(b"\xff\xd8\xff"):
+        return ".jpg"
+    if header.startswith((b"GIF87a", b"GIF89a")):
+        return ".gif"
+    if header.startswith(b"RIFF") and header[8:12] == b"WEBP":
+        return ".webp"
+    if header.lstrip().startswith(b"<svg"):
+        return ".svg"
+    return path.suffix.lower()
+
+
+def copy_graphic_assets(
+    project: LatexProject,
+    build: Path,
+) -> dict[Path, list[tuple[str, str]]]:
+    """Copy source-referenced graphics and return chapter-relative rewrites."""
+
+    rewrites: dict[Path, list[tuple[str, str]]] = {}
+    for source in project.content_sources:
+        source_rewrites: list[tuple[str, str]] = []
+        text = uncommented(source.read_text(encoding="utf-8"))
+        for match in GRAPHIC_RE.finditer(text):
+            raw = match.group("path").strip()
+            relative = Path(raw)
+            if relative.is_absolute():
+                raise LatexProjectError(f"absolute graphic path is unsupported: {raw}")
+            if relative.suffix.casefold() == ".pdf":
+                raise LatexProjectError(
+                    f"PDF graphics are forbidden below notes/; replace {raw} with a web asset"
+                )
+            candidates = (
+                (project.project_root / relative).resolve(),
+                (source.parent / relative).resolve(),
+            )
+            graphic = next((candidate for candidate in candidates if candidate.is_file()), None)
+            if graphic is None:
+                raise LatexProjectError(f"missing graphic referenced by {source}: {raw}")
+            try:
+                target_relative = graphic.relative_to(project.project_root)
+            except ValueError as error:
+                raise LatexProjectError(f"graphic leaves project root: {raw}") from error
+            actual_suffix = detected_image_suffix(graphic)
+            if actual_suffix and actual_suffix != target_relative.suffix.casefold():
+                target_relative = target_relative.with_suffix(actual_suffix)
+            target = build / target_relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(graphic, target)
+            source_rewrites.append((raw, f"../{target_relative.as_posix()}"))
+        rewrites[source] = source_rewrites
+    return rewrites
+
+
 def convert_latex_project(
     project: LatexProject,
     build: Path,
@@ -176,13 +236,20 @@ def convert_latex_project(
     chapters.mkdir(parents=True, exist_ok=True)
     migrate(list(project.content_sources), chapters, build / "diagrams", None)
     copy_support(project, build)
+    graphic_rewrites = copy_graphic_assets(project, build)
     module_imports = (
         '#import "../toolchain/qlnotes.typ": *\n'
         '#import "../toolchain/math-aliases.typ": *\n\n'
     )
     for source in project.content_sources:
         chapter = chapters / f"{source.stem}.typ"
-        chapter.write_text(module_imports + chapter.read_text(encoding="utf-8"), encoding="utf-8")
+        chapter_text = chapter.read_text(encoding="utf-8")
+        for original, replacement in graphic_rewrites[source]:
+            chapter_text = chapter_text.replace(
+                f'image("{original}"',
+                f'image("{replacement}"',
+            )
+        chapter.write_text(module_imports + chapter_text, encoding="utf-8")
     arguments = [f'  title: "{typst_string(title or project.title)}"']
     if project.subtitle:
         arguments.append(f'  subtitle: "{typst_string(project.subtitle)}"')
@@ -193,8 +260,13 @@ def convert_latex_project(
         arguments.append(f'  author: "{typst_string(resolved_author)}"')
     if project.date:
         arguments.append(f'  date: "{typst_string(project.date)}"')
-    arguments.append("  bibliography: none")
+    bibliography = project.project_root / "reference.bib"
+    if bibliography.is_file():
+        arguments.append('  bibliography: "reference.bib"')
+    else:
+        arguments.append("  bibliography: none")
     includes = "\n".join(f'#include "chapters/{path.stem}.typ"' for path in project.content_sources)
+    bibliography_block = '\n#bibliography("reference.bib")' if bibliography.is_file() else ""
     main = build / "main.typ"
     main.write_text(
         '#import "toolchain/qlnotes.typ": *\n'
@@ -202,14 +274,16 @@ def convert_latex_project(
         "#show: qlnotes.with(\n"
         + ",\n".join(arguments)
         + ",\n)\n\n"
+        + '#set math.equation(numbering: "(1)")\n\n'
         + includes
+        + bibliography_block
         + "\n",
         encoding="utf-8",
     )
     (build / "Makefile").write_text(
         ".PHONY: preview watch web\n\n"
-        "preview:\n\ttypst compile main.typ preview.pdf\n\n"
-        "watch:\n\ttypst watch main.typ preview.pdf\n\n"
+        "preview:\n\ttypst compile --features html --format html main.typ index.html\n\n"
+        "watch:\n\ttypst watch --features html --format html main.typ index.html\n\n"
         "web:\n\ttypst compile --features html --format html main.typ index.html\n",
         encoding="utf-8",
     )

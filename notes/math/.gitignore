@@ -2,6 +2,8 @@
 **/build/
 # Course-local HTML is disposable. GitHub Actions publishes it to Pages.
 **/site/
+# Typst-to-LaTeX/Markdown snapshots are reproducible local projections.
+**/exports/
 **/*.aux
 **/*.log
 **/*.out
@@ -16,8 +18,7 @@
 **/*.bcf
 **/*.run.xml
 
-# Generated PDFs and pagination previews stay local. The repository keeps
-# editable sources/snapshots and their authored figure assets instead.
+# PDF and pagination artifacts are forbidden below notes/.
 **/main.pdf
 **/docs/*.pdf
 **/pages/

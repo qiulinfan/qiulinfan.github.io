@@ -1,4 +1,0 @@
-Error: Invalid command line option
-Error: Invalid mode
-Error: No mode specified
-Cannot construct MST

@@ -44,6 +44,10 @@ core.*
 *.synctex.gz
 *.toc
 
+# Notes are source-first and published as web pages. PDF artifacts never belong
+# anywhere below notes/, including ignored local preview builds.
+/notes/**/*.[pP][dD][fF]
+
 # JavaScript dependencies
 node_modules/
 

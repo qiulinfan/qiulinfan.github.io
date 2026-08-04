@@ -6,8 +6,9 @@ description: Maintain, semantically curate, and publish repository notes whose a
 # Export Multi-Source Knowledge Notes
 
 Treat every configured source file as authority in its own format. Generated
-Markdown, Typst intermediates, HTML, and PDFs are projections, never additional
-authorities. The repository graph is one semantic index shared by all formats.
+Markdown, Typst intermediates, and HTML are projections, never additional
+authorities. PDF files are forbidden anywhere below `notes/`; the repository
+graph is one semantic index shared by all formats.
 
 ## Load the contracts
 
@@ -140,7 +141,8 @@ is rehomed. Remove semantic knowledge only through an explicit reviewed delta.
 ### Typst
 
 Run the owning course command. It synchronizes the course, compiles each entry
-once, and writes flat per-chapter LaTeX and Markdown snapshots:
+once, and writes flat per-chapter LaTeX and Markdown snapshots into an ignored,
+reproducible local directory:
 
 ```sh
 make export
@@ -223,7 +225,8 @@ Run only the affected scope, then the shared checks:
 
 ```sh
 python3 -m unittest knowledge.tests.test_knowledge \
-  notes.math.toolchain.tests.test_multisource
+  notes.math.toolchain.tests.test_multisource \
+  notes.scripts.test_source_policy
 make knowledge-check
 make blog-check
 make blog-build
@@ -233,9 +236,14 @@ For a global foundation review, run `knowledge.py audit` and use its coverage
 and topology only to choose authorities to read. Never repair a metric without
 source evidence.
 
+Never commit `exports/`; regenerate snapshots only when they are needed for
+inspection or interchange. The normal course `make` target synchronizes the
+graph and checks HTML without producing snapshots.
+
 GitHub Actions builds Astro, compiles configured Typst/LaTeX note HTML, and
-uploads only the Pages artifact. Keep HTML, PDFs, generated Typst, copied note
-assets, SQLite, compiler logs, and agent deltas ignored.
+uploads only the Pages artifact. Keep HTML, generated Typst, copied note assets,
+SQLite, compiler logs, and agent deltas ignored. Run `make notes-source-check`;
+do not create, copy, or retain any PDF below `notes/`, even as an ignored preview.
 
 Treat each source's `knowledge/sources.json` `web` value as the only canonical
 public route. Never hardcode a repository name, Pages subpath, or deployment

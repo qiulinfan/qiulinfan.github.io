@@ -1,7 +1,8 @@
 # Mathematics notes
 
-数学笔记按课程独立维护。已迁移课程采用 Typst-first；尚未迁移的历史课程继续
-保留原 LaTeX 工程，直到逐门完成转换。
+数学笔记按课程独立维护。当前图谱中的 Probability 与 Measure Theory 使用
+Typst 权威源；零散的旧 Markdown 笔记可在整理后单独注册。历史 LaTeX-first
+课程、PDF、MkDocs 页面和课程归档均不再保留。
 
 ## Typst-first 课程
 
@@ -15,14 +16,13 @@ course/
 ├── assets/
 ├── reference.bib
 ├── Makefile
-└── exports/
-    ├── latex/*.tex
-    └── markdown/*.md
+├── build/                 # ignored HTML
+└── exports/               # ignored optional local snapshots
 ```
 
 模板、数学 alias、网页样式和导出程序只维护一份，位于
-[`toolchain/`](toolchain/README.md)。Typst 是唯一权威源；LaTeX 与 Markdown
-按一级章节生成可编辑快照，不提交整本导出文件。
+[`toolchain/`](toolchain/README.md)。对这两门现役课程，Typst 是唯一权威源；需要时可以在本地
+生成 LaTeX/Markdown 快照，但这些可再生产物不进入 Git。
 
 ```sh
 make export
@@ -35,22 +35,12 @@ make web-check
 `make knowledge-course COURSE=measure-theory` 或 `make knowledge-file FILE=...`
 按不同粒度同步。
 
-课程本地 HTML、PDF、编译中间文件和 `site/` 均被忽略。GitHub Actions 从
-Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
+课程本地 HTML、快照与编译中间文件均被忽略；`notes/` 下不允许存在任何 PDF。
+GitHub Actions 从 Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
 
 - Probability: <https://qiulinfan.github.io/notes/math/probability/>
 - Measure Theory: <https://qiulinfan.github.io/notes/math/measure-theory/>
 
-## 尚未迁移的 LaTeX 课程
-
-现有 LaTeX 工程继续使用 ElegantBook 与 LuaLaTeX/latexmk；迁移前不要机械
-套用 Typst 目录。当前主要历史工程包括：
-
-- `advanced-linear-algebra/latex-note/`
-- `multivariate-analysis/lec-note/`
-- `numerical-linear-algebra/notes/`
-- `pde-boundary-problems/latex-note/`
-- `topological-manifolds/latex-note/`
-
-所有课程都只提交可编辑源与必要原始资源；整本 PDF、章节 PDF、分页预览、
-`build/` 和课程本地 `site/` 不进入版本控制。
+未来确有必要时仍可维护 `.tex` 权威源，但唯一预览路径是
+`LaTeX -> Typst -> HTML`。根目录的 `make notes-source-check` 会阻止任何 PDF
+重新进入 `notes/`。

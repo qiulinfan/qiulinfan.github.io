@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import os
 import shutil
 import subprocess
 import sys
@@ -28,6 +27,17 @@ WEB_SPEC.loader.exec_module(export_latex_web)
 
 
 class MultiSourceExportTest(unittest.TestCase):
+    def test_typst_math_relations_stay_separate_from_preceding_exponents(self) -> None:
+        rendered, changes = migrate_latex.normalize_typst_output(
+            '$x^iapprox y + z^nepsilon.alt + mat(delim: "||", a; b)$'
+        )
+
+        self.assertEqual(
+            '$x^i approx y + z^n epsilon.alt + mat(delim: "|", a; b)$',
+            rendered,
+        )
+        self.assertEqual(3, changes)
+
     def test_starter_and_export_elegantbook_surfaces_are_synchronized(self) -> None:
         export_class = (TOOLCHAIN / "latex/elegantbook.cls").read_text(encoding="utf-8")
         starter_class = (
@@ -95,36 +105,6 @@ class MultiSourceExportTest(unittest.TestCase):
         )
 
     @unittest.skipUnless(
-        shutil.which("lualatex"),
-        "LuaLaTeX is required for the source preview fixture",
-    )
-    def test_elegantbook_source_preview_supports_knowledge_macros(self) -> None:
-        fixture_root = Path(__file__).parent / "fixtures/latex-project"
-        build_parent = REPO_ROOT / "knowledge/build"
-        build_parent.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="qlnotes-latex-source-", dir=build_parent) as temporary:
-            result = subprocess.run(
-                [
-                    "lualatex",
-                    "-interaction=nonstopmode",
-                    "-halt-on-error",
-                    f"-output-directory={temporary}",
-                    "main.tex",
-                ],
-                cwd=fixture_root,
-                env={
-                    **os.environ,
-                    "TEXINPUTS": f"{TOOLCHAIN / 'latex'}:",
-                },
-                check=False,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-            )
-            self.assertEqual(0, result.returncode, result.stdout[-4000:] + result.stderr)
-            self.assertTrue((Path(temporary) / "main.pdf").is_file())
-
-    @unittest.skipUnless(
         shutil.which("pandoc") and shutil.which("typst"),
         "Pandoc and Typst are required for the project integration fixture",
     )
@@ -136,9 +116,20 @@ class MultiSourceExportTest(unittest.TestCase):
             root = Path(temporary)
             project = export_latex_web.inspect_project([fixture])
             main = export_latex_web.convert_latex_project(project, root / "typst")
-            preview = root / "typst/preview.pdf"
+            preview = root / "typst/index.html"
             result = subprocess.run(
-                ["typst", "compile", "--root", str(root / "typst"), str(main), str(preview)],
+                [
+                    "typst",
+                    "compile",
+                    "--root",
+                    str(root / "typst"),
+                    "--features",
+                    "html",
+                    "--format",
+                    "html",
+                    str(main),
+                    str(preview),
+                ],
                 check=False,
                 capture_output=True,
                 text=True,

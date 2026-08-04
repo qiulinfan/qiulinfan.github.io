@@ -21,8 +21,8 @@ Before conversion, record per-file counts for:
 - `proof`, `solution`, `remark`, and `note`;
 - active TikZ blocks, code environments, citations, labels, and references.
 
-Ignore commented TikZ blocks. Keep the old LaTeX and its compiled main PDF as a
-read-only comparison baseline.
+Ignore commented TikZ blocks. Keep the old LaTeX source as the read-only
+comparison baseline. Do not retain or regenerate a compiled PDF below `notes/`.
 
 ## 2. Generate a migration draft
 
@@ -74,7 +74,7 @@ translate legacy proximity or numbering into dependencies.
 
 Avoid wrapping export-relevant content in paged-only outer `figure` or centered
 table constructs. Typst's experimental HTML target may omit nested content even
-when the paged PDF looks correct.
+when another renderer looks correct.
 
 ## 4. Port TikZ to CeTZ
 
@@ -89,8 +89,8 @@ Every diagram needs:
 - non-empty alt text describing the relationship shown;
 - successful Typst export and basic HTML checking.
 
-Keep CeTZ authoritative. Markdown receives SVG in `.assets/`; LaTeX receives
-the corresponding vector PDF. Do not regenerate TikZ.
+Keep CeTZ authoritative. Markdown receives SVG in `.assets/`; editable LaTeX
+snapshots receive a derived PNG. Do not regenerate TikZ or create PDF assets.
 
 ## 5. Accept the migration
 
@@ -108,6 +108,7 @@ acceptance path:
 - the main and secondary web checks succeed;
 - the knowledge graph freshness check succeeds.
 
-Stop after these commands pass. Do not compile or inspect PDFs, create contact
-sheets, independently compile exported LaTeX, or run broad visual regressions
-unless the user explicitly requests them or an export command fails.
+Stop after these commands pass. Do not create PDFs or contact sheets,
+independently compile exported LaTeX, or run broad visual regressions unless the
+user explicitly requests them or an export command fails. Even with such a
+request, any temporary PDF must live outside `notes/`.

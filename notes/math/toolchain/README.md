@@ -7,7 +7,7 @@ output reuses this toolchain through an ignored Typst intermediate.
 
 ```text
 toolchain/
-├── qlnotes.typ             # PDF and HTML presentation
+├── qlnotes.typ             # HTML presentation
 ├── math-aliases.typ        # shared math notation
 ├── web.css                 # responsive web style
 ├── scripts/
@@ -38,7 +38,7 @@ make                     # both of the above, plus secondary web entries
 
 For a Typst-first course, Typst is its authority. `export_course.py` compiles
 each entry once, splits the semantic Markdown and LaTeX at real level-one
-chapters, and writes a flat, browsable result:
+chapters, and writes a flat, ignored local result:
 
 ```text
 course/exports/
@@ -53,9 +53,10 @@ course/exports/
     └── reference.bib
 ```
 
-No whole-book `main.tex` or `main.md` is committed. HTML, PDFs, and exporter
-intermediates stay under the ignored course `build/` directory. GitHub Actions
-builds HTML from Typst and publishes only the Pages artifact.
+No generated snapshot is committed. HTML and exporter intermediates stay under
+ignored `build/` or `exports/` directories. PDF files are forbidden anywhere
+below `notes/`. GitHub Actions builds HTML from Typst and publishes only the
+Pages artifact.
 
 Markdown is intentionally graph-oriented and lossy. Semantic statements,
 examples, proofs, remarks, notes, and solutions become ordinary `>` blockquotes;
@@ -135,6 +136,6 @@ If a file-scoped sync no longer sees a previously active `#kn`, its source is
 marked orphaned. The node metadata and semantic edges remain available until the
 same name is defined in its new authoritative location.
 
-CeTZ remains the diagram authority. Markdown uses Typora-compatible SVG files;
-LaTeX uses the corresponding vector PDF figure assets. The exporter never
-reconstructs TikZ.
+CeTZ remains the diagram authority. Markdown and the web use SVG; editable
+LaTeX snapshots use portable derived PNG assets so export never creates a PDF
+inside `notes/`. The exporter never reconstructs TikZ.

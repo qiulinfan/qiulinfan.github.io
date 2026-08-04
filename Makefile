@@ -1,4 +1,4 @@
-.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search
+.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search
 
 KNOWLEDGE := knowledge/scripts/knowledge.py
 
@@ -21,6 +21,9 @@ blog-preview:
 blog-check:
 	cd site && corepack pnpm check
 
+notes-source-check:
+	@python3 notes/scripts/check_source_policy.py --repo-root .
+
 knowledge-build:
 	@python3 $(KNOWLEDGE) --repo-root . sync
 
@@ -36,7 +39,7 @@ knowledge-file:
 	@test -n "$(FILE)" || (echo '用法: make knowledge-file FILE=notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ' && exit 1)
 	@python3 $(KNOWLEDGE) --repo-root . sync --file "$(FILE)"
 
-knowledge-check:
+knowledge-check: notes-source-check
 	@python3 $(KNOWLEDGE) --repo-root . check
 
 knowledge-search:

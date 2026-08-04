@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "LaTeX: build main PDF",
+      "label": "LaTeX source: build Typst HTML",
       "type": "shell",
-      "command": "make pdf",
+      "command": "make web",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -12,7 +12,7 @@
       "problemMatcher": []
     },
     {
-      "label": "LaTeX: watch main PDF",
+      "label": "LaTeX source: watch Typst HTML",
       "type": "shell",
       "command": "make watch",
       "isBackground": true,
@@ -24,4 +24,3 @@
     }
   ]
 }
-

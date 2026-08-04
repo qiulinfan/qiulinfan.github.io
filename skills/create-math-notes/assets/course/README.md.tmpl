@@ -5,11 +5,11 @@ presentation and export code lives in `../toolchain/`.
 
 ```sh
 make edit       # open the ready-to-use VS Code/Tinymist workspace
-make export     # chaptered editable LaTeX and Markdown
+make            # synchronize the graph and check HTML
+make export     # optional local LaTeX and Markdown snapshots
 make web-check  # ignored local HTML plus basic integrity checks
-make pdf        # optional ignored local PDF
 ```
 
-Committed exports are written to `exports/latex/` and `exports/markdown/`.
-Generated HTML, PDF, and intermediates stay under ignored `build/`.
-
+Generated snapshots are written to ignored `exports/latex/` and
+`exports/markdown/`. HTML and intermediates stay under ignored `build/`;
+`notes/` never contains PDFs.

@@ -124,7 +124,11 @@ def require_commands(commands: tuple[str, ...]) -> None:
 def clean_generated_assets(directory: Path, suffixes: set[str]) -> None:
     directory.mkdir(parents=True, exist_ok=True)
     for path in directory.iterdir():
-        if path.is_file() and path.suffix.lower() in suffixes:
+        if (
+            path.is_file()
+            and path.name.startswith("figure-raster-")
+            and path.suffix.lower() in suffixes
+        ):
             path.unlink()
 
 
@@ -237,12 +241,12 @@ def extract_diagrams(
 
         svg_text = svg_match.group(0)
         svg_path = markdown_assets / f"{name}.svg"
-        pdf_path = latex_assets / f"{name}.pdf"
+        png_path = latex_assets / f"{name}.png"
         rendered_svg = svg_text + "\n"
         unchanged = (
             svg_path.is_file()
             and svg_path.read_text(encoding="utf-8") == rendered_svg
-            and pdf_path.is_file()
+            and png_path.is_file()
         )
         if not unchanged:
             svg_path.write_text(rendered_svg, encoding="utf-8")
@@ -250,9 +254,9 @@ def extract_diagrams(
                 [
                     "rsvg-convert",
                     "--format",
-                    "pdf",
+                    "png",
                     "--output",
-                    str(pdf_path),
+                    str(png_path),
                     str(svg_path),
                 ]
             )
@@ -273,7 +277,8 @@ def extract_diagrams(
     converted = FIGURE_RE.sub(replace, source_html)
     active = set(names)
     remove_stale_assets(markdown_assets, ".svg", active)
-    remove_stale_assets(latex_assets, ".pdf", active)
+    remove_stale_assets(latex_assets, ".png", active)
+    remove_stale_assets(latex_assets, ".pdf", set())
     return converted, names
 
 
@@ -490,7 +495,7 @@ def export(
         raise ExportError("embedded data URI leaked into an editable export")
     if diagrams and any(
         not (markdown_assets / f"{name}.svg").is_file()
-        or not (latex_assets / f"{name}.pdf").is_file()
+        or not (latex_assets / f"{name}.png").is_file()
         for name in diagrams
     ):
         raise ExportError("one or more diagram assets were not exported")

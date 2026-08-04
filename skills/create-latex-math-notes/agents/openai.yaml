@@ -1,4 +1,4 @@
 interface:
   display_name: "Create LaTeX Math Notes"
-  short_description: "Scaffold LaTeX notes with synchronized Typst preview"
-  default_prompt: "Use $create-latex-math-notes to create a LuaLaTeX mathematics notebook with a self-contained synchronized Typst preview."
+  short_description: "Scaffold LaTeX sources with Typst HTML preview"
+  default_prompt: "Use $create-latex-math-notes to create lightweight LaTeX-authored mathematics notes that preview only through Typst HTML."

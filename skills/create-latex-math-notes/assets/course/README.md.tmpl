@@ -1,22 +1,19 @@
 # {{TITLE_TEXT}}
 
-This is a local-first LuaLaTeX mathematics notebook based on
-`qiulinfan/localLatexenv`. `main.tex` and `chapters/*.tex` are the authority.
+This is a lightweight LaTeX-authored mathematics notebook using the synchronized
+ElegantBook syntax. `main.tex` and `chapters/*.tex` are the authority; preview
+always goes through Typst HTML.
 
 ```sh
 make edit    # open the configured VS Code workspace
-make pdf     # compile build/main.pdf once
-make watch   # continuously rebuild build/main.pdf
-make typst-preview # convert main.tex and chapters, then compile Typst preview
-make typst-watch   # continuously preview the generated Typst projection
-make clean   # remove local compiler output
+make         # convert main.tex and chapters, then compile index.html
+make watch   # continuously preview the generated Typst HTML
 ```
 
-LaTeX Workshop recompiles the root document on save and refreshes its internal
-PDF tab; Ultra Math Preview renders the formula at the cursor. The synchronized
-ElegantBook adapter writes a self-contained projection under `build/typst/`.
+Ultra Math Preview may render only the formula at the cursor. The synchronized
+ElegantBook adapter writes a
+self-contained projection under ignored `build/typst/`.
 Use `\kn{canonical concept}` for the one authoritative graph occurrence and
-`\knref{canonical concept}` elsewhere; both remain valid in the LuaLaTeX PDF
-and convert to Typst graph markers.
-Publishing and knowledge-graph ingestion are handled later by the repository's
-multi-source export skill; this project has no direct LaTeX-to-HTML path.
+`\knref{canonical concept}` elsewhere; both convert to Typst graph markers.
+Publishing and graph ingestion are handled later by the repository's
+multi-source export skill. Never generate a PDF below `notes/`.

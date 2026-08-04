@@ -319,6 +319,9 @@ def normalize_typst_output(source: str) -> tuple[str, int]:
     """Normalize Pandoc output for paged and experimental HTML targets."""
 
     changes = 0
+    before = source
+    source = source.replace('mat(delim: "||",', 'mat(delim: "|",')
+    changes += before.count('mat(delim: "||",')
     # Typst's HTML backend currently ignores `overline`; `accent` preserves the
     # notation in both paged PDF and HTML output.
     source, rewritten = replace_typst_function(
@@ -345,7 +348,7 @@ def normalize_typst_output(source: str) -> tuple[str, int]:
     # A TeX exponent or subscript ends before the following relation/spacing
     # command. Pandoc occasionally omits the separating space in Typst output.
     source, separated = re.subn(
-        r"\^([A-Za-z0-9]+?)(thin|quad|lt\.eq|gt\.eq|arrow\.r|in\b|dot\.op)",
+        r"\^([A-Za-z0-9]+?)(thin|quad|approx|epsilon\.alt|lt\.eq|gt\.eq|arrow\.r|in\b|dot\.op)",
         r"^\1 \2",
         source,
     )

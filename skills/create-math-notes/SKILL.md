@@ -1,6 +1,6 @@
 ---
 name: create-math-notes
-description: Create a new Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or新建 math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, chaptered LaTeX/Markdown export, semantic HTML checks, and knowledge-graph synchronization used by the probability notes.
+description: Create a new lightweight Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or新建 math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, optional ignored LaTeX/Markdown snapshots, semantic HTML checks, and knowledge-graph synchronization.
 ---
 
 # Create Math Notes
@@ -54,17 +54,16 @@ Tinymist and can prevent the language server from starting.
 Run only the new course's fast path:
 
 ```sh
-make -C notes/math/<slug> export
-make -C notes/math/<slug> web-check
+make -C notes/math/<slug>
 ```
 
-Successful commands are sufficient. Do not inspect PDFs or generate page
-images. Confirm that chaptered snapshots appear under `exports/latex/` and
-`exports/markdown/`, while HTML and compiler output remain under ignored
-`build/`.
+Successful commands are sufficient. Do not create PDFs or page images. Confirm
+that HTML and compiler output remain under ignored `build/`. Run `make export`
+only when the user explicitly needs chaptered LaTeX/Markdown snapshots; those
+must appear only under ignored `exports/`. The normal `make` target synchronizes
+the graph and checks HTML without creating snapshots.
 
 If validation changes deterministic knowledge graph snapshots, keep those
 changes: source registration and scoped synchronization are part of course
 creation. Do not add a GitHub Pages route unless the user also asks to publish
 the new notes.
-

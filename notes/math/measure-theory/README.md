@@ -6,13 +6,13 @@ this course directory: [`main.typ`](main.typ) contains the course sequence and
 and extras remain independently readable `.typ` files.
 
 ```sh
-make export              # split LaTeX / Markdown exports + graph refresh
+make export              # generate local LaTeX / Markdown snapshots on demand
 make web-check           # main HTML UTF-8 and structure check
 make extras-web-check    # supplementary HTML check
-make                     # complete lightweight publication workflow
+make                     # synchronize the graph and check HTML only
 ```
 
-All committed snapshots share one `exports/` directory:
+All reproducible local snapshots share one ignored `exports/` directory:
 
 ```text
 exports/
@@ -20,8 +20,8 @@ exports/
 └── markdown/<entry>--<chapter>.md
 ```
 
-There is no committed whole-book export. Local HTML, PDFs, and intermediates are
-written only under ignored `build/`; GitHub Actions publishes the HTML directly
-to Pages.
+There is no committed snapshot or whole-book export. Local HTML and
+intermediates stay ignored; `notes/` never contains PDFs. GitHub Actions
+publishes HTML directly to Pages.
 
 Published notes: <https://qiulinfan.github.io/notes/math/measure-theory/>

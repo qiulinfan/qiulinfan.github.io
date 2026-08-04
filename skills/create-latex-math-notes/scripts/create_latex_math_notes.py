@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a localLatexenv-based math-notes project without web-export logic."""
+"""Create a LaTeX-authored math-notes project with Typst HTML preview."""
 
 from __future__ import annotations
 
@@ -158,7 +158,7 @@ def main() -> int:
         print(f"workspace: {workspace}")
         print(
             f"validate: make -C {destination} doctor && "
-            f"make -C {destination} pdf && make -C {destination} typst-preview"
+            f"make -C {destination} web"
         )
     return 0
 

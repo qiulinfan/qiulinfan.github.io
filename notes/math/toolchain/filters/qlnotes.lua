@@ -579,7 +579,7 @@ local function normalize_image(element)
     element.src = string.gsub(
       element.src,
       "%.svg$",
-      ".pdf"
+      ".png"
     )
   end
   return element
