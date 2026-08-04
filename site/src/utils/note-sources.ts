@@ -3,7 +3,9 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, extname, relative, resolve, sep } from "node:path";
 import katex from "katex";
 import MarkdownIt from "markdown-it";
+import { createHighlighter } from "shiki";
 import type { MarkdownHeading } from "astro";
+import { markdownNoteConfig } from "../config/note-presentation.ts";
 
 interface SourceSpec {
 	id: string;
@@ -55,10 +57,19 @@ export interface MarkdownNote {
 	description: string;
 	subject: string;
 	course: string;
+	sourceTitle: string;
 	sourceId: string;
 	authority: string;
 	html: string;
 	headings: MarkdownHeading[];
+	heroImage?: string;
+	backgroundImage?: string;
+	navigation: MarkdownNavigationItem[];
+}
+
+export interface MarkdownNavigationItem extends MarkdownHeading {
+	href: string;
+	documentSlug: string;
 }
 
 export interface NoteSource {
@@ -86,6 +97,18 @@ const standalonePresentationPaths = [
 	resolve(repositoryRoot, "notes/math/toolchain/web.css"),
 	resolve(repositoryRoot, "site/scripts/install-note-artifacts.mjs"),
 ];
+const codeHighlighter = await createHighlighter({
+	themes: [markdownNoteConfig.codeThemes.light, markdownNoteConfig.codeThemes.dark],
+	langs: ["plaintext", "cpp", "bash", "bat", "makefile", "json", "powershell", "latex", "typst"],
+});
+const codeLanguageAliases = new Map([
+	["c++", "cpp"],
+	["shell", "bash"],
+	["sh", "bash"],
+	["cmd", "bat"],
+	["makefile", "makefile"],
+	["tex", "latex"],
+]);
 
 function readJsonLines<T>(path: string): T[] {
 	return readFileSync(path, "utf-8")
@@ -244,6 +267,19 @@ function publishedTarget(spec: SourceSpec, sourcePath: string, rawTarget: string
 	return sitePath(`/_notes-assets/${sourceId}/${local}`);
 }
 
+function presentationImage(
+	spec: SourceSpec,
+	sourcePath: string,
+	rawValue: string | undefined,
+	defaultValue: string | undefined,
+): string | undefined {
+	const value = (rawValue ?? defaultValue)?.trim();
+	if (!value || ["false", "none", "null", "off"].includes(value.toLowerCase())) return undefined;
+	const resolved = publishedTarget(spec, sourcePath, value);
+	if (resolved === value && value.startsWith("/")) return sitePath(value);
+	return resolved;
+}
+
 function rewriteRawHtmlTargets(source: string, spec: SourceSpec, sourcePath: string): string {
 	return source.replace(/\b(src|href)\s*=\s*(["'])(.*?)\2/gi, (_whole, attribute: string, quote: string, target: string) => {
 		const rewritten = publishedTarget(spec, sourcePath, target);
@@ -320,6 +356,23 @@ function installMath(renderer: MarkdownIt) {
 		katex.renderToString(tokens[index].content, { displayMode: true, strict: false, throwOnError: false, output: "htmlAndMathml" });
 }
 
+function installCodeHighlighting(renderer: MarkdownIt) {
+	const loaded = new Set(codeHighlighter.getLoadedLanguages());
+	renderer.renderer.rules.fence = (tokens: any[], index: number) => {
+		const token = tokens[index];
+		const sourceLanguage = String(token.info ?? "").trim().split(/\s+/, 1)[0];
+		const normalized = sourceLanguage.toLowerCase();
+		const candidate = codeLanguageAliases.get(normalized) ?? normalized;
+		const language = loaded.has(candidate) ? candidate : "plaintext";
+		const label = sourceLanguage || "text";
+		const highlighted = codeHighlighter.codeToHtml(token.content, {
+			lang: language as any,
+			themes: markdownNoteConfig.codeThemes,
+		});
+		return `<figure class="ql-code-block" data-language="${escapeHtml(label)}"><figcaption>${escapeHtml(label)}</figcaption>${highlighted}</figure>`;
+	};
+}
+
 function installHeadingIds(renderer: MarkdownIt, headings: MarkdownHeading[], markerLabels: string[]) {
 	const counts = new Map<string, number>();
 	(renderer as any).core.ruler.push("ql_heading_ids", (state: any) => {
@@ -327,7 +380,10 @@ function installHeadingIds(renderer: MarkdownIt, headings: MarkdownHeading[], ma
 			const token = state.tokens[index];
 			if (token.type !== "heading_open") continue;
 			const inline = state.tokens[index + 1];
-			const text = (inline?.content ?? "")
+			const inlineText = Array.isArray(inline?.children)
+				? inline.children.map((child: any) => child.content ?? "").join("")
+				: (inline?.content ?? "");
+			const text = inlineText
 				.replace(/QLKGMARKER(\d+)END/g, (_: string, rawIndex: string) => markerLabels[Number(rawIndex)] ?? "")
 				.trim() || "section";
 			const base = text
@@ -363,6 +419,7 @@ export function renderKnowledgeMarkdown(
 	const markerLabels: string[] = [];
 	const renderer = new MarkdownIt({ html: true, linkify: true });
 	installMath(renderer);
+	installCodeHighlighting(renderer);
 	installHeadingIds(renderer, headings, markerLabels);
 	if (options.resolveTarget) {
 		const defaultImage = renderer.renderer.rules.image;
@@ -449,13 +506,27 @@ export function loadMarkdownNotes(): MarkdownNote[] {
 				description: metadata.description ?? `${spec.course} · ${fileAuthority}`,
 				subject: spec.subject,
 				course: spec.course,
+				sourceTitle: spec.title,
 				sourceId: spec.id,
 				authority: fileAuthority,
 				html: rendered.html,
 				headings: rendered.headings,
+				heroImage: presentationImage(spec, path, metadata.hero_image, markdownNoteConfig.defaultHeroImage),
+				backgroundImage: presentationImage(spec, path, metadata.background_image, markdownNoteConfig.defaultBackgroundImage),
+				navigation: [],
 			});
 		}
 	}
 	cachedNotes = notes.sort((left, right) => left.slug.localeCompare(right.slug));
+	for (const note of cachedNotes) {
+		const courseRoot = `${note.subject}/${note.course}`;
+		note.navigation = cachedNotes
+			.filter((candidate) => candidate.sourceId === note.sourceId && candidate.slug !== courseRoot)
+			.flatMap((candidate) => candidate.headings.map((heading) => ({
+				...heading,
+				documentSlug: candidate.slug,
+				href: sitePath(`/notes/${candidate.slug}/#${heading.slug}`),
+			})));
+	}
 	return cachedNotes;
 }

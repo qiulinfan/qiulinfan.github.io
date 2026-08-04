@@ -36,15 +36,24 @@ test("the source registry publishes and lists only the selected notes", () => {
 		loadMarkdownNotes().some((note) => note.sourceId === "cs:computer-organization"),
 		false,
 	);
-	assert.equal(loadMarkdownNotes().filter((note) => note.sourceId === "cs:cpp-programming").length, 27);
-	assert.equal(loadMarkdownNotes().filter((note) => note.sourceId === "cs:data-structures-algorithms").length, 7);
+	const markdownNotes = loadMarkdownNotes();
+	const cppNotes = markdownNotes.filter((note) => note.sourceId === "cs:cpp-programming");
+	const dataStructuresNotes = markdownNotes.filter((note) => note.sourceId === "cs:data-structures-algorithms");
+	assert.equal(cppNotes.length, 26);
+	assert.equal(dataStructuresNotes.length, 4);
+	assert.equal(cppNotes.some((note) => note.authority.endsWith("280-midterm-cheatsheet.md")), false);
+	assert.equal(dataStructuresNotes.every((note) => note.authority.includes("/docs/")), true);
+	assert.equal(markdownNotes.some((note) => /FinalReview|notes-project-optimization|\/README\.md$/.test(note.authority)), false);
+	assert.equal(markdownNotes.every((note) => note.heroImage === "/assets/backgrounds/one-dark-sakura-right-v3.webp"), true);
+	assert.equal(markdownNotes.every((note) => note.backgroundImage === undefined), true);
 	const debuggerNote = loadMarkdownNotes().find((note) => note.authority.endsWith("04-Debuggers.md"));
 	assert.match(debuggerNote?.html ?? "", /\/_notes-assets\/cs-cpp-programming\/Assets\/image-20231223020225955\.png/);
-	const finalReview = loadMarkdownNotes().find((note) => note.authority.endsWith("data-structures-algorithms/FinalReview.md"));
-	assert.match(finalReview?.html ?? "", /\/_notes-assets\/cs-data-structures-algorithms\/docs\/note-assets\//);
-	const dataStructuresHome = loadMarkdownNotes().find((note) => note.authority.endsWith("data-structures-algorithms/README.md"));
-	assert.match(dataStructuresHome?.html ?? "", /href="\/notes\/cs\/data-structures-algorithms\/docs\/"/);
-	assert.match(dataStructuresHome?.html ?? "", /href="\/notes\/cs\/data-structures-algorithms\/FinalReview\/"/);
+	const cppHome = cppNotes.find((note) => note.slug === "cs/cpp-programming");
+	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("01-Command-Line Interface-(CLI)")), true);
+	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("280-midterm-cheatsheet")), false);
+	const dataStructuresHome = dataStructuresNotes.find((note) => note.slug === "cs/data-structures-algorithms");
+	assert.equal(dataStructuresHome?.navigation.some((heading) => heading.text === "Lec 24 (Knapsack and Floyd's algorithm)"), true);
+	assert.equal(dataStructuresHome?.navigation.some((heading) => heading.documentSlug === dataStructuresHome.slug), false);
 });
 
 test("the public graph excludes unpublished sources without changing the local graph", async () => {
@@ -78,6 +87,10 @@ test("Markdown authority markers are anchors and ordinary wikilinks are backlink
 		"$$",
 		"T = C + M",
 		"$$",
+		"",
+		"```cpp",
+		"int main() { return 0; }",
+		"```",
 	].join("\n");
 	const nodes = [{
 		id: "cache-line",
@@ -103,4 +116,6 @@ test("Markdown authority markers are anchors and ordinary wikilinks are backlink
 	assert.doesNotMatch(rendered.html, /<a[^>]+id="kn-cache-line"/);
 	assert.match(rendered.html, /<a class="ql-ref"[^>]+href="https:\/\/example\.test\/notes\/cache\/#kn-cache-line">line<\/a>/);
 	assert.match(rendered.html, /class="katex-display"/);
+	assert.match(rendered.html, /class="ql-code-block" data-language="cpp"/);
+	assert.match(rendered.html, /--shiki-dark:/);
 });

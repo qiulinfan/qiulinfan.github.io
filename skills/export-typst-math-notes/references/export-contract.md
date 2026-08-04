@@ -21,6 +21,16 @@ terminal `README` and `index` stems fold into their parent route. A LaTeX
 authority's local HTML output is an ignored artifact, while its canonical node
 URLs use the source registry's `web` value.
 
+Markdown page artwork is opt-in source metadata, never agent-selected personal
+media. `hero_image` and `background_image` frontmatter may point to a public URL
+or a source-local referenced asset; both render below the page text. The site
+configuration supplies the uploaded cherry-blossom artwork as the default
+Markdown hero, while the background default is empty. A page may override
+either value, and `none` disables the corresponding layer. Asset synchronization
+must copy configured source-local artwork with the same bounded rules as inline
+Markdown images. Do not infer artwork from prose, nearby files, profile media,
+or previously generated images.
+
 The ElegantBook LaTeX pass always emits a self-contained preview project before
 HTML: `main.typ`, converted chapter modules, a copied QLNotes runtime, assets,
 and preview commands. Unsupported template constructs fail explicitly so the

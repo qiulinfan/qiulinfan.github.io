@@ -139,7 +139,12 @@
         "index.md",
         "0*.md",
         "1*.md",
-        "2*.md"
+        "20*.md",
+        "21*.md",
+        "22*.md",
+        "23*.md",
+        "24*.md",
+        "25*.md"
       ],
       "publish": true,
       "listed": true,
@@ -156,19 +161,16 @@
       "course": "data-structures-algorithms",
       "knowledge_origin": "personal-note",
       "fields": ["data-structures-and-algorithms"],
-      "root": "notes/cs/data-structures-algorithms",
+      "root": "notes/cs/data-structures-algorithms/docs",
       "files": [
-        "README.md",
-        "FinalReview.md",
-        "notes-project-optimization.md",
-        "docs/*.md"
+        "index.md",
+        "notes-*.md"
       ],
       "publish": true,
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/cs/data-structures-algorithms",
       "topics": [
-        {"glob": "*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"},
-        {"glob": "docs/*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"}
+        {"glob": "*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"}
       ]
     }
   ]

@@ -52,6 +52,7 @@ function resolveTarget(root, sourcePath, rawTarget) {
 
 function targets(source) {
 	const result = [];
+	for (const match of source.matchAll(/^(?:hero_image|background_image):\s*(['"]?)(.*?)\1\s*$/gim)) result.push(match[2]);
 	for (const match of source.matchAll(/\b(?:src|href)\s*=\s*(["'])(.*?)\1/gi)) result.push(match[2]);
 	for (const match of source.matchAll(/!?\[[^\]]*\]\(\s*(?:<([^>]+)>|([^\s)]+))/g)) result.push(match[1] ?? match[2]);
 	return result;

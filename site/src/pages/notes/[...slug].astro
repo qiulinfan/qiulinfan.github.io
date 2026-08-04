@@ -1,5 +1,6 @@
 ---
 import Markdown from "@components/misc/Markdown.astro";
+import NoteNavigation from "@components/notes/NoteNavigation.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { loadMarkdownNotes, type MarkdownNote } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
@@ -14,9 +15,11 @@ export function getStaticPaths() {
 const { note } = Astro.props as { note: MarkdownNote };
 ---
 
-<MainGridLayout title={note.title} description={note.description} headings={note.headings}>
-	<article class="card-base overflow-hidden rounded-[var(--radius-large)]">
-		<header class="note-header">
+<MainGridLayout title={note.title} description={note.description} headings={note.headings} backgroundImage={note.backgroundImage}>
+	<NoteNavigation slot="sidebar" note={note} />
+	<article class="note-article overflow-hidden rounded-[var(--radius-large)]">
+		<header class:list={["note-header", { "has-hero": note.heroImage }]}>
+			{note.heroImage && <img class="note-hero" src={note.heroImage} alt="" aria-hidden="true" decoding="async" />}
 			<div>
 				<span>{note.subject} / {note.course}</span>
 				<h1>{note.title}</h1>
@@ -33,11 +36,17 @@ const { note } = Astro.props as { note: MarkdownNote };
 </MainGridLayout>
 
 <style>
-	.note-header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 1.75rem 2.5rem; border-bottom: 1px solid var(--line-divider); background: linear-gradient(135deg, color-mix(in oklch, var(--primary) 8%, transparent), transparent 58%); }
+	.note-article { position: relative; background: transparent; }
+	.note-header { position: relative; isolation: isolate; display: flex; align-items: end; justify-content: space-between; gap: 1rem; min-height: 8rem; padding: 1.75rem 2.5rem; border-bottom: 1px solid var(--line-divider); overflow: hidden; }
+	.note-header.has-hero { min-height: clamp(13rem, 27vw, 21rem); color: var(--media-overlay-text); }
+	.note-header.has-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(12, 17, 25, .86), rgba(12, 17, 25, .12) 72%); }
+	.note-hero { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; }
 	.note-header span { font: 650 .68rem/1.2 "JetBrains Mono Variable", monospace; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in oklch, currentColor 48%, transparent); }
+	.note-header.has-hero span { color: rgba(244, 247, 251, .68); }
 	.note-header h1 { margin: .5rem 0 0; font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; }
 	.note-header nav { display: flex; flex-wrap: wrap; gap: .5rem; }
 	.note-header a { padding: .52rem .75rem; border: 1px solid var(--line-divider); border-radius: .65rem; color: inherit; font-size: .72rem; text-decoration: none; }
+	.note-header.has-hero a { border-color: rgba(255, 255, 255, .24); background: rgba(12, 17, 25, .24); backdrop-filter: blur(10px); }
 	:global(.ql-kn) { color: inherit; font-weight: 750; scroll-margin-top: 6rem; }
 	:global(.ql-ref) { color: var(--primary); text-decoration: underline; text-decoration-color: color-mix(in oklch, var(--primary) 35%, transparent); text-underline-offset: .18em; }
 	:global(.ql-unresolved) { text-decoration-style: dashed; opacity: .7; }

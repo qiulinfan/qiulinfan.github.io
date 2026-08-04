@@ -1,0 +1,80 @@
+---
+import type { MarkdownNote } from "@utils/note-sources";
+
+interface Props {
+	note: MarkdownNote;
+}
+
+const { note } = Astro.props;
+---
+
+<note-navigation class="note-navigation" data-current-document={note.slug}>
+	<header>
+		<span>LECTURE OUTLINE</span>
+		<strong>{note.sourceTitle}</strong>
+	</header>
+	<nav aria-label={`${note.sourceTitle} cross-document outline`}>
+		{note.navigation.map((heading) => (
+			<a
+				href={heading.href}
+				data-document={heading.documentSlug}
+				data-heading={heading.slug}
+				class:list={{ "is-current-document": heading.documentSlug === note.slug }}
+				style={`--outline-indent: ${Math.max(0, heading.depth - 1) * .72}rem`}
+			>
+				<span>{heading.text}</span>
+			</a>
+		))}
+	</nav>
+</note-navigation>
+
+<style>
+	.note-navigation { position: sticky; top: 1rem; display: block; max-height: calc(100vh - 2rem); overflow: hidden; border-left: 1px solid var(--line-divider); }
+	header { display: grid; gap: .35rem; padding: .65rem .8rem 1rem; }
+	header span { color: var(--text-muted); font: 650 .62rem/1 var(--font-mono); letter-spacing: .14em; }
+	header strong { color: var(--text-strong); font-size: .92rem; }
+	nav { max-height: calc(100vh - 7rem); overflow: auto; padding: 0 .35rem 2rem 0; scrollbar-width: thin; }
+	a { display: block; margin-left: var(--outline-indent); padding: .36rem .55rem; border-left: 2px solid transparent; border-radius: 0 .45rem .45rem 0; color: var(--text-muted); font-size: .74rem; line-height: 1.35; text-decoration: none; overflow-wrap: anywhere; transition: color .15s ease, border-color .15s ease, background .15s ease; }
+	a:hover { color: var(--text-strong); background: color-mix(in srgb, var(--primary) 7%, transparent); }
+	a.is-current-document { color: color-mix(in srgb, var(--text-strong) 86%, var(--primary)); }
+	a.is-active { border-left-color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); }
+	@media (max-width: 1023px) {
+		.note-navigation { position: static; max-height: 24rem; margin-bottom: 1rem; border: 1px solid var(--line-divider); border-radius: var(--radius-large); }
+		nav { max-height: 19rem; padding-left: .45rem; }
+	}
+</style>
+
+<script>
+	class NoteNavigation extends HTMLElement {
+		private updateActive = () => {
+			const currentDocument = this.dataset.currentDocument;
+			const links = Array.from(this.querySelectorAll<HTMLAnchorElement>(`a[data-document="${CSS.escape(currentDocument ?? "")}"]`));
+			if (!links.length) return;
+			let active = links[0];
+			for (const link of links) {
+				const heading = document.getElementById(link.dataset.heading ?? "");
+				if (heading && heading.getBoundingClientRect().top <= 140) active = link;
+			}
+			for (const link of links) link.classList.toggle("is-active", link === active);
+			const nav = this.querySelector<HTMLElement>("nav");
+			if (!nav) return;
+			const top = active.offsetTop;
+			const bottom = top + active.offsetHeight;
+			if (top < nav.scrollTop) nav.scrollTo({ top, behavior: "smooth" });
+			else if (bottom > nav.scrollTop + nav.clientHeight) nav.scrollTo({ top: bottom - nav.clientHeight, behavior: "smooth" });
+		};
+
+		connectedCallback() {
+			window.addEventListener("scroll", this.updateActive, { passive: true });
+			window.addEventListener("hashchange", this.updateActive);
+			requestAnimationFrame(this.updateActive);
+		}
+
+		disconnectedCallback() {
+			window.removeEventListener("scroll", this.updateActive);
+			window.removeEventListener("hashchange", this.updateActive);
+		}
+	}
+
+	if (!customElements.get("note-navigation")) customElements.define("note-navigation", NoteNavigation);
+</script>

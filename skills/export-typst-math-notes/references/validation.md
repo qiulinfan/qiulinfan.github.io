@@ -31,6 +31,11 @@ markdown`. That pass synchronizes configured Markdown files and rejects missing
 agent-authored entries or required direct cross-file refs; it does not perform
 semantic extraction itself.
 
+The note-renderer test must also verify that published Markdown sources expose
+only their bounded lecture files, use the configured default/override artwork
+without inventing personal media, emit highlighted fenced code, and build one
+cross-document outline from authored heading levels alone.
+
 For a LaTeX authority, test the maintained conversion path before the owning
 Typst web check:
 
