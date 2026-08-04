@@ -1,7 +1,8 @@
 # qlblog knowledge graph policy
 
-The reusable compiler, schema invariants, Agent Skill, and local browser live in
-the pinned [`vendor/kgdistiller`](../vendor/kgdistiller/) submodule. This file is
+The reusable compiler, schema invariants, and local browser live in the
+[`vendor/kgdistiller`](../vendor/kgdistiller/) submodule tracking `main`. The
+Agent Skill remains authoritative under `skills/`. This file is
 the host policy for qlblog's personal sources, taxonomy, curation, and site
 integration.
 

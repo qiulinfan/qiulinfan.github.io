@@ -1,4 +1,4 @@
-.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search knowledge-serve
+.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check kgdistiller-update knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search knowledge-serve
 
 KGDISTILLER := python3 knowledge/kgd.py
 
@@ -23,6 +23,9 @@ blog-check:
 
 notes-source-check:
 	@python3 notes/scripts/check_source_policy.py --repo-root .
+
+kgdistiller-update:
+	@git submodule update --init --remote --merge vendor/kgdistiller
 
 knowledge-build:
 	@$(KGDISTILLER) sync

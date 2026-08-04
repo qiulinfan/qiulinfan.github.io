@@ -24,6 +24,7 @@ skills。本目录是 skill 文件的权威副本；`~/.codex/skills` 通过软�
 - [discuss-game-design](./discuss-game-design/)
 - [export-typst-math-notes](./export-typst-math-notes/)
 - [extract-paper-concepts](./extract-paper-concepts/)
+- [kgdistiller-distill](./kgdistiller-distill/)
 - [play-unity-game](./play-unity-game/)
 - [search-game-art](./search-game-art/)
 - [trace-concept-lineage](./trace-concept-lineage/)

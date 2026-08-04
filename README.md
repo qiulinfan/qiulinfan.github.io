@@ -6,13 +6,17 @@
 - [`blogs/`](blogs/): 日常的一些知识分享和闲聊. (保证都是碎碎念
 - [`skills/`](skills/)：个人积累和维护的 skills. (也有偷别人开源的, 会标明出处
 
-可复用的知识图谱蒸馏引擎以 Git submodule 形式固定在
+可复用的知识图谱蒸馏引擎通过跟踪 `main` 的 Git submodule 接入
 [`vendor/kgdistiller/`](vendor/kgdistiller/)；本仓库只保存个人知识源、图谱配置、
 确定性图谱快照与网站集成。首次克隆后运行：
 
 ```bash
-git submodule update --init --recursive
+git submodule update --init --remote --merge
 ```
+
+本地若存在相邻的 `../kgdistiller` 开发仓库，`knowledge/kgd.py` 会优先使用它；
+也可用 `KGDISTILLER_SRC` 显式指定源码目录。CI 部署前会主动更新 submodule 到
+远端 `main`。手动更新可运行 `make kgdistiller-update`。
 
 个人主页、blog、notes 网页和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
 
