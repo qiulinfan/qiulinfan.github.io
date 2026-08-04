@@ -53,13 +53,7 @@ jobs:
           make -C notes/math/measure-theory web-check extras-web-check
 
       - name: Add math notes to Pages artifact
-        run: |
-          mkdir -p site/dist/notes/math/probability/homeworks
-          mkdir -p site/dist/notes/math/measure-theory/extras
-          cp notes/math/prob/build/typst/index.html site/dist/notes/math/probability/index.html
-          cp notes/math/prob/build/typst/homeworks.html site/dist/notes/math/probability/homeworks/index.html
-          cp notes/math/measure-theory/build/typst/index.html site/dist/notes/math/measure-theory/index.html
-          cp notes/math/measure-theory/build/typst/extras.html site/dist/notes/math/measure-theory/extras/index.html
+        run: node site/scripts/install-note-artifacts.mjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

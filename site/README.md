@@ -30,4 +30,10 @@ QL_SITE_BASE=/qlblog/ corepack pnpm build
 
 知识节点的 canonical `web` 地址以 `knowledge/sources.json` 为准。根域构建同时保留旧 `/qlblog/*` 兼容跳转。
 
+`/notes/` 与主页的公开笔记入口也只读取这份 registry。每个 source 必须显式设置
+`publish` 和 `listed`：前者控制网页是否产出，后者控制是否出现在公开目录；
+`listed: true` 必须同时满足 `publish: true`。这些开关不影响本地知识图谱摄取，
+但公开知识图谱只投影 `publish: true` 的 sources。Typst 等由 Astro 之外编译的页面通过 source 的 `web_artifacts` 声明部署产物，CI
+只会安装 `publish: true` 的产物。
+
 Fuwari 的 MIT 许可证保存在 `FUWARI-LICENSE`。

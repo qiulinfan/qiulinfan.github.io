@@ -1,6 +1,7 @@
 ---
-import { featuredNotes, homepageLinks, projects } from "@/data/home";
+import { homepageLinks, projects } from "@/data/home";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
+import { loadListedNoteSources } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
 
 interface Props {
@@ -9,6 +10,18 @@ interface Props {
 
 const { lang = "en" } = Astro.props;
 const zh = lang === "zh";
+const featuredNotes = [
+	...loadListedNoteSources().map((source) => ({
+		title: source.title,
+		field: source.fields[0] ?? source.subject,
+		href: source.href,
+	})),
+	{
+		title: "Knowledge Graph",
+		field: "Research memory",
+		href: "/knowledge/",
+	},
+];
 const copy = zh
 	? {
 			eyebrow: "MATHEMATICS · SYSTEMS · GAMES",

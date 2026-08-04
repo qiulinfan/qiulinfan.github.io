@@ -1,21 +1,27 @@
 ---
 import WidePageLayout from "@layouts/WidePageLayout.astro";
-import { loadMarkdownNotes } from "@utils/note-sources";
+import { loadListedNoteSources } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
 
-const notes = loadMarkdownNotes();
-const groups = Map.groupBy(notes, (note) => `${note.subject}/${note.course}`);
+const sources = loadListedNoteSources();
+const groups = Map.groupBy(sources, (source) => source.subject);
 ---
 
-<WidePageLayout title="Notes" description="Source-backed Markdown notes">
+<WidePageLayout title="Notes" description="Source-backed notes">
 	<section class="notes-index card-base">
-		<header><span>KNOWLEDGE SOURCES</span><h1>Notes</h1><p>Markdown 权威源直接生成的网页；知识标记与全局图谱使用同一身份。</p></header>
+		<header><span>KNOWLEDGE SOURCES</span><h1>Notes</h1><p>公开笔记由统一 source registry 生成目录，并与全局知识图谱共享身份。</p></header>
 		<div class="groups">
 			{Array.from(groups.entries()).map(([name, entries]) => (
 				<section>
 					<h2>{name}</h2>
 					<div class="note-list">
-						{entries.map((note) => <a href={url(`/notes/${note.slug}/`)}><strong>{note.title}</strong><small>{note.authority}</small></a>)}
+						{entries.map((source) => (
+							<a href={url(source.href)}>
+								<span><strong>{source.title}</strong><small>{source.fields.join(" · ")}</small></span>
+								<p>{source.description}</p>
+								<small>{source.authority}</small>
+							</a>
+						))}
 					</div>
 				</section>
 			))}
@@ -31,7 +37,9 @@ const groups = Map.groupBy(notes, (note) => `${note.subject}/${note.course}`);
 	.groups { display: grid; gap: 2rem; margin-top: 2.5rem; }
 	h2 { margin-bottom: .8rem; font-size: 1rem; font-family: "JetBrains Mono Variable", monospace; }
 	.note-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .7rem; }
-	.note-list a { display: flex; min-height: 5rem; flex-direction: column; justify-content: space-between; gap: .7rem; padding: 1rem; border: 1px solid var(--line-divider); border-radius: .8rem; color: inherit; text-decoration: none; }
+	.note-list a { display: flex; min-height: 9rem; flex-direction: column; justify-content: space-between; gap: .8rem; padding: 1rem; border: 1px solid var(--line-divider); border-radius: .8rem; color: inherit; text-decoration: none; }
 	.note-list a:hover { border-color: color-mix(in oklch, var(--primary) 55%, var(--line-divider)); transform: translateY(-1px); }
+	.note-list a span { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+	.note-list p { margin: 0; color: color-mix(in oklch, currentColor 62%, transparent); font-size: .88rem; line-height: 1.5; }
 	.note-list small { overflow-wrap: anywhere; color: color-mix(in oklch, currentColor 44%, transparent); }
 </style>

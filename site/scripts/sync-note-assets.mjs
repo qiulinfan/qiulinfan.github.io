@@ -55,6 +55,7 @@ function targets(source) {
 rmSync(outputRoot, { recursive: true, force: true });
 let copied = 0;
 for (const spec of registry.sources) {
+	if (!spec.publish) continue;
 	if (!spec.files.some((pattern) => pattern.toLowerCase().includes(".md"))) continue;
 	const root = resolve(repositoryRoot, spec.root);
 	const markdown = walk(root).filter((path) => {

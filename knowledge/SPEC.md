@@ -35,6 +35,17 @@ ordinary notes, or `research` for paper-derived and original-research entries.
 The website renders personal knowledge as circles and research knowledge as
 squares.
 
+Site visibility is independent from graph ingestion. Every source explicitly
+declares `publish` and `listed`: `publish` controls whether the notes site emits
+that authority's public pages, while `listed` controls whether the source is
+shown in `/notes/` and on the homepage. A listed source must also be published.
+Neither flag removes the source, its taxonomy, or its knowledge from the local
+graph; the public graph projection includes only sources with `publish: true`.
+Sources compiled outside Astro may declare `web_artifacts`, whose
+`source` paths are relative to the source root and whose `route` values are
+relative to the canonical `web` URL; the Pages workflow installs only artifacts
+belonging to sources with `publish: true`.
+
 `subject` and `course` are source-selection metadata only. Values such as
 `math` and `cs` never become graph nodes. The visible taxonomy begins with
 specific fields such as Analysis, Measure Theory, Probability Theory,

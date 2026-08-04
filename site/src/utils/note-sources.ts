@@ -6,11 +6,26 @@ import type { MarkdownHeading } from "astro";
 
 interface SourceSpec {
 	id: string;
+	title: string;
+	description: string;
 	subject: string;
 	course: string;
 	root: string;
 	files: string[];
+	fields: string[];
+	publish: boolean;
+	listed: boolean;
 	web: string;
+}
+
+interface FieldSpec {
+	id: string;
+	label: string;
+}
+
+interface SourceRegistry {
+	fields: FieldSpec[];
+	sources: SourceSpec[];
 }
 
 interface GraphNode {
@@ -44,6 +59,17 @@ export interface MarkdownNote {
 	headings: MarkdownHeading[];
 }
 
+export interface NoteSource {
+	id: string;
+	title: string;
+	description: string;
+	subject: string;
+	course: string;
+	authority: string;
+	href: string;
+	fields: string[];
+}
+
 interface RenderOptions {
 	resolveTarget?: (target: string, kind: "image" | "link") => string;
 }
@@ -59,11 +85,47 @@ function readJsonLines<T>(path: string): T[] {
 		.map((line) => JSON.parse(line) as T);
 }
 
-function sourceRegistry(): SourceSpec[] {
-	const payload = JSON.parse(readFileSync(registryPath, "utf-8")) as {
-		sources: SourceSpec[];
-	};
-	return payload.sources;
+let cachedRegistry: SourceRegistry | undefined;
+
+function sourceRegistry(): SourceRegistry {
+	if (cachedRegistry) return cachedRegistry;
+	const payload = JSON.parse(readFileSync(registryPath, "utf-8")) as SourceRegistry;
+	for (const spec of payload.sources) {
+		if (typeof spec.publish !== "boolean" || typeof spec.listed !== "boolean") {
+			throw new Error(`Source ${spec.id} must explicitly declare boolean publish and listed values.`);
+		}
+		if (spec.listed && !spec.publish) {
+			throw new Error(`Source ${spec.id} cannot be listed when publish is false.`);
+		}
+		if (!spec.title.trim() || !spec.description.trim()) {
+			throw new Error(`Source ${spec.id} must declare a title and description for site publication.`);
+		}
+	}
+	cachedRegistry = payload;
+	return cachedRegistry;
+}
+
+function sourceWebPath(spec: SourceSpec): string {
+	const pathname = new URL(spec.web).pathname.replace(/\/+$/, "");
+	return `${pathname || "/"}${pathname ? "/" : ""}`;
+}
+
+export function loadListedNoteSources(): NoteSource[] {
+	const registry = sourceRegistry();
+	const fieldLabels = new Map(registry.fields.map((field) => [field.id, field.label]));
+	return registry.sources
+		.filter((spec) => spec.publish && spec.listed)
+		.map((spec) => ({
+			id: spec.id,
+			title: spec.title,
+			description: spec.description,
+			subject: spec.subject,
+			course: spec.course,
+			authority: spec.root,
+			href: sourceWebPath(spec),
+			fields: spec.fields.map((field) => fieldLabels.get(field) ?? field),
+		}))
+		.sort((left, right) => left.title.localeCompare(right.title));
 }
 
 function walk(directory: string): string[] {
@@ -342,7 +404,7 @@ export function loadMarkdownNotes(): MarkdownNote[] {
 	const nodes = readJsonLines<GraphNode>(resolve(graphRoot, "nodes.jsonl"));
 	const references = readJsonLines<GraphReference>(resolve(graphRoot, "references.jsonl"));
 	const notes: MarkdownNote[] = [];
-	for (const spec of sourceRegistry()) {
+	for (const spec of sourceRegistry().sources.filter((source) => source.publish)) {
 		for (const path of markdownFiles(spec)) {
 			const raw = readFileSync(path, "utf-8");
 			const { body, metadata } = splitFrontmatter(raw);

@@ -30,6 +30,8 @@
   "sources": [
     {
       "id": "math:measure-theory",
+      "title": "Measure Theory",
+      "description": "Measure, integration, convergence, product measures, differentiation, and Lp spaces.",
       "subject": "math",
       "course": "measure-theory",
       "knowledge_origin": "personal-note",
@@ -42,7 +44,13 @@
         "homeworks/*.typ",
         "extras/*.typ"
       ],
+      "publish": true,
+      "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/measure-theory",
+      "web_artifacts": [
+        {"source": "build/typst/index.html", "route": ""},
+        {"source": "build/typst/extras.html", "route": "extras"}
+      ],
       "topics": [
         {"glob": "chapters/01-*.typ", "id": "measurable-spaces-and-measures", "label": "Measurable Spaces and Measures"},
         {"glob": "chapters/02-*.typ", "id": "outer-measure-and-extension", "label": "Outer Measure and Measure Extension"},
@@ -61,6 +69,8 @@
     },
     {
       "id": "math:probability",
+      "title": "Probability Theory",
+      "description": "Probability spaces, random variables, distributions, laws of large numbers, and central limit theorems.",
       "subject": "math",
       "course": "probability",
       "knowledge_origin": "personal-note",
@@ -72,7 +82,13 @@
         "chapters/*.typ",
         "homeworks/*.typ"
       ],
+      "publish": true,
+      "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/probability",
+      "web_artifacts": [
+        {"source": "build/typst/index.html", "route": ""},
+        {"source": "build/typst/homeworks.html", "route": "homeworks"}
+      ],
       "topics": [
         {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics", "fields": ["combinatorics"]},
         {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions", "fields": ["measure-theory"]},
@@ -83,6 +99,8 @@
     },
     {
       "id": "cs:computer-organization",
+      "title": "Computer Organization",
+      "description": "Course notes on instruction sets, digital logic, caches, and memory systems.",
       "subject": "cs",
       "course": "computer-organization",
       "knowledge_origin": "personal-note",
@@ -91,6 +109,8 @@
       "files": [
         "*.md"
       ],
+      "publish": false,
+      "listed": false,
       "web": "https://qiulinfan.github.io/notes/cs/computer-organization",
       "topics": [
         {"glob": "*.md", "id": "computer-organization", "label": "Computer Organization"}

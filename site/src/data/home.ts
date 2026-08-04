@@ -40,26 +40,3 @@ export const projects = [
 			"围绕八种颜色状态构建的 FPS，让颜色机制同时驱动战斗与环境谜题。",
 	},
 ] as const;
-
-export const featuredNotes = [
-	{
-		title: "Measure Theory",
-		field: "Analysis",
-		href: "/notes/math/measure-theory/",
-	},
-	{
-		title: "Probability Theory",
-		field: "Probability",
-		href: "/notes/math/probability/",
-	},
-	{
-		title: "Computer Organization",
-		field: "Architecture",
-		href: "/notes/cs/computer-organization/",
-	},
-	{
-		title: "Knowledge Graph",
-		field: "Research memory",
-		href: "/knowledge/",
-	},
-] as const;
