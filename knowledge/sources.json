@@ -25,6 +25,16 @@
       "id": "computer-architecture",
       "label": "Computer Architecture",
       "text": "The field connecting instruction sets, processors, memory systems, digital organization, and performance."
+    },
+    {
+      "id": "programming-languages",
+      "label": "Programming Languages",
+      "text": "The field studying programming-language concepts, abstractions, type systems, memory models, and their practical use."
+    },
+    {
+      "id": "data-structures-and-algorithms",
+      "label": "Data Structures and Algorithms",
+      "text": "The field studying representations of data, algorithm design, correctness, and computational efficiency."
     }
   ],
   "sources": [
@@ -114,6 +124,51 @@
       "web": "https://qiulinfan.github.io/notes/cs/computer-organization",
       "topics": [
         {"glob": "*.md", "id": "computer-organization", "label": "Computer Organization"}
+      ]
+    },
+    {
+      "id": "cs:cpp-programming",
+      "title": "C++ Programming",
+      "description": "C++ programming notes on tooling, procedural abstraction, memory, object-oriented design, containers, iterators, recursion, and trees.",
+      "subject": "cs",
+      "course": "cpp-programming",
+      "knowledge_origin": "personal-note",
+      "fields": ["programming-languages"],
+      "root": "notes/cs/cpp-programming/docs",
+      "files": [
+        "index.md",
+        "0*.md",
+        "1*.md",
+        "2*.md"
+      ],
+      "publish": true,
+      "listed": true,
+      "web": "https://qiulinfan.github.io/notes/cs/cpp-programming",
+      "topics": [
+        {"glob": "*.md", "id": "cpp-programming", "label": "C++ Programming"}
+      ]
+    },
+    {
+      "id": "cs:data-structures-algorithms",
+      "title": "Data Structures and Algorithms",
+      "description": "Data structures and algorithms notes covering union-find, hashing, balanced trees, graphs, shortest paths, minimum spanning trees, dynamic programming, and optimization.",
+      "subject": "cs",
+      "course": "data-structures-algorithms",
+      "knowledge_origin": "personal-note",
+      "fields": ["data-structures-and-algorithms"],
+      "root": "notes/cs/data-structures-algorithms",
+      "files": [
+        "README.md",
+        "FinalReview.md",
+        "notes-project-optimization.md",
+        "docs/*.md"
+      ],
+      "publish": true,
+      "listed": true,
+      "web": "https://qiulinfan.github.io/notes/cs/data-structures-algorithms",
+      "topics": [
+        {"glob": "*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"},
+        {"glob": "docs/*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"}
       ]
     }
   ]

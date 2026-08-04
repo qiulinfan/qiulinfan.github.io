@@ -1,11 +1,11 @@
 {
   "counts": {
-    "edges": 513,
-    "nodes": 295,
+    "edges": 515,
+    "nodes": 299,
     "references": 44
   },
   "entry_store": {
-    "entries": 101,
+    "entries": 103,
     "schema": "qlkg-entry-shards-v1",
     "shards": [
       {
@@ -39,10 +39,10 @@
         "sha256": "a55e1e98a805c142ecbf5959d7839d5dd17bea36dd8649bad7518b0e88a35c5f"
       },
       {
-        "bytes": 651,
-        "count": 5,
+        "bytes": 963,
+        "count": 7,
         "path": "entries/meta/global/unscoped.jsonl",
-        "sha256": "634dd8932fe3f2fdffadc5649c34432addd4b7c7cbbd2ee1982f6dc1ccc5f165"
+        "sha256": "57b5056982138e0171a36685fb3c90abca58d805738596297ef9a4bdab0b0281"
       },
       {
         "bytes": 2129,
@@ -59,17 +59,17 @@
     ]
   },
   "generator": "kgdistiller",
-  "graph_sha256": "83e22fa3340a10623312df26855bd403245a3e399beba543482f8d346dc745bc",
+  "graph_sha256": "f5dd02ff2c7438f713914e7c4a66216adca790ceecc2957090d35eb92aed8fe7",
   "knowledge_origins": {
     "personal-note": 271
   },
   "node_types": {
-    "field": 5,
+    "field": 7,
     "knowledge": 271,
-    "topic": 19
+    "topic": 21
   },
   "relations": {
-    "contains": 311,
+    "contains": 313,
     "contrasts-with": 2,
     "derived-from": 61,
     "generalizes": 6,
@@ -85,6 +85,40 @@
     "notes/cs/computer-organization/370-notes-project.md": "51990a1759719b05079865e4e14e7aee60b0cbb49efa4bc3f24d4c312a31bb26",
     "notes/cs/computer-organization/370-notes.md": "cec9d5bcad1c87f2c31f07b0a87d970a9888b39340940b05b9d7cd0514bce45b",
     "notes/cs/computer-organization/README.md": "5727ff108259e90801c51cc89840af818f5159863e2e80730241930d4d7fcf45",
+    "notes/cs/cpp-programming/docs/01-Command-Line Interface-(CLI).md": "b390652af49325cf80e3112e9c36d87aaebb2170215d3bce275256db7065641a",
+    "notes/cs/cpp-programming/docs/02-IDEs.md": "7a69b59c1da2e2ed63b48cc7d3877f9fd142171072430fbae7b85f710ef7b679",
+    "notes/cs/cpp-programming/docs/03-Compilation-(Makefile).md": "e6863738d6567d5b2019ca5da7513959ce9c33d7d70f142abe97a51a3eb71064",
+    "notes/cs/cpp-programming/docs/04-Debuggers.md": "972085c7aba81b32b6eff19d9ef3b2b06d996d0652154070d631d4ef435b2e07",
+    "notes/cs/cpp-programming/docs/05-Version-Control-(git).md": "f2a28196c556d2fb5e8071ee7d6a032309ebff8f1b7c521fc97365efed2ad676",
+    "notes/cs/cpp-programming/docs/06-Text-Editors-(emacs).md": "580ad122ef1d3bf064b8d4b56e14d78408fe567bde1eecfe86478a9add42cde0",
+    "notes/cs/cpp-programming/docs/07-Call-Stack-Procedural-Abstraction-and-Unit-Tests.md": "53e1d008c927fabfa7f8d304bebe51141f3f3abaf46b45dc30e9f0712254bd11",
+    "notes/cs/cpp-programming/docs/08-Pointers-and-Arrays.md": "d95831129590fd952cd8c02ff3511395fe5db9bcd3b84cc16b071621f65f465e",
+    "notes/cs/cpp-programming/docs/09-const-keyword.md": "fd0dc95b9cd223469c5a811902ae2ca09ad74ed6d087d5171af8cb818e6f59ea",
+    "notes/cs/cpp-programming/docs/10-Compound-objects,-ADT-and-Dynamic-Allocation.md": "8f555f719a04615ad6b39d36e5f9e1d19535b0112d1bae3957fab716c3346066",
+    "notes/cs/cpp-programming/docs/11-C-strings.md": "4f44b5b924d09eec5e9d1f88e916b993ab0588df1b134190aa086396950d114a",
+    "notes/cs/cpp-programming/docs/12-Stream-and-IO.md": "5d4ecd1e1b4b32f88cdf3327b0176efd42e517761d37678d6242f812e7e360d5",
+    "notes/cs/cpp-programming/docs/13-ADT-in-C++.md": "6296f0f5e5d983c20a14a6742bbd70fe58a34885ae32f785543196a4858e2701",
+    "notes/cs/cpp-programming/docs/14-Derived-Classes-and-Inheritance.md": "d16cc72d7469cab0823305ca054e47b134410011e68d94f45394884226685ce8",
+    "notes/cs/cpp-programming/docs/15-Polymorphism.md": "922b4d3f4556ef3064babb4ef9bbd51e047397b6f3e435475b519f16e5fcc461",
+    "notes/cs/cpp-programming/docs/16-ContainerADT-I.md": "539499c1650f77e4b854575924166069bc32f350e4b9624685576cf44201efbe",
+    "notes/cs/cpp-programming/docs/17-ContainerADT-II.md": "4b0f024b51741373c48077997c1232c192ac47c30b8e88c55d428dce32db3973",
+    "notes/cs/cpp-programming/docs/18-Memory-Model-and-Dynamic-Memory.md": "a2fb5c6ccd2f6814a743728038d1ef1372b377b04e6a68fa01b12517aca64205",
+    "notes/cs/cpp-programming/docs/19-Managing-Dynamic-Memory.md": "ec59948fd90aba6bb35abfe4dee920e6fafc272288e96e610a488dd4e41d2407",
+    "notes/cs/cpp-programming/docs/20-Deep-Copies-and-the-Big-Three.md": "8fb14ee2c25ed07bf8fa350e0cf09f873cbfebaa50ce1d605b545ac01c1bdf6f",
+    "notes/cs/cpp-programming/docs/21-Linked-List.md": "562d59df35e1a1537e74eb0917fb3ddd38fb3bd1b5b964d0f799a55610e1b3e9",
+    "notes/cs/cpp-programming/docs/22-Iterator.md": "c2dd4078d3a2bb1db696a0c071a4b6cae24aadf726c8c94a23d6d0ab39c7b272",
+    "notes/cs/cpp-programming/docs/23-Functors-and-Imposter-Syndrome.md": "2d321a50872e80db2381b26131a41284696c9b2572a59a3557b7bfe356721f88",
+    "notes/cs/cpp-programming/docs/24-Recursion.md": "4e78c17830d5ef99bef5feac1685ee62cd07f8b0ae3b046251d8656cd649a1ae",
+    "notes/cs/cpp-programming/docs/25-BST-and-Maps.md": "b8a469bc09f0fe2e3d1aabfd87421da30875dd57bcd0f61ecacc9a18778ac318",
+    "notes/cs/cpp-programming/docs/280-midterm-cheatsheet.md": "83a31141fb1828981aca060c90bb4bf7648fa5c8f9c902f8963fcbd3e4d94abf",
+    "notes/cs/cpp-programming/docs/index.md": "15300036d234fa1152d6999a122f3ef6682b983091b009aabe018a24f9642cf8",
+    "notes/cs/data-structures-algorithms/FinalReview.md": "85141464926aabedbd7eee7232b042b21d6ce8d8bd955e56ca6d35817bbfe9d6",
+    "notes/cs/data-structures-algorithms/README.md": "05885525a8a93d588d6044fa30f7b526ca08169eae599d1b3a895a7ced1ef5b0",
+    "notes/cs/data-structures-algorithms/docs/index.md": "d744483f159fe9d06d41a24073ae99bd0329efb4ff105392d1d461b61abcf2c4",
+    "notes/cs/data-structures-algorithms/docs/notes-01-08.md": "9a9b99378912e2302a72a53ba3c4b207c49e28e4b8e0743d6f31d08e90df6fc1",
+    "notes/cs/data-structures-algorithms/docs/notes-09-16.md": "8e18a6733fb8ea23346693a7ba6e920b8696d2291192431a6a93741d216e5ac1",
+    "notes/cs/data-structures-algorithms/docs/notes-17-25.md": "ca2f238092a05b7b1ee48f9a6bdf6e935d2a6fbe67c58c8a14512668c2bc3451",
+    "notes/cs/data-structures-algorithms/notes-project-optimization.md": "bbd405336e1da0758eb1fd25b769a887069432157be3a313f32b6a6887495adc",
     "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "ffa24a29a32bce31387e4b0f8053fb78e36e9b83494fb713b275476565ea5383",
     "notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ": "8a3f8aa8efd167455ee91f76b928ffc881fdd1b3c1d5eb60cd96eb0bfdf78a8e",
     "notes/math/measure-theory/chapters/03-distribution-function-与-lebesgue-stieltjes-measures.typ": "30558efcc4e880fc58a37e4b09170511ae0067592bb7aceb7ee8d6befa0e330a",
@@ -133,6 +167,6 @@
   },
   "statuses": {
     "active": 271,
-    "meta": 24
+    "meta": 28
   }
 }

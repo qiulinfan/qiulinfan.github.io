@@ -8,31 +8,53 @@ import {
 } from "../src/utils/note-sources.ts";
 import { GET as getPublicGraph } from "../src/pages/knowledge/graph.json.ts";
 
-test("the source registry publishes and lists only the selected math notes", () => {
+test("the source registry publishes and lists only the selected notes", () => {
 	const listed = loadListedNoteSources();
-	assert.deepEqual(listed.map((source) => source.id), ["math:measure-theory", "math:probability"]);
+	assert.deepEqual(listed.map((source) => source.id), [
+		"cs:cpp-programming",
+		"cs:data-structures-algorithms",
+		"math:measure-theory",
+		"math:probability",
+	]);
 	assert.deepEqual(listed.map((source) => source.href), [
+		"/notes/cs/cpp-programming/",
+		"/notes/cs/data-structures-algorithms/",
 		"/notes/math/measure-theory/",
 		"/notes/math/probability/",
 	]);
 	assert.deepEqual(
 		listed.map((source) => source.navigationHref.replace(/[a-f0-9]{12}$/, "VERSION")),
 		[
+			"/notes/cs/cpp-programming/",
+			"/notes/cs/data-structures-algorithms/",
 			"/notes/math/measure-theory/?v=VERSION",
 			"/notes/math/probability/?v=VERSION",
 		],
 	);
-	assert.deepEqual(listed.map((source) => source.standalone), [true, true]);
+	assert.deepEqual(listed.map((source) => source.standalone), [false, false, true, true]);
 	assert.equal(
 		loadMarkdownNotes().some((note) => note.sourceId === "cs:computer-organization"),
 		false,
 	);
+	assert.equal(loadMarkdownNotes().filter((note) => note.sourceId === "cs:cpp-programming").length, 27);
+	assert.equal(loadMarkdownNotes().filter((note) => note.sourceId === "cs:data-structures-algorithms").length, 7);
+	const debuggerNote = loadMarkdownNotes().find((note) => note.authority.endsWith("04-Debuggers.md"));
+	assert.match(debuggerNote?.html ?? "", /\/_notes-assets\/cs-cpp-programming\/Assets\/image-20231223020225955\.png/);
+	const finalReview = loadMarkdownNotes().find((note) => note.authority.endsWith("data-structures-algorithms/FinalReview.md"));
+	assert.match(finalReview?.html ?? "", /\/_notes-assets\/cs-data-structures-algorithms\/docs\/note-assets\//);
+	const dataStructuresHome = loadMarkdownNotes().find((note) => note.authority.endsWith("data-structures-algorithms/README.md"));
+	assert.match(dataStructuresHome?.html ?? "", /href="\/notes\/cs\/data-structures-algorithms\/docs\/"/);
+	assert.match(dataStructuresHome?.html ?? "", /href="\/notes\/cs\/data-structures-algorithms\/FinalReview\/"/);
 });
 
 test("the public graph excludes unpublished sources without changing the local graph", async () => {
 	const response = getPublicGraph();
 	const graph = await response.json();
 	const ids = new Set(graph.nodes.map((node) => node.id));
+	assert.equal(ids.has("cpp-programming"), true);
+	assert.equal(ids.has("programming-languages"), true);
+	assert.equal(ids.has("data-structures-algorithms"), true);
+	assert.equal(ids.has("data-structures-and-algorithms"), true);
 	assert.equal(ids.has("computer-organization"), false);
 	assert.equal(ids.has("computer-architecture"), false);
 	assert.equal("source_hashes" in graph.manifest, false);

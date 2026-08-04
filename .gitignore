@@ -12,6 +12,7 @@ Thumbs.db
 *.tmp
 *.temp
 *.bak
+/tmp/
 
 # Python caches
 __pycache__/

@@ -2,6 +2,12 @@
 
 Welcome to my 281 archive!
 
+## Notes
+
+- [Lecture notes](docs/index.md)
+- [Final review](FinalReview.md)
+- [Project optimization notes](notes-project-optimization.md)
+
 This notes include implementations of basic data structures: union-find sets, unordered_map by hash table, AVL tree, graph represented by adjacency matrix&list and a lot more with optimization. Also, basic algorithms like Dijkstra's, Prim's, Kruskal's and dp problems are included, both proof sketch and implementation.
 
 If you want to read my lecture notes and found a lot of Chinese words that you could not read, sorry about that!

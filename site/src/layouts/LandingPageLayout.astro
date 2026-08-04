@@ -12,11 +12,19 @@ interface Props {
 }
 
 const { title, description, lang } = Astro.props;
-const backdrop = `url("${url("/assets/backgrounds/one-dark-sakura-cat.webp")}")`;
+const backdrop = `url("${url("/assets/backgrounds/one-dark-sakura-right-v3.webp")}")`;
+const mascot = url("/assets/mascots/bluesamoyed-line-v3.png");
 ---
 
 <Layout title={title} description={description} lang={lang}>
 	<div class="site-backdrop" style={`--site-backdrop-image: ${backdrop}`}></div>
+	<img
+		class="site-mascot"
+		src={mascot}
+		alt=""
+		aria-hidden="true"
+		decoding="async"
+	/>
 
 	<div
 		id="top-row"
@@ -39,3 +47,25 @@ const backdrop = `url("${url("/assets/backgrounds/one-dark-sakura-cat.webp")}")`
 	</div>
 	<div id="toc"></div>
 </Layout>
+
+<style>
+	.site-mascot {
+		position: fixed;
+		left: clamp(1.5rem, 6vw, 7rem);
+		bottom: clamp(.75rem, 4vh, 2.5rem);
+		z-index: -1;
+		width: clamp(11rem, 22vw, 22rem);
+		height: auto;
+		pointer-events: none;
+		opacity: var(--site-backdrop-opacity);
+		filter: var(--site-backdrop-filter);
+	}
+
+	@media (max-width: 40rem) {
+		.site-mascot {
+			left: -2rem;
+			bottom: .5rem;
+			width: 12rem;
+		}
+	}
+</style>

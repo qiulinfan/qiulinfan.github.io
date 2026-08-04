@@ -34,15 +34,20 @@ function resolveTarget(root, sourcePath, rawTarget) {
 	let decoded = rawTarget;
 	try { decoded = decodeURIComponent(rawTarget); } catch {}
 	decoded = decoded.replaceAll("\\", "/").trim();
-	if (!decoded || decoded.startsWith("#") || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(decoded)) return undefined;
+	const windowsDrivePath = /^[A-Za-z]:\//.test(decoded);
+	if (!decoded || decoded.startsWith("#") || (!windowsDrivePath && /^[A-Za-z][A-Za-z0-9+.-]*:/.test(decoded))) return undefined;
 	const withoutQuery = decoded.split(/[?#]/, 1)[0];
 	const candidates = [resolve(dirname(sourcePath), withoutQuery), resolve(root, withoutQuery)];
 	const segments = withoutQuery.split("/").filter(Boolean);
 	for (let index = 0; index < segments.length; index += 1) candidates.push(resolve(root, ...segments.slice(index)));
-	return candidates.find((candidate) => {
+	const direct = candidates.find((candidate) => {
 		const local = relative(root, candidate);
 		return local !== "" && !local.startsWith("..") && !local.includes(`${sep}..${sep}`) && existsSync(candidate) && statSync(candidate).isFile();
 	});
+	if (direct) return direct;
+	const suffix = withoutQuery.replace(/^\/+/, "").split("/").filter(Boolean).join(sep);
+	const relocated = walk(root).filter((candidate) => candidate.endsWith(`${sep}${suffix}`));
+	return relocated.length === 1 ? relocated[0] : undefined;
 }
 
 function targets(source) {
