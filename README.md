@@ -45,8 +45,9 @@ make knowledge-serve
 ```
 
 笔记提取/入库闭环和论文默认不合并的联邦 GraphRAG 流程见
-[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。项目级 `.codex/config.toml` 已把
-只读 kgdistiller MCP 接入 Codex；首次调用会从提交的图谱自动生成本地 SQLite 索引。
+[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)；项目现状、仓库提交、缺口和后续
+路线见 [`knowledge/HANDOFF.md`](knowledge/HANDOFF.md)。项目级 `.codex/config.toml`
+已把只读 kgdistiller MCP 接入 Codex；首次调用会从提交的图谱自动生成本地 SQLite 索引。
 
 首次使用或依赖变化后运行：
 

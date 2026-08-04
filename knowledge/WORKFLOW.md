@@ -4,6 +4,9 @@
 闭环。`.md`、`.typ`、`.tex` 正文始终是权威；图谱、SQLite、candidate snapshot 和
 HTML 都是可重建投影。
 
+当前跨 `qlblog`、`kgdistiller` 与 `solvablemodel` 的实现状态、Git 现场、未完成边界、
+后续五阶段路线和验收标准见 [`HANDOFF.md`](HANDOFF.md)。
+
 ## 四个 Skill 的职责
 
 - `export-typst-math-notes`：从 Git 改动和显式 marker 提取笔记候选图，委托查询、
