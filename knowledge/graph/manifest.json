@@ -4,6 +4,10 @@
     "nodes": 299,
     "references": 44
   },
+  "curation_statuses": {
+    "current": 78,
+    "pending": 193
+  },
   "entry_store": {
     "entries": 103,
     "schema": "qlkg-entry-shards-v1",
@@ -59,7 +63,8 @@
     ]
   },
   "generator": "kgdistiller",
-  "graph_sha256": "f5dd02ff2c7438f713914e7c4a66216adca790ceecc2957090d35eb92aed8fe7",
+  "git_revision": "eb4b1c680523b570daf7473f263d16d24fb64b86",
+  "graph_sha256": "72e6e11418c1cdc31923ffe2afbfc54933de26a49f271e90e943e327fdd052b7",
   "knowledge_origins": {
     "personal-note": 271
   },

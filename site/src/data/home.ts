@@ -1,8 +1,6 @@
 export const homepageLinks = {
-	github: "https://github.com/qiulinfan",
 	pocketEngine: "https://qiulinfan.github.io/pocketEngine/",
 	pocketEngineRepository: "https://github.com/qiulinfan/pocketEngine",
-	graphNl2Sql: "https://github.com/qiulinfan/graphNL2SQL",
 } as const;
 
 export const projects = [
@@ -27,16 +25,5 @@ export const projects = [
 			"A recreation of the original dungeon with enemy AI, room control, weapons, health systems, custom shadows, and animation work.",
 		descriptionZh:
 			"对初代地牢的重制；包含敌人 AI、房间控制、武器、生命系统、自定义阴影与动画。",
-	},
-	{
-		id: "colorable",
-		title: "Colorable",
-		image: "/assets/colorable.webp",
-		href: "https://bluesamoyed.itch.io/colorables",
-		tags: ["FPS", "Game Design", "Unity"],
-		description:
-			"A color-manipulation FPS where eight color states shape both combat and environmental puzzles.",
-		descriptionZh:
-			"围绕八种颜色状态构建的 FPS，让颜色机制同时驱动战斗与环境谜题。",
 	},
 ] as const;
