@@ -18,7 +18,7 @@ git submodule update --init --remote --merge
 也可用 `KGDISTILLER_SRC` 显式指定源码目录。CI 部署前会主动更新 submodule 到
 远端 `main`。手动更新可运行 `make kgdistiller-update`。
 
-个人主页、blog、notes 网页和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
+个人主页、blog、notes、skills 页面和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。Skills 页面直接读取 [`skills/`](skills/) 下的 `SKILL.md` 权威源；全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
 
 ## 博客常用命令
 

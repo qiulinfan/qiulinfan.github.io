@@ -1,0 +1,58 @@
+---
+import LandingPageLayout from "@layouts/LandingPageLayout.astro";
+import { loadPublishedSkills } from "@utils/skill-sources";
+
+const skills = loadPublishedSkills();
+---
+
+<LandingPageLayout
+	title="Skills"
+	description="Locally maintained Agent Skills authored in Qiulin's knowledge repository."
+>
+	<div class="skills-page">
+		<header class="skills-header">
+			<span>SKILL.md / {String(skills.length).padStart(2, "0")}</span>
+			<h1>Skills</h1>
+		</header>
+
+		<section class="skill-list" data-pagefind-body aria-label="Locally maintained Agent Skills">
+			{skills.map((skill, index) => (
+				<article class="skill-card">
+					<header>
+						<span>{String(index + 1).padStart(2, "0")}</span>
+						<code>{skill.id}</code>
+					</header>
+					<h2>{skill.name}</h2>
+					<p>{skill.description}</p>
+					<footer>
+						{skill.license && <span>{skill.license}</span>}
+						<a href={skill.sourceHref} target="_blank" rel="noreferrer">SKILL.md ↗</a>
+					</footer>
+				</article>
+			))}
+		</section>
+	</div>
+</LandingPageLayout>
+
+<style>
+	.skills-page { padding: clamp(2rem, 6vw, 6rem) 0 3rem; }
+	.skills-header { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(2rem, 5vw, 4rem); border-bottom: 1px solid var(--border); padding: 0 .25rem 1.5rem; }
+	.skills-header span, .skill-card header, .skill-card footer { font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
+	.skills-header span { color: var(--primary); }
+	.skills-header h1 { margin: 0; color: var(--text-strong); font-size: clamp(4rem, 12vw, 9rem); font-weight: 760; line-height: .78; letter-spacing: -.08em; }
+	.skill-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+	.skill-card { min-width: 0; min-height: 20rem; border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+	.skill-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--primary) 42%, var(--border)); background: var(--surface-hover); }
+	.skill-card header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--muted); }
+	.skill-card header > span { color: var(--primary); }
+	.skill-card code { min-width: 0; overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+	.skill-card h2 { margin: auto 0 1rem; color: var(--text-strong); font-size: clamp(1.7rem, 3vw, 2.7rem); font-weight: 720; line-height: 1; letter-spacing: -.05em; overflow-wrap: anywhere; }
+	.skill-card p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.7; }
+	.skill-card footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; color: var(--muted); }
+	.skill-card footer a { margin-left: auto; color: var(--primary); text-decoration: none; }
+	@media (max-width: 720px) {
+		.skills-header { align-items: start; flex-direction: column-reverse; }
+		.skill-list { grid-template-columns: 1fr; }
+		.skill-card { min-height: 18rem; }
+	}
+</style>

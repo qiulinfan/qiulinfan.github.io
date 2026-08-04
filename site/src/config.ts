@@ -50,6 +50,10 @@ export const navBarConfig: NavBarConfig = {
 			url: "/notes/",
 		},
 		{
+			name: "Skills",
+			url: "/skills/",
+		},
+		{
 			name: "知识图谱",
 			url: "/knowledge/",
 		},
