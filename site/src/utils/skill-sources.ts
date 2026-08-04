@@ -17,6 +17,7 @@ const sourceBase = "https://github.com/qiulinfan/qiulinfan.github.io/blob/main";
 
 function skillFiles(directory: string): string[] {
 	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+		if (entry.name.startsWith(".")) return [];
 		const path = resolve(directory, entry.name);
 		if (entry.isDirectory()) return skillFiles(path);
 		return entry.name === "SKILL.md" ? [path] : [];

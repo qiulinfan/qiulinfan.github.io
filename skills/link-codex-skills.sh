@@ -5,7 +5,8 @@ set -eu
 skills_repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 codex_root=${CODEX_HOME:-"$HOME/.codex"}
 codex_skills_dir="$codex_root/skills"
-system_store="$codex_root/system-skills"
+repo_system_dir="$skills_repo_dir/.system"
+codex_system_dir="$codex_root/system-skills"
 lock_store="$codex_root/skills-store-lock.json"
 backup_stamp=$(date '+%Y%m%d-%H%M%S')
 backup_dir="$codex_root/skill-layout-backups/$backup_stamp"
@@ -25,20 +26,67 @@ repo_dir_for_name() {
   return 1
 }
 
-ensure_managed_bridges() {
-  if [ -d "$system_store" ]; then
-    if [ -L "$skills_repo_dir/.system" ]; then
-      [ "$(realpath "$skills_repo_dir/.system")" = "$(realpath "$system_store")" ] || {
-        printf 'conflict: %s points to the wrong system store\n' "$skills_repo_dir/.system" >&2
-        exit 1
-      }
-    elif [ -e "$skills_repo_dir/.system" ]; then
-      printf 'conflict: %s is not a symlink\n' "$skills_repo_dir/.system" >&2
+ensure_system_store_link() {
+  if [ -L "$repo_system_dir" ]; then
+    repo_system_target=$(realpath "$repo_system_dir" 2>/dev/null || true)
+    codex_system_target=$(realpath "$codex_system_dir" 2>/dev/null || true)
+    [ -n "$repo_system_target" ] && [ "$repo_system_target" = "$codex_system_target" ] || {
+      printf 'conflict: %s points outside %s\n' "$repo_system_dir" "$codex_system_dir" >&2
       exit 1
-    else
-      ln -s "$system_store" "$skills_repo_dir/.system"
-    fi
+    }
+    [ -d "$codex_system_dir" ] && [ ! -L "$codex_system_dir" ] || {
+      printf 'conflict: cannot migrate %s because %s is not a real directory\n' "$repo_system_dir" "$codex_system_dir" >&2
+      exit 1
+    }
+
+    mkdir -p "$backup_dir"
+    cp -a "$codex_system_dir" "$backup_dir/system-skills-before"
+    rm "$repo_system_dir"
+    mv "$codex_system_dir" "$repo_system_dir"
+    printf 'migrated: %s is now repository-managed\n' "$repo_system_dir"
+    printf 'backup: %s\n' "$backup_dir"
+  elif [ -e "$repo_system_dir" ]; then
+    [ -d "$repo_system_dir" ] || {
+      printf 'conflict: %s exists and is not a directory\n' "$repo_system_dir" >&2
+      exit 1
+    }
+  elif [ -d "$codex_system_dir" ] && [ ! -L "$codex_system_dir" ]; then
+    mkdir -p "$backup_dir"
+    cp -a "$codex_system_dir" "$backup_dir/system-skills-before"
+    mv "$codex_system_dir" "$repo_system_dir"
+    printf 'migrated: %s is now repository-managed\n' "$repo_system_dir"
+    printf 'backup: %s\n' "$backup_dir"
+  else
+    printf 'conflict: repository system skill store is missing: %s\n' "$repo_system_dir" >&2
+    exit 1
   fi
+
+  if [ -L "$codex_system_dir" ]; then
+    [ "$(realpath "$codex_system_dir")" = "$(realpath "$repo_system_dir")" ] || {
+      printf 'conflict: %s points to the wrong system skill store\n' "$codex_system_dir" >&2
+      exit 1
+    }
+  elif [ -e "$codex_system_dir" ]; then
+    [ -d "$codex_system_dir" ] || {
+      printf 'conflict: %s exists and is not a directory\n' "$codex_system_dir" >&2
+      exit 1
+    }
+    mkdir -p "$backup_dir"
+    mv "$codex_system_dir" "$backup_dir/system-skills-replaced"
+    ln -s "$repo_system_dir" "$codex_system_dir"
+    if ! diff -qr "$backup_dir/system-skills-replaced" "$repo_system_dir" >/dev/null 2>&1; then
+      printf 'notice: replaced divergent local system skills with the repository version\n'
+    fi
+    printf 'linked: %s -> %s\n' "$codex_system_dir" "$repo_system_dir"
+    printf 'backup: %s\n' "$backup_dir"
+  else
+    ln -s "$repo_system_dir" "$codex_system_dir"
+    printf 'linked: %s -> %s\n' "$codex_system_dir" "$repo_system_dir"
+  fi
+}
+
+ensure_managed_bridges() {
+  ensure_system_store_link
 
   if [ -f "$lock_store" ]; then
     if [ -L "$skills_repo_dir/.skills_store_lock.json" ]; then
@@ -105,13 +153,13 @@ if [ -e "$codex_skills_dir" ]; then
   cp -a "$codex_skills_dir" "$backup_dir/skills-before"
 
   if [ -d "$codex_skills_dir/.system" ] && [ ! -L "$codex_skills_dir/.system" ]; then
-    if [ -e "$system_store" ]; then
-      diff -qr "$codex_skills_dir/.system" "$system_store" >/dev/null 2>&1 || {
-        printf 'conflict: system skill store differs from %s\n' "$system_store" >&2
+    if [ -e "$repo_system_dir" ]; then
+      diff -qr "$codex_skills_dir/.system" "$repo_system_dir" >/dev/null 2>&1 || {
+        printf 'conflict: legacy system skills differ from %s\n' "$repo_system_dir" >&2
         exit 1
       }
     else
-      mv "$codex_skills_dir/.system" "$system_store"
+      cp -a "$codex_skills_dir/.system" "$repo_system_dir"
     fi
   fi
 
