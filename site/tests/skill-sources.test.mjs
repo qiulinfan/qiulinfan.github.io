@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 
@@ -25,4 +25,33 @@ test("the public skills list is generated from every visible local SKILL.md auth
 	assert.equal(skills.every((skill) => skill.authority.startsWith("skills/") && skill.authority.endsWith("/SKILL.md")), true);
 	assert.equal(skills.every((skill) => !skill.authority.includes("/.system/")), true);
 	assert.equal(skills.every((skill) => skill.sourceHref.includes(`/blob/main/${skill.authority}`)), true);
+});
+
+test("kgdistiller discovery skills delegate to the vendored canonical skills", () => {
+	for (const name of ["query-kgdistiller", "ingest-kgdistiller"]) {
+		const entryPath = join(repositoryRoot, "skills", name, "SKILL.md");
+		const canonicalPath = join(repositoryRoot, "vendor", "kgdistiller", "skills", name, "SKILL.md");
+		const entry = readFileSync(entryPath, "utf8");
+		const canonical = readFileSync(canonicalPath, "utf8");
+		assert.match(entry, new RegExp(`vendor/kgdistiller/skills/${name}/SKILL\\.md`));
+		assert.match(canonical, new RegExp(`name: ${name}`));
+		assert.equal(entry.match(/^description: (.+)$/m)?.[1], canonical.match(/^description: (.+)$/m)?.[1]);
+	}
+});
+
+test("knowledge Skills keep extraction, query, and ingestion responsibilities separate", () => {
+	const exportSkill = readFileSync(join(repositoryRoot, "skills/export-typst-math-notes/SKILL.md"), "utf8");
+	const paperSkill = readFileSync(join(repositoryRoot, "skills/extract-paper-concepts/SKILL.md"), "utf8");
+	const querySkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/query-kgdistiller/SKILL.md"), "utf8");
+	const ingestSkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/ingest-kgdistiller/SKILL.md"), "utf8");
+
+	for (const extractor of [exportSkill, paperSkill]) {
+		assert.match(extractor, /\$query-kgdistiller/);
+		assert.match(extractor, /\$ingest-kgdistiller/);
+		assert.doesNotMatch(extractor, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
+	}
+	assert.match(querySkill, /Keep the boundary read-only/);
+	assert.doesNotMatch(querySkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
+	assert.match(ingestSkill, /python3 knowledge\/kgd\.py apply REVIEWED_DELTA/);
+	assert.equal(existsSync(join(repositoryRoot, "skills/kgdistiller-distill/SKILL.md")), false);
 });

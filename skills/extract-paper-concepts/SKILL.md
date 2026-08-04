@@ -1,166 +1,113 @@
 ---
 name: extract-paper-concepts
-description: Read a complete academic paper or paper repository and produce a source-grounded, beginner-first inventory of the concepts required to understand it. Use when Codex must extract and prioritize technical concepts from PDF, LaTeX, Markdown, Word, or linked paper sources; build a prerequisite graph or learning order; prepare a handoff for a tutor or a later concept-research task; or explain what a paper assumes a new reader already knows.
+description: Read a complete academic paper or paper repository, extract a source-grounded isolated concept graph, query kgdistiller before writing full entries, omit duplicate entries for knowledge already present in the personal knowledge base, and return a federated paper-to-personal snapshot without mutating the personal graph. Use for PDF, LaTeX, Markdown, Word, or linked papers; prerequisite learning maps; paper concept inventories; and explicit, separately authorized handoffs of selected missing concepts to ingest-kgdistiller.
 ---
 
-# Extract Paper Concepts
+# Extract a federated paper concept graph
 
-Read the whole paper before deciding what its key concepts are. Produce a
-learning map, not a bag of frequent words.
+Own the paper and its candidate graph. Treat the personal knowledge base as an
+external service: call `$query-kgdistiller` before explaining concepts, and call
+`$ingest-kgdistiller` only when the user explicitly requests an import.
 
-## Default audience and language
+## Establish the paper boundary
 
-- Assume the learner has no background in the paper's field unless the user
-  states otherwise.
-- Write explanations in the user's language.
-- Preserve the canonical English name for every concept so it can be searched
-  later.
-- Define notation only to identify a concept. Leave full teaching to a
-  follow-up task such as `$trace-concept-lineage`.
+Identify the canonical version and read the complete main text, central
+equations and results, figure/table captions, conclusion, limitations, and any
+appendix or supplement required by the argument. Resolve LaTeX inputs,
+bibliography, and notation files. For PDF, inspect every page and visually check
+equations or diagrams where extraction may be unreliable.
 
-## 1. Establish the source boundary
+Distinguish paper claims from repository notes and outside background. Record
+what was read, missing, or ambiguous. Never infer the concept set from only an
+abstract, introduction, filename, or citation list.
 
-1. Identify the canonical paper and all files that contribute to it.
-2. Read the title, abstract, every main-text section, theorem or proposition,
-   equations central to the argument, figure and table captions, conclusion,
-   limitations, and appendices or supplements that contain required arguments.
-3. For LaTeX, resolve `\input`, `\include`, bibliography, and custom notation
-   files. For a PDF, extract all pages and visually inspect pages where
-   equations, diagrams, or extraction quality matter. Use the appropriate
-   document or PDF tooling when available.
-4. Treat project notes and references as supporting context; clearly
-   distinguish them from claims present in the paper.
-5. Record what was and was not read. Never infer the paper's full concept set
-   from only its abstract, introduction, filename, or citation list.
+## Build the candidate graph before entries
 
-If there are multiple drafts and the current version is not discoverable,
-state the ambiguity before selecting one.
-
-## 2. Build candidates in two passes
-
-### Pass A: argument skeleton
-
-Summarize the paper as:
+First summarize the argument as:
 
 `problem -> setup -> mechanism -> main result -> evidence -> limitations`
 
-This skeleton determines which concepts are central.
+Then select atomic concepts that are independently teachable and necessary for
+the paper's argument. Include foundations, mechanisms, paper-specific results,
+assumptions, metrics, and important distinctions. Exclude local symbols,
+authors, datasets, section headings, and generic filler words unless they are
+independently necessary.
 
-### Pass B: concept candidates
+For each candidate record only:
 
-Collect concepts from:
+- stable source-local ID and canonical English name;
+- user-language name and paper-local aliases;
+- type and importance;
+- its role in this paper;
+- exact source locations and evidence class;
+- direct candidate prerequisite IDs;
+- ambiguity or nonstandard paper-local meaning.
 
-- prerequisites in mathematics, statistics, and the application domain;
-- objects being modeled;
-- mechanisms or algorithms;
-- architectural or modeling assumptions;
-- theorem machinery and proof ideas;
-- objectives, metrics, and experimental controls;
-- distinctions the authors rely on, including easily confused neighboring
-  concepts.
+Do not write its general explanation or full concept card yet. Create an
+isolated `qlkg-agent-snapshot-v1` namespace such as `paper:<digest>` and keep it
+below the paper's ignored build/learning workspace. Candidate prerequisite
+edges express learning order, not section order or generic co-occurrence.
 
-A concept is a reusable idea with explanatory content. Do not promote a local
-symbol, author name, dataset name, section heading, or generic word such as
-"model" into a concept unless understanding it is independently necessary.
-Merge aliases and singular/plural variants.
+## Query the external brain once
 
-Keep entries atomic enough to become the input to one later deep dive. As a
-test, the canonical English title should normally work as one focused search
-query. Split a title joined by "and" when its parts have different definitions,
-mechanisms, or prerequisite paths. Retain a compound only when it is an
-established unit or when splitting it would create meaningless fragments.
+Pass the complete candidate snapshot to `$query-kgdistiller`. Do not open the
+personal graph, entry shards, or SQLite. Require a target graph/snapshot digest
+and one `known`, `partial`, `new`, `conflict`, or `uncertain` result per
+candidate.
 
-## 3. Select at the right granularity
+Paper abbreviations such as `AC` remain scoped evidence. They never become
+global aliases, and similarity never decides identity. Preserve unresolved
+senses for review.
 
-Score each candidate from 0 to 2 on:
+## Build the federated deliverable
 
-- **centrality**: removing it breaks the paper's main argument;
-- **prerequisite value**: later concepts depend on it;
-- **recurrence**: it matters in more than one part of the paper;
-- **beginner surprise**: the paper assumes knowledge a novice is unlikely to
-  have.
+Follow [references/inventory-contract.md](references/inventory-contract.md).
+Keep every candidate in the learning index and paper graph, then vary its
+payload by query status:
 
-Prefer concepts scoring at least 4, then add any low-scoring prerequisite
-needed to make the map teachable. Normally keep 15–35 concepts for a full
-paper. Use fewer for a short note and more only when the paper truly spans
-several fields. Do not bundle several foundations merely to stay under the
-range.
+- `known`: include only the paper-local role, evidence, and an exact bridge to
+  the personal node; do not reproduce or paraphrase its knowledge entry;
+- `partial`: explain only the missing condition, role, claim, or relation and
+  bridge the known portion;
+- `new`: write the complete source-grounded concept card;
+- `conflict`: show both claims and provenance without choosing one;
+- `uncertain`: show the candidate senses and non-authoritative matching
+  evidence without creating a bridge.
 
-Balance the final inventory across:
+The result is a federated snapshot, not a merged graph. Keep candidate nodes and
+paper edges in the paper namespace; store cross-namespace mappings as bridges.
+Do not copy personal entries into the snapshot merely for convenience.
 
-1. foundations;
-2. field-level concepts;
-3. mechanisms and algorithms;
-4. paper-specific constructions and results;
-5. assumptions, metrics, and scope boundaries.
+If a reusable artifact is requested, write the inventory to the user-specified
+path. Otherwise use `<paper-root>/learning/<paper-stem>-concepts.md` and keep the
+machine-readable snapshot beside it. End with the first concepts to learn,
+recommended next deep dive, unresolved terminology, and coverage warnings.
 
-Split an entry when its parts need different prerequisite paths. Merge entries
-when a novice could not meaningfully learn them separately.
+## Import only by explicit request
 
-## 4. Ground every entry
+The default workflow must leave the personal `graph_sha256` unchanged. If the
+user explicitly requests import:
 
-For each selected concept:
+1. select the requested `new` concepts and missing parts of `partial` concepts;
+2. create or update one registered research authority with exact paper sources;
+3. represent every `known` concept as a ref;
+4. send the reviewed source patch, bridges, entries, edges, and query digests to
+   `$ingest-kgdistiller`.
 
-- give it a stable ID such as `C01`;
-- provide canonical English name, user-language name, and aliases;
-- explain it in one plain-language sentence;
-- state exactly why it is needed in this paper;
-- cite section, equation, theorem, figure, page, or source-file location;
-- list only direct prerequisite IDs;
-- label importance as `core`, `supporting`, or `boundary`;
-- label evidence as `explicit`, `implicit prerequisite`, or `paper-specific`;
-- record uncertainty instead of inventing a definition.
-
-Do not use outside knowledge to silently change the authors' meaning. If the
-paper uses a term nonstandardly, record both the paper-local meaning and the
-standard meaning as an ambiguity.
-
-## 5. Construct the learning graph
-
-Create directed edges `prerequisite -> dependent`. An edge means the learner
-should understand the source concept first in order to learn the target
-concept. Do not encode section order, causal order inside the paper, or the
-fact that one paper result uses another as a learning prerequisite. Those
-relations belong in each concept's `Role in this paper` and in the argument
-skeleton.
-
-Keep only edges necessary for teaching, remove redundant shortcuts, and ensure
-the graph is acyclic. Check apparently inverted edges explicitly: foundational
-mathematics or an ODE/SDE normally precedes the paper-specific model that uses
-it. Give a topological learning order grouped into short stages.
-
-Pay special attention to distinctions that beginners commonly collapse. Add a
-contrast note when two concepts are related but not interchangeable.
-
-## 6. Deliver the inventory
-
-Follow [references/inventory-contract.md](references/inventory-contract.md)
-exactly. Use its compact table for scanning and its concept cards for the
-handoff.
-
-If the user requests a reusable artifact or another agent will consume the
-result, save it to the user-specified path. Otherwise use
-`<paper-root>/learning/<paper-stem>-concepts.md` when repository writes are
-authorized, or return the complete inventory in the response.
-
-End with:
-
-- the 3–5 concepts that should be taught first;
-- the single concept recommended for the next deep dive and why;
-- unresolved terminology or missing-source warnings.
+Do not import unresolved or conflicting identities. Do not treat producing the
+paper snapshot as permission to persist an alignment.
 
 ## Quality gate
 
-Before delivering, verify:
+Before delivery verify:
 
-- source coverage is explicit and complete;
-- every core claim in the argument skeleton maps to at least one concept;
-- every concept has local evidence and a paper-specific role;
-- aliases are merged and neighboring terms are distinguished;
-- each entry is focused enough for one later concept-research task;
-- all prerequisite IDs exist and the graph has no cycle;
-- prerequisite edges express learning order rather than paper narrative order;
-- the learning order introduces notation only after its prerequisites;
-- the inventory is useful to a complete beginner, not merely accurate for an
-  expert;
-- no concept card pretends to be a full tutorial.
+- paper coverage and version are explicit;
+- every core argument step maps to at least one candidate;
+- every candidate has a paper role and precise source evidence;
+- direct prerequisite edges form a DAG;
+- query ran before full entries were written;
+- known concepts have no duplicated entry;
+- partial entries describe only the gap;
+- bridges connect namespaces without merging them;
+- the personal graph digest is unchanged unless import was explicitly asked;
+- all unresolved terminology remains visible.

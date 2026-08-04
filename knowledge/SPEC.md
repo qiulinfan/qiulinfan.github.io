@@ -284,29 +284,37 @@ This orphan interval is intentional. Removing prose invalidates source
 provenance, not the accumulated knowledge about the concept. Semantic edges are
 removed only by an explicit agent delta.
 
-## Agent ingestion
+## Agent extraction, query, and ingestion
 
-During export, the agent:
+Client Skills treat kgdistiller as an opaque external brain. They never scan
+`knowledge/graph/*.jsonl`, entry shards, or SQLite to decide identity. The
+workflow has three separate capabilities:
 
-1. handles one changed file and reads its existing graph neighborhoods;
-2. preserves user-authored `#kn`, `--[[...]]--`, or `\kn{...}` markers and
-   semantically decides any additional nodes, splits, aliases, and cross-file
-   references in the selected format;
-3. runs a scoped scan and resolves duplicate or dangling names;
-4. extracts a source-grounded entry for every node defined in the file;
-5. extracts direct, correctly typed relations from statements, proofs, and
-   explicit comparisons;
-6. applies a `qlkg-agent-delta-v2` containing node entries, edge upserts, and any
-   explicit removals;
-7. synchronizes and runs file-level curation validation before export.
+1. `export-typst-math-notes` extracts a source-backed candidate graph from Git-
+   changed note authorities and preserves user markers;
+2. `query-kgdistiller` performs read-only batch resolution, bounded retrieval,
+   GraphRAG alignment, and candidate comparison;
+3. `ingest-kgdistiller` is the only capability allowed to reconcile identity,
+   apply reviewed deltas, synchronize authorities, or validate personal-graph
+   writes.
 
-For an isolated research snapshot, the agent first runs GraphRAG alignment,
-comparison, and proposal. Scoped abbreviation evidence can rank candidates but
-cannot create a global alias. Accepted and rejected cross-namespace mappings
-are stored in `knowledge/alignments.json` with both endpoint fingerprints; a
-changed endpoint invalidates the hard decision. New concepts use a two-pass
-proposal: first review and author the native marker, then resynchronize and
-regenerate a delta against the real personal node ID.
+A known candidate becomes a format-native ref and receives no duplicate entry.
+A new candidate may receive one authority and source-grounded entry. Partial
+knowledge adds only the missing condition, claim, role, or relation. Uncertain
+and conflicting identities remain review operations.
+
+Paper extraction happens before full entry writing. An isolated research
+snapshot is compared against the personal namespace; known nodes remain paper-
+local roles connected by cross-namespace bridges, while only new and missing
+partial knowledge receives an explanation. This default comparison never
+mutates the personal graph or alignment registry. Explicit paper import creates
+a registered research authority, writes known concepts as refs, and hands only
+reviewed new/partial knowledge to `ingest-kgdistiller`.
+
+Scoped abbreviation evidence can rank candidates but cannot create a global
+alias. When persistence is explicitly requested, reviewed mappings are stored
+in `knowledge/alignments.json` with both endpoint fingerprints; a changed
+endpoint invalidates the hard decision.
 
 An agent delta has this shape:
 

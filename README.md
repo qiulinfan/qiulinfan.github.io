@@ -14,11 +14,12 @@
 git submodule update --init vendor/kgdistiller
 ```
 
-日常命令与 CI 都使用仓库提交中固定的 submodule revision，因此本地、干净克隆和
-Pages 构建使用同一引擎。开发调试时可用 `KGDISTILLER_SRC` 显式覆盖；升级引擎时
-运行 `make kgdistiller-update`，验收后提交新的 submodule pointer。
+kgdistiller 是主动跟随 `main` 的高频升级依赖；运行 `make kgdistiller-update` 会
+同时更新引擎及其 query/ingest Skills。每次升级后提交实际解析到的 submodule
+revision，使本地、干净克隆和 Pages 在单次运行中仍然可追溯。开发调试时可用
+`KGDISTILLER_SRC` 显式覆盖。
 
-个人主页、blog、notes、skills 页面和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。Skills 页面直接读取 [`skills/`](skills/) 下的 `SKILL.md` 权威源；全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
+个人主页、blog、notes、skills 页面和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。Skills 页面直接读取 [`skills/`](skills/) 下的 `SKILL.md`；其中 query/ingest 是通向 submodule 规范正文的发现入口。全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
 
 ## 博客常用命令
 
@@ -43,7 +44,7 @@ make knowledge-context QUERY="conditional expectation"
 make knowledge-serve
 ```
 
-论文图谱的 GraphRAG 对齐、已知/未知比较、reviewed mapping 与两阶段提案流程见
+笔记提取/入库闭环和论文默认不合并的联邦 GraphRAG 流程见
 [`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。项目级 `.codex/config.toml` 已把
 只读 kgdistiller MCP 接入 Codex；首次调用会从提交的图谱自动生成本地 SQLite 索引。
 

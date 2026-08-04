@@ -1,4 +1,0 @@
-interface:
-  display_name: "KG Distiller"
-  short_description: "Distill source notes into a grounded knowledge graph"
-  default_prompt: "Use $kgdistiller-distill to curate one changed knowledge source and validate its graph updates."

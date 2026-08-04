@@ -1,14 +1,15 @@
-# Concept inventory contract
+# Federated paper inventory contract
 
-Use this structure for a complete deliverable.
+Use this structure for the complete paper deliverable. Query the external brain
+before writing sections 5 and 6.
 
 ## 1. Source and coverage
 
-- Paper title and version
-- Source files or URL
+- Paper title, version, and source files or URL
 - Sections, appendices, supplements, figures, and notes read
 - Missing or ambiguous material
 - Intended learner level and output language
+- Candidate and target graph/snapshot digests
 
 ## 2. Paper in one argument
 
@@ -16,51 +17,82 @@ Write five to eight sentences following:
 
 `problem -> setup -> mechanism -> main result -> evidence -> limitations`
 
-Do not teach individual concepts yet.
+Do not teach individual concepts here.
 
-## 3. Concept index
+## 3. Candidate index
 
-Use one row per concept:
+Use one row per paper candidate:
 
 | ID | Canonical English term | User-language term | Type | Importance | Direct prerequisites | First source location |
 |---|---|---|---|---|---|---|
 
-Allowed types: `foundation`, `field`, `mechanism`, `paper-specific`,
-`metric`, `assumption-boundary`.
+Allowed types: `foundation`, `field`, `mechanism`, `paper-specific`, `metric`,
+and `assumption-boundary`.
 
-Allowed importance values: `core`, `supporting`, `boundary`.
+Allowed importance values: `core`, `supporting`, and `boundary`.
 
-## 4. Learning stages
+## 4. External-brain comparison
 
-Group concept IDs into a topological learning order. Give each stage a one-line
-learning goal. Prefer three to six stages with two to six concepts per stage.
+Use one row per candidate:
 
-## 5. Prerequisite graph
+| Candidate | Status | Personal node | Bridge | Missing/conflicting material | Identity evidence |
+|---|---|---|---|---|---|
 
-Render a Mermaid `flowchart LR` using `prerequisite --> dependent`. Keep labels
-short and quote labels containing punctuation. Follow it with an edge list so
-the graph remains machine-readable:
+Allowed statuses are `known`, `partial`, `new`, `conflict`, and `uncertain`.
+Only identity-authoritative evidence may create an `exact-match` bridge.
+
+## 5. Learning stages and federated graph
+
+Group all candidate IDs into a topological learning order. Known candidates
+remain in the route because the paper uses them, even though they receive no
+new entry.
+
+Render the paper prerequisite graph using `prerequisite -> dependent`, then
+list machine-readable paper edges. List bridges separately:
 
 ```text
-C01 prerequisite-for C04
-C02 prerequisite-for C04
+paper:C01 prerequisite-for paper:C04
+paper:C01 exact-match personal:measure-space
 ```
 
-Every edge must pass this test: "A complete beginner should understand the
-source before starting a focused lesson on the target." Do not use the graph
-for the paper's section order or proof-dependency order; the argument summary
-and `Role in this paper` fields carry those relationships.
+Never reinterpret a bridge as a personal semantic edge.
 
-## 6. Concept cards
+## 6. Status-sensitive records
 
-For every concept, use:
+### Known candidate
+
+Do not write a definition, plain-language anchor, or concept explanation.
 
 ```markdown
-### C01 — Canonical English term / user-language term
+### C01 — Canonical term / user-language term — known
+
+- Personal node:
+- Bridge:
+- Role in this paper:
+- Paper source locations:
+```
+
+### Partial candidate
+
+Explain only what is absent from the personal node.
+
+```markdown
+### C02 — Canonical term / user-language term — partial
+
+- Personal node and bridge:
+- Known coverage:
+- Missing condition, role, claim, or relation:
+- Why the gap matters in this paper:
+- Paper source locations:
+```
+
+### New candidate
+
+```markdown
+### C03 — Canonical term / user-language term — new
 
 - Aliases:
-- Type:
-- Importance:
+- Type and importance:
 - Evidence: explicit | implicit prerequisite | paper-specific
 - Plain-language anchor:
 - Role in this paper:
@@ -70,26 +102,23 @@ For every concept, use:
 - Open ambiguity:
 ```
 
-The plain-language anchor is one or two sentences, not a full tutorial. The
-role must name the part of the paper that would become unintelligible without
-the concept.
+### Conflict or uncertain candidate
+
+Do not create an entry or bridge. Record the competing claims or candidate
+senses, their provenance, and the evidence required for review.
 
 ## 7. Handoff
 
-- First concepts to teach
+- First concepts to learn
 - Recommended next deep dive and reason
-- Terms that require author clarification
+- New/partial concepts eligible for an explicitly requested import
+- Known concepts that will become refs during import
+- Terms requiring review or author clarification
 - Coverage or extraction warnings
 
 ## Selection audit
 
-Before delivery, confirm:
-
-- Each main claim in the argument summary has a matching concept.
-- Each selected concept is actually used or necessarily assumed.
-- No entry is merely a symbol or a broad filler word.
-- Each entry can normally serve as one focused search or lesson topic.
-- Direct prerequisite edges form a DAG.
-- Prerequisite edges describe learning order, not merely narrative order.
-- Canonical English terms are searchable.
-- Paper-local meanings are separated from standard meanings.
+Confirm that every main claim has a matching candidate, every candidate is
+actually used or necessarily assumed, names are searchable, prerequisite edges
+form a DAG, known entries are not duplicated, partial records contain only the
+gap, and the default deliverable does not mutate the personal graph.

@@ -2,19 +2,18 @@
 
 Use this contract for every changed Typst, Markdown, or LaTeX file that defines
 or uses knowledge.
-Semantic judgment belongs to the agent. Scripts only inspect explicit markers,
-apply reviewed deltas, and validate deterministic invariants.
+Semantic judgment belongs to the extracting agent. `$query-kgdistiller` owns
+existing-knowledge resolution and `$ingest-kgdistiller` owns graph mutation.
+Scripts only inspect explicit markers, apply reviewed decisions, and validate
+deterministic invariants.
 
 ## File-scoped authority
 
 Treat one source file as the curation unit. Read the entire file, including
-statements, adjacent proofs, explanatory prose, and comparisons. Query the
-existing graph before editing:
-
-```sh
-python3 knowledge/kgd.py search "candidate"
-python3 knowledge/kgd.py show "Candidate"
-```
+statements, adjacent proofs, explanatory prose, and comparisons. Extract a
+candidate batch or isolated snapshot, then delegate existing-graph lookup to
+`$query-kgdistiller`. Never inspect graph JSONL, entry shards, or SQLite from
+this extraction workflow.
 
 Preserve a user-authored authority marker as an accepted identity unless it conflicts with
 an existing canonical node or bundles several independent concepts. Do not
@@ -56,9 +55,9 @@ not connect them solely because they share a title.
 
 When splitting an already-synchronized composite node, preserve its stable ID
 for the primary concept. If the primary name does not already resolve to that
-ID, first apply a reviewed alias upsert to the old node, then edit and scan so
-the identity index reuses it. Add the remaining concepts as new authority
-markers.
+ID, include the reviewed alias decision in the handoff to
+`$ingest-kgdistiller`. Add the remaining concepts as candidate authorities only
+after `$query-kgdistiller` classifies them as new.
 Do not leave the old bundle orphaned or delete its accumulated edges merely
 because its public label became more precise; review and redirect any edge whose
 meaning belonged to a different component.
@@ -82,12 +81,13 @@ Use the node's existing provenance as the authority link. Set
 `properties.entry_origin` to `agent-extracted` for an agent-written entry. The
 source synchronizer must preserve `text` and agent properties.
 
-For ordinary personal notes, the compact `text` entry is sufficient. For a
-paper-derived or original-research authority, also write the structured
-`entry` fields defined in `research-ingestion.md` so that the definition is
-preserved together with its paper context, role, confusions, open questions,
-and precise source locations. The graph writer shards these bodies by authority;
-never place a full dossier inside node properties.
+For ordinary personal notes, the compact `text` entry is sufficient. Paper-
+derived or original-research entries are prepared by
+`$extract-paper-concepts` only for new or missing partial knowledge. They may
+also carry `summary`, `context`, `role`, `prerequisites`, `confusions`,
+`open_questions`, and precise `sources`. `$ingest-kgdistiller` applies the
+reviewed dossier. The graph writer shards these bodies by authority; never
+place a full dossier inside node properties.
 
 An untouched legacy authority may still appear as pending in the global audit.
 That is migration state, not permission to leave a selected file incomplete:
@@ -196,20 +196,20 @@ historical influence, topic co-membership, or keyword co-occurrence. Remove or
 replace a prior edge when the newly read authority shows that its type or
 direction is wrong.
 
-## Required file workflow
+## Required extraction handoff
 
 For each selected file:
 
-1. read the source and run scoped `scan`;
-2. search/show candidate existing nodes and their neighborhoods;
-3. edit only semantically justified authority and ref occurrences, using the
-   selected file's native syntax;
-4. rerun scoped `scan` and inspect every node identity;
-5. prepare one delta with entries, aliases, edge upserts, and explicit removals;
-6. apply the delta and synchronize the same file;
-7. run `curate-check --file ...`;
+1. read the complete changed authority and extract candidates with evidence;
+2. send one batch or isolated snapshot to `$query-kgdistiller`;
+3. turn known identities into native refs and new identities into authorities;
+4. stop on every uncertain or conflicting identity;
+5. prepare the reviewed source diff and delta without opening graph artifacts;
+6. pass them with the query digests to `$ingest-kgdistiller`;
+7. require a successful scoped curation/global-check receipt;
 8. export and validate the owning course.
 
-If `curate-check` finds an empty entry or a confirmed cross-file direct
-dependency without a ref, return to semantic curation. Do not silence it by
-inventing a generic entry, deleting a valid edge, or adding a contextless ref.
+If the ingestion receipt reports an empty entry or a confirmed cross-file
+direct dependency without a ref, return to semantic extraction. Do not silence
+it by inventing a generic entry, deleting a valid edge, or adding a contextless
+ref.

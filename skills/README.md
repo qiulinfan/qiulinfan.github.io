@@ -1,10 +1,14 @@
 # Skills
 
-本目录是个人 skills 的权威副本，并随 qlblog 提交和同步。
+本目录是个人领域 skills 的权威副本，并随 qlblog 提交和同步。
 `~/.codex/skills` 应作为一个完整目录软链接指向本目录，而不是为每个 skill
 分别创建链接。定制过的 Codex system skills 保存在受版本控制但不公开展示的
 `.system/`；`~/.codex/system-skills` 整目录软链接到该位置。
 `.skills_store_lock.json` 仍是仅在本机保留的 Codex 管理状态。
+
+`query-kgdistiller` 与 `ingest-kgdistiller` 是例外：本目录保存供 Codex 和网站发现
+的薄入口，规范正文随 `vendor/kgdistiller` submodule 维护。更新 kgdistiller 会同时
+更新这两个 Skill 的实际行为，入口不得复制或改写其长工作流。
 
 ## 仓库协议
 
@@ -139,9 +143,10 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [create-latex-math-notes](./create-latex-math-notes/)：新建使用 ElegantBook 语法和 LaTeX-to-Typst 适配器的轻量数学笔记项目。
 - [create-math-notes](./create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
 - [discuss-game-design](./discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
-- [export-typst-math-notes](./export-typst-math-notes/)：维护、语义整理并发布 Typst、Markdown、LaTeX 或混合格式的数学笔记。
-- [extract-paper-concepts](./extract-paper-concepts/)：通读论文或论文仓库，生成面向初学者、具有来源依据的概念清单。
-- [kgdistiller-distill](./kgdistiller-distill/)：把 Markdown、Typst 或 LaTeX 权威来源整理为有显式标记和证据关系的 kgdistiller 图谱。
+- [export-typst-math-notes](./export-typst-math-notes/)：从 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
+- [extract-paper-concepts](./extract-paper-concepts/)：通读论文，查询个人知识库后生成不重复已知词条、默认不合并的联邦概念图。
+- [ingest-kgdistiller](./ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，把已审查、可追溯的知识更新安全写入个人图谱；qlblog 只维护发现入口。
+- [query-kgdistiller](./query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
 - [play-unity-game](./play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
 - [search-game-art](./search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
 - [test-skill-with-agent](./test-skill-with-agent/)：在隔离环境中用真实或委派 agent 测试 skill，并独立检查产物、权限、改动和凭据泄漏。

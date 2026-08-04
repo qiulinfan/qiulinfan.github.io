@@ -1,280 +1,116 @@
 ---
 name: export-typst-math-notes
-description: Maintain, semantically curate, and publish repository notes whose authoritative files may be Typst, Markdown, LaTeX, or any mixture of the three. Use at repository, subject, course, directory, or file scope when Codex needs to author or export QLNotes; preserve explicit knowledge nodes and backlinks; extract contextual node entries and typed graph edges; classify interdisciplinary knowledge under overlapping field facets without coarse discipline roots; compare distilled papers against the existing external-brain graph; convert ElegantBook LaTeX into a previewable Typst project before web export; publish Markdown directly; validate the sharded global knowledge graph; or update the notes website.
+description: Extract candidate knowledge changes from Git-modified Markdown, Typst, and LaTeX authorities, preserve user-written knowledge markers, delegate existing-knowledge resolution to query-kgdistiller, delegate reviewed graph writes to ingest-kgdistiller, and publish the resulting notes to the web. Use when Codex authors, updates, migrates, exports, or validates QLNotes at file, directory, course, subject, or repository scope.
 ---
 
-# Export Multi-Source Knowledge Notes
+# Extract and export multi-source notes
 
-Treat every configured source file as authority in its own format. Generated
-Markdown, Typst intermediates, and HTML are projections, never additional
-authorities. PDF files are forbidden anywhere below `notes/`; the repository
-graph is one semantic index shared by all formats.
+Own two things: extract a candidate graph from changed note authorities, and
+publish the validated authorities. Treat kgdistiller as an external brain;
+delegate all personal-graph queries to `$query-kgdistiller` and all personal-
+graph mutation to `$ingest-kgdistiller`.
 
-## Load the contracts
+## Load only the relevant contracts
 
-From the authoritative repository root (`git rev-parse --show-toplevel`), read
-these before acting:
+From the repository root, read:
 
 - `knowledge/SPEC.md` and `knowledge/sources.json`;
-- `notes/math/toolchain/README.md` when Typst or LaTeX is in scope;
-- [references/curation-contract.md](references/curation-contract.md) whenever
-  nodes, entries, refs, or semantic edges are in scope;
-- [references/export-contract.md](references/export-contract.md);
-- [references/validation.md](references/validation.md).
+- [references/curation-contract.md](references/curation-contract.md) for
+  semantic extraction;
+- [references/export-contract.md](references/export-contract.md) and
+  [references/validation.md](references/validation.md) for the selected format;
+- `notes/math/toolchain/README.md` only for Typst or LaTeX;
+- [references/migration.md](references/migration.md) only for LaTeX migration.
 
-For a paper distillation, literature note, or the author's own research, also
-read [references/research-ingestion.md](references/research-ingestion.md).
+Do not use this Skill to distill a paper. Use `$extract-paper-concepts`.
 
-For a legacy LaTeX migration, also read
-[references/migration.md](references/migration.md). Keep shared conversion and
-presentation code in `notes/math/toolchain/`, graph adapters in `knowledge/`,
-and website code in `site/`.
+## Select the changed authority scope
 
-## Select and register authority
+Use Git staged, unstaged, untracked, deleted, and renamed paths to select the
+smallest complete scope. Every new or changed `.md`, `.typ`, or `.tex` note must
+match exactly one bounded source in `knowledge/sources.json`. Stop on missing or
+overlapping ownership.
 
-Use the smallest complete scope. One `knowledge/sources.json` source may list
-mixed patterns such as:
+Read each complete changed authority, not only its hunks. Generated Markdown,
+Typst intermediates, HTML, and PDF are never authorities. Preserve every user-
+authored authority or ref marker unless the user explicitly requests an
+identity change or the query handoff proves that it duplicates an established
+personal identity.
 
-```json
-{
-  "root": "notes/demo",
-  "files": ["chapters/*.typ", "chapters/*.md", "chapters/*.tex"],
-  "fields": ["analysis", "optimization"]
-}
+## Extract a candidate graph
+
+Extract only source-supported candidates from the changed authority:
+
+- explicit authority and ref occurrences;
+- independently teachable, searchable, reusable concepts introduced or
+  materially changed by the edit;
+- one atomic identity per concept, with local aliases kept separate;
+- concise candidate entries and exact source spans;
+- direct typed semantic relations with concrete evidence;
+- meaningful immediate cross-file dependencies.
+
+Do not promote headings, examples, equations, file order, keyword co-occurrence,
+or every formal wrapper. Do not inspect `knowledge/graph/*.jsonl`, entry shards,
+or SQLite to decide whether a candidate already exists.
+
+Hand the candidate names and evidence, or an isolated
+`qlkg-agent-snapshot-v1`, to `$query-kgdistiller` in one batch.
+
+## Apply the query decision to the source
+
+Use only identity-authoritative query results:
+
+- `known`: write a format-native ref to the personal node and create no entry;
+- `new`: retain or add one format-native authority marker and its candidate
+  source-grounded entry;
+- `partial`: author only the missing condition, claim, role, or relation; do not
+  duplicate the known definition;
+- `uncertain` or `conflict`: stop automatic source edits and return the evidence
+  for review.
+
+Use the native syntax:
+
+```text
+Typst:   #kn[Name]        #ref[Name]
+Markdown --[[Name]]--     [[Name]] or [[Name|display]]
+LaTeX:   \kn{Name}        \knref{Name}
 ```
 
-Register specific field facets in the registry and assign one or more to each
-source or topic. Keep `subject`/`course` only for selecting files. Never create
-coarse `Mathematics` or `Computer Science` nodes, never connect fields into a
-forced tree, and never infer a single field from a directory name. A topic or
-knowledge node may belong to several fields; add fields such as geometry,
-algebra, deep learning theory, architecture, programming languages, or
-optimization only when actual content enters that field.
+A ref records source usage and a backlink; it is not a semantic edge. Add it
+only for a direct, immediate dependency whose authority is another file.
 
-Set `knowledge_origin` to `personal-note` for the author's ordinary notes and
-to `research` for paper-derived or original-research entries. The website
-renders the former as circles and the latter as squares.
+Pass the reviewed source diff, query digests, decision table, entries, and
+typed edge delta to `$ingest-kgdistiller`. Do not run `apply`, `sync`,
+`reconcile`, or edit graph artifacts in this Skill. Continue only after the
+ingestion receipt reports successful scoped curation and global validation.
 
-Before authoring a new note, make its path match exactly one bounded source in
-`knowledge/sources.json`. `knowledge/workflow-policy.json` freezes the existing
-legacy rollout and explicitly classifies toolchain/assets; it is not a shortcut
-for new knowledge. A new unregistered `.md`, `.typ`, or `.tex`, or any edit to a
-legacy-unregistered note, must stop until the authority is registered and
-curated.
+## Publish the validated authority
 
-Infer the adapter from each file suffix. Never ingest a Typst-generated
-Markdown snapshot as a second authority. Keep every file within one configured
-source root so scoped sync can preserve unrelated occurrences. `--file` accepts
-either one authority file or a directory; a directory expands only descendants
-matched by that source's configured patterns and may therefore contain all
-three suffixes.
+Follow the selected format section of `references/export-contract.md`:
 
-## Preserve explicit knowledge identity
+- Typst: run the owning course `make`/web checks and compile with QLNotes;
+- Markdown: publish the configured authority through Astro `/notes/` routes;
+- LaTeX: convert the maintained source into an ignored self-contained Typst
+  project, then compile its web artifact.
 
-Use exactly one authority marker for each global concept and any number of
-format-native refs:
+Never reconstruct Typst from generated Markdown or convert from PDF. Keep
+generated snapshots, HTML, SQLite, deltas, and compiler logs ignored. Treat the
+source registry's `web` value as the only canonical public route.
 
-```typst
-#definition(title: [#kn[Banach space]])[...]
-By #ref[normed space], ...
-```
+## Validate and report
 
-```markdown
-> **Definition: --[[Banach space]]--**
->
-> It is a complete [[normed space]].
-```
+Run the affected course checks, then the shared workflow and website checks
+required by `references/validation.md`. At minimum verify the source policy,
+knowledge workflow, graph, Astro checks, and production build for the changed
+scope.
 
-```tex
-\kn{Banach space}
-It is a complete \knref{normed space}.
-```
+Report:
 
-For Markdown, `--[[Name]]--` is always the canonical `kn`; `[[Name]]` is always
-a `ref`. `[[Name|display]]` keeps `Name` as identity. Do not infer roles from
-headings, blockquotes, first occurrence, or file order. On the website, a
-Markdown `kn` is an anchored non-link and a ref is a canonical hyperlink.
+- changed authority paths and formats;
+- candidate counts and query classifications;
+- reused nodes/refs versus new or partial entries;
+- the ingestion receipt and diagnostics;
+- exported routes and whether they are local or deployed.
 
-Preserve user-authored authority markers unless they conflict with a canonical
-node or bundle several reusable concepts. Put separate markers around multiple
-concepts in one title. Keep synonyms as aliases of one node. Query first:
-
-```sh
-python3 knowledge/kgd.py search "candidate"
-python3 knowledge/kgd.py show "Candidate"
-```
-
-Scripts may scan explicit markers, synchronize reviewed occurrences, and apply
-reviewed deltas. They must not promote headings, split concepts, select refs,
-write entries, or infer semantic edges.
-
-## Curate one changed file at a time
-
-Before export:
-
-1. read the complete changed authority and its graph neighborhoods;
-2. preserve explicit markers and semantically decide any additional nodes,
-   concept splits, aliases, and direct cross-file refs;
-3. run scoped `scan` and resolve duplicates or dangling names;
-4. extract a concise source-grounded entry for every local authority node;
-5. infer only direct, typed, source-supported edges;
-6. apply one reviewed `qlkg-agent-delta-v2`;
-7. synchronize the same file and run `curate-check`.
-
-For research Markdown, compare the complete candidate graph against the
-external brain before editing identities. Run `agent align`, review every
-ambiguous candidate, persist accepted or rejected decisions with `reconcile
-alignment`, then run `agent compare` and `agent propose`. Known concepts become
-refs and are not regenerated; unknown concepts receive one reviewed authority
-plus a contextual structured entry. Never promote acronym or embedding
-similarity into identity, and never put paper-local abbreviations such as `AC`
-into global aliases. Entry bodies are written to per-authority shards, while
-`nodes.jsonl` stores only their paths. Follow the exact two-pass marker/delta
-sequence in `references/research-ingestion.md`.
-
-```sh
-python3 knowledge/kgd.py scan --file path/to/file.md
-python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
-python3 knowledge/kgd.py sync --file path/to/file.md
-python3 knowledge/kgd.py curate-check --file path/to/file.md
-python3 knowledge/workflow.py
-```
-
-Add one meaningful ref when a file directly uses an immediate prerequisite
-whose canonical authority is another file. Omit same-file and merely transitive
-foundations. A ref records source usage and a backlink; it is not a semantic
-edge. Read the curation contract before choosing among `prerequisite-for`,
-`implies`, `generalizes`, `contrasts-with`, and `derived-from`.
-
-If a selected file loses its authority marker, accept the orphan interval.
-Synchronization retains its metadata and semantic edges until the same identity
-is rehomed. Remove semantic knowledge only through an explicit reviewed delta.
-
-## Export by source format
-
-Apply the shared web-presentation contract in
-[references/export-contract.md](references/export-contract.md) to every
-standalone QLNotes page. Treat `site/src/styles/variables.styl` as the palette
-authority and `notes/math/toolchain/web.css` as its standalone Notes
-projection. Never introduce a course-local palette. Preserve light, dark, and
-system-theme behavior, and run the theme-contract test whenever either file or
-the HTML installation path changes.
-
-### Typst
-
-Run the owning course command. It synchronizes the course, compiles each entry
-once, and writes flat per-chapter LaTeX and Markdown snapshots into an ignored,
-reproducible local directory:
-
-```sh
-make export
-make web-check
-```
-
-Markdown is deliberately lossy: semantic environments are ordinary
-blockquotes, authoritative nodes are `--[[...]]--`, refs are `[[...]]`, inline
-math is `$...$`, and every display formula uses line-delimited `$$` blocks.
-Never reconstruct Typst from snapshots or convert from PDF.
-
-### Markdown
-
-Publish configured `.md` files directly through the Astro `/notes/` routes.
-The build reads committed graph occurrences, renders `kn` markers as stable
-anchors without links, renders refs as links to canonical provenance, renders
-`$...$`/line-delimited `$$` with KaTeX, rewrites registered note links, and
-copies only referenced static assets:
-
-```sh
-cd site
-python3 ../knowledge/kgd.py publish --format markdown
-node tests/note-sources.test.mjs
-corepack pnpm build
-```
-
-`pnpm dev`, `pnpm start`, and `pnpm build` already run this format-scoped
-publication command. It synchronizes configured Markdown authorities and then
-fails if an explicit node still lacks its agent-authored entry or a confirmed
-direct external dependency lacks its ref. The command does not invent entries
-or edges.
-
-Do not ingest generated Typst Markdown exports as direct Markdown authorities.
-The canonical path is `source.web/<relative-stem>`; a terminal `README` or
-`index` stem is folded into its parent route. Astro emits the matching local
-path as `/notes/<subject>/<course>/<relative-stem>/` under the configured site
-base.
-
-### LaTeX
-
-Convert the synchronized ElegantBook `main.tex` into a self-contained Typst
-project before any web compilation. The converter discovers the template's
-direct `\input` chapters, extracts title metadata, copies the shared QLNotes
-runtime and course assets, and emits `main.typ` plus a Makefile that can be
-previewed without the LaTeX environment:
-
-```sh
-python3 notes/math/toolchain/scripts/convert_latex_project.py main.tex \
-  --build notes/<subject>/<course>/build/typst
-make -C notes/<subject>/<course>/build/typst preview
-```
-
-Scan the authoritative `.tex` files directly for `\kn{}` and `\knref{}`. The
-export command synchronizes every selected, configured LaTeX authority first;
-it also runs the same per-file curation gate before compilation. This registry
-step is required for `data-ql-kn`, anchors, canonical ref links, and contextual
-entries. It then converts into an ignored Typst build directory and compiles
-with QLNotes:
-
-```sh
-python3 notes/math/toolchain/scripts/export_latex_web.py main.tex \
-  --repo-root . \
-  --build notes/<subject>/<course>/build/typst \
-  --output notes/<subject>/<course>/build/index.html \
-  --title "Course Notes"
-```
-
-There is no direct LaTeX-to-web renderer: the web command compiles the generated
-Typst project. The converter preserves both knowledge macros as Typst
-`#kn`/`#ref`. Commit the
-LaTeX authority, not the generated Typst or HTML. `--output` is only a local
-artifact path; node provenance still uses the source's configured `web` route.
-Wire that same route into the Pages artifact when the course is ready to
-publish. The exporter fails if any source marker silently degrades to plain
-text.
-
-## Validate and publish
-
-Run only the affected scope, then the shared checks:
-
-```sh
-PYTHONPATH=vendor/kgdistiller/src python3 -m unittest discover \
-  -s vendor/kgdistiller/tests -v
-python3 -m unittest notes.math.toolchain.tests.test_multisource \
-  notes.scripts.test_source_policy knowledge.test_workflow
-make knowledge-workflow-check
-make knowledge-check
-make blog-check
-make blog-build
-```
-
-For a global foundation review, run `python3 knowledge/kgd.py audit` and use its coverage
-and topology only to choose authorities to read. Never repair a metric without
-source evidence.
-
-Never commit `exports/`; regenerate snapshots only when they are needed for
-inspection or interchange. The normal course `make` target synchronizes the
-graph and checks HTML without producing snapshots.
-
-GitHub Actions builds Astro, compiles configured Typst/LaTeX note HTML, and
-uploads only the Pages artifact. Keep HTML, generated Typst, copied note assets,
-SQLite, compiler logs, and agent deltas ignored. Run `make notes-source-check`;
-do not create, copy, or retain any PDF below `notes/`, even as an ignored preview.
-
-Treat each source's `knowledge/sources.json` `web` value as the only canonical
-public route. Never hardcode a repository name, Pages subpath, or deployment
-base in the skill or graph adapters. When the public site moves, update the
-registry and repository deployment configuration together, run a full graph
-sync to regenerate provenance, refs, and the Typst registry, then verify legacy
-redirects separately.
-
-Report the selected authority files and formats, exported routes, node/entry/
-reference/edge deltas, diagnostics, and whether the HTML is local or deployed.
+Never report an export as closed if query, ingestion, curation, or publication
+was skipped for a graph-affecting source change.

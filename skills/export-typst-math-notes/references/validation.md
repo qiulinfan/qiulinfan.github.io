@@ -118,7 +118,8 @@ The audit reports deterministic curation coverage and topology without failing
 on legacy pending files or isolated nodes. Treat those values as routing data
 for agent reading, never as permission to synthesize nodes or edges by script.
 
-After applying the reviewed agent delta and synchronizing the file, require:
+Require `$ingest-kgdistiller` to report that it applied the reviewed delta,
+synchronized the file, and ran:
 
 ```sh
 python3 knowledge/kgd.py curate-check \
@@ -159,6 +160,6 @@ preview or diagram asset.
 | Duplicate knowledge name | every active authority-marker occurrence |
 | Dangling reference | ref name and graph registry |
 | Broken diagram | `#diagram`, CeTZ source, inline SVG extraction |
-| Graph contract error | `knowledge/graph/diagnostics.json` and agent delta |
-| Stale graph | synchronize the smallest complete source scope |
+| Graph contract error | `$ingest-kgdistiller` receipt and reviewed delta |
+| Stale graph | rerun `$query-kgdistiller`, then ingest the smallest complete scope |
 | Pages failure | workflow log and the matching course web target |
