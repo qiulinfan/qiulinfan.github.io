@@ -26,6 +26,29 @@ HTML: `main.typ`, converted chapter modules, a copied QLNotes runtime, assets,
 and preview commands. Unsupported template constructs fail explicitly so the
 LaTeX and Typst adapters can be updated together; they never disappear silently.
 
+## Standalone web theme
+
+`site/src/styles/variables.styl` is the palette authority for the public site.
+`notes/math/toolchain/web.css` is the only standalone QLNotes presentation
+projection of that palette. Every Typst HTML export must embed that shared CSS
+through `qlnotes.typ`; every LaTeX conversion must copy the same file into its
+generated Typst project. Never add a course-local palette or copy color values
+into an authority source.
+
+The projection must preserve the site's semantic light and dark colors,
+including page, card, text, border, link, code, and callout roles. It must honor
+the site's saved `light`, `dark`, or `auto` preference, with the operating-system
+preference as the fallback. A palette change in `variables.styl` and its QLNotes
+projection is one atomic maintenance change; `site/tests/theme-contract.test.mjs`
+must reject drift between their mapped semantic colors.
+
+Raw Typst HTML may initially place its shared style at the start of `<body>`.
+Public standalone artifacts must pass through
+`site/scripts/install-note-artifacts.mjs`, which moves that style into `<head>`
+and installs the theme bootstrap before publication. Links from Astro pages to
+these standalone artifacts must opt out of partial Swup navigation so browser
+back/forward restoration never mixes the two document shells.
+
 ## Semantic authoring API
 
 Formal statement components are `definition`, `axiom`, `theorem`, `lemma`,

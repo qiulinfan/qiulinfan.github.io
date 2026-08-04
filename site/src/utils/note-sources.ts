@@ -16,6 +16,7 @@ interface SourceSpec {
 	publish: boolean;
 	listed: boolean;
 	web: string;
+	web_artifacts?: Array<{ source: string; route: string }>;
 }
 
 interface FieldSpec {
@@ -68,6 +69,7 @@ export interface NoteSource {
 	authority: string;
 	href: string;
 	fields: string[];
+	standalone: boolean;
 }
 
 interface RenderOptions {
@@ -124,6 +126,7 @@ export function loadListedNoteSources(): NoteSource[] {
 			authority: spec.root,
 			href: sourceWebPath(spec),
 			fields: spec.fields.map((field) => fieldLabels.get(field) ?? field),
+			standalone: Boolean(spec.web_artifacts?.length),
 		}))
 		.sort((left, right) => left.title.localeCompare(right.title));
 }

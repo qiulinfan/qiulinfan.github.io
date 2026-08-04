@@ -15,6 +15,7 @@ test("the source registry publishes and lists only the selected math notes", () 
 		"/notes/math/measure-theory/",
 		"/notes/math/probability/",
 	]);
+	assert.deepEqual(listed.map((source) => source.standalone), [true, true]);
 	assert.equal(
 		loadMarkdownNotes().some((note) => note.sourceId === "cs:computer-organization"),
 		false,

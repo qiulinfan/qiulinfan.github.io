@@ -61,8 +61,22 @@ The checker rejects:
 
 - invalid UTF-8, replacement characters, and common mojibake;
 - missing title, QLNotes shell, or table of contents;
+- missing shared light/dark QLNotes theme variables;
 - duplicate/invalid `data-ql-kn` IDs and broken `data-ql-ref` targets;
 - inaccessible diagram SVG.
+
+When the shared palette, QLNotes CSS, or standalone artifact installer changes,
+also run:
+
+```sh
+cd site
+node tests/theme-contract.test.mjs
+node scripts/install-note-artifacts.mjs
+```
+
+The first command compares the mapped QLNotes semantic colors with the public
+site palette. The installer must fail if it cannot move the generated QLNotes
+theme into `<head>` and add the matching light/dark bootstrap.
 
 Experimental Typst HTML warnings are acceptable when compile and check succeed.
 

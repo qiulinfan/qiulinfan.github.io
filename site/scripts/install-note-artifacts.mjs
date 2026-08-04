@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 
 const siteRoot = resolve(import.meta.dirname, "..");
@@ -13,6 +13,28 @@ function assertContained(parent, child, label) {
 	if (local.startsWith("..") || local.includes(`${sep}..${sep}`)) {
 		throw new Error(`${label} escapes ${parent}: ${child}`);
 	}
+}
+
+const themeBootstrap = `<script data-qlnotes-theme-bootstrap>(()=>{const root=document.documentElement;const stored=localStorage.getItem("theme")||"auto";const dark=stored==="dark"||(stored==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);root.classList.toggle("dark",dark);root.dataset.qlTheme=dark?"dark":"light";})();</script>`;
+
+function prepareStandaloneHtml(source, sourceId) {
+	const bodyStyle = /<body><style>([\s\S]*?)<\/style>/u.exec(source);
+	if (!bodyStyle) {
+		throw new Error(`QLNotes theme style was not found for ${sourceId}.`);
+	}
+	const withHeadStyle = source
+		.replace(bodyStyle[0], "<body>")
+		.replace(
+			"</head>",
+			`${themeBootstrap}<style data-qlnotes-theme>${bodyStyle[1]}</style></head>`,
+		);
+	if (
+		withHeadStyle === source ||
+		!withHeadStyle.includes("data-qlnotes-theme")
+	) {
+		throw new Error(`QLNotes theme integration failed for ${sourceId}.`);
+	}
+	return withHeadStyle;
 }
 
 let installed = 0;
@@ -45,7 +67,8 @@ for (const spec of registry.sources) {
 			`Artifact destination for ${spec.id}`,
 		);
 		mkdirSync(dirname(destination), { recursive: true });
-		copyFileSync(source, destination);
+		const html = prepareStandaloneHtml(readFileSync(source, "utf-8"), spec.id);
+		writeFileSync(destination, html, "utf-8");
 		installed += 1;
 	}
 }

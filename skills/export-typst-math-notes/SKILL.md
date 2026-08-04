@@ -138,6 +138,14 @@ is rehomed. Remove semantic knowledge only through an explicit reviewed delta.
 
 ## Export by source format
 
+Apply the shared web-presentation contract in
+[references/export-contract.md](references/export-contract.md) to every
+standalone QLNotes page. Treat `site/src/styles/variables.styl` as the palette
+authority and `notes/math/toolchain/web.css` as its standalone Notes
+projection. Never introduce a course-local palette. Preserve light, dark, and
+system-theme behavior, and run the theme-contract test whenever either file or
+the HTML installation path changes.
+
 ### Typst
 
 Run the owning course command. It synchronizes the course, compiles each entry

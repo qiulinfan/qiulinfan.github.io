@@ -112,6 +112,21 @@ def check(args: argparse.Namespace) -> None:
     if not parser.has_toc:
         raise CheckError("HTML document has no document table of contents")
 
+    theme_markers = (
+        ":root.dark",
+        "--ql-canvas:",
+        "--ql-paper:",
+        "--ql-text:",
+        "--ql-blue:",
+        "--ql-border:",
+        'data-ql-theme="light"',
+    )
+    missing_theme_markers = [marker for marker in theme_markers if marker not in text]
+    if missing_theme_markers:
+        raise CheckError(
+            f"shared QLNotes light/dark theme is incomplete: {missing_theme_markers}"
+        )
+
     id_counts = {identifier: parser.knowledge_ids.count(identifier) for identifier in set(parser.knowledge_ids)}
     duplicates = sorted(identifier for identifier, count in id_counts.items() if count > 1)
     if duplicates:

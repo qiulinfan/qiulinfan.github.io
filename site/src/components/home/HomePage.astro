@@ -15,11 +15,13 @@ const featuredNotes = [
 		title: source.title,
 		field: source.fields[0] ?? source.subject,
 		href: source.href,
+		standalone: source.standalone,
 	})),
 	{
 		title: "Knowledge Graph",
 		field: "Research memory",
 		href: "/knowledge/",
+		standalone: false,
 	},
 ];
 const copy = zh
@@ -165,7 +167,7 @@ const copy = zh
 			</header>
 			<div class="note-grid">
 				{featuredNotes.map((note, index) => (
-					<a class="note-card card" href={url(note.href)}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
+					<a class="note-card card" href={url(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
 				))}
 			</div>
 		</section>

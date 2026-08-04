@@ -5,6 +5,12 @@ The repository-wide graph also accepts maintained Markdown and LaTeX authority;
 those format adapters live in the pinned `vendor/kgdistiller` submodule, while
 LaTeX web output reuses this toolchain through an ignored Typst intermediate.
 
+The public site's palette authority is `site/src/styles/variables.styl`.
+`web.css` is its single standalone Notes projection, shared by every Typst
+export and copied into every generated LaTeX-to-Typst project. Do not create
+course-local palettes. Keep its light, dark, and automatic theme roles aligned
+with the site and verify them with `site/tests/theme-contract.test.mjs`.
+
 ```text
 toolchain/
 ├── qlnotes.typ             # HTML presentation
