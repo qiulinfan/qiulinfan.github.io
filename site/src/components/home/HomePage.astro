@@ -14,7 +14,7 @@ const featuredNotes = [
 	...loadListedNoteSources().map((source) => ({
 		title: source.title,
 		field: source.fields[0] ?? source.subject,
-		href: source.href,
+		href: source.navigationHref,
 		standalone: source.standalone,
 	})),
 	{

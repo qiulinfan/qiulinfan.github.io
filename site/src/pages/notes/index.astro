@@ -16,7 +16,7 @@ const groups = Map.groupBy(sources, (source) => source.subject);
 					<h2>{name}</h2>
 					<div class="note-list">
 						{entries.map((source) => (
-							<a href={url(source.href)} data-no-swup={source.standalone || undefined}>
+							<a href={url(source.navigationHref)} data-no-swup={source.standalone || undefined}>
 								<span><strong>{source.title}</strong><small>{source.fields.join(" · ")}</small></span>
 								<p>{source.description}</p>
 								<small>{source.authority}</small>

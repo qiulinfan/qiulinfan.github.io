@@ -118,6 +118,7 @@ def check(args: argparse.Namespace) -> None:
         "--ql-paper:",
         "--ql-text:",
         "--ql-blue:",
+        "--ql-primary-contrast:",
         "--ql-border:",
         'data-ql-theme="light"',
     )

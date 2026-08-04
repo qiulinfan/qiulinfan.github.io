@@ -8,6 +8,7 @@
   --ql-surface-deep: #eaeef2;
   --ql-border: #d0d7de;
   --ql-blue: #0969da;
+  --ql-primary-contrast: #ffffff;
   --ql-blue-soft: #eef4fb;
   --ql-teal: #1b7c83;
   --ql-teal-soft: #edf8f8;
@@ -31,6 +32,7 @@
   --ql-surface-deep: #333946;
   --ql-border: rgba(171, 178, 191, 0.17);
   --ql-blue: #61afef;
+  --ql-primary-contrast: #17202a;
   --ql-blue-soft: rgba(97, 175, 239, 0.1);
   --ql-teal: #56b6c2;
   --ql-teal-soft: rgba(86, 182, 194, 0.1);
@@ -55,6 +57,7 @@
     --ql-surface-deep: #333946;
     --ql-border: rgba(171, 178, 191, 0.17);
     --ql-blue: #61afef;
+    --ql-primary-contrast: #17202a;
     --ql-blue-soft: rgba(97, 175, 239, 0.1);
     --ql-teal: #56b6c2;
     --ql-teal-soft: rgba(86, 182, 194, 0.1);
@@ -99,6 +102,50 @@ body {
   font-size: 17px;
   line-height: 1.78;
   text-rendering: optimizeLegibility;
+}
+
+.ql-theme-switcher {
+  position: fixed;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 1000;
+  display: flex;
+  gap: 0.18rem;
+  padding: 0.24rem;
+  border: 1px solid var(--ql-border);
+  border-radius: 0.75rem;
+  background: color-mix(in oklch, var(--ql-paper) 92%, transparent);
+  box-shadow: var(--ql-panel-shadow);
+  backdrop-filter: blur(18px);
+  font-family: "PingFang SC", "Arial", sans-serif;
+}
+
+.ql-theme-switcher button {
+  min-height: 2rem;
+  padding: 0 0.65rem;
+  border: 0;
+  border-radius: 0.55rem;
+  color: var(--ql-muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.ql-theme-switcher button:hover {
+  color: var(--ql-ink);
+  background: var(--ql-blue-soft);
+}
+
+.ql-theme-switcher button[aria-pressed="true"] {
+  color: var(--ql-primary-contrast);
+  background: var(--ql-blue);
+}
+
+.ql-theme-switcher button:focus-visible {
+  outline: 2px solid var(--ql-blue);
+  outline-offset: 2px;
 }
 
 a {
@@ -497,6 +544,15 @@ code {
 }
 
 @media (max-width: 860px) {
+  .ql-theme-switcher {
+    top: 0.65rem;
+    right: 0.65rem;
+  }
+
+  .ql-theme-switcher button {
+    padding: 0 0.5rem;
+  }
+
   .ql-hero {
     padding: 3.2rem 1.5rem;
   }

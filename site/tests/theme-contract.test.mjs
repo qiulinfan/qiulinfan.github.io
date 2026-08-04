@@ -89,6 +89,7 @@ test("the standalone QLNotes theme follows the site palette", () => {
 	const dark = cssBlock(notesTheme, ":root.dark");
 	const mappings = [
 		["--ql-blue", "--primary"],
+		["--ql-primary-contrast", "--primary-contrast"],
 		["--ql-ink", "--text-strong"],
 		["--ql-text", "--text"],
 		["--ql-muted", "--text-muted"],

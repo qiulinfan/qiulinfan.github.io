@@ -42,12 +42,20 @@ preference as the fallback. A palette change in `variables.styl` and its QLNotes
 projection is one atomic maintenance change; `site/tests/theme-contract.test.mjs`
 must reject drift between their mapped semantic colors.
 
+Every published standalone QLNotes page exposes visible Light, Dark, and Auto
+controls backed by the same `theme` preference as the Astro shell. Standalone
+links carry a short presentation digest derived from the shared QLNotes runtime,
+CSS, and installer so a presentation update cannot silently reuse stale cached
+HTML. The canonical registry and graph URL remains query-free.
+
 Raw Typst HTML may initially place its shared style at the start of `<body>`.
 Public standalone artifacts must pass through
 `site/scripts/install-note-artifacts.mjs`, which moves that style into `<head>`
 and installs the theme bootstrap before publication. Links from Astro pages to
 these standalone artifacts must opt out of partial Swup navigation so browser
-back/forward restoration never mixes the two document shells.
+back/forward restoration never mixes the two document shells. Both shells must
+verify their critical theme variables after a back-forward-cache restore and
+reload only when that restored document has lost its styles.
 
 ## Semantic authoring API
 

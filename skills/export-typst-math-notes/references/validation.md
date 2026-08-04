@@ -76,7 +76,10 @@ node scripts/install-note-artifacts.mjs
 
 The first command compares the mapped QLNotes semantic colors with the public
 site palette. The installer must fail if it cannot move the generated QLNotes
-theme into `<head>` and add the matching light/dark bootstrap.
+theme into `<head>`, add the matching theme runtime and controls, and preserve
+back/forward style recovery. The notes-index test must also confirm that
+standalone navigation URLs carry the current presentation digest while
+canonical source URLs stay unchanged.
 
 Experimental Typst HTML warnings are acceptable when compile and check succeed.
 

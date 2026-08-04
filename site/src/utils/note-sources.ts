@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, extname, relative, resolve, sep } from "node:path";
 import katex from "katex";
@@ -68,6 +69,7 @@ export interface NoteSource {
 	course: string;
 	authority: string;
 	href: string;
+	navigationHref: string;
 	fields: string[];
 	standalone: boolean;
 }
@@ -79,6 +81,11 @@ interface RenderOptions {
 const repositoryRoot = resolve(process.cwd(), "..");
 const registryPath = resolve(repositoryRoot, "knowledge/sources.json");
 const graphRoot = resolve(repositoryRoot, "knowledge/graph");
+const standalonePresentationPaths = [
+	resolve(repositoryRoot, "notes/math/toolchain/qlnotes.typ"),
+	resolve(repositoryRoot, "notes/math/toolchain/web.css"),
+	resolve(repositoryRoot, "site/scripts/install-note-artifacts.mjs"),
+];
 
 function readJsonLines<T>(path: string): T[] {
 	return readFileSync(path, "utf-8")
@@ -112,22 +119,37 @@ function sourceWebPath(spec: SourceSpec): string {
 	return `${pathname || "/"}${pathname ? "/" : ""}`;
 }
 
+let cachedStandalonePresentationVersion: string | undefined;
+
+function standalonePresentationVersion(): string {
+	if (cachedStandalonePresentationVersion) return cachedStandalonePresentationVersion;
+	const digest = createHash("sha256");
+	for (const path of standalonePresentationPaths) digest.update(readFileSync(path, "utf8"));
+	cachedStandalonePresentationVersion = digest.digest("hex").slice(0, 12);
+	return cachedStandalonePresentationVersion;
+}
+
 export function loadListedNoteSources(): NoteSource[] {
 	const registry = sourceRegistry();
 	const fieldLabels = new Map(registry.fields.map((field) => [field.id, field.label]));
 	return registry.sources
 		.filter((spec) => spec.publish && spec.listed)
-		.map((spec) => ({
-			id: spec.id,
-			title: spec.title,
-			description: spec.description,
-			subject: spec.subject,
-			course: spec.course,
-			authority: spec.root,
-			href: sourceWebPath(spec),
-			fields: spec.fields.map((field) => fieldLabels.get(field) ?? field),
-			standalone: Boolean(spec.web_artifacts?.length),
-		}))
+		.map((spec) => {
+			const href = sourceWebPath(spec);
+			const standalone = Boolean(spec.web_artifacts?.length);
+			return {
+				id: spec.id,
+				title: spec.title,
+				description: spec.description,
+				subject: spec.subject,
+				course: spec.course,
+				authority: spec.root,
+				href,
+				navigationHref: standalone ? `${href}?v=${standalonePresentationVersion()}` : href,
+				fields: spec.fields.map((field) => fieldLabels.get(field) ?? field),
+				standalone,
+			};
+		})
 		.sort((left, right) => left.title.localeCompare(right.title));
 }
 

@@ -132,6 +132,15 @@ const bannerOffset =
 			offset = offset - offset % 4;
 			document.documentElement.style.setProperty('--banner-height-extend', `${offset}px`);
 		</script>
+		<script is:inline>
+			window.addEventListener("pageshow", (event) => {
+				if (!event.persisted) return;
+				const rootStyle = getComputedStyle(document.documentElement);
+				const themeReady = rootStyle.getPropertyValue("--page-bg").trim();
+				const shellReady = document.querySelector("main");
+				if (!themeReady || !shellReady) window.location.reload();
+			});
+		</script>
 		<style define:vars={{
 			'page-width': `${PAGE_WIDTH}rem`,
 		}}></style>

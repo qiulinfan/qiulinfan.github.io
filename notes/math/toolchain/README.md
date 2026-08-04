@@ -10,6 +10,9 @@ The public site's palette authority is `site/src/styles/variables.styl`.
 export and copied into every generated LaTeX-to-Typst project. Do not create
 course-local palettes. Keep its light, dark, and automatic theme roles aligned
 with the site and verify them with `site/tests/theme-contract.test.mjs`.
+Published standalone pages expose the same Light, Dark, and Auto preference as
+the Astro shell; `site/scripts/install-note-artifacts.mjs` installs that runtime
+and its back/forward style-recovery guard.
 
 ```text
 toolchain/
