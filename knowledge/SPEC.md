@@ -22,6 +22,11 @@ statement into a node.
 - Contextual entry bodies live in deterministic per-authority shards under
   `knowledge/graph/entries/`; `nodes.jsonl` stores only `entry_path` locators.
 - `knowledge/build/knowledge.sqlite` is an ignored local search index.
+- `knowledge/alignments.json` stores reviewed, fingerprint-bound mappings from
+  isolated paper/research namespaces into the personal graph.
+- `knowledge/workflow-policy.json` freezes legacy rollout exceptions and the
+  explicit non-authority toolchain/asset classes; new notes cannot enter it as
+  a curation bypass.
 - Agent-created metadata and semantic edges are durable graph knowledge. A source
   edit does not silently delete them.
 
@@ -261,6 +266,9 @@ nodes that would become orphaned without writing artifacts. File arguments and
 registry patterns may select `.typ`, `.md`, and `.tex` together.
 Directory selection expands only configured descendants; it does not ingest
 arbitrary files that merely share a supported suffix.
+An explicit file must also match exactly one source's bounded `files` pattern;
+living below a registered root is insufficient. The host workflow checks every
+tracked or new supported note path and rejects missing or overlapping ownership.
 
 For a selected file, synchronization replaces only that file's authored
 definition/reference occurrences. Everything outside the scope is retained. A
@@ -292,6 +300,14 @@ During export, the agent:
    explicit removals;
 7. synchronizes and runs file-level curation validation before export.
 
+For an isolated research snapshot, the agent first runs GraphRAG alignment,
+comparison, and proposal. Scoped abbreviation evidence can rank candidates but
+cannot create a global alias. Accepted and rejected cross-namespace mappings
+are stored in `knowledge/alignments.json` with both endpoint fingerprints; a
+changed endpoint invalidates the hard decision. New concepts use a two-pass
+proposal: first review and author the native marker, then resynchronize and
+regenerate a delta against the real personal node ID.
+
 An agent delta has this shape:
 
 ```json
@@ -317,7 +333,10 @@ An agent delta has this shape:
 ```text
 knowledge/
 ├── SPEC.md
+├── WORKFLOW.md
 ├── sources.json
+├── workflow-policy.json
+├── alignments.json
 ├── kgd.py                    # thin host adapter to vendor/kgdistiller
 ├── graph/
 │   ├── manifest.json
@@ -358,7 +377,12 @@ make knowledge-search QUERY="conditional expectation"
 python3 knowledge/kgd.py show "Dominated convergence theorem"
 python3 knowledge/kgd.py curate-check --file path/to/file.md
 python3 knowledge/kgd.py publish --format markdown
+python3 knowledge/workflow.py
 ```
+
+The host workflow always validates every newly complete authority and every
+changed authority. Its pending baseline permits untouched legacy files to
+remain in rollout, but changing one forces that file through `curate-check`.
 
 `audit` is a deterministic readiness report: it measures entry coverage by
 authority, semantic connectedness, relation counts, cross-course bridges,

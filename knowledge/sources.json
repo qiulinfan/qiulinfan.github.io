@@ -144,7 +144,8 @@
         "22*.md",
         "23*.md",
         "24*.md",
-        "25*.md"
+        "25*.md",
+        "280*.md"
       ],
       "publish": true,
       "listed": true,

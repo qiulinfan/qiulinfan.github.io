@@ -1,4 +1,4 @@
-.PHONY: all release export web web-check homeworks-web homeworks-web-check watch knowledge-sync
+.PHONY: all release export web web-check homeworks-web homeworks-web-check watch knowledge-sync knowledge-curate
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
@@ -10,10 +10,9 @@ EXPORTS := exports
 
 all: release
 
-release: knowledge-sync web-check homeworks-web-check
+release: knowledge-curate web-check homeworks-web-check
 
-export:
-	@$(KGDISTILLER) sync --course probability
+export: knowledge-curate
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document notes=main.typ \
 		--document homeworks=homeworks.typ \
@@ -23,6 +22,9 @@ export:
 
 knowledge-sync:
 	@$(KGDISTILLER) sync --course probability
+
+knowledge-curate: knowledge-sync
+	@$(MAKE) -C $(REPO_ROOT) knowledge-workflow-check
 
 web:
 	@mkdir -p $(BUILD)

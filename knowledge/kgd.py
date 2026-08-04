@@ -13,12 +13,7 @@ configured_source = os.environ.get("KGDISTILLER_SRC")
 engine_candidates: list[Path] = []
 if configured_source:
     engine_candidates.append(Path(configured_source).expanduser().resolve())
-engine_candidates.extend(
-    [
-        REPO_ROOT.parent / "kgdistiller/src",
-        REPO_ROOT / "vendor/kgdistiller/src",
-    ]
-)
+engine_candidates.append(REPO_ROOT / "vendor/kgdistiller/src")
 ENGINE_SRC = next(
     (candidate for candidate in engine_candidates if (candidate / "kgdistiller").is_dir()),
     None,
@@ -26,7 +21,7 @@ ENGINE_SRC = next(
 if ENGINE_SRC is None:
     raise SystemExit(
         "kgdistiller is missing; set KGDISTILLER_SRC or run: "
-        "git submodule update --init --remote --merge"
+        "git submodule update --init vendor/kgdistiller"
     )
 sys.path.insert(0, str(ENGINE_SRC))
 

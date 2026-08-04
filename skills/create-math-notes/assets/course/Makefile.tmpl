@@ -1,4 +1,4 @@
-.PHONY: all release export web web-check watch edit knowledge-sync
+.PHONY: all release export web web-check watch edit knowledge-sync knowledge-curate
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
@@ -11,10 +11,9 @@ COURSE_SLUG := {{SLUG}}
 
 all: release
 
-release: knowledge-sync web-check
+release: knowledge-curate web-check
 
-export:
-	@$(KGDISTILLER) sync --course $(COURSE_SLUG)
+export: knowledge-curate
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document notes=main.typ \
 		--root ../.. \
@@ -23,6 +22,9 @@ export:
 
 knowledge-sync:
 	@$(KGDISTILLER) sync --course $(COURSE_SLUG)
+
+knowledge-curate: knowledge-sync
+	@$(MAKE) -C $(REPO_ROOT) knowledge-workflow-check
 
 web:
 	@mkdir -p $(BUILD)

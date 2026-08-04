@@ -42,7 +42,7 @@ Daily commands live in each migrated course root:
 ```sh
 make export              # scoped graph sync + chapter .tex/.md snapshots
 make web-check           # local ignored HTML + basic UTF-8/structure check
-make                     # both of the above, plus secondary web entries
+make                     # sync + changed-file curation gate + all web entries
 ```
 
 For a Typst-first course, Typst is its authority. `export_course.py` compiles
@@ -119,7 +119,13 @@ python3 knowledge/kgd.py scan --file path/to/chapter.typ
 python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
 python3 knowledge/kgd.py sync --file path/to/chapter.typ
 python3 knowledge/kgd.py curate-check --file path/to/chapter.typ
+python3 knowledge/workflow.py
 ```
+
+The repository workflow classifies every supported note as one registered
+authority, one explicit non-authority tool/asset, or frozen legacy backlog. A
+new unregistered file or an edit to legacy backlog fails before export. Course
+`make` targets run this gate after their scoped synchronization.
 
 Direct Markdown site publication runs a format-wide version automatically:
 

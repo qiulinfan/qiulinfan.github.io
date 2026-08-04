@@ -6,17 +6,17 @@
 - [`blogs/`](blogs/): 日常的一些知识分享和闲聊. (保证都是碎碎念
 - [`skills/`](skills/)：个人积累和维护的 skills. (也有偷别人开源的, 会标明出处
 
-可复用的知识图谱蒸馏引擎通过跟踪 `main` 的 Git submodule 接入
+可复用的知识图谱蒸馏引擎通过 Git submodule 接入
 [`vendor/kgdistiller/`](vendor/kgdistiller/)；本仓库只保存个人知识源、图谱配置、
 确定性图谱快照与网站集成。首次克隆后运行：
 
 ```bash
-git submodule update --init --remote --merge
+git submodule update --init vendor/kgdistiller
 ```
 
-本地若存在相邻的 `../kgdistiller` 开发仓库，`knowledge/kgd.py` 会优先使用它；
-也可用 `KGDISTILLER_SRC` 显式指定源码目录。CI 部署前会主动更新 submodule 到
-远端 `main`。手动更新可运行 `make kgdistiller-update`。
+日常命令与 CI 都使用仓库提交中固定的 submodule revision，因此本地、干净克隆和
+Pages 构建使用同一引擎。开发调试时可用 `KGDISTILLER_SRC` 显式覆盖；升级引擎时
+运行 `make kgdistiller-update`，验收后提交新的 submodule pointer。
 
 个人主页、blog、notes、skills 页面和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。Skills 页面直接读取 [`skills/`](skills/) 下的 `SKILL.md` 权威源；全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
 
@@ -37,9 +37,15 @@ make blog-build
 知识图谱也可以只在本地浏览：
 
 ```bash
+make knowledge-workflow-check
 make knowledge-check
+make knowledge-context QUERY="conditional expectation"
 make knowledge-serve
 ```
+
+论文图谱的 GraphRAG 对齐、已知/未知比较、reviewed mapping 与两阶段提案流程见
+[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。项目级 `.codex/config.toml` 已把
+只读 kgdistiller MCP 接入 Codex；首次调用会从提交的图谱自动生成本地 SQLite 索引。
 
 首次使用或依赖变化后运行：
 

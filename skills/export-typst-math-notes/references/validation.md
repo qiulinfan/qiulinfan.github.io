@@ -6,6 +6,7 @@ For an affected Typst course, run:
 
 ```sh
 make -C "$repo_root" notes-source-check
+make -C "$repo_root" knowledge-workflow-check
 make
 make web-check
 make <secondary>-web-check   # when present
@@ -128,6 +129,12 @@ This deterministic check covers only explicit, already curated knowledge: every
 node defined by the selected file needs a nonempty entry, and every confirmed
 cross-file direct dependency needs a file-level ref marker. It never promotes
 titles, splits concepts, or infers relations.
+
+`knowledge-workflow-check` is the host closure gate. It requires unique source
+registration for new authorities, rejects edits to unregistered legacy notes,
+and runs file-level curation for every complete authority plus any changed
+pending authority. Untouched pending authorities remain an explicit migration
+baseline rather than weakening the rule for future edits.
 
 For a format-wide Markdown publication gate, use:
 

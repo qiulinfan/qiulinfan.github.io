@@ -39,9 +39,9 @@ test("the source registry publishes and lists only the selected notes", () => {
 	const markdownNotes = loadMarkdownNotes();
 	const cppNotes = markdownNotes.filter((note) => note.sourceId === "cs:cpp-programming");
 	const dataStructuresNotes = markdownNotes.filter((note) => note.sourceId === "cs:data-structures-algorithms");
-	assert.equal(cppNotes.length, 26);
+	assert.equal(cppNotes.length, 27);
 	assert.equal(dataStructuresNotes.length, 4);
-	assert.equal(cppNotes.some((note) => note.authority.endsWith("280-midterm-cheatsheet.md")), false);
+	assert.equal(cppNotes.some((note) => note.authority.endsWith("280-midterm-cheatsheet.md")), true);
 	assert.equal(dataStructuresNotes.every((note) => note.authority.includes("/docs/")), true);
 	assert.equal(markdownNotes.some((note) => /FinalReview|notes-project-optimization|\/README\.md$/.test(note.authority)), false);
 	assert.equal(markdownNotes.every((note) => note.heroImage === "/assets/backgrounds/one-dark-sakura-right-v3.webp"), true);
@@ -50,7 +50,7 @@ test("the source registry publishes and lists only the selected notes", () => {
 	assert.match(debuggerNote?.html ?? "", /\/_notes-assets\/cs-cpp-programming\/Assets\/image-20231223020225955\.png/);
 	const cppHome = cppNotes.find((note) => note.slug === "cs/cpp-programming");
 	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("01-Command-Line Interface-(CLI)")), true);
-	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("280-midterm-cheatsheet")), false);
+	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("280-midterm-cheatsheet")), true);
 	const dataStructuresHome = dataStructuresNotes.find((note) => note.slug === "cs/data-structures-algorithms");
 	assert.equal(dataStructuresHome?.navigation.some((heading) => heading.text === "Lec 24 (Knapsack and Floyd's algorithm)"), true);
 	assert.equal(dataStructuresHome?.navigation.some((heading) => heading.documentSlug === dataStructuresHome.slug), false);

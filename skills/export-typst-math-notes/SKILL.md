@@ -55,6 +55,13 @@ Set `knowledge_origin` to `personal-note` for the author's ordinary notes and
 to `research` for paper-derived or original-research entries. The website
 renders the former as circles and the latter as squares.
 
+Before authoring a new note, make its path match exactly one bounded source in
+`knowledge/sources.json`. `knowledge/workflow-policy.json` freezes the existing
+legacy rollout and explicitly classifies toolchain/assets; it is not a shortcut
+for new knowledge. A new unregistered `.md`, `.typ`, or `.tex`, or any edit to a
+legacy-unregistered note, must stop until the authority is registered and
+curated.
+
 Infer the adapter from each file suffix. Never ingest a Typst-generated
 Markdown snapshot as a second authority. Keep every file within one configured
 source root so scoped sync can preserve unrelated occurrences. `--file` accepts
@@ -114,16 +121,23 @@ Before export:
 6. apply one reviewed `qlkg-agent-delta-v2`;
 7. synchronize the same file and run `curate-check`.
 
-For research Markdown, search the existing graph for every candidate first.
-Known concepts become refs and are not regenerated; unknown concepts receive
-one authority plus a contextual structured entry. Entry bodies are written to
-per-authority shards, while `nodes.jsonl` stores only their paths.
+For research Markdown, compare the complete candidate graph against the
+external brain before editing identities. Run `agent align`, review every
+ambiguous candidate, persist accepted or rejected decisions with `reconcile
+alignment`, then run `agent compare` and `agent propose`. Known concepts become
+refs and are not regenerated; unknown concepts receive one reviewed authority
+plus a contextual structured entry. Never promote acronym or embedding
+similarity into identity, and never put paper-local abbreviations such as `AC`
+into global aliases. Entry bodies are written to per-authority shards, while
+`nodes.jsonl` stores only their paths. Follow the exact two-pass marker/delta
+sequence in `references/research-ingestion.md`.
 
 ```sh
 python3 knowledge/kgd.py scan --file path/to/file.md
 python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
 python3 knowledge/kgd.py sync --file path/to/file.md
 python3 knowledge/kgd.py curate-check --file path/to/file.md
+python3 knowledge/workflow.py
 ```
 
 Add one meaningful ref when a file directly uses an immediate prerequisite
@@ -235,7 +249,8 @@ Run only the affected scope, then the shared checks:
 PYTHONPATH=vendor/kgdistiller/src python3 -m unittest discover \
   -s vendor/kgdistiller/tests -v
 python3 -m unittest notes.math.toolchain.tests.test_multisource \
-  notes.scripts.test_source_policy
+  notes.scripts.test_source_policy knowledge.test_workflow
+make knowledge-workflow-check
 make knowledge-check
 make blog-check
 make blog-build

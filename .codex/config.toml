@@ -1,0 +1,6 @@
+[mcp_servers.kgdistiller]
+command = "python3"
+args = ["knowledge/kgd.py", "mcp"]
+cwd = "."
+required = false
+startup_timeout_sec = 20
