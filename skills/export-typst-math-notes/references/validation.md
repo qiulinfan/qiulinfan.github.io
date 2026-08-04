@@ -82,13 +82,13 @@ are valid and expected for interdisciplinary topics.
 For a changed-file workflow, preview first:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/file.md
+python3 knowledge/kgd.py scan --file path/to/file.md
 ```
 
 For a global foundation review, also run:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . audit
+python3 knowledge/kgd.py audit
 ```
 
 The audit reports deterministic curation coverage and topology without failing
@@ -98,7 +98,7 @@ for agent reading, never as permission to synthesize nodes or edges by script.
 After applying the reviewed agent delta and synchronizing the file, require:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . curate-check \
+python3 knowledge/kgd.py curate-check \
   --file path/to/<source-file>
 ```
 
@@ -110,7 +110,7 @@ titles, splits concepts, or infers relations.
 For a format-wide Markdown publication gate, use:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
+python3 knowledge/kgd.py publish --format markdown
 ```
 
 ## Repository boundary

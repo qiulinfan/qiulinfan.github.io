@@ -58,7 +58,7 @@
       }
     ]
   },
-  "generator": "knowledge/scripts/knowledge.py",
+  "generator": "kgdistiller",
   "graph_sha256": "83e22fa3340a10623312df26855bd403245a3e399beba543482f8d346dc745bc",
   "knowledge_origins": {
     "personal-note": 271

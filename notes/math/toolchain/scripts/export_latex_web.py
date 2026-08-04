@@ -38,9 +38,7 @@ def run_knowledge_command(command: list[str], *, purpose: str) -> None:
 def sync_knowledge_sources(sources: list[Path], repo_root: Path) -> None:
     base = [
         sys.executable,
-        str(repo_root / "knowledge/scripts/knowledge.py"),
-        "--repo-root",
-        str(repo_root),
+        str(repo_root / "knowledge/kgd.py"),
     ]
     command = [
         *base,

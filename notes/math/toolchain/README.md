@@ -2,8 +2,8 @@
 
 This is the shared build and presentation layer for Typst-first math notes.
 The repository-wide graph also accepts maintained Markdown and LaTeX authority;
-those format adapters live in `knowledge/scripts/knowledge.py`, while LaTeX web
-output reuses this toolchain through an ignored Typst intermediate.
+those format adapters live in the pinned `vendor/kgdistiller` submodule, while
+LaTeX web output reuses this toolchain through an ignored Typst intermediate.
 
 ```text
 toolchain/
@@ -106,16 +106,16 @@ knowledge website. Formal statements without `#kn` are not graph nodes.
 The changed-file workflow ends with scoped curation validation:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/chapter.typ
-python3 knowledge/scripts/knowledge.py --repo-root . apply knowledge/build/reviewed-delta.json
-python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/chapter.typ
-python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/chapter.typ
+python3 knowledge/kgd.py scan --file path/to/chapter.typ
+python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
+python3 knowledge/kgd.py sync --file path/to/chapter.typ
+python3 knowledge/kgd.py curate-check --file path/to/chapter.typ
 ```
 
 Direct Markdown site publication runs a format-wide version automatically:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
+python3 knowledge/kgd.py publish --format markdown
 ```
 
 It synchronizes every configured Markdown authority before checking entries and

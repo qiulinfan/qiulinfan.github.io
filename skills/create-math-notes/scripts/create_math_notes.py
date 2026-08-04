@@ -66,7 +66,8 @@ def validate_repo(repo: Path) -> None:
         repo / "notes/math/toolchain/math-aliases.typ",
         repo / "notes/math/toolchain/scripts/export_course.py",
         repo / "skills/export-typst-math-notes/scripts/check_web.py",
-        repo / "knowledge/scripts/knowledge.py",
+        repo / "knowledge/kgd.py",
+        repo / "vendor/kgdistiller/src/kgdistiller/cli.py",
         repo / "knowledge/sources.json",
     )
     missing = [str(path) for path in required if not path.is_file()]

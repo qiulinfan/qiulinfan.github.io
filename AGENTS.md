@@ -1,6 +1,8 @@
 # qlblog agent guidance
 
 - Preserve the `notes/`, `blogs/`, `skills/`, and `site/` separation documented in `README.md`.
+- The reusable knowledge graph engine is pinned as the `vendor/kgdistiller` Git submodule; personal sources, registry, graph snapshots, and site integration remain in this repository.
+- Run `git submodule update --init --recursive` before knowledge commands in a fresh checkout.
 - Blog source lives in `site/src/content/posts/` and is exposed through `blogs/posts/`.
 - Validate blog changes with `make blog-check` and `make blog-build`.
 - When the user asks to install or update AI agents, read `install/agent-stack.md` completely and follow its safety contract.

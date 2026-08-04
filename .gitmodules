@@ -1,0 +1,3 @@
+[submodule "vendor/kgdistiller"]
+	path = vendor/kgdistiller
+	url = https://github.com/qiulinfan/kgdistiller.git

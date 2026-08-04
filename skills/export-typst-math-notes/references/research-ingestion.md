@@ -17,8 +17,8 @@ For every candidate concept, derive its canonical English name and aliases,
 then search the current repository graph before authoring markers:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . search "canonical term"
-python3 knowledge/scripts/knowledge.py --repo-root . show "resolved node"
+python3 knowledge/kgd.py search "canonical term"
+python3 knowledge/kgd.py show "resolved node"
 ```
 
 - If the concept already resolves, treat it as known: use `[[canonical name]]`

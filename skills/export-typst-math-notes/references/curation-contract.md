@@ -12,8 +12,8 @@ statements, adjacent proofs, explanatory prose, and comparisons. Query the
 existing graph before editing:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . search "candidate"
-python3 knowledge/scripts/knowledge.py --repo-root . show "Candidate"
+python3 knowledge/kgd.py search "candidate"
+python3 knowledge/kgd.py show "Candidate"
 ```
 
 Preserve a user-authored authority marker as an accepted identity unless it conflicts with

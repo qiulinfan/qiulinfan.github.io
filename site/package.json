@@ -3,10 +3,10 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "python3 ../knowledge/scripts/knowledge.py --repo-root .. publish --format markdown && node scripts/sync-note-assets.mjs && astro dev",
-    "start": "python3 ../knowledge/scripts/knowledge.py --repo-root .. publish --format markdown && node scripts/sync-note-assets.mjs && astro dev",
+    "dev": "python3 ../knowledge/kgd.py publish --format markdown && node scripts/sync-note-assets.mjs && astro dev",
+    "start": "python3 ../knowledge/kgd.py publish --format markdown && node scripts/sync-note-assets.mjs && astro dev",
     "check": "astro check && node tests/theme-contract.test.mjs",
-    "build": "node tests/theme-contract.test.mjs && python3 ../knowledge/scripts/knowledge.py --repo-root .. publish --format markdown && node scripts/sync-note-assets.mjs && astro build && pagefind --site dist",
+    "build": "node tests/theme-contract.test.mjs && python3 ../knowledge/kgd.py publish --format markdown && node scripts/sync-note-assets.mjs && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "type-check": "tsc --noEmit --isolatedDeclarations",

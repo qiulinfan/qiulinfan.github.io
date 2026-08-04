@@ -3,8 +3,8 @@
 TYPST := typst
 TOOLCHAIN := ../toolchain
 SKILL := ../../../skills/export-typst-math-notes
-KNOWLEDGE := ../../../knowledge/scripts/knowledge.py
 REPO_ROOT := ../../..
+KGDISTILLER := python3 $(REPO_ROOT)/knowledge/kgd.py
 BUILD := build/typst
 EXPORTS := exports
 
@@ -13,7 +13,7 @@ all: release
 release: knowledge-sync web-check homeworks-web-check
 
 export:
-	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course probability
+	@$(KGDISTILLER) sync --course probability
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document notes=main.typ \
 		--document homeworks=homeworks.typ \
@@ -22,7 +22,7 @@ export:
 		--build $(BUILD)/export
 
 knowledge-sync:
-	@python3 $(KNOWLEDGE) --repo-root $(REPO_ROOT) sync --course probability
+	@$(KGDISTILLER) sync --course probability
 
 web:
 	@mkdir -p $(BUILD)

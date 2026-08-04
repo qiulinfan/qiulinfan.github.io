@@ -93,8 +93,8 @@ node or bundle several reusable concepts. Put separate markers around multiple
 concepts in one title. Keep synonyms as aliases of one node. Query first:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . search "candidate"
-python3 knowledge/scripts/knowledge.py --repo-root . show "Candidate"
+python3 knowledge/kgd.py search "candidate"
+python3 knowledge/kgd.py show "Candidate"
 ```
 
 Scripts may scan explicit markers, synchronize reviewed occurrences, and apply
@@ -120,10 +120,10 @@ one authority plus a contextual structured entry. Entry bodies are written to
 per-authority shards, while `nodes.jsonl` stores only their paths.
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . scan --file path/to/file.md
-python3 knowledge/scripts/knowledge.py --repo-root . apply knowledge/build/reviewed-delta.json
-python3 knowledge/scripts/knowledge.py --repo-root . sync --file path/to/file.md
-python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.md
+python3 knowledge/kgd.py scan --file path/to/file.md
+python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
+python3 knowledge/kgd.py sync --file path/to/file.md
+python3 knowledge/kgd.py curate-check --file path/to/file.md
 ```
 
 Add one meaningful ref when a file directly uses an immediate prerequisite
@@ -164,7 +164,7 @@ copies only referenced static assets:
 
 ```sh
 cd site
-python3 ../knowledge/scripts/knowledge.py --repo-root .. publish --format markdown
+python3 ../knowledge/kgd.py publish --format markdown
 node tests/note-sources.test.mjs
 corepack pnpm build
 ```
@@ -224,15 +224,16 @@ text.
 Run only the affected scope, then the shared checks:
 
 ```sh
-python3 -m unittest knowledge.tests.test_knowledge \
-  notes.math.toolchain.tests.test_multisource \
+PYTHONPATH=vendor/kgdistiller/src python3 -m unittest discover \
+  -s vendor/kgdistiller/tests -v
+python3 -m unittest notes.math.toolchain.tests.test_multisource \
   notes.scripts.test_source_policy
 make knowledge-check
 make blog-check
 make blog-build
 ```
 
-For a global foundation review, run `knowledge.py audit` and use its coverage
+For a global foundation review, run `python3 knowledge/kgd.py audit` and use its coverage
 and topology only to choose authorities to read. Never repair a metric without
 source evidence.
 

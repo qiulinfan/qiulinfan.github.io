@@ -1,4 +1,9 @@
-# qlkg-v2 knowledge graph contract
+# qlblog knowledge graph policy
+
+The reusable compiler, schema invariants, Agent Skill, and local browser live in
+the pinned [`vendor/kgdistiller`](../vendor/kgdistiller/) submodule. This file is
+the host policy for qlblog's personal sources, taxonomy, curation, and site
+integration.
 
 `qlkg-v2` is the repository-wide, agent-maintained knowledge graph. Authored
 documents remain readable on their own; the graph adds identity, hierarchy,
@@ -230,12 +235,12 @@ The same compiler supports repository, subject, course, directory, and file
 scopes:
 
 ```sh
-python3 knowledge/scripts/knowledge.py --repo-root . sync
-python3 knowledge/scripts/knowledge.py --repo-root . sync --subject math
-python3 knowledge/scripts/knowledge.py --repo-root . sync --course measure-theory
-python3 knowledge/scripts/knowledge.py --repo-root . sync \
+python3 knowledge/kgd.py sync
+python3 knowledge/kgd.py sync --subject math
+python3 knowledge/kgd.py sync --course measure-theory
+python3 knowledge/kgd.py sync \
   --file notes/cs/computer-organization
-python3 knowledge/scripts/knowledge.py --repo-root . sync \
+python3 knowledge/kgd.py sync \
   --file notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ
 ```
 
@@ -301,7 +306,7 @@ An agent delta has this shape:
 knowledge/
 ├── SPEC.md
 ├── sources.json
-├── scripts/knowledge.py
+├── kgd.py                    # thin host adapter to vendor/kgdistiller
 ├── graph/
 │   ├── manifest.json
 │   ├── nodes.jsonl
@@ -311,7 +316,6 @@ knowledge/
 │   └── entries/
 │       ├── by-source/<authority-filename-with-extension>.jsonl
 │       └── meta/<subject>/<course>.jsonl
-├── tests/
 └── build/knowledge.sqlite       # ignored
 ```
 
@@ -337,11 +341,11 @@ Run:
 
 ```sh
 make knowledge-check
-python3 knowledge/scripts/knowledge.py --repo-root . audit
+python3 knowledge/kgd.py audit
 make knowledge-search QUERY="conditional expectation"
-python3 knowledge/scripts/knowledge.py --repo-root . show "Dominated convergence theorem"
-python3 knowledge/scripts/knowledge.py --repo-root . curate-check --file path/to/file.md
-python3 knowledge/scripts/knowledge.py --repo-root . publish --format markdown
+python3 knowledge/kgd.py show "Dominated convergence theorem"
+python3 knowledge/kgd.py curate-check --file path/to/file.md
+python3 knowledge/kgd.py publish --format markdown
 ```
 
 `audit` is a deterministic readiness report: it measures entry coverage by
