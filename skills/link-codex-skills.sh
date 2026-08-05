@@ -124,10 +124,56 @@ ensure_global_agents_link() {
   printf 'ok: %s -> %s\n' "$codex_agents_file" "$global_agents_source"
 }
 
+skill_manifests() {
+  (
+    cd "$skills_repo_dir"
+    find . -type f -name SKILL.md ! -path '*/.*/*' -print | LC_ALL=C sort
+  )
+}
+
+check_flat_skill_names() {
+  duplicate_names=$(
+    skill_manifests |
+      awk -F/ '{ print $(NF - 1) }' |
+      LC_ALL=C sort |
+      uniq -d
+  )
+  [ -z "$duplicate_names" ] || {
+    printf 'conflict: duplicate Skill directory names cannot be flattened:\n%s\n' "$duplicate_names" >&2
+    exit 1
+  }
+
+  duplicate_metadata_names=$(
+    skill_manifests | while IFS= read -r relative_manifest; do
+      sed -n 's/^name:[[:space:]]*//p' "$skills_repo_dir/${relative_manifest#./}" | head -n 1
+    done | LC_ALL=C sort | uniq -d
+  )
+  [ -z "$duplicate_metadata_names" ] || {
+    printf 'conflict: duplicate Skill names are ambiguous:\n%s\n' "$duplicate_metadata_names" >&2
+    exit 1
+  }
+}
+
+remove_stale_repository_skill_links() {
+  for existing in "$codex_skills_dir"/*; do
+    [ -L "$existing" ] || continue
+    link_target=$(readlink "$existing")
+    case "$link_target" in
+      "$skills_repo_dir"/*)
+        if [ ! -f "$link_target/SKILL.md" ]; then
+          unlink "$existing"
+          printf 'removed stale repository Skill link: %s\n' "$existing"
+        fi
+        ;;
+    esac
+  done
+}
+
 link_visible_skills() {
-  linked_count=0
-  for manifest in "$skills_repo_dir"/*/SKILL.md; do
-    [ -f "$manifest" ] || continue
+  linked_count=$(skill_manifests | wc -l | tr -d ' ')
+  skill_manifests | while IFS= read -r relative_manifest; do
+    [ -n "$relative_manifest" ] || continue
+    manifest="$skills_repo_dir/${relative_manifest#./}"
     source_dir=${manifest%/SKILL.md}
     entry_name=$(basename "$source_dir")
     destination="$codex_skills_dir/$entry_name"
@@ -147,20 +193,6 @@ link_visible_skills() {
     else
       ln -s "$source_dir" "$destination"
     fi
-    linked_count=$((linked_count + 1))
-  done
-
-  for existing in "$codex_skills_dir"/*; do
-    [ -L "$existing" ] || continue
-    resolved=$(realpath "$existing" 2>/dev/null || true)
-    case "$resolved" in
-      "$skills_repo_dir"/*)
-        if [ ! -f "$resolved/SKILL.md" ]; then
-          unlink "$existing"
-          printf 'removed stale repository Skill link: %s\n' "$existing"
-        fi
-        ;;
-    esac
   done
 
   printf 'ok: linked %s visible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
@@ -170,4 +202,6 @@ ensure_real_codex_skills_dir
 remove_legacy_system_bridge
 remove_legacy_lock_bridge
 ensure_global_agents_link
+check_flat_skill_names
+remove_stale_repository_skill_links
 link_visible_skills

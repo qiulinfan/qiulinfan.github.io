@@ -1,6 +1,10 @@
 # Skills
 
-本目录是个人与社区 Skills 的权威副本，并随 qlblog 提交和同步。
+本目录是个人与社区 Skills 的权威副本，并随 qlblog 提交和同步。普通个人 Skill
+一律先放在本目录顶层；现有套件是 `gamemaker/`、`kgdistiller/` 与 `notes/`，保持其
+当前成员不动。以后只有用户明确指定时，才新建套件或把 Skills 放入套件，不根据主题
+自动归类。从开源网站下载的外部 Skills 统一放在 `community/`，供 Codex 使用但不在
+个人主页发布。目录层级不改变 Skill 名称或 Codex 中的扁平清单。
 `$CODEX_HOME/skills`（默认 `~/.codex/skills`）必须是 Codex 自己管理的真实目录；
 仓库中的每个可见 Skill 分别软链接进去。Codex 生成的 `.system/` 只保留在该真实
 目录中，不复制、不定制、不发布，也不纳入本仓库版本管理。
@@ -10,19 +14,28 @@
 务必运行 `./skills/link-codex-skills.sh`，把它导入为 `$CODEX_HOME/AGENTS.md`，同时
 重建逐 Skill 链接；否则内置 `skill-creator` 不会自动获得本仓库的个人维护协议。
 
-`query-kgdistiller` 与 `ingest-kgdistiller` 是例外：本目录保存供 Codex 和网站发现
-的薄入口，规范正文随 `vendor/kgdistiller` submodule 维护。更新 kgdistiller 会同时
-更新这两个 Skill 的实际行为，入口不得复制或改写其长工作流。
+`kgdistiller/` 是知识图谱系统的配套 Skill 套件。其中 `query-kgdistiller` 与
+`ingest-kgdistiller` 是薄入口：本目录只保存供 Codex 和网站发现的元数据与委派说明，
+规范正文随 `vendor/kgdistiller` submodule 维护。更新 kgdistiller 会同时更新这两个
+Skill 的实际行为，入口不得复制或改写其长工作流。
 
 多个 Skill 的编排关系、流程图和简短说明统一维护在 [WORKFLOWS.md](./WORKFLOWS.md)；
-Skills 页面直接读取本 README 的能力清单与该文件，不另外维护一份页面数据。
+Skills 页面只读取本 README 的“个人维护”清单与该文件，不发布“社区来源”内容，也
+不另外维护一份页面数据。
 
 ## 仓库协议
 
-- 新建个人 skill 时，直接创建在本目录下。
+- 新建个人 Skill 时一律先直接创建在本目录顶层。保留已有套件，但不要根据 Skill
+  的主题、名称、依赖或看似所属的系统自动归类。
+- 只有当用户明确指定某个分类时，才新建套件目录，或把一个或多个 Skills 放入、
+  移入、移出套件。不得仅凭推断使用已有套件。
+- 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即重新运行
+  `./skills/link-codex-skills.sh`；脚本成功前不得视为重分类完成。
+- 从开源网站下载的外部 Skill 放入 `community/`，记录准确来源，并保持网站排除。
 - 每次创建或实质更新 skill，都要更新本 README 中对应的一句话用途说明。
 - 新建或调整跨 Skill 工具流时，直接编辑 `WORKFLOWS.md` 中的 Markdown 与 Mermaid。
-- skill 目录名通常与 `SKILL.md` 的 `name` 一致；社区包可保留版本化目录名。
+- Skill 的 `name` 与末级目录名都必须在整个集合中唯一；目录名通常与 `name` 一致，
+  社区包可保留版本化目录名。
 - 永远不要在本目录创建、复制或提交 `.system/`；它是 Codex 生成状态。
 - skill 内只保留执行所需文件，不为单个 skill 添加额外 README。
 - 完成后运行 skill 校验、检查本 README，并审阅 qlblog Git diff。
@@ -34,13 +47,15 @@ Skills 页面直接读取本 README 的能力清单与该文件，不另外维�
 目标布局把 Codex 生成状态与仓库权威内容彻底分开：
 
 ```text
-<qlblog>/skills/<name>/                 # 个人与社区 Skill，Git 权威副本
+<qlblog>/skills/<name>/                 # 普通个人 Skill，默认位置
+<qlblog>/skills/<suite>/<name>/         # 明确定义系统的配套 Skill
+<qlblog>/skills/community/<name>/       # 外部下载 Skill，不进入网站
 <qlblog>/install/codex/AGENTS.md         # 个人全局 Codex 约束，Git 权威副本
 
 <CODEX_HOME>/AGENTS.md            -> <qlblog>/install/codex/AGENTS.md
 <CODEX_HOME>/skills/                  # Codex 拥有的真实目录
 <CODEX_HOME>/skills/.system/          # Codex 自动生成和更新，不进 Git
-<CODEX_HOME>/skills/<name>         -> <qlblog>/skills/<name>
+<CODEX_HOME>/skills/<name>         -> 上述任一仓库 Skill 目录
 ```
 
 `CODEX_HOME` 未设置时，默认使用用户主目录下的 `.codex`。安装或修复后重新打开
@@ -148,15 +163,43 @@ if ($ExistingLegacySystem) {
     Remove-Item -LiteralPath $LegacySystem
 }
 
-Get-ChildItem -LiteralPath $RepoSkills -Directory | Where-Object {
-    Test-Path (Join-Path $_.FullName "SKILL.md")
-} | ForEach-Object {
-    $Destination = Join-Path $CodexSkills $_.Name
+$RepoSkillManifests = @(Get-ChildItem -LiteralPath $RepoSkills -Filter "SKILL.md" -File -Recurse | Where-Object {
+    $RelativeDirectory = [System.IO.Path]::GetRelativePath($RepoSkills, $_.Directory.FullName)
+    -not (($RelativeDirectory -split '[\\/]') | Where-Object { $_.StartsWith('.') })
+})
+$DuplicateNames = @($RepoSkillManifests | Group-Object { $_.Directory.Name } | Where-Object Count -gt 1)
+if ($DuplicateNames) {
+    throw "Duplicate Skill directory names cannot be flattened: $($DuplicateNames.Name -join ', ')"
+}
+$SkillNames = @($RepoSkillManifests | ForEach-Object {
+    $Match = Select-String -LiteralPath $_.FullName -Pattern '^name:\s*(.+)\s*$' | Select-Object -First 1
+    if (-not $Match) {
+        throw "Skill is missing frontmatter name: $($_.FullName)"
+    }
+    $Match.Matches[0].Groups[1].Value.Trim()
+})
+$DuplicateSkillNames = @($SkillNames | Group-Object | Where-Object Count -gt 1)
+if ($DuplicateSkillNames) {
+    throw "Duplicate Skill names are ambiguous: $($DuplicateSkillNames.Name -join ', ')"
+}
+
+$RepoSkillsPrefix = [System.IO.Path]::GetFullPath($RepoSkills) + [System.IO.Path]::DirectorySeparatorChar
+Get-ChildItem -LiteralPath $CodexSkills -Force | Where-Object LinkType | ForEach-Object {
+    $Target = Resolve-SymbolicLinkTarget $_
+    if ($Target.StartsWith($RepoSkillsPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
+        -not (Test-Path -LiteralPath (Join-Path $Target "SKILL.md"))) {
+        Remove-Item -LiteralPath $_.FullName
+    }
+}
+
+$RepoSkillManifests | ForEach-Object {
+    $SourceDirectory = $_.Directory
+    $Destination = Join-Path $CodexSkills $SourceDirectory.Name
     $Existing = Get-Item -LiteralPath $Destination -Force -ErrorAction SilentlyContinue
     if (-not $Existing) {
-        New-Item -ItemType SymbolicLink -Path $Destination -Target $_.FullName | Out-Null
+        New-Item -ItemType SymbolicLink -Path $Destination -Target $SourceDirectory.FullName | Out-Null
     } elseif (-not $Existing.LinkType -or
-              (Resolve-SymbolicLinkTarget $Existing) -ne [System.IO.Path]::GetFullPath($_.FullName)) {
+              (Resolve-SymbolicLinkTarget $Existing) -ne [System.IO.Path]::GetFullPath($SourceDirectory.FullName)) {
         throw "Existing Skill conflicts with repository authority: $Destination"
     }
 }
@@ -185,13 +228,16 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 日常修改与同步
 
-- 修改个人或社区 skill：编辑 `skills/<skill-name>/`，并按需更新本 README 的
-  一句话说明与第三方出处。
+- 修改普通个人 Skill：编辑 `skills/<skill-name>/`；修改套件或社区 Skill：编辑
+  `skills/<suite>/<skill-name>/`。按需更新本 README 的一句话说明与第三方出处。
+- 重新分类或移动 Skill 的父目录后，必须运行 `./skills/link-codex-skills.sh`，清理
+  旧链接并重建 Codex 的扁平 Skill 清单。
 - 不修改或版本管理 system Skill；让 Codex 维护 `$CODEX_HOME/skills/.system`。
 - 修改后校验：
 
   ```sh
   python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" skills/<skill-name>
+  # 套件 Skill 则改用：skills/<suite>/<skill-name>
   git diff --check
   git status --short -- skills
   ```
@@ -206,23 +252,37 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ## 个人维护
 
-- [build-unity-scene](./build-unity-scene/)：读取 Unity 项目架构与关卡需求，按既有边界创建或修改场景并完成验证。
-- [configure-unity-mcp](./configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
-- [create-latex-math-notes](./create-latex-math-notes/)：新建使用 ElegantBook 语法和 LaTeX-to-Typst 适配器的轻量数学笔记项目。
-- [create-math-notes](./create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
-- [discuss-game-design](./discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
-- [extract-and-export-notes](./extract-and-export-notes/)：从跨领域 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
-- [extract-paper-concepts](./extract-paper-concepts/)：从网页、DOI 或标题找到规范 PDF，逐页核验并预处理为无图片、图表可追溯的 TeX，再查询个人知识库并生成默认不合并的联邦概念图。
-- [ingest-kgdistiller](./ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
-- [query-kgdistiller](./query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
-- [play-unity-game](./play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
+### Gamemaker 套件
+
+- [build-unity-scene](./gamemaker/build-unity-scene/)：读取 Unity 项目架构与关卡需求，按既有边界创建或修改场景并完成验证。
+- [configure-unity-mcp](./gamemaker/configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
+- [discuss-game-design](./gamemaker/discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
+- [play-unity-game](./gamemaker/play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
+- [search-game-art](./gamemaker/search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
+
+### kgdistiller 套件
+
+- [extract-and-export-notes](./kgdistiller/extract-and-export-notes/)：从跨领域 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
+- [extract-paper-concepts](./kgdistiller/extract-paper-concepts/)：从网页、DOI 或标题找到规范 PDF，逐页核验并预处理为无图片、图表可追溯的 TeX，再查询个人知识库并生成默认不合并的联邦概念图。
+- [ingest-kgdistiller](./kgdistiller/ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
+- [query-kgdistiller](./kgdistiller/query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
+- [trace-concept-lineage](./kgdistiller/trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
+
+### 笔记项目
+
+- [create-latex-math-notes](./notes/create-latex-math-notes/)：新建使用 ElegantBook 语法和 LaTeX-to-Typst 适配器的轻量数学笔记项目。
+- [create-math-notes](./notes/create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
+
+### 全局 Skills
+
 - [run-workflow-with-agents](./run-workflow-with-agents/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的基础 agent 为默认，并可按 workflow/skill 路由，再用 Claude Code、Codex 或 OpenCode 的原生单 worker / coordinator + workers 机制执行生产工作流。
-- [search-game-art](./search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
 - [test-skill-with-agent](./test-skill-with-agent/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的 Claude Code、Codex 或 OpenCode 基础 agent（或可选 skill 路由）运行隔离 trials，支持 smoke、回归、负向、安全、重复稳定性和有界并发压力测试。
-- [trace-concept-lineage](./trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
 
 ## 社区来源
 
-- [find-skill-skillhub-1.0.2](./find-skill-skillhub-1.0.2/)：在 SkillHub 按关键词和分类发现、筛选并推荐 skills。
-- [mainpdf](./mainpdf/)：编辑、转换、OCR、拆分、合并并提取 PDF 的文字、表格和图片。
-- [mermaid-diagram-1.0.0](./mermaid-diagram-1.0.0/)：把需求或文字描述转换为 Mermaid 流程图、架构图、时序图或思维导图。
+本节记录外部下载 Skill 的来源与用途，仅供仓库维护和 Codex 发现；网站构建明确排除
+整个 `community/` 目录。
+
+- [find-skill-skillhub-1.0.2](./community/find-skill-skillhub-1.0.2/)：在 SkillHub 按关键词和分类发现、筛选并推荐 skills。
+- [mainpdf](./community/mainpdf/)：编辑、转换、OCR、拆分、合并并提取 PDF 的文字、表格和图片。
+- [mermaid-diagram-1.0.0](./community/mermaid-diagram-1.0.0/)：把需求或文字描述转换为 Mermaid 流程图、架构图、时序图或思维导图。

@@ -1,6 +1,12 @@
 ---
 name: mermaid-diagram
-description: Generate Mermaid diagrams for product managers and developers. Use when: (1) creating flowcharts, system architecture diagrams, sequence diagrams, or mind maps, (2) converting text descriptions or PRDs into visual diagrams, (3) drawing user journey maps, state machines, or ER diagrams, (4) any request that mentions "画图", "流程图", "架构图", "时序图", "脑图", "mermaid". Output valid Mermaid code blocks.
+description: >-
+  Generate Mermaid diagrams for product managers and developers. Use when:
+  (1) creating flowcharts, system architecture diagrams, sequence diagrams, or
+  mind maps, (2) converting text descriptions or PRDs into visual diagrams,
+  (3) drawing user journey maps, state machines, or ER diagrams, or (4) handling
+  any request that mentions "画图", "流程图", "架构图", "时序图", "脑图", or
+  "mermaid". Output valid Mermaid code blocks.
 ---
 
 # Mermaid Diagram Generator

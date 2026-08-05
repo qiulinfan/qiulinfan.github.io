@@ -23,7 +23,7 @@ and first-chapter title. Never overwrite an existing directory.
 From the qlblog repository root, run:
 
 ```sh
-python3 skills/create-math-notes/scripts/create_math_notes.py \
+python3 skills/notes/create-math-notes/scripts/create_math_notes.py \
   functional-analysis \
   --title "Functional Analysis" \
   --course "MATH 501" \

@@ -19,12 +19,16 @@ const skillsRoot = resolve(repositoryRoot, "skills");
 const skillsReadme = resolve(skillsRoot, "README.md");
 const workflowsDocument = resolve(skillsRoot, "WORKFLOWS.md");
 const sourceBase = "https://github.com/qiulinfan/qiulinfan.github.io/blob/main";
+const unpublishedSkillRoots = new Set([resolve(skillsRoot, "community")]);
 
 function skillFiles(directory: string): string[] {
 	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
 		if (entry.name.startsWith(".")) return [];
 		const path = resolve(directory, entry.name);
-		if (entry.isDirectory()) return skillFiles(path);
+		if (entry.isDirectory()) {
+			if (unpublishedSkillRoots.has(path)) return [];
+			return skillFiles(path);
+		}
 		return entry.name === "SKILL.md" ? [path] : [];
 	});
 }
@@ -96,17 +100,14 @@ function markdownSection(source: string, heading: string): string {
 }
 
 function linkedSkillIds(markdown: string): string[] {
-	return [...markdown.matchAll(/\]\(\.\/([^/)]+)\/\)/g)].map(
+	return [...markdown.matchAll(/\]\(\.\/([^\s)]+)\/\)/g)].map(
 		(match) => match[1],
 	);
 }
 
 export function loadSkillCatalogMarkdown(): string {
 	const source = readFileSync(skillsReadme, "utf8");
-	return [
-		markdownSection(source, "个人维护"),
-		markdownSection(source, "社区来源"),
-	].join("\n\n");
+	return markdownSection(source, "个人维护");
 }
 
 export function loadOwnedSkills(): PublishedSkill[] {

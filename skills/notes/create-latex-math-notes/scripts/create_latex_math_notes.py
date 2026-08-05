@@ -73,11 +73,18 @@ def render(template: str, values: dict[str, str]) -> str:
     return template
 
 
+def default_repo_root() -> Path:
+    for candidate in Path(__file__).resolve().parents:
+        if (candidate / "AGENTS.md").is_file() and (candidate / "notes/math").is_dir():
+            return candidate
+    raise CreateError("cannot locate the qlblog repository root")
+
+
 def create_project(args: argparse.Namespace) -> tuple[Path, Path]:
     if not SLUG_RE.fullmatch(args.slug) or args.slug == "toolchain":
         raise CreateError("slug must be lowercase hyphen-case and cannot be 'toolchain'")
 
-    repo = (args.repo_root or Path(__file__).resolve().parents[3]).resolve()
+    repo = (args.repo_root or default_repo_root()).resolve()
     math_root = repo / "notes/math"
     if not math_root.is_dir():
         raise CreateError(f"missing qlblog mathematics root: {math_root}")

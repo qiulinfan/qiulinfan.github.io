@@ -65,7 +65,7 @@ def validate_repo(repo: Path) -> None:
         repo / "notes/math/toolchain/qlnotes.typ",
         repo / "notes/math/toolchain/math-aliases.typ",
         repo / "notes/math/toolchain/scripts/export_course.py",
-        repo / "skills/extract-and-export-notes/scripts/check_web.py",
+        repo / "skills/kgdistiller/extract-and-export-notes/scripts/check_web.py",
         repo / "knowledge/kgd.py",
         repo / "vendor/kgdistiller/src/kgdistiller/cli.py",
         repo / "knowledge/sources.json",
@@ -83,6 +83,13 @@ def canonical_site_root(registry: Path) -> str:
         if marker in web:
             return web.split(marker, 1)[0]
     raise CreateError("cannot derive the canonical site root from knowledge/sources.json")
+
+
+def default_repo_root() -> Path:
+    for candidate in Path(__file__).resolve().parents:
+        if (candidate / "AGENTS.md").is_file() and (candidate / "notes/math").is_dir():
+            return candidate
+    raise CreateError("cannot locate the qlblog repository root")
 
 
 def new_source(slug: str, site_root: str) -> dict[str, object]:
@@ -134,7 +141,7 @@ def create_course(args: argparse.Namespace) -> tuple[Path, Path]:
     if not SLUG_RE.fullmatch(args.slug) or args.slug == "toolchain":
         raise CreateError("slug must be lowercase hyphen-case and cannot be 'toolchain'")
 
-    repo = (args.repo_root or Path(__file__).resolve().parents[3]).resolve()
+    repo = (args.repo_root or default_repo_root()).resolve()
     validate_repo(repo)
     destination = repo / "notes/math" / args.slug
     if destination.exists():

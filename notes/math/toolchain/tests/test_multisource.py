@@ -41,7 +41,7 @@ class MultiSourceExportTest(unittest.TestCase):
     def test_starter_and_export_elegantbook_surfaces_are_synchronized(self) -> None:
         export_class = (TOOLCHAIN / "latex/elegantbook.cls").read_text(encoding="utf-8")
         starter_class = (
-            REPO_ROOT / "skills/create-latex-math-notes/assets/course/elegantbook.cls"
+            REPO_ROOT / "skills/notes/create-latex-math-notes/assets/course/elegantbook.cls"
         ).read_text(encoding="utf-8")
 
         self.assertEqual("".join(export_class.split()), "".join(starter_class.split()))

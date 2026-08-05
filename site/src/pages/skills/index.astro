@@ -14,7 +14,7 @@ const ownedIds = new Set(ownedSkills.map((skill) => skill.id));
 const publishedById = new Map(
 	publishedSkills.map((skill) => [skill.id, skill]),
 );
-const skillAnchor = (id: string) => `skill-${id.replace(/[^a-z0-9]+/gi, "-")}`;
+const skillAnchor = (name: string) => `skill-${name.replace(/[^a-z0-9]+/gi, "-")}`;
 
 const markdown = new MarkdownIt({
 	html: false,
@@ -23,10 +23,10 @@ const markdown = new MarkdownIt({
 });
 
 function resolveCatalogLinks(source: string): string {
-	return source.replace(/\]\(\.\/([^/)]+)\/\)/g, (match, id: string) => {
+	return source.replace(/\]\(\.\/([^\s)]+)\/\)/g, (match, id: string) => {
 		const skill = publishedById.get(id);
 		if (!skill) return match;
-		const href = ownedIds.has(id) ? `#${skillAnchor(id)}` : skill.sourceHref;
+		const href = ownedIds.has(id) ? `#${skillAnchor(skill.name)}` : skill.sourceHref;
 		return `](${href})`;
 	});
 }
@@ -105,7 +105,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-index" class="index-section" data-pagefind-body>
 			<header class="section-header">
 				<div><span>01 / README</span><h2>Skill 导航</h2></div>
-				<p>简介以 <code>skills/README.md</code> 为权威来源。自有 Skill 链到本页详情，社区 Skill 链到它的来源文件。</p>
+				<p>简介以 <code>skills/README.md</code> 的“个人维护”清单为权威来源；<code>community/</code> 中的外部 Skills 不发布到本站。</p>
 			</header>
 			<div class="markdown-panel catalog-markdown" set:html={catalogHtml} />
 		</section>
@@ -134,11 +134,11 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-details" class="details-section">
 			<header class="section-header">
 				<div><span>03 / OWNED SKILLS</span><h2>自有 Skill 详情</h2></div>
-				<p>这里只展示“个人维护”清单中的 Skill。社区 Skill 已在第一层提供来源链接，不重复展开。</p>
+				<p>这里只展示“个人维护”清单中的 Skill；外部下载的 community Skills 不进入任何主页层级。</p>
 			</header>
 			<div class="skill-list" data-pagefind-body aria-label="Personally maintained Agent Skills">
 				{ownedSkills.map((skill, index) => (
-					<article class="skill-card" id={skillAnchor(skill.id)}>
+					<article class="skill-card" id={skillAnchor(skill.name)}>
 						<header>
 							<span>{String(index + 1).padStart(2, "0")}</span>
 							<code>{skill.id}</code>

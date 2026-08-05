@@ -35,6 +35,9 @@ class ProfileError(RuntimeError):
 
 
 def default_profile_path() -> Path:
+    for candidate in Path(__file__).resolve().parents:
+        if candidate.name == "skills":
+            return candidate / CACHE_NAME
     return Path(__file__).resolve().parents[2] / CACHE_NAME
 
 

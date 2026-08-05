@@ -21,7 +21,7 @@ course directory.
 From the qlblog repository root, run:
 
 ```sh
-python3 skills/create-latex-math-notes/scripts/create_latex_math_notes.py \
+python3 skills/notes/create-latex-math-notes/scripts/create_latex_math_notes.py \
   complex-analysis \
   --title "Complex Analysis" \
   --subtitle "Course notes" \
