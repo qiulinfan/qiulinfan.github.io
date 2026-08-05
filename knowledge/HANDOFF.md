@@ -4,7 +4,7 @@
 >
 > 覆盖仓库：`kgdistiller`、`qlblog`、后续验收仓库 `solvablemodel`
 >
-> 当前阶段：事务 ingest、笔记 E2E、默认论文联邦快照、10 万节点压测和发布准备已经完成；论文显式导入与公共发布等待用户授权。
+> 当前阶段：事务 ingest、查询 API 和确定性笔记 E2E 已完成；本任务明确不导入论文知识、不写回论文 marker、不进行生产发布。剩余关键工作是闭合真实 Agent 笔记流程，并把论文联邦快照做成可验证产品入口。
 
 本文是当前项目状态的唯一交接入口。它回答四个问题：我们最终要做什么，哪些语义不能改变，两个仓库已经实现了什么，下一位执行者应按什么顺序继续。
 
@@ -12,6 +12,7 @@
 
 - [职责拆分需求文档](../site/src/content/posts/kgdistiller-skill-separation-requirements.md)：保存用户原始要求、已经确认的理解和四 Skill 方案；该文已经发布。
 - [qlblog 工作流](WORKFLOW.md)：面向日常笔记和论文操作的短版说明。
+- [非阻塞质量与性能 TODO](TODO.md)：记录不影响当前功能拆分验收的性能、质量和测试债务。
 - [qlblog 图谱策略](SPEC.md)：个人知识源、marker、taxonomy、curation 和网页策略。
 - [kgdistiller Agentic Knowledge Base spec](../vendor/kgdistiller/docs/agentic-knowledge-base-spec.md)：snapshot、索引、GraphRAG、MCP、安全和阶段设计。
 - [kgdistiller graph contract](../vendor/kgdistiller/docs/graph-contract.md)：节点身份、来源和确定性图谱约束。
@@ -607,13 +608,34 @@ qlblog `codex/transactional-ingest` 的集成提交 `24114b3` 已完成；当前
 指向 `0406b8f`，本节已随之刷新。
 仍须先发布 kgdistiller，再发布 qlblog；当前两个分支都没有远程 push/tag/package release。
 
-### 仍需用户决策或外部授权
+### 本任务已确定的边界
 
-1. Phase C2：用户从 C02、C07、C09、C12、C15、C16、C17、C19、C20 中明确选择要
-   导入 qlblog research authority 的节点；C04 只作为
-   `personal:conditional-expectation` ref；10 个 uncertain 节点不得自动导入。
-2. 是否把 marker 写回 solvablemodel 论文 source；默认没有写回。
-3. 是否 push kgdistiller、发布 0.3.0/tag/package，再按顺序 push/publish qlblog。
+1. 不把 C02、C07、C09、C12、C15、C16、C17、C19、C20 或其他论文节点导入
+   qlblog personal graph/research authority。
+2. 不把 marker 写回 solvablemodel 论文 source。
+3. 不 push、tag、发布 package 或执行生产部署；用户会在功能完成后另行测试。
 
-当前边界：**事务 ingest、笔记 E2E、默认论文联邦快照、100k 压测和 release preparation
-已经实现；显式论文导入和实际公共发布等待用户选择/授权。**
+### 四 Skill 功能审计
+
+- 版本管理通过：四个 discovery Skill 和 `agents/openai.yaml` 都是 qlblog tracked files；
+  query/ingest 的 canonical 内容由 tracked submodule gitlink `0406b8f` 固定；
+  `~/.codex/skills` 是指向 qlblog `skills/` 的整目录 symlink，没有独立漂移副本。
+- query 通过独立真实 Agent 测试：一次 batch resolve/alignment/comparison 正确得到
+  `partial/new/uncertain`，ambiguity 没有被提升成 identity，workspace guard 为零修改。
+- ingest 通过独立真实 Agent 测试：在 disposable fixture 中完成 plan → review → apply，
+  canonical receipt digest 和最终 status/graph check 独立复验通过。
+- 笔记确定性 E2E 覆盖 staged、unstaged、untracked、rename、delete、三种 authority、
+  known/new/partial 和 review stop；真实 exporter Agent 能构造并查询合法 candidate，但
+  现有真实 run 因 uncertain 正确停止，因此还没有证明一次 Agent session 能继续完成
+  source patch → ingest receipt → web export。
+- 论文 extractor 的两个真实 Agent run 都未在边界内完成 inventory；此外 solvablemodel
+  的 `qlkg-federated-paper-snapshot-v1` 是手工组合产物，kgdistiller 当前没有该 schema、
+  builder 或 validator，`candidate validate` 会报 `unsupported snapshot schema`。
+
+当前功能性缺口只保留两项：
+
+1. 为笔记 Skill 增加一个无歧义 disposable fixture 的真实 Agent 全闭环验收；
+2. 实现并验证 deterministic federated-paper snapshot builder/schema，然后让论文 Skill
+   在真实 Agent 运行中稳定完成 candidate → query → status-sensitive inventory → snapshot。
+
+性能、精度、扩展压测和生产前验证不属于这两个功能阻塞，统一记录在 [`TODO.md`](TODO.md)。
