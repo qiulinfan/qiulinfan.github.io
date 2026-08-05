@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -61,37 +62,143 @@ def render_pages(source: Path, destination: Path, dpi: int) -> list[Path]:
     return sorted(rendered)
 
 
-def extract_pages(source: Path, destination: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    try:
-        import pdfplumber  # type: ignore[import-not-found]
-    except ImportError as error:
-        raise PrepareError("pdfplumber is required for per-page extraction") from error
+def text_record(
+    *,
+    page_number: int,
+    extracted: str,
+    text_path: Path,
+    destination: Path,
+    width: float | None,
+    height: float | None,
+    embedded_images: int | None,
+) -> dict[str, Any]:
+    text_path.write_text(extracted.rstrip() + "\n", encoding="utf-8")
+    compact = "".join(extracted.split())
+    replacement_count = extracted.count("\ufffd")
+    return {
+        "page": page_number,
+        "width": width,
+        "height": height,
+        "text_path": text_path.relative_to(destination.parent).as_posix(),
+        "extracted_characters": len(compact),
+        "replacement_characters": replacement_count,
+        "embedded_images": embedded_images,
+        "needs_ocr_or_visual_transcription": (
+            len(compact) < 80 or replacement_count > max(2, len(compact) // 100)
+        ),
+    }
 
+
+def extract_pages_with_pdfplumber(
+    source: Path, destination: Path, pdfplumber: Any
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     destination.mkdir(parents=True, exist_ok=True)
     pages: list[dict[str, Any]] = []
     with pdfplumber.open(source) as pdf:
         metadata = {str(key): str(value) for key, value in (pdf.metadata or {}).items()}
         for page_number, page in enumerate(pdf.pages, start=1):
             extracted = page.extract_text(layout=True) or ""
-            text_path = destination / f"page-{page_number:04d}.txt"
-            text_path.write_text(extracted.rstrip() + "\n", encoding="utf-8")
-            compact = "".join(extracted.split())
-            replacement_count = extracted.count("\ufffd")
             pages.append(
-                {
-                    "page": page_number,
-                    "width": float(page.width),
-                    "height": float(page.height),
-                    "text_path": text_path.relative_to(destination.parent).as_posix(),
-                    "extracted_characters": len(compact),
-                    "replacement_characters": replacement_count,
-                    "embedded_images": len(page.images),
-                    "needs_ocr_or_visual_transcription": (
-                        len(compact) < 80 or replacement_count > max(2, len(compact) // 100)
-                    ),
-                }
+                text_record(
+                    page_number=page_number,
+                    extracted=extracted,
+                    text_path=destination / f"page-{page_number:04d}.txt",
+                    destination=destination,
+                    width=float(page.width),
+                    height=float(page.height),
+                    embedded_images=len(page.images),
+                )
             )
     return metadata, pages
+
+
+def pdfinfo_metadata(source: Path, pdfinfo: str) -> tuple[dict[str, str], int, float | None, float | None]:
+    result = subprocess.run(
+        [pdfinfo, str(source)], check=False, capture_output=True, text=True
+    )
+    if result.returncode:
+        raise PrepareError(result.stderr.strip() or "pdfinfo failed")
+    metadata: dict[str, str] = {}
+    for line in result.stdout.splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        metadata[key.strip()] = value.strip()
+    try:
+        page_count = int(metadata["Pages"])
+    except (KeyError, ValueError) as error:
+        raise PrepareError("pdfinfo did not report a valid page count") from error
+    width: float | None = None
+    height: float | None = None
+    match = re.match(r"([0-9.]+)\s+x\s+([0-9.]+)\s+pts", metadata.get("Page size", ""))
+    if match:
+        width, height = float(match.group(1)), float(match.group(2))
+    return metadata, page_count, width, height
+
+
+def extract_pages_with_ghostscript(
+    source: Path, destination: Path, ghostscript: str, pdfinfo: str
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    metadata, page_count, width, height = pdfinfo_metadata(source, pdfinfo)
+    destination.mkdir(parents=True, exist_ok=True)
+    pages: list[dict[str, Any]] = []
+    for page_number in range(1, page_count + 1):
+        text_path = destination / f"page-{page_number:04d}.txt"
+        result = subprocess.run(
+            [
+                ghostscript,
+                "-q",
+                "-dSAFER",
+                "-dBATCH",
+                "-dNOPAUSE",
+                "-sDEVICE=txtwrite",
+                f"-dFirstPage={page_number}",
+                f"-dLastPage={page_number}",
+                f"-sOutputFile={text_path}",
+                str(source),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode:
+            raise PrepareError(
+                result.stderr.strip()
+                or f"Ghostscript text extraction failed on page {page_number}"
+            )
+        extracted = text_path.read_text(encoding="utf-8", errors="replace")
+        pages.append(
+            text_record(
+                page_number=page_number,
+                extracted=extracted,
+                text_path=text_path,
+                destination=destination,
+                width=width,
+                height=height,
+                embedded_images=None,
+            )
+        )
+    return metadata, pages
+
+
+def extract_pages(
+    source: Path, destination: Path
+) -> tuple[dict[str, Any], list[dict[str, Any]], str]:
+    try:
+        import pdfplumber  # type: ignore[import-not-found]
+    except ImportError:
+        ghostscript = shutil.which("gs")
+        pdfinfo = shutil.which("pdfinfo")
+        if ghostscript is None or pdfinfo is None:
+            raise PrepareError(
+                "text extraction requires pdfplumber, or both Ghostscript gs and pdfinfo"
+            )
+        metadata, pages = extract_pages_with_ghostscript(
+            source, destination, ghostscript, pdfinfo
+        )
+        return metadata, pages, "ghostscript-txtwrite"
+    metadata, pages = extract_pages_with_pdfplumber(source, destination, pdfplumber)
+    return metadata, pages, "pdfplumber"
 
 
 def write_tex_skeleton(path: Path, digest: str, pages: list[dict[str, Any]]) -> None:
@@ -150,7 +257,7 @@ def main() -> int:
         source = output / "source.pdf"
         shutil.copyfile(source_input, source)
         digest = sha256(source)
-        metadata, pages = extract_pages(source, output / "text")
+        metadata, pages, text_tool = extract_pages(source, output / "text")
         if not pages:
             raise PrepareError("PDF contains no pages")
         renders = render_pages(source, output / "pages", args.dpi)
@@ -177,7 +284,7 @@ def main() -> int:
                 "version": args.version,
                 "access_date": date.today().isoformat(),
             },
-            "tools": {"text": "pdfplumber", "render": "pdftoppm", "dpi": args.dpi},
+            "tools": {"text": text_tool, "render": "pdftoppm", "dpi": args.dpi},
             "pages": pages,
             "normalized_tex": tex_path.relative_to(output).as_posix(),
         }

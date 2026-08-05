@@ -1,23 +1,28 @@
-# Claude Code with DeepSeek for skill trials
+# Claude Code runtime for skill trials
 
-Use DeepSeek's Anthropic-compatible endpoint:
-`https://api.deepseek.com/anthropic`. Default every isolated trial to
+The machine-local runtime profile is authoritative. With `subscription`
+authentication, launch Claude Code through its existing local login, clear
+ambient API overrides, and omit the model unless the user selected one. With
+`api` authentication, use DeepSeek's Anthropic-compatible endpoint,
+`https://api.deepseek.com/anthropic`, and the cached model, normally
 `deepseek-v4-flash`. Verify model identifiers against the
 [official model documentation](https://api-docs.deepseek.com/quick_start/pricing)
 when a model matrix or comparison matters.
 
 ## Credential rules
 
-- Accept `--key-file`, `ANTHROPIC_AUTH_TOKEN`, or `DEEPSEEK_API_KEY`.
-- Prefer a one-line plaintext credential file with mode `0600`.
+- Require a ready `.agent-runtime-profile.local.json` before every dry-run or
+  trial.
+- For API mode, read only the one-line `0600` credential file named by the
+  profile.
 - Never print the key or put it in prompts, commands, settings, agent
   definitions, logs, fixtures, or model-produced metadata.
 - Use a separate credential file outside all trial and result directories.
 
-`scripts/run_trials.py` reads the credential inside Python and passes it only
-through each child environment. It removes ambient `ANTHROPIC_API_KEY` and sets
-the main, alias, and subagent model variables to V4 Flash unless `--model`
-explicitly overrides them.
+`scripts/run_trials.py` reads an API credential inside Python and passes it only
+through each child environment. It never falls back to ambient API variables.
+In subscription mode it clears those variables so the cached authentication
+choice cannot be silently changed.
 
 ## Trial mechanics
 

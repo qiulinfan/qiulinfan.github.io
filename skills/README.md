@@ -152,9 +152,9 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [ingest-kgdistiller](./ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
 - [query-kgdistiller](./query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
 - [play-unity-game](./play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
-- [run-workflow-with-agents](./run-workflow-with-agents/)：默认用 DeepSeek V4 Flash 单 worker 或 coordinator + workers 注入一个或多个 Codex skills，执行会产出真实交付物的生产工作流。
+- [run-workflow-with-agents](./run-workflow-with-agents/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的基础 agent 为默认，并可按 workflow/skill 路由，再执行单 worker 或 coordinator + workers 生产工作流。
 - [search-game-art](./search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
-- [test-skill-with-agent](./test-skill-with-agent/)：用独立 DeepSeek V4 Flash trials 原子测试单个 skill，支持 smoke、回归、负向、安全、重复稳定性和有界并发压力测试。
+- [test-skill-with-agent](./test-skill-with-agent/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的基础 agent 或可选 skill 路由运行隔离 trials，支持 smoke、回归、负向、安全、重复稳定性和有界并发压力测试。
 - [trace-concept-lineage](./trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
 
 ## 社区来源

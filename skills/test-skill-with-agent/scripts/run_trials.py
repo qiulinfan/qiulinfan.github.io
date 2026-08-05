@@ -13,11 +13,14 @@ import time
 from pathlib import Path
 from typing import Any
 
+from runtime_profile import (
+    ProfileError,
+    default_profile_path,
+    require_ready_profile,
+    selected_agent_record,
+)
 from stage_skill import default_roots, resolve_skill, skill_name
 from workspace_guard import inventory
-
-
-DEFAULT_MODEL = "deepseek-v4-flash"
 
 
 def read_prompt(args: argparse.Namespace) -> str:
@@ -30,40 +33,50 @@ def read_prompt(args: argparse.Namespace) -> str:
     return value.strip()
 
 
-def provider_environment(args: argparse.Namespace) -> tuple[dict[str, str], bytes]:
+def provider_environment(
+    args: argparse.Namespace, profile: dict[str, Any], model: str | None
+) -> tuple[dict[str, str], bytes | None]:
     environment = os.environ.copy()
-    environment.pop("ANTHROPIC_API_KEY", None)
-    if args.key_file:
-        key_path = args.key_file.expanduser().resolve()
-        try:
-            key = key_path.read_text(encoding="utf-8").strip()
-        except OSError as error:
-            raise SystemExit(f"cannot read DeepSeek credential file: {key_path}") from error
-        if not key or "\n" in key or "\r" in key:
-            raise SystemExit("DeepSeek credential file must contain one non-empty line")
-        environment["ANTHROPIC_AUTH_TOKEN"] = key
-    elif environment.get("ANTHROPIC_AUTH_TOKEN"):
-        key = environment["ANTHROPIC_AUTH_TOKEN"]
-    elif environment.get("DEEPSEEK_API_KEY"):
-        key = environment["DEEPSEEK_API_KEY"]
-        environment["ANTHROPIC_AUTH_TOKEN"] = key
-    else:
-        raise SystemExit(
-            "provide --key-file, ANTHROPIC_AUTH_TOKEN, or DEEPSEEK_API_KEY"
-        )
+    for name in (
+        "ANTHROPIC_API_KEY",
+        "ANTHROPIC_AUTH_TOKEN",
+        "ANTHROPIC_BASE_URL",
+        "ANTHROPIC_MODEL",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL",
+        "CLAUDE_CODE_SUBAGENT_MODEL",
+        "DEEPSEEK_API_KEY",
+    ):
+        environment.pop(name, None)
 
-    environment.pop("DEEPSEEK_API_KEY", None)
-    environment["ANTHROPIC_BASE_URL"] = "https://api.deepseek.com/anthropic"
-    environment["ANTHROPIC_MODEL"] = args.model
-    environment["ANTHROPIC_DEFAULT_OPUS_MODEL"] = args.model
-    environment["ANTHROPIC_DEFAULT_SONNET_MODEL"] = args.model
-    environment["ANTHROPIC_DEFAULT_HAIKU_MODEL"] = args.model
-    environment["CLAUDE_CODE_SUBAGENT_MODEL"] = args.model
+    authentication = profile["authentication"]
+    if authentication["mode"] == "subscription":
+        environment["CLAUDE_CODE_EFFORT_LEVEL"] = args.effort
+        return environment, None
+
+    runtime = profile["runtime"]
+    key_path = Path(authentication["credential_file"])
+    try:
+        key = key_path.read_text(encoding="utf-8").strip()
+    except OSError as error:
+        raise SystemExit(f"cannot read configured credential file: {key_path}") from error
+    if runtime.get("provider") != "deepseek" or not model:
+        raise SystemExit("configured API runtime must be DeepSeek with a model")
+    environment["ANTHROPIC_AUTH_TOKEN"] = key
+    environment["ANTHROPIC_BASE_URL"] = runtime["base_url"]
+    environment["ANTHROPIC_MODEL"] = model
+    environment["ANTHROPIC_DEFAULT_OPUS_MODEL"] = model
+    environment["ANTHROPIC_DEFAULT_SONNET_MODEL"] = model
+    environment["ANTHROPIC_DEFAULT_HAIKU_MODEL"] = model
+    environment["CLAUDE_CODE_SUBAGENT_MODEL"] = model
     environment["CLAUDE_CODE_EFFORT_LEVEL"] = args.effort
     return environment, key.encode("utf-8")
 
 
-def credential_occurrences(root: Path, secret: bytes) -> list[str]:
+def credential_occurrences(root: Path, secret: bytes | None) -> list[str]:
+    if secret is None:
+        return []
     hits: list[str] = []
     for relative in inventory(root):
         path = root / relative
@@ -127,22 +140,30 @@ def runtime_metrics(stdout: str) -> tuple[dict[str, Any], bool]:
 
 
 def trial_command(
-    args: argparse.Namespace, skill: str, prompt: str
+    args: argparse.Namespace,
+    runtime: dict[str, Any],
+    skill: str,
+    prompt: str,
+    model: str | None,
 ) -> list[str]:
+    agent_definition: dict[str, Any] = {
+        "description": "Executes one isolated natural task with the skill under test.",
+        "prompt": (
+            "Complete the assigned task as an end user requested it. Follow the "
+            "preloaded skill exactly, stay within the fixture, validate required "
+            "artifacts, and report concrete results."
+        ),
+        "skills": [skill],
+    }
+    if model:
+        agent_definition["model"] = model
     agents = {
         "skill-trial": {
-            "description": "Executes one isolated natural task with the skill under test.",
-            "prompt": (
-                "Complete the assigned task as an end user requested it. Follow the "
-                "preloaded skill exactly, stay within the fixture, validate required "
-                "artifacts, and report concrete results."
-            ),
-            "skills": [skill],
-            "model": args.model,
+            **agent_definition,
         }
     }
     command = [
-        "claude",
+        runtime["path"],
         "--print",
         "--output-format",
         "json",
@@ -152,13 +173,13 @@ def trial_command(
         "--strict-mcp-config",
         "--permission-mode",
         args.permission_mode,
-        "--model",
-        args.model,
         "--agents",
         json.dumps(agents, separators=(",", ":")),
         "--agent",
         "skill-trial",
     ]
+    if model:
+        command[command.index("--agents"):command.index("--agents")] = ["--model", model]
     if args.allowed_tool:
         command.extend(["--allowedTools", ",".join(args.allowed_tool)])
     if args.disallowed_tool:
@@ -195,7 +216,9 @@ def run_trial(
     output: Path,
     prompt: str,
     environment: dict[str, str],
-    secret: bytes,
+    secret: bytes | None,
+    runtime: dict[str, Any],
+    model: str | None,
 ) -> dict[str, Any]:
     trial_id = f"trial-{index:04d}"
     project = output / "trials" / trial_id
@@ -203,7 +226,7 @@ def run_trial(
     shutil.copytree(fixture, project, symlinks=True)
     stage_one(source, name, project)
     before = inventory(project)
-    command = trial_command(args, name, prompt)
+    command = trial_command(args, runtime, name, prompt, model)
 
     started = time.monotonic()
     completed = subprocess.run(
@@ -226,9 +249,9 @@ def run_trial(
         f"project/{relative}"
         for relative in credential_occurrences(project, secret)
     ]
-    if secret in completed.stdout.encode("utf-8"):
+    if secret is not None and secret in completed.stdout.encode("utf-8"):
         credential_hits.append("result/stdout.json")
-    if secret in completed.stderr.encode("utf-8"):
+    if secret is not None and secret in completed.stderr.encode("utf-8"):
         credential_hits.append("result/stderr.txt")
     metadata = {
         "trial": trial_id,
@@ -236,7 +259,8 @@ def run_trial(
         "returncode": completed.returncode,
         "runtime_ok": runtime_ok,
         "wall_seconds": duration,
-        "model_configured": args.model,
+        "runtime_agent": runtime["id"],
+        "model_configured": model or "runtime-default",
         "runtime_metrics": metrics,
         "workspace": workspace_diff(before, after),
         "credential_occurrences": credential_hits,
@@ -254,11 +278,11 @@ def main() -> None:
     parser.add_argument("--skill-root", action="append", default=[], type=Path)
     parser.add_argument("--fixture", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--runtime-profile", type=Path, default=default_profile_path())
     prompt_group = parser.add_mutually_exclusive_group(required=True)
     prompt_group.add_argument("--prompt")
     prompt_group.add_argument("--prompt-file", type=Path)
-    parser.add_argument("--key-file", type=Path)
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model")
     parser.add_argument(
         "--effort", default="max", choices=("low", "medium", "high", "xhigh", "max")
     )
@@ -276,6 +300,13 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
+    profile_path = args.runtime_profile.expanduser().resolve()
+    try:
+        profile = require_ready_profile(profile_path)
+    except ProfileError as error:
+        raise SystemExit(f"runtime profile gate stopped before test work:\n{error}") from error
+    model = args.model or profile.get("runtime", {}).get("model")
+
     if args.trials < 1 or args.parallel < 1:
         raise SystemExit("--trials and --parallel must be positive")
     if args.parallel > args.trials:
@@ -292,11 +323,6 @@ def main() -> None:
         raise SystemExit(f"output path already exists: {output}")
     if fixture == output or fixture in output.parents:
         raise SystemExit("output must not be inside the fixture")
-    if args.key_file:
-        key_path = args.key_file.expanduser().resolve()
-        if key_path == fixture or fixture in key_path.parents:
-            raise SystemExit("credential file must be outside the fixture")
-
     roots = [*args.skill_root, *default_roots()]
     source = resolve_skill(args.skill, roots)
     if source == fixture or fixture in source.parents:
@@ -307,15 +333,24 @@ def main() -> None:
         name = skill_name(source / "SKILL.md")
     except (OSError, UnicodeError, ValueError) as error:
         raise SystemExit(str(error)) from error
+    try:
+        runtime = selected_agent_record(
+            profile, workflow="test-skill-with-agent", skill=name
+        )
+    except ProfileError as error:
+        raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
     prompt = read_prompt(args)
-    command = trial_command(args, name, prompt)
+    command = trial_command(args, runtime, name, prompt, model)
     if args.dry_run:
         print(
             json.dumps(
                 {
                     "skill": name,
                     "source": str(source),
-                    "model": args.model,
+                    "runtime_profile": str(profile_path),
+                    "runtime_agent": runtime["id"],
+                    "auth_mode": profile["authentication"]["mode"],
+                    "model": model or "runtime-default",
                     "trials": args.trials,
                     "parallel": args.parallel,
                     "command": command,
@@ -325,7 +360,7 @@ def main() -> None:
         )
         return
 
-    environment, secret = provider_environment(args)
+    environment, secret = provider_environment(args, profile, model)
     (output / "trials").mkdir(parents=True)
     (output / "results").mkdir(parents=True)
     results: list[dict[str, Any]] = []
@@ -343,6 +378,8 @@ def main() -> None:
                 prompt,
                 environment,
                 secret,
+                runtime,
+                model,
             ): index
             for index in range(1, args.trials + 1)
         }
@@ -363,7 +400,10 @@ def main() -> None:
     summary = {
         "skill": name,
         "source": str(source),
-        "model_configured": args.model,
+        "runtime_profile": str(profile_path),
+        "runtime_agent": runtime["id"],
+        "auth_mode": profile["authentication"]["mode"],
+        "model_configured": model or "runtime-default",
         "trials_requested": args.trials,
         "parallel": args.parallel,
         "runtime_ok": sum(1 for item in results if item["runtime_ok"]),

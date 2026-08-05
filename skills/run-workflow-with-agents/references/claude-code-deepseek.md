@@ -1,26 +1,32 @@
-# Claude Code with DeepSeek
+# Claude Code runtime
 
-Use Claude Code against DeepSeek's Anthropic-compatible endpoint:
-`https://api.deepseek.com/anthropic`.
+The machine-local runtime profile is authoritative. With `subscription`
+authentication, launch Claude Code through its existing local login, clear
+ambient API overrides, and omit the model unless the user selected one. With
+`api` authentication, use Claude Code against the cached DeepSeek
+Anthropic-compatible endpoint, normally `https://api.deepseek.com/anthropic`.
 
 DeepSeek's official model list currently includes `deepseek-v4-flash` and
-`deepseek-v4-pro`. This skill intentionally defaults both the main agent and
-all subagents to `deepseek-v4-flash`, even though DeepSeek's generic Claude Code
-example assigns Pro to some Claude aliases. Verify the identifiers again in
+`deepseek-v4-pro`. The default API profile assigns the cached
+`deepseek-v4-flash` model to the main agent and all workers. Verify identifiers again in
 the [official model documentation](https://api-docs.deepseek.com/quick_start/pricing)
 when model selection changes.
 
 ## Credential handling
 
-- Accept `--key-file`, `ANTHROPIC_AUTH_TOKEN`, or `DEEPSEEK_API_KEY`.
-- Prefer a one-line plaintext credential file with mode `0600`.
+- Require a ready `.agent-runtime-profile.local.json` before every dry-run,
+  staging operation, or workflow run.
+- For API mode, read only the one-line `0600` credential file named by the
+  profile.
 - Confirm only presence, line count, length, recognizable shape, and file mode.
 - Never print the key or include it literally in a prompt, command argument,
   settings file, agent definition, log, or copied workspace.
 - Never copy the credential into the task project.
 
-`scripts/run_deepseek.py` reads a credential file inside Python and passes it
-only through the child environment. It sets:
+`scripts/run_agents.py` reads an API credential inside Python and passes it
+only through the child environment. It never falls back to ambient API
+variables. In subscription mode it clears those variables and uses the local
+login. In DeepSeek API mode it sets:
 
 ```text
 ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
@@ -32,8 +38,10 @@ CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
 CLAUDE_CODE_EFFORT_LEVEL=max
 ```
 
-Pass `--model` only for an explicit override. The runner applies that override
-to every default model variable and to agent definitions that omit `model`.
+Pass `--model` only for an explicit override. The runner applies the cached or
+overridden API model to every default model variable and to agent definitions
+that omit `model`. In subscription mode, an omitted model remains the runtime
+default.
 
 ## Runtime behavior
 

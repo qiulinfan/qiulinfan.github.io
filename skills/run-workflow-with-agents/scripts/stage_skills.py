@@ -10,6 +10,14 @@ import re
 import shutil
 from pathlib import Path
 
+from runtime_profile import (
+    ProfileError,
+    default_profile_path,
+    require_ready_profile,
+    resolve_agent_id,
+    selected_agent_record,
+)
+
 
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
@@ -116,8 +124,15 @@ def main() -> None:
         help="additional skill search root, checked before default Codex roots",
     )
     parser.add_argument("--project", required=True, type=Path)
-    parser.add_argument("--runtime", default="claude-code", choices=("claude-code",))
+    parser.add_argument("--runtime-profile", type=Path, default=default_profile_path())
+    parser.add_argument("--workflow", default="run-workflow-with-agents")
+    parser.add_argument("--runtime", choices=("claude-code",))
     args = parser.parse_args()
+
+    try:
+        profile = require_ready_profile(args.runtime_profile.expanduser().resolve())
+    except ProfileError as error:
+        raise SystemExit(f"runtime profile gate stopped before staging:\n{error}") from error
 
     project = args.project.expanduser().resolve()
     project.mkdir(parents=True, exist_ok=True)
@@ -132,6 +147,29 @@ def main() -> None:
             raise SystemExit(str(error)) from error
         sources[source] = name
 
+    routed_pairs = [
+        (name, resolve_agent_id(profile, workflow=args.workflow, skill=name))
+        for name in sources.values()
+    ]
+    routed_agents = {agent_id for _, agent_id in routed_pairs}
+    if len(routed_agents) != 1:
+        details = ", ".join(f"{skill} -> {agent}" for skill, agent in routed_pairs)
+        raise SystemExit(
+            "cached routes require heterogeneous staging runtimes, which one project "
+            f"cannot represent: {details}"
+        )
+    routed = next(iter(routed_agents))
+    route_skill = routed_pairs[0][0]
+    try:
+        selected_agent_record(profile, workflow=args.workflow, skill=route_skill)
+    except ProfileError as error:
+        raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
+    runtime = args.runtime or routed
+    if runtime != routed:
+        raise SystemExit(
+            f"requested runtime {runtime!r} differs from cached route {routed!r}"
+        )
+
     staged: list[dict[str, str]] = []
     seen_names: dict[str, Path] = {}
     for source, name in sources.items():
@@ -139,7 +177,7 @@ def main() -> None:
         if prior and prior != source:
             raise SystemExit(f"two sources define skill {name!r}: {prior}, {source}")
         seen_names[name] = source
-        destination = destination_for(project, args.runtime, name)
+        destination = destination_for(project, runtime, name)
         if destination.exists() or destination.is_symlink():
             if destination.resolve() == source:
                 staged.append(
@@ -157,7 +195,7 @@ def main() -> None:
             {"name": name, "source": str(source), "destination": str(destination)}
         )
 
-    print(json.dumps({"runtime": args.runtime, "skills": staged}, indent=2))
+    print(json.dumps({"runtime": runtime, "skills": staged}, indent=2))
 
 
 if __name__ == "__main__":

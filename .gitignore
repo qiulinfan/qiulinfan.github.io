@@ -63,3 +63,6 @@ knowledge/build/
 
 # Codex-managed state exposed through the repository-backed skills directory
 /skills/.skills_store_lock.json
+
+# Machine-local external-agent selection and credential-file pointers
+/skills/.agent-runtime-profile.local.json

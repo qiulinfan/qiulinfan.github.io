@@ -1,14 +1,36 @@
 ---
 name: run-workflow-with-agents
-description: Execute production workflows with one or more external agents, defaulting to Claude Code backed by DeepSeek V4 Flash. Use when Codex should complete real work by injecting one or more Codex skills into a single worker or a coordinated multi-agent topology, including implementation, research, review, validation, and other deliverable-producing workflows. Do not use for isolated testing or stress-testing of one skill; use test-skill-with-agent instead.
+description: Execute production workflows with one or more external agents selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any staging, dry-run, or production work. Use when Codex should complete real work by injecting one or more Codex skills into a single worker or a coordinated multi-agent topology, including implementation, research, review, validation, and other deliverable-producing workflows. Do not use for isolated testing or stress-testing of one skill; use test-skill-with-agent instead.
 ---
 
 # Run a production workflow with agents
 
-Complete real work through one agent or a coordinated group. Default every main
-agent and worker to `deepseek-v4-flash`. Treat the external run as production:
+Complete real work through one agent or a coordinated group. Treat the external run as production:
 preserve user data, enforce authority boundaries, validate artifacts, and return
 the requested deliverable rather than an evaluation score.
+
+## Resolve the machine runtime before all workflow work
+
+Read and follow
+[`references/agent-runtime-profile.md`](references/agent-runtime-profile.md).
+Run the profile `status` command before defining the workflow contract, reading
+task Skills, inspecting or staging the project, building agent definitions, or
+calling a provider. This gate applies to `--dry-run` too.
+
+If the shared local profile is absent or incomplete and the user's current
+prompt does not supply the missing choices, return only the detected-agent
+summary and the profile's unanswered questions, then stop. When exactly one
+agent is detected, select it without asking which agent to use.
+
+If the prompt explicitly supplies the selected agent, subscription/API mode,
+and, for API mode, an absolute credential-file path, run `configure` first and
+then require a clean `status`. Store only the credential path, never the key.
+Use the cached runtime and authentication mode for the complete topology. Do
+not replace it with an ambient credential or a different executable.
+Treat `selected_agent` as the cached base agent and never ask again while that
+entry remains valid. Optional cached routes may override it by workflow, Skill,
+or workflow-plus-Skill; when no route matches, use the base agent without
+interaction. Pass a stable `--workflow` name when applying a named route.
 
 ## Define the workflow contract
 
@@ -18,16 +40,16 @@ Resolve from the request and local context:
 - one or more skills required by the workflow;
 - authorized reads, writes, external effects, tools, and MCP dependencies;
 - a single-worker or coordinator-plus-workers topology;
-- credential source and a reasonable spend/time boundary.
+- a reasonable spend/time boundary.
 
 Use Codex's discovered skills as the default source. Accept an explicit skill
 directory or additional skill root only when the user provides one. If no skill
 is named, choose the smallest set whose descriptions clearly cover the task.
 Do not inject unrelated skills.
 
-Override `deepseek-v4-flash` only when the user explicitly selects another
-model or the workflow already requires one. Do not convert a production request
-into a benchmark or test matrix.
+Override the cached runtime's model only when the user explicitly selects
+another model or the workflow already requires one. Do not convert a production
+request into a benchmark or test matrix.
 
 ## Read and stage the skills
 
@@ -59,7 +81,7 @@ after the run and verification; never overwrite or remove a pre-existing skill.
 
 Use one worker for a cohesive task that benefits from one context. Preload all
 selected skills into it with repeated `--skill` arguments to
-`scripts/run_deepseek.py`.
+`scripts/run_agents.py`.
 
 Use multiple agents when research, implementation, review, or validation can be
 bounded independently. Always define one coordinator and named workers. Give
@@ -67,25 +89,30 @@ each worker only its required skills and tools; assign disjoint write ownership
 or sequence dependent edits. Workers return results to the coordinator and
 cannot spawn nested workers.
 
+Resolve cached agent routes for every worker Skill before staging. The current
+coordinated runner uses one external runtime per session; if cached routes
+select different agent products for different workers, stop with a compatibility
+finding. Do not ask the user to choose again or silently collapse the routes.
+
 For multi-agent work, read and follow
 [`references/multi-agent-orchestration.md`](references/multi-agent-orchestration.md).
 Prefer coordinator-plus-subagents. Enable experimental agent teams only when
 workers truly need a shared task list or peer-to-peer communication.
 
-## Run through DeepSeek
+## Run through the cached runtime
 
 Read and follow
-[`references/claude-code-deepseek.md`](references/claude-code-deepseek.md).
-The runner keeps credentials out of shell arguments, applies V4 Flash to the
-main agent and every worker by default, validates preloaded skills, and invokes
-Claude Code without a shell.
+[`references/claude-code-deepseek.md`](references/claude-code-deepseek.md) when
+the profile selects Claude Code with the DeepSeek API. The runner keeps
+credentials out of shell arguments, validates preloaded skills, and invokes
+the cached executable without a shell. Subscription mode uses the agent's
+existing local login and runtime-default model unless the user overrides it.
 
 For a single worker:
 
 ```sh
-python3 scripts/run_deepseek.py \
+python3 scripts/run_agents.py \
   --project "$RUN_PROJECT" \
-  --key-file "$KEY_FILE" \
   --skill first-skill \
   --skill second-skill \
   --allowed-tool Read \
@@ -95,7 +122,9 @@ python3 scripts/run_deepseek.py \
   --prompt-file "$TASK_FILE"
 ```
 
-Grant `Edit` and `Write` only for authorized write tasks. Pass approved MCP
+The runner reads the shared profile by default; pass `--runtime-profile` only
+for an explicitly selected alternate local profile. Grant `Edit` and `Write`
+only for authorized write tasks. Pass approved MCP
 configuration explicitly. Use `--max-budget-usd` when a bounded unattended run
 benefits from a cap. Use `--dry-run` to inspect the credential-free command
 before an expensive or high-impact launch.

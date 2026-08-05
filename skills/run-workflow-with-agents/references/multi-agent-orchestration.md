@@ -14,6 +14,12 @@ worker, so all fan-out and sequencing belongs to the coordinator.
 
 ## Build the topology
 
+Resolve the cached workflow and per-Skill agent routes before staging. The
+current coordinator runs inside one external-agent session, so all selected
+routes must resolve to the same agent product. Preserve heterogeneous cached
+routes and report the compatibility limit; do not ask the user to choose again
+or silently replace a routed agent with the base agent.
+
 Create the agent-definition file outside the task project when it is a temporary
 run-control artifact. Use this shape:
 
@@ -58,7 +64,9 @@ run-control artifact. Use this shape:
 
 Remove unused roles. Replace placeholder skill names with the staged Codex
 skills required by each role. Omit a coordinator skill when none is relevant.
-The runner supplies `deepseek-v4-flash` to every definition that omits a model.
+For an API profile, the runner supplies the cached model to every definition
+that omits one. For a subscription profile, omitted models remain the local
+runtime default.
 
 ## Partition work safely
 
@@ -80,9 +88,8 @@ only on automatic delegation for a topology the user explicitly requested.
 Stage the union of all skills referenced by the definitions, then run:
 
 ```sh
-python3 scripts/run_deepseek.py \
+python3 scripts/run_agents.py \
   --project "$RUN_PROJECT" \
-  --key-file "$KEY_FILE" \
   --agents-file "$AGENTS_FILE" \
   --primary-agent coordinator \
   --allowed-tool Read \

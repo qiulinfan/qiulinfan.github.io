@@ -25,10 +25,13 @@ source, extracts per-page text, renders every page, records low-text pages, and
 creates a TeX skeleton with one unresolved marker per PDF page. Finish the TeX,
 remove every unresolved marker, then run `scripts/validate_normalized_tex.py`.
 
-The scripts require Python with `pdfplumber`, Poppler `pdftoppm`, and, for the
-final compile gate, `latexmk`. Prefer the Codex bundled document runtime when
-available. If a dependency is absent, install only when the current environment
-and user authorization permit it; otherwise stop and report the missing tool.
+The scripts require Poppler `pdftoppm` and, for the final compile gate,
+`latexmk`. Text extraction prefers Python `pdfplumber`; when that package is
+absent, the preflight automatically falls back to Ghostscript `gs` plus
+Poppler `pdfinfo`. Prefer the Codex bundled document runtime when available. If
+neither text-extraction route is available, install only when the current
+environment and user authorization permit it; otherwise stop and report the
+missing tool.
 
 ## Acquire the canonical PDF
 

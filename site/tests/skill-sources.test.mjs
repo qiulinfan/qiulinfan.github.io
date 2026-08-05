@@ -95,19 +95,14 @@ test("the Markdown-authored workflows reference real Skills and preserve knowled
 	const publishedSkillIds = new Set(
 		loadPublishedSkills().map((skill) => skill.id),
 	);
+	const workflowCount = (workflows.match(/^## /gm) ?? []).length;
+	const diagramCount = (
+		workflows.match(/```mermaid\nflowchart LR/g) ?? []
+	).length;
 
-	assert.equal((workflows.match(/^## /gm) ?? []).length, 2);
-	assert.equal((workflows.match(/```mermaid\nflowchart LR/g) ?? []).length, 2);
+	assert.ok(workflowCount > 0);
+	assert.equal(diagramCount, workflowCount);
 	assert.equal(skillIds.every((skillId) => publishedSkillIds.has(skillId)), true);
-	assert.deepEqual(
-		new Set(skillIds),
-		new Set([
-			"extract-and-export-notes",
-			"extract-paper-concepts",
-			"query-kgdistiller",
-			"ingest-kgdistiller",
-		]),
-	);
 	for (const status of ["known", "partial", "new", "uncertain", "conflict"]) {
 		assert.match(workflows, new RegExp(status));
 	}

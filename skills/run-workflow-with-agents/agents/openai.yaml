@@ -1,4 +1,4 @@
 interface:
   display_name: "Run Workflow with Agents"
   short_description: "Run production workflows with agents"
-  default_prompt: "Use $run-workflow-with-agents to execute this production workflow with the required Codex skills and DeepSeek agents."
+  default_prompt: "Use $run-workflow-with-agents to check the local agent profile, apply its cached base agent or workflow/skill routes, then execute this production workflow with the required Codex skills."

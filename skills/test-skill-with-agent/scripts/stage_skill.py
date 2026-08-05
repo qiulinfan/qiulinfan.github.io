@@ -10,6 +10,14 @@ import re
 import shutil
 from pathlib import Path
 
+from runtime_profile import (
+    ProfileError,
+    default_profile_path,
+    require_ready_profile,
+    resolve_agent_id,
+    selected_agent_record,
+)
+
 
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
@@ -115,8 +123,14 @@ def main() -> None:
         help="additional skill search root, checked before default Codex roots",
     )
     parser.add_argument("--project", required=True, type=Path)
-    parser.add_argument("--runtime", default="claude-code", choices=("claude-code",))
+    parser.add_argument("--runtime-profile", type=Path, default=default_profile_path())
+    parser.add_argument("--runtime", choices=("claude-code",))
     args = parser.parse_args()
+
+    try:
+        profile = require_ready_profile(args.runtime_profile.expanduser().resolve())
+    except ProfileError as error:
+        raise SystemExit(f"runtime profile gate stopped before staging:\n{error}") from error
 
     project = args.project.expanduser().resolve()
     project.mkdir(parents=True, exist_ok=True)
@@ -127,8 +141,22 @@ def main() -> None:
         name = skill_name(manifest)
     except (OSError, UnicodeError, ValueError) as error:
         raise SystemExit(str(error)) from error
+    routed = resolve_agent_id(
+        profile, workflow="test-skill-with-agent", skill=name
+    )
+    try:
+        selected_agent_record(
+            profile, workflow="test-skill-with-agent", skill=name
+        )
+    except ProfileError as error:
+        raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
+    runtime = args.runtime or routed
+    if runtime != routed:
+        raise SystemExit(
+            f"requested runtime {runtime!r} differs from cached route {routed!r}"
+        )
 
-    destination = destination_for(project, args.runtime, name)
+    destination = destination_for(project, runtime, name)
     if destination.exists() or destination.is_symlink():
         if destination.resolve() != source:
             raise SystemExit(f"destination already exists: {destination}")
@@ -142,7 +170,7 @@ def main() -> None:
     print(
         json.dumps(
             {
-                "runtime": args.runtime,
+                "runtime": runtime,
                 "skill": {
                     "name": name,
                     "source": str(source),
