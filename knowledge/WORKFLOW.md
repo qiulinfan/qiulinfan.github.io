@@ -9,7 +9,7 @@ HTML 都是可重建投影。
 
 ## 四个 Skill 的职责
 
-- `export-typst-math-notes`：从 Git 改动和显式 marker 提取笔记候选图，委托查询、
+- `extract-and-export-notes`：从任意领域的 Git 改动和显式 marker 提取笔记候选图，委托查询、
   入库后导出网页；不直接读写个人图谱。
 - `extract-paper-concepts`：通读论文并生成隔离候选图；查询之后只解释 new 和缺失的
   partial 知识，默认输出联邦快照而不合并个人图谱。
@@ -24,7 +24,7 @@ HTML 都是可重建投影。
 ## 日常修改与新建
 
 1. 先在 `knowledge/sources.json` 中让文件路径命中且只命中一个 source glob。
-2. `export-typst-math-notes` 读取完整改动 authority，从 Git diff 和用户 marker 提取
+2. `extract-and-export-notes` 读取完整改动 authority，从 Git diff 和用户 marker 提取
    source-backed `qlkg-candidate-graph-v1`；它不能打开 graph JSONL、entry shard 或
    SQLite。用 `make knowledge-candidate CANDIDATE=... SNAPSHOT=...` 生成并验证隔离
    snapshot，不能手写 envelope 或 digest。

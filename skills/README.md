@@ -143,7 +143,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [create-latex-math-notes](./create-latex-math-notes/)：新建使用 ElegantBook 语法和 LaTeX-to-Typst 适配器的轻量数学笔记项目。
 - [create-math-notes](./create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
 - [discuss-game-design](./discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
-- [export-typst-math-notes](./export-typst-math-notes/)：从 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
+- [extract-and-export-notes](./extract-and-export-notes/)：从跨领域 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
 - [extract-paper-concepts](./extract-paper-concepts/)：通读论文，查询个人知识库后生成不重复已知词条、默认不合并的联邦概念图。
 - [ingest-kgdistiller](./ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
 - [query-kgdistiller](./query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。

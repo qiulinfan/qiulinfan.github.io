@@ -1,9 +1,9 @@
 ---
-name: export-typst-math-notes
-description: Extract candidate knowledge changes from Git-modified Markdown, Typst, and LaTeX authorities, preserve user-written knowledge markers, delegate existing-knowledge resolution to query-kgdistiller, delegate reviewed graph writes to ingest-kgdistiller, and publish the resulting notes to the web. Use when Codex authors, updates, migrates, exports, or validates QLNotes at file, directory, course, subject, or repository scope.
+name: extract-and-export-notes
+description: Extract candidate knowledge graphs from Git-modified Markdown, Typst, and LaTeX notes across mathematical, technical, scientific, humanities, architecture, and everyday domains; preserve user-written knowledge markers; delegate existing-knowledge resolution to query-kgdistiller; delegate reviewed graph writes to ingest-kgdistiller; and publish validated notes to the web. Use when Codex authors, updates, migrates, exports, or validates knowledge-bearing notes at file, directory, course, subject, or repository scope.
 ---
 
-# Extract and export multi-source notes
+# Extract and export knowledge from multi-source notes
 
 Own two things: extract a candidate graph from changed note authorities, and
 publish the validated authorities. Treat kgdistiller as an external brain;
@@ -48,6 +48,12 @@ Extract only source-supported candidates from the changed authority:
 - concise candidate entries and exact source spans;
 - direct typed semantic relations with concrete evidence;
 - meaningful immediate cross-file dependencies.
+
+Apply the same identity standard across domains. A reusable architecture
+component, scientific phenomenon, causal mechanism, design constraint,
+procedure, historical idea, or everyday practice may be a node when the source
+actually teaches it. Do not require a theorem wrapper, equation, formal
+definition, or mathematics-specific vocabulary.
 
 Do not promote headings, examples, equations, file order, keyword co-occurrence,
 or every formal wrapper. Do not inspect `knowledge/graph/*.jsonl`, entry shards,

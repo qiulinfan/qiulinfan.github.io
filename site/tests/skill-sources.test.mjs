@@ -40,7 +40,7 @@ test("kgdistiller discovery skills delegate to the vendored canonical skills", (
 });
 
 test("knowledge Skills keep extraction, query, and ingestion responsibilities separate", () => {
-	const exportSkill = readFileSync(join(repositoryRoot, "skills/export-typst-math-notes/SKILL.md"), "utf8");
+	const exportSkill = readFileSync(join(repositoryRoot, "skills/extract-and-export-notes/SKILL.md"), "utf8");
 	const paperSkill = readFileSync(join(repositoryRoot, "skills/extract-paper-concepts/SKILL.md"), "utf8");
 	const querySkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/query-kgdistiller/SKILL.md"), "utf8");
 	const ingestSkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/ingest-kgdistiller/SKILL.md"), "utf8");

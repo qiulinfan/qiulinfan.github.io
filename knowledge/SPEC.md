@@ -290,7 +290,7 @@ Client Skills treat kgdistiller as an opaque external brain. They never scan
 `knowledge/graph/*.jsonl`, entry shards, or SQLite to decide identity. The
 workflow has three separate capabilities:
 
-1. `export-typst-math-notes` extracts a source-backed candidate graph from Git-
+1. `extract-and-export-notes` extracts a domain-neutral, source-backed candidate graph from Git-
    changed note authorities and preserves user markers;
 2. `query-kgdistiller` performs read-only batch resolution, bounded retrieval,
    GraphRAG alignment, and candidate comparison;

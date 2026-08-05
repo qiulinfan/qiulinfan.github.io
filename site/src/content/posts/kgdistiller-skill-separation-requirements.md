@@ -54,7 +54,7 @@ lang: zh_CN
 
 | Skill | 唯一职责 | 不再负责 |
 |---|---|---|
-| `export-typst-math-notes` | 从 Git 改动和用户显式 marker 中提取候选图，按查询结果写 `kn/ref`，最后导出网页 | 读取完整知识图谱、执行身份匹配、直接合并全局图谱 |
+| `extract-and-export-notes`（原 `export-typst-math-notes`） | 从任意领域 Git 改动和用户显式 marker 中提取候选图，按查询结果写 `kn/ref`，最后导出网页 | 读取完整知识图谱、执行身份匹配、直接合并全局图谱 |
 | `extract-paper-concepts` | 通读论文，生成独立论文候选图和论文内部学习关系 | 读取个人大图谱、重复解释已知词条、默认导入个人图谱 |
 | 新建 `query-kgdistiller` | 只读查询、批量消歧、GraphRAG、候选图对齐和比较 | 修改 authority、alignment 或个人图谱 |
 | 新建 `ingest-kgdistiller` | 将已经审查的 marker、entry、ref、edge 事务性写入知识库 | 从原文发现概念、猜测歧义身份、读取整篇论文 |
@@ -91,7 +91,7 @@ flowchart LR
 
 ## 三、笔记工作流
 
-`export-typst-math-notes` 的新流程：
+`extract-and-export-notes` 的新流程：
 
 1. 用 Git diff 找出新增、修改、删除、重命名的 authority。
 2. 阅读完整改动文件，但只提取：
@@ -225,7 +225,7 @@ precondition check
   - `ingest-kgdistiller`；
   - schema 和兼容性测试。
 - qlblog 维护：
-  - `export-typst-math-notes`；
+  - `extract-and-export-notes`；
   - `extract-paper-concepts`；
   - 个人知识源和网页策略。
 

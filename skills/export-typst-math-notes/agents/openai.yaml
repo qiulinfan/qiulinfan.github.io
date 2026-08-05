@@ -1,4 +1,0 @@
-interface:
-  display_name: "Extract and Export Notes"
-  short_description: "Extract changed note knowledge and publish validated web notes"
-  default_prompt: "Use $export-typst-math-notes to extract candidate knowledge from my changed notes, delegate query and ingestion, and publish the validated result."

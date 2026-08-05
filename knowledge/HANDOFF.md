@@ -113,7 +113,7 @@ qlblog 不永久冻结 kgdistiller。`make kgdistiller-update` 应经常跟随�
 
 ```mermaid
 flowchart TD
-    N["笔记 Git diff<br/>Markdown / Typst / LaTeX"] --> NE["export-typst-math-notes<br/>提取候选与保留手写 marker"]
+    N["笔记 Git diff<br/>Markdown / Typst / LaTeX"] --> NE["extract-and-export-notes<br/>提取候选与保留手写 marker"]
     P["论文全文或 PDF"] --> PE["extract-paper-concepts<br/>论文局部候选图"]
     NE --> C["qlkg-agent-snapshot-v1<br/>隔离候选图"]
     PE --> C
@@ -130,7 +130,7 @@ flowchart TD
 
 | Skill | 所属仓库 | 只负责 | 明确不负责 |
 | --- | --- | --- | --- |
-| `export-typst-math-notes` | qlblog | 从 Git 改动的完整 authority 和手写 marker 提取笔记候选；根据 query 决策安排 `kn/ref/entry`；成功入库后发布 | 读取大图、实现 identity、直接写全局图谱 |
+| `extract-and-export-notes` | qlblog | 从任意领域 Git 改动的完整 authority 和手写 marker 提取笔记候选；根据 query 决策安排 `kn/ref/entry`；成功入库后发布 | 读取大图、实现 identity、直接写全局图谱 |
 | `extract-paper-concepts` | qlblog | 通读论文、覆盖来源、生成论文局部候选和最终联邦快照 | 默认导入个人图谱、重复解释 known、把缩写升级为全局 alias |
 | `query-kgdistiller` | kgdistiller | 批量 resolve、受预算限制的 GraphRAG、align、compare、proposal | 修改 source、alignment、graph 或 index 事实 |
 | `ingest-kgdistiller` | kgdistiller | 应用已审查的 marker/ref/entry/edge/alignment 决策并返回验证回执 | 读论文发现知识、决定歧义身份、生成无来源语义 |
@@ -211,7 +211,7 @@ warnings: 0
 
 当前本地实现已经完成：
 
-- 精简 `export-typst-math-notes`，只做改动来源提取、marker 处理和两个能力的编排；
+- 精简 `extract-and-export-notes`（原 `export-typst-math-notes`），只做跨领域改动来源提取、marker 处理和两个能力的编排；
 - 精简 `extract-paper-concepts`，查询前只建轻量候选图，查询后 known 不写 entry，默认只建联邦快照；
 - 新建 canonical `query-kgdistiller`，强制 read-only 和 bounded context；
 - 新建 canonical `ingest-kgdistiller`，把所有个人知识写入收口到一个 Skill；

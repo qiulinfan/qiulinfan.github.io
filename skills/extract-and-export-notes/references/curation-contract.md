@@ -31,6 +31,12 @@ For unmarked prose, decide semantically whether it defines an independently
 teachable, searchable, reusable concept. Never promote every formal title by
 regex, position, or wrapper type.
 
+This rule is domain-neutral. Architecture components and tradeoffs, software
+abstractions, physical or biological mechanisms, historical ideas, practical
+procedures, and everyday-life concepts are eligible when the authority teaches
+them as stable reusable knowledge. Formal mathematics statements are examples,
+not a restriction on the graph.
+
 ## One concept per node
 
 One authority marker denotes one concept. If a title defines several independently reusable
@@ -72,8 +78,8 @@ that let a reader recognize the concept without opening the full note:
 - preserve the source's mathematical meaning and important distinctions;
 - synthesize the statement and its explanation instead of copying a long span;
 - do not add facts that the authoritative file does not support;
-- follow the authority's dominant language while preserving established
-  mathematical terminology and notation;
+- follow the authority's dominant language while preserving established domain
+  terminology, notation, names, and units;
 - update the entry when the authority changes materially;
 - preserve an explicitly reviewed entry unless the source now contradicts it.
 

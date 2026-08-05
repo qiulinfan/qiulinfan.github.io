@@ -65,7 +65,7 @@ def validate_repo(repo: Path) -> None:
         repo / "notes/math/toolchain/qlnotes.typ",
         repo / "notes/math/toolchain/math-aliases.typ",
         repo / "notes/math/toolchain/scripts/export_course.py",
-        repo / "skills/export-typst-math-notes/scripts/check_web.py",
+        repo / "skills/extract-and-export-notes/scripts/check_web.py",
         repo / "knowledge/kgd.py",
         repo / "vendor/kgdistiller/src/kgdistiller/cli.py",
         repo / "knowledge/sources.json",
