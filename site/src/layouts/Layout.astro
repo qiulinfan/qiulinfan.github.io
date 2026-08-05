@@ -501,6 +501,25 @@ window.onresize = () => {
 </script>
 
 <script>
+import { startSkillsMermaid } from "../scripts/skills-mermaid";
+
+let skillsMermaidHooked = false;
+
+function setupSkillsMermaid() {
+	startSkillsMermaid();
+	if (skillsMermaidHooked) return;
+	window.swup.hooks.on("page:view", startSkillsMermaid);
+	skillsMermaidHooked = true;
+}
+
+if (window.swup) {
+	setupSkillsMermaid();
+} else {
+	document.addEventListener("swup:enable", setupSkillsMermaid, { once: true });
+}
+</script>
+
+<script>
 import PhotoSwipeLightbox from "photoswipe/lightbox"
 import "photoswipe/style.css"
 
