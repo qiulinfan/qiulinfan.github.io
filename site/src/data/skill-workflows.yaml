@@ -1,0 +1,146 @@
+# Skills 页面「工具流」内容源。
+#
+# 日常维护只需要编辑这个文件。每个 workflow 包含：
+# - 页面标题与简介；
+# - 从左到右展示的 steps；
+# - query 返回五种状态后的 decisions；
+# - 默认交付结果，以及可选的显式导入分支。
+#
+# kind 只能是 input / skill / output。
+# tone 只能是 reuse / author / review。
+# skill 步骤的 skillId 必须对应 skills/ 下真实存在的 Skill。
+
+workflows:
+  - id: notes-to-web
+    index: "01"
+    kicker: AUTHORING LOOP
+    title: 笔记 → 知识库 → Web
+    summary: >-
+      从 Git 改动和作者已经写下的 marker 中提取候选知识；先询问外接大脑，
+      再把审查后的结果事务入库，最后发布网页。
+    mutatesPersonalGraphByDefault: true
+
+    steps:
+      - kind: input
+        label: SOURCE
+        title: Git diff + 原生 marker
+        description: >-
+          读取完整的 Markdown、Typst 或 LaTeX authority，保留作者写下的 kn/ref。
+
+      - kind: skill
+        label: EXTRACT
+        title: extract-and-export-notes
+        skillId: extract-and-export-notes
+        description: >-
+          从最小完整改动范围构造 source-backed 候选图，不打开个人大图。
+
+      - kind: skill
+        label: READ API
+        title: query-kgdistiller
+        skillId: query-kgdistiller
+        description: >-
+          一次批量解析身份、检索证据，并返回 known / partial / new / conflict / uncertain。
+
+      - kind: skill
+        label: WRITE API
+        title: ingest-kgdistiller
+        skillId: ingest-kgdistiller
+        description: >-
+          只执行已经审查的 source patch、entry、ref 与 edge，并返回 canonical receipt。
+
+      - kind: output
+        label: PUBLISH
+        title: Validated web export
+        description: >-
+          只有事务提交且 curation 通过后，才生成 Notes 页面、anchor 与 backlink。
+
+    decisions:
+      - status: KNOWN
+        tone: reuse
+        title: 复用已有身份
+        description: 写格式原生 ref，不创建重复节点或词条。
+
+      - status: PARTIAL · NEW
+        tone: author
+        title: 只补真正缺失的知识
+        description: partial 只补缺口；new 才获得 authority marker 与完整 entry。
+
+      - status: UNCERTAIN · CONFLICT
+        tone: review
+        title: 停在审查门前
+        description: 不为保持自动流程而猜测身份，也不会进入写事务。
+
+    result:
+      label: DELIVERABLE
+      title: Authority、图谱与网页一致
+      description: >-
+        源文件仍是事实权威；提交后的图谱、查询索引、网页链接和回执共同证明这次更新。
+
+  - id: paper-to-federated-snapshot
+    index: "02"
+    kicker: RESEARCH LOOP
+    title: 论文 → 联邦知识快照
+    summary: >-
+      在撰写完整词条之前先查询个人知识库。论文图保持独立，
+      已知知识只作为连接两张图的桥，不被重复解释。
+    mutatesPersonalGraphByDefault: false
+
+    steps:
+      - kind: input
+        label: SOURCE
+        title: Paper / PDF / TeX
+        description: >-
+          通读完整论证、公式、图表、附录与来源，记录精确 coverage 和 provenance。
+
+      - kind: skill
+        label: EXTRACT
+        title: extract-paper-concepts
+        skillId: extract-paper-concepts
+        description: >-
+          先生成轻量候选图：概念、论文角色、来源位置和直接 prerequisite。
+
+      - kind: skill
+        label: READ API
+        title: query-kgdistiller
+        skillId: query-kgdistiller
+        description: >-
+          在 full entries 之前批量比较 paper namespace 与 personal namespace。
+
+      - kind: output
+        label: DEFAULT OUTPUT
+        title: Federated snapshot
+        description: >-
+          保留论文节点、论文内部关系和跨 namespace bridges，但不合并个人图谱。
+
+    decisions:
+      - status: KNOWN
+        tone: reuse
+        title: 只保留论文角色与桥
+        description: >-
+          不复制或改写个人知识词条；只有权威身份依据才能建立 exact bridge。
+
+      - status: PARTIAL · NEW
+        tone: author
+        title: 按缺失程度解释
+        description: >-
+          partial 只解释缺口；new 才生成完整的 source-backed concept card。
+
+      - status: UNCERTAIN · CONFLICT
+        tone: review
+        title: 保留证据，不建 bridge
+        description: >-
+          论文局部缩写与相似度只能召回候选，不能升级成全局身份。
+
+    result:
+      label: DEFAULT GUARANTEE
+      title: 个人知识库保持不变
+      description: >-
+        默认运行前后的 personal graph 与 alignment digest 必须一致；
+        联邦快照可独立阅读和查询。
+
+    optionalImport:
+      label: EXPLICIT IMPORT ONLY
+      skillId: ingest-kgdistiller
+      description: >-
+        只有额外授权时，才把选中的 new / partial 写入带论文来源的 research authority；
+        known 只写 ref。

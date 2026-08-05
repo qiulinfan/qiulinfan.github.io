@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 
+import { knowledgeWorkflows } from "../src/data/skill-workflows.ts";
 import { loadPublishedSkills } from "../src/utils/skill-sources.ts";
 
 const repositoryRoot = new URL("../..", import.meta.url).pathname;
@@ -56,4 +57,46 @@ test("knowledge Skills keep extraction, query, and ingestion responsibilities se
 	assert.match(ingestSkill, /kgdistiller ingest apply REQUEST\.json/);
 	assert.doesNotMatch(ingestSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
 	assert.equal(existsSync(join(repositoryRoot, "skills/kgdistiller-distill/SKILL.md")), false);
+});
+
+test("the Skills page workflows reference real Skills and preserve knowledge boundaries", () => {
+	const skillIds = new Set(loadPublishedSkills().map((skill) => skill.id));
+	const workflowSkillIds = knowledgeWorkflows.flatMap((workflow) => [
+		...workflow.steps.flatMap((step) => (step.skillId ? [step.skillId] : [])),
+		...(workflow.optionalImport ? [workflow.optionalImport.skillId] : []),
+	]);
+
+	assert.deepEqual(
+		new Set(knowledgeWorkflows.map((workflow) => workflow.id)),
+		new Set(["notes-to-web", "paper-to-federated-snapshot"]),
+	);
+	assert.equal(
+		workflowSkillIds.every((skillId) => skillIds.has(skillId)),
+		true,
+	);
+	assert.deepEqual(
+		new Set(workflowSkillIds),
+		new Set([
+			"extract-and-export-notes",
+			"extract-paper-concepts",
+			"query-kgdistiller",
+			"ingest-kgdistiller",
+		]),
+	);
+
+	for (const workflow of knowledgeWorkflows) {
+		const statuses = workflow.decisions.flatMap((decision) =>
+			decision.status.toLowerCase().split(" · "),
+		);
+		assert.deepEqual(
+			new Set(statuses),
+			new Set(["known", "partial", "new", "uncertain", "conflict"]),
+		);
+	}
+
+	const paperWorkflow = knowledgeWorkflows.find(
+		(workflow) => workflow.id === "paper-to-federated-snapshot",
+	);
+	assert.equal(paperWorkflow?.mutatesPersonalGraphByDefault, false);
+	assert.equal(paperWorkflow?.optionalImport?.skillId, "ingest-kgdistiller");
 });
