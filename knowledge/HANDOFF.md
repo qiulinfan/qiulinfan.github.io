@@ -619,7 +619,8 @@ qlblog `codex/transactional-ingest` 的集成提交 `24114b3` 已完成；当前
 
 - 版本管理通过：四个 discovery Skill 和 `agents/openai.yaml` 都是 qlblog tracked files；
   query/ingest 的 canonical 内容由 tracked submodule gitlink `0406b8f` 固定；
-  `~/.codex/skills` 是指向 qlblog `skills/` 的整目录 symlink，没有独立漂移副本。
+  qlblog 中的可见 Skills 通过逐 Skill symlink 接入真实的 `~/.codex/skills`，Codex
+  生成的 `.system` 留在该目录并与仓库版本管理隔离。
 - query 通过独立真实 Agent 测试：一次 batch resolve/alignment/comparison 正确得到
   `partial/new/uncertain`，ambiguity 没有被提升成 identity，workspace guard 为零修改。
 - ingest 通过独立真实 Agent 测试：在 disposable fixture 中完成 plan → review → apply，

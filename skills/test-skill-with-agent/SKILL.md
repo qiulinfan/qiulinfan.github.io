@@ -1,6 +1,6 @@
 ---
 name: test-skill-with-agent
-description: Atomically evaluate exactly one Agent Skill with isolated external-agent trials selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any fixture, staging, dry-run, or trial work. Use for skill smoke tests, behavioral conformance, negative and safety cases, regression testing, repeated flakiness checks, or bounded concurrent stress tests. Do not use for production workflows or multi-skill deliverables; use run-workflow-with-agents instead.
+description: Atomically evaluate exactly one Agent Skill with isolated Claude Code, Codex, or OpenCode trials selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any fixture, staging, dry-run, or trial work. Use for skill smoke tests, behavioral conformance, negative and safety cases, regression testing, repeated flakiness checks, or bounded concurrent stress tests. Do not use for production workflows or multi-skill deliverables; use run-workflow-with-agents instead.
 ---
 
 # Test one skill with agents
@@ -26,18 +26,21 @@ is detected, select it without asking which agent to use.
 If the prompt explicitly supplies the selected agent, subscription/API mode,
 and, for API mode, an absolute credential-file path, run `configure` first and
 then require a clean `status`. Store only the credential path, never the key.
-Use the cached runtime and authentication mode for every trial. Override its
-model only when the user requests a model comparison or a specific model.
+Use the resolved agent's cached authentication/runtime entry for every trial;
+never borrow credentials from the base agent. Override its model only when the
+user requests a model comparison or a specific model.
 Treat `selected_agent` as the cached base agent and never ask again while that
 entry remains valid. Optional cached routes may override it for a target Skill
 or for the `test-skill-with-agent` workflow; when no route matches, use the base
 agent without interaction.
+When the user configures an additional routed agent without changing the base,
+use `configure --keep-base` as described in the profile reference.
 
 ## Define the atomic contract
 
 Resolve:
 
-- one target skill directory or Codex skill name;
+- one target skill directory or discovered skill name;
 - a minimal fixture and natural user request;
 - trial type: smoke, conformance, negative/safety, regression, repeat, or stress;
 - expected invariants, mandatory artifacts, allowed output paths, and validators;
@@ -65,8 +68,10 @@ python3 scripts/stage_skill.py \
   --skill target-skill
 ```
 
-The skill name resolves from Codex's workspace, personal, system, and installed
-plugin roots; pass an explicit directory or `--skill-root` for another source.
+The source skill name resolves from Codex's workspace, personal, system, and
+installed-plugin roots; pass an explicit directory or `--skill-root` for
+another source. The staging script copies it to `.claude/skills`,
+`.agents/skills`, or `.opencode/skills` according to the cached runtime.
 Never reuse a writable project, session, or staged skill between trials.
 
 Snapshot each fixture after staging and before execution:
@@ -82,9 +87,10 @@ the workspace comparison is the independent enforcement layer.
 ## Prove discovery before behavior
 
 Run the smallest invocation that proves the runtime recognizes the target
-skill. Verify that `SKILL.md` is a regular project skill file and that the
-runtime launched from the intended fixture. An unknown skill, disabled skill,
-or zero-turn result is a `harness` failure, not model behavior.
+skill. Verify that `SKILL.md` is a regular file below the selected runtime's
+native project Skill root and that the runtime launched from the intended
+fixture. An unknown skill, disabled skill, or zero-turn result is a `harness`
+failure, not model behavior.
 
 After fixing only a harness defect, restart with a fresh trial and record the
 failed attempt and any incurred API usage.
@@ -94,9 +100,10 @@ failed attempt and any incurred API usage.
 When the profile selects Claude Code, read and follow
 [`references/claude-code-deepseek.md`](references/claude-code-deepseek.md).
 Use `scripts/run_trials.py` to run one or many isolated copies with the same
-atomic contract. It stages one skill per copy, applies the cached route and
-model, keeps credentials out of command arguments, records structured results
-and workspace diffs, and supports bounded concurrency.
+atomic contract through Claude Code, Codex, or OpenCode. It stages one skill per
+copy, applies the cached route and model, keeps credentials out of command
+arguments, records structured results and workspace diffs, and supports bounded
+concurrency.
 
 ```sh
 python3 scripts/run_trials.py \
@@ -114,10 +121,11 @@ python3 scripts/run_trials.py \
 
 The runner reads the shared profile by default; pass `--runtime-profile` only
 for an explicitly selected alternate local profile. For repeat or stress
-testing, increase `--trials` and set conservative
-`--parallel` and `--max-budget-usd-per-trial`. Keep prompts, fixtures, tools,
-model, and validators identical unless the contract explicitly defines a
-matrix. Distinguish provider saturation and rate limits from skill failures.
+testing, increase `--trials` and set conservative `--parallel`. Use
+`--max-budget-usd-per-trial` only with Claude Code; use
+`--timeout-seconds-per-trial` with Codex or OpenCode. Keep prompts, fixtures,
+tools, model, and validators identical unless the contract explicitly defines
+a matrix. Distinguish provider saturation and rate limits from skill failures.
 Do not silently strengthen prompts between trials.
 
 ## Verify independently

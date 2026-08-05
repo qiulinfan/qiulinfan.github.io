@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Run isolated Claude Code trials against exactly one Agent Skill."""
+"""Run isolated external-agent trials against exactly one Agent Skill."""
 
 from __future__ import annotations
 
 import argparse
 import concurrent.futures
 import json
-import os
 import shutil
 import subprocess
 import time
@@ -18,6 +17,16 @@ from runtime_profile import (
     default_profile_path,
     require_ready_profile,
     selected_agent_record,
+)
+from runtime_adapter import (
+    all_staged_manifests,
+    codex_sandbox,
+    install_opencode_config,
+    isolate_runtime_state,
+    opencode_permissions,
+    provider_environment,
+    runtime_metrics,
+    skill_root,
 )
 from stage_skill import default_roots, resolve_skill, skill_name
 from workspace_guard import inventory
@@ -31,47 +40,6 @@ def read_prompt(args: argparse.Namespace) -> str:
     if not value or not value.strip():
         raise SystemExit("the trial prompt is empty")
     return value.strip()
-
-
-def provider_environment(
-    args: argparse.Namespace, profile: dict[str, Any], model: str | None
-) -> tuple[dict[str, str], bytes | None]:
-    environment = os.environ.copy()
-    for name in (
-        "ANTHROPIC_API_KEY",
-        "ANTHROPIC_AUTH_TOKEN",
-        "ANTHROPIC_BASE_URL",
-        "ANTHROPIC_MODEL",
-        "ANTHROPIC_DEFAULT_OPUS_MODEL",
-        "ANTHROPIC_DEFAULT_SONNET_MODEL",
-        "ANTHROPIC_DEFAULT_HAIKU_MODEL",
-        "CLAUDE_CODE_SUBAGENT_MODEL",
-        "DEEPSEEK_API_KEY",
-    ):
-        environment.pop(name, None)
-
-    authentication = profile["authentication"]
-    if authentication["mode"] == "subscription":
-        environment["CLAUDE_CODE_EFFORT_LEVEL"] = args.effort
-        return environment, None
-
-    runtime = profile["runtime"]
-    key_path = Path(authentication["credential_file"])
-    try:
-        key = key_path.read_text(encoding="utf-8").strip()
-    except OSError as error:
-        raise SystemExit(f"cannot read configured credential file: {key_path}") from error
-    if runtime.get("provider") != "deepseek" or not model:
-        raise SystemExit("configured API runtime must be DeepSeek with a model")
-    environment["ANTHROPIC_AUTH_TOKEN"] = key
-    environment["ANTHROPIC_BASE_URL"] = runtime["base_url"]
-    environment["ANTHROPIC_MODEL"] = model
-    environment["ANTHROPIC_DEFAULT_OPUS_MODEL"] = model
-    environment["ANTHROPIC_DEFAULT_SONNET_MODEL"] = model
-    environment["ANTHROPIC_DEFAULT_HAIKU_MODEL"] = model
-    environment["CLAUDE_CODE_SUBAGENT_MODEL"] = model
-    environment["CLAUDE_CODE_EFFORT_LEVEL"] = args.effort
-    return environment, key.encode("utf-8")
 
 
 def credential_occurrences(root: Path, secret: bytes | None) -> list[str]:
@@ -103,7 +71,7 @@ def workspace_diff(before: dict[str, str], after: dict[str, str]) -> dict[str, l
 
 
 def validate_fixture(fixture: Path) -> None:
-    existing_skills = list((fixture / ".claude" / "skills").glob("*/SKILL.md"))
+    existing_skills = all_staged_manifests(fixture)
     if existing_skills:
         paths = ", ".join(str(path) for path in existing_skills)
         raise SystemExit(f"fixture must not contain preloaded skills: {paths}")
@@ -115,30 +83,6 @@ def validate_fixture(fixture: Path) -> None:
             raise SystemExit(f"fixture symlink escapes its root: {path} -> {target}")
 
 
-def runtime_metrics(stdout: str) -> tuple[dict[str, Any], bool]:
-    try:
-        payload = json.loads(stdout)
-    except json.JSONDecodeError:
-        return {"json_parse_error": True}, False
-    if not isinstance(payload, dict):
-        return {"json_parse_error": True}, False
-    fields = (
-        "subtype",
-        "is_error",
-        "api_error_status",
-        "terminal_reason",
-        "duration_ms",
-        "duration_api_ms",
-        "num_turns",
-        "total_cost_usd",
-        "permission_denials",
-        "usage",
-        "modelUsage",
-    )
-    metrics = {field: payload[field] for field in fields if field in payload}
-    return metrics, not bool(payload.get("is_error", False))
-
-
 def trial_command(
     args: argparse.Namespace,
     runtime: dict[str, Any],
@@ -146,6 +90,56 @@ def trial_command(
     prompt: str,
     model: str | None,
 ) -> list[str]:
+    runtime_id = runtime["id"]
+    skill_prompt = (
+        f"Load and follow the staged {skill!r} Agent Skill before doing the task. "
+        "Complete the request as an end user supplied it, stay inside the fixture, "
+        "validate required artifacts, and report concrete results.\n\n"
+        f"USER TASK:\n{prompt}"
+    )
+    if runtime_id == "codex":
+        command = [
+            runtime["path"],
+            "exec",
+            "--json",
+            "--ephemeral",
+            "--skip-git-repo-check",
+            "--ignore-user-config",
+            "--ignore-rules",
+            "--sandbox",
+            codex_sandbox(args.allowed_tool, args.permission_mode),
+            "-c",
+            'approval_policy="never"',
+            "-c",
+            f'model_reasoning_effort="{args.effort}"',
+        ]
+        if model:
+            command.extend(["--model", model])
+        if {"WebFetch", "WebSearch"}.intersection(args.allowed_tool):
+            command.extend(["-c", "sandbox_workspace_write.network_access=true"])
+        command.append(skill_prompt)
+        return command
+
+    if runtime_id == "opencode":
+        if model and "/" not in model:
+            raise SystemExit("OpenCode models must use provider/model format")
+        command = [
+            runtime["path"],
+            "run",
+            "--format",
+            "json",
+            "--pure",
+            "--auto",
+            "--agent",
+            "build",
+            "--variant",
+            args.effort,
+        ]
+        if model:
+            command.extend(["--model", model])
+        command.append(skill_prompt)
+        return command
+
     agent_definition: dict[str, Any] = {
         "description": "Executes one isolated natural task with the skill under test.",
         "prompt": (
@@ -194,12 +188,12 @@ def trial_command(
     return command
 
 
-def stage_one(source: Path, name: str, project: Path) -> None:
-    existing = list((project / ".claude" / "skills").glob("*/SKILL.md"))
+def stage_one(source: Path, name: str, project: Path, runtime: str) -> None:
+    existing = all_staged_manifests(project)
     if existing:
         paths = ", ".join(str(path) for path in existing)
         raise RuntimeError(f"fixture already contains skills: {paths}")
-    destination = project / ".claude" / "skills" / name
+    destination = skill_root(project, runtime) / name
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(source, destination, symlinks=False)
     manifest = destination / "SKILL.md"
@@ -219,28 +213,68 @@ def run_trial(
     secret: bytes | None,
     runtime: dict[str, Any],
     model: str | None,
+    auth_mode: str,
+    profile_runtime: dict[str, Any],
 ) -> dict[str, Any]:
     trial_id = f"trial-{index:04d}"
     project = output / "trials" / trial_id
     result_dir = output / "results" / trial_id
     shutil.copytree(fixture, project, symlinks=True)
-    stage_one(source, name, project)
+    stage_one(source, name, project, runtime["id"])
     before = inventory(project)
     command = trial_command(args, runtime, name, prompt, model)
+    trial_environment = environment.copy()
+    if runtime["id"] == "opencode":
+        install_opencode_config(
+            trial_environment,
+            permissions=opencode_permissions(
+                args.allowed_tool,
+                args.disallowed_tool,
+                args.permission_mode,
+                skills=[name],
+            ),
+            provider_runtime=(
+                profile_runtime if auth_mode == "api" else None
+            ),
+        )
+    temporary_state = isolate_runtime_state(
+        trial_environment,
+        runtime["id"],
+        auth_mode,
+    )
 
     started = time.monotonic()
-    completed = subprocess.run(
-        command,
-        cwd=project,
-        env=environment,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
+    timed_out = False
+    try:
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=project,
+                env=trial_environment,
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=args.timeout_seconds_per_trial,
+            )
+        except subprocess.TimeoutExpired as error:
+            timed_out = True
+            completed = subprocess.CompletedProcess(
+                command,
+                124,
+                error.stdout or "",
+                error.stderr or "",
+            )
+    finally:
+        if temporary_state is not None:
+            temporary_state.cleanup()
     duration = time.monotonic() - started
+    if isinstance(completed.stdout, bytes):
+        completed.stdout = completed.stdout.decode("utf-8", errors="replace")
+    if isinstance(completed.stderr, bytes):
+        completed.stderr = completed.stderr.decode("utf-8", errors="replace")
     after = inventory(project)
-    metrics, result_ok = runtime_metrics(completed.stdout)
-    runtime_ok = completed.returncode == 0 and result_ok
+    metrics, result_ok = runtime_metrics(runtime["id"], completed.stdout)
+    runtime_ok = completed.returncode == 0 and result_ok and not timed_out
 
     result_dir.mkdir(parents=True)
     (result_dir / "stdout.json").write_text(completed.stdout, encoding="utf-8")
@@ -258,6 +292,7 @@ def run_trial(
         "project": str(project),
         "returncode": completed.returncode,
         "runtime_ok": runtime_ok,
+        "timed_out": timed_out,
         "wall_seconds": duration,
         "runtime_agent": runtime["id"],
         "model_configured": model or "runtime-default",
@@ -297,6 +332,7 @@ def main() -> None:
         choices=("acceptEdits", "auto", "bypassPermissions", "manual", "dontAsk", "plan"),
     )
     parser.add_argument("--max-budget-usd-per-trial", type=float)
+    parser.add_argument("--timeout-seconds-per-trial", type=float)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -305,14 +341,14 @@ def main() -> None:
         profile = require_ready_profile(profile_path)
     except ProfileError as error:
         raise SystemExit(f"runtime profile gate stopped before test work:\n{error}") from error
-    model = args.model or profile.get("runtime", {}).get("model")
-
     if args.trials < 1 or args.parallel < 1:
         raise SystemExit("--trials and --parallel must be positive")
     if args.parallel > args.trials:
         raise SystemExit("--parallel cannot exceed --trials")
     if args.max_budget_usd_per_trial is not None and args.max_budget_usd_per_trial <= 0:
         raise SystemExit("--max-budget-usd-per-trial must be positive")
+    if args.timeout_seconds_per_trial is not None and args.timeout_seconds_per_trial <= 0:
+        raise SystemExit("--timeout-seconds-per-trial must be positive")
 
     fixture = args.fixture.expanduser().resolve()
     output = args.output.expanduser().resolve()
@@ -339,6 +375,18 @@ def main() -> None:
         )
     except ProfileError as error:
         raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
+    runtime_configuration = runtime["configuration"]
+    model = args.model or runtime_configuration["runtime"].get("model")
+    if args.max_budget_usd_per_trial is not None and runtime["id"] != "claude-code":
+        raise SystemExit(
+            "--max-budget-usd-per-trial is available only in Claude Code; "
+            "use --timeout-seconds-per-trial for Codex or OpenCode"
+        )
+    if args.mcp_config and runtime["id"] != "claude-code":
+        raise SystemExit(
+            "--mcp-config currently accepts Claude Code config only; configure MCP "
+            "as project runtime state for Codex or OpenCode"
+        )
     prompt = read_prompt(args)
     command = trial_command(args, runtime, name, prompt, model)
     if args.dry_run:
@@ -349,18 +397,26 @@ def main() -> None:
                     "source": str(source),
                     "runtime_profile": str(profile_path),
                     "runtime_agent": runtime["id"],
-                    "auth_mode": profile["authentication"]["mode"],
+                    "auth_mode": runtime_configuration["authentication"]["mode"],
                     "model": model or "runtime-default",
                     "trials": args.trials,
                     "parallel": args.parallel,
                     "command": command,
+                    "timeout_seconds_per_trial": args.timeout_seconds_per_trial,
+                    "native_usd_budget": runtime["id"] == "claude-code",
+                    "staged_skill_root": str(skill_root(fixture, runtime["id"])),
                 },
                 indent=2,
             )
         )
         return
 
-    environment, secret = provider_environment(args, profile, model)
+    try:
+        environment, secret = provider_environment(
+            runtime_configuration, runtime["id"], model, args.effort
+        )
+    except RuntimeError as error:
+        raise SystemExit(str(error)) from error
     (output / "trials").mkdir(parents=True)
     (output / "results").mkdir(parents=True)
     results: list[dict[str, Any]] = []
@@ -380,6 +436,8 @@ def main() -> None:
                 secret,
                 runtime,
                 model,
+                runtime_configuration["authentication"]["mode"],
+                runtime_configuration["runtime"],
             ): index
             for index in range(1, args.trials + 1)
         }
@@ -402,7 +460,7 @@ def main() -> None:
         "source": str(source),
         "runtime_profile": str(profile_path),
         "runtime_agent": runtime["id"],
-        "auth_mode": profile["authentication"]["mode"],
+        "auth_mode": runtime_configuration["authentication"]["mode"],
         "model_configured": model or "runtime-default",
         "trials_requested": args.trials,
         "parallel": args.parallel,

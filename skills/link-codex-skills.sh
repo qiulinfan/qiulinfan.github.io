@@ -3,181 +3,171 @@
 set -eu
 
 skills_repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repo_root=$(CDPATH= cd -- "$skills_repo_dir/.." && pwd)
 codex_root=${CODEX_HOME:-"$HOME/.codex"}
 codex_skills_dir="$codex_root/skills"
-repo_system_dir="$skills_repo_dir/.system"
-codex_system_dir="$codex_root/system-skills"
-lock_store="$codex_root/skills-store-lock.json"
+codex_agents_file="$codex_root/AGENTS.md"
+global_agents_source="$repo_root/install/codex/AGENTS.md"
+legacy_system_dir="$codex_root/system-skills"
+legacy_lock_bridge="$skills_repo_dir/.skills_store_lock.json"
 backup_stamp=$(date '+%Y%m%d-%H%M%S')
 backup_dir="$codex_root/skill-layout-backups/$backup_stamp"
+backup_ready=false
 
 mkdir -p "$codex_root"
-
-repo_dir_for_name() {
-  requested_name=$1
-  for skill_file in "$skills_repo_dir"/*/SKILL.md; do
-    [ -f "$skill_file" ] || continue
-    candidate_name=$(sed -n 's/^name:[[:space:]]*//p' "$skill_file" | head -n 1)
-    if [ "$candidate_name" = "$requested_name" ]; then
-      printf '%s\n' "${skill_file%/SKILL.md}"
-      return 0
-    fi
-  done
-  return 1
+[ -f "$global_agents_source" ] || {
+  printf 'missing tracked global guidance: %s\n' "$global_agents_source" >&2
+  exit 1
 }
 
-ensure_system_store_link() {
-  if [ -L "$repo_system_dir" ]; then
-    repo_system_target=$(realpath "$repo_system_dir" 2>/dev/null || true)
-    codex_system_target=$(realpath "$codex_system_dir" 2>/dev/null || true)
-    [ -n "$repo_system_target" ] && [ "$repo_system_target" = "$codex_system_target" ] || {
-      printf 'conflict: %s points outside %s\n' "$repo_system_dir" "$codex_system_dir" >&2
-      exit 1
-    }
-    [ -d "$codex_system_dir" ] && [ ! -L "$codex_system_dir" ] || {
-      printf 'conflict: cannot migrate %s because %s is not a real directory\n' "$repo_system_dir" "$codex_system_dir" >&2
-      exit 1
-    }
-
-    mkdir -p "$backup_dir"
-    cp -a "$codex_system_dir" "$backup_dir/system-skills-before"
-    rm "$repo_system_dir"
-    mv "$codex_system_dir" "$repo_system_dir"
-    printf 'migrated: %s is now repository-managed\n' "$repo_system_dir"
-    printf 'backup: %s\n' "$backup_dir"
-  elif [ -e "$repo_system_dir" ]; then
-    [ -d "$repo_system_dir" ] || {
-      printf 'conflict: %s exists and is not a directory\n' "$repo_system_dir" >&2
-      exit 1
-    }
-  elif [ -d "$codex_system_dir" ] && [ ! -L "$codex_system_dir" ]; then
-    mkdir -p "$backup_dir"
-    cp -a "$codex_system_dir" "$backup_dir/system-skills-before"
-    mv "$codex_system_dir" "$repo_system_dir"
-    printf 'migrated: %s is now repository-managed\n' "$repo_system_dir"
-    printf 'backup: %s\n' "$backup_dir"
-  else
-    printf 'conflict: repository system skill store is missing: %s\n' "$repo_system_dir" >&2
-    exit 1
+ensure_backup_dir() {
+  if [ "$backup_ready" = true ]; then
+    return
   fi
-
-  if [ -L "$codex_system_dir" ]; then
-    [ "$(realpath "$codex_system_dir")" = "$(realpath "$repo_system_dir")" ] || {
-      printf 'conflict: %s points to the wrong system skill store\n' "$codex_system_dir" >&2
-      exit 1
-    }
-  elif [ -e "$codex_system_dir" ]; then
-    [ -d "$codex_system_dir" ] || {
-      printf 'conflict: %s exists and is not a directory\n' "$codex_system_dir" >&2
-      exit 1
-    }
-    mkdir -p "$backup_dir"
-    mv "$codex_system_dir" "$backup_dir/system-skills-replaced"
-    ln -s "$repo_system_dir" "$codex_system_dir"
-    if ! diff -qr "$backup_dir/system-skills-replaced" "$repo_system_dir" >/dev/null 2>&1; then
-      printf 'notice: replaced divergent local system skills with the repository version\n'
-    fi
-    printf 'linked: %s -> %s\n' "$codex_system_dir" "$repo_system_dir"
-    printf 'backup: %s\n' "$backup_dir"
-  else
-    ln -s "$repo_system_dir" "$codex_system_dir"
-    printf 'linked: %s -> %s\n' "$codex_system_dir" "$repo_system_dir"
+  if [ -e "$backup_dir" ]; then
+    backup_dir="$backup_dir-$$"
   fi
-}
-
-ensure_managed_bridges() {
-  ensure_system_store_link
-
-  if [ -f "$lock_store" ]; then
-    if [ -L "$skills_repo_dir/.skills_store_lock.json" ]; then
-      [ "$(realpath "$skills_repo_dir/.skills_store_lock.json")" = "$(realpath "$lock_store")" ] || {
-        printf 'conflict: %s points to the wrong lock store\n' "$skills_repo_dir/.skills_store_lock.json" >&2
-        exit 1
-      }
-    elif [ -e "$skills_repo_dir/.skills_store_lock.json" ]; then
-      printf 'conflict: %s is not a symlink\n' "$skills_repo_dir/.skills_store_lock.json" >&2
-      exit 1
-    else
-      ln -s "$lock_store" "$skills_repo_dir/.skills_store_lock.json"
-    fi
-  fi
-}
-
-if [ -L "$codex_skills_dir" ]; then
-  if [ "$(realpath "$codex_skills_dir")" != "$(realpath "$skills_repo_dir")" ]; then
-    printf 'conflict: %s points to %s\n' "$codex_skills_dir" "$(readlink "$codex_skills_dir")" >&2
-    exit 1
-  fi
-  ensure_managed_bridges
-  printf 'ok: %s -> %s\n' "$codex_skills_dir" "$skills_repo_dir"
-  exit 0
-fi
-
-if [ -e "$codex_skills_dir" ]; then
-  [ -d "$codex_skills_dir" ] || {
-    printf 'conflict: %s exists and is not a directory\n' "$codex_skills_dir" >&2
-    exit 1
-  }
-
-  had_conflict=false
-  find "$codex_skills_dir" -mindepth 1 -maxdepth 1 -print | while IFS= read -r existing; do
-    entry_name=$(basename "$existing")
-    case "$entry_name" in
-      .system|.skills_store_lock.json) continue ;;
-    esac
-
-    if [ -L "$existing" ]; then
-      resolved=$(realpath "$existing" 2>/dev/null || true)
-      case "$resolved" in
-        "$skills_repo_dir"/*) continue ;;
-      esac
-      printf 'conflict: external skill link %s -> %s\n' "$existing" "$(readlink "$existing")" >&2
-      exit 20
-    fi
-
-    if [ -d "$existing" ] && [ -f "$existing/SKILL.md" ]; then
-      skill_name=$(sed -n 's/^name:[[:space:]]*//p' "$existing/SKILL.md" | head -n 1)
-      repo_skill=$(repo_dir_for_name "$skill_name" || true)
-      if [ -n "$repo_skill" ] && diff -qr "$existing" "$repo_skill" >/dev/null 2>&1; then
-        continue
-      fi
-    fi
-
-    printf 'conflict: untracked or divergent entry %s\n' "$existing" >&2
-    exit 20
-  done || had_conflict=true
-
-  [ "$had_conflict" = false ] || exit 1
-
   mkdir -p "$backup_dir"
-  cp -a "$codex_skills_dir" "$backup_dir/skills-before"
+  backup_ready=true
+}
 
-  if [ -d "$codex_skills_dir/.system" ] && [ ! -L "$codex_skills_dir/.system" ]; then
-    if [ -e "$repo_system_dir" ]; then
-      diff -qr "$codex_skills_dir/.system" "$repo_system_dir" >/dev/null 2>&1 || {
-        printf 'conflict: legacy system skills differ from %s\n' "$repo_system_dir" >&2
-        exit 1
-      }
-    else
-      cp -a "$codex_skills_dir/.system" "$repo_system_dir"
-    fi
+backup_entry() {
+  source_path=$1
+  backup_name=$2
+  ensure_backup_dir
+  mv "$source_path" "$backup_dir/$backup_name"
+  printf 'backup: %s -> %s\n' "$source_path" "$backup_dir/$backup_name"
+}
+
+ensure_real_codex_skills_dir() {
+  if [ -L "$codex_skills_dir" ]; then
+    linked_target=$(realpath "$codex_skills_dir" 2>/dev/null || true)
+    [ "$linked_target" = "$(realpath "$skills_repo_dir")" ] || {
+      printf 'conflict: %s points to %s\n' "$codex_skills_dir" "$(readlink "$codex_skills_dir")" >&2
+      exit 1
+    }
+    unlink "$codex_skills_dir"
+    mkdir "$codex_skills_dir"
+    printf 'migrated: %s is now a Codex-owned directory\n' "$codex_skills_dir"
+  elif [ -e "$codex_skills_dir" ]; then
+    [ -d "$codex_skills_dir" ] || {
+      printf 'conflict: %s exists and is not a directory\n' "$codex_skills_dir" >&2
+      exit 1
+    }
+  else
+    mkdir "$codex_skills_dir"
+    printf 'created: %s\n' "$codex_skills_dir"
   fi
 
-  if [ -f "$codex_skills_dir/.skills_store_lock.json" ] && [ ! -L "$codex_skills_dir/.skills_store_lock.json" ]; then
-    if [ -e "$lock_store" ]; then
-      cmp -s "$codex_skills_dir/.skills_store_lock.json" "$lock_store" || {
-        printf 'conflict: skill store lock differs from %s\n' "$lock_store" >&2
+  if [ -d "$skills_repo_dir/.system" ] && [ ! -e "$codex_skills_dir/.system" ]; then
+    cp -a "$skills_repo_dir/.system" "$codex_skills_dir/.system"
+    printf 'migrated: generated system Skills -> %s\n' "$codex_skills_dir/.system"
+  fi
+}
+
+remove_legacy_system_bridge() {
+  if [ -L "$legacy_system_dir" ]; then
+    legacy_target=$(realpath "$legacy_system_dir" 2>/dev/null || true)
+    case "$legacy_target" in
+      "$(realpath "$skills_repo_dir/.system" 2>/dev/null || true)"|"$(realpath "$codex_skills_dir/.system" 2>/dev/null || true)")
+        unlink "$legacy_system_dir"
+        printf 'removed legacy link: %s\n' "$legacy_system_dir"
+        ;;
+      *)
+        printf 'conflict: %s points to %s\n' "$legacy_system_dir" "$(readlink "$legacy_system_dir")" >&2
         exit 1
-      }
+        ;;
+    esac
+  elif [ -e "$legacy_system_dir" ]; then
+    [ -d "$legacy_system_dir" ] || {
+      printf 'conflict: %s exists and is not a directory\n' "$legacy_system_dir" >&2
+      exit 1
+    }
+    if [ ! -e "$codex_skills_dir/.system" ]; then
+      mv "$legacy_system_dir" "$codex_skills_dir/.system"
+      printf 'migrated: %s -> %s\n' "$legacy_system_dir" "$codex_skills_dir/.system"
+    elif diff -qr "$legacy_system_dir" "$codex_skills_dir/.system" >/dev/null 2>&1; then
+      backup_entry "$legacy_system_dir" system-skills-legacy
     else
-      mv "$codex_skills_dir/.skills_store_lock.json" "$lock_store"
+      printf 'conflict: legacy system Skills differ from %s\n' "$codex_skills_dir/.system" >&2
+      exit 1
     fi
   fi
+}
 
-  mv "$codex_skills_dir" "$backup_dir/skills-old-layout"
-  printf 'backup: %s\n' "$backup_dir"
-fi
+remove_legacy_lock_bridge() {
+  if [ -L "$legacy_lock_bridge" ]; then
+    unlink "$legacy_lock_bridge"
+    printf 'removed legacy link: %s\n' "$legacy_lock_bridge"
+  elif [ -e "$legacy_lock_bridge" ]; then
+    printf 'conflict: %s exists and is not a symlink\n' "$legacy_lock_bridge" >&2
+    exit 1
+  fi
+}
 
-ensure_managed_bridges
-ln -s "$skills_repo_dir" "$codex_skills_dir"
-printf 'linked: %s -> %s\n' "$codex_skills_dir" "$skills_repo_dir"
+ensure_global_agents_link() {
+  if [ -L "$codex_agents_file" ]; then
+    [ "$(realpath "$codex_agents_file")" = "$(realpath "$global_agents_source")" ] || {
+      printf 'conflict: %s points to %s\n' "$codex_agents_file" "$(readlink "$codex_agents_file")" >&2
+      exit 1
+    }
+  elif [ -e "$codex_agents_file" ]; then
+    [ -f "$codex_agents_file" ] && cmp -s "$codex_agents_file" "$global_agents_source" || {
+      printf 'conflict: existing global guidance differs: %s\n' "$codex_agents_file" >&2
+      exit 1
+    }
+    backup_entry "$codex_agents_file" AGENTS.md-before-link
+    ln -s "$global_agents_source" "$codex_agents_file"
+  else
+    ln -s "$global_agents_source" "$codex_agents_file"
+  fi
+  printf 'ok: %s -> %s\n' "$codex_agents_file" "$global_agents_source"
+}
+
+link_visible_skills() {
+  linked_count=0
+  for manifest in "$skills_repo_dir"/*/SKILL.md; do
+    [ -f "$manifest" ] || continue
+    source_dir=${manifest%/SKILL.md}
+    entry_name=$(basename "$source_dir")
+    destination="$codex_skills_dir/$entry_name"
+
+    if [ -L "$destination" ]; then
+      [ "$(realpath "$destination")" = "$(realpath "$source_dir")" ] || {
+        printf 'conflict: %s points to %s\n' "$destination" "$(readlink "$destination")" >&2
+        exit 1
+      }
+    elif [ -e "$destination" ]; then
+      [ -d "$destination" ] && diff -qr "$destination" "$source_dir" >/dev/null 2>&1 || {
+        printf 'conflict: existing Skill differs from repository authority: %s\n' "$destination" >&2
+        exit 1
+      }
+      backup_entry "$destination" "skill-$entry_name-before-link"
+      ln -s "$source_dir" "$destination"
+    else
+      ln -s "$source_dir" "$destination"
+    fi
+    linked_count=$((linked_count + 1))
+  done
+
+  for existing in "$codex_skills_dir"/*; do
+    [ -L "$existing" ] || continue
+    resolved=$(realpath "$existing" 2>/dev/null || true)
+    case "$resolved" in
+      "$skills_repo_dir"/*)
+        if [ ! -f "$resolved/SKILL.md" ]; then
+          unlink "$existing"
+          printf 'removed stale repository Skill link: %s\n' "$existing"
+        fi
+        ;;
+    esac
+  done
+
+  printf 'ok: linked %s visible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
+}
+
+ensure_real_codex_skills_dir
+remove_legacy_system_bridge
+remove_legacy_lock_bridge
+ensure_global_agents_link
+link_visible_skills

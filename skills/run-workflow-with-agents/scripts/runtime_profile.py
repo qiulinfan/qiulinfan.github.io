@@ -19,8 +19,8 @@ SCHEMA = "qlblog-agent-runtime-profile-v1"
 CACHE_NAME = ".agent-runtime-profile.local.json"
 AGENT_COMMANDS = (
     ("claude-code", "claude", True),
-    ("opencode", "opencode", False),
-    ("codex", "codex", False),
+    ("opencode", "opencode", True),
+    ("codex", "codex", True),
     ("gemini-cli", "gemini", False),
     ("aider", "aider", False),
     ("cursor-agent", "cursor-agent", False),
@@ -83,6 +83,48 @@ def read_profile(path: Path) -> tuple[dict[str, Any] | None, str | None]:
     if value.get("schema") != SCHEMA:
         return None, f"runtime profile schema must be {SCHEMA}"
     return value, None
+
+
+def agent_configuration(
+    profile: dict[str, Any], agent_id: str
+) -> dict[str, Any] | None:
+    configured = profile.get("agent_profiles", {})
+    if isinstance(configured, dict):
+        value = configured.get(agent_id)
+        if isinstance(value, dict):
+            authentication = value.get("authentication")
+            runtime = value.get("runtime")
+            if isinstance(authentication, dict) and isinstance(runtime, dict):
+                return {"authentication": authentication, "runtime": runtime}
+    if profile.get("selected_agent") == agent_id:
+        authentication = profile.get("authentication")
+        runtime = profile.get("runtime")
+        if isinstance(authentication, dict) and isinstance(runtime, dict):
+            return {"authentication": authentication, "runtime": runtime}
+    return None
+
+
+def configured_agent_problem(
+    profile: dict[str, Any], agent_id: str
+) -> str | None:
+    configuration = agent_configuration(profile, agent_id)
+    if configuration is None:
+        return f"authentication is not configured for agent: {agent_id}"
+    authentication = configuration["authentication"]
+    mode = authentication.get("mode")
+    if mode not in ("subscription", "api"):
+        return f"authentication mode is missing for agent: {agent_id}"
+    if mode == "api":
+        problem = credential_problem(authentication.get("credential_file"))
+        if problem:
+            return f"agent {agent_id}: {problem}"
+        runtime = configuration["runtime"]
+        if not all(
+            isinstance(runtime.get(key), str) and runtime.get(key)
+            for key in ("provider", "model", "base_url")
+        ):
+            return f"API runtime is incomplete for agent: {agent_id}"
+    return None
 
 
 def route_problem(route: Any, detected_ids: set[str]) -> str | None:
@@ -171,7 +213,8 @@ def inspect_profile(path: Path) -> dict[str, Any]:
                 }
             )
 
-    authentication = profile.get("authentication", {}) if profile else {}
+    configuration = agent_configuration(profile, selected) if profile and selected else None
+    authentication = configuration.get("authentication", {}) if configuration else {}
     auth_mode = authentication.get("mode") if isinstance(authentication, dict) else None
     if auth_mode not in ("subscription", "api"):
         questions.append(
@@ -227,8 +270,8 @@ def inspect_profile(path: Path) -> dict[str, Any]:
             {
                 "id": "supported_agent",
                 "question": (
-                    "External agents were detected, but this Skill currently supports "
-                    "only Claude Code. Which supported runtime should be configured?"
+                    "External agents were detected, but none has an implemented runner. "
+                    "Which supported runtime should be configured?"
                 ),
             },
         )
@@ -254,6 +297,10 @@ def inspect_profile(path: Path) -> dict[str, Any]:
             problem = route_problem(route, detected_ids)
             if problem:
                 route_warnings.append(f"routes[{index}]: {problem}")
+            elif profile:
+                problem = configured_agent_problem(profile, route["agent"])
+                if problem:
+                    route_warnings.append(f"routes[{index}]: {problem}")
 
     return {
         "schema": SCHEMA,
@@ -274,6 +321,13 @@ def inspect_profile(path: Path) -> dict[str, Any]:
         "selected_agent": selected,
         "base_agent": selected,
         "auth_mode": auth_mode,
+        "configured_agents": {
+            agent_id: configuration["authentication"].get("mode")
+            for agent_id in detected_by_id
+            if (configuration := agent_configuration(profile, agent_id)) is not None
+        }
+        if profile
+        else {},
         "routes": routes if isinstance(routes, list) else [],
         "route_warnings": route_warnings,
         "questions": questions,
@@ -302,6 +356,7 @@ def write_profile(
     provider: str,
     model: str,
     base_url: str,
+    keep_base: bool = False,
 ) -> dict[str, Any]:
     prior, _ = read_profile(path)
     detected = detect_agents()
@@ -322,17 +377,59 @@ def write_profile(
         if problem:
             raise ProfileError(problem)
         if selected_agent == "claude-code" and provider != "deepseek":
-            raise ProfileError("the current Claude Code API runner supports provider=deepseek")
+            raise ProfileError("the Claude Code API adapter supports provider=deepseek")
+        if selected_agent == "codex" and provider != "openai":
+            raise ProfileError("the Codex API adapter supports provider=openai")
+        if selected_agent == "opencode":
+            if provider not in ("anthropic", "deepseek", "openai"):
+                raise ProfileError(
+                    "the OpenCode API adapter supports provider=anthropic, deepseek, or openai"
+                )
+            if "/" not in model:
+                raise ProfileError(
+                    "OpenCode API models must use provider/model format"
+                )
         authentication["credential_file"] = str(resolved)
         runtime = {"provider": provider, "model": model, "base_url": base_url}
+
+    agent_profiles: dict[str, Any] = {}
+    if prior:
+        existing = prior.get("agent_profiles")
+        if isinstance(existing, dict):
+            agent_profiles.update(existing)
+        prior_selected = prior.get("selected_agent")
+        prior_authentication = prior.get("authentication")
+        prior_runtime = prior.get("runtime")
+        if (
+            isinstance(prior_selected, str)
+            and prior_selected not in agent_profiles
+            and isinstance(prior_authentication, dict)
+            and isinstance(prior_runtime, dict)
+        ):
+            agent_profiles[prior_selected] = {
+                "authentication": prior_authentication,
+                "runtime": prior_runtime,
+            }
+    agent_profiles[selected_agent] = {
+        "authentication": authentication,
+        "runtime": runtime,
+    }
+    if keep_base:
+        if not prior or not isinstance(prior.get("selected_agent"), str):
+            raise ProfileError("--keep-base requires an existing configured profile")
+        base_agent = prior["selected_agent"]
+    else:
+        base_agent = selected_agent
+    base_configuration = agent_profiles[base_agent]
 
     value = {
         "schema": SCHEMA,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "installed_agents": detected,
-        "selected_agent": selected_agent,
-        "authentication": authentication,
-        "runtime": runtime,
+        "selected_agent": base_agent,
+        "authentication": base_configuration["authentication"],
+        "runtime": base_configuration["runtime"],
+        "agent_profiles": agent_profiles,
         "routes": prior.get("routes", []) if prior else [],
     }
     write_profile_value(path, value)
@@ -365,6 +462,9 @@ def update_route(
             raise ProfileError("--agent is required unless --remove is used")
         if agent not in detected_ids:
             raise ProfileError(f"route agent is not installed: {agent}")
+        problem = configured_agent_problem(profile, agent)
+        if problem:
+            raise ProfileError(problem)
         routes.append({"when": when, "agent": agent})
     profile["routes"] = routes
     profile["updated_at"] = datetime.now(timezone.utc).isoformat()
@@ -393,7 +493,15 @@ def selected_agent_record(
         raise ProfileError(
             f"cached route selects detected agent {selected}, but its runner is not implemented"
         )
-    return record
+    configuration = agent_configuration(profile, selected)
+    if configuration is None:
+        raise ProfileError(
+            f"cached route selects {selected}, but its authentication is not configured"
+        )
+    problem = configured_agent_problem(profile, selected)
+    if problem:
+        raise ProfileError(problem)
+    return {**record, "configuration": configuration}
 
 
 def main() -> None:
@@ -408,6 +516,7 @@ def main() -> None:
     configure.add_argument("--provider", default="deepseek")
     configure.add_argument("--model", default=DEEPSEEK_MODEL)
     configure.add_argument("--base-url", default=DEEPSEEK_BASE_URL)
+    configure.add_argument("--keep-base", action="store_true")
     route = subparsers.add_parser("route")
     route.add_argument("--agent")
     route.add_argument("--workflow")
@@ -439,6 +548,7 @@ def main() -> None:
                 args.provider,
                 args.model,
                 args.base_url,
+                args.keep_base,
             )
     except ProfileError as error:
         raise SystemExit(f"runtime profile: {error}") from error

@@ -16,22 +16,29 @@ repository's ignore rules without permission.
 ├── source.pdf
 ├── source.json
 ├── pages/page-0001.png
+├── review/sheet-0001.jpg
 ├── text/page-0001.txt
 └── normalized/paper.tex
 ```
 
 Run `scripts/prepare_pdf.py` after acquiring the PDF. It copies and hashes the
 source, extracts per-page text, renders every page, records low-text pages, and
-creates a TeX skeleton with one unresolved marker per PDF page. Finish the TeX,
-remove every unresolved marker, then run `scripts/validate_normalized_tex.py`.
+creates optional four-page review sheets plus a TeX skeleton with one unresolved
+marker per PDF page. Finish the TeX, remove every unresolved marker, then run
+`scripts/validate_normalized_tex.py`.
 
 The scripts require Poppler `pdftoppm` and, for the final compile gate,
 `latexmk`. Text extraction prefers Python `pdfplumber`; when that package is
-absent, the preflight automatically falls back to Ghostscript `gs` plus
-Poppler `pdfinfo`. Prefer the Codex bundled document runtime when available. If
-neither text-extraction route is available, install only when the current
-environment and user authorization permit it; otherwise stop and report the
-missing tool.
+absent from the invoking interpreter, the preflight automatically re-enters the
+Codex bundled document runtime when it is discoverable, then falls back to
+Ghostscript `gs` plus Poppler `pdfinfo`. If neither text-extraction route is
+available, install only when the current environment and user authorization
+permit it; otherwise stop and report the missing tool.
+
+Before acquisition work, require an image-capable path that lets the acting
+model inspect page renders directly. A text-only model may use OCR but cannot
+perform this contract's visual-verification gate. Stop and report that runtime
+capability blocker instead of doing an OCR-only conversion or claiming a pass.
 
 ## Acquire the canonical PDF
 
@@ -51,12 +58,18 @@ If no lawful complete PDF is available, stop and report the missing source. Do
 not distill an abstract or search snippets as if they were the paper.
 
 If an official source archive is available and matches the selected PDF
-version, use its TeX as a transcription aid. The PDF remains the coverage and
-visual baseline, and every imported source fragment must be checked against it.
+version, acquire it before manual transcription and use its TeX as the initial
+transcription. Resolve included files and bibliography, using `latexpand` when
+available. The PDF remains the coverage and visual baseline, and every imported
+source fragment must be checked against it.
 
 ## Inspect every PDF page
 
-Use both extraction and rendering:
+Use both extraction and rendering. When the manifest lists `review_sheets`,
+inspect those sheets in order for the all-page coverage sweep instead of making
+one image-tool round trip per ordinary text page. Then inspect the original
+full-resolution render for each low-text, symbol-heavy, multi-column,
+figure/table, or otherwise layout-sensitive page:
 
 - extract per-page text with `pdfplumber`, `pypdf`, or an equivalent parser;
 - render every page with Poppler or an equivalent renderer;
@@ -70,6 +83,8 @@ Use both extraction and rendering:
 OCR is evidence acquisition, not truth. Visually verify OCR output. If a core
 statement, equation, table, or figure cannot be read with confidence, retain an
 explicit warning and stop before concept distillation.
+Do not OCR every page when extracted text is readable; limit OCR to pages that
+the manifest flags or that direct inspection shows are missing or corrupted.
 
 ## Produce one self-contained TeX transcription
 

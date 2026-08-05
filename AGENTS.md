@@ -2,8 +2,9 @@
 
 - Preserve the `notes/`, `blogs/`, `skills/`, and `site/` separation documented in `README.md`.
 - The reusable knowledge graph engine is the `vendor/kgdistiller` Git submodule tracking `main`; personal sources, registry, graph snapshots, skills, and site integration remain in this repository.
-- `skills/` is the authority for locally maintained domain Skills. Personal and community skills live in visible subdirectories; customized Codex system skills live in the tracked `skills/.system/` directory. `query-kgdistiller` and `ingest-kgdistiller` are thin discovery entries whose canonical instructions travel with `vendor/kgdistiller`. Codex and sibling tool repositories consume the visible and system stores through whole-directory local symlinks.
-- Keep `skills/.system/` out of the public skill catalog and website even though Git tracks it; do not add its individual skills to `skills/README.md`.
+- `skills/` is the authority for locally maintained personal and community Skills. `query-kgdistiller` and `ingest-kgdistiller` are thin discovery entries whose canonical instructions travel with `vendor/kgdistiller`. Codex consumes visible repository Skills through per-Skill local symlinks created by `skills/link-codex-skills.sh`.
+- Codex-generated system Skills belong only under `$CODEX_HOME/skills/.system`; never copy, symlink, customize, publish, or version-control that directory in this repository.
+- The version-controlled source for personal global Codex guidance is `install/codex/AGENTS.md`; install it as `$CODEX_HOME/AGENTS.md` with `skills/link-codex-skills.sh` after cloning or moving the repository.
 - Run `git submodule update --init vendor/kgdistiller` before knowledge commands in a fresh checkout. CI and ordinary work use the committed engine revision; `make kgdistiller-update` is the explicit upgrade path.
 - Blog source lives in `site/src/content/posts/` and is exposed through `blogs/posts/`.
 - Validate blog changes with `make blog-check` and `make blog-build`.

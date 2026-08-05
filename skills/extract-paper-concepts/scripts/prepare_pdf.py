@@ -6,10 +6,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
+from collections.abc import Sequence
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -20,6 +22,30 @@ SCHEMA = "qlpaper-pdf-preflight-v1"
 
 class PrepareError(RuntimeError):
     """Raised when a PDF cannot be prepared safely."""
+
+
+def prefer_bundled_pdf_runtime() -> None:
+    try:
+        import pdfplumber  # type: ignore[import-not-found]  # noqa: F401
+    except ImportError:
+        pass
+    else:
+        return
+
+    bundled = (
+        Path.home()
+        / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+    )
+    if not bundled.is_file() or bundled.resolve() == Path(sys.executable).resolve():
+        return
+    probe = subprocess.run(
+        [str(bundled), "-c", "import pdfplumber"],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if probe.returncode == 0:
+        os.execv(str(bundled), [str(bundled), *sys.argv])
 
 
 def sha256(path: Path) -> str:
@@ -60,6 +86,60 @@ def render_pages(source: Path, destination: Path, dpi: int) -> list[Path]:
         raw.rename(target)
         rendered.append(target)
     return sorted(rendered)
+
+
+def build_review_sheets(
+    renders: Sequence[Path], destination: Path, pages_per_sheet: int = 4
+) -> tuple[list[Path], str | None]:
+    magick = shutil.which("magick")
+    montage = shutil.which("montage")
+    font = next(
+        (
+            path
+            for path in (
+                Path("/System/Library/Fonts/Helvetica.ttc"),
+                Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+                Path("/usr/share/fonts/dejavu/DejaVuSans.ttf"),
+            )
+            if path.is_file()
+        ),
+        None,
+    )
+    if (magick is None and montage is None) or font is None:
+        return [], None
+    destination.mkdir(parents=True, exist_ok=True)
+    sheets: list[Path] = []
+    for offset in range(0, len(renders), pages_per_sheet):
+        group = renders[offset : offset + pages_per_sheet]
+        sheet = destination / f"sheet-{offset // pages_per_sheet + 1:04d}.jpg"
+        command = (
+            [magick, "montage", "+label", "-font", str(font)]
+            if magick is not None
+            else [montage, "+label", "-font", str(font)]
+        )
+        command.extend(str(path) for path in group)
+        command.extend(
+            [
+                "-thumbnail",
+                "600x800",
+                "-tile",
+                "2x2",
+                "-geometry",
+                "+12+18",
+                "-background",
+                "white",
+                "-quality",
+                "82",
+                str(sheet),
+            ]
+        )
+        result = subprocess.run(command, check=False, capture_output=True, text=True)
+        if result.returncode:
+            raise PrepareError(
+                result.stderr.strip() or "ImageMagick review-sheet generation failed"
+            )
+        sheets.append(sheet)
+    return sheets, "imagemagick-montage"
 
 
 def text_record(
@@ -240,6 +320,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    prefer_bundled_pdf_runtime()
     args = parse_args()
     source_input = args.pdf.expanduser().resolve()
     output = args.output_dir.expanduser().resolve()
@@ -267,6 +348,10 @@ def main() -> int:
             )
         for record, render in zip(pages, renders):
             record["render_path"] = render.relative_to(output).as_posix()
+        review_sheets, review_tool = build_review_sheets(renders, output / "review")
+        for index, record in enumerate(pages):
+            if review_sheets:
+                record["review_sheet"] = review_sheets[index // 4].relative_to(output).as_posix()
 
         tex_path = output / "normalized" / "paper.tex"
         write_tex_skeleton(tex_path, digest, pages)
@@ -284,7 +369,15 @@ def main() -> int:
                 "version": args.version,
                 "access_date": date.today().isoformat(),
             },
-            "tools": {"text": text_tool, "render": "pdftoppm", "dpi": args.dpi},
+            "tools": {
+                "text": text_tool,
+                "render": "pdftoppm",
+                "review": review_tool,
+                "dpi": args.dpi,
+            },
+            "review_sheets": [
+                path.relative_to(output).as_posix() for path in review_sheets
+            ],
             "pages": pages,
             "normalized_tex": tex_path.relative_to(output).as_posix(),
         }
@@ -306,6 +399,7 @@ def main() -> int:
                 "needs_review": sum(
                     bool(page["needs_ocr_or_visual_transcription"]) for page in pages
                 ),
+                "review_sheets": len(review_sheets),
             },
             ensure_ascii=False,
         )

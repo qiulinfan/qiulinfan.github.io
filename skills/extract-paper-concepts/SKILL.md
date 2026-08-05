@@ -10,6 +10,23 @@ graph. Treat the personal knowledge base as an external service: call
 `$query-kgdistiller` before explaining concepts, and call
 `$ingest-kgdistiller` only when the user explicitly requests an import.
 
+## Confirm the acting runtime
+
+This Skill is portable across Claude Code, Codex, and OpenCode, but runtime
+capabilities are not interchangeable. Before paper work, confirm that the
+selected agent can discover this physical project Skill, run its bundled Python
+scripts, access the required local PDF tools, and inspect rendered page images
+directly. Use the runtime's native Skill loader and image-inspection tool; names
+written as `$query-kgdistiller` and `$ingest-kgdistiller` identify required
+Skills rather than prescribing one product's invocation syntax.
+
+For a production run, make `query-kgdistiller` discoverable in the same runtime
+before graph alignment and make `ingest-kgdistiller` discoverable only when an
+explicit import is authorized. In an atomic normalization test, stop at the
+declared normalization boundary rather than silently bypassing an unavailable
+downstream Skill. Never substitute a text-only model, OCR output, or the
+coordinator's visual claims for direct page inspection by the acting model.
+
 ## Resolve the complete paper
 
 For a URL, DOI, title, abstract page, or HTML viewer, search the web for the
@@ -31,6 +48,11 @@ For PDF, scan, Word, or another non-TeX primary input, read and follow
 [references/pdf-normalization-contract.md](references/pdf-normalization-contract.md).
 Export a Word or other paginated manuscript to PDF first so page-level visual
 evidence and the same normalization gate apply.
+Require an image-capable runtime path that lets the acting model inspect page
+renders directly. OCR and extracted text are supporting evidence, not visual
+verification. If the selected runtime/model cannot accept image inputs, stop
+and report the capability blocker before claiming or attempting to pass the
+normalization gate.
 Keep the immutable PDF, page renders, extracted text, manifest, and normalized
 TeX in an existing ignored build/learning workspace; otherwise use a temporary
 directory and report it. Do not modify ignore rules without permission.
@@ -43,7 +65,17 @@ python3 <skill-directory>/scripts/prepare_pdf.py PAPER.pdf --output-dir WORKSPAC
   --landing-url LANDING_URL --pdf-url PDF_URL --identifier DOI_OR_ARXIV
 ```
 
-Inspect every rendered page, repair extraction or OCR errors, and complete
+When an exact-version official source archive exists, acquire it immediately
+after preflight and use its TeX to seed the transcription before doing manual
+page repair. Resolve included source files and bibliography; use `latexpand`
+when available. Never substitute the archive for the selected PDF or import
+source content that is absent from that PDF version.
+
+Inspect the generated review sheets in order to cover every rendered page,
+then open full-resolution page renders for low-text, symbol-heavy,
+multi-column, figure/table, or otherwise layout-sensitive pages. Repair
+extraction errors and use OCR only on pages whose text is missing or visibly
+corrupted; never OCR every page merely to avoid direct image inspection. Then complete
 `WORKSPACE/normalized/paper.tex`. Preserve text, native equations, LaTeX
 tables, and only high-confidence TikZ/PGFPlots reconstructions. Embed no image
 assets. Replace every visual object that cannot be faithfully reconstructed

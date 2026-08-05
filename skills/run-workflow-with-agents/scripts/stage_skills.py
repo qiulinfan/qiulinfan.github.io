@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage one or more Agent Skills into a Claude Code project."""
+"""Stage one or more Agent Skills into a supported external-agent project."""
 
 from __future__ import annotations
 
@@ -103,9 +103,15 @@ def resolve_skill(spec: str, roots: list[Path]) -> Path:
 
 
 def destination_for(project: Path, runtime: str, name: str) -> Path:
-    if runtime == "claude-code":
-        return project / ".claude" / "skills" / name
-    raise SystemExit(f"unsupported runtime: {runtime}")
+    roots = {
+        "claude-code": project / ".claude" / "skills",
+        "codex": project / ".agents" / "skills",
+        "opencode": project / ".opencode" / "skills",
+    }
+    try:
+        return roots[runtime] / name
+    except KeyError as error:
+        raise SystemExit(f"unsupported runtime: {runtime}") from error
 
 
 def main() -> None:
@@ -126,7 +132,7 @@ def main() -> None:
     parser.add_argument("--project", required=True, type=Path)
     parser.add_argument("--runtime-profile", type=Path, default=default_profile_path())
     parser.add_argument("--workflow", default="run-workflow-with-agents")
-    parser.add_argument("--runtime", choices=("claude-code",))
+    parser.add_argument("--runtime", choices=("claude-code", "codex", "opencode"))
     args = parser.parse_args()
 
     try:

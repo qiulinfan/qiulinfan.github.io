@@ -21,14 +21,14 @@ flowchart LR
 
 遇到 `uncertain` 或 `conflict` 时，流程停在审查门前，不猜测身份，也不为了自动发布而创建重复词条。
 
-## Codex Skills 委派给本机配置的 Agents
+## Agent Skills 委派给本机配置的 Agents
 
 ```mermaid
 flowchart LR
     Req["用户任务"] --> Profile{"本机 runtime profile 完整?"}
     Profile -->|否| Ask["立即返回 agent / auth / key 文件问题"]
-    Profile -->|是| Pick["选择一个或多个 Codex Skills"]
-    Pick --> Stage["复制到 Claude Code 项目"]
+    Profile -->|是| Pick["选择一个或多个 Agent Skills"]
+    Pick --> Stage["复制到所选 runtime 的原生 Skill 目录"]
     Stage --> Shape{"任务拓扑"}
     Shape -->|内聚任务| One["Cached Runtime Worker"]
     Shape -->|独立或分阶段任务| Lead["Cached Runtime Coordinator"]
@@ -46,8 +46,9 @@ flowchart LR
 生产工作。第一次配置的基础 agent 成为永久 fallback；可选 routes list 可按
 workflow、skill 或二者组合覆盖，未匹配时不再询问。配置完整后再从 Codex 已发现的
 skills 解析用户要求的一个或多个能力，
-物理注入所选 runtime；内聚任务由单 worker 完成，可拆分任务由 coordinator
-限定命名 workers、skill 预加载、工具权限和写入边界，最后仍由 Codex 检查
+物理注入 Claude Code、Codex 或 OpenCode 的原生项目 Skill 目录；内聚任务由单
+worker 完成，可拆分任务由 coordinator 限定命名 workers、skill 预加载、工具权限
+和写入边界，并翻译为该 runtime 的原生 subagent 配置，最后仍由 Codex 检查
 实际产物和验证结果。这个流程只处理会产生真实交付物的生产任务。
 
 ## 单 Skill 原子与压力测试

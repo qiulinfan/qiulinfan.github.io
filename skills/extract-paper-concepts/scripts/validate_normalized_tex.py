@@ -90,6 +90,10 @@ def main() -> int:
         errors.append("TeX source digest header does not match manifest")
     if "QLPAPER_UNRESOLVED" in content:
         errors.append("unresolved PDF-page transcription markers remain")
+    if "QLPAPER_VISUAL_REQUIRED" in content:
+        errors.append("visual-description markers remain")
+    if "QLPAPER_PAGE_LOCATION_REVIEW" in content:
+        errors.append("low-confidence PDF-page location markers remain")
 
     for command, label in FORBIDDEN_MEDIA.items():
         if command in content:

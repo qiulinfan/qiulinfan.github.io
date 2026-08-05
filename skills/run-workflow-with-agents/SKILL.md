@@ -1,6 +1,6 @@
 ---
 name: run-workflow-with-agents
-description: Execute production workflows with one or more external agents selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any staging, dry-run, or production work. Use when Codex should complete real work by injecting one or more Codex skills into a single worker or a coordinated multi-agent topology, including implementation, research, review, validation, and other deliverable-producing workflows. Do not use for isolated testing or stress-testing of one skill; use test-skill-with-agent instead.
+description: Execute production workflows with one or more Claude Code, Codex, or OpenCode agents selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any staging, dry-run, or production work. Use when Codex should complete real work by injecting one or more Agent Skills into a single worker or coordinated multi-agent topology, including implementation, research, review, validation, and other deliverable-producing workflows. Do not use for isolated testing or stress-testing of one skill; use test-skill-with-agent instead.
 ---
 
 # Run a production workflow with agents
@@ -25,12 +25,15 @@ agent is detected, select it without asking which agent to use.
 If the prompt explicitly supplies the selected agent, subscription/API mode,
 and, for API mode, an absolute credential-file path, run `configure` first and
 then require a clean `status`. Store only the credential path, never the key.
-Use the cached runtime and authentication mode for the complete topology. Do
-not replace it with an ambient credential or a different executable.
+Use the resolved agent's cached authentication/runtime entry for the complete
+topology; never borrow credentials from the base agent. Do not replace it with
+an ambient credential or a different executable.
 Treat `selected_agent` as the cached base agent and never ask again while that
 entry remains valid. Optional cached routes may override it by workflow, Skill,
 or workflow-plus-Skill; when no route matches, use the base agent without
 interaction. Pass a stable `--workflow` name when applying a named route.
+When the user configures an additional routed agent without changing the base,
+use `configure --keep-base` as described in the profile reference.
 
 ## Define the workflow contract
 
@@ -55,9 +58,9 @@ request into a benchmark or test matrix.
 
 Read each selected `SKILL.md` completely and every resource it makes mandatory.
 Check runtime compatibility before launch: a staged skill transfers instructions
-and bundled files, not Codex-only tools. Supply an equivalent Claude Code tool
-or approved MCP configuration for every mandatory dependency; stop and report
-an incompatibility when no equivalent exists.
+and bundled files, not product-specific tools. Supply an equivalent tool or
+approved MCP configuration for every mandatory dependency in the selected
+runtime; stop and report an incompatibility when no equivalent exists.
 
 Stage one or more skills as physical project files:
 
@@ -72,10 +75,11 @@ Names resolve from workspace, personal, system, and installed-plugin Codex skill
 roots. Explicit paths and `--skill-root` take precedence. The script fails on
 ambiguous names, malformed manifests, existing destinations, and missing skills.
 
-Inspect the project status before staging. Treat newly staged `.claude/skills`
-directories as run-control artifacts, not deliverables, unless the user asks to
-keep them. Record their exact paths and remove only those newly created paths
-after the run and verification; never overwrite or remove a pre-existing skill.
+Inspect the project status before staging. Treat newly staged `.claude/skills`,
+`.agents/skills`, or `.opencode/skills` directories as run-control artifacts,
+not deliverables, unless the user asks to keep them. Record their exact paths
+and remove only those newly created paths after the run and verification; never
+overwrite or remove a pre-existing skill.
 
 ## Choose the topology
 
@@ -86,8 +90,9 @@ selected skills into it with repeated `--skill` arguments to
 Use multiple agents when research, implementation, review, or validation can be
 bounded independently. Always define one coordinator and named workers. Give
 each worker only its required skills and tools; assign disjoint write ownership
-or sequence dependent edits. Workers return results to the coordinator and
-cannot spawn nested workers.
+or sequence dependent edits. The runner translates that common JSON topology
+to Claude `--agents`, Codex project custom agents, or OpenCode primary/subagents.
+Workers return results to the coordinator and must not spawn nested workers.
 
 Resolve cached agent routes for every worker Skill before staging. The current
 coordinated runner uses one external runtime per session; if cached routes
@@ -96,8 +101,8 @@ finding. Do not ask the user to choose again or silently collapse the routes.
 
 For multi-agent work, read and follow
 [`references/multi-agent-orchestration.md`](references/multi-agent-orchestration.md).
-Prefer coordinator-plus-subagents. Enable experimental agent teams only when
-workers truly need a shared task list or peer-to-peer communication.
+Prefer coordinator-plus-subagents. `--agent-teams` is a Claude Code-only
+experimental escalation and must not be passed to Codex or OpenCode.
 
 ## Run through the cached runtime
 
@@ -124,10 +129,11 @@ python3 scripts/run_agents.py \
 
 The runner reads the shared profile by default; pass `--runtime-profile` only
 for an explicitly selected alternate local profile. Grant `Edit` and `Write`
-only for authorized write tasks. Pass approved MCP
-configuration explicitly. Use `--max-budget-usd` when a bounded unattended run
-benefits from a cap. Use `--dry-run` to inspect the credential-free command
-before an expensive or high-impact launch.
+only for authorized write tasks. Pass approved MCP configuration through the
+selected runtime's project state; the runner's `--mcp-config` flag accepts
+Claude Code config only. Use `--max-budget-usd` only with Claude Code. Use
+`--timeout-seconds` for a runtime-neutral wall-clock boundary and `--dry-run`
+to inspect the credential-free command before an expensive or high-impact launch.
 
 Do not silently retry a failed workflow with a stronger prompt. Retry only a
 transient provider error or a demonstrated harness defect, and record every

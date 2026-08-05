@@ -1,4 +1,4 @@
 interface:
   display_name: "Test Skill with Agents"
-  short_description: "Atomically test and stress one skill"
-  default_prompt: "Use $test-skill-with-agent to check the local agent profile, apply its cached base agent or matching route, then run isolated trials against this one skill and report evidence."
+  short_description: "Test one skill with three agent CLIs"
+  default_prompt: "Use $test-skill-with-agent to check the local agent profile, apply its cached Claude Code, Codex, or OpenCode base agent or matching route, then run isolated trials against this one skill and report evidence."
