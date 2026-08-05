@@ -1,4 +1,4 @@
 interface:
-  display_name: "Test Skill with Agent"
-  short_description: "Run isolated agent-based skill evaluations"
-  default_prompt: "Use $test-skill-with-agent to test a skill with an isolated external agent and report evidence."
+  display_name: "Test Skill with Agents"
+  short_description: "Atomically test and stress one skill"
+  default_prompt: "Use $test-skill-with-agent to run isolated DeepSeek V4 Flash trials against this one skill and report evidence."

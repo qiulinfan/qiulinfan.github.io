@@ -1,73 +1,50 @@
-# Claude Code with DeepSeek
+# Claude Code with DeepSeek for skill trials
 
-Use this adapter only when the user requests DeepSeek through Claude Code or has
-already authorized that provider flow. DeepSeek's Anthropic-compatible endpoint
-is `https://api.deepseek.com/anthropic`.
+Use DeepSeek's Anthropic-compatible endpoint:
+`https://api.deepseek.com/anthropic`. Default every isolated trial to
+`deepseek-v4-flash`. Verify model identifiers against the
+[official model documentation](https://api-docs.deepseek.com/quick_start/pricing)
+when a model matrix or comparison matters.
 
-## Credential handling
+## Credential rules
 
-- Accept a credential file path or an already-exported variable.
-- Confirm only presence, line count, length, recognizable shape, and file mode.
-- Never print the key or include it literally in a command argument.
-- Read it into the environment inside the same shell that launches Claude Code.
-- Prefer mode `0600` for a plaintext credential file.
-- Never copy the credential into the fixture or Claude settings.
+- Accept `--key-file`, `ANTHROPIC_AUTH_TOKEN`, or `DEEPSEEK_API_KEY`.
+- Prefer a one-line plaintext credential file with mode `0600`.
+- Never print the key or put it in prompts, commands, settings, agent
+  definitions, logs, fixtures, or model-produced metadata.
+- Use a separate credential file outside all trial and result directories.
 
-## Environment template
+`scripts/run_trials.py` reads the credential inside Python and passes it only
+through each child environment. It removes ambient `ANTHROPIC_API_KEY` and sets
+the main, alias, and subagent model variables to V4 Flash unless `--model`
+explicitly overrides them.
 
-Verify current model names against official DeepSeek documentation when model
-selection matters. Then launch in one shell:
+## Trial mechanics
 
-```sh
-DEEPSEEK_KEY="$(tr -d '\r\n' < "$KEY_FILE")"
-export ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic'
-export ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_KEY"
-export ANTHROPIC_MODEL='deepseek-v4-pro[1m]'
-export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
-export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro[1m]'
-export ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash'
-export CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash'
-export CLAUDE_CODE_EFFORT_LEVEL='max'
+Each trial must have its own fixture copy, physical target-skill copy, Claude
+session, baseline, result files, and workspace diff. Disable session persistence
+and ambient MCP configuration. Pass only approved MCP configs and minimum tools.
 
-claude --print --output-format json --no-session-persistence \
-  --setting-sources project \
-  --strict-mcp-config \
-  --permission-mode dontAsk \
-  --allowedTools 'Read,Grep,Glob,Bash' \
-  --agent skill-tester \
-  "/target-skill Natural user request over the fixture"
-```
+Use one trial for a smoke or conformance case. For repeat and stress tests:
 
-Define `skill-tester` with `--agents` when a named agent is required. Tailor its
-prompt to role and scope, but keep the actual task in the natural user request.
-Do not disclose grading criteria in either prompt.
+- keep one target skill and one atomic contract;
+- use identical copies rather than concurrent access to shared files;
+- cap `--parallel` to the authorized load and provider budget;
+- cap spend per trial with `--max-budget-usd-per-trial`;
+- preserve every trial result, including harness and provider failures;
+- stop increasing load when rate limits or budget failures dominate the signal.
 
-For review-only tests, omit `Edit` and `Write`. Remember that `Bash` can still
-write; independently compare the workspace afterward. For write tests, grant
-only the required tools and keep the project disposable.
-
-## Discovery behavior
-
-Place a physical skill directory at:
-
-```text
-PROJECT/.claude/skills/SKILL_NAME/SKILL.md
-```
-
-Project skill discovery may fail for a directory symlink. The `--bare` option
-can also change customization discovery across Claude Code versions. Prefer
-`--setting-sources project` for an isolated project-level test and prove skill
-recognition before interpreting model behavior.
+Stress testing authorizes bounded API concurrency only to the level stated in
+the contract. It does not authorize writes to production systems or live user
+data.
 
 ## Result fields
 
-When JSON output provides them, record:
+When Claude JSON exposes them, record `subtype`, `is_error`,
+`api_error_status`, `terminal_reason`, `duration_ms`, `duration_api_ms`,
+`num_turns`, `total_cost_usd`, per-model usage, and permission denials. Confirm
+the reported model instead of inferring it only from environment configuration.
 
-- `subtype`, `is_error`, `api_error_status`, and `terminal_reason`;
-- `duration_ms`, `duration_api_ms`, and `num_turns`;
-- `total_cost_usd` and per-model usage;
-- `permission_denials`;
-- the agent's final result.
-
-An `Unknown command` result with zero API duration and zero turns is a harness
-failure, not a provider or behavior failure.
+An unknown skill, zero API duration, or zero turns is a harness/discovery
+failure. A rate limit, balance, authentication, or unavailable-model response
+is a provider failure. Neither is evidence that the skill's behavior failed.

@@ -5,11 +5,21 @@ before writing sections 5 and 6.
 
 ## 1. Source and coverage
 
-- Paper title, version, and source files or URL
-- Sections, appendices, supplements, figures, and notes read
+- Paper title, authors, version/date, DOI or arXiv ID, canonical landing URL,
+  final PDF URL, access date, PDF page count, and PDF SHA-256
+- PDF preflight manifest path, normalized TeX path, TeX SHA-256, and whether an
+  official source archive assisted transcription
+- Counts of OCR/visual-transcription pages, native LaTeX tables, TikZ/PGFPlots
+  objects, text-described visual objects, and unresolved conversion warnings
+- Sections, appendices, supplements, equations, tables, figures, and notes read
 - Missing or ambiguous material
 - Intended learner level and output language
 - Candidate and target graph/snapshot digests
+
+Do not proceed when a core claim or prerequisite depends on an unresolved PDF
+transcription warning. Every cited paper location must include the original PDF
+page and, when available, its theorem/equation/table/figure label; machine
+records should also retain the normalized TeX line or span.
 
 ## 2. Paper in one argument
 
@@ -23,7 +33,7 @@ Do not teach individual concepts here.
 
 Use one row per paper candidate:
 
-| ID | Canonical English term | User-language term | Type | Importance | Direct prerequisites | First source location |
+| ID | Canonical English term | User-language term | Type | Importance | Direct prerequisites | First PDF/TeX source location |
 |---|---|---|---|---|---|---|
 
 Allowed types: `foundation`, `field`, `mechanism`, `paper-specific`, `metric`,

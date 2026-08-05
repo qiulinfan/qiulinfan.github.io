@@ -1,4 +1,4 @@
 interface:
   display_name: "Extract Paper Concepts"
-  short_description: "Build a federated paper graph without duplicating known entries"
-  default_prompt: "Use $extract-paper-concepts to read this paper, query my kgdistiller brain, and return an unmerged federated concept snapshot."
+  short_description: "Find and normalize papers, then build a federated concept graph"
+  default_prompt: "Use $extract-paper-concepts to find the canonical PDF for this paper, normalize it to verified image-free TeX, query my kgdistiller brain, and return an unmerged federated concept snapshot."

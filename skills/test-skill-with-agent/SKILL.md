@@ -1,132 +1,125 @@
 ---
 name: test-skill-with-agent
-description: Run evidence-based, isolated evaluations of an Agent Skill with a real external or delegated agent. Use when Codex must test whether a skill is discoverable, follows its workflow, produces valid artifacts, respects permissions, avoids credential leakage, or works through a named runtime/provider such as Claude Code with DeepSeek.
+description: Atomically evaluate exactly one Agent Skill with isolated external-agent trials, defaulting to Claude Code backed by DeepSeek V4 Flash. Use for skill smoke tests, behavioral conformance, negative and safety cases, regression testing, repeated flakiness checks, or bounded concurrent stress tests. Do not use for production workflows or multi-skill deliverables; use run-workflow-with-agents instead.
 ---
 
-# Test a skill with an agent
+# Test one skill with agents
 
-Evaluate the skill as a user would invoke it, then independently verify the run.
-Distinguish harness failures from skill behavior failures. Never accept the tested
-agent's self-report as sufficient evidence.
+Evaluate exactly one target skill per test contract. Use disposable fixtures,
+independent trials, and observable evidence. Never treat the tested agent's
+self-report as sufficient proof.
 
-## Define the test contract
+## Define the atomic contract
 
-Resolve these inputs from the request and local context:
+Resolve:
 
-- target skill directory and invocation name;
-- fixture project or disposable input artifact;
-- agent runtime and model provider;
-- review-only versus authorized writes;
-- expected invariants, required artifacts, and allowed output paths;
-- credential source and a reasonable spend/time boundary when an API is used.
+- one target skill directory or Codex skill name;
+- a minimal fixture and natural user request;
+- trial type: smoke, conformance, negative/safety, regression, repeat, or stress;
+- expected invariants, mandatory artifacts, allowed output paths, and validators;
+- trial count, maximum parallelism, credential source, and per-trial budget.
 
-Use a minimal realistic prompt. Do not include the expected answer, suspected
-bug, prior evaluation, or hidden grading criteria in the agent prompt. If a
-missing choice would materially change cost or external state, ask before the
-run. Otherwise choose the smallest safe test.
+Reject a contract that requires multiple target skills or a production
+deliverable. Test one skill in isolation so failures remain attributable.
+Default every trial to `deepseek-v4-flash`; override only when the user requests
+a model comparison or a specific provider configuration.
 
-Read the complete target `SKILL.md` and every instruction or reference it makes
-mandatory before building the fixture. Treat this reading as test setup, not as
-information to leak into the evaluation prompt.
+Read the complete target `SKILL.md` and every resource it makes mandatory before
+building the fixture. Treat this as harness setup. Do not include expected
+answers, suspected bugs, prior findings, or hidden grading criteria in the
+agent prompt.
 
-## Isolate the run
+## Isolate every trial
 
-1. Create a unique directory with `mktemp -d`. Do not reuse a prior run.
-2. Copy or synthesize only the task-local fixture. Never test write-capable
-   behavior against live user data unless explicitly requested.
-3. Install the target skill as physical files, not a symlink. For Claude Code:
+Use a fresh physical copy of the fixture for every trial. Keep source skills,
+credentials, result logs, and baselines outside trial projects. Stage only the
+single target skill:
 
-   ```sh
-   python3 scripts/stage_skill.py \
-     --skill /absolute/path/to/target-skill \
-     --project "$TEST_ROOT" \
-     --runtime claude-code
-   ```
+```sh
+python3 scripts/stage_skill.py \
+  --project "$TRIAL_PROJECT" \
+  --skill target-skill
+```
 
-4. Keep credentials outside the fixture. Do not put a key in prompts, commands,
-   settings JSON, logs, copied environment files, or model-produced metadata.
-5. Snapshot the fixture before execution:
+The skill name resolves from Codex's workspace, personal, system, and installed
+plugin roots; pass an explicit directory or `--skill-root` for another source.
+Never reuse a writable project, session, or staged skill between trials.
 
-   ```sh
-   python3 scripts/workspace_guard.py snapshot "$TEST_ROOT" \
-     --output "$GUARD_FILE"
-   ```
+Snapshot each fixture after staging and before execution:
 
-Prefer a copied fixture when the tested skill may edit files. For a review-only
-test, remove edit/write tools as an independent enforcement layer.
+```sh
+python3 scripts/workspace_guard.py snapshot "$TRIAL_PROJECT" \
+  --output "$GUARD_FILE"
+```
 
-## Check discovery before behavior
+For review-only tests, omit edit tools. Remember that `Bash` can still write;
+the workspace comparison is the independent enforcement layer.
 
-Run the smallest invocation that proves the runtime recognizes the skill. A
-response such as `Unknown command` is a discovery or installation failure and
-must not be reported as a model failure. Verify:
+## Prove discovery before behavior
 
-- the folder name matches the frontmatter name;
-- `SKILL.md` is a regular file under the runtime's project skill directory;
-- the runtime was launched from the intended project root;
-- safe/bare modes did not disable project-level discovery.
+Run the smallest invocation that proves the runtime recognizes the target
+skill. Verify that `SKILL.md` is a regular project skill file and that the
+runtime launched from the intended fixture. An unknown skill, disabled skill,
+or zero-turn result is a `harness` failure, not model behavior.
 
-After fixing only the harness, restart with a fresh session. Record failed
-attempts and whether they incurred API usage.
+After fixing only a harness defect, restart with a fresh trial and record the
+failed attempt and any incurred API usage.
 
-## Run the agent
+## Run single or stress trials
 
-Give the agent only the target skill, raw fixture, and natural user request.
-Grant the minimum tools needed by the target workflow. Prefer structured output
-from the runtime and disable session persistence when it is not needed.
+Read and follow
+[`references/claude-code-deepseek.md`](references/claude-code-deepseek.md).
+Use `scripts/run_trials.py` to run one or many isolated copies with the same
+atomic contract. It stages one skill per copy, applies V4 Flash by default,
+keeps credentials out of command arguments, records structured results and
+workspace diffs, and supports bounded concurrency.
 
-For Claude Code with DeepSeek, read
-[`references/claude-code-deepseek.md`](references/claude-code-deepseek.md) and
-follow it exactly. For another runtime, derive an equivalent adapter while
-preserving the same isolation and evidence requirements.
+```sh
+python3 scripts/run_trials.py \
+  --skill target-skill \
+  --fixture "$FIXTURE_TEMPLATE" \
+  --output "$RESULT_ROOT" \
+  --key-file "$KEY_FILE" \
+  --prompt-file "$TASK_FILE" \
+  --trials 1 \
+  --parallel 1 \
+  --allowed-tool Read \
+  --allowed-tool Grep \
+  --allowed-tool Glob \
+  --allowed-tool Bash
+```
 
-Do not silently retry a behavior failure with a stronger prompt. Retry only
-transient API failures or identified harness defects, and report every attempt.
+For repeat or stress testing, increase `--trials` and set conservative
+`--parallel` and `--max-budget-usd-per-trial`. Keep prompts, fixtures, tools,
+model, and validators identical unless the contract explicitly defines a
+matrix. Distinguish provider saturation and rate limits from skill failures.
+Do not silently strengthen prompts between trials.
 
 ## Verify independently
 
-After the run:
+For every trial:
 
-1. Parse the runtime's structured result. Record runtime, actual model usage,
-   turns, duration, cost, API errors, permission denials, and terminal reason
-   when available.
-2. Inspect the actual fixture and artifacts. Re-run deterministic validators
-   required by the target skill.
-3. Compare the workspace against the baseline:
+1. Parse runtime status, actual model usage, turns, duration, cost, API errors,
+   permission denials, and terminal reason when available.
+2. Inspect actual artifacts and run deterministic validators required by the
+   target skill.
+3. Compare the workspace with its baseline and check credential occurrences.
+4. Compare observable behavior against mandatory target-skill instructions.
 
-   ```sh
-   python3 scripts/workspace_guard.py verify "$TEST_ROOT" \
-     --snapshot "$GUARD_FILE" \
-     --secret-file /absolute/path/to/credential
-   ```
+Treat an unobservable mandatory step as a finding, not a pass. Classify findings
+as `harness`, `provider`, `behavior`, `artifact`, or `safety`.
 
-4. Check that source files, repositories, credentials, and external systems
-   changed only within the test contract.
-5. Compare behavior against the target skill line by line: mandatory reads,
-   commands, review gates, output schema, validation steps, and reporting.
-
-Treat an unobservable mandatory step as a finding, not a pass. State which trace
-or artifact the runtime failed to expose even when the final values validate.
-
-Classify each finding as one of:
-
-- `harness`: staging, discovery, executable, environment, or fixture defect;
-- `provider`: authentication, rate limit, balance, model, or API failure;
-- `behavior`: the agent misunderstood or violated the target skill;
-- `artifact`: output is missing, malformed, inconsistent, or fails validation;
-- `safety`: credential exposure, unauthorized write, or scope escape.
+For repeated trials, aggregate pass rate, failure signatures, latency and cost
+distribution, model usage, and provider errors. Do not call provider instability
+a behavioral regression, and do not hide flaky skill behavior inside an
+aggregate success rate.
 
 ## Report the result
 
-Lead with `pass`, `pass with findings`, or `fail`. Include:
+Lead with `pass`, `pass with findings`, or `fail`. Include the exact target
+skill, fixture authority, trial type and count, concurrency, runtime, actual
+models, attempts, cost, deterministic evidence, changed files, credential
+occurrence count, findings by classification, and the smallest recommended fix.
 
-- exact target skill, authority/fixture, runtime, and actual models;
-- attempts, duration, turns, cost, and provider status;
-- what the agent did and what deterministic checks proved;
-- changed, added, and deleted files;
-- credential occurrence count without printing the credential;
-- findings by classification and the smallest recommended fix;
-- path to the disposable fixture when it is useful for inspection.
-
-Do not claim a pass when discovery failed, validators were not run, the tested
-agent merely asserted success, or safety checks were skipped.
+Never claim a pass when discovery failed, validators or safety checks were
+skipped, or only the agent's final prose was inspected.

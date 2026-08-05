@@ -303,13 +303,23 @@ A new candidate may receive one authority and source-grounded entry. Partial
 knowledge adds only the missing condition, claim, role, or relation. Uncertain
 and conflicting identities remain review operations.
 
+Web links and PDFs are acquisition inputs, not graph authorities. Before paper
+extraction, the paper Skill resolves and hashes the canonical PDF, renders and
+checks every page, and normalizes it to image-free `.tex`: native text,
+mathematics, and tables; high-confidence TikZ/PGFPlots reconstructions; and
+source-located textual descriptions for visual objects that cannot be converted
+faithfully. Candidate provenance retains both normalized TeX spans and original
+PDF page/object labels.
+
 Paper extraction happens before full entry writing. An isolated research
 snapshot is compared against the personal namespace; known nodes remain paper-
 local roles connected by cross-namespace bridges, while only new and missing
-partial knowledge receives an explanation. This default comparison never
-mutates the personal graph or alignment registry. Explicit paper import creates
-a registered research authority, writes known concepts as refs, and hands only
-reviewed new/partial knowledge to `ingest-kgdistiller`.
+partial knowledge receives an explanation. The normalized TeX remains a paper
+workspace artifact and does not become personal authority by normalization
+alone. This default comparison never mutates the personal graph or alignment
+registry. Explicit paper import creates a registered research authority, writes
+known concepts as refs, and hands only reviewed new/partial knowledge to
+`ingest-kgdistiller`.
 
 Scoped abbreviation evidence can rank candidates but cannot create a global
 alias. When persistence is explicitly requested, reviewed mappings are stored

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage exactly one Agent Skill into a Claude Code trial project."""
+"""Stage one or more Agent Skills into a Claude Code project."""
 
 from __future__ import annotations
 
@@ -105,7 +105,8 @@ def main() -> None:
     parser.add_argument(
         "--skill",
         required=True,
-        help="Codex skill name or explicit skill directory",
+        action="append",
+        help="Codex skill name or explicit skill directory; repeat for multiple skills",
     )
     parser.add_argument(
         "--skill-root",
@@ -121,37 +122,42 @@ def main() -> None:
     project = args.project.expanduser().resolve()
     project.mkdir(parents=True, exist_ok=True)
     roots = [*args.skill_root, *default_roots()]
-    source = resolve_skill(args.skill, roots)
-    manifest = source / "SKILL.md"
-    try:
-        name = skill_name(manifest)
-    except (OSError, UnicodeError, ValueError) as error:
-        raise SystemExit(str(error)) from error
+    sources: dict[Path, str] = {}
+    for spec in args.skill:
+        source = resolve_skill(spec, roots)
+        manifest = source / "SKILL.md"
+        try:
+            name = skill_name(manifest)
+        except (OSError, UnicodeError, ValueError) as error:
+            raise SystemExit(str(error)) from error
+        sources[source] = name
 
-    destination = destination_for(project, args.runtime, name)
-    if destination.exists() or destination.is_symlink():
-        if destination.resolve() != source:
+    staged: list[dict[str, str]] = []
+    seen_names: dict[str, Path] = {}
+    for source, name in sources.items():
+        prior = seen_names.get(name)
+        if prior and prior != source:
+            raise SystemExit(f"two sources define skill {name!r}: {prior}, {source}")
+        seen_names[name] = source
+        destination = destination_for(project, args.runtime, name)
+        if destination.exists() or destination.is_symlink():
+            if destination.resolve() == source:
+                staged.append(
+                    {"name": name, "source": str(source), "destination": str(destination)}
+                )
+                continue
             raise SystemExit(f"destination already exists: {destination}")
-    else:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(source, destination, symlinks=False)
 
-    staged_manifest = destination / "SKILL.md"
-    if staged_manifest.is_symlink() or not staged_manifest.is_file():
-        raise SystemExit(f"staged SKILL.md is not a regular file: {staged_manifest}")
-    print(
-        json.dumps(
-            {
-                "runtime": args.runtime,
-                "skill": {
-                    "name": name,
-                    "source": str(source),
-                    "destination": str(destination),
-                },
-            },
-            indent=2,
+        staged_manifest = destination / "SKILL.md"
+        if staged_manifest.is_symlink() or not staged_manifest.is_file():
+            raise SystemExit(f"staged SKILL.md is not a regular file: {staged_manifest}")
+        staged.append(
+            {"name": name, "source": str(source), "destination": str(destination)}
         )
-    )
+
+    print(json.dumps({"runtime": args.runtime, "skills": staged}, indent=2))
 
 
 if __name__ == "__main__":

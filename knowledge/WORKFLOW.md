@@ -48,10 +48,16 @@ curation。
 
 ## 论文与外部研究图谱
 
-`extract-paper-concepts` 先完成论文覆盖和轻量 candidate graph：名称、论文局部别名、
-论文角色、来源位置和直接 prerequisite，但不先写所有词条解释。它将这些记录写成
-`qlkg-candidate-graph-v1`，通过 kgdistiller builder 生成独立的 `paper:<digest>`
-snapshot，再交给 `query-kgdistiller`。
+对网页、DOI、标题或 PDF 输入，`extract-paper-concepts` 先定位规范且可合法访问的
+完整 PDF，记录 landing/PDF URL、版本和 SHA-256，并逐页提取、渲染和视觉核验。PDF
+预处理结果必须是可编译的无图片 TeX：保留文字、原生公式和 LaTeX 表格；只把能可信
+复现的图表写成 TikZ/PGFPlots，其余视觉对象用带原页码、图号、结构、趋势、关键量和
+结论的文字描述替代。核心内容仍不可读时停止蒸馏。
+
+预处理通过后，Skill 才从规范化 TeX 完成论文覆盖和轻量 candidate graph：名称、论文
+局部别名、论文角色、TeX span + PDF 页码来源和直接 prerequisite，但不先写所有词条
+解释。它将这些记录写成 `qlkg-candidate-graph-v1`，通过 kgdistiller builder 生成独立的
+`paper:<digest>` snapshot，再交给 `query-kgdistiller`。
 
 查询结果生成联邦快照：
 

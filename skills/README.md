@@ -148,12 +148,13 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [create-math-notes](./create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
 - [discuss-game-design](./discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
 - [extract-and-export-notes](./extract-and-export-notes/)：从跨领域 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
-- [extract-paper-concepts](./extract-paper-concepts/)：通读论文，查询个人知识库后生成不重复已知词条、默认不合并的联邦概念图。
+- [extract-paper-concepts](./extract-paper-concepts/)：从网页、DOI 或标题找到规范 PDF，逐页核验并预处理为无图片、图表可追溯的 TeX，再查询个人知识库并生成默认不合并的联邦概念图。
 - [ingest-kgdistiller](./ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
 - [query-kgdistiller](./query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
 - [play-unity-game](./play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
+- [run-workflow-with-agents](./run-workflow-with-agents/)：默认用 DeepSeek V4 Flash 单 worker 或 coordinator + workers 注入一个或多个 Codex skills，执行会产出真实交付物的生产工作流。
 - [search-game-art](./search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
-- [test-skill-with-agent](./test-skill-with-agent/)：在隔离环境中用真实或委派 agent 测试 skill，并独立检查产物、权限、改动和凭据泄漏。
+- [test-skill-with-agent](./test-skill-with-agent/)：用独立 DeepSeek V4 Flash trials 原子测试单个 skill，支持 smoke、回归、负向、安全、重复稳定性和有界并发压力测试。
 - [trace-concept-lineage](./trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
 
 ## 社区来源
