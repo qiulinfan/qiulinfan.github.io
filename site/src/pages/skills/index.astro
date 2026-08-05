@@ -1,39 +1,33 @@
 ---
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import {
-	loadOwnedSkills,
 	loadPublishedSkills,
-	loadSkillCatalogMarkdown,
+	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
 } from "@utils/skill-sources";
 import MarkdownIt from "markdown-it";
-
-const publishedSkills = loadPublishedSkills();
-const ownedSkills = loadOwnedSkills();
-const ownedIds = new Set(ownedSkills.map((skill) => skill.id));
-const publishedById = new Map(
-	publishedSkills.map((skill) => [skill.id, skill]),
-);
-const skillAnchor = (name: string) => `skill-${name.replace(/[^a-z0-9]+/gi, "-")}`;
 
 const markdown = new MarkdownIt({
 	html: false,
 	linkify: true,
 	typographer: false,
 });
-
-function resolveCatalogLinks(source: string): string {
-	return source.replace(/\]\(\.\/([^\s)]+)\/\)/g, (match, id: string) => {
-		const skill = publishedById.get(id);
-		if (!skill) return match;
-		const href = ownedIds.has(id) ? `#${skillAnchor(skill.name)}` : skill.sourceHref;
-		return `](${href})`;
-	});
-}
-
-const catalogHtml = markdown.render(
-	resolveCatalogLinks(loadSkillCatalogMarkdown()),
+const publishedSkills = loadPublishedSkills();
+const skillGroups = loadSkillDirectoryGroups().map((group) => ({
+	...group,
+	skills: group.skills.map((skill) => ({
+		...skill,
+		summaryHtml: markdown.renderInline(skill.summary),
+	})),
+}));
+const groupedSkills = skillGroups.flatMap((group) => group.skills);
+const skillOrdinal = new Map(
+	groupedSkills.map((skill, index) => [skill.name, index + 1]),
 );
+const skillAnchor = (name: string) => `skill-${name.replace(/[^a-z0-9]+/gi, "-")}`;
+const directoryAnchor = (directory: string) =>
+	`skill-directory-${directory || "root"}`;
+
 const workflowSource = loadSkillWorkflowsMarkdown();
 const workflowTokens = markdown.parse(workflowSource, {});
 type MarkdownToken = (typeof workflowTokens)[number];
@@ -104,10 +98,31 @@ const renderedWorkflows = workflows.map((workflow) => ({
 
 		<section id="skill-index" class="index-section" data-pagefind-body>
 			<header class="section-header">
-				<div><span>01 / README</span><h2>Skill 导航</h2></div>
-				<p>简介以 <code>skills/README.md</code> 的“个人维护”清单为权威来源；<code>community/</code> 中的外部 Skills 不发布到本站。</p>
+				<div><span>01 / DIRECTORY</span><h2>Skill 导航</h2></div>
+				<p>按仓库中的真实目录分组；展开文件夹查看 README 维护的简短说明。顶层 Skill 保持在 <code>skills/</code>，外部下载的 <code>community/</code> 完全不发布。</p>
 			</header>
-			<div class="markdown-panel catalog-markdown" set:html={catalogHtml} />
+			<div class="folder-tree" aria-label="Skills grouped by repository directory">
+				{skillGroups.map((group, index) => (
+					<details class="skill-folder" open={index === 0}>
+						<summary>
+							<span class="folder-icon" aria-hidden="true"></span>
+							<span class="folder-heading">
+								<strong>{group.directory ? `${group.directory}/` : "顶层 Skills"}</strong>
+								<code>{group.path}</code>
+							</span>
+							<span class="folder-count">{String(group.skills.length).padStart(2, "0")}</span>
+						</summary>
+						<ul class="folder-skills">
+							{group.skills.map((skill) => (
+								<li>
+									<a href={`#${skillAnchor(skill.name)}`}>{skill.name}</a>
+									<p set:html={skill.summaryHtml} />
+								</li>
+							))}
+						</ul>
+					</details>
+				))}
+			</div>
 		</section>
 
 		<section id="workflows" class="workflow-section" data-pagefind-body>
@@ -134,22 +149,35 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-details" class="details-section">
 			<header class="section-header">
 				<div><span>03 / OWNED SKILLS</span><h2>自有 Skill 详情</h2></div>
-				<p>这里只展示“个人维护”清单中的 Skill；外部下载的 community Skills 不进入任何主页层级。</p>
+				<p>详情继续按实际目录分类，但保持展开的内容分组，不重复使用文件夹折叠交互。</p>
 			</header>
-			<div class="skill-list" data-pagefind-body aria-label="Personally maintained Agent Skills">
-				{ownedSkills.map((skill, index) => (
-					<article class="skill-card" id={skillAnchor(skill.name)}>
-						<header>
-							<span>{String(index + 1).padStart(2, "0")}</span>
-							<code>{skill.id}</code>
+			<div class="skill-detail-groups" data-pagefind-body aria-label="Personally maintained Agent Skills grouped by directory">
+				{skillGroups.map((group) => (
+					<section class="skill-detail-group" aria-labelledby={directoryAnchor(group.directory)}>
+						<header class="detail-group-heading">
+							<div>
+								<span>{group.directory ? "SUITE" : "ROOT"}</span>
+								<h3 id={directoryAnchor(group.directory)}>{group.directory ? `${group.directory}/` : "顶层 Skills"}</h3>
+							</div>
+							<code>{group.path} · {String(group.skills.length).padStart(2, "0")}</code>
 						</header>
-						<h3>{skill.name}</h3>
-						<p>{skill.description}</p>
-						<footer>
-							{skill.license && <span>{skill.license}</span>}
-							<a href={skill.sourceHref} target="_blank" rel="noreferrer">SKILL.md ↗</a>
-						</footer>
-					</article>
+						<div class="skill-list">
+							{group.skills.map((skill) => (
+								<article class="skill-card" id={skillAnchor(skill.name)}>
+									<header>
+										<span>{String(skillOrdinal.get(skill.name)).padStart(2, "0")}</span>
+										<code>{skill.id}</code>
+									</header>
+									<h3>{skill.name}</h3>
+									<p>{skill.description}</p>
+									<footer>
+										{skill.license && <span>{skill.license}</span>}
+										<a href={skill.sourceHref} target="_blank" rel="noreferrer">SKILL.md ↗</a>
+									</footer>
+								</article>
+							))}
+						</div>
+					</section>
 				))}
 			</div>
 		</section>
@@ -177,15 +205,28 @@ const renderedWorkflows = workflows.map((workflow) => ({
 	.section-header h2 { margin: .5rem 0 0; color: var(--text-strong); font-size: clamp(2.4rem, 6vw, 5.5rem); font-weight: 730; line-height: .9; letter-spacing: -.065em; }
 	.section-header > p { max-width: 34rem; margin: 0; color: var(--text-muted); font-size: .86rem; line-height: 1.7; }
 	.section-header code { color: var(--text-strong); font-family: var(--font-mono); }
-	.markdown-panel { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); }
-	.catalog-markdown { padding: clamp(1.25rem, 3vw, 2.25rem); }
-	.catalog-markdown :global(h2) { margin: 0 0 1rem; color: var(--text-strong); font-size: clamp(1.4rem, 3vw, 2.1rem); letter-spacing: -.04em; }
-	.catalog-markdown :global(h2:not(:first-child)) { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 2rem; }
-	.catalog-markdown :global(ul) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
-	.catalog-markdown :global(li) { position: relative; border: 1px solid var(--border); border-radius: var(--radius-medium); padding: .9rem 1rem .9rem 1.25rem; color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
-	.catalog-markdown :global(li::before) { content: ""; position: absolute; inset: .85rem auto .85rem 0; width: 3px; border-radius: 2px; background: var(--primary); }
-	.catalog-markdown :global(a) { color: var(--text-strong); font-family: var(--font-mono); font-weight: 680; text-decoration: none; }
-	.catalog-markdown :global(a:hover) { color: var(--primary); }
+	.folder-tree { display: grid; gap: .8rem; }
+	.skill-folder { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); overflow: hidden; }
+	.skill-folder summary { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 1rem; padding: clamp(1rem, 2.5vw, 1.5rem); cursor: pointer; list-style: none; }
+	.skill-folder summary::-webkit-details-marker { display: none; }
+	.skill-folder summary::after { content: "+"; width: 1.25rem; color: var(--primary); font: 700 1.1rem/1 var(--font-mono); text-align: center; }
+	.skill-folder[open] summary::after { content: "−"; }
+	.skill-folder[open] summary { border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--primary) 4%, var(--card-bg)); }
+	.folder-icon { position: relative; width: 1.55rem; height: 1.05rem; border: 1px solid color-mix(in srgb, var(--primary) 55%, var(--border)); border-radius: .2rem; background: color-mix(in srgb, var(--primary) 13%, var(--surface-deep)); }
+	.folder-icon::before { content: ""; position: absolute; left: .12rem; top: -.38rem; width: .7rem; height: .38rem; border: 1px solid color-mix(in srgb, var(--primary) 55%, var(--border)); border-bottom: 0; border-radius: .2rem .2rem 0 0; background: color-mix(in srgb, var(--primary) 13%, var(--surface-deep)); }
+	.folder-heading { display: flex; min-width: 0; align-items: baseline; gap: .8rem; }
+	.folder-heading strong { color: var(--text-strong); font-size: clamp(1rem, 2vw, 1.25rem); letter-spacing: -.025em; }
+	.folder-heading code, .folder-count { color: var(--muted); font: 650 .64rem/1.4 var(--font-mono); letter-spacing: .08em; }
+	.folder-heading code { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.folder-count { border: 1px solid var(--border); border-radius: 999px; padding: .25rem .5rem; color: var(--primary); }
+	.folder-skills { display: grid; margin: 0; padding: 0; list-style: none; }
+	.folder-skills li { display: grid; grid-template-columns: minmax(12rem, .55fr) minmax(0, 1.45fr); gap: clamp(1rem, 3vw, 3rem); align-items: start; padding: 1rem clamp(1rem, 2.5vw, 1.5rem); }
+	.folder-skills li + li { border-top: 1px solid var(--border); }
+	.folder-skills li:hover { background: var(--surface-hover); }
+	.folder-skills a { color: var(--text-strong); font: 680 .78rem/1.5 var(--font-mono); overflow-wrap: anywhere; text-decoration: none; }
+	.folder-skills a:hover { color: var(--primary); }
+	.folder-skills p { margin: 0; color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
+	.folder-skills p :global(a) { color: var(--primary); font: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent); text-underline-offset: .16em; }
 	.workflow-intro :global(p) { max-width: 34rem; margin: 0; color: var(--text-muted); font-size: .86rem; line-height: 1.7; }
 	.workflow-list { display: grid; gap: 1rem; }
 	.workflow-card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); overflow: hidden; }
@@ -205,6 +246,12 @@ const renderedWorkflows = workflows.map((workflow) => ({
 	.workflow-body :global(strong) { color: var(--text-strong); font-weight: 700; }
 	.workflow-body :global(code) { border-radius: .25rem; padding: .08rem .3rem; background: var(--surface-deep); color: var(--text-strong); font-family: var(--font-mono); }
 	.workflow-body :global(h3), .workflow-body :global(h4) { grid-column: 1 / -1; margin: 0; border-top: 1px solid var(--border); padding: 1.25rem clamp(1.15rem, 3vw, 1.75rem) .25rem; color: var(--text-strong); }
+	.skill-detail-groups { display: grid; gap: clamp(3rem, 7vw, 6rem); }
+	.skill-detail-group { scroll-margin-top: 6rem; }
+	.detail-group-heading { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding: 0 .25rem 1rem; }
+	.detail-group-heading span { color: var(--primary); font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
+	.detail-group-heading h3 { margin: .3rem 0 0; color: var(--text-strong); font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1; letter-spacing: -.05em; }
+	.detail-group-heading code { color: var(--muted); font: 650 .65rem/1.4 var(--font-mono); letter-spacing: .06em; }
 	.skill-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
 	.skill-card { min-width: 0; min-height: 20rem; border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 	.skill-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--primary) 42%, var(--border)); background: var(--surface-hover); }
@@ -218,7 +265,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 	.skill-card footer a { margin-left: auto; color: var(--primary); text-decoration: none; }
 	@media (max-width: 860px) {
 		.hero-grid, .section-header { grid-template-columns: 1fr; }
-		.catalog-markdown :global(ul) { grid-template-columns: 1fr; }
+		.folder-skills li { grid-template-columns: 1fr; gap: .35rem; }
 	}
 	@media (max-width: 640px) {
 		.skills-hero { padding-inline: .1rem; }
@@ -233,6 +280,8 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		.workflow-body :global(.mermaid-diagram) { min-height: 12rem; padding: .75rem; }
 		.workflow-body :global(p:nth-of-type(even)) { border-left: 0; }
 		.workflow-body :global(p:nth-of-type(n + 2)) { border-top: 1px solid var(--border); }
+		.folder-heading { display: grid; gap: .2rem; }
+		.detail-group-heading { align-items: start; flex-direction: column; }
 		.skill-list { grid-template-columns: 1fr; }
 		.skill-card { min-height: 18rem; }
 	}

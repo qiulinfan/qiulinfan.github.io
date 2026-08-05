@@ -11,6 +11,16 @@ export interface PublishedSkill {
 	sourceHref: string;
 }
 
+export interface CatalogSkill extends PublishedSkill {
+	summary: string;
+}
+
+export interface SkillDirectoryGroup {
+	directory: string;
+	path: string;
+	skills: CatalogSkill[];
+}
+
 const repositoryRoot = resolve(
 	dirname(fileURLToPath(import.meta.url)),
 	"../../..",
@@ -57,14 +67,16 @@ function frontmatter(source: string): Record<string, string> {
 		const line = lines[index];
 		const match = /^([a-zA-Z][\w-]*):\s*(.*)$/.exec(line);
 		if (!match || !match[2]) continue;
-		if (match[2] === ">" || match[2] === "|") {
+		if (/^[>|][+-]?$/.test(match[2])) {
 			const continuation: string[] = [];
 			while (index + 1 < lines.length && /^\s+/.test(lines[index + 1])) {
 				continuation.push(lines[index + 1].trim());
 				index += 1;
 			}
 			metadata[match[1]] =
-				match[2] === ">" ? continuation.join(" ") : continuation.join("\n");
+				match[2].startsWith(">")
+					? continuation.join(" ")
+					: continuation.join("\n");
 			continue;
 		}
 		metadata[match[1]] = yamlScalar(match[2]);
@@ -105,6 +117,14 @@ function linkedSkillIds(markdown: string): string[] {
 	);
 }
 
+function catalogSummaries(markdown: string): Map<string, string> {
+	return new Map(
+		[...markdown.matchAll(/^- \[[^\]]+\]\(\.\/([^\s)]+)\/\)[：:]\s*(.+)$/gm)].map(
+			(match) => [match[1], match[2].trim()],
+		),
+	);
+}
+
 export function loadSkillCatalogMarkdown(): string {
 	const source = readFileSync(skillsReadme, "utf8");
 	return markdownSection(source, "个人维护");
@@ -125,6 +145,39 @@ export function loadOwnedSkills(): PublishedSkill[] {
 		}
 		return skill;
 	});
+}
+
+export function loadSkillDirectoryGroups(): SkillDirectoryGroup[] {
+	const catalog = loadSkillCatalogMarkdown();
+	const summaries = catalogSummaries(catalog);
+	const groups = new Map<string, CatalogSkill[]>();
+
+	for (const skill of loadOwnedSkills()) {
+		const summary = summaries.get(skill.id);
+		if (!summary) {
+			throw new Error(
+				`${skillsReadme} is missing a one-line summary for ${skill.id}.`,
+			);
+		}
+		const separator = skill.id.indexOf("/");
+		const directory = separator === -1 ? "" : skill.id.slice(0, separator);
+		groups.set(directory, [
+			...(groups.get(directory) ?? []),
+			{ ...skill, summary },
+		]);
+	}
+
+	return [...groups.entries()]
+		.sort(([left], [right]) => {
+			if (!left) return -1;
+			if (!right) return 1;
+			return left.localeCompare(right);
+		})
+		.map(([directory, skills]) => ({
+			directory,
+			path: directory ? `skills/${directory}/` : "skills/",
+			skills: skills.sort((left, right) => left.name.localeCompare(right.name)),
+		}));
 }
 
 export function loadSkillWorkflowsMarkdown(): string {

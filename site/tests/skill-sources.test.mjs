@@ -7,6 +7,7 @@ import {
 	loadOwnedSkills,
 	loadPublishedSkills,
 	loadSkillCatalogMarkdown,
+	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
 } from "../src/utils/skill-sources.ts";
 
@@ -62,6 +63,23 @@ test("the README catalog lists every visible Skill and owns the detail-page boun
 	);
 });
 
+test("the public catalog mirrors real Skill directories without a community group", () => {
+	const groups = loadSkillDirectoryGroups();
+	assert.deepEqual(
+		groups.map((group) => group.directory),
+		["", "gamemaker", "kgdistiller", "notes"],
+	);
+	assert.deepEqual(
+		groups.map((group) => group.skills.length),
+		[2, 5, 5, 2],
+	);
+	assert.equal(groups.some((group) => group.directory === "community"), false);
+	assert.equal(
+		groups.flatMap((group) => group.skills).every((skill) => skill.summary.length > 0),
+		true,
+	);
+});
+
 test("kgdistiller discovery skills delegate to the vendored canonical skills", () => {
 	for (const name of ["query-kgdistiller", "ingest-kgdistiller"]) {
 		const entryPath = join(repositoryRoot, "skills", "kgdistiller", name, "SKILL.md");
@@ -95,6 +113,9 @@ test("knowledge Skills keep extraction, query, and ingestion responsibilities se
 
 test("the Markdown-authored workflows reference real Skills and preserve knowledge boundaries", () => {
 	const workflows = loadSkillWorkflowsMarkdown();
+	const workflowHrefs = [
+		...workflows.matchAll(/\]\(([^)]+)\)/g),
+	].map((match) => match[1]);
 	const skillIds = [
 		...workflows.matchAll(/\]\(#skill-([a-z0-9-]+)\)/g),
 	].map((match) => match[1]);
@@ -108,6 +129,7 @@ test("the Markdown-authored workflows reference real Skills and preserve knowled
 
 	assert.ok(workflowCount > 0);
 	assert.equal(diagramCount, workflowCount);
+	assert.equal(workflowHrefs.every((href) => href.startsWith("#skill-")), true);
 	assert.equal(skillIds.every((skillId) => publishedSkillNames.has(skillId)), true);
 	for (const status of ["known", "partial", "new", "uncertain", "conflict"]) {
 		assert.match(workflows, new RegExp(status));
