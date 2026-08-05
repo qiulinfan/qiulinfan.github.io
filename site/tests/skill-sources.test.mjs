@@ -52,6 +52,8 @@ test("knowledge Skills keep extraction, query, and ingestion responsibilities se
 	}
 	assert.match(querySkill, /Keep the boundary read-only/);
 	assert.doesNotMatch(querySkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
-	assert.match(ingestSkill, /python3 knowledge\/kgd\.py apply REVIEWED_DELTA/);
+	assert.match(ingestSkill, /kgdistiller ingest plan REQUEST\.json/);
+	assert.match(ingestSkill, /kgdistiller ingest apply REQUEST\.json/);
+	assert.doesNotMatch(ingestSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
 	assert.equal(existsSync(join(repositoryRoot, "skills/kgdistiller-distill/SKILL.md")), false);
 });

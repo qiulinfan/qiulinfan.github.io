@@ -33,6 +33,13 @@ assumptions, metrics, and important distinctions. Exclude local symbols,
 authors, datasets, section headings, and generic filler words unless they are
 independently necessary.
 
+Include every named direct prerequisite that the paper operationally uses in a
+definition, construction, theorem, or proof, even when it looks elementary or
+likely to be known already. The external-brain query, not the extractor's
+memory, decides whether that prerequisite is known. In particular, do not
+extract a normalized, derived, or bounded construction while omitting the
+named base operation from which the source explicitly builds it.
+
 For each candidate record only:
 
 - stable source-local ID and canonical English name;
@@ -43,10 +50,13 @@ For each candidate record only:
 - direct candidate prerequisite IDs;
 - ambiguity or nonstandard paper-local meaning.
 
-Do not write its general explanation or full concept card yet. Create an
-isolated `qlkg-agent-snapshot-v1` namespace such as `paper:<digest>` and keep it
-below the paper's ignored build/learning workspace. Candidate prerequisite
-edges express learning order, not section order or generic co-occurrence.
+Do not write its general explanation or full concept card yet. Write a bounded
+`qlkg-candidate-graph-v1`, then call kgdistiller's `candidate build` entry point
+to create an isolated `qlkg-agent-snapshot-v1` namespace such as
+`paper:<digest>`. Do not hand-write the snapshot envelope or digests. Keep both
+artifacts below the paper's ignored build/learning workspace. Candidate
+prerequisite edges express learning order, not section order or generic
+co-occurrence.
 
 ## Query the external brain once
 
@@ -92,7 +102,8 @@ user explicitly requests import:
 2. create or update one registered research authority with exact paper sources;
 3. represent every `known` concept as a ref;
 4. send the reviewed source patch, bridges, entries, edges, and query digests to
-   `$ingest-kgdistiller`.
+   `$ingest-kgdistiller`, review its transaction plan, and require a committed
+   canonical receipt.
 
 Do not import unresolved or conflicting identities. Do not treat producing the
 paper snapshot as permission to persist an alignment.
@@ -103,7 +114,11 @@ Before delivery verify:
 
 - paper coverage and version are explicit;
 - every core argument step maps to at least one candidate;
+- every named direct prerequisite used by a core candidate is itself present
+  in the candidate graph and can receive a query classification or bridge;
 - every candidate has a paper role and precise source evidence;
+- the candidate builder validated schema, endpoints, source locations, counts,
+  ordering, and digests;
 - direct prerequisite edges form a DAG;
 - query ran before full entries were written;
 - known concepts have no duplicated entry;

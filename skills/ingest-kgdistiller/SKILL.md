@@ -1,6 +1,6 @@
 ---
 name: ingest-kgdistiller
-description: Apply a reviewed, source-backed knowledge update to a kgdistiller project and return a validation receipt. Use after query-kgdistiller or another extractor has already decided identities, authority markers, refs, entries, aliases, and direct semantic edges; when changed Markdown, Typst, or LaTeX knowledge must enter the personal graph; when an explicitly selected paper concept must be imported with provenance; or when a reviewed cross-namespace alignment must be persisted.
+description: Apply a reviewed, source-backed knowledge update through kgdistiller's transactional ingest API and return a canonical receipt. Use after query-kgdistiller or another extractor has decided identities, native authority markers, refs, entries, aliases, direct semantic edges, and optional mappings; for changed Markdown, Typst, or LaTeX knowledge; for explicitly authorized paper imports; or for reviewed cross-namespace alignment persistence.
 ---
 
 # Ingest into kgdistiller

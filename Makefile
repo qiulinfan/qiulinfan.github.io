@@ -1,4 +1,4 @@
-.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check kgdistiller-update knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-workflow-check knowledge-check knowledge-search knowledge-context knowledge-agent-status knowledge-align knowledge-compare knowledge-propose knowledge-reconcile knowledge-serve
+.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check kgdistiller-update knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-workflow-check knowledge-transaction-test knowledge-check knowledge-search knowledge-context knowledge-agent-status knowledge-candidate knowledge-align knowledge-compare knowledge-propose knowledge-ingest-plan knowledge-ingest-apply knowledge-serve
 
 KGDISTILLER := python3 knowledge/kgd.py
 
@@ -44,6 +44,10 @@ knowledge-file:
 
 knowledge-workflow-check:
 	@python3 knowledge/workflow.py $(if $(CHANGED_FROM),--changed-from "$(CHANGED_FROM)",)
+	@PYTHONPATH=vendor/kgdistiller/src:. python3 -m unittest knowledge.test_workflow knowledge.test_transactional_workflow
+
+knowledge-transaction-test:
+	@PYTHONPATH=vendor/kgdistiller/src:. python3 -m unittest knowledge.test_transactional_workflow -v
 
 knowledge-check: notes-source-check knowledge-workflow-check
 	@$(KGDISTILLER) check
@@ -58,6 +62,11 @@ knowledge-context:
 
 knowledge-agent-status:
 	@$(KGDISTILLER) agent status
+
+knowledge-candidate:
+	@test -n "$(CANDIDATE)" || (echo 'CANDIDATE 不能为空' && exit 1)
+	@test -n "$(SNAPSHOT)" || (echo 'SNAPSHOT 不能为空' && exit 1)
+	@$(KGDISTILLER) candidate build "$(CANDIDATE)" --output "$(SNAPSHOT)"
 
 knowledge-align:
 	@test -n "$(SNAPSHOT)" || (echo '用法: make knowledge-align SNAPSHOT=knowledge/build/paper.snapshot.json NAME=paper' && exit 1)
@@ -76,13 +85,15 @@ knowledge-propose:
 		--output "knowledge/build/reviews/$(NAME).proposal.json" \
 		--delta-output "knowledge/build/reviews/$(NAME).delta.json"
 
-knowledge-reconcile:
-	@test -n "$(SNAPSHOT)" || (echo 'SNAPSHOT 不能为空' && exit 1)
-	@test -n "$(CANDIDATE_ID)" || (echo 'CANDIDATE_ID 不能为空' && exit 1)
-	@test -n "$(TARGET_ID)" || (echo 'TARGET_ID 不能为空' && exit 1)
-	@test -n "$(EVIDENCE)" || (echo 'EVIDENCE 不能为空' && exit 1)
-	@$(KGDISTILLER) reconcile alignment "$(SNAPSHOT)" "$(CANDIDATE_ID)" "$(TARGET_ID)" \
-		--evidence "$(EVIDENCE)" --justification "$(or $(JUSTIFICATION),manual-domain-review)"
+knowledge-ingest-plan:
+	@test -n "$(REQUEST)" || (echo 'REQUEST 不能为空' && exit 1)
+	@test -n "$(PLAN)" || (echo 'PLAN 不能为空' && exit 1)
+	@$(KGDISTILLER) ingest plan "$(REQUEST)" --output "$(PLAN)"
+
+knowledge-ingest-apply:
+	@test -n "$(REQUEST)" || (echo 'REQUEST 不能为空' && exit 1)
+	@test -n "$(RECEIPT)" || (echo 'RECEIPT 不能为空' && exit 1)
+	@$(KGDISTILLER) ingest apply "$(REQUEST)" --receipt "$(RECEIPT)"
 
 knowledge-serve:
 	@$(KGDISTILLER) serve

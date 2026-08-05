@@ -25,15 +25,21 @@ HTML 都是可重建投影。
 
 1. 先在 `knowledge/sources.json` 中让文件路径命中且只命中一个 source glob。
 2. `export-typst-math-notes` 读取完整改动 authority，从 Git diff 和用户 marker 提取
-   source-backed candidate；它不能打开 graph JSONL、entry shard 或 SQLite。
-3. 将整批候选交给 `query-kgdistiller`：
+   source-backed `qlkg-candidate-graph-v1`；它不能打开 graph JSONL、entry shard 或
+   SQLite。用 `make knowledge-candidate CANDIDATE=... SNAPSHOT=...` 生成并验证隔离
+   snapshot，不能手写 envelope 或 digest。
+3. 将完整 snapshot 交给 `query-kgdistiller`：
    - known → 写格式原生 ref，不生成新 entry；
    - new → 保留或增加 authority marker 与 entry；
    - partial → 只写缺失部分；
    - uncertain/conflict → 停止自动处理并等待 review。
-4. 把 source diff、query digests、decision table 和 reviewed delta 交给
-   `ingest-kgdistiller`。只有它能运行 reconcile/apply/sync/curate-check/check。
-5. ingestion receipt 成功后，运行所属课程或 Markdown/LaTeX 发布命令，再执行
+4. 把 native source patch、完整预期 marker/ref 状态、query digests、decision table
+   和 reviewed delta 交给 `ingest-kgdistiller`。先运行
+   `make knowledge-ingest-plan REQUEST=... PLAN=...` 并 review；将 request 改为
+   `apply`、重算 digest 后，再运行
+   `make knowledge-ingest-apply REQUEST=... RECEIPT=...`。领域 Skill 不得自行调用
+   `reconcile/apply/sync/curate-check/check`。
+5. 只有 canonical receipt 为 `committed` 后，才运行所属课程或 Markdown/LaTeX 发布命令，再执行
    `make knowledge-workflow-check && make knowledge-check && make blog-check && make blog-build`。
 
 `knowledge/workflow-policy.json` 只记录迁移开始时已经存在的 legacy backlog，以及有
@@ -43,8 +49,9 @@ curation。
 ## 论文与外部研究图谱
 
 `extract-paper-concepts` 先完成论文覆盖和轻量 candidate graph：名称、论文局部别名、
-论文角色、来源位置和直接 prerequisite，但不先写所有词条解释。然后把一个独立
-`paper:<digest>` snapshot 交给 `query-kgdistiller`。
+论文角色、来源位置和直接 prerequisite，但不先写所有词条解释。它将这些记录写成
+`qlkg-candidate-graph-v1`，通过 kgdistiller builder 生成独立的 `paper:<digest>`
+snapshot，再交给 `query-kgdistiller`。
 
 查询结果生成联邦快照：
 

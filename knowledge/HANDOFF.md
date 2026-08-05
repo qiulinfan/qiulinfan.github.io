@@ -545,4 +545,62 @@ git -C /Users/qiulinfan/Desktop/qlblog log --oneline --decorate -5
 git -C /Users/qiulinfan/Desktop/solvablemodel status --short --branch
 ```
 
-最后再次强调当前边界：**GraphRAG/alias/query 核心和四 Skill 拆分已经存在；事务 ingest、两个真实端到端、压力测试和产品发布仍是 TODO。**
+## 10. 2026-08-05 实施进展
+
+本节覆盖并取代上面的旧现场结论；路线和验收原则仍然有效。
+
+### 已完成
+
+- kgdistiller Phase A：`qlkg-ingest-request-v1`、plan/apply、canonical receipt、
+  digest/source precondition、bounded payload、single-writer lock、staging、原子安装、
+  idempotency、journal rollback/crash recovery、candidate builder 和 packaged schemas。
+- qlblog Phase B：Markdown/Typst/LaTeX scratch Git 仓库事务 E2E，覆盖 staged、unstaged、
+  untracked、rename、delete、known/new/partial、uncertain/conflict、scope isolation 和 receipt；
+  Makefile/四 Skill/工作流文档已经切换到 candidate + ingest plan/apply。
+- 真实 Agent 隔离测试：笔记 exporter 的 review-only 运行通过 validator 和 workspace
+  guard；论文 extractor 两次运行均因时间边界内没有完成 inventory 而明确判为失败，未
+  用加强提示重试“刷通过”。第二次测试暴露的 SQLite byte change 已定位并修复：所有
+  query index 现在从 committed hydrated graph 构建，read-only query 不再重建 current
+  index。
+- solvablemodel Phase C1：完整读取 `main.tex`、原始研究笔记和 bibliography；生成 20
+  nodes / 28 prerequisite edges 的 `paper:f5ce64239e7e038a` candidate/snapshot，query
+  分类为 1 known、9 new、10 uncertain、0 partial/conflict；完整联邦 inventory 和
+  machine snapshot 位于
+  `/Users/qiulinfan/Desktop/solvablemodel/.latex-build/learning/fixed-linear-architectures/`。
+  personal graph/snapshot/alignment digest 未变化，论文、`.gitignore` 和 `.vscode/` 未改。
+- kgdistiller Phase D：新增可复跑 synthetic stress harness 和小型默认回归。真实 100k
+  knowledge-node Markdown+Typst 运行通过 exact、FTS、GraphRAG、file-scope no-op、事务
+  plan/apply、fault injection 和 concurrent reader isolation；0 reader errors，峰值 RSS
+  约 2.82 GiB。报告在 `/tmp/kgdistiller-stress-100k-report.json`，生成大图未入仓库。
+- Phase E release preparation：local deployment、MCP/loopback、Git/backup/restore、crash
+  recovery、upgrade/rollback、compatibility matrix、migration、security/privacy、release
+  order、changelog、CI 和 wheel smoke test 已补齐。未 push、未 tag、未发布 package。
+
+### 当前验证
+
+- kgdistiller：75 unit tests 通过；`uv build` 通过；0.3.0 wheel 在干净 Python 3.9 venv
+  安装/import/schema smoke test 通过。
+- qlblog：`knowledge-check` 通过（299 nodes / 515 edges / 44 refs / 0 warnings）；
+  `blog-check` 和 `blog-build` 通过（88 pages，Pagefind 35 pages）。
+- 四个 qlblog knowledge Skill quick validation 通过。
+
+### 当前 commits 与发布顺序
+
+kgdistiller `codex/transactional-ingest`：
+
+1. `25f35b7 Add transactional knowledge ingestion`
+2. `2baa97f Add large-scale validation and release guidance`
+
+qlblog `codex/transactional-ingest` 将在本节和子模块 pointer 提交后指向 `2baa97f`。
+仍须先发布 kgdistiller，再发布 qlblog；当前两个分支都没有远程 push/tag/package release。
+
+### 仍需用户决策或外部授权
+
+1. Phase C2：用户从 C02、C07、C09、C12、C15、C16、C17、C19、C20 中明确选择要
+   导入 qlblog research authority 的节点；C04 只作为
+   `personal:conditional-expectation` ref；10 个 uncertain 节点不得自动导入。
+2. 是否把 marker 写回 solvablemodel 论文 source；默认没有写回。
+3. 是否 push kgdistiller、发布 0.3.0/tag/package，再按顺序 push/publish qlblog。
+
+当前边界：**事务 ingest、笔记 E2E、默认论文联邦快照、100k 压测和 release preparation
+已经实现；显式论文导入和实际公共发布等待用户选择/授权。**

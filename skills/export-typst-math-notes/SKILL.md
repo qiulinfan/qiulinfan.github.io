@@ -53,8 +53,11 @@ Do not promote headings, examples, equations, file order, keyword co-occurrence,
 or every formal wrapper. Do not inspect `knowledge/graph/*.jsonl`, entry shards,
 or SQLite to decide whether a candidate already exists.
 
-Hand the candidate names and evidence, or an isolated
-`qlkg-agent-snapshot-v1`, to `$query-kgdistiller` in one batch.
+Write the bounded source-local records as `qlkg-candidate-graph-v1`, then call
+kgdistiller's `candidate build` entry point to produce the isolated
+`qlkg-agent-snapshot-v1`. Do not hand-write the snapshot envelope, counts, or
+digests. Hand the complete validated snapshot to `$query-kgdistiller` in one
+batch.
 
 ## Apply the query decision to the source
 
@@ -79,10 +82,12 @@ LaTeX:   \kn{Name}        \knref{Name}
 A ref records source usage and a backlink; it is not a semantic edge. Add it
 only for a direct, immediate dependency whose authority is another file.
 
-Pass the reviewed source diff, query digests, decision table, entries, and
-typed edge delta to `$ingest-kgdistiller`. Do not run `apply`, `sync`,
-`reconcile`, or edit graph artifacts in this Skill. Continue only after the
-ingestion receipt reports successful scoped curation and global validation.
+Pass the reviewed native source patch, expected complete marker/ref state,
+candidate and query digests, decision table, entries, and typed edge delta to
+`$ingest-kgdistiller`. It must run transaction plan before apply and return a
+canonical `qlkg-ingest-receipt-v1`. Do not run `apply`, `sync`, `reconcile`, or
+edit graph artifacts in this Skill. Continue only after the receipt reports
+`committed`, successful scoped curation, and global validation.
 
 ## Publish the validated authority
 
