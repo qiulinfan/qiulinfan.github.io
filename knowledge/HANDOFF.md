@@ -4,7 +4,7 @@
 >
 > 覆盖仓库：`kgdistiller`、`qlblog`、后续验收仓库 `solvablemodel`
 >
-> 当前阶段：GraphRAG 查询基础和四 Skill 职责拆分已经完成；事务型 ingest 引擎与真实端到端验收尚未完成。
+> 当前阶段：事务 ingest、笔记 E2E、默认论文联邦快照、10 万节点压测和发布准备已经完成；论文显式导入与公共发布等待用户授权。
 
 本文是当前项目状态的唯一交接入口。它回答四个问题：我们最终要做什么，哪些语义不能改变，两个仓库已经实现了什么，下一位执行者应按什么顺序继续。
 
@@ -472,6 +472,10 @@ make blog-build
 - ambiguity corpus 中未经 review 的自动 identity merge 为 0；
 - 事务故障测试中 source/graph/alignment 数据损坏为 0。
 
+实测后校准的参考机基线、未达到的原始阈值和复跑命令见
+[`kgdistiller/docs/performance.md`](../vendor/kgdistiller/docs/performance.md)。原始的
+60 秒全量同步与 1 GiB RSS 是探索目标，不应被误报为已达标。
+
 ### Phase E：个人部署与公共产品化
 
 #### E1. 给个人使用
@@ -570,15 +574,22 @@ git -C /Users/qiulinfan/Desktop/solvablemodel status --short --branch
   personal graph/snapshot/alignment digest 未变化，论文、`.gitignore` 和 `.vscode/` 未改。
 - kgdistiller Phase D：新增可复跑 synthetic stress harness 和小型默认回归。真实 100k
   knowledge-node Markdown+Typst 运行通过 exact、FTS、GraphRAG、file-scope no-op、事务
-  plan/apply、fault injection 和 concurrent reader isolation；0 reader errors，峰值 RSS
-  约 2.82 GiB。报告在 `/tmp/kgdistiller-stress-100k-report.json`，生成大图未入仓库。
+  plan/apply、fault injection 和 concurrent reader isolation；5,410 次 reader observation
+  只看到 old/new generation，0 errors。完整事务 run 的 plan/apply 为 232.085/271.132 秒，
+  峰值 RSS 约 2.63 GiB。
+- GraphRAG 性能修订：hybrid retrieval 的 PPR 只在已展开、最多 400 节点的有界邻域运行，
+  standalone PPR 仍覆盖完整 namespace。最终 20-sample 100k query profile 的 resolve/search/
+  hybrid-context p95 分别为 0.000348/0.225039/0.346568 秒；首次/增量同步为
+  68.515/59.987 秒，峰值 RSS 约 2.37 GiB。原暂定 `<60 s` full sync 和 `<1 GiB` RSS
+  未达到，已在 `docs/performance.md` 如实记录并校准成参考机 release envelope。报告在
+  `/tmp/kgdistiller-stress-100k-query-final.json`；生成大图未入仓库。
 - Phase E release preparation：local deployment、MCP/loopback、Git/backup/restore、crash
   recovery、upgrade/rollback、compatibility matrix、migration、security/privacy、release
   order、changelog、CI 和 wheel smoke test 已补齐。未 push、未 tag、未发布 package。
 
 ### 当前验证
 
-- kgdistiller：75 unit tests 通过；`uv build` 通过；0.3.0 wheel 在干净 Python 3.9 venv
+- kgdistiller：76 unit tests 通过；`uv build` 通过；0.3.0 wheel 在干净 Python 3.9 venv
   安装/import/schema smoke test 通过。
 - qlblog：`knowledge-check` 通过（299 nodes / 515 edges / 44 refs / 0 warnings）；
   `blog-check` 和 `blog-build` 通过（88 pages，Pagefind 35 pages）。
@@ -590,8 +601,10 @@ kgdistiller `codex/transactional-ingest`：
 
 1. `25f35b7 Add transactional knowledge ingestion`
 2. `2baa97f Add large-scale validation and release guidance`
+3. `0406b8f Bound GraphRAG retrieval and record performance`
 
-qlblog `codex/transactional-ingest` 将在本节和子模块 pointer 提交后指向 `2baa97f`。
+qlblog `codex/transactional-ingest` 的集成提交 `24114b3` 已完成；当前子模块 pointer
+指向 `0406b8f`，本节已随之刷新。
 仍须先发布 kgdistiller，再发布 qlblog；当前两个分支都没有远程 push/tag/package release。
 
 ### 仍需用户决策或外部授权
