@@ -11,8 +11,13 @@ export interface PublishedSkill {
 	sourceHref: string;
 }
 
-const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+const repositoryRoot = resolve(
+	dirname(fileURLToPath(import.meta.url)),
+	"../../..",
+);
 const skillsRoot = resolve(repositoryRoot, "skills");
+const skillsReadme = resolve(skillsRoot, "README.md");
+const workflowsDocument = resolve(skillsRoot, "WORKFLOWS.md");
 const sourceBase = "https://github.com/qiulinfan/qiulinfan.github.io/blob/main";
 
 function skillFiles(directory: string): string[] {
@@ -54,7 +59,8 @@ function frontmatter(source: string): Record<string, string> {
 				continuation.push(lines[index + 1].trim());
 				index += 1;
 			}
-			metadata[match[1]] = match[2] === ">" ? continuation.join(" ") : continuation.join("\n");
+			metadata[match[1]] =
+				match[2] === ">" ? continuation.join(" ") : continuation.join("\n");
 			continue;
 		}
 		metadata[match[1]] = yamlScalar(match[2]);
@@ -78,4 +84,48 @@ export function loadPublishedSkills(): PublishedSkill[] {
 			};
 		})
 		.sort((left, right) => left.name.localeCompare(right.name));
+}
+
+function markdownSection(source: string, heading: string): string {
+	const startMarker = `## ${heading}`;
+	const start = source.indexOf(startMarker);
+	if (start === -1)
+		throw new Error(`${skillsReadme} is missing ${startMarker}.`);
+	const next = source.indexOf("\n## ", start + startMarker.length);
+	return source.slice(start, next === -1 ? undefined : next).trim();
+}
+
+function linkedSkillIds(markdown: string): string[] {
+	return [...markdown.matchAll(/\]\(\.\/([^/)]+)\/\)/g)].map(
+		(match) => match[1],
+	);
+}
+
+export function loadSkillCatalogMarkdown(): string {
+	const source = readFileSync(skillsReadme, "utf8");
+	return [
+		markdownSection(source, "个人维护"),
+		markdownSection(source, "社区来源"),
+	].join("\n\n");
+}
+
+export function loadOwnedSkills(): PublishedSkill[] {
+	const source = readFileSync(skillsReadme, "utf8");
+	const ownedIds = linkedSkillIds(markdownSection(source, "个人维护"));
+	const publishedById = new Map(
+		loadPublishedSkills().map((skill) => [skill.id, skill]),
+	);
+	return ownedIds.map((id) => {
+		const skill = publishedById.get(id);
+		if (!skill) {
+			throw new Error(
+				`${skillsReadme} lists ${id} as personally maintained, but its SKILL.md is missing.`,
+			);
+		}
+		return skill;
+	});
+}
+
+export function loadSkillWorkflowsMarkdown(): string {
+	return readFileSync(workflowsDocument, "utf8");
 }

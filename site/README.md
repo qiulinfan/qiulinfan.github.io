@@ -17,7 +17,8 @@
 - `src/content/spec/about.md`：关于页面；
 - `public/`：favicon 等原样发布的静态资源；
 - `src/assets/`：由 Astro 处理的图片资源；
-- `src/data/skill-workflows.yaml`：Skills 页面工具流的可编辑内容源；
+- `../skills/README.md`：Skills 页面顶部能力简介的权威来源；
+- `../skills/WORKFLOWS.md`：Skills 页面工具流与 Mermaid 图的可编辑内容源；
 - `src/styles/variables.styl`：全站唯一的视觉 token 源；
 - `src/components/home/`：个人主页与项目页面。
 

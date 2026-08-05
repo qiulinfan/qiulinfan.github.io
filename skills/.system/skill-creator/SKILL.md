@@ -72,6 +72,19 @@ Honor explicit catalog exclusions. A repository may track hidden or internal
 system skills without listing or publishing them; in that case, keep those
 skills version-controlled but do not add README catalog entries for them.
 
+### Keep Workflow Documentation in Sync
+
+When a skill collection maintains workflow or orchestration documentation,
+treat that documentation as a consumer of the skills it references. Before
+creating or modifying a skill, locate and read any workflow documents that
+reference it. After the change, check whether its role, inputs, outputs,
+ordering, boundaries, failure behavior, or links in those workflows are still
+accurate, and update the workflow documentation when they are not.
+
+When adding an existing or new skill to an orchestrated workflow, read the
+workflow document before defining the composition and update it as part of the
+same change. Do not edit an accurate workflow document merely to create churn.
+
 ### Anatomy of a Skill
 
 Every skill consists of a required SKILL.md file and optional bundled resources:
@@ -271,6 +284,10 @@ authoritative repository for personal skills. When that repository exists:
   repository-level `/Users/qiulinfan/Desktop/qlblog/skills/README.md` and
   update it when necessary so it still explains what the skill does and when
   it is useful;
+- before creating or modifying any skill, read
+  `/Users/qiulinfan/Desktop/qlblog/skills/WORKFLOWS.md` when it exists and
+  check whether the skill participates in a documented composition; update
+  that document when the skill's orchestration relationship changes;
 - when importing, installing, or adapting someone else's skill, identify its
   upstream source in that README entry, including a link or other precise
   identifier when available and noting local modifications when relevant;

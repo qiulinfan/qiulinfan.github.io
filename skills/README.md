@@ -10,10 +10,14 @@
 的薄入口，规范正文随 `vendor/kgdistiller` submodule 维护。更新 kgdistiller 会同时
 更新这两个 Skill 的实际行为，入口不得复制或改写其长工作流。
 
+多个 Skill 的编排关系、流程图和简短说明统一维护在 [WORKFLOWS.md](./WORKFLOWS.md)；
+Skills 页面直接读取本 README 的能力清单与该文件，不另外维护一份页面数据。
+
 ## 仓库协议
 
 - 新建个人 skill 时，直接创建在本目录下。
 - 每次创建或实质更新 skill，都要更新本 README 中对应的一句话用途说明。
+- 新建或调整跨 Skill 工具流时，直接编辑 `WORKFLOWS.md` 中的 Markdown 与 Mermaid。
 - skill 目录名通常与 `SKILL.md` 的 `name` 一致；社区包可保留版本化目录名。
 - `.system/` 中的 system skills 不加入下方清单，也不发布到网页。
 - skill 内只保留执行所需文件，不为单个 skill 添加额外 README。

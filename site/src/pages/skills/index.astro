@@ -1,232 +1,310 @@
 ---
-import { knowledgeWorkflows } from "@/data/skill-workflows";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
-import { loadPublishedSkills } from "@utils/skill-sources";
+import {
+	loadOwnedSkills,
+	loadPublishedSkills,
+	loadSkillCatalogMarkdown,
+	loadSkillWorkflowsMarkdown,
+} from "@utils/skill-sources";
+import MarkdownIt from "markdown-it";
 
-const skills = loadPublishedSkills();
+const publishedSkills = loadPublishedSkills();
+const ownedSkills = loadOwnedSkills();
+const ownedIds = new Set(ownedSkills.map((skill) => skill.id));
+const publishedById = new Map(
+	publishedSkills.map((skill) => [skill.id, skill]),
+);
 const skillAnchor = (id: string) => `skill-${id.replace(/[^a-z0-9]+/gi, "-")}`;
+
+const markdown = new MarkdownIt({
+	html: false,
+	linkify: true,
+	typographer: false,
+});
+
+function resolveCatalogLinks(source: string): string {
+	return source.replace(/\]\(\.\/([^/)]+)\/\)/g, (match, id: string) => {
+		const skill = publishedById.get(id);
+		if (!skill) return match;
+		const href = ownedIds.has(id) ? `#${skillAnchor(id)}` : skill.sourceHref;
+		return `](${href})`;
+	});
+}
+
+const catalogHtml = markdown.render(
+	resolveCatalogLinks(loadSkillCatalogMarkdown()),
+);
+const workflowSource = loadSkillWorkflowsMarkdown();
+const workflowTokens = markdown.parse(workflowSource, {});
+type MarkdownToken = (typeof workflowTokens)[number];
+const workflowIntroTokens: MarkdownToken[] = [];
+const workflows: Array<{
+	title: string;
+	tokens: MarkdownToken[];
+}> = [];
+let workflowTitle = "Skill Workflows";
+let currentWorkflow: (typeof workflows)[number] | undefined;
+
+for (let index = 0; index < workflowTokens.length; index += 1) {
+	const token = workflowTokens[index];
+	if (token.type === "heading_open" && token.tag === "h1") {
+		workflowTitle = workflowTokens[index + 1]?.content || workflowTitle;
+		index += 2;
+		continue;
+	}
+	if (token.type === "heading_open" && token.tag === "h2") {
+		currentWorkflow = {
+			title:
+				workflowTokens[index + 1]?.content ||
+				`Workflow ${workflows.length + 1}`,
+			tokens: [],
+		};
+		workflows.push(currentWorkflow);
+		index += 2;
+		continue;
+	}
+	(currentWorkflow?.tokens ?? workflowIntroTokens).push(token);
+}
+
+const renderTokens = (tokens: MarkdownToken[]) =>
+	markdown.renderer.render(tokens, markdown.options, {});
+const workflowIntroHtml = renderTokens(workflowIntroTokens);
+const renderedWorkflows = workflows.map((workflow) => ({
+	...workflow,
+	html: renderTokens(workflow.tokens),
+}));
 ---
 
 <LandingPageLayout
 	title="Skills & Workflows"
-	description="Reusable Agent Skills and the knowledge workflows they form together."
+	description="Reusable Agent Skills and the Markdown-authored workflows they form together."
 >
 	<div class="skills-page">
 		<header class="skills-hero">
 			<div class="hero-meta">
 				<span>CAPABILITIES × ORCHESTRATION</span>
-				<span>{String(skills.length).padStart(2, "0")} SKILLS · {String(knowledgeWorkflows.length).padStart(2, "0")} FLOWS</span>
+				<span>{String(publishedSkills.length).padStart(2, "0")} SKILLS · {String(renderedWorkflows.length).padStart(2, "0")} FLOWS</span>
 			</div>
 			<div class="hero-grid">
 				<h1>Skills<br /><em>&amp; Flows</em></h1>
 				<div class="hero-copy" data-pagefind-body>
-					<p>单个 Skill 只是可复用的能力单元；真正产生实用结果的，是它们在明确边界下组成的工具流。</p>
+					<p>Skill 是能力单元，Workflow 决定它们如何协作。目录与流程都直接来自仓库里的 Markdown。</p>
 					<nav aria-label="Page sections">
-						<a href="#workflows">查看工具流 ↓</a>
-						<a href="#catalog">浏览 Skills ↓</a>
+						<a href="#skill-index">Skill 导航 ↓</a>
+						<a href="#workflows">工具流 ↓</a>
+						<a href="#skill-details">自有 Skills ↓</a>
 					</nav>
 					<aside>
 						<span>AGENTS / NEXT</span>
-						<p>未来的 Agent 会有独立页面。这里专注能力本身，以及能力之间如何协作。</p>
+						<p>未来的 Agent 会有独立页面；这里保留能力、编排关系与实现详情三层信息。</p>
 					</aside>
 				</div>
 			</div>
 		</header>
 
+		<section id="skill-index" class="index-section" data-pagefind-body>
+			<header class="section-header">
+				<div><span>01 / README</span><h2>Skill 导航</h2></div>
+				<p>简介以 <code>skills/README.md</code> 为权威来源。自有 Skill 链到本页详情，社区 Skill 链到它的来源文件。</p>
+			</header>
+			<div class="markdown-panel catalog-markdown" set:html={catalogHtml} />
+		</section>
+
 		<section id="workflows" class="workflow-section" data-pagefind-body>
 			<header class="section-header">
-				<div><span>01 / TOOLFLOWS</span><h2>从能力到交付</h2></div>
-				<p>两条主流程共享同一个 kgdistiller 外接大脑，但对个人知识库有不同的默认写入边界。</p>
+				<div><span>02 / WORKFLOWS.MD</span><h2>{workflowTitle}</h2></div>
+				<div class="workflow-intro" set:html={workflowIntroHtml} />
 			</header>
-
 			<div class="workflow-list">
-				{knowledgeWorkflows.map((workflow) => (
-					<article class="workflow-card" id={workflow.id}>
+				{renderedWorkflows.map((workflow, index) => (
+					<article class="workflow-card">
 						<header class="workflow-heading">
-							<div class="workflow-number">{workflow.index}</div>
+							<div class="workflow-number">{String(index + 1).padStart(2, "0")}</div>
 							<div>
-								<span>{workflow.kicker}</span>
+								<span>WORKFLOW / MARKDOWN AUTHORED</span>
 								<h3>{workflow.title}</h3>
-								<p>{workflow.summary}</p>
-							</div>
-							<div class:list={["mutation-badge", { "is-readonly": !workflow.mutatesPersonalGraphByDefault }]}>
-								{workflow.mutatesPersonalGraphByDefault ? "COMMITS AFTER REVIEW" : "SNAPSHOT BY DEFAULT"}
 							</div>
 						</header>
-
-						<ol class:list={["flow-track", `has-${workflow.steps.length}-steps`]} aria-label={`${workflow.title} 流程`}>
-							{workflow.steps.map((step, index) => (
-								<li class:list={["flow-step", `is-${step.kind}`]}>
-									<div class="step-topline"><span>{String(index + 1).padStart(2, "0")}</span><span>{step.label}</span></div>
-									{step.skillId ? (
-										<a href={`#${skillAnchor(step.skillId)}`}>{step.title}</a>
-									) : (
-										<h4>{step.title}</h4>
-									)}
-									<p>{step.description}</p>
-								</li>
-							))}
-						</ol>
-
-						<div class="decision-band">
-							<header><span>QUERY DECISION TABLE</span><p>每个候选恰好进入一个状态分支。</p></header>
-							<div class="decision-grid">
-								{workflow.decisions.map((decision) => (
-									<div class:list={["decision-item", `is-${decision.tone}`]}>
-										<span>{decision.status}</span>
-										<h4>{decision.title}</h4>
-										<p>{decision.description}</p>
-									</div>
-								))}
-							</div>
-						</div>
-
-						<footer class="workflow-result">
-							<div><span>{workflow.result.label}</span><h4>{workflow.result.title}</h4><p>{workflow.result.description}</p></div>
-							{workflow.optionalImport && (
-								<div class="optional-import">
-									<span>{workflow.optionalImport.label}</span>
-									<p>{workflow.optionalImport.description}</p>
-									<a href={`#${skillAnchor(workflow.optionalImport.skillId)}`}>{workflow.optionalImport.skillId} ↘</a>
-								</div>
-							)}
-						</footer>
+						<div class="workflow-body" set:html={workflow.html} />
 					</article>
 				))}
 			</div>
 		</section>
 
-		<section class="brain-section" aria-labelledby="brain-title" data-pagefind-body>
+		<section id="skill-details" class="details-section">
 			<header class="section-header">
-				<div><span>02 / EXTERNAL BRAIN</span><h2 id="brain-title">kgdistiller</h2></div>
-				<p>领域 Skill 不读取不断增长的个人大图，而是通过两个窄接口获取知识与提交决定。</p>
+				<div><span>03 / OWNED SKILLS</span><h2>自有 Skill 详情</h2></div>
+				<p>这里只展示“个人维护”清单中的 Skill。社区 Skill 已在第一层提供来源链接，不重复展开。</p>
 			</header>
-			<div class="brain-map">
-				<article class="brain-port is-query">
-					<span>READ-ONLY PORT</span>
-					<h3>query-kgdistiller</h3>
-					<p>批量 resolve、受预算限制的 GraphRAG、alignment 和 comparison。它召回证据，但从不制造身份。</p>
-					<a href={`#${skillAnchor("query-kgdistiller")}`}>查看 Skill ↓</a>
-				</article>
-				<div class="brain-core">
-					<span>LOCAL-FIRST KNOWLEDGE SYSTEM</span>
-					<code>kgdistiller</code>
-					<p><strong>.md / .typ / .tex</strong> 是可编辑 authority；确定性图谱是提交的知识快照；SQLite 只是可删除、可重建的快速索引。</p>
-				</div>
-				<article class="brain-port is-ingest">
-					<span>TRANSACTIONAL PORT</span>
-					<h3>ingest-kgdistiller</h3>
-					<p>唯一写入口。执行已审查决定，完成 plan → review → apply，并用 canonical receipt 证明结果。</p>
-					<a href={`#${skillAnchor("ingest-kgdistiller")}`}>查看 Skill ↓</a>
-				</article>
-			</div>
-			<div class="brain-rules">
-				<span>QUERY 不写入</span><span>INGEST 不发现概念</span><span>相似度不等于身份</span><span>论文默认不污染个人图谱</span>
-			</div>
-		</section>
-
-		<section id="catalog" class="catalog-section">
-			<header class="section-header">
-				<div><span>03 / CAPABILITY CATALOG</span><h2>Skill 目录</h2></div>
-				<p>下面是仓库中公开、可复用的能力。工作流会选择其中一部分，并为它们规定顺序、输入、输出和停止条件。</p>
-			</header>
-			<div class="skill-list" data-pagefind-body aria-label="Locally maintained Agent Skills">
-			{skills.map((skill, index) => (
-				<article class="skill-card" id={skillAnchor(skill.id)}>
-					<header>
-						<span>{String(index + 1).padStart(2, "0")}</span>
-						<code>{skill.id}</code>
-					</header>
-					<h2>{skill.name}</h2>
-					<p>{skill.description}</p>
-					<footer>
-						{skill.license && <span>{skill.license}</span>}
-						<a href={skill.sourceHref} target="_blank" rel="noreferrer">SKILL.md ↗</a>
-					</footer>
-				</article>
-			))}
+			<div class="skill-list" data-pagefind-body aria-label="Personally maintained Agent Skills">
+				{ownedSkills.map((skill, index) => (
+					<article class="skill-card" id={skillAnchor(skill.id)}>
+						<header>
+							<span>{String(index + 1).padStart(2, "0")}</span>
+							<code>{skill.id}</code>
+						</header>
+						<h3>{skill.name}</h3>
+						<p>{skill.description}</p>
+						<footer>
+							{skill.license && <span>{skill.license}</span>}
+							<a href={skill.sourceHref} target="_blank" rel="noreferrer">SKILL.md ↗</a>
+						</footer>
+					</article>
+				))}
 			</div>
 		</section>
 	</div>
 </LandingPageLayout>
 
+<script>
+	import mermaid from "mermaid";
+
+	type SkillsWindow = Window & {
+		__skillsMermaidObserver?: MutationObserver;
+		__skillsMermaidTheme?: string;
+	};
+
+	const skillsWindow = window as SkillsWindow;
+
+	function prepareDiagrams(): HTMLElement[] {
+		document
+			.querySelectorAll<HTMLElement>(
+				".workflow-body pre > code.language-mermaid",
+			)
+			.forEach((code) => {
+				const source = code.textContent?.trim();
+				const pre = code.parentElement;
+				if (!source || !pre) return;
+				const diagram = document.createElement("div");
+				diagram.className = "mermaid mermaid-diagram";
+				diagram.dataset.source = source;
+				diagram.textContent = source;
+				pre.replaceWith(diagram);
+			});
+
+		return Array.from(
+			document.querySelectorAll<HTMLElement>(
+				".workflow-body .mermaid-diagram",
+			),
+		);
+	}
+
+	async function renderDiagrams() {
+		const diagrams = prepareDiagrams();
+		if (diagrams.length === 0) return;
+
+		const dark = document.documentElement.classList.contains("dark");
+		const theme = dark ? "dark" : "light";
+		if (
+			skillsWindow.__skillsMermaidTheme === theme &&
+			diagrams.every((diagram) => diagram.dataset.processed === "true")
+		) {
+			return;
+		}
+
+		for (const diagram of diagrams) {
+			diagram.removeAttribute("data-processed");
+			diagram.classList.remove("has-error");
+			diagram.textContent = diagram.dataset.source ?? "";
+		}
+		const rootStyle = getComputedStyle(document.documentElement);
+		const color = (name: string) => rootStyle.getPropertyValue(name).trim();
+
+		mermaid.initialize({
+			startOnLoad: false,
+			securityLevel: "strict",
+			theme: "base",
+			flowchart: { curve: "basis", htmlLabels: true },
+			themeVariables: {
+				background: color("--page-bg"),
+				primaryColor: color("--card-bg"),
+				primaryTextColor: color("--text-strong"),
+				primaryBorderColor: color("--primary"),
+				lineColor: color("--text-muted"),
+				secondaryColor: color("--surface-hover"),
+				tertiaryColor: color("--surface-deep"),
+				edgeLabelBackground: color("--page-bg"),
+			},
+		});
+
+		try {
+			await mermaid.run({ nodes: diagrams });
+			skillsWindow.__skillsMermaidTheme = theme;
+		} catch (error) {
+			console.error("Unable to render a workflow diagram.", error);
+			for (const diagram of diagrams) {
+				if (diagram.dataset.processed === "true") continue;
+				diagram.classList.add("has-error");
+				diagram.textContent = diagram.dataset.source ?? "";
+			}
+		}
+	}
+
+	function startDiagramRendering() {
+		void renderDiagrams();
+		skillsWindow.__skillsMermaidObserver?.disconnect();
+		skillsWindow.__skillsMermaidObserver = new MutationObserver(() => {
+			void renderDiagrams();
+		});
+		skillsWindow.__skillsMermaidObserver.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
+	}
+
+	startDiagramRendering();
+	document.addEventListener("astro:page-load", startDiagramRendering);
+</script>
+
 <style>
 	.skills-page { padding: clamp(2rem, 6vw, 6rem) 0 3rem; }
 	.skills-hero { margin-bottom: clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--border); padding: 0 .25rem clamp(2rem, 5vw, 4rem); }
-	.hero-meta, .skills-hero aside span, .section-header span, .workflow-heading span, .mutation-badge, .step-topline, .decision-band > header span, .decision-item > span, .workflow-result span, .brain-port > span, .brain-core > span, .brain-rules, .skill-card header, .skill-card footer { font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
+	.hero-meta, .skills-hero aside span, .section-header span, .workflow-heading span, .skill-card header, .skill-card footer { font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
 	.hero-meta { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); }
-	.hero-meta span:first-child, .section-header span, .workflow-heading span, .workflow-result span, .brain-core > span { color: var(--primary); }
+	.hero-meta span:first-child, .section-header span, .workflow-heading span { color: var(--primary); }
 	.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); align-items: end; gap: clamp(2rem, 6vw, 7rem); margin-top: clamp(3rem, 8vw, 7rem); }
 	.skills-hero h1 { margin: 0; color: var(--text-strong); font-size: clamp(4rem, 11vw, 9.5rem); font-weight: 760; line-height: .72; letter-spacing: -.085em; }
 	.skills-hero h1 em { color: var(--primary); font-size: .66em; font-style: normal; }
 	.hero-copy > p { max-width: 31rem; margin: 0; color: var(--text-strong); font-size: clamp(1.25rem, 2.5vw, 2rem); font-weight: 610; line-height: 1.25; letter-spacing: -.035em; }
 	.hero-copy nav { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.6rem; }
-	.hero-copy nav a, .brain-port a, .optional-import a { color: var(--primary); font: 650 .68rem/1 var(--font-mono); text-decoration: none; }
-	.hero-copy nav a { padding: .75rem .9rem; border: 1px solid var(--border); border-radius: var(--radius-small); background: var(--card-bg); }
+	.hero-copy nav a { border: 1px solid var(--border); border-radius: var(--radius-small); padding: .75rem .9rem; background: var(--card-bg); color: var(--primary); font: 650 .68rem/1 var(--font-mono); text-decoration: none; }
 	.skills-hero aside { display: grid; grid-template-columns: auto 1fr; gap: 1rem; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem; }
 	.skills-hero aside span { color: var(--violet); white-space: nowrap; }
 	.skills-hero aside p { margin: 0; color: var(--text-muted); font-size: .78rem; line-height: 1.6; }
-	.workflow-section, .brain-section, .catalog-section { scroll-margin-top: 6rem; }
-	.brain-section, .catalog-section { margin-top: clamp(5rem, 10vw, 9rem); }
+	.index-section, .workflow-section, .details-section { scroll-margin-top: 6rem; }
+	.workflow-section, .details-section { margin-top: clamp(5rem, 10vw, 9rem); }
 	.section-header { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); align-items: end; gap: clamp(2rem, 6vw, 7rem); margin-bottom: 1.5rem; padding: 0 .25rem; }
 	.section-header h2 { margin: .5rem 0 0; color: var(--text-strong); font-size: clamp(2.4rem, 6vw, 5.5rem); font-weight: 730; line-height: .9; letter-spacing: -.065em; }
 	.section-header > p { max-width: 34rem; margin: 0; color: var(--text-muted); font-size: .86rem; line-height: 1.7; }
+	.section-header code { color: var(--text-strong); font-family: var(--font-mono); }
+	.markdown-panel { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); }
+	.catalog-markdown { padding: clamp(1.25rem, 3vw, 2.25rem); }
+	.catalog-markdown :global(h2) { margin: 0 0 1rem; color: var(--text-strong); font-size: clamp(1.4rem, 3vw, 2.1rem); letter-spacing: -.04em; }
+	.catalog-markdown :global(h2:not(:first-child)) { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+	.catalog-markdown :global(ul) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
+	.catalog-markdown :global(li) { position: relative; border: 1px solid var(--border); border-radius: var(--radius-medium); padding: .9rem 1rem .9rem 1.25rem; color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
+	.catalog-markdown :global(li::before) { content: ""; position: absolute; inset: .85rem auto .85rem 0; width: 3px; border-radius: 2px; background: var(--primary); }
+	.catalog-markdown :global(a) { color: var(--text-strong); font-family: var(--font-mono); font-weight: 680; text-decoration: none; }
+	.catalog-markdown :global(a:hover) { color: var(--primary); }
+	.workflow-intro :global(p) { max-width: 34rem; margin: 0; color: var(--text-muted); font-size: .86rem; line-height: 1.7; }
 	.workflow-list { display: grid; gap: 1rem; }
 	.workflow-card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); overflow: hidden; }
-	.workflow-heading { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(1rem, 3vw, 2rem); padding: clamp(1.25rem, 3vw, 2rem); }
+	.workflow-heading { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(1rem, 3vw, 2rem); align-items: end; padding: clamp(1.25rem, 3vw, 2rem); }
 	.workflow-number { color: var(--primary); font: 760 clamp(2.8rem, 6vw, 5rem)/.8 var(--font-mono); letter-spacing: -.08em; }
-	.workflow-heading h3 { margin: .35rem 0 .65rem; color: var(--text-strong); font-size: clamp(1.7rem, 4vw, 3.3rem); line-height: 1; letter-spacing: -.055em; }
-	.workflow-heading p { max-width: 52rem; margin: 0; color: var(--text-muted); font-size: .85rem; line-height: 1.7; }
-	.mutation-badge { align-self: start; border: 1px solid color-mix(in srgb, var(--yellow) 42%, var(--border)); border-radius: 999px; padding: .45rem .65rem; color: var(--yellow); white-space: nowrap; }
-	.mutation-badge.is-readonly { border-color: color-mix(in srgb, var(--green) 42%, var(--border)); color: var(--green); }
-	.flow-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; border-block: 1px solid var(--border); padding: 0; list-style: none; }
-	.flow-track.has-4-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-	.flow-step { position: relative; min-height: 15rem; padding: 1.25rem; background: color-mix(in srgb, var(--card-bg) 76%, transparent); }
-	.flow-step + .flow-step { border-left: 1px solid var(--border); }
-	.flow-step:not(:last-child)::after { content: "→"; position: absolute; z-index: 2; top: 1rem; right: -.7rem; display: grid; width: 1.35rem; height: 1.35rem; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); color: var(--primary); font: 650 .7rem/1 var(--font-mono); }
-	.flow-step.is-skill { background: color-mix(in srgb, var(--primary) 5%, var(--card-bg)); }
-	.flow-step.is-output { background: color-mix(in srgb, var(--green) 6%, var(--card-bg)); }
-	.step-topline { display: flex; justify-content: space-between; gap: .75rem; color: var(--muted); }
-	.step-topline span:last-child { color: var(--primary); }
-	.flow-step h4, .flow-step > a { display: block; margin: clamp(2.5rem, 5vw, 4.2rem) 0 .75rem; color: var(--text-strong); font-size: clamp(1.05rem, 1.8vw, 1.35rem); font-weight: 720; line-height: 1.05; letter-spacing: -.035em; overflow-wrap: anywhere; text-decoration: none; }
-	.flow-step > a:hover { color: var(--primary); }
-	.flow-step p { margin: 0; color: var(--text-muted); font-size: .73rem; line-height: 1.6; }
-	.decision-band { padding: clamp(1.25rem, 3vw, 2rem); }
-	.decision-band > header { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-	.decision-band > header span { color: var(--violet); }
-	.decision-band > header p { margin: 0; color: var(--muted); font-size: .72rem; }
-	.decision-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: var(--radius-medium); overflow: hidden; }
-	.decision-item { --decision-color: var(--primary); position: relative; min-height: 9.5rem; padding: 1rem 1.1rem; }
-	.decision-item + .decision-item { border-left: 1px solid var(--border); }
-	.decision-item::before { content: ""; position: absolute; inset: 0 auto 0 0; width: .22rem; background: var(--decision-color); }
-	.decision-item.is-reuse { --decision-color: var(--green); }
-	.decision-item.is-author { --decision-color: var(--primary); }
-	.decision-item.is-review { --decision-color: var(--red); }
-	.decision-item > span { color: var(--decision-color); }
-	.decision-item h4 { margin: 1.4rem 0 .45rem; color: var(--text-strong); font-size: .95rem; }
-	.decision-item p { margin: 0; color: var(--text-muted); font-size: .72rem; line-height: 1.55; }
-	.workflow-result { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 1rem; border-top: 1px solid var(--border); padding: clamp(1.25rem, 3vw, 2rem); background: var(--surface-deep); }
-	.workflow-result > div:only-child { grid-column: 1 / -1; }
-	.workflow-result h4 { margin: .35rem 0 .4rem; color: var(--text-strong); font-size: 1.1rem; }
-	.workflow-result p { max-width: 52rem; margin: 0; color: var(--text-muted); font-size: .76rem; line-height: 1.6; }
-	.optional-import { border-left: 1px solid var(--border); padding-left: 1rem; }
-	.optional-import span { color: var(--yellow); }
-	.optional-import a { display: inline-block; margin-top: .7rem; }
-	.brain-map { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 1.15fr) minmax(0, 1fr); border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); overflow: hidden; }
-	.brain-port, .brain-core { min-height: 22rem; padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; justify-content: flex-end; }
-	.brain-port + .brain-core, .brain-core + .brain-port { border-left: 1px solid var(--border); }
-	.brain-port > span { margin-bottom: auto; color: var(--green); }
-	.brain-port.is-ingest > span { color: var(--yellow); }
-	.brain-port h3 { margin: 3rem 0 .7rem; color: var(--text-strong); font-size: clamp(1.4rem, 2.5vw, 2.1rem); letter-spacing: -.05em; overflow-wrap: anywhere; }
-	.brain-port p, .brain-core p { margin: 0; color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
-	.brain-port a { margin-top: 1.2rem; }
-	.brain-core { justify-content: center; text-align: center; background: var(--surface-deep); }
-	.brain-core code { display: block; margin: .8rem 0 1.2rem; color: var(--text-strong); font: 760 clamp(2rem, 4vw, 4rem)/1 var(--font-mono); letter-spacing: -.08em; }
-	.brain-core p { max-width: 30rem; margin-inline: auto; }
-	.brain-core strong { color: var(--text-strong); font-weight: 680; }
-	.brain-rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-top: 0; border-radius: 0 0 var(--radius-large) var(--radius-large); color: var(--muted); }
-	.brain-rules span { padding: .85rem 1rem; text-align: center; }
-	.brain-rules span + span { border-left: 1px solid var(--border); }
+	.workflow-heading h3 { margin: .35rem 0 0; color: var(--text-strong); font-size: clamp(1.7rem, 4vw, 3.3rem); line-height: 1; letter-spacing: -.055em; }
+	.workflow-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); }
+	.workflow-body :global(pre), .workflow-body :global(.mermaid-diagram) { grid-column: 1 / -1; margin: 0; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; padding: clamp(1rem, 3vw, 2.25rem); overflow-x: auto; background: var(--surface-deep); }
+	.workflow-body :global(pre code) { padding: 0; background: transparent; font-family: var(--font-mono); white-space: pre; }
+	.workflow-body :global(.mermaid-diagram) { display: grid; min-height: 19rem; place-items: center; }
+	.workflow-body :global(.mermaid-diagram svg) { display: block; width: 100%; max-width: 72rem !important; height: auto; margin-inline: auto; }
+	.workflow-body :global(.mermaid-diagram.has-error) { display: block; color: var(--red); font: 500 .78rem/1.6 var(--font-mono); white-space: pre; }
+	.workflow-body :global(p), .workflow-body :global(ul), .workflow-body :global(ol), .workflow-body :global(blockquote) { min-width: 0; margin: 0; padding: clamp(1.15rem, 3vw, 1.75rem); color: var(--text-muted); font-size: .8rem; line-height: 1.75; }
+	.workflow-body :global(p:nth-of-type(even)) { border-left: 1px solid var(--border); }
+	.workflow-body :global(p:nth-of-type(n + 3)) { border-top: 1px solid var(--border); }
+	.workflow-body :global(a) { color: var(--primary); font-family: var(--font-mono); font-weight: 650; text-decoration: none; }
+	.workflow-body :global(strong) { color: var(--text-strong); font-weight: 700; }
+	.workflow-body :global(code) { border-radius: .25rem; padding: .08rem .3rem; background: var(--surface-deep); color: var(--text-strong); font-family: var(--font-mono); }
+	.workflow-body :global(h3), .workflow-body :global(h4) { grid-column: 1 / -1; margin: 0; border-top: 1px solid var(--border); padding: 1.25rem clamp(1.15rem, 3vw, 1.75rem) .25rem; color: var(--text-strong); }
 	.skill-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
 	.skill-card { min-width: 0; min-height: 20rem; border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 	.skill-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--primary) 42%, var(--border)); background: var(--surface-hover); }
@@ -234,27 +312,13 @@ const skillAnchor = (id: string) => `skill-${id.replace(/[^a-z0-9]+/gi, "-")}`;
 	.skill-card header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--muted); }
 	.skill-card header > span { color: var(--primary); }
 	.skill-card code { min-width: 0; overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
-	.skill-card h2 { margin: auto 0 1rem; color: var(--text-strong); font-size: clamp(1.7rem, 3vw, 2.7rem); font-weight: 720; line-height: 1; letter-spacing: -.05em; overflow-wrap: anywhere; }
-	.skill-card p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.7; }
+	.skill-card h3 { margin: auto 0 1rem; color: var(--text-strong); font-size: clamp(1.7rem, 3vw, 2.7rem); font-weight: 720; line-height: 1; letter-spacing: -.05em; overflow-wrap: anywhere; }
+	.skill-card > p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.7; }
 	.skill-card footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; color: var(--muted); }
 	.skill-card footer a { margin-left: auto; color: var(--primary); text-decoration: none; }
-	@media (max-width: 980px) {
+	@media (max-width: 860px) {
 		.hero-grid, .section-header { grid-template-columns: 1fr; }
-		.workflow-heading { grid-template-columns: auto minmax(0, 1fr); }
-		.mutation-badge { grid-column: 2; }
-		.flow-track, .flow-track.has-4-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-		.flow-step + .flow-step { border-left: 0; }
-		.flow-step:nth-child(even) { border-left: 1px solid var(--border); }
-		.flow-step:nth-child(n + 3) { border-top: 1px solid var(--border); }
-		.flow-step::after { display: none !important; }
-		.brain-map { grid-template-columns: 1fr 1fr; }
-		.brain-core { grid-column: 1 / -1; grid-row: 1; min-height: 16rem; }
-		.brain-port + .brain-core, .brain-core + .brain-port { border-left: 0; }
-		.brain-port { min-height: 18rem; border-top: 1px solid var(--border); }
-		.brain-port.is-ingest { border-left: 1px solid var(--border); }
-		.brain-rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-		.brain-rules span:nth-child(even) { border-left: 1px solid var(--border); }
-		.brain-rules span:nth-child(n + 3) { border-top: 1px solid var(--border); }
+		.catalog-markdown :global(ul) { grid-template-columns: 1fr; }
 	}
 	@media (max-width: 640px) {
 		.skills-hero { padding-inline: .1rem; }
@@ -263,24 +327,12 @@ const skillAnchor = (id: string) => `skill-${id.replace(/[^a-z0-9]+/gi, "-")}`;
 		.skills-hero h1 { font-size: clamp(3.5rem, 20vw, 6rem); }
 		.skills-hero aside { grid-template-columns: 1fr; }
 		.section-header { gap: 1rem; }
-		.workflow-heading { grid-template-columns: 1fr; }
 		.workflow-number { font-size: 2.6rem; }
-		.mutation-badge { grid-column: 1; justify-self: start; white-space: normal; }
-		.flow-track, .flow-track.has-4-steps { grid-template-columns: 1fr; }
-		.flow-step { min-height: auto; }
-		.flow-step:nth-child(even) { border-left: 0; }
-		.flow-step + .flow-step { border-top: 1px solid var(--border); }
-		.flow-step h4, .flow-step > a { margin-top: 2.5rem; }
-		.decision-band > header { align-items: start; flex-direction: column; }
-		.decision-grid { grid-template-columns: 1fr; }
-		.decision-item + .decision-item { border-top: 1px solid var(--border); border-left: 0; }
-		.workflow-result { grid-template-columns: 1fr; }
-		.optional-import { border-top: 1px solid var(--border); border-left: 0; padding-top: 1rem; padding-left: 0; }
-		.brain-map { grid-template-columns: 1fr; }
-		.brain-core, .brain-port { grid-column: 1; }
-		.brain-port.is-ingest { border-left: 0; }
-		.brain-rules { grid-template-columns: 1fr; }
-		.brain-rules span + span { border-top: 1px solid var(--border); border-left: 0; }
+		.workflow-heading { grid-template-columns: 1fr; align-items: start; }
+		.workflow-body { grid-template-columns: 1fr; }
+		.workflow-body :global(.mermaid-diagram) { min-height: 12rem; padding: .75rem; }
+		.workflow-body :global(p:nth-of-type(even)) { border-left: 0; }
+		.workflow-body :global(p:nth-of-type(n + 2)) { border-top: 1px solid var(--border); }
 		.skill-list { grid-template-columns: 1fr; }
 		.skill-card { min-height: 18rem; }
 	}
