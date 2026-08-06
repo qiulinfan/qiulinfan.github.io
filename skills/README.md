@@ -262,8 +262,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### kgdistiller 套件
 
-- [extract-and-export-notes](./kgdistiller/extract-and-export-notes/)：从跨领域 Git 改动提取 Markdown、Typst、LaTeX 候选知识，委托查询和入库后发布网页。
-- [extract-paper-concepts](./kgdistiller/extract-paper-concepts/)：从网页、DOI 或标题找到规范 PDF，逐页核验并预处理为无图片、图表可追溯的 TeX，再查询个人知识库并生成默认不合并的联邦概念图。
+- [extract-and-export-notes](./kgdistiller/extract-and-export-notes/)：从个人笔记或标准论文 Markdown 包提取候选图；笔记分支查询、入库并发布，论文分支只读连接个人图谱并生成不合并的联邦图。
 - [ingest-kgdistiller](./kgdistiller/ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
 - [query-kgdistiller](./kgdistiller/query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
 - [trace-concept-lineage](./kgdistiller/trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
@@ -275,6 +274,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
+- [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
 - [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；用当前 Codex 会话的原生 subagents 做新上下文 smoke、回归、负向、安全、重复稳定性和有界并发行为测试，不冒充进程或认证级隔离。
 - [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。
 - [codex-subagent-workflow](./codex-subagent-workflow/)：在当前 Codex 会话内用原生 subagents 编排生产任务；优先采用可信项目 `.codex/config.toml` 的标准 `[agents]` 角色，未配置角色时才从任务描述自动拆分，并由主 agent 集成验收。

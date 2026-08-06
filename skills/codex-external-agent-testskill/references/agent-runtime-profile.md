@@ -73,7 +73,7 @@ evaluator:
 
 ```sh
 python3 scripts/runtime_profile.py route \
-  --skill extract-paper-concepts \
+  --skill extract-paper-markdown \
   --agent opencode
 
 python3 scripts/runtime_profile.py route \

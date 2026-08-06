@@ -1,4 +1,4 @@
-# QLNotes semantic curation contract
+# Personal-note semantic curation contract
 
 Use this contract for every changed Typst, Markdown, or LaTeX file that defines
 or uses knowledge.
@@ -88,12 +88,14 @@ Use the node's existing provenance as the authority link. Set
 source synchronizer must preserve `text` and agent properties.
 
 For ordinary personal notes, the compact `text` entry is sufficient. Paper-
-derived or original-research entries are prepared by
-`$extract-paper-concepts` only for new or missing partial knowledge. They may
-also carry `summary`, `context`, `role`, `prerequisites`, `confusions`,
-`open_questions`, and precise `sources`. `$ingest-kgdistiller` applies the
-reviewed dossier. The graph writer shards these bodies by authority; never
-place a full dossier inside node properties.
+derived entries are outside this personal-note contract. Use
+`$extract-paper-markdown`, then run this Skill in `research-paper` mode under
+`research-paper-contract.md`; that mode never passes its result to ingest.
+Original research authored directly in a registered personal note may also
+carry `summary`, `context`, `role`, `prerequisites`, `confusions`,
+`open_questions`, and precise `sources`. `$ingest-kgdistiller` applies only the
+reviewed personal-note result. The graph writer shards these bodies by authority;
+never place a full dossier inside node properties.
 
 An untouched legacy authority may still appear as pending in the global audit.
 That is migration state, not permission to leave a selected file incomplete:

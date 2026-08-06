@@ -1,127 +1,99 @@
 ---
 name: extract-and-export-notes
-description: Extract candidate knowledge graphs from Git-modified Markdown, Typst, and LaTeX notes across mathematical, technical, scientific, humanities, architecture, and everyday domains; preserve user-written knowledge markers; delegate existing-knowledge resolution to query-kgdistiller; delegate reviewed graph writes to ingest-kgdistiller; and publish validated notes to the web. Use when Codex authors, updates, migrates, exports, or validates knowledge-bearing notes at file, directory, course, subject, or repository scope.
+description: Extract a source-grounded candidate knowledge graph from either Git-modified personal Markdown, Typst, or LaTeX notes, or from a validated qlpaper Markdown package. For personal notes, preserve author markers, query existing knowledge, transactionally ingest reviewed changes, and publish the web graph. For research papers, identify concepts, assumptions, methods, and conclusions; query the personal graph for identity and gaps; explain only new or missing knowledge; and return an isolated federated paper graph without ingesting or publishing it. Use for note curation, note-to-web export, or paper-Markdown-to-knowledge-graph distillation.
 ---
 
-# Extract and export knowledge from multi-source notes
+# Extract source-grounded knowledge graphs
 
-Own two things: extract a candidate graph from changed note authorities, and
-publish the validated authorities. Treat kgdistiller as an external brain;
-delegate all personal-graph queries to `$query-kgdistiller` and all personal-
-graph mutation to `$ingest-kgdistiller`.
+Use one of two source modes. Both build and query a bounded candidate graph;
+only the personal-note mode may mutate or publish the personal knowledge base.
 
-## Load only the relevant contracts
+## Select the source mode
 
-From the repository root, read:
+- `personal-note`: use for Git-modified registered Markdown, Typst, or LaTeX
+  notes containing native knowledge/reference markers. This is the default only
+  when the request and repository scope clearly describe authored notes.
+- `research-paper`: use when the user says the source is a paper or the input is
+  a package whose `paper.md` begins with `qlpaper-markdown-v1`. A raw PDF is not
+  valid input; first use `$extract-paper-markdown`.
 
-- `knowledge/SPEC.md` and `knowledge/sources.json`;
-- [references/curation-contract.md](references/curation-contract.md) for
-  semantic extraction;
-- [references/export-contract.md](references/export-contract.md) and
-  [references/validation.md](references/validation.md) for the selected format;
-- `notes/math/toolchain/README.md` only for Typst or LaTeX;
-- [references/migration.md](references/migration.md) only for LaTeX migration.
+State the selected mode before extraction. Never mix both authorities into one
+candidate graph or silently treat a paper as a personal note.
 
-Do not use this Skill to distill a paper. Use `$extract-paper-concepts`.
+## Enforce common boundaries
 
-## Select the changed authority scope
+Discover `$query-kgdistiller` before identity decisions. Treat it as the only
+interface to existing personal knowledge: never inspect graph JSONL, entry
+shards, or SQLite directly. Build `qlkg-candidate-graph-v1`, use kgdistiller's
+deterministic `candidate build`, and pass the resulting complete
+`qlkg-agent-snapshot-v1` to the query Skill in one bounded batch.
 
-Use Git staged, unstaged, untracked, deleted, and renamed paths to select the
-smallest complete scope. Every new or changed `.md`, `.typ`, or `.tex` note must
-match exactly one bounded source in `knowledge/sources.json`. Stop on missing or
-overlapping ownership.
+Extract names, source locations, node roles, and direct relations before the
+query, but do not write general explanations or decide identity from similarity.
+Require one `known`, `partial`, `new`, `conflict`, or `uncertain` result per
+candidate and retain target graph/snapshot digests.
 
-Read each complete changed authority, not only its hunks. Generated Markdown,
-Typst intermediates, HTML, and PDF are never authorities. Preserve every user-
-authored authority or ref marker unless the user explicitly requests an
-identity change or the query handoff proves that it duplicates an established
-personal identity.
+Use only source-supported `contains`, `prerequisite-for`, `implies`,
+`generalizes`, `contrasts-with`, and `derived-from` edges. Every semantic edge
+needs evidence; `contains` and `prerequisite-for` must remain acyclic.
 
-## Extract a candidate graph
+## Run personal-note mode
 
-Extract only source-supported candidates from the changed authority:
+Read and follow
+[references/curation-contract.md](references/curation-contract.md). Select the
+smallest coherent Git change scope from `knowledge/sources.json`, including both
+sides of tracked renames. Preserve the author's native markers and file-scoped
+authority. Do not promote ordinary prose, generated output, or an unregistered
+file into authoritative knowledge.
 
-- explicit authority and ref occurrences;
-- independently teachable, searchable, reusable concepts introduced or
-  materially changed by the edit;
-- one atomic identity per concept, with local aliases kept separate;
-- concise candidate entries and exact source spans;
-- direct typed semantic relations with concrete evidence;
-- meaningful immediate cross-file dependencies.
+After query alignment, preserve known identities as refs, author only missing
+content for partial/new nodes, and stop for conflict/uncertain nodes. Read
+[references/validation.md](references/validation.md), pass the reviewed patch
+and query digests to `$ingest-kgdistiller`, and require a committed canonical
+receipt before publication.
 
-Apply the same identity standard across domains. A reusable architecture
-component, scientific phenomenon, causal mechanism, design constraint,
-procedure, historical idea, or everyday practice may be a node when the source
-actually teaches it. Do not require a theorem wrapper, equation, formal
-definition, or mathematics-specific vocabulary.
+Use [references/migration.md](references/migration.md) only for the LaTeX adapter.
+Then read [references/export-contract.md](references/export-contract.md), run the
+appropriate graph/Web checks, and publish the registered personal source. A
+failed or missing ingest receipt blocks the Web phase.
 
-Do not promote headings, examples, equations, file order, keyword co-occurrence,
-or every formal wrapper. Do not inspect `knowledge/graph/*.jsonl`, entry shards,
-or SQLite to decide whether a candidate already exists.
+## Run research-paper mode
 
-Write the bounded source-local records as `qlkg-candidate-graph-v1`, then call
-kgdistiller's `candidate build` entry point to produce the isolated
-`qlkg-agent-snapshot-v1`. Do not hand-write the snapshot envelope, counts, or
-digests. Hand the complete validated snapshot to `$query-kgdistiller` in one
-batch.
+Read and follow
+[references/research-paper-contract.md](references/research-paper-contract.md).
+Validate the paper package when the `$extract-paper-markdown` validator is
+available, then read `paper.md` and all manifest-listed semantic attachments.
+Use its page, heading, equation, figure, and table markers as provenance. Reopen
+the source PDF only for a specific unresolved semantic ambiguity; do not repeat
+all-page visual review.
 
-## Apply the query decision to the source
+Select independently explainable concepts plus paper-specific assumptions,
+methods, results, and boundaries required to recover the full argument. Query
+the personal graph before writing explanations. Keep known candidates in the
+paper graph as bridged paper-local roles without duplicate definitions; explain
+only the missing part of partial candidates and fully explain new candidates.
+Retain competing senses and evidence for conflict/uncertain candidates.
 
-Use only identity-authoritative query results:
+Write the isolated candidate, snapshot, alignment response, and human-readable
+`paper-graph.md` under `<paper-package>/knowledge/` unless another output path is
+requested. The output connects the paper namespace to personal nodes with
+explicit bridges, but it never merges namespaces.
 
-- `known`: write a format-native ref to the personal node and create no entry;
-- `new`: retain or add one format-native authority marker and its candidate
-  source-grounded entry;
-- `partial`: author only the missing condition, claim, role, or relation; do not
-  duplicate the known definition;
-- `uncertain` or `conflict`: stop automatic source edits and return the evidence
-  for review.
+Research-paper mode must not invoke `$ingest-kgdistiller`, edit knowledge
+markers, modify the paper Markdown package, update the personal graph, or publish
+the Web site—even when all candidates are confidently aligned. A later import is
+a separate user-authorized workflow, outside this mode.
 
-Use the native syntax:
+## Deliver
 
-```text
-Typst:   #kn[Name]        #ref[Name]
-Markdown --[[Name]]--     [[Name]] or [[Name|display]]
-LaTeX:   \kn{Name}        \knref{Name}
-```
+For personal notes, return the changed authority scope, candidate/query digests,
+committed ingest receipt, validation commands, and published paths.
 
-A ref records source usage and a backlink; it is not a semantic edge. Add it
-only for a direct, immediate dependency whose authority is another file.
+For research papers, return source provenance, package validation, candidate and
+snapshot paths/digests, query target digest, node/edge/bridge counts, learning
+order, unknown or partial explanations, and all conflict/uncertainty records.
+Confirm that the personal graph digest did not change.
 
-Pass the reviewed native source patch, expected complete marker/ref state,
-candidate and query digests, decision table, entries, and typed edge delta to
-`$ingest-kgdistiller`. It must run transaction plan before apply and return a
-canonical `qlkg-ingest-receipt-v1`. Do not run `apply`, `sync`, `reconcile`, or
-edit graph artifacts in this Skill. Continue only after the receipt reports
-`committed`, successful scoped curation, and global validation.
-
-## Publish the validated authority
-
-Follow the selected format section of `references/export-contract.md`:
-
-- Typst: run the owning course `make`/web checks and compile with QLNotes;
-- Markdown: publish the configured authority through Astro `/notes/` routes;
-- LaTeX: convert the maintained source into an ignored self-contained Typst
-  project, then compile its web artifact.
-
-Never reconstruct Typst from generated Markdown or convert from PDF. Keep
-generated snapshots, HTML, SQLite, deltas, and compiler logs ignored. Treat the
-source registry's `web` value as the only canonical public route.
-
-## Validate and report
-
-Run the affected course checks, then the shared workflow and website checks
-required by `references/validation.md`. At minimum verify the source policy,
-knowledge workflow, graph, Astro checks, and production build for the changed
-scope.
-
-Report:
-
-- changed authority paths and formats;
-- candidate counts and query classifications;
-- reused nodes/refs versus new or partial entries;
-- the ingestion receipt and diagnostics;
-- exported routes and whether they are local or deployed.
-
-Never report an export as closed if query, ingestion, curation, or publication
-was skipped for a graph-affecting source change.
+Stop instead of guessing when source authority is ambiguous, the paper package
+has unresolved core content, identity is conflicting, a required Skill or
+validator is unavailable, or an external effect lacks authorization.

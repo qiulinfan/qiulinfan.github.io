@@ -84,9 +84,12 @@ diff 和 validators，并区分 harness、behavior、artifact、safety 与 orche
 ```mermaid
 flowchart LR
     Input["网页 / DOI / PDF"] --> Find["确认规范 PDF"]
-    Find --> Prep["逐页核验<br/>转无图片 TeX"]
-    Prep --> Ext["提取论文图"]
-    Ext --> Ask["查询知识库"]
+    Find --> Text["提取正文 / 公式"]
+    Find --> Visual["定点理解图表页"]
+    Text --> MD["可追溯 Markdown 包"]
+    Visual --> MD
+    MD --> Ext["research-paper 分支<br/>提取候选图"]
+    Ext --> Ask["只读查询个人图谱"]
     Ask --> Gate{"身份状态"}
     Gate -->|known| Bridge["只建立 bridge"]
     Gate -->|new / partial| Entry["解释缺失知识"]
@@ -94,15 +97,17 @@ flowchart LR
     Bridge --> Snap["联邦快照"]
     Entry --> Snap
     Review --> Snap
-    Snap -.->|明确要求导入| Put["事务入库"]
-    Put --> Brain["个人知识库"]
 ```
 
-[`extract-paper-concepts`](#skill-extract-paper-concepts) 先从网页、DOI、标题或 PDF
-定位规范全文，保留 PDF hash 与逐页证据，将其规范化成只含文字、原生公式、LaTeX
-表格、可信 TikZ/PGFPlots 重建和不可转换图表文字描述的 TeX。预处理通过覆盖、编译与
-视觉核验后，才提取候选图并调用 [`query-kgdistiller`](#skill-query-kgdistiller)。已知
-概念不重复解释，只作为论文图与个人图谱之间的 bridge；新知识和论文特有内容留在
-独立的联邦快照中。
+[`extract-paper-markdown`](#skill-extract-paper-markdown) 先从网页、DOI、标题或 PDF
+定位规范全文，保留来源 hash 和页码映射，把正文、公式、结论、限制与附件转成语义
+Markdown。它只渲染 caption、低文本、解析异常或含重要视觉对象的页面；每个图表在
+Markdown 中只留下编号、页码、标题、内容摘要、支撑结论和不确定项，不嵌图、不复刻
+版式，也不经过 TeX 编译。
 
-默认流程不修改个人知识库。只有收到明确导入要求时，才为选中的 `new` / `partial` 节点保留论文来源并调用 [`ingest-kgdistiller`](#skill-ingest-kgdistiller)；`known` 仍然只写 `ref`。
+随后 [`extract-and-export-notes`](#skill-extract-and-export-notes) 选择
+`research-paper` 分支，复用同一套候选图、确定性 snapshot 和
+[`query-kgdistiller`](#skill-query-kgdistiller) 对齐流程。已知概念只建立跨 namespace
+bridge；`new` 与 `partial` 只解释未知或缺失部分；冲突与歧义保留证据。交付物是独立
+论文图及学习顺序，不修改论文 Markdown、个人来源、主图谱或 Web。把论文知识导入
+主图谱是另一条需要重新授权和审查的流程，不属于这里的默认或可选分支。

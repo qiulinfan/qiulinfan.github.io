@@ -9,10 +9,11 @@ HTML 都是可重建投影。
 
 ## 四个 Skill 的职责
 
-- `extract-and-export-notes`：从任意领域的 Git 改动和显式 marker 提取笔记候选图，委托查询、
-  入库后导出网页；不直接读写个人图谱。
-- `extract-paper-concepts`：通读论文并生成隔离候选图；查询之后只解释 new 和缺失的
-  partial 知识，默认输出联邦快照而不合并个人图谱。
+- `extract-paper-markdown`：把论文网页或 PDF 变成页码可追溯的语义 Markdown；只对
+  图表相关页面做定点多模态理解，不嵌图、不复刻版式、不生成知识图谱。
+- `extract-and-export-notes`：`personal-note` 分支从 Git 改动和显式 marker 提取笔记
+  候选图，委托查询、入库后导出网页；`research-paper` 分支从标准论文 Markdown 包
+  生成只读联邦图，不修改个人图谱。
 - `query-kgdistiller`：唯一只读查询/GraphRAG/对齐入口；不修改 source、alignment 或
   graph。
 - `ingest-kgdistiller`：唯一个人知识库写入口；只执行已经审查的 source patch、entry、
@@ -48,16 +49,16 @@ curation。
 
 ## 论文与外部研究图谱
 
-对网页、DOI、标题或 PDF 输入，`extract-paper-concepts` 先定位规范且可合法访问的
-完整 PDF，记录 landing/PDF URL、版本和 SHA-256，并逐页提取、渲染和视觉核验。PDF
-预处理结果必须是可编译的无图片 TeX：保留文字、原生公式和 LaTeX 表格；只把能可信
-复现的图表写成 TikZ/PGFPlots，其余视觉对象用带原页码、图号、结构、趋势、关键量和
-结论的文字描述替代。核心内容仍不可读时停止蒸馏。
+对网页、DOI、标题或 PDF 输入，`extract-paper-markdown` 先定位规范且可合法访问的
+全文，记录 landing/PDF URL、版本、页数和 SHA-256。它逐页提取正文，但只渲染 caption、
+低文本、解析异常或含重要视觉对象的页面。输出 `paper.md`、`source.json`、规范 PDF 与
+可选附件；正文保留原生公式和关键表格，每个图表只记录编号、页码、标题、语义摘要、
+支撑结论和具体不确定项。Markdown 不嵌图，也不经过 TeX 转录或编译。
 
-预处理通过后，Skill 才从规范化 TeX 完成论文覆盖和轻量 candidate graph：名称、论文
-局部别名、论文角色、TeX span + PDF 页码来源和直接 prerequisite，但不先写所有词条
-解释。它将这些记录写成 `qlkg-candidate-graph-v1`，通过 kgdistiller builder 生成独立的
-`paper:<digest>` snapshot，再交给 `query-kgdistiller`。
+随后 `extract-and-export-notes` 的 `research-paper` 分支读取完整 Markdown 包，选择概念、
+直接前置、假设、方法、核心结论与限制，写成 `qlkg-candidate-graph-v1`，通过 kgdistiller
+builder 生成独立的 `paper:<digest>` snapshot，再交给 `query-kgdistiller`。查询前只写
+名称、论文角色、精确来源与直接关系，不先生成通用解释。
 
 查询结果生成联邦快照：
 
@@ -66,10 +67,10 @@ curation。
 - new 才生成完整 source-backed entry；
 - conflict/uncertain 保留证据且不桥接。
 
-默认流程不得修改 `knowledge/graph` 或 `knowledge/alignments.json`。只有用户明确要求
-导入时，论文 Skill 才创建/更新注册的 research authority，把 known 写成 ref，并把
-选中的 new/partial 知识交给 `ingest-kgdistiller`。论文局部缩写（如 `AC`）永远不能因
-相似度成为全局 alias。
+这一论文流程不得修改 `knowledge/graph`、`knowledge/alignments.json`、论文 Markdown
+或网页，也不得调用 `ingest-kgdistiller`。导入论文知识是另一条需要重新授权和审查的
+工作流，不是这个分支的可选尾声。论文局部缩写（如 `AC`）永远不能因相似度成为全局
+alias。
 
 ## Agent 快速访问
 

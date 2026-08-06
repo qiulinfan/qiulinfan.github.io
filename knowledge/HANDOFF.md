@@ -1,10 +1,10 @@
 # Agentic 知识图谱工作流交接文档
 
-> 状态日期：2026-08-05
+> 状态日期：2026-08-06
 >
 > 覆盖仓库：`kgdistiller`、`qlblog`、后续验收仓库 `solvablemodel`
 >
-> 当前阶段：事务 ingest、查询 API 和确定性笔记 E2E 已完成；本任务明确不导入论文知识、不写回论文 marker、不进行生产发布。剩余关键工作是闭合真实 Agent 笔记流程，并把论文联邦快照做成可验证产品入口。
+> 当前阶段：事务 ingest、查询 API 和确定性笔记 E2E 已完成；论文链路已进一步拆成“规范全文转语义 Markdown”和“复用现有提取器生成只读联邦图”两段。本任务明确不导入论文知识、不写回论文 marker、不进行生产发布。剩余关键工作是在真实论文上验收新的 Markdown 包与 research-paper 分支。
 
 本文是当前项目状态的唯一交接入口。它回答四个问题：我们最终要做什么，哪些语义不能改变，两个仓库已经实现了什么，下一位执行者应按什么顺序继续。
 
@@ -26,9 +26,11 @@
 目标工作流是：
 
 ```text
-tex / md / typ / pdf
-        ↓
-来源约束的候选图
+personal tex / md / typ        paper web / pdf
+        ↓                           ↓
+来源约束的候选图              可追溯语义 Markdown
+                                    ↓
+                              来源约束的候选图
         ↓
 kgdistiller 外接大脑（identity + alias + GraphRAG）
         ↓
@@ -96,7 +98,9 @@ known / partial / new / conflict / uncertain
 - 已知概念没有重复 entry；
 - conflict/uncertain 没有 bridge。
 
-只有用户明确要求导入时，才把选中的 `new`/`partial` 写入注册的 research authority，并把 `known` 写成 ref。
+当前论文蒸馏流程到联邦快照即结束，不包含导入分支。未来若要把选中的
+`new`/`partial` 写入注册的 research authority，必须另起一条明确授权、独立审查的
+工作流；不能把本次只读对齐视为导入许可。
 
 ### 2.4 kgdistiller 高频升级，单次运行可追溯
 
@@ -113,10 +117,11 @@ qlblog 不永久冻结 kgdistiller。`make kgdistiller-update` 应经常跟随�
 
 ```mermaid
 flowchart TD
-    N["笔记 Git diff<br/>Markdown / Typst / LaTeX"] --> NE["extract-and-export-notes<br/>提取候选与保留手写 marker"]
-    P["论文全文或 PDF"] --> PE["extract-paper-concepts<br/>论文局部候选图"]
-    NE --> C["qlkg-agent-snapshot-v1<br/>隔离候选图"]
-    PE --> C
+    N["笔记 Git diff<br/>Markdown / Typst / LaTeX"] --> E["extract-and-export-notes<br/>personal-note 分支"]
+    P["论文网页或 PDF"] --> PM["extract-paper-markdown<br/>语义 Markdown + 图表摘要"]
+    PM --> RP["extract-and-export-notes<br/>research-paper 分支"]
+    E --> C["qlkg-agent-snapshot-v1<br/>隔离候选图"]
+    RP --> C
     C --> Q["query-kgdistiller<br/>只读 resolve / retrieve / align / compare"]
     K["个人 authority + qlkg-v2 graph"] --> IDX["qlkg-agent-index-v2<br/>可重建 SQLite"]
     IDX --> Q
@@ -124,14 +129,13 @@ flowchart TD
     R -->|"笔记：reviewed decision"| I["ingest-kgdistiller<br/>唯一写入口"]
     I --> K
     I --> W["网页构建与发布"]
-    R -->|"论文默认"| F["paper × personal 联邦快照"]
-    F -->|"用户明确要求导入"| I
+    R -->|"论文只读"| F["paper × personal 联邦快照"]
 ```
 
 | Skill | 所属仓库 | 只负责 | 明确不负责 |
 | --- | --- | --- | --- |
-| `extract-and-export-notes` | qlblog | 从任意领域 Git 改动的完整 authority 和手写 marker 提取笔记候选；根据 query 决策安排 `kn/ref/entry`；成功入库后发布 | 读取大图、实现 identity、直接写全局图谱 |
-| `extract-paper-concepts` | qlblog | 通读论文、覆盖来源、生成论文局部候选和最终联邦快照 | 默认导入个人图谱、重复解释 known、把缩写升级为全局 alias |
+| `extract-paper-markdown` | qlblog | 从论文网页或 PDF 生成页码可追溯的语义 Markdown；图表只做定点多模态摘要 | 提取知识图谱、重建图片、复刻版式、TeX 编译 |
+| `extract-and-export-notes` | qlblog | personal-note 分支负责笔记提取、入库和发布；research-paper 分支负责从标准 Markdown 包生成隔离候选与联邦图 | 读取大图、实现 identity、在论文分支调用 ingest 或发布 |
 | `query-kgdistiller` | kgdistiller | 批量 resolve、受预算限制的 GraphRAG、align、compare、proposal | 修改 source、alignment、graph 或 index 事实 |
 | `ingest-kgdistiller` | kgdistiller | 应用已审查的 marker/ref/entry/edge/alignment 决策并返回验证回执 | 读论文发现知识、决定歧义身份、生成无来源语义 |
 
@@ -211,8 +215,12 @@ warnings: 0
 
 当前本地实现已经完成：
 
-- 精简 `extract-and-export-notes`（原 `export-typst-math-notes`），只做跨领域改动来源提取、marker 处理和两个能力的编排；
-- 精简 `extract-paper-concepts`，查询前只建轻量候选图，查询后 known 不写 entry，默认只建联邦快照；
+- 改造 `extract-and-export-notes`（原 `export-typst-math-notes`），以
+  `personal-note` / `research-paper` 两个显式分支复用候选图和查询逻辑；论文分支禁止
+  marker、ingest 与 Web 发布；
+- 新建 `extract-paper-markdown`，用页码、来源 hash、原生公式和图表语义摘要替代旧的
+  全页视觉核验、TeX 转录、编译与图像重建链路；
+- 删除职责重叠的 `extract-paper-concepts`，避免旧触发器继续进入一体化流程；
 - 新建 canonical `query-kgdistiller`，强制 read-only 和 bounded context；
 - 新建 canonical `ingest-kgdistiller`，把所有个人知识写入收口到一个 Skill；
 - qlblog 同名 query/ingest 目录只做发现和版本委托；
@@ -225,14 +233,14 @@ warnings: 0
 
 | 范围 | 最近结果 |
 | --- | --- |
-| Skill `quick_validate` | 6 个 Skill/包装入口全部通过 |
+| Skill `quick_validate` | 15 个非 community Skill 全部通过 |
 | kgdistiller unit tests | 62 tests passed |
 | kgdistiller package build | `uv build` passed |
 | qlblog vendored kgdistiller tests | 62 tests passed |
-| qlblog multisource/source/workflow tests | 16 tests passed |
+| qlblog workflow/source boundary tests | knowledge workflow 6 tests、Skill source 6 tests 全部通过 |
 | qlblog `make knowledge-check` | passed，0 warning |
 | qlblog `make blog-check` | passed |
-| qlblog `make blog-build` | passed，88 pages；Pagefind 35 pages / 5897 words |
+| qlblog `make blog-build` | passed，88 pages；Pagefind 35 pages / 6032 words |
 | 已发布需求博客 | HTTP 200，标题验证通过 |
 
 它们证明现有核心和 Skill 边界没有回归，但不等于笔记/论文的真实 Agent 端到端流程已经验收。

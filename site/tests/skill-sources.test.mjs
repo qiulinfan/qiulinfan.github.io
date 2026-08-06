@@ -71,7 +71,7 @@ test("the public catalog mirrors real Skill directories without a community grou
 	);
 	assert.deepEqual(
 		groups.map((group) => group.skills.length),
-		[3, 5, 5, 2],
+		[4, 5, 4, 2],
 	);
 	assert.equal(groups.some((group) => group.directory === "community"), false);
 	assert.equal(
@@ -94,15 +94,17 @@ test("kgdistiller discovery skills delegate to the vendored canonical skills", (
 
 test("knowledge Skills keep extraction, query, and ingestion responsibilities separate", () => {
 	const exportSkill = readFileSync(join(repositoryRoot, "skills/kgdistiller/extract-and-export-notes/SKILL.md"), "utf8");
-	const paperSkill = readFileSync(join(repositoryRoot, "skills/kgdistiller/extract-paper-concepts/SKILL.md"), "utf8");
+	const paperSkill = readFileSync(join(repositoryRoot, "skills/extract-paper-markdown/SKILL.md"), "utf8");
 	const querySkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/query-kgdistiller/SKILL.md"), "utf8");
 	const ingestSkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/ingest-kgdistiller/SKILL.md"), "utf8");
 
-	for (const extractor of [exportSkill, paperSkill]) {
-		assert.match(extractor, /\$query-kgdistiller/);
-		assert.match(extractor, /\$ingest-kgdistiller/);
-		assert.doesNotMatch(extractor, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
-	}
+	assert.match(exportSkill, /\$query-kgdistiller/);
+	assert.match(exportSkill, /\$ingest-kgdistiller/);
+	assert.match(exportSkill, /research-paper/);
+	assert.doesNotMatch(exportSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
+	assert.match(paperSkill, /paper\.md/);
+	assert.doesNotMatch(paperSkill, /\$(?:query|ingest)-kgdistiller/);
+	assert.doesNotMatch(paperSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
 	assert.match(querySkill, /Keep the boundary read-only/);
 	assert.doesNotMatch(querySkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
 	assert.match(ingestSkill, /kgdistiller ingest plan REQUEST\.json/);
@@ -134,8 +136,8 @@ test("the Markdown-authored workflows reference real Skills and preserve knowled
 	for (const status of ["known", "partial", "new", "uncertain", "conflict"]) {
 		assert.match(workflows, new RegExp(status));
 	}
-	assert.match(workflows, /默认流程不修改个人知识库/);
-	assert.match(workflows, /明确要求导入/);
+	assert.match(workflows, /不修改论文 Markdown、个人来源、主图谱或 Web/);
+	assert.match(workflows, /另一条需要重新授权和审查的流程/);
 	assert.equal(
 		existsSync(join(repositoryRoot, "site/src/data/skill-workflows.yaml")),
 		false,

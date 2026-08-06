@@ -15,7 +15,8 @@ Use:
 
 - a paper repository, paper file, or complete paper text;
 - an optional concept inventory, especially one produced by
-  `$extract-paper-concepts`;
+  `$extract-and-export-notes` in `research-paper` mode from an
+  `$extract-paper-markdown` package;
 - the learner profile, defaulting to familiarity with foundational
   mathematics;
 - an optional output directory.
