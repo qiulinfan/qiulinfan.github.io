@@ -21,56 +21,63 @@ flowchart LR
 
 遇到 `uncertain` 或 `conflict` 时，流程停在审查门前，不猜测身份，也不为了自动发布而创建重复词条。
 
-## Agent Skills 委派给本机配置的 Agents
+## Codex 原生 Subagent 生产工作流
 
 ```mermaid
 flowchart LR
-    Req["用户任务"] --> Profile{"本机 runtime profile 完整?"}
-    Profile -->|否| Ask["立即返回 agent / auth / key 文件问题"]
-    Profile -->|是| Pick["选择一个或多个 Agent Skills"]
-    Pick --> Stage["复制到所选 runtime 的原生 Skill 目录"]
-    Stage --> Shape{"任务拓扑"}
-    Shape -->|内聚任务| One["Cached Runtime Worker"]
-    Shape -->|独立或分阶段任务| Lead["Cached Runtime Coordinator"]
-    Lead --> A["Worker A<br/>专属 skills / tools"]
-    Lead --> B["Worker B<br/>专属 skills / tools"]
-    One --> Check["Codex 独立验收"]
+    Req["用户任务"] --> Contract["产物 / 权限 / 完成条件"]
+    Contract --> Pick["选择最小 Agent Skill 集"]
+    Pick --> Config{"可信 .codex/config.toml<br/>存在 agents roles?"}
+    Config -->|是| Roles["选择标准配置角色<br/>读取 config_file"]
+    Config -->|否| Shape{"按描述生成任务拓扑"}
+    Roles --> Lead["Codex Coordinator"]
+    Shape -->|单一边界| One["Fresh Codex Subagent"]
+    Shape -->|独立或分阶段| Lead
+    Lead --> A["Worker A<br/>专属 Skill / 写入边界"]
+    Lead --> B["Worker B<br/>专属 Skill / 写入边界"]
+    One --> Check["主 Agent 集成与独立验收"]
     A --> Lead
     B --> Lead
     Lead --> Check
 ```
 
-[`run-workflow-with-agents`](#skill-run-workflow-with-agents) 在读取项目、选择 skills
-或 staging 之前，先检查两个 agent skills 共享且 Git 忽略的本机 runtime profile。
-缺少 agent 选择、订阅/API 模式或 API key 文件路径时立即询问，不启动 dry-run 或
-生产工作。第一次配置的基础 agent 成为永久 fallback；可选 routes list 可按
-workflow、skill 或二者组合覆盖，未匹配时不再询问。配置完整后再从 Codex 已发现的
-skills 解析用户要求的一个或多个能力，
-物理注入 Claude Code、Codex 或 OpenCode 的原生项目 Skill 目录；内聚任务由单
-worker 完成，可拆分任务由 coordinator 限定命名 workers、skill 预加载、工具权限
-和写入边界，并翻译为该 runtime 的原生 subagent 配置，最后仍由 Codex 检查
-实际产物和验证结果。这个流程只处理会产生真实交付物的生产任务。
+[`codex-subagent-workflow`](#skill-codex-subagent-workflow) 只使用当前 Codex 会话的
+原生 subagents，不通过 shell 或 API 再启动 Codex、Claude Code 或 OpenCode。
+主 agent 先固定交付物、权限和完成条件，再检查可信主项目的 `.codex/config.toml`：
+若 `[agents.<role>]` 已声明角色，就按标准描述、`config_file`、默认模型/推理强度和并发
+限制选择最小角色集；只有没有自定义角色时才根据任务描述自动编排。配置损坏或当前
+surface 无法选择已配置角色时明确失败，不悄悄退化。每个 worker 仍需指定最小 Skill、
+上下文、写入所有权和依赖关系；独立任务可以有界并发，依赖任务顺序交接。Subagents
+共享当前 runtime 与工作区，因此它们是新工作上下文而不是独立安全主体；最终 diff、
+产物和 validators 始终由主 agent 集成并验收。这个流程只处理真实生产交付物。
 
 ## 单 Skill 原子与压力测试
 
 ```mermaid
 flowchart LR
-    Skill["一个目标 Skill"] --> Profile{"本机 runtime profile 完整?"}
-    Profile -->|否| Ask["立即返回 agent / auth / key 文件问题"]
-    Profile -->|是| Contract["固定 fixture / prompt / invariants"]
-    Contract --> Copies["独立 trial copies"]
-    Copies --> T1["Cached Runtime Trial 1"]
-    Copies --> T2["Cached Runtime Trial N"]
-    T1 --> Evidence["逐 trial 产物 / diff / runtime evidence"]
+    Skill["一个目标 Skill"] --> Contract["固定 fixture / prompt / invariants"]
+    Contract --> Runtime{"明确要求外部进程 / 登录 / runtime?"}
+    Runtime -->|否，默认| Copies["新 fixture + 新上下文"]
+    Runtime -->|是| External["Claude Code / OpenCode<br/>隔离进程 trial"]
+    Copies --> T1["Native Codex Subagent 1"]
+    Copies --> T2["Native Codex Subagent N"]
+    T1 --> Evidence["逐 trial 产物 / diff / 行为证据"]
     T2 --> Evidence
-    Evidence --> Verdict["Codex 独立判定"]
+    External --> Evidence
+    Evidence --> Verdict["主 Agent 独立判定"]
 ```
 
-[`test-skill-with-agent`](#skill-test-skill-with-agent) 每个 contract 只测试一个
-skill，不承接生产交付。它与生产 workflow 共用本机 runtime profile，并在读取目标
-Skill、选择样本或创建 fixture 之前执行同一个首次使用门禁。单次 smoke、回归和负向测试使用一个一次性 fixture；
-稳定性或压力测试并发运行多个互不共享文件与 session 的相同 trial，并把 provider、
-harness、behavior、artifact 和 safety 失败分开统计。
+[`codex-subagent-testskill`](#skill-codex-subagent-testskill) 每个 contract 只测试一个
+Skill，是单 Skill 测试默认入口，不承接生产交付。每个 trial 使用新的 fixture copy 和不继承对话历史的原生
+Codex subagent；单次 smoke、回归和负向测试使用一个 evaluator，稳定性或压力测试
+在可用 subagent slots 内分批运行相同 contract。主 agent 独立检查产物、workspace
+diff 和 validators，并区分 harness、behavior、artifact、safety 与 orchestration
+失败。它提供行为与上下文隔离，不声称全新进程、登录、provider 或文件系统隔离。
+
+只有用户明确要求 Claude Code、OpenCode、跨 runtime 对比或全新进程/认证时，才改用
+[`codex-external-agent-testskill`](#skill-codex-external-agent-testskill)。它的本机 profile
+只配置这两个外部 evaluator，不包含 Codex target；首次使用或缓存被清理后必须重新
+回答 runtime 与认证问题。
 
 ## 论文生成联邦知识快照
 

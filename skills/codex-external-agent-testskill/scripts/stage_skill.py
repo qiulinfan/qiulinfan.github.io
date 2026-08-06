@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage one or more Agent Skills into a supported external-agent project."""
+"""Stage exactly one Agent Skill into a supported external-agent project."""
 
 from __future__ import annotations
 
@@ -105,7 +105,6 @@ def resolve_skill(spec: str, roots: list[Path]) -> Path:
 def destination_for(project: Path, runtime: str, name: str) -> Path:
     roots = {
         "claude-code": project / ".claude" / "skills",
-        "codex": project / ".agents" / "skills",
         "opencode": project / ".opencode" / "skills",
     }
     try:
@@ -119,8 +118,7 @@ def main() -> None:
     parser.add_argument(
         "--skill",
         required=True,
-        action="append",
-        help="Codex skill name or explicit skill directory; repeat for multiple skills",
+        help="Codex skill name or explicit skill directory",
     )
     parser.add_argument(
         "--skill-root",
@@ -131,8 +129,7 @@ def main() -> None:
     )
     parser.add_argument("--project", required=True, type=Path)
     parser.add_argument("--runtime-profile", type=Path, default=default_profile_path())
-    parser.add_argument("--workflow", default="run-workflow-with-agents")
-    parser.add_argument("--runtime", choices=("claude-code", "codex", "opencode"))
+    parser.add_argument("--runtime", choices=("claude-code", "opencode"))
     args = parser.parse_args()
 
     try:
@@ -143,31 +140,19 @@ def main() -> None:
     project = args.project.expanduser().resolve()
     project.mkdir(parents=True, exist_ok=True)
     roots = [*args.skill_root, *default_roots()]
-    sources: dict[Path, str] = {}
-    for spec in args.skill:
-        source = resolve_skill(spec, roots)
-        manifest = source / "SKILL.md"
-        try:
-            name = skill_name(manifest)
-        except (OSError, UnicodeError, ValueError) as error:
-            raise SystemExit(str(error)) from error
-        sources[source] = name
-
-    routed_pairs = [
-        (name, resolve_agent_id(profile, workflow=args.workflow, skill=name))
-        for name in sources.values()
-    ]
-    routed_agents = {agent_id for _, agent_id in routed_pairs}
-    if len(routed_agents) != 1:
-        details = ", ".join(f"{skill} -> {agent}" for skill, agent in routed_pairs)
-        raise SystemExit(
-            "cached routes require heterogeneous staging runtimes, which one project "
-            f"cannot represent: {details}"
-        )
-    routed = next(iter(routed_agents))
-    route_skill = routed_pairs[0][0]
+    source = resolve_skill(args.skill, roots)
+    manifest = source / "SKILL.md"
     try:
-        selected_agent_record(profile, workflow=args.workflow, skill=route_skill)
+        name = skill_name(manifest)
+    except (OSError, UnicodeError, ValueError) as error:
+        raise SystemExit(str(error)) from error
+    routed = resolve_agent_id(
+        profile, workflow="codex-external-agent-testskill", skill=name
+    )
+    try:
+        selected_agent_record(
+            profile, workflow="codex-external-agent-testskill", skill=name
+        )
     except ProfileError as error:
         raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
     runtime = args.runtime or routed
@@ -176,32 +161,30 @@ def main() -> None:
             f"requested runtime {runtime!r} differs from cached route {routed!r}"
         )
 
-    staged: list[dict[str, str]] = []
-    seen_names: dict[str, Path] = {}
-    for source, name in sources.items():
-        prior = seen_names.get(name)
-        if prior and prior != source:
-            raise SystemExit(f"two sources define skill {name!r}: {prior}, {source}")
-        seen_names[name] = source
-        destination = destination_for(project, runtime, name)
-        if destination.exists() or destination.is_symlink():
-            if destination.resolve() == source:
-                staged.append(
-                    {"name": name, "source": str(source), "destination": str(destination)}
-                )
-                continue
+    destination = destination_for(project, runtime, name)
+    if destination.exists() or destination.is_symlink():
+        if destination.resolve() != source:
             raise SystemExit(f"destination already exists: {destination}")
+    else:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(source, destination, symlinks=False)
 
-        staged_manifest = destination / "SKILL.md"
-        if staged_manifest.is_symlink() or not staged_manifest.is_file():
-            raise SystemExit(f"staged SKILL.md is not a regular file: {staged_manifest}")
-        staged.append(
-            {"name": name, "source": str(source), "destination": str(destination)}
+    staged_manifest = destination / "SKILL.md"
+    if staged_manifest.is_symlink() or not staged_manifest.is_file():
+        raise SystemExit(f"staged SKILL.md is not a regular file: {staged_manifest}")
+    print(
+        json.dumps(
+            {
+                "runtime": runtime,
+                "skill": {
+                    "name": name,
+                    "source": str(source),
+                    "destination": str(destination),
+                },
+            },
+            indent=2,
         )
-
-    print(json.dumps({"runtime": runtime, "skills": staged}, indent=2))
+    )
 
 
 if __name__ == "__main__":

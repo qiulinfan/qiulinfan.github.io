@@ -71,7 +71,7 @@ test("the public catalog mirrors real Skill directories without a community grou
 	);
 	assert.deepEqual(
 		groups.map((group) => group.skills.length),
-		[2, 5, 5, 2],
+		[3, 5, 5, 2],
 	);
 	assert.equal(groups.some((group) => group.directory === "community"), false);
 	assert.equal(

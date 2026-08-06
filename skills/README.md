@@ -275,8 +275,9 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [run-workflow-with-agents](./run-workflow-with-agents/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的基础 agent 为默认，并可按 workflow/skill 路由，再用 Claude Code、Codex 或 OpenCode 的原生单 worker / coordinator + workers 机制执行生产工作流。
-- [test-skill-with-agent](./test-skill-with-agent/)：先读取 Git 忽略的本机 agent/runtime profile，以缓存的 Claude Code、Codex 或 OpenCode 基础 agent（或可选 skill 路由）运行隔离 trials，支持 smoke、回归、负向、安全、重复稳定性和有界并发压力测试。
+- [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；用当前 Codex 会话的原生 subagents 做新上下文 smoke、回归、负向、安全、重复稳定性和有界并发行为测试，不冒充进程或认证级隔离。
+- [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。
+- [codex-subagent-workflow](./codex-subagent-workflow/)：在当前 Codex 会话内用原生 subagents 编排生产任务；优先采用可信项目 `.codex/config.toml` 的标准 `[agents]` 角色，未配置角色时才从任务描述自动拆分，并由主 agent 集成验收。
 
 ## 社区来源
 

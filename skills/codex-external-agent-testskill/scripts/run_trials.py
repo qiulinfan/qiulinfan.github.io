@@ -20,7 +20,6 @@ from runtime_profile import (
 )
 from runtime_adapter import (
     all_staged_manifests,
-    codex_sandbox,
     install_opencode_config,
     isolate_runtime_state,
     opencode_permissions,
@@ -97,29 +96,6 @@ def trial_command(
         "validate required artifacts, and report concrete results.\n\n"
         f"USER TASK:\n{prompt}"
     )
-    if runtime_id == "codex":
-        command = [
-            runtime["path"],
-            "exec",
-            "--json",
-            "--ephemeral",
-            "--skip-git-repo-check",
-            "--ignore-user-config",
-            "--ignore-rules",
-            "--sandbox",
-            codex_sandbox(args.allowed_tool, args.permission_mode),
-            "-c",
-            'approval_policy="never"',
-            "-c",
-            f'model_reasoning_effort="{args.effort}"',
-        ]
-        if model:
-            command.extend(["--model", model])
-        if {"WebFetch", "WebSearch"}.intersection(args.allowed_tool):
-            command.extend(["-c", "sandbox_workspace_write.network_access=true"])
-        command.append(skill_prompt)
-        return command
-
     if runtime_id == "opencode":
         if model and "/" not in model:
             raise SystemExit("OpenCode models must use provider/model format")
@@ -139,6 +115,9 @@ def trial_command(
             command.extend(["--model", model])
         command.append(skill_prompt)
         return command
+
+    if runtime_id != "claude-code":
+        raise SystemExit(f"unsupported external runtime: {runtime_id}")
 
     agent_definition: dict[str, Any] = {
         "description": "Executes one isolated natural task with the skill under test.",
@@ -371,7 +350,7 @@ def main() -> None:
         raise SystemExit(str(error)) from error
     try:
         runtime = selected_agent_record(
-            profile, workflow="test-skill-with-agent", skill=name
+            profile, workflow="codex-external-agent-testskill", skill=name
         )
     except ProfileError as error:
         raise SystemExit(f"cached agent route is not runnable:\n{error}") from error
@@ -380,12 +359,12 @@ def main() -> None:
     if args.max_budget_usd_per_trial is not None and runtime["id"] != "claude-code":
         raise SystemExit(
             "--max-budget-usd-per-trial is available only in Claude Code; "
-            "use --timeout-seconds-per-trial for Codex or OpenCode"
+            "use --timeout-seconds-per-trial for OpenCode"
         )
     if args.mcp_config and runtime["id"] != "claude-code":
         raise SystemExit(
             "--mcp-config currently accepts Claude Code config only; configure MCP "
-            "as project runtime state for Codex or OpenCode"
+            "as project runtime state for OpenCode"
         )
     prompt = read_prompt(args)
     command = trial_command(args, runtime, name, prompt, model)

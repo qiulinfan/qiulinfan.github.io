@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared adapters for Claude Code, Codex CLI, and OpenCode CLI."""
+"""Shared adapters for Claude Code and OpenCode CLI."""
 
 from __future__ import annotations
 
@@ -11,10 +11,9 @@ from pathlib import Path
 from typing import Any
 
 
-RUNTIMES = ("claude-code", "codex", "opencode")
+RUNTIMES = ("claude-code", "opencode")
 SKILL_ROOTS = {
     "claude-code": Path(".claude/skills"),
-    "codex": Path(".agents/skills"),
     "opencode": Path(".opencode/skills"),
 }
 TOOL_PERMISSIONS = {
@@ -31,6 +30,8 @@ TOOL_PERMISSIONS = {
     "Task": "task",
     "Skill": "skill",
 }
+# Clear unrelated ambient provider tokens too; this denylist does not declare
+# supported target runtimes.
 SENSITIVE_ENVIRONMENT = (
     "ANTHROPIC_API_KEY",
     "ANTHROPIC_AUTH_TOKEN",
@@ -75,6 +76,8 @@ def provider_environment(
     agent_teams: bool = False,
 ) -> tuple[dict[str, str], bytes | None]:
     """Build a credential-safe child environment for one selected runtime."""
+    if runtime not in RUNTIMES:
+        raise RuntimeError(f"unsupported external runtime: {runtime}")
     environment = os.environ.copy()
     for name in SENSITIVE_ENVIRONMENT:
         environment.pop(name, None)
@@ -114,12 +117,6 @@ def provider_environment(
         )
         if agent_teams:
             environment["CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"] = "1"
-    elif runtime == "codex":
-        if provider != "openai":
-            raise RuntimeError("Codex API execution requires provider=openai")
-        environment["CODEX_API_KEY"] = key
-        if config.get("base_url"):
-            environment["OPENAI_BASE_URL"] = str(config["base_url"])
     elif runtime == "opencode":
         variable = {
             "anthropic": "ANTHROPIC_API_KEY",
@@ -138,22 +135,6 @@ def isolate_runtime_state(
     environment: dict[str, str], runtime: str, auth_mode: str
 ) -> tempfile.TemporaryDirectory[str] | None:
     """Isolate sessions and ambient Skills while preserving only cached login auth."""
-    if runtime == "codex":
-        temporary = tempfile.TemporaryDirectory(prefix="codex-agent-home-")
-        source_home = Path(
-            environment.get("CODEX_HOME", str(Path.home() / ".codex"))
-        ).expanduser()
-        if auth_mode == "subscription":
-            source = source_home / "auth.json"
-            if not source.is_file():
-                temporary.cleanup()
-                raise RuntimeError("Codex subscription auth.json is unavailable")
-            destination = Path(temporary.name) / "auth.json"
-            shutil.copy2(source, destination)
-            destination.chmod(0o600)
-        environment["CODEX_HOME"] = temporary.name
-        return temporary
-
     if runtime == "opencode":
         temporary = tempfile.TemporaryDirectory(prefix="opencode-agent-state-")
         root = Path(temporary.name)
@@ -177,15 +158,6 @@ def isolate_runtime_state(
         environment["OPENCODE_DISABLE_CLAUDE_CODE_SKILLS"] = "1"
         return temporary
     return None
-
-
-def codex_sandbox(allowed_tools: list[str], permission_mode: str) -> str:
-    if permission_mode == "plan":
-        return "read-only"
-    if not allowed_tools:
-        return "workspace-write"
-    writable = {"Bash", "Edit", "Write"}
-    return "workspace-write" if writable.intersection(allowed_tools) else "read-only"
 
 
 def opencode_permissions(
@@ -241,6 +213,8 @@ def install_opencode_config(
 
 
 def runtime_metrics(runtime: str, stdout: str) -> tuple[dict[str, Any], bool]:
+    if runtime not in RUNTIMES:
+        return {"unsupported_external_runtime": runtime}, False
     if runtime == "claude-code":
         try:
             payload = json.loads(stdout)
@@ -278,23 +252,6 @@ def runtime_metrics(runtime: str, stdout: str) -> tuple[dict[str, Any], bool]:
             events.append(value)
     if not events:
         return {"json_parse_error": True, "non_json_lines": parse_errors}, False
-
-    if runtime == "codex":
-        types = [str(event.get("type", "")) for event in events]
-        completed = [event for event in events if event.get("type") == "turn.completed"]
-        failed = any(
-            event.get("type") in ("turn.failed", "error")
-            for event in events
-        )
-        usage = completed[-1].get("usage") if completed else None
-        metrics = {
-            "event_count": len(events),
-            "num_turns": types.count("turn.started"),
-            "terminal_event": types[-1],
-            "usage": usage,
-            "non_json_lines": parse_errors,
-        }
-        return metrics, bool(completed) and not failed
 
     types = [str(event.get("type", "")) for event in events]
     failed = any(value in ("error", "session.error") for value in types)

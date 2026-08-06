@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Discover external agents and manage the shared machine-local runtime profile."""
+"""Discover external evaluators and manage their machine-local runtime profile."""
 
 from __future__ import annotations
 
@@ -15,16 +15,11 @@ from pathlib import Path
 from typing import Any
 
 
-SCHEMA = "qlblog-agent-runtime-profile-v1"
+SCHEMA = "qlblog-external-agent-runtime-profile-v1"
 CACHE_NAME = ".agent-runtime-profile.local.json"
 AGENT_COMMANDS = (
     ("claude-code", "claude", True),
     ("opencode", "opencode", True),
-    ("codex", "codex", True),
-    ("gemini-cli", "gemini", False),
-    ("aider", "aider", False),
-    ("cursor-agent", "cursor-agent", False),
-    ("github-copilot-cli", "copilot", False),
 )
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/anthropic"
 DEEPSEEK_MODEL = "deepseek-v4-flash"
@@ -210,7 +205,7 @@ def inspect_profile(path: Path) -> dict[str, Any]:
                 {
                     "id": "selected_agent",
                     "question": (
-                        "Which installed agent should these skills use? "
+                        "Which installed external evaluator should this Skill use? "
                         f"Choices: {choices}."
                     ),
                 }
@@ -241,7 +236,7 @@ def inspect_profile(path: Path) -> dict[str, Any]:
                     ),
                 }
             )
-        runtime = profile.get("runtime", {}) if profile else {}
+        runtime = configuration.get("runtime", {}) if configuration else {}
         if not isinstance(runtime, dict) or not all(
             isinstance(runtime.get(key), str) and runtime.get(key)
             for key in ("provider", "model", "base_url")
@@ -262,23 +257,11 @@ def inspect_profile(path: Path) -> dict[str, Any]:
             {
                 "id": "installed_agent",
                 "question": (
-                    "No supported or known external agent executable was detected. "
-                    "Which agent should be installed or configured?"
+                    "Neither Claude Code nor OpenCode was detected. Which external "
+                    "evaluator should be installed or configured?"
                 ),
             },
         )
-    elif not any(item["supported"] for item in detected):
-        questions.insert(
-            0,
-            {
-                "id": "supported_agent",
-                "question": (
-                    "External agents were detected, but none has an implemented runner. "
-                    "Which supported runtime should be configured?"
-                ),
-            },
-        )
-
     cached_agents = profile.get("installed_agents") if profile else None
     if profile and (not isinstance(cached_agents, list) or not cached_agents):
         questions.append(
@@ -356,9 +339,9 @@ def write_profile(
     selected_agent: str | None,
     auth_mode: str,
     credential_file: Path | None,
-    provider: str,
-    model: str,
-    base_url: str,
+    provider: str | None,
+    model: str | None,
+    base_url: str | None,
     keep_base: bool = False,
 ) -> dict[str, Any]:
     prior, _ = read_profile(path)
@@ -379,11 +362,17 @@ def write_profile(
         problem = credential_problem(str(resolved))
         if problem:
             raise ProfileError(problem)
-        if selected_agent == "claude-code" and provider != "deepseek":
-            raise ProfileError("the Claude Code API adapter supports provider=deepseek")
-        if selected_agent == "codex" and provider != "openai":
-            raise ProfileError("the Codex API adapter supports provider=openai")
+        if selected_agent == "claude-code":
+            provider = provider or "deepseek"
+            model = model or DEEPSEEK_MODEL
+            base_url = base_url or DEEPSEEK_BASE_URL
+            if provider != "deepseek":
+                raise ProfileError("the Claude Code API adapter supports provider=deepseek")
         if selected_agent == "opencode":
+            if not provider or not model or not base_url:
+                raise ProfileError(
+                    "OpenCode API authentication requires --provider, --model, and --base-url"
+                )
             if provider not in ("anthropic", "deepseek", "openai"):
                 raise ProfileError(
                     "the OpenCode API adapter supports provider=anthropic, deepseek, or openai"
@@ -395,16 +384,24 @@ def write_profile(
         authentication["credential_file"] = str(resolved)
         runtime = {"provider": provider, "model": model, "base_url": base_url}
 
+    allowed_agents = {item[0] for item in AGENT_COMMANDS}
     agent_profiles: dict[str, Any] = {}
     if prior:
         existing = prior.get("agent_profiles")
         if isinstance(existing, dict):
-            agent_profiles.update(existing)
+            agent_profiles.update(
+                {
+                    agent_id: configuration
+                    for agent_id, configuration in existing.items()
+                    if agent_id in allowed_agents
+                }
+            )
         prior_selected = prior.get("selected_agent")
         prior_authentication = prior.get("authentication")
         prior_runtime = prior.get("runtime")
         if (
             isinstance(prior_selected, str)
+            and prior_selected in allowed_agents
             and prior_selected not in agent_profiles
             and isinstance(prior_authentication, dict)
             and isinstance(prior_runtime, dict)
@@ -418,7 +415,11 @@ def write_profile(
         "runtime": runtime,
     }
     if keep_base:
-        if not prior or not isinstance(prior.get("selected_agent"), str):
+        if (
+            not prior
+            or not isinstance(prior.get("selected_agent"), str)
+            or prior["selected_agent"] not in allowed_agents
+        ):
             raise ProfileError("--keep-base requires an existing configured profile")
         base_agent = prior["selected_agent"]
     else:
@@ -433,7 +434,14 @@ def write_profile(
         "authentication": base_configuration["authentication"],
         "runtime": base_configuration["runtime"],
         "agent_profiles": agent_profiles,
-        "routes": prior.get("routes", []) if prior else [],
+        "routes": [
+            route
+            for route in prior.get("routes", [])
+            if isinstance(route, dict)
+            and route.get("agent") in allowed_agents
+        ]
+        if prior and isinstance(prior.get("routes"), list)
+        else [],
     }
     write_profile_value(path, value)
     return value
@@ -516,9 +524,9 @@ def main() -> None:
     configure.add_argument("--selected-agent")
     configure.add_argument("--auth-mode", required=True, choices=("subscription", "api"))
     configure.add_argument("--credential-file", type=Path)
-    configure.add_argument("--provider", default="deepseek")
-    configure.add_argument("--model", default=DEEPSEEK_MODEL)
-    configure.add_argument("--base-url", default=DEEPSEEK_BASE_URL)
+    configure.add_argument("--provider")
+    configure.add_argument("--model")
+    configure.add_argument("--base-url")
     configure.add_argument("--keep-base", action="store_true")
     route = subparsers.add_parser("route")
     route.add_argument("--agent")

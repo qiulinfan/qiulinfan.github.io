@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex External Agent Test Skill"
+  short_description: "Test one Codex Skill through Claude Code or OpenCode"
+  default_prompt: "Use $codex-external-agent-testskill to check the local external-agent profile, apply its cached Claude Code or OpenCode base agent or matching route, then run isolated trials against this one Skill and report evidence."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Run Workflow with Agents"
-  short_description: "Run workflows with three agent CLIs"
-  default_prompt: "Use $run-workflow-with-agents to check the local agent profile, apply its cached Claude Code, Codex, or OpenCode base agent or workflow/skill routes, then execute this production workflow with the required Agent Skills."

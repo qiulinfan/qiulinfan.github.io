@@ -1,13 +1,25 @@
 ---
-name: test-skill-with-agent
-description: Atomically evaluate exactly one Agent Skill with isolated Claude Code, Codex, or OpenCode trials selected from a shared machine-local runtime profile. Gate first use on discovering installed agents, choosing the runtime, and recording subscription or API-file authentication before any fixture, staging, dry-run, or trial work. Use for skill smoke tests, behavioral conformance, negative and safety cases, regression testing, repeated flakiness checks, or bounded concurrent stress tests. Do not use for production workflows or multi-skill deliverables; use run-workflow-with-agents instead.
+name: codex-external-agent-testskill
+description: Let Codex atomically evaluate exactly one Agent Skill through isolated Claude Code or OpenCode processes selected from a machine-local runtime profile. Use only when the user explicitly requests an external evaluator, cross-runtime comparison, fresh-process authentication, or process-level isolation. Gate first use on discovering Claude Code and OpenCode, choosing one, and recording subscription or API-file authentication before any fixture, staging, dry-run, or trial work. Do not configure or launch Codex as a target, and do not use for production workflows or ordinary single-Skill tests; codex-subagent-testskill is the default test path.
 ---
 
-# Test one skill with agents
+# Test one Skill with external agents
 
 Evaluate exactly one target skill per test contract. Use disposable fixtures,
 independent trials, and observable evidence. Never treat the tested agent's
 self-report as sufficient proof.
+
+## Enforce the external-runtime boundary
+
+Assume this Skill is always executed by Codex and that target Skills are Codex
+Skills discovered from Codex roots. Launch only Claude Code or OpenCode as the
+external evaluator. Never offer, configure, or launch Codex as a target runtime.
+
+Use `codex-subagent-testskill` for ordinary smoke, regression, safety, repeat,
+and bounded stress testing. Continue here only when the user explicitly asks
+for Claude Code or OpenCode, cross-runtime behavior, a fresh login/process, or
+another property that native Codex subagents cannot provide. Use
+`codex-subagent-workflow` for production deliverables.
 
 ## Resolve the machine runtime before all test work
 
@@ -31,8 +43,8 @@ never borrow credentials from the base agent. Override its model only when the
 user requests a model comparison or a specific model.
 Treat `selected_agent` as the cached base agent and never ask again while that
 entry remains valid. Optional cached routes may override it for a target Skill
-or for the `test-skill-with-agent` workflow; when no route matches, use the base
-agent without interaction.
+or for the `codex-external-agent-testskill` workflow; when no route matches, use
+the base agent without interaction.
 When the user configures an additional routed agent without changing the base,
 use `configure --keep-base` as described in the profile reference.
 
@@ -70,8 +82,8 @@ python3 scripts/stage_skill.py \
 
 The source skill name resolves from Codex's workspace, personal, system, and
 installed-plugin roots; pass an explicit directory or `--skill-root` for
-another source. The staging script copies it to `.claude/skills`,
-`.agents/skills`, or `.opencode/skills` according to the cached runtime.
+another source. The staging script copies it to `.claude/skills` or
+`.opencode/skills` according to the cached external runtime.
 Never reuse a writable project, session, or staged skill between trials.
 
 Snapshot each fixture after staging and before execution:
@@ -100,9 +112,9 @@ failed attempt and any incurred API usage.
 When the profile selects Claude Code, read and follow
 [`references/claude-code-deepseek.md`](references/claude-code-deepseek.md).
 Use `scripts/run_trials.py` to run one or many isolated copies with the same
-atomic contract through Claude Code, Codex, or OpenCode. It stages one skill per
-copy, applies the cached route and model, keeps credentials out of command
-arguments, records structured results and workspace diffs, and supports bounded
+atomic contract through Claude Code or OpenCode. It stages one skill per copy,
+applies the cached route and model, keeps credentials out of command arguments,
+records structured results and workspace diffs, and supports bounded
 concurrency.
 
 ```sh
@@ -123,10 +135,10 @@ The runner reads the shared profile by default; pass `--runtime-profile` only
 for an explicitly selected alternate local profile. For repeat or stress
 testing, increase `--trials` and set conservative `--parallel`. Use
 `--max-budget-usd-per-trial` only with Claude Code; use
-`--timeout-seconds-per-trial` with Codex or OpenCode. Keep prompts, fixtures,
-tools, model, and validators identical unless the contract explicitly defines
-a matrix. Distinguish provider saturation and rate limits from skill failures.
-Do not silently strengthen prompts between trials.
+`--timeout-seconds-per-trial` for OpenCode or as an additional wall-clock bound.
+Keep prompts, fixtures, tools, model, and validators identical unless the
+contract explicitly defines a matrix. Distinguish provider saturation and rate
+limits from skill failures. Do not silently strengthen prompts between trials.
 
 ## Verify independently
 

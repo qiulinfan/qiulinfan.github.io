@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Subagent Workflow"
+  short_description: "Run production work with native Codex subagents"
+  default_prompt: "Use $codex-subagent-workflow to coordinate this production task with native Codex subagents, prefer standard project roles from .codex/config.toml when configured, and verify the integrated result."
