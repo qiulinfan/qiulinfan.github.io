@@ -22,6 +22,20 @@ FORBIDDEN_MEDIA = (
     (re.compile(r"<\s*(?:img|picture|video|object|embed)\b", re.I), "HTML media embed"),
     (re.compile(r"data:image/", re.I), "base64 image data"),
 )
+FORBIDDEN_CONVERSION_DEBRIS = (
+    (
+        re.compile(
+            r"<\s*/?\s*[A-Za-z][A-Za-z0-9-]*(?:\s+[^<>]*?)?/?>",
+            re.I,
+        ),
+        "raw HTML tag",
+    ),
+    (
+        re.compile(r"^```\s*(?:math|latex|tex)\s*$", re.I | re.M),
+        "fenced TeX math block",
+    ),
+    (re.compile(r"\$`|`\$"), "Pandoc backtick math delimiter"),
+)
 
 
 def sha256(path: Path) -> str:
@@ -72,6 +86,8 @@ def main() -> int:
         errors.append("unresolved transcription or object markers remain")
     if "\ufffd" in content:
         errors.append("Markdown contains Unicode replacement characters")
+    if "\x00" in content:
+        errors.append("Markdown contains NUL characters")
 
     page_count = manifest.get("page_count")
     if not isinstance(page_count, int) or page_count < 1:
@@ -119,6 +135,9 @@ def main() -> int:
     for pattern, label in FORBIDDEN_MEDIA:
         if pattern.search(content):
             errors.append(f"forbidden {label} remains")
+    for pattern, label in FORBIDDEN_CONVERSION_DEBRIS:
+        if pattern.search(content):
+            errors.append(f"forbidden conversion debris remains: {label}")
 
     found_objects: list[tuple[str, str, int]] = []
     matches = list(OBJECT_RE.finditer(content))
@@ -167,6 +186,8 @@ def main() -> int:
             continue
         if not text_path.is_file():
             errors.append(f"page {page} extracted text is missing: {text_path}")
+        elif b"\x00" in text_path.read_bytes():
+            errors.append(f"page {page} extracted text contains NUL characters")
 
     raw_visual = manifest.get("visual_pages", [])
     if not isinstance(raw_visual, list):
@@ -207,6 +228,12 @@ def main() -> int:
         for pattern, label in FORBIDDEN_MEDIA:
             if pattern.search(attachment_text):
                 errors.append(f"attachment contains forbidden {label}: {attachment}")
+        for pattern, label in FORBIDDEN_CONVERSION_DEBRIS:
+            if pattern.search(attachment_text):
+                errors.append(
+                    f"attachment contains forbidden conversion debris ({label}): "
+                    f"{attachment}"
+                )
 
     if errors:
         for error in errors:

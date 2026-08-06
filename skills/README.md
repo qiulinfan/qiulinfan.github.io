@@ -274,8 +274,9 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
-- [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；用当前 Codex 会话的原生 subagents 做新上下文 smoke、回归、负向、安全、重复稳定性和有界并发行为测试，不冒充进程或认证级隔离。
+- [multica-local-dev](./multica-local-dev/)：安装、启动、停止、检查与调试 Multica self-hosted server、daemon 和 workspace 对象；最初从用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 导入，现已本地重构为可选 profile/runtime 的纯操作参考，并保留参数化 Windows PowerShell 辅助脚本。
+- [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图且无 HTML/Pandoc 转码残留的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
+- [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。
 - [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。
 - [codex-subagent-workflow](./codex-subagent-workflow/)：在当前 Codex 会话内用原生 subagents 编排生产任务；优先采用可信项目 `.codex/config.toml` 的标准 `[agents]` 角色，未配置角色时才从任务描述自动拆分，并由主 agent 集成验收。
 

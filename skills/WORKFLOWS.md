@@ -56,23 +56,26 @@ surface 无法选择已配置角色时明确失败，不悄悄退化。每个 wo
 ```mermaid
 flowchart LR
     Skill["一个目标 Skill"] --> Contract["固定 fixture / prompt / invariants"]
-    Contract --> Runtime{"明确要求外部进程 / 登录 / runtime?"}
+    Contract --> Count["运行次数：默认 1<br/>或用户指定 N"]
+    Count --> Runtime{"明确要求外部进程 / 登录 / runtime?"}
     Runtime -->|否，默认| Copies["新 fixture + 新上下文"]
-    Runtime -->|是| External["Claude Code / OpenCode<br/>隔离进程 trial"]
+    Runtime -->|是| External["Claude Code / OpenCode<br/>隔离进程 run"]
     Copies --> T1["Native Codex Subagent 1"]
     Copies --> T2["Native Codex Subagent N"]
-    T1 --> Evidence["逐 trial 产物 / diff / 行为证据"]
+    T1 --> Evidence["逐 run 产物 / diff / 行为证据 / 耗时"]
     T2 --> Evidence
     External --> Evidence
     Evidence --> Verdict["主 Agent 独立判定"]
 ```
 
 [`codex-subagent-testskill`](#skill-codex-subagent-testskill) 每个 contract 只测试一个
-Skill，是单 Skill 测试默认入口，不承接生产交付。每个 trial 使用新的 fixture copy 和不继承对话历史的原生
-Codex subagent；单次 smoke、回归和负向测试使用一个 evaluator，稳定性或压力测试
-在可用 subagent slots 内分批运行相同 contract。主 agent 独立检查产物、workspace
-diff 和 validators，并区分 harness、behavior、artifact、safety 与 orchestration
-失败。它提供行为与上下文隔离，不声称全新进程、登录、provider 或文件系统隔离。
+Skill，是单 Skill 测试默认入口，不承接生产交付。每个 run 使用新的 fixture copy 和
+不继承对话历史的原生 Codex subagent；未指定次数时只运行一次，用户可指定正整数次数
+重复同一 contract。重复测试默认串行以保持耗时可比，只有用户明确要求时才在可用
+subagent slots 内有界并发。主 agent 记录每次运行与完整 harness 的 wall-clock 时间，
+独立检查产物、workspace diff 和 validators，并区分 harness、behavior、artifact、safety
+与 orchestration 失败。它提供行为与上下文隔离，不声称全新进程、登录、provider 或
+文件系统隔离。
 
 只有用户明确要求 Claude Code、OpenCode、跨 runtime 对比或全新进程/认证时，才改用
 [`codex-external-agent-testskill`](#skill-codex-external-agent-testskill)。它的本机 profile
@@ -103,7 +106,7 @@ flowchart LR
 定位规范全文，保留来源 hash 和页码映射，把正文、公式、结论、限制与附件转成语义
 Markdown。它只渲染 caption、低文本、解析异常或含重要视觉对象的页面；每个图表在
 Markdown 中只留下编号、页码、标题、内容摘要、支撑结论和不确定项，不嵌图、不复刻
-版式，也不经过 TeX 编译。
+版式，也不经过 TeX 编译；交付前还必须清理 HTML layout 与 Pandoc 数学转码残留。
 
 随后 [`extract-and-export-notes`](#skill-extract-and-export-notes) 选择
 `research-paper` 分支，复用同一套候选图、确定性 snapshot 和

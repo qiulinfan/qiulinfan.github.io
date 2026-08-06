@@ -92,6 +92,11 @@ Never use Markdown image syntax, HTML image/media tags, base64 media, SVG, a
 source PDF embed, or a link whose target is required to understand the record.
 The render may remain under `evidence/visual/` solely for audit.
 
+Do not leave Pandoc or source-converter syntax in the semantic handoff. Normalize
+raw HTML tags, HTML tables, layout wrappers, fenced TeX `math` blocks, and
+Pandoc's `$`-plus-backtick math form into native Markdown and `$...$` or
+`$$...$$` mathematics before validation.
+
 ## Text fidelity
 
 Preserve semantic content required to recover the paper's argument:
@@ -145,7 +150,8 @@ the package.
 
 The deterministic validator checks source hash and page count, ordered page
 markers, manifest coverage, object-candidate coverage, required object record
-fields, unresolved placeholders, and forbidden media embeds. It cannot decide
+fields, unresolved placeholders, forbidden media embeds, raw HTML/layout
+wrappers, Pandoc math residue, and NUL-corrupted extracted text. It cannot decide
 whether prose or an object summary is accurate. The acting Agent must separately
 check:
 

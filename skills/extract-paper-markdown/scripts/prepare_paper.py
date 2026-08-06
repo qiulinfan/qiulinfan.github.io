@@ -18,7 +18,7 @@ from typing import Any
 
 SCHEMA = "qlpaper-markdown-source-v1"
 CAPTION_RE = re.compile(
-    r"(?im)^\s*(Figure|Fig\.?|Table)\s+"
+    r"(?im)^\s*(Figure|Fig\.?|Table)\s*"
     r"([A-Z]?\d+(?:[.\-]\d+)?|[IVXLCDM]+)\s*[:.\-]?\s*(.{0,240})$"
 )
 
@@ -111,6 +111,9 @@ def extract_pdf(source: Path, text_dir: Path) -> tuple[dict[str, Any], list[dict
         metadata = {str(key): str(value) for key, value in (pdf.metadata or {}).items()}
         for page_number, page in enumerate(pdf.pages, start=1):
             extracted = page.extract_text(layout=True) or ""
+            nul_characters = extracted.count("\x00")
+            if nul_characters:
+                extracted = extracted.replace("\x00", "")
             text_path = text_dir / f"page-{page_number:04d}.txt"
             text_path.write_text(extracted.rstrip() + "\n", encoding="utf-8")
             compact = "".join(extracted.split())
@@ -132,6 +135,7 @@ def extract_pdf(source: Path, text_dir: Path) -> tuple[dict[str, Any], list[dict
                     "text_path": text_path.relative_to(text_dir.parent.parent).as_posix(),
                     "extracted_characters": len(compact),
                     "replacement_characters": replacements,
+                    "nul_characters_removed": nul_characters,
                     "embedded_images": len(page.images),
                     "substantial_images": significant_images,
                     "caption_candidates": captions,
