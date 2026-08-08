@@ -1,0 +1,4 @@
+interface:
+  display_name: "Multica Runtime Client"
+  short_description: "经许可和独立认证把本机加入可信 Multica runtime 集群"
+  default_prompt: "Use $multica-runtime-client to join this authorized machine to the trusted Multica workspace, publish a workspace-callable agent, and verify a real task."

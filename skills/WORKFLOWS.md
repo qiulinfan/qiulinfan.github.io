@@ -2,6 +2,37 @@
 
 单个 Skill 只描述一种可复用能力；这里记录多个 Skill 如何编排成可以交付结果的工具流。流程图和图下文字都是普通 Markdown，可以按需要增删节点、分支和说明，不受页面字段约束。
 
+## Multica 控制面与执行节点
+
+```mermaid
+flowchart LR
+    Host["multica-selfhost-server<br/>唯一控制面"] --> Owner["独立 owner 身份<br/>共享 workspace"]
+    Owner --> First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
+    First --> FirstAgent["workspace 可调用 agent<br/>smoke task"]
+    Owner --> Gate["server allowlist<br/>workspace invite + 接受"]
+    Gate --> Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
+    Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
+    FirstAgent --> Pool["互信团队共享 agent 计算池"]
+    MoreAgents --> Pool
+```
+
+[`multica-selfhost-server`](#skill-multica-selfhost-server) 建立唯一控制面和共享 workspace，
+并把服务器宿主机上的首个 runtime、workspace 可调用 agent 与真实 smoke task 设为初始
+集群的强制完成条件。Windows + WSL 中 server 位于 WSL Docker，首 runtime 位于 Windows
+宿主机；Mac 上二者同机但保持独立进程和恢复项。它把不含凭据的地址写入
+`connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
+宿主机执行面。
+
+后续朋友机器只有同时通过 server 邮箱 allowlist、目标 workspace 邀请/成员资格和自己的
+身份认证，才使用 `multica-runtime-client` 加入。知道 `server_url` 本身不构成许可；成员
+之间也不共享 Multica PAT、验证码、provider key 或系统账号。每台机器创建显式开放给整个
+workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调度。所谓“完全信任”只
+表示团队有意共享这些 agents 的调用权，并接受任务在对应 runtime 本地权限内执行。
+
+每个客户端单独配置登录自启动，不克隆 server、不启动 Docker。每台设备的本地目录资源
+只属于自己的 daemon，跨设备项目优先使用 Git repository；撤销成员时同步移除 membership、
+allowlist、runtime 和 agent。
+
 ## 笔记进入知识库并发布 Web
 
 ```mermaid

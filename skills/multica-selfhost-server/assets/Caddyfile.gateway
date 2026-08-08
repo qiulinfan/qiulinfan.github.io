@@ -1,0 +1,22 @@
+{
+    auto_https off
+    admin off
+}
+
+:{$MULTICA_GATEWAY_PORT} {
+    @multica_ws path /ws /ws/*
+    handle @multica_ws {
+        reverse_proxy backend:8080 {
+            flush_interval -1
+        }
+    }
+
+    @multica_backend path /api /api/* /auth /auth/* /uploads /uploads/* /health /healthz /readyz
+    handle @multica_backend {
+        reverse_proxy backend:8080
+    }
+
+    handle {
+        reverse_proxy frontend:3000
+    }
+}
