@@ -262,7 +262,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [configure-unity-mcp](./gamemaker/configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
 - [discuss-game-design](./gamemaker/discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
 - [play-unity-game](./gamemaker/play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
-- [search-game-art](./gamemaker/search-game-art/)：搜索游戏美术资源并给出经过来源与许可证核验的候选清单，不自动下载或导入。
+- [search-game-art](./gamemaker/search-game-art/)：从策划案提取外观、主题、玩法功能与动画需求，搜索并比较经过来源与许可证核验的资源；获明确授权后还可审计下载文件、筛选最小导入子集并交接 Unity 集成。
 
 ### kgdistiller 套件
 

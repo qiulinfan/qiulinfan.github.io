@@ -1,4 +1,4 @@
 interface:
   display_name: "Search Game Art"
-  short_description: "Find license-verified game art with source records"
-  default_prompt: "Use $search-game-art to find source- and license-verified art candidates for the current game requirement."
+  short_description: "Match design, animation, license, and Unity needs"
+  default_prompt: "Use $search-game-art to turn the current game design into asset requirements, find license-verified candidates, and audit or import only when explicitly requested."

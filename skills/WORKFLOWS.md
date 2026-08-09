@@ -2,6 +2,26 @@
 
 单个 Skill 只描述一种可复用能力；这里记录多个 Skill 如何编排成可以交付结果的工具流。流程图和图下文字都是普通 Markdown，可以按需要增删节点、分支和说明，不受页面字段约束。
 
+## 从策划案到 Unity 美术资源
+
+```mermaid
+flowchart LR
+    Brief["策划案与技术文档"] --> Matrix["search-game-art<br/>需求矩阵"]
+    Matrix --> Search["按外观、主题、功能与动画动词搜索"]
+    Search --> Evidence["原始来源与许可证核验"]
+    Evidence --> Choice{"用户是否授权获取或导入?"}
+    Choice -->|否| Shortlist["候选清单、推荐与风险"]
+    Choice -->|是| Audit["临时下载<br/>哈希、归档与 Blender 审计"]
+    Audit --> Subset["筛选最小有用子集<br/>记录来源与修改"]
+    Subset --> Unity["build-unity-scene<br/>项目内导入与配置"]
+    Unity --> Validate["Unity Editor 验证<br/>控制台、视觉与动画兼容性"]
+    Validate --> Learn["只把可复用经验回写 Skill"]
+```
+
+[`search-game-art`](#skill-search-game-art) 先读取项目内的设计来源层级，把模糊的“风格像什么”拆成可核验的资产角色：玩法功能、叙事主题、视觉要求、所需状态或动画动词、技术约束与许可证边界。搜索阶段仍然可以独立结束；只有用户明确要求获取或导入时，才在临时目录下载候选，记录 SHA-256，审计归档的真实文件、许可证和异常内容，并用 Blender 检查实际网格、骨架与动作曲线。网页描述属于声明证据，下载包与引擎结果属于审计证据，两者不混为一谈。
+
+审计通过后只选择当前需求所需的最小子集，再交给 [`build-unity-scene`](#skill-build-unity-scene) 按目标项目已有结构完成 Unity 导入、Importer 设置、材质或 prefab 建立以及 Editor 验证。动画包只有在目标角色的实际重定向测试通过后才算集成；仅有“Humanoid”“Mixamo compatible”或“animated”标签时保留为待验证。真实项目中的具体资源 URL、哈希和导入清单写入目标游戏仓库，Skill 本体只沉淀可复用的判断与审计步骤。面向用户的说明、提示与交接跟随用户语言，命令、标识符、结构化键和原始错误保持不变。
+
 ## Multica 控制面与执行节点
 
 ```mermaid
