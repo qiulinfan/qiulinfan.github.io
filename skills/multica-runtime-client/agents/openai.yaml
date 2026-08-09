@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Runtime Client"
-  short_description: "Join Multica over Tailscale with safe VPN split routing"
-  default_prompt: "Use $multica-runtime-client to verify Tailscale and VPN coexistence before opening Multica, then join every detected local runtime to the trusted workspace."
+  short_description: "Guided Multica onboarding over private Tailscale"
+  default_prompt: "Use $multica-runtime-client to guide me from whatever details I have through requesting owner admission and joining this device safely."

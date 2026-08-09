@@ -1,6 +1,6 @@
 ---
 name: multica-runtime-client
-description: Join macOS, Windows/WSL, or native Linux devices to a Multica workspace over private Tailscale. Use for initial or later runtime devices, Web UI access, VPN/proxy conflicts, identity or membership failures, offline runtimes, smoke tests, lifecycle work, and explicitly authorized autostart. Preflight VPN coexistence before browser flows; support persistent macOS Clash Verge split routing. Never inspect or authenticate provider CLIs, deploy a Server, or change admission policy.
+description: Guide a member from zero details, only a Multica Server URL, or a complete owner handoff through joining macOS, Windows/WSL, or native Linux devices over private Tailscale. Tell the member what to send the owner, obtain owner-chosen workspace and Tailscale access details, preflight VPN coexistence, authenticate, verify runtimes, create workspace agents, smoke-test, and optionally configure authorized autostart. Use for onboarding, Web UI access, VPN/proxy conflicts, admission failures, offline runtimes, and lifecycle work. Never inspect provider CLIs, deploy a Server, or change admission policy.
 ---
 
 # Multica runtime client
@@ -17,30 +17,58 @@ Join and manage this device only. Do not deploy the Multica Server stack.
   only execution-plane evidence.
 - Register Windows-native runtimes for Windows and WSL; POSIX scripts must fail closed in WSL.
 - Require explicit authorization before installing autostart.
-- Detect VPN, TUN, PAC, and system-proxy state before any browser flow. With another network client
+- Detect VPN, TUN, PAC, and system-proxy state before browser flows. With another network client
   active, require persistent split routing and successful private-direct plus public-proxy probes.
   Never disable the user's VPN globally.
 - Cache no credentials. Live state overrides cached state.
 
-## Inputs
+## Staged inputs
 
-Read the platform profile cache first, then apply current-request overrides. Require:
+Read the profile cache, apply current-request overrides, then classify the entry state as no details,
+a Server URL/partial handoff, or a complete owner handoff. Never demand all fields at once.
 
-- `.ts.net` HTTPS `ServerUrl`, workspace, and the user's `IdentityEmail`;
-- `TAILSCALE_ACCESS_MODE=same-tailnet|shared-machine`;
-- an auto-detected device name and concurrency, default `1`;
-- whether to expose all local online runtimes and enable autostart.
-
-Ignore cached `PROVIDER` and remove it on the next write.
+The member decides their own `IdentityEmail` and later sharing/autostart preferences. Detect the
+device name, current Tailscale identity when available, and default concurrency to `1`. If the
+Tailscale account email differs from `IdentityEmail`, include both in the owner request. The owner
+alone chooses the workspace and
+`TAILSCALE_ACCESS_MODE=same-tailnet|shared-machine`, then supplies them through a credential-free
+handoff. Ignore cached `PROVIDER` and remove it on the next write. Never cache invitation/share links.
 
 ## Workflow
+
+### 0. Obtain owner admission
+
+Run this stage even when the user provides nothing. Immediately explain that joining requires the
+owner's private Server handoff and the member's own Multica email. If `IdentityEmail` is missing,
+show the owner-request outline, ask for the email, and return `manual_action_required` with
+`phase=member-identity-required` and `action=provide_member_email`.
+
+Once the email is known, output a filled, copyable message in the user's language. Include the
+member's Multica email, their different Tailscale email if applicable, and any known Server URL. Ask
+the owner to use `multica-selfhost-server` to:
+
+1. add the exact member email to the Server allowlist;
+2. choose and invite the member to a workspace;
+3. choose and issue either tailnet membership or a machine share;
+4. return a credential-free handoff with Server URL, chosen workspace, access mode, both invitation
+   states, member email, and the instance verification code.
+
+If the Server URL is unknown, explicitly tell the member to request it. Do not ask the member to
+choose or guess the workspace or access mode. Tailscale invitations/share links must go directly to
+the member through Tailscale; never ask the member to paste them into chat.
+
+List only missing owner actions when a partial handoff exists. Until the handoff and owner actions
+are complete, return `manual_action_required` with
+`phase=owner-handoff-required`, `action=request_owner_handoff`, `background_work=false`, and
+`resume_hint=rerun_runtime_client`. Preserve valid partial inputs for the next invocation.
 
 ### 1. Admit the private path
 
 Run `check-windows-tailscale-access.ps1` on Windows or
-`check-unix-tailscale-access.sh` on macOS/native Linux. Require connected Tailscale, a valid Server
-URL, and reachable `/api/config`. If access is absent, return `manual_action_required` for the
-invitation or machine share; do not call it a Multica 403.
+`check-unix-tailscale-access.sh` on macOS/native Linux. Require connected Tailscale, the handoff
+Server URL, and reachable `/api/config`. If access is absent, guide the member to install/sign in to
+Tailscale or accept the owner-issued invitation/share, then return `manual_action_required`; do not
+call it a Multica 403.
 
 Then inspect VPN/proxy state. On macOS run `prepare-macos-vpn-routing.sh`; it handles Clash Verge
 system-proxy mode. Unknown clients, TUN mode, PAC-only routing, or unsafe updates require
@@ -49,10 +77,10 @@ the private direct probe and public proxy probe both pass while the VPN remains 
 
 Follow [Tailscale access](references/tailscale-access.md).
 
-### 2. Authenticate and select the workspace
+### 2. Authenticate and select the owner-provided workspace
 
 Run the platform connect script. If visible browser/email action is required, open it and stop.
-Require `auth status` email to equal `IdentityEmail`, then switch to the target workspace. Stop on
+Require `auth status` email to equal `IdentityEmail`, then switch to the handoff workspace. Stop on
 denied signup, unaccepted invitation, identity mismatch, or `workspace get` 403. Never edit remote
 admission policy from this client workflow.
 
@@ -83,8 +111,9 @@ daemon ID, runtime IDs, agent IDs, smoke task ID, and recovery mechanism—never
 
 Report joined only when:
 
+- the owner handoff confirms allowlist, workspace invitation, and Tailscale access actions;
 - Tailscale and the VPN coexistence gate pass;
-- identity and target workspace match;
+- identity and handoff workspace match;
 - the verifier returns a local online runtime;
 - each intended runtime has a workspace agent and exact smoke success;
 - any required cross-member smoke and authorized autostart checks pass.
@@ -103,5 +132,5 @@ Inspect installed CLI `--help` before choosing arguments. Scripts return `ready`
 `manual_action_required`, or failure; do not infer state from prose.
 
 For upgrades or revocation, follow [client lifecycle](references/lifecycle.md). Troubleshoot only the
-first failing stage: Tailscale -> VPN/proxy -> identity -> workspace -> daemon -> verifier -> agent
-access -> smoke.
+first failing stage: owner handoff -> Tailscale -> VPN/proxy -> identity -> workspace -> daemon ->
+verifier -> agent access -> smoke.

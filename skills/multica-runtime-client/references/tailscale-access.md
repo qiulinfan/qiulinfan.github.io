@@ -5,7 +5,8 @@
 - `same-tailnet`: the member joins with their own Tailscale account.
 - `shared-machine`: the owner shares only the Server machine; use its full `.ts.net` hostname.
 
-Network admission, Multica allowlisting, registration, and workspace membership are independent.
+The owner chooses the mode; never ask the member to choose or guess it. Network admission, Multica
+allowlisting, registration, and workspace membership are independent.
 
 ## Gate
 

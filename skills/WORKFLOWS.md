@@ -19,7 +19,9 @@ flowchart LR
     FirstSplit --> FirstVPN
     FirstVPN -->|是| First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
     First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
-    Owner --> Gate["server allowlist + workspace invite<br/>Tailscale tailnet / machine share"]
+    Invitee["成员调用 runtime-client<br/>可零输入或仅 URL"] --> Guide["收集成员自己的 email<br/>生成给服主的准入请求"]
+    Guide --> Gate["服主决定 workspace + access mode<br/>allowlist + 两类邀请"]
+    Owner --> Gate
     Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 固定码 + 两层状态"]
     Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
     ClientCache --> ClientVPN{"客户端打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
@@ -39,6 +41,13 @@ WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭�
 `connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
 宿主机执行面。
 
+成员可以在零输入或仅知道 Server URL 时调用 `multica-runtime-client`。Agent 先说明加入所需的
+服主 handoff，收集成员自己的 Multica email，并生成可直接转发的准入请求；服主通过
+`multica-selfhost-server` 决定 workspace 和 `same-tailnet` / `shared-machine`，完成 Server
+allowlist、workspace invite 与 Tailscale access 后返回无凭据 handoff。workspace 与 access mode
+不是成员要选择的输入，邀请/share 链接也不得粘贴给 Agent。缺少服主操作时，客户端在
+`owner-handoff-required` 阶段结构化暂停。
+
 Agent 自动探测拓扑、WSL 和 hostname；在打开任何 Multica Web UI 或浏览器认证前，还必须探测
 VPN、TUN、PAC 与系统代理。仅有 `/api/config` 的 CLI 成功不足以证明浏览器路径可用；存在其他
 网络客户端时，必须同时验证 Multica 经 Tailscale 直连、公共身份站点经原代理可达。macOS Clash
@@ -46,8 +55,7 @@ Verge 系统代理模式自动持久合并 `.ts.net`、Tailscale IPv4 与 IPv6 b
 或 TUN 模式无法安全配置时结构化停止，不通过关闭用户 VPN 规避。Multica 自动发现本机全部
 providers，Skill 不询问、
 登录或直接验证 provider CLI，provider 也不是输入、断点或完成条件。结构化脚本结果保持英文
-动作码，Agent 面向用户的解释、提示和交接则跟随用户语言。用户以自然语言提供 owner/成员邮箱、
-workspace、连接地址、私网发布与自启动偏好即可。Agent 先合并 Skill 内
+动作码，Agent 面向用户的解释、提示和交接则跟随用户语言。Agent 先合并 Skill 内
 `.cache/<profile>/profile.env`，再自行执行脚本和验证，不把命令交回用户。两个 cache 都由
 各自 `.gitignore` 排除，只保存可恢复的非凭据配置；本轮明确值覆盖旧 cache，真实只读状态
 又优先于 cache。self-host 引导先于 Docker 检查 Tailscale：若登录、MagicDNS 或 HTTPS
@@ -72,7 +80,7 @@ allowlist、runtime 和 agent。
 
 ### 中文调用示例
 
-以下文字是仓库外层的个人速查模板，不属于两个 Skill 本体。邮箱、workspace 和 URL 都要换成
+以下文字是仓库外层的个人速查模板，不属于两个 Skill 本体。示例中的邮箱、workspace 和 URL 要换成
 真实值；不要在提示中粘贴 token、一次性验证码、cookie、邀请密钥或 Tailscale share link。
 Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
@@ -92,10 +100,20 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 > 使用 `$multica-selfhost-server` 邀请 `friend@example.com` 加入 `trusted-team`。为对方使用
 > `shared-machine` Tailscale access，只共享 Multica server 机器，并生成不含凭据的 client handoff。
 
+成员还没有任何信息：
+
+> 使用 `$multica-runtime-client` 引导我加入服主的 Multica。我还没有 Server URL 或邀请信息；请告诉
+> 我需要把什么信息发给服主、向服主索取什么，并在服主完成准入前暂停。
+
+成员只知道 Server URL：
+
+> 使用 `$multica-runtime-client` 引导我加入 `https://server.tailnet.ts.net/`。我不知道 workspace 或
+> Tailscale access mode，也不需要替服主选择；请收集我的 Multica email，并生成给服主的准入请求。
+
 为新设备加入 runtime：
 
-> 使用 `$multica-runtime-client` 把这台 Mac 加入 handoff 指定的 Multica Server 和
-> `trusted-team` workspace。我会使用自己的 Tailscale 与 Multica 账号。把 Multica 自动发现的
+> 使用 `$multica-runtime-client` 把这台 Mac 加入服主 handoff 指定的 Server、workspace 和
+> Tailscale access mode。我会使用自己的 Tailscale 与 Multica 账号。把 Multica 自动发现的
 > 全部本机 online runtimes 开放给 workspace，并运行有界 smoke；不要询问或验证 provider。
 
 继续客户端登录流程：
