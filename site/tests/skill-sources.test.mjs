@@ -140,7 +140,9 @@ test("the Markdown-authored workflows reference real Skills and preserve knowled
 	);
 	const workflowCount = (workflows.match(/^## /gm) ?? []).length;
 	const diagramCount = (
-		workflows.match(/```mermaid\nflowchart LR/g) ?? []
+		workflows.match(
+			/```mermaid\r?\nflowchart[ \t]+(?:TB|TD|BT|RL|LR)\b/g,
+		) ?? []
 	).length;
 
 	assert.ok(workflowCount > 0);
