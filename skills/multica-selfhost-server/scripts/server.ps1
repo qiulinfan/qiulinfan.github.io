@@ -51,8 +51,12 @@ function Invoke-Compose([string[]] $Arguments) {
 
 function Get-Port([string] $Name, [int] $ContainerPort, [switch] $AllowMissing) {
     Push-Location $MulticaRepo
-    try { $Output = & docker compose -f $ComposeFile port $Name $ContainerPort 2>$null }
+    try { $Container = (& docker compose -f $ComposeFile ps -q $Name | Select-Object -Last 1).Trim() }
     finally { Pop-Location }
+    if ($LASTEXITCODE -ne 0 -or $Container -notmatch '^[a-f0-9]{12,64}$') {
+        throw "Could not resolve the container for $Name."
+    }
+    $Output = & docker port $Container "${ContainerPort}/tcp" 2>$null
     if ($LASTEXITCODE -ne 0 -or -not $Output) {
         if ($AllowMissing) { return $null }
         throw "Could not resolve $Name/$ContainerPort."
@@ -81,6 +85,7 @@ function Set-SelfHostOrigin([string] $Origin) {
     $Updates = [ordered]@{
         FRONTEND_ORIGIN = $Origin; MULTICA_APP_URL = $Origin; CORS_ALLOWED_ORIGINS = $Origin
         COOKIE_DOMAIN = ""; NEXT_PUBLIC_API_URL = ""; NEXT_PUBLIC_WS_URL = ""
+        APP_ENV = "development"; MULTICA_DEV_VERIFICATION_CODE = "114514"
     }
     $Lines = [System.Collections.Generic.List[string]]::new()
     foreach ($Line in [System.IO.File]::ReadAllLines($EnvironmentPath)) { $Lines.Add($Line) }
@@ -138,6 +143,8 @@ function Write-State([int] $BackendPort, [int] $FrontendPort, [Nullable[int]] $D
         server_repo = $MulticaRepo; published_url = $PublishedUrl
         identity_model = "individual-members"
         admission_policy = "server-env-and-workspace-invite"
+        authentication_mode = "fixed-private-code"
+        fixed_verification_code = "114514"
         updated_at = $Now
     }
     $Receipt = [ordered]@{
@@ -146,6 +153,8 @@ function Write-State([int] $BackendPort, [int] $FrontendPort, [Nullable[int]] $D
         access_scope = if ($PublishedUrl) { "published-private" } else { "local-only" }
         identity_model = "individual-members"
         admission_policy = "server-env-and-workspace-invite"
+        authentication_mode = "fixed-private-code"
+        fixed_verification_code = "114514"
         server_device = $env:COMPUTERNAME; updated_at = $Now
     }
     foreach ($Entry in @(

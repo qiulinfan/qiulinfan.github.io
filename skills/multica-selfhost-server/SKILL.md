@@ -1,6 +1,6 @@
 ---
 name: multica-selfhost-server
-description: Detect Windows with WSL, macOS, or native Linux from natural-language requests and use a resumable state machine to deploy, start, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the backend, frontend, loopback-only gateway, Tailscale Serve, exact-email admission, a shared workspace, credential-free client handoffs, server autostart, and multica-runtime-client orchestration for host runtimes, workspace agents, and bounded smoke tasks. Use when a trusted group needs one private Server or when troubleshooting admission, CORS, WebSockets, upgrades, and recovery. Use multica-runtime-client alone for later devices. Multica automatically detects all providers; provider handling is not a workflow step, and this Skill never asks about, signs in to, or directly verifies a provider CLI.
+description: Detect Windows with WSL, macOS, or native Linux from natural-language requests and use a resumable state machine to deploy, start, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the backend, frontend, loopback-only gateway, Tailscale Serve, a fixed private-instance verification code, exact-email admission, a shared workspace, credential-free client handoffs, server autostart, and multica-runtime-client orchestration for host runtimes, workspace agents, and bounded smoke tasks. Use when a trusted group needs one private Server or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-runtime-client alone for later devices. Multica automatically detects all providers; provider handling is not a workflow step, and this Skill never asks about, signs in to, or directly verifies a provider CLI.
 ---
 
 # Multica self-host server
@@ -23,8 +23,9 @@ system authorization interactions. Never deploy a second server.
 - Do not ask about providers, invoke provider CLIs, or trigger provider OAuth. Assume providers are
   available; the Multica daemon automatically detects all of them. First-node completion evidence
   comes only from Multica runtime state and smoke tasks.
-- Never share PATs, verification codes, cookies, JWTs, database passwords, Tailscale share links,
-  SSH keys, or system accounts.
+- Never share PATs, generated or one-time verification codes, cookies, JWTs, database passwords,
+  Tailscale share links, SSH keys, or system accounts. The Skill-managed fixed code `114514` is
+  public instance configuration rather than a credential and must be included in member handoffs.
 - Do not use Funnel or expose a public entrypoint. Bind the backend, frontend, and gateway only to
   loopback, and do not host-publish PostgreSQL. Stop on `0.0.0.0`, `::`, or any database host binding.
 - Require explicit authorization for autostart, upgrades, recovery, remote revocation, and data
@@ -61,8 +62,10 @@ again.
 ### 2. Start the only server
 
 Only after readiness succeeds, install Docker, obtain a confirmed Multica checkout, generate `.env`,
-and apply the admission cache. Use WSL2 Ubuntu Docker on Windows while keeping runtimes on the
-Windows host. Use native Docker on macOS and Linux. Read
+apply the admission cache, and set `APP_ENV=development` with
+`MULTICA_DEV_VERIFICATION_CODE=114514`. Do not configure an email delivery service: this private
+instance uses that fixed, non-secret code for every allowed member. Use WSL2 Ubuntu Docker on
+Windows while keeping runtimes on the Windows host. Use native Docker on macOS and Linux. Read
 [references/platforms.md](references/platforms.md) for entry points and loopback verification.
 
 Start PostgreSQL, the backend, frontend, and Caddy gateway, then configure same-origin Tailscale
@@ -93,8 +96,9 @@ Choose one access mode for each member:
 - `shared-machine`: share only the Multica server machine.
 
 After issuing Tailscale access and the workspace invitation, run `write-client-handoff.ps1|sh` to
-produce a credential-free receipt containing the Server URL, workspace, member email, and both
-invitation states. Never write a share or invitation secret to the receipt. Invoke
+produce a credential-free receipt containing the Server URL, workspace, member email, both
+invitation states, and the fixed code `114514`. The fixed code is public configuration; never write
+a generated code, share link, session token, or invitation secret to the receipt. Invoke
 `multica-runtime-client` on the client with that receipt.
 
 ### 5. Finalize host runtimes
@@ -117,7 +121,7 @@ following evidence:
 3. the host daemon has at least one Multica-detected online runtime under the target workspace;
 4. every local runtime intended for sharing has a workspace agent and the zero-tool smoke completes;
 5. every authorized recovery item passes a restart test;
-6. handoff receipts contain no credentials.
+6. handoff receipts contain the fixed code `114514` but no credentials or one-time secrets.
 
 Provider login, type, availability, and version are not inputs, manual boundaries, or completion
 conditions.
@@ -136,6 +140,6 @@ Use this fixed order: current phase -> Tailscale -> port bindings -> Docker/Comp
 backend -> gateway -> private URL -> owner/workspace -> delegated runtime client. Address only the
 first failure.
 
-Without SMTP, never expose a verification code in command output, cache, or conversation. If the
-available tools cannot place a log value directly into a visible UI without exposing it, stop and
-require a working mail channel instead of reading the code.
+Do not read generated verification codes from logs. This Skill deliberately does not require SMTP:
+members enter the documented fixed code `114514`, while exact-email admission and workspace
+membership remain the authorization controls.

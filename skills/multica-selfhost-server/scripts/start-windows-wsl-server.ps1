@@ -63,8 +63,12 @@ function Write-SafeLog([string] $Message) {
 
 function Get-PublishedPort {
     param([string] $Service, [int] $ContainerPort, [switch] $AllowMissing)
-    $Output = & wsl.exe -d $WslDistro --exec docker compose `
-        -f "$LinuxRepo/docker-compose.selfhost.yml" port $Service $ContainerPort 2>$null
+    $Container = (& wsl.exe -d $WslDistro --exec docker compose `
+        -f "$LinuxRepo/docker-compose.selfhost.yml" ps -q $Service | Select-Object -Last 1).Trim()
+    if ($LASTEXITCODE -ne 0 -or $Container -notmatch '^[a-f0-9]{12,64}$') {
+        throw "Could not resolve the container for $Service."
+    }
+    $Output = & wsl.exe -d $WslDistro --exec docker port $Container "${ContainerPort}/tcp" 2>$null
     if ($LASTEXITCODE -ne 0 -or -not $Output) {
         if ($AllowMissing) { return $null }
         throw "Could not resolve the published port for $Service/$ContainerPort."
@@ -99,6 +103,8 @@ function Set-SelfHostOrigin([string] $Origin) {
         COOKIE_DOMAIN = ""
         NEXT_PUBLIC_API_URL = ""
         NEXT_PUBLIC_WS_URL = ""
+        APP_ENV = "development"
+        MULTICA_DEV_VERIFICATION_CODE = "114514"
     }
     $Lines = [System.Collections.Generic.List[string]]::new()
     foreach ($Line in [System.IO.File]::ReadAllLines($EnvironmentPath)) { $Lines.Add($Line) }
@@ -178,6 +184,8 @@ function Write-StateAndReceipt {
         server_repo = $LinuxRepo; wsl_distro = $WslDistro; published_url = $PublishedUrl
         identity_model = "individual-members"
         admission_policy = "server-env-and-workspace-invite"
+        authentication_mode = "fixed-private-code"
+        fixed_verification_code = "114514"
         updated_at = $UpdatedAt
     }
     $Receipt = [ordered]@{
@@ -186,6 +194,8 @@ function Write-StateAndReceipt {
         access_scope = if ($PublishedUrl) { "published-private" } else { "local-only" }
         identity_model = "individual-members"
         admission_policy = "server-env-and-workspace-invite"
+        authentication_mode = "fixed-private-code"
+        fixed_verification_code = "114514"
         server_device = $env:COMPUTERNAME; updated_at = $UpdatedAt
     }
     foreach ($Entry in @(

@@ -31,6 +31,8 @@ $Receipt = [ordered]@{
     tailscale_access_mode = $TailscaleAccessMode
     tailscale_access_status = $TailscaleAccessStatus
     multica_invitation_status = $MulticaInvitationStatus
+    authentication_mode = "fixed-private-code"
+    fixed_verification_code = "114514"
     contains_credentials = $false
     updated_at = (Get-Date).ToUniversalTime().ToString("o")
 }

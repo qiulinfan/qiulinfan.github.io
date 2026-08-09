@@ -1,5 +1,33 @@
 # Personal Codex guidance
 
+## General engineering defaults
+
+Apply these defaults only when the user's request and closer project guidance
+do not specify otherwise:
+
+- Choose the simplest coherent implementation that fully satisfies the current
+  requirements. Avoid speculative abstractions, configuration layers, and
+  indirection.
+- Deliver non-trivial systems in working end-to-end slices. Add capabilities on
+  top of a runnable baseline; do not replace verified behavior with unfinished
+  complexity.
+- Keep components cohesive and concerns separated, but do not create
+  abstractions or layers without a concrete responsibility.
+- Before adding a dependency or reimplementing common functionality, inspect
+  the project's existing dependencies and consult their current documentation
+  and types. Prefer established, well-maintained libraries when they reduce
+  total complexity or improve reliability.
+- For consequential or hard-to-reverse design decisions, inspect the
+  repository's existing patterns and, when useful, established products or
+  reference implementations before inventing a custom approach.
+- Prefer durable architectural choices. When a temporary stopgap is necessary,
+  make the trade-off explicit, bound its scope, and record the condition for
+  removing it.
+- Do not add compatibility layers, fallbacks, or migrations by default. First
+  determine whether users, persisted data, public interfaces, or deployment
+  constraints require compatibility; never remove or break them without clear
+  scope and authorization.
+
 ## Personal Skill maintenance
 
 When using the built-in `skill-creator`, or when creating or materially
