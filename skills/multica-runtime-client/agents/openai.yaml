@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Runtime Client"
-  short_description: "Run and monitor work on configured Multica agents"
-  default_prompt: "Use $multica-runtime-client to run this task on an available Multica agent and report the verified result."
+  short_description: "Provision and operate Multica workspaces and agents"
+  default_prompt: "Use $multica-runtime-client to create or operate the requested Multica workspace and agents, then report the verified result."

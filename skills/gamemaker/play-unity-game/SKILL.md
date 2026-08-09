@@ -51,10 +51,13 @@ Test at least:
 6. **Recovery:** exercise restart, retry, undo, pause, or safe exit as applicable.
 7. **Robustness:** look for soft locks, lost key items, blocked navigation, duplicate rewards, broken collision, and repeated-trigger bugs.
 8. **Replay:** verify that reset or replay restores the intended initial state when the feature exists.
+9. **Fresh completion:** for stateful or resettable work, complete the primary loop a second time after reset or reload; checking only the restored initial state is insufficient.
 
 Capture evidence at meaningful milestones. Prefer inline screenshots; if files are required, place temporary captures under the project `Temp/` directory unless the user requests durable artifacts.
 
 Monitor the Console during and after play. Distinguish project errors from Editor, package, capture-tool, or transport warnings.
+
+Relevant project compile errors, exceptions, missing references, or reproducible gameplay errors make the result `FAIL` even when an inspected success flag or terminal state appears correct. After a programming fix, begin a new clean session and rerun the affected path; do not carry forward the earlier pass evidence.
 
 ## Evaluate by Discipline
 
@@ -101,3 +104,7 @@ Include:
 - recommended owner: design, art, programming, or cross-discipline.
 
 Do not implement fixes during this skill. Hand actionable findings back to the responsible agent.
+
+## Language Alignment
+
+Match user-facing explanations, prompts, reports, and handoffs to the user's language unless the user requests another language. Keep commands, identifiers, structured keys, action codes, and raw errors unchanged.

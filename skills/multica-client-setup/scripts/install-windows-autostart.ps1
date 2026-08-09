@@ -8,7 +8,7 @@ param(
     [string] $Profile = "remote",
     [string] $DeviceName = $env:COMPUTERNAME,
     [string] $RuntimeName = "",
-    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 1,
+    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 10,
     [string] $AgentTimeout = "0s",
     [string] $TaskName = ""
 )
@@ -68,5 +68,10 @@ Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger `
     -Description "Start this Windows machine as a Multica runtime client after user logon." `
     -Force | Out-Null
 
-Get-ScheduledTask -TaskName $TaskName | Select-Object TaskName, State, TaskPath
+$RegisteredTask = Get-ScheduledTask -TaskName $TaskName
+if (-not (Test-Path -LiteralPath $Starter)) { throw "Registered starter path does not exist: $Starter" }
+if ($RegisteredTask.Actions.Arguments -notmatch "(?:^|\s)-MaxConcurrentTasks\s+$MaxConcurrentTasks(?:\s|$)") {
+    throw "Registered task does not preserve MaxConcurrentTasks=$MaxConcurrentTasks."
+}
+$RegisteredTask | Select-Object TaskName, State, TaskPath
 Write-Output "Runtime client autostart registered for $UserId without storing a password."

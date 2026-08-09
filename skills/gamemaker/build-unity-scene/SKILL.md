@@ -43,6 +43,8 @@ Define:
 - required build-settings changes;
 - validation criteria.
 
+For stateful gameplay, define the transition contract before editing the scene: initial state, valid triggers, intermediate evidence, invalid-action feedback, repair or escape path, completion, and reset/reload behavior. Make every transition observable to a later playtest without relying on private fields.
+
 Keep gameplay truth in the documented state or component layer. Do not make animation transforms the only record of gameplay state.
 
 ## Build in Safe Order
@@ -58,6 +60,8 @@ Keep gameplay truth in the documented state or component layer. Do not make anim
 9. Save the scene and update build settings only when required by the task or framework.
 
 Preserve unrelated scene and worktree changes. Do not overwrite an existing scene without first resolving its exact target and purpose.
+
+If the project generates scenes or prefabs from an authoritative builder, edit that source and regenerate the artifact instead of making a one-off generated-file change that will be lost.
 
 ## Script Workflow
 
@@ -90,6 +94,8 @@ Perform the programming-agent checks:
 
 Do not perform exploratory gameplay or claim the scene is fun, readable, or complete. If the user also requests actual play, hand the saved artifact to `play-unity-game` as a separate pass.
 
+When that independent playtest reports a programming defect, apply the requested fix through the same safe build workflow, clear stale Console evidence, and return a newly saved and technically clean artifact for a fresh independent pass. Never reuse the pre-fix play result as acceptance evidence.
+
 ## Handoff
 
 Report:
@@ -102,3 +108,7 @@ Report:
 - compile, Console, and scene-validation results;
 - known technical limitations;
 - exact playtest target, controls, expected state sequence, and acceptance criteria for the playtest agent.
+
+## Language Alignment
+
+Match user-facing explanations, prompts, documentation, and handoffs to the user's language unless the user requests another language. Keep commands, identifiers, structured keys, action codes, and raw errors unchanged.

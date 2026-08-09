@@ -11,7 +11,7 @@ param(
     [string] $CallbackHost = "127.0.0.1",
     [string] $DeviceName = $env:COMPUTERNAME,
     [string] $RuntimeName = "",
-    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 1,
+    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 10,
     [string] $AgentTimeout = "0s",
     [switch] $SkipCliInstall
 )

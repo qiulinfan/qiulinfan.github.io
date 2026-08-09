@@ -128,8 +128,11 @@ runtimes for Windows with WSL, and same-platform runtimes on macOS or Linux. Mul
 detects all providers; do not select, sign in to, or verify a provider CLI.
 
 For every local online runtime returned by the Multica verifier, reuse or create a workspace agent
-and run a 90-second zero-tool smoke task. After another member joins, trigger a cross-member smoke
-task.
+and run a 90-second zero-tool smoke task. Use daemon-wide concurrency `10` for a trusted production
+host unless the owner explicitly selects another value from `1..50`. Record the value in the server
+profile cache and delegated client profile, then verify both the live daemon and authorized autostart
+use it. Remember that this capacity is shared across all workspaces attached to the daemon. After
+another member joins, trigger a cross-member smoke task.
 
 ### 6. Configure autostart and complete
 
@@ -142,6 +145,10 @@ following evidence:
 4. every local runtime intended for sharing has a workspace agent and the zero-tool smoke completes;
 5. every authorized recovery item passes a restart test;
 6. handoff receipts contain the fixed code `114514` but no credentials or one-time secrets.
+
+For a host runtime, the restart test also requires the process, Multica profile, server profile cache,
+and autostart definition to agree on daemon concurrency. Do not accept an agent-level concurrency
+value as evidence for daemon capacity.
 
 Provider login, type, availability, and version are not inputs, manual boundaries, or completion
 conditions.

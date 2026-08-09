@@ -2,6 +2,40 @@
 
 单个 Skill 只描述一种可复用能力；这里记录多个 Skill 如何编排成可以交付结果的工具流。流程图和图下文字都是普通 Markdown，可以按需要增删节点、分支和说明，不受页面字段约束。
 
+## 从游戏点子到 Unity 交付
+
+```mermaid
+flowchart TD
+    Idea["用户点子 / 父 issue"] --> Producer["制作人 agent<br/>coordinate-game-production"]
+    Producer --> Classify{"策划探索、关卡、功能/系统、混合?"}
+    Classify -->|行为未确定| Plan["策划 agent<br/>write-game-design-brief"]
+    Plan --> Producer
+    Classify -->|关卡| Level["iterate-unity-level"]
+    Classify -->|功能或系统| Feature["deliver-unity-feature"]
+    Classify -->|混合| Feature
+    Feature --> Level
+    Level --> Gap{"有明确美术缺口?"}
+    Feature --> Gap
+    Gap -->|是| Art["美术 agent<br/>search-game-art + 导入"]
+    Gap -->|否| Code["程序 agent<br/>实现与技术验证"]
+    Art --> Code
+    Code --> Play{"玩家可见行为?"}
+    Play -->|是| Test["playtester agent<br/>play-unity-game"]
+    Play -->|否| Verify["对应层级的测试与回归"]
+    Test --> Findings{"是否有缺陷?"}
+    Verify --> Findings
+    Findings -->|有| Owner["按策划 / 美术 / 程序归属回流"]
+    Owner --> Code
+    Findings -->|无| Record["record-windows-playtest<br/>录屏、校验与 Drive 交付"]
+    Record --> Accept["制作人集成验收并关闭父 issue"]
+```
+
+[`coordinate-game-production`](#skill-coordinate-game-production) 是总线而不是全能执行者：它读取父 issue，先判断目标是空间与遭遇主导的关卡、可复用的功能或系统，还是二者混合；再按依赖创建单一职责、写入边界和验收证据明确的子 issue。策划 agent 用 [`write-game-design-brief`](#skill-write-game-design-brief) 把口头点子变成规则、状态、表现需求与可观测验收案例；美术 agent 只搜索、核验、获取、审计和导入外部资源，不自主建模、贴图或编写玩法；程序 agent 负责代码、scene/prefab 接线、测试和修复；playtester 负责只读试玩、录屏、回执与 Drive 交付。制作人核对真实产物和证据后才关闭父 issue，不能只相信子任务的完成标签。
+
+制作人采用事件驱动的阶段生命周期：每个 Run 只读取一次父 issue、刚完成阶段和必要的仓库状态，验收后只创建当前就绪阶段并立即结束；staged child 发布证据后把自身标为 `done`，该状态只表示专业交付可供验收，并触发下一次制作人 Run。不得同时保留自动唤醒与前台轮询；只有事件缺失或用户明确要求实时观察时，才以至少 120 秒间隔和 `run-messages --since <last_seq>` 增量检查。Git 状态只在 Run 开始、子任务完成和最终验收时读取。Dreamweaver 的写入统一指向 `C:\Users\rynne\Desktop\dreamweaver` 的绝对路径，首次写入后立即验证；保留私有仓库 SSH transport。除非父 issue 写明 `no push`，写入 worker 默认可提交自有改动、推送任务分支并创建或更新 draft PR。
+
+关卡走 [`iterate-unity-level`](#skill-iterate-unity-level)：每轮只加入一个与核心规则相连的选择、依赖、状态或恢复关系，先写状态契约，再由 `build-unity-scene` 构建、独立 playtester 用 `play-unity-game` 验证有效路径、无效反馈、恢复、重置以及重置后的第二次完整通关，并用 [`record-windows-playtest`](#skill-record-windows-playtest) 将核验后的 Windows 窗口视频与回执交付到 Google Drive。module、功能和系统走 [`deliver-unity-feature`](#skill-deliver-unity-feature)：先明确调用者、接口、数据和状态所有权、生命周期与验证面，再交付最小端到端切片；纯逻辑模块不强行伪装成关卡，只有玩家可见行为才要求真实试玩和视频证据。playtester 只报告结果和缺陷，不修改项目；任何修复都回流给所属 agent，清除旧诊断并从干净状态重跑。这个流程只定义按 issue 触发的协作，不自动创建常驻轮询、daemon 或定时 autopilot。
+
 ## 从策划案到 Unity 美术资源
 
 ```mermaid
@@ -55,7 +89,8 @@ flowchart LR
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
     FirstAgent --> Pool["互信团队共享 agent 计算池"]
     MoreAgents --> Pool
-    Work["成员自然语言工作"] --> RuntimeClient["multica-runtime-client<br/>agent / issue / task"]
+    Provision["明确授权的新 workspace / agent"] --> RuntimeClient["multica-runtime-client<br/>workspace / agent / issue / task"]
+    Work["成员自然语言工作"] --> RuntimeClient
     RuntimeClient --> Pool
 ```
 
@@ -108,11 +143,21 @@ workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调�
 只属于自己的 daemon，跨设备项目优先使用 Git repository；撤销成员时同步移除 membership、
 allowlist、runtime 和 agent。
 
-客户端完成接入后，日常工作改由 [`multica-runtime-client`](#skill-multica-runtime-client)
-承接。它只读取已经配置好的 profile、workspace、agents 和 online runtimes，把自然语言请求
-整理为一个可验收 issue，以完整 agent ID 防重复地入队一次，再通过 runs 和 messages 监控、
-续接、取消或按授权 rerun。安装、身份、membership、Tailscale/VPN、初始 agent 暴露和自启动
-仍属于 `multica-client-setup`，两者不互相兜底执行。
+客户端完成接入后，日常工作和明确授权的 workspace/agent 扩展由
+[`multica-runtime-client`](#skill-multica-runtime-client) 承接。它默认读取既有 profile、workspace、
+agents 和 online runtimes；只有用户明确要求时才先按永久 slug 防重复地创建 workspace，并以完整
+workspace ID 继续，除非用户同时要求，否则不改变 profile 默认 workspace。每个新建 Codex agent
+都显式携带 `danger-full-access` 与 `never` 的启动覆盖，因为 Multica 的独立 task home 不能依赖
+全局 Codex sandbox marker；其他 provider 不使用这组参数。随后自然语言请求被整理为一个可验收
+issue，以完整 agent ID 入队一次，再通过 runs 和 messages 监控、续接、取消或按授权 rerun。
+安装、身份、membership、Tailscale/VPN、首台设备接入和自启动仍属于 `multica-client-setup`，
+两者不互相兜底执行；`multica-client-setup` 自己创建 Codex agent 时也执行同一参数规则。
+
+同一台机器上的 daemon 并发是跨 workspace 共享的全局容量，不等于单个 agent 的并发上限。
+可信生产节点默认使用 `10`；`multica-selfhost-server` 在服主 cache 中记录该值，
+`multica-client-setup` 将它同时写入客户端 profile、实际 daemon 启动参数和获授权的自启动定义，
+并在恢复后核验四者一致。`multica-runtime-client` 遇到长时间 `queued` 时必须检查 daemon 服务的
+全部 workspace、`active_task_count` 与真实启动容量，不能只看当前 workspace 是否空闲。
 
 ### 中文调用示例
 

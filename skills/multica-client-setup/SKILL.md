@@ -29,8 +29,10 @@ Read the profile cache, apply current-request overrides, then classify the entry
 a Server URL/partial handoff, or a complete owner handoff. Never demand all fields at once.
 
 The member decides their own `IdentityEmail` and later sharing/autostart preferences. Detect the
-device name, current Tailscale identity when available, and default concurrency to `1`. If the
-Tailscale account email differs from `IdentityEmail`, include both in the owner request. The owner
+device name, current Tailscale identity when available, and default daemon concurrency to `10`.
+Treat this as a daemon-wide capacity shared by every workspace and runtime registered to that local
+daemon, not as an agent-only setting. If the Tailscale account email differs from `IdentityEmail`,
+include both in the owner request. The owner
 alone chooses the workspace and
 `TAILSCALE_ACCESS_MODE=same-tailnet|shared-machine`, then supplies them through a credential-free
 handoff. Ignore cached `PROVIDER` and remove it on the next write. Never cache invitation/share links.
@@ -95,27 +97,36 @@ admission policy from this client workflow.
 
 ### 3. Start and verify runtimes
 
-Start the daemon, then run the platform verifier. Accept only `online` runtime IDs that correlate
-the target workspace ID and local daemon ID; require at least one. Never use list order, names,
-provider strings, or another device's runtime. Follow [runtime verification](references/verification.md).
+Persist the chosen daemon capacity in the Multica profile, start the daemon with the same value,
+then run the platform verifier. Accept only `online` runtime IDs that correlate the target workspace
+ID and local daemon ID; require at least one. Verify the live daemon launch/effective configuration
+still reports the chosen capacity. Never use list order, names, provider strings, or another device's
+runtime. Follow [runtime verification](references/verification.md).
 
 ### 4. Expose agents and smoke-test
 
 When authorized, process every verified local online runtime:
 
 1. Reuse or create its agent.
-2. Set `permission_mode=public_to` for the workspace.
-3. Submit one zero-tool issue whose only allowed reply is `MULTICA_SMOKE_OK:<random-nonce>`.
-4. Wait at most 90 seconds; require `completed` and an exact reply. Do not duplicate the issue.
+2. For every newly created Codex agent, pass this exact logical `--custom-args` JSON array:
+   `["-c", "sandbox_mode=\"danger-full-access\"", "-c", "approval_policy=\"never\""]`.
+   Multica tasks use isolated Codex homes, so never rely on the user's global Codex configuration
+   or sandbox marker. Do not apply these Codex-only arguments to other providers.
+3. Set `permission_mode=public_to` for the workspace, then read the agent back and verify its runtime,
+   permission targets, requested model and thinking level, and—for Codex—the exact custom arguments.
+4. Submit one zero-tool issue whose only allowed reply is `MULTICA_SMOKE_OK:<random-nonce>`.
+5. Wait at most 90 seconds; require `completed` and an exact reply. Do not duplicate the issue.
 
 For formal cross-member readiness, require another workspace member to trigger one smoke task.
 
 ### 5. Autostart and receipt
 
 Install the platform autostart only when authorized. It may restore existing authentication, never
-accept invitations or register accounts. Return server, workspace, identity email, access mode,
-daemon ID, runtime IDs, agent IDs, smoke task ID, and recovery mechanism—never tokens. Hand ordinary
-agent, issue, task, and post-setup runtime operations to `multica-runtime-client`.
+accept invitations or register accounts. Inspect the installed task, unit, or launch item and require
+an existing starter path plus the same chosen daemon capacity; a successful registration command is
+not enough. Return server, workspace, identity email, access mode, daemon ID, runtime IDs, agent IDs,
+smoke task ID, daemon capacity, and recovery mechanism—never tokens. Hand ordinary agent, issue,
+task, and post-setup runtime operations to `multica-runtime-client`.
 
 ## Completion
 
@@ -126,7 +137,9 @@ Report joined only when:
 - identity and handoff workspace match;
 - the verifier returns a local online runtime;
 - each intended runtime has a workspace agent and exact smoke success;
-- any required cross-member smoke and authorized autostart checks pass.
+- the live daemon and persisted profile agree on the chosen concurrency;
+- any required cross-member smoke and authorized autostart checks pass, including the installed
+  starter path and concurrency argument.
 
 Provider state is never an input or completion condition.
 

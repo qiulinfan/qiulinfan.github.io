@@ -258,10 +258,10 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### Gamemaker 套件
 
-- [build-unity-scene](./gamemaker/build-unity-scene/)：读取 Unity 项目架构与关卡需求，按既有边界创建或修改场景并完成验证。
+- [build-unity-scene](./gamemaker/build-unity-scene/)：读取 Unity 项目架构与关卡需求，先明确可观测的状态转换与权威生成源，再按既有边界创建或修改场景并完成技术验证；独立试玩发现问题后进入修复与干净复验。
 - [configure-unity-mcp](./gamemaker/configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
 - [discuss-game-design](./gamemaker/discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
-- [play-unity-game](./gamemaker/play-unity-game/)：实际游玩并评估 Unity 游戏或场景，验证玩法循环和复现交互问题。
+- [play-unity-game](./gamemaker/play-unity-game/)：独立游玩并评估 Unity 游戏或场景，验证有效、无效、恢复与重置路径；有状态目标在重置后还需再次完整通关，相关项目错误会使结果失败。
 - [search-game-art](./gamemaker/search-game-art/)：从策划案提取外观、主题、玩法功能与动画需求，搜索并比较经过来源与许可证核验的资源；获明确授权后还可审计下载文件、筛选最小导入子集并交接 Unity 集成。
 
 ### kgdistiller 套件
@@ -278,9 +278,14 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、把自然语言访问范围映射为 Tailscale 模式、完成两层准入并生成无需客户端理解网络结构的完整 handoff，同时管理首 runtimes、升级备份和撤销。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
-- [multica-client-setup](./multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并按确认配置自启动；不处理日常 issue/task、provider CLI 或第二套 server。
-- [multica-runtime-client](./multica-runtime-client/)：在 CLI、身份、workspace、daemon 和初始 agents 已配置的前提下，把自然语言工作转成单个可验收 issue，按完整 ID 选择 online runtime 上的 agent，防重复地入队一次，并读取 runs/messages 监控、续接、取消或按授权 rerun；同时检查 runtime/daemon 活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
+- [record-windows-playtest](./record-windows-playtest/)：在 Windows 上对指定 Unity 游戏或 Editor 窗口执行有界录屏，以 `ffprobe`、时长、分辨率和 SHA-256 验证 MP4，生成包含 issue、版本与结论的回执，并把两者交付到 Google Drive for Desktop；只提供独立试玩证据，不修改游戏实现。
+- [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run，并以 Dreamweaver 绝对工作树、默认 commit/push/draft PR（父 issue 可 `no push`）及集成产物和 Drive 视频证据约束交付。
+- [write-game-design-brief](./write-game-design-brief/)：把原始点子或 issue 写成可实现、可测试且区分事实、综合、提案与开放问题的策划契约，向美术和程序提供明确需求但不亲自实现。
+- [iterate-unity-level](./iterate-unity-level/)：为已有可玩 Unity 关卡增加与核心规则相关的选择、依赖或状态，通过设计—构建—独立试玩—修复—重置后再次通关完成窄职责闭环。
+- [deliver-unity-feature](./deliver-unity-feature/)：把 Unity module、功能或系统作为最小端到端切片交付，先明确接口、状态与验证面，再实现、集成、回归；只有玩家可见行为才要求试玩。
+- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、把自然语言访问范围映射为 Tailscale 模式、完成两层准入并生成无需客户端理解网络结构的完整 handoff，同时管理首 runtimes、升级备份和撤销，并让生产宿主机的 daemon、cache 与自启动保持默认并发 `10`。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
+- [multica-client-setup](./multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并以 daemon 全局默认并发 `10` 持久化和核验获授权的自启动；新建 Codex agent 时显式使用无需 Windows sandbox setup 的固定启动参数，不处理日常 issue/task、provider CLI 或第二套 server。
+- [multica-runtime-client](./multica-runtime-client/)：在 CLI、身份、daemon 和本机 runtimes 已配置的前提下，按明确授权防重复地新建 workspace 和 agents，或把自然语言工作转成单个可验收 issue；新建 Codex agent 时强制使用独立 home 可工作的固定 sandbox/approval 参数，随后按完整 ID 入队一次并读取 runs/messages 监控、续接、取消或按授权 rerun，同时检查跨 workspace 的 daemon 全局容量、活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
 - [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图且无 HTML/Pandoc 转码残留的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
 - [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。
 - [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。

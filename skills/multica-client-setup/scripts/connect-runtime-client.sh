@@ -19,7 +19,7 @@ identity_email=
 tailscale_access_mode=same-tailnet
 device_name=
 runtime_name=
-max_concurrent_tasks=1
+max_concurrent_tasks=10
 agent_timeout=0s
 
 while [ "$#" -gt 0 ]; do

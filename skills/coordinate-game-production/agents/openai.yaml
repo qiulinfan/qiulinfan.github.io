@@ -1,0 +1,4 @@
+interface:
+  display_name: "Coordinate Game Production"
+  short_description: "Route game ideas into owned, verified production work"
+  default_prompt: "Use $coordinate-game-production to turn this game idea into coordinated design, art, programming, and independent playtest work."

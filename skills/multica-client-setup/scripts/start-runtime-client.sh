@@ -19,7 +19,7 @@ server_url=${1:-}
 profile=${2:-remote}
 device_name=${3:-}
 runtime_name=${4:-}
-max_concurrent_tasks=${5:-1}
+max_concurrent_tasks=${5:-10}
 app_url=${6:-$server_url}
 timeout_seconds=${7:-120}
 agent_timeout=${8:-0s}
@@ -59,6 +59,7 @@ fi
 
 multica config set server_url "$server_url" --profile "$profile" >/dev/null
 multica config set app_url "$app_url" --profile "$profile" >/dev/null
+multica config set max_concurrent_tasks "$max_concurrent_tasks" --profile "$profile" >/dev/null
 
 authenticated=false
 attempt=0

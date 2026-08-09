@@ -8,7 +8,7 @@ param(
     [string] $Profile = "remote",
     [string] $DeviceName = $env:COMPUTERNAME,
     [string] $RuntimeName = "",
-    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 1,
+    [ValidateRange(1, 50)] [int] $MaxConcurrentTasks = 10,
     [string] $AgentTimeout = "0s",
     [ValidateRange(10, 600)] [int] $TimeoutSeconds = 120
 )
@@ -58,6 +58,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Could not set server_url for profile '$Profile'." }
     & $MulticaExe config set app_url $AppUrl --profile $Profile *> $null
     if ($LASTEXITCODE -ne 0) { throw "Could not set app_url for profile '$Profile'." }
+    & $MulticaExe config set max_concurrent_tasks $MaxConcurrentTasks --profile $Profile *> $null
+    if ($LASTEXITCODE -ne 0) { throw "Could not persist max_concurrent_tasks for profile '$Profile'." }
 
     $Authenticated = $false
     for ($Attempt = 0; $Attempt -lt $TimeoutSeconds; $Attempt++) {
