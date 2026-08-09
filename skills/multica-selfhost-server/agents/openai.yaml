@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Self-host Server"
-  short_description: "部署唯一控制面并引导首个本机 runtime 与可信团队"
-  default_prompt: "Use $multica-selfhost-server to deploy a private Multica server, register this host as the first runtime, and bootstrap the trusted shared workspace."
+  short_description: "断点部署、维护和恢复私网 Multica 控制面与首节点"
+  default_prompt: "Use $multica-selfhost-server to deploy the private control plane, produce credential-free client handoffs, and finalize all Multica-detected host runtimes."

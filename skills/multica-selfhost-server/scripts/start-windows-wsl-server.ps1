@@ -4,7 +4,7 @@
 param(
     [string] $WslDistro = "Ubuntu-26.04",
     [string] $LinuxRepo = "",
-    [string] $Profile = "local",
+    [string] $Profile = "home",
     [string] $PublishedUrl = "",
     [ValidateRange(1, 65535)] [int] $GatewayPort = 8787,
     [ValidateRange(10, 600)] [int] $TimeoutSeconds = 120,
@@ -34,6 +34,23 @@ if ([string]::IsNullOrWhiteSpace($LinuxRepo)) {
 if ($LinuxRepo -notmatch '^/[A-Za-z0-9._/-]+$') { throw "Invalid WSL repository path: $LinuxRepo" }
 $GatewayUrl = "http://127.0.0.1:$GatewayPort"
 $EffectiveOrigin = if ($PublishedUrl) { $PublishedUrl } else { $GatewayUrl }
+$CacheEntries = @(
+    "TOPOLOGY=windows-wsl", "WSL_DISTRO=$WslDistro", "LINUX_REPO=$LinuxRepo",
+    "GATEWAY_PORT=$GatewayPort", "PUBLISHED_URL=$PublishedUrl"
+)
+& (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile -Entry $CacheEntries *> $null
+$ExistingStatePath = Join-Path $env:USERPROFILE ".multica\selfhost-server\$Profile\state.json"
+if (-not (Test-Path -LiteralPath $ExistingStatePath)) {
+    $CachedProfile = (& (Join-Path $PSScriptRoot "profile-cache.ps1") show -Profile $Profile) |
+        ConvertFrom-Json
+    $Phase = [string]$CachedProfile.values.ONBOARDING_PHASE
+    if ($Phase -notin @("tailscale-ready", "server-ready", "owner-registration-required", "cluster-finalizing", "complete")) {
+        throw "Tailscale readiness must be completed before initial server startup."
+    }
+}
+& (Join-Path $PSScriptRoot "apply-admission.ps1") -Profile $Profile `
+    -WslDistro $WslDistro -LinuxRepo $LinuxRepo
+if ($LASTEXITCODE -ne 0) { throw "Could not apply the cached admission policy." }
 
 $LogDirectory = Join-Path $env:LOCALAPPDATA "Multica"
 $LogPath = Join-Path $LogDirectory "selfhost-server-$Profile.log"
@@ -51,6 +68,11 @@ function Get-PublishedPort {
     if ($LASTEXITCODE -ne 0 -or -not $Output) {
         if ($AllowMissing) { return $null }
         throw "Could not resolve the published port for $Service/$ContainerPort."
+    }
+    foreach ($Binding in @($Output)) {
+        if ([string]$Binding -notmatch '^(127\.0\.0\.1|\[::1\]):[0-9]{1,5}\s*$') {
+            throw "Unsafe host binding for $Service/${ContainerPort}: $Binding"
+        }
     }
     $Match = [regex]::Match([string]($Output | Select-Object -Last 1), ':([0-9]{1,5})\s*$')
     if (-not $Match.Success) {
@@ -189,6 +211,7 @@ try {
     $BackendPort = Get-PublishedPort -Service backend -ContainerPort 8080
     $FrontendPort = Get-PublishedPort -Service frontend -ContainerPort 3000
     $DatabaseHostPort = Get-PublishedPort -Service postgres -ContainerPort 5432 -AllowMissing
+    if ($null -ne $DatabaseHostPort) { throw "PostgreSQL must not be published on the host." }
     Start-SameOriginGateway
     $ReadyUrl = "http://127.0.0.1:$BackendPort/readyz"
     $Ready = $false

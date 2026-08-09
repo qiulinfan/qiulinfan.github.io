@@ -4,7 +4,7 @@
 param(
     [string] $WslDistro = "Ubuntu-26.04",
     [string] $LinuxRepo = "",
-    [string] $Profile = "local",
+    [string] $Profile = "home",
     [string] $PublishedUrl = "",
     [ValidateRange(1, 65535)] [int] $GatewayPort = 8787,
     [string] $TaskName = ""
@@ -26,6 +26,8 @@ $StarterArguments = @{
 if ($PublishedUrl) { $StarterArguments.PublishedUrl = $PublishedUrl }
 & $Starter @StarterArguments
 if ($LASTEXITCODE -ne 0) { throw "Server restart verification failed." }
+& (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile `
+    -Entry "SERVER_AUTOSTART_APPROVED=true" *> $null
 
 $PwshAlias = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps\pwsh.exe"
 $PwshExe = if (Test-Path -LiteralPath $PwshAlias) { $PwshAlias }

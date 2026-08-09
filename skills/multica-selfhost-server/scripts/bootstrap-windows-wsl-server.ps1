@@ -4,7 +4,7 @@
 param(
     [string] $WslDistro = "Ubuntu-26.04",
     [string] $LinuxRepo = "",
-    [string] $Profile = "local",
+    [string] $Profile = "home",
     [string] $PublishedUrl = "",
     [ValidateRange(1, 65535)] [int] $GatewayPort = 8787,
     [switch] $AllowProxyCredentials
@@ -31,6 +31,17 @@ $WslUser = (Invoke-WslBash -Script "set -euo pipefail`nid -un" | Select-Object -
 if ($WslUser -notmatch '^[a-z_][a-z0-9_-]*$') { throw "Unsafe WSL user: $WslUser" }
 if ([string]::IsNullOrWhiteSpace($LinuxRepo)) { $LinuxRepo = "/home/$WslUser/multica" }
 if ($LinuxRepo -notmatch '^/[A-Za-z0-9._/-]+$') { throw "Invalid WSL repository path: $LinuxRepo" }
+$CacheEntries = @(
+    "TOPOLOGY=windows-wsl", "WSL_DISTRO=$WslDistro", "LINUX_REPO=$LinuxRepo",
+    "GATEWAY_PORT=$GatewayPort"
+)
+if ($PublishedUrl) { $CacheEntries += "PUBLISHED_URL=$PublishedUrl" }
+& (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile -Entry $CacheEntries *> $null
+$CachedProfile = (& (Join-Path $PSScriptRoot "profile-cache.ps1") show -Profile $Profile) | ConvertFrom-Json
+$Phase = [string]$CachedProfile.values.ONBOARDING_PHASE
+if ($Phase -notin @("tailscale-ready", "server-ready", "owner-registration-required", "cluster-finalizing", "complete")) {
+    throw "Tailscale readiness must be completed before server bootstrap. Run the readiness check first."
+}
 
 Write-Output "Installing or verifying Docker Engine inside $WslDistro..."
 $DockerInstall = @"
@@ -66,12 +77,10 @@ systemctl enable --now docker.service containerd.service
 "@
 Invoke-WslBash -Script $DockerInstall -Root
 
-$DockerProbe = "set -euo pipefail`ndocker version >/dev/null`ndocker compose version >/dev/null`ndocker pull hello-world:latest >/dev/null"
-try {
-    Invoke-WslBash -Script $DockerProbe
-} catch {
-    $AllowFlag = if ($AllowProxyCredentials) { "true" } else { "false" }
-    $ProxySetup = @"
+$DockerProbe = "set -euo pipefail`ndocker version >/dev/null`ndocker compose version >/dev/null"
+Invoke-WslBash -Script $DockerProbe
+$AllowFlag = if ($AllowProxyCredentials) { "true" } else { "false" }
+$ProxySetup = @"
 set -euo pipefail
 proxy="`${HTTPS_PROXY:-`${https_proxy:-}}"
 [ -n "`$proxy" ] || { echo 'No HTTPS proxy is available.' >&2; exit 30; }
@@ -90,9 +99,6 @@ chmod 0644 /etc/systemd/system/docker.service.d/http-proxy.conf
 systemctl daemon-reload
 systemctl restart docker
 "@
-    Invoke-WslBash -Script $ProxySetup -Root
-    Invoke-WslBash -Script $DockerProbe
-}
 
 Write-Output "Cloning or verifying the Multica server repository..."
 $ServerSetup = @"
@@ -108,10 +114,25 @@ case "`$origin" in
   https://github.com/multica-ai/multica.git|git@github.com:multica-ai/multica.git) ;;
   *) echo "Unexpected Multica origin: `$origin" >&2; exit 41 ;;
 esac
-make -C "`$repo" selfhost
-[ ! -f "`$repo/.env" ] || chmod 0600 "`$repo/.env"
+if [ ! -f "`$repo/.env" ]; then
+  cp "`$repo/.env.example" "`$repo/.env"
+  jwt="`$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')"
+  sed -i "s/^JWT_SECRET=.*/JWT_SECRET=`$jwt/" "`$repo/.env"
+fi
+chmod 0600 "`$repo/.env"
 "@
 Invoke-WslBash -Script $ServerSetup
+
+& (Join-Path $PSScriptRoot "apply-admission.ps1") -Profile $Profile `
+    -WslDistro $WslDistro -LinuxRepo $LinuxRepo
+if ($LASTEXITCODE -ne 0) { throw "Could not apply the cached admission policy." }
+$ComposePull = "set -euo pipefail`ndocker compose -f '$LinuxRepo/docker-compose.selfhost.yml' pull"
+try {
+    Invoke-WslBash -Script $ComposePull
+} catch {
+    Invoke-WslBash -Script $ProxySetup -Root
+    Invoke-WslBash -Script $ComposePull
+}
 
 $Starter = Join-Path $PSScriptRoot "start-windows-wsl-server.ps1"
 $StarterArguments = @{

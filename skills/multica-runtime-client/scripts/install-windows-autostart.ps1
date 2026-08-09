@@ -4,7 +4,7 @@
 param(
     [Parameter(Mandatory)] [string] $ServerUrl,
     [string] $AppUrl = "",
-    [string] $Workspace = "",
+    [Parameter(Mandatory)] [string] $Workspace,
     [string] $Profile = "remote",
     [string] $DeviceName = $env:COMPUTERNAME,
     [string] $RuntimeName = "",
@@ -16,6 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 if ([string]::IsNullOrWhiteSpace($AppUrl)) { $AppUrl = $ServerUrl }
 if ($Profile -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid Multica profile: $Profile" }
+if ([string]::IsNullOrWhiteSpace($Workspace)) { throw "Workspace is required." }
 if ([string]::IsNullOrWhiteSpace($RuntimeName)) { $RuntimeName = "$DeviceName runtime" }
 if ([string]::IsNullOrWhiteSpace($TaskName)) { $TaskName = "Multica-RuntimeClient-$Profile" }
 if ($TaskName -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid scheduled task name: $TaskName" }
@@ -32,6 +33,8 @@ Write-Output "Verifying the runtime client before registering persistence..."
     -DeviceName $DeviceName -RuntimeName $RuntimeName `
     -MaxConcurrentTasks $MaxConcurrentTasks -AgentTimeout $AgentTimeout
 if ($LASTEXITCODE -ne 0) { throw "Runtime client verification failed." }
+& (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile `
+    -Entry "AUTOSTART_APPROVED=true" *> $null
 
 $PwshAlias = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps\pwsh.exe"
 $PwshExe = if (Test-Path -LiteralPath $PwshAlias) { $PwshAlias }

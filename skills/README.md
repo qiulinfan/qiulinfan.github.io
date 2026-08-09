@@ -274,8 +274,8 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [multica-selfhost-server](./multica-selfhost-server/)：在 Windows + WSL 或 macOS 上部署唯一 Multica self-host 控制面、私网 HTTPS 和 invite-only 共享 workspace，再组合 `multica-runtime-client` 把服务器宿主机注册为首个 runtime、创建全 workspace 可调用的 agent 并完成端到端验收；后续机器不部署第二套 server。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来，现按控制面与执行面拆分但由本 Skill 统一引导。
-- [multica-runtime-client](./multica-runtime-client/)：在 server allowlist、workspace 邀请/成员资格和个人身份认证都通过后，把 Windows、macOS 或 Linux 机器注册为第 1/2/3/N 个执行节点，绑定全 workspace 可调用的 agent、验证真实任务并按确认配置登录自启动；它不共享人类/provider 凭据，也不运行 Docker 或第二套 server。
+- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS、精确邮箱与 workspace 准入、无凭据 client handoff、首 runtimes、升级备份和撤销；遇到 Tailscale、owner 或系统授权就结构化暂停。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
+- [multica-runtime-client](./multica-runtime-client/)：验证 same-tailnet 或 shared-machine Tailscale access、独立 Multica 身份与 workspace membership，按 workspace/daemon/runtime IDs 关联 Multica 自动发现的全部本机 online runtimes，创建 workspace agents、运行有界 smoke，并按确认配置 Windows、macOS 或 Linux 登录自启动；不询问、选择、登录或直接验证 provider CLI，也不部署第二套 server。
 - [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图且无 HTML/Pandoc 转码残留的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
 - [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。
 - [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。

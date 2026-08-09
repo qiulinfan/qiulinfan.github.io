@@ -6,11 +6,20 @@
 
 ```mermaid
 flowchart LR
-    Host["multica-selfhost-server<br/>唯一控制面"] --> Owner["独立 owner 身份<br/>共享 workspace"]
+    NL["用户自然语言<br/>无需说明操作系统"] --> Detect["只读平台探测<br/>Windows / macOS / Linux / WSL"]
+    Detect --> HostCache["server profile cache<br/>Git ignored / no secrets"]
+    HostCache --> TS{"Tailscale 登录 + HTTPS<br/>已就绪?"}
+    TS -->|否| TSStop["立即停止<br/>用户完成设置后再次调用"]
+    TSStop --> TS
+    TS -->|是| Host["multica-selfhost-server<br/>唯一控制面 + 私网 HTTPS"]
+    Host --> OwnerStop["打开 owner WebUI 后立即停止<br/>用户注册后再次调用"]
+    OwnerStop --> Owner["独立 owner 身份<br/>共享 workspace"]
     Owner --> First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
-    First --> FirstAgent["workspace 可调用 agent<br/>smoke task"]
-    Owner --> Gate["server allowlist<br/>workspace invite + 接受"]
-    Gate --> Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
+    First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
+    Owner --> Gate["server allowlist + workspace invite<br/>Tailscale tailnet / machine share"]
+    Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 两层状态"]
+    Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
+    ClientCache --> Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
     FirstAgent --> Pool["互信团队共享 agent 计算池"]
     MoreAgents --> Pool
@@ -19,17 +28,31 @@ flowchart LR
 [`multica-selfhost-server`](#skill-multica-selfhost-server) 建立唯一控制面和共享 workspace，
 并把服务器宿主机上的首个 runtime、workspace 可调用 agent 与真实 smoke task 设为初始
 集群的强制完成条件。Windows + WSL 中 server 位于 WSL Docker，首 runtime 位于 Windows
-宿主机；Mac 上二者同机但保持独立进程和恢复项。它把不含凭据的地址写入
+宿主机；macOS 与原生 Linux 上 server 和同平台 runtime 同机但保持独立进程和恢复项。
+WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭据的地址写入
 `connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
 宿主机执行面。
 
-后续朋友机器只有同时通过 server 邮箱 allowlist、目标 workspace 邀请/成员资格和自己的
-身份认证，才使用 `multica-runtime-client` 加入。知道 `server_url` 本身不构成许可；成员
-之间也不共享 Multica PAT、验证码、provider key 或系统账号。每台机器创建显式开放给整个
+Agent 自动探测拓扑、WSL 和 hostname；Multica 自动发现本机全部 providers，Skill 不询问、
+登录或直接验证 provider CLI。用户以自然语言提供 owner/成员邮箱、
+workspace、连接地址、私网发布与自启动偏好即可。Agent 先合并 Skill 内
+`.cache/<profile>/profile.env`，再自行执行脚本和验证，不把命令交回用户。两个 cache 都由
+各自 `.gitignore` 排除，只保存可恢复的非凭据配置；本轮明确值覆盖旧 cache，真实只读状态
+又优先于 cache。self-host 引导先于 Docker 检查 Tailscale：若登录、MagicDNS 或 HTTPS
+Certificates 需要人工操作，立即结束本轮并提示用户完成后再次调用；Tailscale 就绪后才启动
+server，打开 owner WebUI 又立即结束，owner 注册后再调用才完成 workspace、首 runtime、
+agent、90 秒内的 zero-tool smoke 与获授权的自启动。Agent 不在这些人工断点后台等待、轮询
+或重复执行安装。邮箱/浏览器、UAC/sudo 等其他不可代办交互采用相同断点语义。
+
+后续朋友机器只有同时通过 Tailscale tailnet 或 server machine share、server 邮箱 allowlist、
+目标 workspace 邀请/成员资格和自己的身份认证，才使用 `multica-runtime-client` 加入。owner
+为每位成员生成不含凭据的 handoff receipt；知道 `server_url` 本身不构成许可。每台机器先
+按 workspace ID、daemon ID 与 runtime IDs 关联 Multica 自动发现的本机 online runtimes，再创建显式开放给整个
 workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调度。所谓“完全信任”只
 表示团队有意共享这些 agents 的调用权，并接受任务在对应 runtime 本地权限内执行。
 
-每个客户端单独配置登录自启动，不克隆 server、不启动 Docker。每台设备的本地目录资源
+每个客户端单独配置登录自启动，不克隆 server、不启动 Docker，也不执行 provider 登录。
+每台设备的本地目录资源
 只属于自己的 daemon，跨设备项目优先使用 Git repository；撤销成员时同步移除 membership、
 allowlist、runtime 和 agent。
 

@@ -4,7 +4,7 @@
 param(
     [Parameter(Mandatory)] [string] $ServerUrl,
     [string] $AppUrl = "",
-    [string] $Workspace = "",
+    [Parameter(Mandatory)] [string] $Workspace,
     [string] $Profile = "remote",
     [string] $DeviceName = $env:COMPUTERNAME,
     [string] $RuntimeName = "",
@@ -36,6 +36,7 @@ if ([string]::IsNullOrWhiteSpace($AppUrl)) { $AppUrl = $ServerUrl }
 Assert-HttpUrl "ServerUrl" $ServerUrl
 Assert-HttpUrl "AppUrl" $AppUrl
 if ($Profile -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid Multica profile: $Profile" }
+if ([string]::IsNullOrWhiteSpace($Workspace)) { throw "Workspace is required." }
 if ([string]::IsNullOrWhiteSpace($DeviceName)) { throw "DeviceName cannot be empty." }
 if ([string]::IsNullOrWhiteSpace($RuntimeName)) { $RuntimeName = "$DeviceName runtime" }
 if ($AgentTimeout -notmatch '^(0|[0-9]+(?:ms|s|m|h))$') { throw "Invalid AgentTimeout: $AgentTimeout" }
@@ -84,32 +85,18 @@ try {
         --agent-timeout $AgentTimeout
     if ($LASTEXITCODE -ne 0) { throw "Could not start the Windows Multica daemon." }
 
-    $MatchingRuntimes = @()
+    $Verifier = Join-Path $PSScriptRoot "verify-runtime-client.ps1"
+    $Verification = $null
     for ($Attempt = 0; $Attempt -lt $TimeoutSeconds; $Attempt++) {
         try {
-            $Status = (& $MulticaExe daemon status --profile $Profile --output json 2>$null) | ConvertFrom-Json
-            $RuntimeIds = @($Status.workspaces | ForEach-Object { @($_.runtimes) })
-            if ($Status.status -eq "running" -and $RuntimeIds.Count -gt 0) {
-                $AllRuntimes = @((& $MulticaExe runtime list --profile $Profile --output json 2>$null) | ConvertFrom-Json)
-                $MatchingRuntimes = @($AllRuntimes | Where-Object {
-                    $_.id -in $RuntimeIds -and $_.status -eq "online"
-                })
-                if ($MatchingRuntimes.Count -gt 0) { break }
-            }
-        } catch {}
+            $Verification = & $Verifier -Workspace $Workspace -Profile $Profile -MulticaExe $MulticaExe
+            if ($LASTEXITCODE -eq 0) { break }
+        } catch { $Verification = $null }
         Start-Sleep -Seconds 1
     }
-    if ($MatchingRuntimes.Count -eq 0) {
-        throw "The daemon started, but none of its provider runtimes became online. Check the local provider CLI."
-    }
-
-    & $MulticaExe daemon status --profile $Profile --output json
-    $MatchingRuntimes | ConvertTo-Json -Depth 8
-    if ([string]::IsNullOrWhiteSpace($Workspace)) {
-        Write-SafeLog "Windows runtime client is online."
-    } else {
-        Write-SafeLog "Windows runtime client is online in workspace '$Workspace'."
-    }
+    if (-not $Verification) { throw "Multica did not report an online local runtime in the target workspace." }
+    $Verification
+    Write-SafeLog "Windows runtime client is online in workspace '$Workspace'."
 } catch {
     Write-SafeLog "Startup failed: $($_.Exception.Message)"
     throw

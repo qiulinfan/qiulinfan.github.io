@@ -6,13 +6,14 @@ set -eu
 script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
 starter="$script_dir/start-macos-server.sh"
 multica_repo=${1:-"$HOME/multica"}
-profile=${2:-local}
+profile=${2:-home}
 published_url=${3:-}
 gateway_port=${4:-8787}
 case "$profile" in *[!A-Za-z0-9._-]*|'') echo "Invalid profile: $profile" >&2; exit 2 ;; esac
 test -f "$starter" || { echo "Starter not found: $starter" >&2; exit 3; }
 
 /bin/sh "$starter" "$multica_repo" "$profile" "$published_url" 120 "$gateway_port"
+/bin/sh "$script_dir/profile-cache.sh" set "$profile" "SERVER_AUTOSTART_APPROVED=true" >/dev/null
 
 label="dev.multica.selfhost-server.$profile"
 agent_dir="$HOME/Library/LaunchAgents"

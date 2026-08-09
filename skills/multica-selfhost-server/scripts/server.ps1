@@ -5,7 +5,7 @@ param(
     [Parameter(Position = 0)] [ValidateSet("up", "down", "status", "logs", "help")] [string] $Command = "help",
     [Parameter(Position = 1)] [string] $Service = "backend",
     [string] $MulticaRepo = $env:MULTICA_REPO,
-    [string] $Profile = "local",
+    [string] $Profile = "home",
     [string] $PublishedUrl = "",
     [ValidateRange(1, 65535)] [int] $GatewayPort = 8787,
     [ValidateRange(10, 600)] [int] $TimeoutSeconds = 120,
@@ -35,6 +35,12 @@ if ($PublishedUrl) {
 $GatewayUrl = "http://127.0.0.1:$GatewayPort"
 $EffectiveOrigin = if ($PublishedUrl) { $PublishedUrl } else { $GatewayUrl }
 $GatewayContainer = "multica-$Profile-gateway"
+if ($Command -ne "help") {
+    & (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile -Entry @(
+        "TOPOLOGY=windows-native", "SERVER_REPO=$MulticaRepo", "GATEWAY_PORT=$GatewayPort",
+        "PUBLISHED_URL=$PublishedUrl"
+    ) *> $null
+}
 
 function Invoke-Compose([string[]] $Arguments) {
     Push-Location $MulticaRepo
@@ -50,6 +56,11 @@ function Get-Port([string] $Name, [int] $ContainerPort, [switch] $AllowMissing) 
     if ($LASTEXITCODE -ne 0 -or -not $Output) {
         if ($AllowMissing) { return $null }
         throw "Could not resolve $Name/$ContainerPort."
+    }
+    foreach ($Binding in @($Output)) {
+        if ([string]$Binding -notmatch '^(127\.0\.0\.1|\[::1\]):[0-9]{1,5}\s*$') {
+            throw "Unsafe host binding for $Name/${ContainerPort}: $Binding"
+        }
     }
     $Match = [regex]::Match([string]($Output | Select-Object -Last 1), ':([0-9]{1,5})\s*$')
     if (-not $Match.Success) {
@@ -150,13 +161,25 @@ function Write-State([int] $BackendPort, [int] $FrontendPort, [Nullable[int]] $D
 
 switch ($Command) {
     "up" {
+        $ExistingState = Join-Path $env:USERPROFILE ".multica\selfhost-server\$Profile\state.json"
+        if (-not (Test-Path -LiteralPath $ExistingState)) {
+            $CachedProfile = (& (Join-Path $PSScriptRoot "profile-cache.ps1") show -Profile $Profile) | ConvertFrom-Json
+            $Phase = [string]$CachedProfile.values.ONBOARDING_PHASE
+            if ($Phase -notin @("tailscale-ready", "server-ready", "owner-registration-required", "cluster-finalizing", "complete")) {
+                throw "Tailscale readiness must be completed before initial server startup."
+            }
+        }
         docker info *> $null
         if ($LASTEXITCODE -ne 0) { throw "Docker engine is not running." }
+        & (Join-Path $PSScriptRoot "apply-admission.ps1") -Profile $Profile `
+            -ServerRepo $MulticaRepo
+        if ($LASTEXITCODE -ne 0) { throw "Could not apply the cached admission policy." }
         Set-SelfHostOrigin $EffectiveOrigin
         Invoke-Compose @("up", "-d")
         $BackendPort = Get-Port "backend" 8080
         $FrontendPort = Get-Port "frontend" 3000
         $DatabasePort = Get-Port "postgres" 5432 -AllowMissing
+        if ($null -ne $DatabasePort) { throw "PostgreSQL must not be published on the host." }
         Start-SameOriginGateway
         $Ready = $false
         for ($Attempt = 0; $Attempt -lt $TimeoutSeconds; $Attempt++) {
@@ -205,6 +228,6 @@ switch ($Command) {
         Invoke-Compose $Arguments
     }
     default {
-        Write-Output "server.ps1 up|down|status|logs [backend|frontend|postgres] -MulticaRepo <path> [-Profile local]"
+        Write-Output "server.ps1 up|down|status|logs [backend|frontend|postgres] -MulticaRepo <path> [-Profile home]"
     }
 }

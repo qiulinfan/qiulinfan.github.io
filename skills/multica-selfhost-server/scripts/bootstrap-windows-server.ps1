@@ -3,7 +3,7 @@
 [CmdletBinding()]
 param(
     [string] $MulticaRepo = $env:MULTICA_REPO,
-    [string] $Profile = "local",
+    [string] $Profile = "home",
     [string] $PublishedUrl = "",
     [ValidateRange(1, 65535)] [int] $GatewayPort = 8787,
     [switch] $Clone,
@@ -16,6 +16,15 @@ $ComposeFile = "docker-compose.selfhost.yml"
 function Have([string] $Name) { return [bool](Get-Command $Name -ErrorAction SilentlyContinue) }
 
 if ([string]::IsNullOrWhiteSpace($MulticaRepo)) { throw "Specify -MulticaRepo." }
+& (Join-Path $PSScriptRoot "profile-cache.ps1") set -Profile $Profile -Entry @(
+    "TOPOLOGY=windows-native", "SERVER_REPO=$MulticaRepo", "GATEWAY_PORT=$GatewayPort",
+    "PUBLISHED_URL=$PublishedUrl"
+) *> $null
+$CachedProfile = (& (Join-Path $PSScriptRoot "profile-cache.ps1") show -Profile $Profile) | ConvertFrom-Json
+$Phase = [string]$CachedProfile.values.ONBOARDING_PHASE
+if ($Phase -notin @("tailscale-ready", "server-ready", "owner-registration-required", "cluster-finalizing", "complete")) {
+    throw "Tailscale readiness must be completed before clone, Docker installation, or server startup."
+}
 if (Test-Path -LiteralPath (Join-Path $MulticaRepo $ComposeFile)) {
     Write-Output "Multica server checkout found: $MulticaRepo"
 } elseif ($Clone) {
@@ -25,6 +34,29 @@ if (Test-Path -LiteralPath (Join-Path $MulticaRepo $ComposeFile)) {
     if ($LASTEXITCODE -ne 0) { throw "Multica server clone failed." }
 } else {
     throw "Server checkout is missing; pass -Clone or provide an existing checkout."
+}
+
+$EnvironmentPath = Join-Path $MulticaRepo ".env"
+if (-not (Test-Path -LiteralPath $EnvironmentPath)) {
+    $ExamplePath = Join-Path $MulticaRepo ".env.example"
+    if (-not (Test-Path -LiteralPath $ExamplePath)) { throw "Multica .env.example is missing." }
+    Copy-Item -LiteralPath $ExamplePath -Destination $EnvironmentPath
+    $Bytes = New-Object byte[] 32
+    $Generator = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try { $Generator.GetBytes($Bytes) } finally { $Generator.Dispose() }
+    $Jwt = -join ($Bytes | ForEach-Object { $_.ToString("x2") })
+    $Lines = [Collections.Generic.List[string]]::new()
+    foreach ($Line in [IO.File]::ReadAllLines($EnvironmentPath)) { $Lines.Add($Line) }
+    $Found = $false
+    for ($Index = 0; $Index -lt $Lines.Count; $Index++) {
+        if ($Lines[$Index] -match '^JWT_SECRET=') {
+            $Lines[$Index] = "JWT_SECRET=$Jwt"
+            $Found = $true
+            break
+        }
+    }
+    if (-not $Found) { $Lines.Add("JWT_SECRET=$Jwt") }
+    [IO.File]::WriteAllLines($EnvironmentPath, $Lines, [Text.UTF8Encoding]::new($false))
 }
 
 if (-not (Have "docker")) {

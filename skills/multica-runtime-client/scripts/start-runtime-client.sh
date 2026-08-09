@@ -3,6 +3,18 @@
 
 set -eu
 
+kernel=$(uname -s)
+case "$kernel" in
+  Darwin) ;;
+  Linux)
+    if [ -n "${WSL_INTEROP:-}" ] || { [ -r /proc/sys/kernel/osrelease ] && grep -qi microsoft /proc/sys/kernel/osrelease; }; then
+      echo "WSL detected. Start the Windows-native runtime instead." >&2
+      exit 6
+    fi
+    ;;
+  *) echo "Unsupported operating system: $kernel" >&2; exit 3 ;;
+esac
+
 server_url=${1:-}
 profile=${2:-remote}
 device_name=${3:-}
@@ -19,6 +31,7 @@ export PATH
 case "$server_url" in http://*|https://*) ;; *) echo "Server URL must be absolute http(s)." >&2; exit 2 ;; esac
 case "$app_url" in http://*|https://*) ;; *) echo "App URL must be absolute http(s)." >&2; exit 2 ;; esac
 case "$profile" in *[!A-Za-z0-9._-]*|'') echo "Invalid Multica profile: $profile" >&2; exit 2 ;; esac
+[ -n "$workspace" ] || { echo "Workspace is required." >&2; exit 2; }
 case "$max_concurrent_tasks" in ''|*[!0-9]*) echo "Invalid task limit." >&2; exit 2 ;; esac
 case "$timeout_seconds" in ''|*[!0-9]*) echo "Invalid timeout." >&2; exit 2 ;; esac
 if [ "$max_concurrent_tasks" -lt 1 ] || [ "$max_concurrent_tasks" -gt 50 ]; then
@@ -75,24 +88,17 @@ multica daemon start --profile "$profile" \
 daemon_ready=false
 attempt=0
 while [ "$attempt" -lt "$timeout_seconds" ]; do
-  status_json=$(multica daemon status --profile "$profile" --output json 2>/dev/null || true)
-  if printf '%s\n' "$status_json" | grep -q '"status"[[:space:]]*:[[:space:]]*"running"' &&
-     printf '%s\n' "$status_json" | awk '
-       /"runtimes"[[:space:]]*:[[:space:]]*\[/ { in_list=1; next }
-       in_list && /"[0-9a-fA-F-]+"/ { found=1 }
-       in_list && /\]/ { in_list=0 }
-       END { exit(found ? 0 : 1) }
-     '; then daemon_ready=true; break; fi
+  if [ -n "$workspace" ] && /bin/sh "$(dirname "$0")/verify-runtime-client.sh" "$workspace" "$profile" >/dev/null 2>&1; then
+    daemon_ready=true; break
+  fi
   attempt=$((attempt + 1)); sleep 1
 done
 if [ "$daemon_ready" != true ]; then
-  echo "Daemon started, but no local provider runtime registered." >&2
-  echo "Install and log in to the intended provider CLI, then retry." >&2
+  echo "Multica did not report an online local runtime in the target workspace." >&2
   exit 5
 fi
 
-multica daemon status --profile "$profile" --output json
-multica runtime list --profile "$profile" --output json
+/bin/sh "$(dirname "$0")/verify-runtime-client.sh" "$workspace" "$profile"
 if [ -n "$workspace" ]; then
   echo "Runtime client is online in workspace '$workspace': $device_name / $runtime_name"
 else

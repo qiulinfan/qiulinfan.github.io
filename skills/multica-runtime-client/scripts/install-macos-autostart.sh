@@ -3,6 +3,8 @@
 
 set -eu
 
+[ "$(uname -s)" = Darwin ] || { echo "This installer is only for macOS." >&2; exit 3; }
+
 server_url=${1:-}
 profile=${2:-remote}
 device_name=${3:-}
@@ -13,12 +15,15 @@ agent_timeout=${7:-0s}
 workspace=${8:-}
 
 case "$profile" in *[!A-Za-z0-9._-]*|'') echo "Invalid Multica profile: $profile" >&2; exit 2 ;; esac
+[ -n "$workspace" ] || { echo "Workspace is required." >&2; exit 2; }
 script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
 starter="$script_dir/start-runtime-client.sh"
 if [ ! -f "$starter" ]; then echo "Starter not found: $starter" >&2; exit 3; fi
 
 /bin/sh "$starter" "$server_url" "$profile" "$device_name" "$runtime_name" \
   "$max_concurrent_tasks" "$app_url" 120 "$agent_timeout" "$workspace"
+/bin/sh "$script_dir/profile-cache.sh" set "$profile" \
+  "PLATFORM=macos" "AUTOSTART_APPROVED=true" >/dev/null
 
 if [ -z "$device_name" ]; then device_name=$(scutil --get ComputerName 2>/dev/null || hostname); fi
 if [ -z "$runtime_name" ]; then runtime_name="$device_name runtime"; fi

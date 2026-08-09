@@ -4,7 +4,9 @@
 param(
     [Parameter(Mandatory)] [string] $ServerUrl,
     [string] $AppUrl = "",
-    [string] $Workspace = "",
+    [Parameter(Mandatory)] [string] $Workspace,
+    [string] $IdentityEmail = "",
+    [ValidateSet("same-tailnet", "shared-machine")] [string] $TailscaleAccessMode = "same-tailnet",
     [string] $Profile = "remote",
     [string] $CallbackHost = "127.0.0.1",
     [string] $DeviceName = $env:COMPUTERNAME,
@@ -31,7 +33,23 @@ if ([string]::IsNullOrWhiteSpace($AppUrl)) { $AppUrl = $ServerUrl }
 Assert-HttpUrl "ServerUrl" $ServerUrl
 Assert-HttpUrl "AppUrl" $AppUrl
 if ($Profile -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid Multica profile: $Profile" }
+if ([string]::IsNullOrWhiteSpace($Workspace)) { throw "Workspace is required." }
+if ($Workspace -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid workspace reference." }
 if ([string]::IsNullOrWhiteSpace($RuntimeName)) { $RuntimeName = "$DeviceName runtime" }
+
+$CacheScript = Join-Path $PSScriptRoot "profile-cache.ps1"
+$CacheEntries = @(
+    "SERVER_URL=$ServerUrl", "APP_URL=$AppUrl", "WORKSPACE=$Workspace",
+    "INVITATION_STATUS=unknown", "PLATFORM=windows", "DEVICE_NAME=$DeviceName", "RUNTIME_NAME=$RuntimeName",
+    "TAILSCALE_ACCESS_MODE=$TailscaleAccessMode", "TAILSCALE_ACCESS_STATUS=unknown",
+    "MAX_CONCURRENT_TASKS=$MaxConcurrentTasks", "AGENT_TIMEOUT=$AgentTimeout"
+)
+if ($IdentityEmail) { $CacheEntries += "IDENTITY_EMAIL=$IdentityEmail" }
+& $CacheScript set -Profile $Profile -Entry $CacheEntries *> $null
+
+$AccessCheck = Join-Path $PSScriptRoot "check-windows-tailscale-access.ps1"
+& $AccessCheck -ServerUrl $ServerUrl -Profile $Profile -AccessMode $TailscaleAccessMode
+if ($LASTEXITCODE -ne 0) { throw "Tailscale access to the Multica server is not ready." }
 
 if (-not (Test-Path -LiteralPath $MulticaExe)) {
     $Existing = Get-Command multica.exe -ErrorAction SilentlyContinue
@@ -69,12 +87,23 @@ if ($LASTEXITCODE -ne 0) {
     if ($LASTEXITCODE -ne 0) { throw "Interactive Multica login failed." }
 }
 
+if ($IdentityEmail) {
+    $AuthStatus = (& $MulticaExe auth status --profile $Profile 2>&1) -join "`n"
+    if ($LASTEXITCODE -ne 0) { throw "Could not verify the authenticated Multica identity." }
+    $IdentityMatch = [regex]::Match($AuthStatus, '(?im)^User:\s+.*\(([^()\s]+@[^()\s]+)\)\s*$')
+    if (-not $IdentityMatch.Success) { throw "Could not parse the authenticated Multica email." }
+    if (-not $IdentityMatch.Groups[1].Value.Equals($IdentityEmail, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Authenticated Multica email does not match IdentityEmail."
+    }
+}
+
 if (-not [string]::IsNullOrWhiteSpace($Workspace)) {
     Write-Output "Verifying membership and selecting workspace '$Workspace'..."
     & $MulticaExe workspace switch $Workspace --profile $Profile
     if ($LASTEXITCODE -ne 0) {
         throw "The authenticated user is not an accepted member of workspace '$Workspace'."
     }
+    & $CacheScript set -Profile $Profile -Entry "INVITATION_STATUS=accepted" *> $null
 }
 
 $Starter = Join-Path $PSScriptRoot "start-windows-runtime-client.ps1"
@@ -84,4 +113,12 @@ $Starter = Join-Path $PSScriptRoot "start-windows-runtime-client.ps1"
     -MaxConcurrentTasks $MaxConcurrentTasks -AgentTimeout $AgentTimeout
 if ($LASTEXITCODE -ne 0) { throw "Runtime client verification failed." }
 
-Write-Output "This machine is registered as a Multica runtime client."
+[ordered]@{
+    schema_version = 1
+    status = "ready"
+    phase = "runtime-client-ready"
+    server_url = $ServerUrl.TrimEnd('/')
+    workspace = $Workspace
+    identity_email = $IdentityEmail
+    tailscale_access_mode = $TailscaleAccessMode
+} | ConvertTo-Json -Compress
