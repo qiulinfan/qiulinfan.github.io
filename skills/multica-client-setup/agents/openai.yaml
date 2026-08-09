@@ -1,0 +1,4 @@
+interface:
+  display_name: "Multica Client Setup"
+  short_description: "Set up a device for private Multica access"
+  default_prompt: "Use $multica-client-setup to set up this device from whatever Multica Server or owner handoff details I have."

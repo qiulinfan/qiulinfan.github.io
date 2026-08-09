@@ -24,7 +24,7 @@ manual() {
   client=${2:-unknown}
   mode=${3:-unknown}
   action=${4:-configure_vpn_split_routing}
-  printf '{"schema_version":1,"status":"manual_action_required","phase":"vpn-routing-required","action":"%s","reason":"%s","vpn_client":"%s","vpn_mode":"%s","required_direct":"*.ts.net,100.64.0.0/10,fd7a:115c:a1e0::/48","background_work":false,"resume_hint":"rerun_runtime_client"}\n' \
+  printf '{"schema_version":1,"status":"manual_action_required","phase":"vpn-routing-required","action":"%s","reason":"%s","vpn_client":"%s","vpn_mode":"%s","required_direct":"*.ts.net,100.64.0.0/10,fd7a:115c:a1e0::/48","background_work":false,"resume_hint":"rerun_client_setup"}\n' \
     "$action" "$reason" "$client" "$mode"
   exit 7
 }

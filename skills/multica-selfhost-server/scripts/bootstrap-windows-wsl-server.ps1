@@ -141,4 +141,4 @@ $StarterArguments = @{
 if ($PublishedUrl) { $StarterArguments.PublishedUrl = $PublishedUrl }
 & $Starter @StarterArguments
 if ($LASTEXITCODE -ne 0) { throw "Self-host server verification failed." }
-Write-Output "Multica self-host server is ready. Continue with multica-runtime-client to register this host as the first runtime."
+Write-Output "Multica self-host server is ready. Continue with multica-client-setup to register this host as the first runtime."

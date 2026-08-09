@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Runtime Client"
-  short_description: "Guided Multica onboarding with VPN diagnostics"
-  default_prompt: "Use $multica-runtime-client to guide me through owner admission, diagnose any VPN conflict, and join this device safely."
+  short_description: "Run and monitor work on configured Multica agents"
+  default_prompt: "Use $multica-runtime-client to run this task on an available Multica agent and report the verified result."

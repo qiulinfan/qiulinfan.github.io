@@ -37,7 +37,7 @@ flowchart LR
     Owner --> FirstVPN{"首 runtime 打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
     FirstVPN -->|否| FirstSplit["持久 split routing<br/>私网直连 + 公网代理探测"]
     FirstSplit --> FirstVPN
-    FirstVPN -->|是| First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
+    FirstVPN -->|是| First["multica-client-setup<br/>服务器宿主机首个 runtime"]
     First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
     Invitee["成员提出任意接入问题<br/>无需理解 workspace / tailnet"] --> Guide["服主 Skill 收集成员事实<br/>生成服主操作清单"]
     Guide --> Scope{"仅需 Multica<br/>还是加入更广私网?"}
@@ -51,10 +51,12 @@ flowchart LR
     ClientCache --> ClientVPN{"客户端打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
     ClientVPN -->|否| ClientSplit["识别客户端与模式<br/>适配器或证据化人工排障"]
     ClientSplit --> ClientVPN
-    ClientVPN -->|是| Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
+    ClientVPN -->|是| Clients["multica-client-setup<br/>朋友机器第 2/3/N 个 runtime"]
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
     FirstAgent --> Pool["互信团队共享 agent 计算池"]
     MoreAgents --> Pool
+    Work["成员自然语言工作"] --> RuntimeClient["multica-runtime-client<br/>agent / issue / task"]
+    RuntimeClient --> Pool
 ```
 
 [`multica-selfhost-server`](#skill-multica-selfhost-server) 建立唯一控制面和共享 workspace，
@@ -62,7 +64,7 @@ flowchart LR
 集群的强制完成条件。Windows + WSL 中 server 位于 WSL Docker，首 runtime 位于 Windows
 宿主机；macOS 与原生 Linux 上 server 和同平台 runtime 同机但保持独立进程和恢复项。
 WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭据的地址写入
-`connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
+`connection.json`，再委派 [`multica-client-setup`](#skill-multica-client-setup) 配置
 宿主机执行面。
 
 服主使用 `multica-selfhost-server` 承接成员提出的任何接入问题。Skill 向服主收集成员的
@@ -94,7 +96,7 @@ agent、90 秒内的 zero-tool smoke 与获授权的自启动。Agent 不在这�
 或重复执行安装。邮箱/浏览器、UAC/sudo 等其他不可代办交互采用相同断点语义。
 
 后续朋友机器只有同时通过 Tailscale tailnet 或 server machine share、server 邮箱 allowlist、
-目标 workspace 邀请/成员资格和自己的身份认证，才使用 `multica-runtime-client` 加入。owner
+目标 workspace 邀请/成员资格和自己的身份认证，才使用 `multica-client-setup` 加入。owner
 为每位成员生成不含凭据、但明确记录固定码 `114514` 的 handoff receipt；固定码不是授权
 边界，知道 `server_url` 本身也不构成许可。每台机器先
 按 workspace ID、daemon ID 与 runtime IDs 关联 Multica 自动发现的本机 online runtimes，再创建显式开放给整个
@@ -106,9 +108,15 @@ workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调�
 只属于自己的 daemon，跨设备项目优先使用 Git repository；撤销成员时同步移除 membership、
 allowlist、runtime 和 agent。
 
+客户端完成接入后，日常工作改由 [`multica-runtime-client`](#skill-multica-runtime-client)
+承接。它只读取已经配置好的 profile、workspace、agents 和 online runtimes，把自然语言请求
+整理为一个可验收 issue，以完整 agent ID 防重复地入队一次，再通过 runs 和 messages 监控、
+续接、取消或按授权 rerun。安装、身份、membership、Tailscale/VPN、初始 agent 暴露和自启动
+仍属于 `multica-client-setup`，两者不互相兜底执行。
+
 ### 中文调用示例
 
-以下文字是仓库外层的个人速查模板，不属于两个 Skill 本体。示例中的邮箱、workspace 和 URL 要换成
+以下文字是仓库外层的个人速查模板，不属于三个 Skill 本体。示例中的邮箱、workspace 和 URL 要换成
 真实值；不要在提示中粘贴 token、一次性验证码、cookie、邀请密钥或 Tailscale share link。
 Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
@@ -131,30 +139,37 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
 成员还没有任何信息：
 
-> 使用 `$multica-runtime-client` 引导我加入服主的 Multica。我还没有 Server URL 或邀请信息；请告诉
+> 使用 `$multica-client-setup` 引导我加入服主的 Multica。我还没有 Server URL 或邀请信息；请告诉
 > 我需要把什么信息发给服主、向服主索取什么，并在服主完成准入前暂停。
 
 成员只知道 Server URL：
 
-> 使用 `$multica-runtime-client` 引导我加入 `https://server.tailnet.ts.net/`。我不知道 workspace 或
+> 使用 `$multica-client-setup` 引导我加入 `https://server.tailnet.ts.net/`。我不知道 workspace 或
 > Tailscale access mode，也不需要替服主选择；请收集我的 Multica email，并生成给服主的准入请求。
 
 为新设备加入 runtime：
 
-> 使用 `$multica-runtime-client` 把这台 Mac 加入服主 handoff 指定的 Server、workspace 和
+> 使用 `$multica-client-setup` 把这台 Mac 加入服主 handoff 指定的 Server、workspace 和
 > Tailscale access mode。我会使用自己的 Tailscale 与 Multica 账号。把 Multica 自动发现的
 > 全部本机 online runtimes 开放给 workspace，并运行有界 smoke；不要询问或验证 provider。
 
 继续客户端登录流程：
 
-> 继续使用 `$multica-runtime-client` 完成这台设备的加入流程。读取现有 profile cache，验证我的
+> 继续使用 `$multica-client-setup` 完成这台设备的加入流程。读取现有 profile cache，验证我的
 > Multica 身份与 workspace membership，然后从第一个未完成阶段继续，不要重复创建 agent 或 issue。
 
 排查 runtime offline：
 
 > 使用 `$multica-runtime-client` 排查为什么这台设备在 `trusted-team` 中显示 runtime offline。
-> 按 Tailscale reachability、Multica identity、workspace membership、daemon、runtime verifier、
-> agent access、smoke 的顺序，只处理第一个失败点。provider 不属于排查步骤。
+> 读取已经配置好的 profile，按 workspace、agent permission/status、runtime online、daemon、
+> issue、task、messages 的顺序只处理第一个失败点；若发现安装、身份、membership 或网络前提
+> 缺失，就交回 `$multica-client-setup`。provider 不属于排查步骤。
+
+在已配置的 agent 上执行日常工作：
+
+> 使用 `$multica-runtime-client` 在 `trusted-team` 中选择与当前仓库和平台匹配的 online agent，
+> 把“修复现有测试失败并运行相关验证”整理成一个带验收条件的 issue，只入队一次；读取 runs 和
+> messages 直到有界等待结束，并返回 workspace、agent、issue、task ID 与可核验结果。
 
 升级并验证服务器：
 

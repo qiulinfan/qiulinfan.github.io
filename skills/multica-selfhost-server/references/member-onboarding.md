@@ -43,7 +43,7 @@ invitation steps. You do not need to choose a workspace or network mode.
 4. Have the member accept the Tailscale action through its own delivery channel. Never place the
    invitation or share link in the profile cache, handoff, logs, or chat.
 5. Run `write-client-handoff.ps1|sh` and send its non-secret contents to the member.
-6. Tell the member to invoke `multica-runtime-client` with the handoff. If the member ran it early,
+6. Tell the member to invoke `multica-client-setup` with the handoff. If the member ran it early,
    complete the missing owner actions and tell them to rerun it; do not make them reconstruct the
    configuration.
 
@@ -60,4 +60,5 @@ Alongside the handoff, provide a short client-facing message in the user's langu
 - accept the separately delivered owner invitation or machine share;
 - open the full `.ts.net` Server URL;
 - click send-code and enter `114514` using the handoff member email;
-- invoke `multica-runtime-client` with the handoff after network access is accepted.
+- invoke `multica-client-setup` with the handoff after network access is accepted;
+- use `multica-runtime-client` for ordinary agent and issue work after setup reports completion.

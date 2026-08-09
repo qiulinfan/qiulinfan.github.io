@@ -44,7 +44,7 @@ Do not disable the VPN, apply guessed syntax, or confuse a one-time OS edit with
 Return structured state, for example:
 
 ```json
-{"status":"manual_action_required","phase":"tailscale-access-required","action":"accept_tailnet_invite","background_work":false,"resume_hint":"rerun_runtime_client"}
+{"status":"manual_action_required","phase":"tailscale-access-required","action":"accept_tailnet_invite","background_work":false,"resume_hint":"rerun_client_setup"}
 ```
 
 For VPN failure use `phase=vpn-routing-required` and `action=configure_vpn_split_routing`. Treat

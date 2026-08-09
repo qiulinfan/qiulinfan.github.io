@@ -56,7 +56,7 @@ events. Otherwise use guided manual configuration.
 
 For `guided_manual` or `unsupported`, return `manual_action_required` with
 `phase=vpn-routing-required`, `action=configure_vpn_split_routing`, detected client/mode, required
-direct destinations, `background_work=false`, and `resume_hint=rerun_runtime_client`. Installing a
+direct destinations, `background_work=false`, and `resume_hint=rerun_client_setup`. Installing a
 watcher, LaunchAgent, service, scheduled task, or other persistent repair loop always requires
 explicit authorization.
 

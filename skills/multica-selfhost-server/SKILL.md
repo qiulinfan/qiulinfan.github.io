@@ -1,12 +1,12 @@
 ---
 name: multica-selfhost-server
-description: Detect Windows with WSL, macOS, or native Linux and use a resumable state machine to deploy, operate, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the loopback-only backend, frontend and gateway, Tailscale Serve, fixed-code authentication, exact-email and workspace admission, owner-led member intake, Tailscale access decisions, credential-free handoffs, autostart, host runtimes, agents, and smoke tasks. Use when a trusted group needs one private Server; when the owner needs help answering any client onboarding question, deciding workspace or network scope, or preparing a complete handoff; or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-runtime-client only after an owner handoff exists. Multica detects providers automatically; this Skill never asks about, signs in to, or verifies provider CLIs.
+description: Detect Windows with WSL, macOS, or native Linux and use a resumable state machine to deploy, operate, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the loopback-only backend, frontend and gateway, Tailscale Serve, fixed-code authentication, exact-email and workspace admission, owner-led member intake, Tailscale access decisions, credential-free handoffs, autostart, host runtimes, agents, and smoke tasks. Use when a trusted group needs one private Server; when the owner needs help answering any client onboarding question, deciding workspace or network scope, or preparing a complete handoff; or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-client-setup only after an owner handoff exists, then use multica-runtime-client for ordinary work. Multica detects providers automatically; this Skill never asks about, signs in to, or verifies provider CLIs.
 ---
 
 # Multica self-host server
 
-Build the only control plane for a trusted group and delegate every execution node to
-`multica-runtime-client`. Ask the user to handle only non-delegable Tailscale, Multica identity, and
+Build the only control plane for a trusted group and delegate every execution-node onboarding to
+`multica-client-setup`. Ask the user to handle only non-delegable Tailscale, Multica identity, and
 system authorization interactions. Never deploy a second server.
 
 ## Non-negotiable rules
@@ -119,11 +119,11 @@ email, optional Tailscale identity email, owner-selected access mode, both invit
 the fixed code `114514`. Also give the owner a ready-to-send client message that says only what the
 client must install, accept, open, and run. The fixed code is public configuration; never write a
 generated code, share link, session token, or invitation secret to the receipt. Invoke
-`multica-runtime-client` only after this owner handoff exists.
+`multica-client-setup` only after this owner handoff exists.
 
 ### 5. Finalize host runtimes
 
-Compose `multica-runtime-client` and use the host's own Multica identity. Register Windows-native
+Compose `multica-client-setup` and use the host's own Multica identity. Register Windows-native
 runtimes for Windows with WSL, and same-platform runtimes on macOS or Linux. Multica automatically
 detects all providers; do not select, sign in to, or verify a provider CLI.
 

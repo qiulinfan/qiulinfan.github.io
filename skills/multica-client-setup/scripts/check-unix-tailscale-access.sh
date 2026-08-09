@@ -24,7 +24,7 @@ manual() {
   /bin/sh "$cache_script" set "$profile" \
     "TAILSCALE_ACCESS_MODE=$access_mode" "TAILSCALE_ACCESS_STATUS=pending" >/dev/null
   if [ "$access_mode" = same-tailnet ]; then action=accept_tailnet_invite; else action=accept_machine_share; fi
-  printf '{"schema_version":1,"status":"manual_action_required","phase":"tailscale-access-required","action":"%s","reason":"%s","background_work":false,"resume_hint":"rerun_runtime_client"}\n' \
+  printf '{"schema_version":1,"status":"manual_action_required","phase":"tailscale-access-required","action":"%s","reason":"%s","background_work":false,"resume_hint":"rerun_client_setup"}\n' \
     "$action" "$reason"
   exit 7
 }
