@@ -21,6 +21,14 @@ after authorization. Do not enable linger automatically. Make WSL detection fail
 
 ## Port invariant
 
-Every backend/frontend binding returned by `docker compose port` must be `127.0.0.1` or `::1`.
-PostgreSQL must return no host binding. Bind the Caddy gateway itself only to loopback and publish it
-with Tailscale Serve HTTPS. Do not write successful state or a receipt when this invariant fails.
+Resolve each Compose service container and inspect its published bindings with `docker port`.
+Every backend/frontend binding must be `127.0.0.1` or `::1`; PostgreSQL must return no host binding.
+Bind the Caddy gateway itself only to loopback and publish it with Tailscale Serve HTTPS. Do not
+write successful state or a receipt when this invariant fails.
+
+## Private-instance authentication
+
+Every platform starter sets `APP_ENV=development` and `MULTICA_DEV_VERIFICATION_CODE=114514` before
+starting Compose. Treat `114514` as public instance configuration, include it in client handoffs,
+and do not configure SMTP or read generated verification codes from logs. Exact-email admission and
+workspace membership remain separate authorization checks.

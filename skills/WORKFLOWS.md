@@ -12,12 +12,12 @@ flowchart LR
     TS -->|否| TSStop["立即停止<br/>用户完成设置后再次调用"]
     TSStop --> TS
     TS -->|是| Host["multica-selfhost-server<br/>唯一控制面 + 私网 HTTPS"]
-    Host --> OwnerStop["打开 owner WebUI 后立即停止<br/>用户注册后再次调用"]
+    Host --> OwnerStop["打开 owner WebUI 后立即停止<br/>使用固定码 114514 注册"]
     OwnerStop --> Owner["独立 owner 身份<br/>共享 workspace"]
     Owner --> First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
     First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
     Owner --> Gate["server allowlist + workspace invite<br/>Tailscale tailnet / machine share"]
-    Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 两层状态"]
+    Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 固定码 + 两层状态"]
     Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
     ClientCache --> Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
@@ -41,13 +41,15 @@ workspace、连接地址、私网发布与自启动偏好即可。Agent 先合�
 各自 `.gitignore` 排除，只保存可恢复的非凭据配置；本轮明确值覆盖旧 cache，真实只读状态
 又优先于 cache。self-host 引导先于 Docker 检查 Tailscale：若登录、MagicDNS 或 HTTPS
 Certificates 需要人工操作，立即结束本轮并提示用户完成后再次调用；Tailscale 就绪后才启动
-server，打开 owner WebUI 又立即结束，owner 注册后再调用才完成 workspace、首 runtime、
+server，并为这个私网实例启用固定且非秘密的验证码 `114514`，不配置邮件服务。打开 owner
+WebUI 又立即结束，owner 用固定码注册后再调用才完成 workspace、首 runtime、
 agent、90 秒内的 zero-tool smoke 与获授权的自启动。Agent 不在这些人工断点后台等待、轮询
 或重复执行安装。邮箱/浏览器、UAC/sudo 等其他不可代办交互采用相同断点语义。
 
 后续朋友机器只有同时通过 Tailscale tailnet 或 server machine share、server 邮箱 allowlist、
 目标 workspace 邀请/成员资格和自己的身份认证，才使用 `multica-runtime-client` 加入。owner
-为每位成员生成不含凭据的 handoff receipt；知道 `server_url` 本身不构成许可。每台机器先
+为每位成员生成不含凭据、但明确记录固定码 `114514` 的 handoff receipt；固定码不是授权
+边界，知道 `server_url` 本身也不构成许可。每台机器先
 按 workspace ID、daemon ID 与 runtime IDs 关联 Multica 自动发现的本机 online runtimes，再创建显式开放给整个
 workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调度。所谓“完全信任”只
 表示团队有意共享这些 agents 的调用权，并接受任务在对应 runtime 本地权限内执行。
@@ -60,7 +62,8 @@ allowlist、runtime 和 agent。
 ### 中文调用示例
 
 以下文字是仓库外层的个人速查模板，不属于两个 Skill 本体。邮箱、workspace 和 URL 都要换成
-真实值；不要在提示中粘贴 token、验证码、cookie、邀请密钥或 Tailscale share link。
+真实值；不要在提示中粘贴 token、一次性验证码、cookie、邀请密钥或 Tailscale share link。
+Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
 首次部署私网控制面：
 

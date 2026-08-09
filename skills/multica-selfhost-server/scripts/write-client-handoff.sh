@@ -30,7 +30,7 @@ tmp="$path.tmp.$$"
 trap 'rm -f "$tmp"' EXIT HUP INT TERM
 updated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 cat >"$tmp" <<EOF
-{"schema_version":1,"server_url":"$server_url","app_url":"$server_url","workspace":"$workspace","member_email":"$member_email","tailscale_access_mode":"$access_mode","tailscale_access_status":"$access_status","multica_invitation_status":"$invitation_status","contains_credentials":false,"updated_at":"$updated_at"}
+{"schema_version":1,"server_url":"$server_url","app_url":"$server_url","workspace":"$workspace","member_email":"$member_email","tailscale_access_mode":"$access_mode","tailscale_access_status":"$access_status","multica_invitation_status":"$invitation_status","authentication_mode":"fixed-private-code","fixed_verification_code":"114514","contains_credentials":false,"updated_at":"$updated_at"}
 EOF
 chmod 600 "$tmp"; mv -f "$tmp" "$path"; trap - EXIT HUP INT TERM
 cat "$path"

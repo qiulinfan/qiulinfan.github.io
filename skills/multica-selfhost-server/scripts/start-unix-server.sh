@@ -81,7 +81,9 @@ chmod 600 "$multica_repo/.env"
 /bin/sh "$script_dir/apply-admission.sh" "$profile" "$multica_repo" false >/dev/null
 
 compose_host_port() {
-  bindings=$(docker compose -f "$multica_repo/docker-compose.selfhost.yml" port "$1" "$2" 2>/dev/null) || bindings=
+  container=$(docker compose -f "$multica_repo/docker-compose.selfhost.yml" ps -q "$1")
+  case "$container" in ''|*[!a-f0-9]*) echo "Could not resolve container for $1." >&2; exit 7 ;; esac
+  bindings=$(docker port "$container" "$2/tcp" 2>/dev/null) || bindings=
   [ -n "$bindings" ] || return 1
   printf '%s\n' "$bindings" | while IFS= read -r binding; do
     case "$binding" in 127.0.0.1:*|'[::1]':*) ;; *) echo "Unsafe host binding for $1/$2: $binding" >&2; exit 9 ;; esac
@@ -93,7 +95,9 @@ compose_host_port() {
 }
 
 assert_not_published() {
-  bindings=$(docker compose -f "$multica_repo/docker-compose.selfhost.yml" port "$1" "$2" 2>/dev/null || true)
+  container=$(docker compose -f "$multica_repo/docker-compose.selfhost.yml" ps -q "$1")
+  case "$container" in ''|*[!a-f0-9]*) echo "Could not resolve container for $1." >&2; exit 7 ;; esac
+  bindings=$(docker port "$container" "$2/tcp" 2>/dev/null || true)
   [ -z "$bindings" ] || { echo "$1/$2 must not be published on the host." >&2; exit 9; }
 }
 
@@ -143,6 +147,8 @@ write_state() {
   "published_url": "$(json_escape "$published_url")",
   "identity_model": "individual-members",
   "admission_policy": "server-env-and-workspace-invite",
+  "authentication_mode": "fixed-private-code",
+  "fixed_verification_code": "114514",
   "updated_at": "$updated_at"
 }
 EOF
@@ -156,6 +162,8 @@ EOF
   "access_scope": "$access_scope",
   "identity_model": "individual-members",
   "admission_policy": "server-env-and-workspace-invite",
+  "authentication_mode": "fixed-private-code",
+  "fixed_verification_code": "114514",
   "server_device": "$(json_escape "$(hostname)")",
   "updated_at": "$updated_at"
 }
@@ -185,6 +193,8 @@ set_env_value CORS_ALLOWED_ORIGINS "$effective_origin"
 set_env_value COOKIE_DOMAIN ""
 set_env_value NEXT_PUBLIC_API_URL ""
 set_env_value NEXT_PUBLIC_WS_URL ""
+set_env_value APP_ENV "development"
+set_env_value MULTICA_DEV_VERIFICATION_CODE "114514"
 docker compose -f "$multica_repo/docker-compose.selfhost.yml" up -d
 
 backend_port=$(compose_host_port backend 8080)
