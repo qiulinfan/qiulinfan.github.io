@@ -1,141 +1,107 @@
 ---
 name: multica-runtime-client
-description: Detect Windows, macOS, native Linux, or WSL from natural-language requests and join the current device to a licensed Multica member and workspace over private Tailscale access. Manage a credential-free profile cache, independent Multica authentication, the daemon, every local runtime automatically detected by Multica, workspace agents, bounded smoke tasks, and explicitly authorized login autostart. Use for the server host's first runtimes, a friend's second or later device, opening the Web UI, operating workspace objects, or troubleshooting Tailscale access, signup, invitations, 403 responses, offline runtimes, and cross-device paths. Never request, install, select, sign in to, or directly verify a provider CLI; provider handling is not a workflow step, and Multica runtime state is the only execution-plane evidence. Do not deploy another Server; use multica-selfhost-server for the control plane and admission policy.
+description: Join macOS, Windows/WSL, or native Linux devices to a Multica workspace over private Tailscale. Use for initial or later runtime devices, Web UI access, VPN/proxy conflicts, identity or membership failures, offline runtimes, smoke tests, lifecycle work, and explicitly authorized autostart. Preflight VPN coexistence before browser flows; support persistent macOS Clash Verge split routing. Never inspect or authenticate provider CLIs, deploy a Server, or change admission policy.
 ---
 
 # Multica runtime client
 
-Manage only this device's Tailscale network admission, Multica identity, and execution nodes. Use
-the same flow for the server host's first runtime and every later device. Do not deploy Docker,
-PostgreSQL, a backend, a frontend, or Caddy.
+Join and manage this device only. Do not deploy the Multica Server stack.
 
-## Non-negotiable boundaries
+## Boundaries
 
-- Treat natural language as the only user input surface. Detect, execute, and verify directly; do
-  not hand commands back to the user.
-- Match user-facing explanations, prompts, and handoffs to the user's language unless the user
-  requests another language. Keep commands, identifiers, JSON keys, action codes, and raw errors
-  unchanged.
-- Register Windows-native runtimes for both Windows and WSL. Make POSIX scripts fail closed in WSL.
-- Require each person to use their own Tailscale and Multica identities. Never accept an owner's
-  PAT, verification code, or cookie.
-- Do not ask about providers, inspect provider CLIs, or trigger provider OAuth. Assume providers are
-  available; Multica automatically detects all local providers. Use only the local runtime IDs and
-  `online` states returned by the Multica daemon and runtime APIs.
-- Configure a persistent daemon, Scheduled Task, LaunchAgent, or systemd user service only after
-  explicit user authorization.
-- Store only non-credential fields in the cache. Prefer live Tailscale, authentication, workspace,
-  daemon, and runtime state over cached values.
+- Execute and verify from natural-language requests; do not hand commands to the user.
+- Match user-facing language to the user. Preserve commands, identifiers, keys, action codes, and
+  raw errors.
+- Use each person's own Tailscale and Multica identities. Never accept owner credentials.
+- Never inspect, select, install, sign in to, or verify provider CLIs. Multica runtime state is the
+  only execution-plane evidence.
+- Register Windows-native runtimes for Windows and WSL; POSIX scripts must fail closed in WSL.
+- Require explicit authorization before installing autostart.
+- Detect VPN, TUN, PAC, and system-proxy state before any browser flow. With another network client
+  active, require persistent split routing and successful private-direct plus public-proxy probes.
+  Never disable the user's VPN globally.
+- Cache no credentials. Live state overrides cached state.
 
-## Inputs and cache
+## Inputs
 
-Start every run with `scripts/profile-cache.ps1 show` or `scripts/profile-cache.sh show`, then
-override cached values with explicit values from the current request. Require:
+Read the platform profile cache first, then apply current-request overrides. Require:
 
-- the Tailscale HTTPS `ServerUrl`, target workspace, and the user's own `IdentityEmail`;
+- `.ts.net` HTTPS `ServerUrl`, workspace, and the user's `IdentityEmail`;
 - `TAILSCALE_ACCESS_MODE=same-tailnet|shared-machine`;
-- an automatically detected device/runtime name, with concurrency defaulting to `1`;
-- whether to expose every local online runtime to the workspace and whether to enable login
-  autostart.
+- an auto-detected device name and concurrency, default `1`;
+- whether to expose all local online runtimes and enable autostart.
 
-Treat `PROVIDER` in an old cache as deprecated: ignore it while reading and remove it on the next
-write. Never add a provider field.
+Ignore cached `PROVIDER` and remove it on the next write.
 
-## Join state machine
+## Workflow
 
-### 1. Admit Tailscale access
+### 1. Admit the private path
 
-Before any Multica sign-in or daemon start, run:
+Run `check-windows-tailscale-access.ps1` on Windows or
+`check-unix-tailscale-access.sh` on macOS/native Linux. Require connected Tailscale, a valid Server
+URL, and reachable `/api/config`. If access is absent, return `manual_action_required` for the
+invitation or machine share; do not call it a Multica 403.
 
-- Windows: `check-windows-tailscale-access.ps1`;
-- macOS or native Linux: `check-unix-tailscale-access.sh`.
+Then inspect VPN/proxy state. On macOS run `prepare-macos-vpn-routing.sh`; it handles Clash Verge
+system-proxy mode. Unknown clients, TUN mode, PAC-only routing, or unsafe updates require
+`manual_action_required`. Windows/Linux need equivalent persistent exclusions. Continue only when
+the private direct probe and public proxy probe both pass while the VPN remains enabled.
 
-Require a connected Tailscale client, a `.ts.net` HTTPS Server URL, and a reachable `/api/config`.
-If access is not ready, return uniform `manual_action_required` JSON and ask the user only to accept
-the tailnet invitation or server machine share before invoking the Skill again. Do not misdiagnose a
-network denial as a Multica 403.
+Follow [Tailscale access](references/tailscale-access.md).
 
-Read [references/tailscale-access.md](references/tailscale-access.md) for the complete admission and
-sharing boundary.
+### 2. Authenticate and select the workspace
 
-### 2. Establish an independent Multica identity and membership
+Run the platform connect script. If visible browser/email action is required, open it and stop.
+Require `auth status` email to equal `IdentityEmail`, then switch to the target workspace. Stop on
+denied signup, unaccepted invitation, identity mismatch, or `workspace get` 403. Never edit remote
+admission policy from this client workflow.
 
-Run the platform-specific connect script. If browser or email authentication requires manual
-interaction, open the visible flow and stop. After authentication, compare the email from
-`auth status` with `IdentityEmail`, then run `workspace switch <target>`. Stop immediately if signup
-is denied, an invitation is unaccepted, the email differs, or `workspace get` returns 403. A client
-must not change the remote allowlist or fabricate membership.
+### 3. Start and verify runtimes
 
-### 3. Verify the daemon and runtimes
+Start the daemon, then run the platform verifier. Accept only `online` runtime IDs that correlate
+the target workspace ID and local daemon ID; require at least one. Never use list order, names,
+provider strings, or another device's runtime. Follow [runtime verification](references/verification.md).
 
-After starting the daemon, run `verify-runtime-client.ps1` or `verify-runtime-client.sh`. The verifier
-must:
+### 4. Expose agents and smoke-test
 
-1. resolve the workspace reference to its canonical workspace ID;
-2. obtain the local daemon ID and its local runtime IDs for that workspace;
-3. intersect them with `runtime list` entries having the same `daemon_id`, `workspace_id`, runtime ID,
-   and `status=online`;
-4. return at least one local online runtime automatically detected by Multica.
+When authorized, process every verified local online runtime:
 
-Never take the first item from a global list or substitute a runtime from another workspace or
-device. Read [references/verification.md](references/verification.md) for the evidence contract.
+1. Reuse or create its agent.
+2. Set `permission_mode=public_to` for the workspace.
+3. Submit one zero-tool issue whose only allowed reply is `MULTICA_SMOKE_OK:<random-nonce>`.
+4. Wait at most 90 seconds; require `completed` and an exact reply. Do not duplicate the issue.
 
-### 4. Create workspace agents and run smoke tasks
+For formal cross-member readiness, require another workspace member to trigger one smoke task.
 
-When the user has authorized workspace exposure, handle every local online runtime returned by the
-verifier:
+### 5. Autostart and receipt
 
-- reuse or create an agent bound to that runtime;
-- set `permission_mode=public_to` with the workspace as target; never retain the private default;
-- generate a random nonce and run a zero-tool issue that may return only
-  `MULTICA_SMOKE_OK:<nonce>`;
-- wait at most 90 seconds, require a `completed` task and an exact message match, and do not create a
-  duplicate issue.
+Install the platform autostart only when authorized. It may restore existing authentication, never
+accept invitations or register accounts. Return server, workspace, identity email, access mode,
+daemon ID, runtime IDs, agent IDs, smoke task ID, and recovery mechanism—never tokens.
 
-Before declaring cross-member sharing ready, have another workspace member trigger one smoke task
-to prove cross-member invocation access.
+## Completion
 
-### 5. Configure autostart and deliver evidence
+Report joined only when:
 
-Run the corresponding installer only after explicit authorization. Autostart may restore completed
-Tailscale and Multica authentication, but must not accept invitations or register accounts. Deliver
-structured evidence containing the server/workspace, identity email, daemon ID, runtime IDs, agent
-IDs, smoke task ID, Tailscale access mode, and recovery mechanism. Never deliver a token.
+- Tailscale and the VPN coexistence gate pass;
+- identity and target workspace match;
+- the verifier returns a local online runtime;
+- each intended runtime has a workspace agent and exact smoke success;
+- any required cross-member smoke and authorized autostart checks pass.
 
-## Completion conditions
+Provider state is never an input or completion condition.
 
-Report that the device joined only when all applicable conditions hold:
+## Entry points and protocol
 
-1. Tailscale access is `reachable`.
-2. The `auth status` email matches the requested identity and the server is correct.
-3. `workspace get <target>` succeeds and the default workspace has switched.
-4. The verifier returns at least one local online runtime under the correct daemon and workspace.
-5. Every local runtime intended for sharing has an explicit workspace agent.
-6. The zero-tool smoke completes; when formal cross-member sharing is required, the other-member
-   smoke also completes.
-7. Every authorized autostart item is verified.
-
-Provider login, type, availability, and version are not inputs, pause points, or completion
-conditions.
-
-## Platform entry points
-
-- Windows/WSL: `connect-windows-runtime-client.ps1`, `start-windows-runtime-client.ps1`, and
+- Windows/WSL: `connect-windows-runtime-client.ps1`, `start-windows-runtime-client.ps1`,
   `install-windows-autostart.ps1`.
-- macOS: `connect-runtime-client.sh`, `start-runtime-client.sh`, and
-  `install-macos-autostart.sh`.
-- Native Linux: the same connect/start scripts and `install-linux-autostart.sh`.
+- macOS: `prepare-macos-vpn-routing.sh`, `connect-runtime-client.sh`,
+  `start-runtime-client.sh`, `install-macos-autostart.sh`.
+- Linux: the Unix connect/start scripts and `install-linux-autostart.sh`.
 
-Inspect the installed CLI's `--help` before choosing actual arguments. Treat `ready`,
-`manual_action_required`, and a failing exit code as the script protocol; never infer the phase from
-free-form text.
+Inspect installed CLI `--help` before choosing arguments. Scripts return `ready`,
+`manual_action_required`, or failure; do not infer state from prose.
 
-## Revoke, upgrade, and troubleshoot
-
-Generate a revoke plan first. After confirmation, stop autostart and the daemon, disable agents,
-remove runtimes and membership, revoke Tailscale access, and finally clean the credential-free
-cache. Before an upgrade, record the CLI version; afterward, rerun the verifier and smoke task. Read
-[references/lifecycle.md](references/lifecycle.md) for the complete procedures.
-
-Troubleshoot in this fixed order: Tailscale reachability -> Multica identity -> workspace membership
--> daemon -> verifier -> agent access -> smoke. Address only the first failing stage.
+For upgrades or revocation, follow [client lifecycle](references/lifecycle.md). Troubleshoot only the
+first failing stage: Tailscale -> VPN/proxy -> identity -> workspace -> daemon -> verifier -> agent
+access -> smoke.

@@ -33,7 +33,7 @@ command -v tailscale >/dev/null 2>&1 || manual tailscale_not_installed
 status_json=$(tailscale status --json 2>/dev/null || true)
 printf '%s\n' "$status_json" | grep -q '"BackendState"[[:space:]]*:[[:space:]]*"Running"' || manual tailscale_not_connected
 command -v curl >/dev/null 2>&1 || { echo "curl is required." >&2; exit 3; }
-curl -fsS --max-time "$timeout_seconds" "${server_url%/}/api/config" >/dev/null 2>&1 || \
+curl -fsS --noproxy '*' --max-time "$timeout_seconds" "${server_url%/}/api/config" >/dev/null 2>&1 || \
   manual server_not_reachable_or_acl_denied
 
 /bin/sh "$cache_script" set "$profile" \

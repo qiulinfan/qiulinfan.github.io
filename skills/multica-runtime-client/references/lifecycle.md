@@ -2,22 +2,20 @@
 
 ## Upgrade
 
-Before upgrading, record the Multica CLI version, daemon ID, runtime IDs, agents, and autostart
-items. Use only an explicit release. After upgrading, restart the daemon and run the verifier and
-zero-tool smoke. If verification fails, preserve the prior evidence and stop; do not create duplicate
-agents.
+Record the CLI version, daemon ID, runtime IDs, agents, and autostart items. Upgrade only to an
+explicit release, restart the daemon, then rerun verifier and smoke. On failure, preserve prior
+evidence and stop; do not duplicate agents.
 
 ## Revoke
 
-Produce only a plan by default. After the user confirms apply, proceed in order:
+Plan only until the user confirms apply. Then:
 
-1. disable and stop local autostart;
+1. disable local autostart;
 2. stop the daemon;
-3. disable or delete agents bound to local runtimes;
-4. have an owner or administrator remove the runtimes and workspace membership;
-5. remove the exact email from the server allowlist;
-6. revoke the Tailscale tailnet membership or machine share;
-7. clean the local credential-free profile cache.
+3. disable/delete local-runtime agents;
+4. have an owner/admin remove runtimes and workspace membership;
+5. remove the exact email from the Server allowlist;
+6. revoke tailnet membership or machine sharing;
+7. clear the credential-free profile cache.
 
-Return a receipt for every remote object, account, and access revocation. An offline machine does not
-prove that access was revoked.
+Return a receipt for each revocation. An offline machine is not proof of revoked access.

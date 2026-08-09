@@ -93,6 +93,9 @@ if [ -n "$identity_email" ]; then set -- "$@" "IDENTITY_EMAIL=$identity_email"; 
 
 /bin/sh "$script_dir/check-unix-tailscale-access.sh" \
   "$server_url" "$profile" "$tailscale_access_mode"
+if [ "$platform" = macos ]; then
+  /bin/sh "$script_dir/prepare-macos-vpn-routing.sh" "$server_url" "$profile"
+fi
 
 PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.multica/bin:$HOME/.volta/bin:$HOME/.npm-global/bin:$HOME/.bun/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH
@@ -120,14 +123,15 @@ command -v multica >/dev/null 2>&1 || { echo "Multica CLI is not on PATH." >&2; 
 
 multica config set server_url "$server_url" --profile "$profile" >/dev/null
 multica config set app_url "$app_url" --profile "$profile" >/dev/null
-if ! multica auth status --profile "$profile" >/dev/null 2>&1; then
+auth_status=$(multica auth status --profile "$profile" 2>&1 || true)
+if printf '%s\n' "$auth_status" | grep -qi 'Not authenticated'; then
   echo "Starting interactive self-host login..."
   multica setup self-host \
     --server-url "$server_url" --app-url "$app_url" \
     --callback-host "$callback_host" --profile "$profile"
+  auth_status=$(multica auth status --profile "$profile" 2>&1 || true)
 fi
 if [ -n "$identity_email" ]; then
-  auth_status=$(multica auth status --profile "$profile" 2>&1)
   authenticated_email=$(printf '%s\n' "$auth_status" | sed -n 's/^[[:space:]]*User:[^(]*(\([^()[:space:]]*@[^()[:space:]]*\))[[:space:]]*$/\1/p' | head -n 1)
   [ -n "$authenticated_email" ] || { echo "Could not parse the authenticated Multica email." >&2; exit 4; }
   expected_lower=$(printf '%s' "$identity_email" | tr '[:upper:]' '[:lower:]')

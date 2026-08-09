@@ -14,12 +14,18 @@ flowchart LR
     TS -->|是| Host["multica-selfhost-server<br/>唯一控制面 + 私网 HTTPS"]
     Host --> OwnerStop["打开 owner WebUI 后立即停止<br/>使用固定码 114514 注册"]
     OwnerStop --> Owner["独立 owner 身份<br/>共享 workspace"]
-    Owner --> First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
+    Owner --> FirstVPN{"首 runtime 打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
+    FirstVPN -->|否| FirstSplit["持久 split routing<br/>私网直连 + 公网代理探测"]
+    FirstSplit --> FirstVPN
+    FirstVPN -->|是| First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
     First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
     Owner --> Gate["server allowlist + workspace invite<br/>Tailscale tailnet / machine share"]
     Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 固定码 + 两层状态"]
     Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
-    ClientCache --> Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
+    ClientCache --> ClientVPN{"客户端打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
+    ClientVPN -->|否| ClientSplit["持久 split routing<br/>私网直连 + 公网代理探测"]
+    ClientSplit --> ClientVPN
+    ClientVPN -->|是| Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
     FirstAgent --> Pool["互信团队共享 agent 计算池"]
     MoreAgents --> Pool
@@ -33,7 +39,12 @@ WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭�
 `connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
 宿主机执行面。
 
-Agent 自动探测拓扑、WSL 和 hostname；Multica 自动发现本机全部 providers，Skill 不询问、
+Agent 自动探测拓扑、WSL 和 hostname；在打开任何 Multica Web UI 或浏览器认证前，还必须探测
+VPN、TUN、PAC 与系统代理。仅有 `/api/config` 的 CLI 成功不足以证明浏览器路径可用；存在其他
+网络客户端时，必须同时验证 Multica 经 Tailscale 直连、公共身份站点经原代理可达。macOS Clash
+Verge 系统代理模式自动持久合并 `.ts.net`、Tailscale IPv4 与 IPv6 bypass；未知客户端、PAC-only
+或 TUN 模式无法安全配置时结构化停止，不通过关闭用户 VPN 规避。Multica 自动发现本机全部
+providers，Skill 不询问、
 登录或直接验证 provider CLI，provider 也不是输入、断点或完成条件。结构化脚本结果保持英文
 动作码，Agent 面向用户的解释、提示和交接则跟随用户语言。用户以自然语言提供 owner/成员邮箱、
 workspace、连接地址、私网发布与自启动偏好即可。Agent 先合并 Skill 内
