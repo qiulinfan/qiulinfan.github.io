@@ -1,4 +1,4 @@
 interface:
-  display_name: "寻找游戏美术资源"
-  short_description: "搜索许可明确的游戏美术资源并记录来源、版本与候选用途"
-  default_prompt: "使用 $search-game-art 为当前游戏需求搜索许可明确的美术资源候选。"
+  display_name: "Search Game Art"
+  short_description: "Find license-verified game art with source records"
+  default_prompt: "Use $search-game-art to find source- and license-verified art candidates for the current game requirement."

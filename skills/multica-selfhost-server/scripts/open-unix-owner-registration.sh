@@ -40,5 +40,5 @@ if [ "$no_open" = false ]; then
     *) echo "Unsupported platform." >&2; exit 3 ;;
   esac
 fi
-printf '{"schema_version":1,"status":"manual_action_required","action":"owner_registration","phase":"owner-registration-required","app_url":"%s","owner_email":"%s","workspace":"%s","instructions":["在已打开的 WebUI 中使用 owner 邮箱完成注册或登录，并创建缓存中的 workspace。","只需亲自完成浏览器、邮箱或 OAuth 身份验证；不要执行命令。","进入 workspace 后再次调用 $multica-selfhost-server，并说“继续完成首个 runtime”。"]}\n' \
+printf '{"schema_version":1,"status":"manual_action_required","action":"owner_registration","phase":"owner-registration-required","app_url":"%s","owner_email":"%s","workspace":"%s","required_actions":["register_or_sign_in_with_owner_email","create_or_open_target_workspace","rerun_selfhost_server"],"background_work":false,"resume_hint":"rerun_selfhost_server"}\n' \
   "$(json_escape "${app_url%/}")" "$(json_escape "$owner_email")" "$(json_escape "$workspace")"

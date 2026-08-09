@@ -1,6 +1,6 @@
 ---
 name: create-latex-math-notes
-description: Create a lightweight LaTeX-authored mathematics notes project under qlblog/notes/math using the synchronized ElegantBook syntax and the repository's LaTeX-to-Typst adapter. Use when the user asks to start, scaffold, initialize, or新建 `.tex` math notes that preview only as Typst HTML, retain `\kn`/`\knref` knowledge markers, and never add PDF, latexmk, SyncTeX, MkDocs, or committed build artifacts.
+description: Create a lightweight LaTeX-authored mathematics notes project under qlblog/notes/math using the synchronized ElegantBook syntax and the repository's LaTeX-to-Typst adapter. Use when the user asks to start, scaffold, initialize, or create `.tex` math notes that preview only as Typst HTML, retain `\kn`/`\knref` knowledge markers, and never add PDF, latexmk, SyncTeX, MkDocs, or committed build artifacts.
 ---
 
 # Create LaTeX Math Notes

@@ -30,7 +30,7 @@ function Write-ManualResult([string] $Reason) {
         action = if ($AccessMode -eq "same-tailnet") { "accept_tailnet_invite" } else { "accept_machine_share" }
         reason = $Reason
         background_work = $false
-        resume_hint = "继续连接客户端"
+        resume_hint = "rerun_runtime_client"
     } | ConvertTo-Json -Compress
     exit 7
 }

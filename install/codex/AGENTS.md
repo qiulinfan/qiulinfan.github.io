@@ -27,6 +27,14 @@ active Skill's own instructions:
   reclassification complete until that command succeeds.
 - Before changing a visible Skill, read `<qlblog>/skills/README.md` and
   `<qlblog>/skills/WORKFLOWS.md` when present.
+- Write frontmatter descriptions and `agents/openai.yaml` discovery metadata
+  for locally maintained personal Skills in English so the collection remains
+  portable across users. Preserve upstream metadata for downloaded community
+  Skills unless the user explicitly requests a local adaptation.
+- Include an explicit language-alignment rule in every new or materially
+  updated personal Skill: user-facing explanations, prompts, and handoffs must
+  match the user's language unless the user requests another language. Keep
+  commands, identifiers, structured keys/action codes, and raw errors unchanged.
 - Keep the collection catalog accurate. Update a Skill's README entry only
   when its purpose, triggers, scope, name, provenance, or other user-visible
   behavior changed; do not create churn. For imported, installed, or adapted

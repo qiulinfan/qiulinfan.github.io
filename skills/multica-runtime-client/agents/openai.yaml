@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Runtime Client"
-  short_description: "验证私网准入并加入 Multica runtime 集群"
+  short_description: "Join trusted Multica workspaces over private Tailscale"
   default_prompt: "Use $multica-runtime-client to verify this device's Tailscale access and Multica identity, then join every Multica-detected local runtime to the trusted workspace."

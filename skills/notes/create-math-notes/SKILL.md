@@ -1,6 +1,6 @@
 ---
 name: create-math-notes
-description: Create a new lightweight Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or新建 math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, optional ignored LaTeX/Markdown snapshots, semantic HTML checks, and knowledge-graph synchronization.
+description: Create a new lightweight Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or create math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, optional ignored LaTeX/Markdown snapshots, semantic HTML checks, and knowledge-graph synchronization.
 ---
 
 # Create Math Notes

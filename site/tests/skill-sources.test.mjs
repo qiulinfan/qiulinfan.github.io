@@ -63,19 +63,33 @@ test("the README catalog lists every visible Skill and owns the detail-page boun
 	);
 });
 
-test("the public catalog mirrors real Skill directories without a community group", () => {
+test("the public catalog dynamically groups every owned Skill without a community group", () => {
 	const groups = loadSkillDirectoryGroups();
-	assert.deepEqual(
-		groups.map((group) => group.directory),
-		["", "gamemaker", "kgdistiller", "notes"],
-	);
-	assert.deepEqual(
-		groups.map((group) => group.skills.length),
-		[4, 5, 4, 2],
-	);
+	const expectedMembership = loadOwnedSkills()
+		.map((skill) => {
+			const separator = skill.id.indexOf("/");
+			return {
+				directory: separator === -1 ? "" : skill.id.slice(0, separator),
+				id: skill.id,
+			};
+		})
+		.sort((left, right) => left.id.localeCompare(right.id));
+	const actualMembership = groups
+		.flatMap((group) =>
+			group.skills.map((skill) => ({
+				directory: group.directory,
+				id: skill.id,
+			})),
+		)
+		.sort((left, right) => left.id.localeCompare(right.id));
+
+	assert.deepEqual(actualMembership, expectedMembership);
+	assert.equal(groups.every((group) => group.skills.length > 0), true);
 	assert.equal(groups.some((group) => group.directory === "community"), false);
 	assert.equal(
-		groups.flatMap((group) => group.skills).every((skill) => skill.summary.length > 0),
+		groups
+			.flatMap((group) => group.skills)
+			.every((skill) => skill.summary.length > 0),
 		true,
 	);
 });

@@ -1,24 +1,26 @@
 # Platform deployment
 
-## Windows + WSL
+## Windows with WSL
 
-Server 只运行在 WSL2 Ubuntu Docker Engine；宿主机 runtime 只运行在 Windows。顺序为
-Tailscale readiness → `bootstrap-windows-wsl-server.ps1` → `start-windows-wsl-server.ps1` →
-`publish-windows-tailscale.ps1`。原生 Windows Docker controller 仅作兼容恢复入口，也必须读取
-同一 readiness phase，不能 clone、安装或启动未获准的新 server。
+Run the Server only in a WSL2 Ubuntu Docker Engine and run host runtimes only on Windows. Use this
+order: Tailscale readiness -> `bootstrap-windows-wsl-server.ps1` ->
+`start-windows-wsl-server.ps1` -> `publish-windows-tailscale.ps1`. Retain the native Windows Docker
+controller only as a compatibility recovery entry point. It must read the same readiness phase and
+must not clone, install, or start an unauthorized new server.
 
 ## macOS
 
-使用 `start-macos-server.sh` 与 `publish-unix-tailscale.sh`；获授权后使用 LaunchAgent。首次等待
-Docker Desktop 的可见系统交互时停止并让用户再次调用。
+Use `start-macos-server.sh` and `publish-unix-tailscale.sh`, then use a LaunchAgent only after
+authorization. When Docker Desktop first requires visible system interaction, stop and ask the user
+to invoke the Skill again afterward.
 
 ## Native Linux
 
-使用 `start-linux-server.sh` 与 `publish-unix-tailscale.sh`；获授权后使用 systemd 用户服务，
-不自动开启 linger。WSL 检测必须 fail closed。
+Use `start-linux-server.sh` and `publish-unix-tailscale.sh`, then use a systemd user service only
+after authorization. Do not enable linger automatically. Make WSL detection fail closed.
 
 ## Port invariant
 
-`docker compose port` 的每一个 backend/frontend binding 必须是 `127.0.0.1` 或 `::1`；PostgreSQL
-不得返回任何 host binding。Caddy gateway 自身也只绑定 loopback，由 Tailscale Serve 发布 HTTPS。
-不满足时不得写成功 state/receipt。
+Every backend/frontend binding returned by `docker compose port` must be `127.0.0.1` or `::1`.
+PostgreSQL must return no host binding. Bind the Caddy gateway itself only to loopback and publish it
+with Tailscale Serve HTTPS. Do not write successful state or a receipt when this invariant fails.

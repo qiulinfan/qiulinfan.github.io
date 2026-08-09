@@ -1,8 +1,9 @@
 # Runtime verification
 
-把 Multica 视为 provider 发现与健康状态的唯一权威。不要调用任何 provider CLI。
+Treat Multica as the only authority for runtime discovery and health. Never invoke a provider CLI.
+Provider inspection, selection, sign-in, and verification are outside this workflow.
 
-## 必须关联的字段
+## Required correlations
 
 ```text
 workspace get.id
@@ -19,9 +20,9 @@ runtime list[].status
     = online
 ```
 
-只有同时满足全部等式的 runtime 才是目标 workspace 中的本机 online runtime。一个 daemon 可以
-拥有多个 workspace，一个 workspace 可以有多台设备，因此禁止依赖列表顺序、名称或 provider
-字符串。
+Only a runtime satisfying every equality is a local online runtime in the target workspace. One
+daemon may serve multiple workspaces, and one workspace may contain several devices, so never rely
+on list order, names, or provider strings.
 
-verifier 成功输出至少包含 `workspace_id`、`daemon_id`、`runtime_ids` 和 `runtime_count`；失败
-必须非零退出，不得输出“online”成功文案。
+A successful verifier result must contain at least `workspace_id`, `daemon_id`, `runtime_ids`, and
+`runtime_count`. On failure, exit nonzero and do not print a misleading online-success message.

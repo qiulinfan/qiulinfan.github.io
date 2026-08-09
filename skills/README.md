@@ -32,6 +32,10 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 - 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即重新运行
   `./skills/link-codex-skills.sh`；脚本成功前不得视为重分类完成。
 - 从开源网站下载的外部 Skill 放入 `community/`，记录准确来源，并保持网站排除。
+- 本地维护的个人 Skill 使用英文 frontmatter description 与英文 `agents/openai.yaml`
+  发现元数据，便于不同语言的用户稳定发现；社区 Skill 默认保留上游元数据。
+- 每个新建或实质更新的个人 Skill 都要明确要求 Agent 的用户可见解释、提示与交接跟随
+  用户语言，除非用户指定其他语言；命令、标识符、结构化键/动作码与原始错误保持原样。
 - 每次创建或实质更新 skill，都要更新本 README 中对应的一句话用途说明。
 - 新建或调整跨 Skill 工具流时，直接编辑 `WORKFLOWS.md` 中的 Markdown 与 Mermaid。
 - Skill 的 `name` 与末级目录名都必须在整个集合中唯一；目录名通常与 `name` 一致，

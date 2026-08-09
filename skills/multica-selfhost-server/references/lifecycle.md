@@ -2,24 +2,28 @@
 
 ## Backup
 
-备份前记录 Multica commit/release、Compose image digests、schema/version 与 profile。暂停写入或使用
-一致性机制生成 PostgreSQL dump；把 `.env` 单独加密到仓库外目标，不在日志显示内容。记录 hash、
-时间、版本和保留策略。未完成一次隔离 restore drill 的备份不能标为 verified。
+Before a backup, record the Multica commit or release, Compose image digests, schema/version, and
+profile. Pause writes or use a consistency mechanism to create the PostgreSQL dump. Encrypt `.env`
+separately to a destination outside the repository without printing its contents. Record the hash,
+time, version, and retention policy. Do not mark a backup verified until an isolated restore drill
+succeeds.
 
 ## Upgrade
 
-默认只升级到明确 release/commit 和固定 image digest，不跟随未审查的 `main` 或浮动 tag。顺序：
+Upgrade only to an explicit release or commit and pinned image digests by default. Do not follow an
+unreviewed `main` branch or floating tag. Proceed in order:
 
-1. 健康检查和 verified backup；
-2. 记录旧 revision/digests；
-3. pull 明确版本并审查 migration；
-4. recreate stack；
-5. 验证 database、backend、gateway、private URL；
-6. 运行 runtime verifier 与 smoke；
-7. 任一失败就停止，按旧 revision/digests 恢复并重新验证。
+1. run health checks and create a verified backup;
+2. record the old revision and digests;
+3. pull the explicit version and review migrations;
+4. recreate the stack;
+5. verify the database, backend, gateway, and private URL;
+6. run the runtime verifier and smoke task;
+7. stop on any failure, restore the old revision/digests, and verify again.
 
 ## Revoke and uninstall
 
-默认输出 plan。确认 apply 后先撤销 client agents/runtimes/membership/allowlist/Tailscale access，再
-停止 runtime 与 server 自启动。保留 verified backup 后才能删除 containers；删除 PostgreSQL
-volume 需要独立的逐字确认。输出每个远程和本地对象的撤销回执。
+Produce a plan by default. After apply is confirmed, revoke client agents, runtimes, membership,
+allowlist entries, and Tailscale access before stopping runtime and server autostart. Delete
+containers only after retaining a verified backup. Require a separate exact confirmation before
+deleting the PostgreSQL volume. Return a revocation receipt for every remote and local object.

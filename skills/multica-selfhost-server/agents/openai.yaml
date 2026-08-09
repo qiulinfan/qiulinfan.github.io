@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Self-host Server"
-  short_description: "断点部署、维护和恢复私网 Multica 控制面与首节点"
+  short_description: "Deploy and maintain a private Multica control plane"
   default_prompt: "Use $multica-selfhost-server to deploy the private control plane, produce credential-free client handoffs, and finalize all Multica-detected host runtimes."

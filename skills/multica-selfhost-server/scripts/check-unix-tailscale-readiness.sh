@@ -61,7 +61,7 @@ wait_bounded() {
 write_manual() {
   /bin/sh "$cache_script" set "$profile" \
     "ONBOARDING_PHASE=tailscale-action-required" "TAILSCALE_SERVE_APPROVED=false" >/dev/null
-  printf '%s\n' '{"schema_version":1,"status":"manual_action_required","action":"tailscale_login_and_https","phase":"tailscale-action-required","manual_url":"https://login.tailscale.com/admin/dns","instructions":["打开 Tailscale 客户端，用自己的账号登录，并确认本机显示 Connected。","在已登录的外部浏览器打开 Tailscale DNS 页面，启用 MagicDNS 和 HTTPS Certificates。","完成后再次调用 $multica-selfhost-server，并说“继续部署”。"]}'
+  printf '%s\n' '{"schema_version":1,"status":"manual_action_required","action":"tailscale_login_and_https","phase":"tailscale-action-required","manual_url":"https://login.tailscale.com/admin/dns","required_actions":["sign_in_to_tailscale_and_confirm_connected","enable_magicdns_and_https_certificates","rerun_selfhost_server"],"background_work":false,"resume_hint":"rerun_selfhost_server"}'
 }
 
 umask 077

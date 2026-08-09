@@ -1,4 +1,4 @@
 interface:
-  display_name: "搭建 Unity 游戏场景"
-  short_description: "阅读技术架构与关卡需求，在 Unity 中搭建并验证可玩场景"
-  default_prompt: "使用 $build-unity-scene 按项目架构和关卡需求搭建一个 Unity 场景。"
+  display_name: "Build Unity Scene"
+  short_description: "Build and validate Unity scenes from project constraints"
+  default_prompt: "Use $build-unity-scene to build and validate a Unity scene from the project's architecture and level requirements."

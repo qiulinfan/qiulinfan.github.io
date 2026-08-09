@@ -34,7 +34,8 @@ WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭�
 宿主机执行面。
 
 Agent 自动探测拓扑、WSL 和 hostname；Multica 自动发现本机全部 providers，Skill 不询问、
-登录或直接验证 provider CLI。用户以自然语言提供 owner/成员邮箱、
+登录或直接验证 provider CLI，provider 也不是输入、断点或完成条件。结构化脚本结果保持英文
+动作码，Agent 面向用户的解释、提示和交接则跟随用户语言。用户以自然语言提供 owner/成员邮箱、
 workspace、连接地址、私网发布与自启动偏好即可。Agent 先合并 Skill 内
 `.cache/<profile>/profile.env`，再自行执行脚本和验证，不把命令交回用户。两个 cache 都由
 各自 `.gitignore` 排除，只保存可恢复的非凭据配置；本轮明确值覆盖旧 cache，真实只读状态
@@ -55,6 +56,56 @@ workspace 的 agent，并用另一成员触发的 smoke task 验证跨机器调�
 每台设备的本地目录资源
 只属于自己的 daemon，跨设备项目优先使用 Git repository；撤销成员时同步移除 membership、
 allowlist、runtime 和 agent。
+
+### 中文调用示例
+
+以下文字是仓库外层的个人速查模板，不属于两个 Skill 本体。邮箱、workspace 和 URL 都要换成
+真实值；不要在提示中粘贴 token、验证码、cookie、邀请密钥或 Tailscale share link。
+
+首次部署私网控制面：
+
+> 使用 `$multica-selfhost-server` 在这台 Windows 电脑上部署唯一的 Multica 私网服务器。
+> owner 邮箱是 `owner@example.com`，workspace 是 `trusted-team`。使用 Tailscale Serve，内部服务
+> 只绑定 loopback。遇到必须由我完成的登录或系统授权时打开对应界面并暂停，不要在后台等待。
+
+从人工断点继续部署：
+
+> 继续使用 `$multica-selfhost-server` 完成上次的 `trusted-team` 部署。先读取 profile cache 和真实
+> 状态，只执行当前 phase，不要重新创建已经完成的 server、workspace、runtime 或 agent。
+
+邀请一位成员：
+
+> 使用 `$multica-selfhost-server` 邀请 `friend@example.com` 加入 `trusted-team`。为对方使用
+> `shared-machine` Tailscale access，只共享 Multica server 机器，并生成不含凭据的 client handoff。
+
+为新设备加入 runtime：
+
+> 使用 `$multica-runtime-client` 把这台 Mac 加入 handoff 指定的 Multica Server 和
+> `trusted-team` workspace。我会使用自己的 Tailscale 与 Multica 账号。把 Multica 自动发现的
+> 全部本机 online runtimes 开放给 workspace，并运行有界 smoke；不要询问或验证 provider。
+
+继续客户端登录流程：
+
+> 继续使用 `$multica-runtime-client` 完成这台设备的加入流程。读取现有 profile cache，验证我的
+> Multica 身份与 workspace membership，然后从第一个未完成阶段继续，不要重复创建 agent 或 issue。
+
+排查 runtime offline：
+
+> 使用 `$multica-runtime-client` 排查为什么这台设备在 `trusted-team` 中显示 runtime offline。
+> 按 Tailscale reachability、Multica identity、workspace membership、daemon、runtime verifier、
+> agent access、smoke 的顺序，只处理第一个失败点。provider 不属于排查步骤。
+
+升级并验证服务器：
+
+> 使用 `$multica-selfhost-server` 为当前 Multica Server 制定升级计划。先做 verified backup，固定
+> release 和 image digest，审查 migration；得到我的明确授权后再升级，并重新验证私网 URL、
+> runtime verifier 与 smoke。失败时停止并按旧版本回滚。
+
+撤销成员访问：
+
+> 使用 `$multica-selfhost-server` 先生成撤销 `friend@example.com` 访问权的计划，不要立即 apply。
+> 计划应覆盖 workspace membership、allowlist、agents、runtimes 和 Tailscale access，并分别说明
+> 哪些远程删除需要我的确认。
 
 ## 笔记进入知识库并发布 Web
 
