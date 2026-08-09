@@ -278,7 +278,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS、固定且非秘密的私网验证码 `114514`、精确邮箱与 workspace 准入、无凭据 client handoff、首 runtimes、升级备份和撤销；不要求配置邮件服务，遇到 Tailscale、owner 或系统授权就结构化暂停。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
+- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、把自然语言访问范围映射为 Tailscale 模式、完成两层准入并生成无需客户端理解网络结构的完整 handoff，同时管理首 runtimes、升级备份和撤销。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
 - [multica-runtime-client](./multica-runtime-client/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段引导成员，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后验证私网与 VPN/代理共存、身份、membership 和全部本机 online runtimes，创建 workspace agents、运行有界 smoke，并按确认配置登录自启动；不处理 provider CLI，也不部署第二套 server。
 - [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图且无 HTML/Pandoc 转码残留的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
 - [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。

@@ -1,6 +1,6 @@
 ---
 name: multica-selfhost-server
-description: Detect Windows with WSL, macOS, or native Linux from natural-language requests and use a resumable state machine to deploy, start, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the backend, frontend, loopback-only gateway, Tailscale Serve, a fixed private-instance verification code, exact-email admission, a shared workspace, credential-free client handoffs, server autostart, and multica-runtime-client orchestration for host runtimes, workspace agents, and bounded smoke tasks. Use when a trusted group needs one private Server or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-runtime-client alone for later devices. Multica automatically detects all providers; provider handling is not a workflow step, and this Skill never asks about, signs in to, or directly verifies a provider CLI.
+description: Detect Windows with WSL, macOS, or native Linux and use a resumable state machine to deploy, operate, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the loopback-only backend, frontend and gateway, Tailscale Serve, fixed-code authentication, exact-email and workspace admission, owner-led member intake, Tailscale access decisions, credential-free handoffs, autostart, host runtimes, agents, and smoke tasks. Use when a trusted group needs one private Server; when the owner needs help answering any client onboarding question, deciding workspace or network scope, or preparing a complete handoff; or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-runtime-client only after an owner handoff exists. Multica detects providers automatically; this Skill never asks about, signs in to, or verifies provider CLIs.
 ---
 
 # Multica self-host server
@@ -16,6 +16,9 @@ system authorization interactions. Never deploy a second server.
 - Match user-facing explanations, prompts, and handoffs to the user's language unless the user
   requests another language. Keep commands, identifiers, JSON keys, action codes, and raw errors
   unchanged.
+- Treat the server owner as the decision maker for every member onboarding. Never require a client
+  to know or choose a workspace, tailnet, or `same-tailnet` versus `shared-machine` access mode.
+  Translate client questions into an owner checklist and a complete owner-issued handoff.
 - Pass the Tailscale readiness gate before installing Docker, cloning, pulling, or starting Compose.
   Apply the same gate to every Windows server path and fail closed when it is not satisfied.
 - End the turn immediately after opening Tailscale or the owner Web UI. Do not poll or wait in the
@@ -90,16 +93,33 @@ signup only after all members have registered and accepted, or when the owner ex
 
 ### 4. Hand off members
 
-Choose one access mode for each member:
+Run this as an owner-led workflow even when the owner only says that a client asked how to connect.
+Read [references/member-onboarding.md](references/member-onboarding.md), then collect or resolve:
 
-- `same-tailnet`: join the same tailnet with the member's own Tailscale account;
-- `shared-machine`: share only the Multica server machine.
+1. the member's exact Multica email;
+2. the existing workspace selected by the owner;
+3. whether the owner wants to expose only the Multica Server or admit the member's devices to the
+   broader tailnet;
+4. the member's Tailscale identity email when known and whether the invitation was accepted.
+
+Ask the owner about desired access scope in ordinary language, not protocol vocabulary. Map it to:
+
+- `shared-machine` by default when the member needs only Multica;
+- `same-tailnet` only when the owner explicitly wants the member's devices admitted to the tailnet
+  or needs broader tailnet resources.
+
+If the owner lacks a member detail, provide a short copyable message for the owner to send. Do not
+redirect the owner or client to decide the workspace or access mode. Tell the owner exactly which
+Tailscale console action to perform, apply the exact-email allowlist, issue the workspace invitation,
+and keep the access-bearing Tailscale invite separate from the non-secret handoff.
 
 After issuing Tailscale access and the workspace invitation, run `write-client-handoff.ps1|sh` to
-produce a credential-free receipt containing the Server URL, workspace, member email, both
-invitation states, and the fixed code `114514`. The fixed code is public configuration; never write
-a generated code, share link, session token, or invitation secret to the receipt. Invoke
-`multica-runtime-client` on the client with that receipt.
+produce a credential-free receipt containing the Server URL, owner-selected workspace, member
+email, optional Tailscale identity email, owner-selected access mode, both invitation states, and
+the fixed code `114514`. Also give the owner a ready-to-send client message that says only what the
+client must install, accept, open, and run. The fixed code is public configuration; never write a
+generated code, share link, session token, or invitation secret to the receipt. Invoke
+`multica-runtime-client` only after this owner handoff exists.
 
 ### 5. Finalize host runtimes
 

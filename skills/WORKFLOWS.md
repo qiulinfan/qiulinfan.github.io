@@ -39,8 +39,12 @@ flowchart LR
     FirstSplit --> FirstVPN
     FirstVPN -->|是| First["multica-runtime-client<br/>服务器宿主机首个 runtime"]
     First --> FirstAgent["workspace 可调用 agent<br/>90 秒 zero-tool smoke"]
-    Invitee["成员调用 runtime-client<br/>可零输入或仅 URL"] --> Guide["收集成员自己的 email<br/>生成给服主的准入请求"]
-    Guide --> Gate["服主决定 workspace + access mode<br/>allowlist + 两类邀请"]
+    Invitee["成员提出任意接入问题<br/>无需理解 workspace / tailnet"] --> Guide["服主 Skill 收集成员事实<br/>生成服主操作清单"]
+    Guide --> Scope{"仅需 Multica<br/>还是加入更广私网?"}
+    Scope -->|仅 Multica / 默认| Share["shared-machine<br/>只共享 Server"]
+    Scope -->|明确需要更广私网| Join["same-tailnet<br/>邀请成员设备"]
+    Share --> Gate["服主选择 workspace<br/>allowlist + workspace invite"]
+    Join --> Gate
     Owner --> Gate
     Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 固定码 + 两层状态"]
     Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
@@ -61,12 +65,12 @@ WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭�
 `connection.json`，再委派 [`multica-runtime-client`](#skill-multica-runtime-client) 管理
 宿主机执行面。
 
-成员可以在零输入或仅知道 Server URL 时调用 `multica-runtime-client`。Agent 先说明加入所需的
-服主 handoff，收集成员自己的 Multica email，并生成可直接转发的准入请求；服主通过
-`multica-selfhost-server` 决定 workspace 和 `same-tailnet` / `shared-machine`，完成 Server
-allowlist、workspace invite 与 Tailscale access 后返回无凭据 handoff。workspace 与 access mode
-不是成员要选择的输入，邀请/share 链接也不得粘贴给 Agent。缺少服主操作时，客户端在
-`owner-handoff-required` 阶段结构化暂停。
+服主使用 `multica-selfhost-server` 承接成员提出的任何接入问题。Skill 向服主收集成员的
+Multica email、必要时的 Tailscale identity，以及服主希望开放的自然语言范围；workspace、
+tailnet 和 `same-tailnet` / `shared-machine` 都由服主侧决定。只需 Multica 时默认共享 Server
+机器，只有服主明确要求更广私网成员资格时才邀请加入 tailnet。Skill 再完成 Server allowlist、
+workspace invite 与 Tailscale access，向服主输出操作清单、可直接回复成员的话术和无凭据
+handoff。成员无需理解网络结构，邀请/share 链接也不得粘贴给 Agent。
 
 Agent 自动探测拓扑、WSL 和 hostname；在打开任何 Multica Web UI 或浏览器认证前，还必须探测
 VPN、TUN、PAC 与系统代理。仅有 `/api/config` 的 CLI 成功不足以证明浏览器路径可用；存在其他
@@ -117,8 +121,9 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
 邀请一位成员：
 
-> 使用 `$multica-selfhost-server` 邀请 `friend@example.com` 加入 `trusted-team`。为对方使用
-> `shared-machine` Tailscale access，只共享 Multica server 机器，并生成不含凭据的 client handoff。
+> 使用 `$multica-selfhost-server` 帮我接入一位新成员。对方只需要使用 Multica，并不了解
+> workspace、tailnet 或 access mode。请向我收集服主必须决定的信息，选择已有 workspace，
+> 告诉我需要执行的 Tailscale 与 Multica 操作，并生成我可以直接转发的完整 client handoff。
 
 成员还没有任何信息：
 

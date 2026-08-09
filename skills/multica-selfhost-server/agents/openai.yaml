@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Self-host Server"
-  short_description: "Deploy a private Multica control plane with fixed-code login"
-  default_prompt: "Use $multica-selfhost-server to deploy the private control plane with fixed code 114514, produce credential-free client handoffs, and finalize all Multica-detected host runtimes."
+  short_description: "Deploy Multica and guide owner-led member onboarding"
+  default_prompt: "Use $multica-selfhost-server to deploy or operate my private control plane, decide each member's workspace and Tailscale access with me, perform owner-side admission, and produce a complete client handoff."

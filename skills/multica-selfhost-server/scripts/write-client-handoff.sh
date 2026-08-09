@@ -8,7 +8,11 @@ access_mode=${2:-}
 access_status=${3:-pending}
 invitation_status=${4:-pending}
 profile=${5:-home}
+tailscale_identity_email=${6:-}
 printf '%s\n' "$member_email" | awk '/^[^[:space:]@,]+@[^[:space:]@,]+\.[^[:space:]@,]+$/ {ok=1} END {exit(ok?0:1)}' || { echo "Invalid member email." >&2; exit 2; }
+if [ -n "$tailscale_identity_email" ]; then
+  printf '%s\n' "$tailscale_identity_email" | awk '/^[^[:space:]@,]+@[^[:space:]@,]+\.[^[:space:]@,]+$/ {ok=1} END {exit(ok?0:1)}' || { echo "Invalid Tailscale identity email." >&2; exit 2; }
+fi
 case "$access_mode" in same-tailnet|shared-machine) ;; *) echo "Invalid Tailscale access mode." >&2; exit 2 ;; esac
 case "$access_status" in pending|accepted|reachable) ;; *) echo "Invalid Tailscale access status." >&2; exit 2 ;; esac
 case "$invitation_status" in pending|accepted) ;; *) echo "Invalid Multica invitation status." >&2; exit 2 ;; esac
@@ -30,7 +34,7 @@ tmp="$path.tmp.$$"
 trap 'rm -f "$tmp"' EXIT HUP INT TERM
 updated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 cat >"$tmp" <<EOF
-{"schema_version":1,"server_url":"$server_url","app_url":"$server_url","workspace":"$workspace","member_email":"$member_email","tailscale_access_mode":"$access_mode","tailscale_access_status":"$access_status","multica_invitation_status":"$invitation_status","authentication_mode":"fixed-private-code","fixed_verification_code":"114514","contains_credentials":false,"updated_at":"$updated_at"}
+{"schema_version":1,"server_url":"$server_url","app_url":"$server_url","workspace":"$workspace","member_email":"$member_email","tailscale_identity_email":"$tailscale_identity_email","workspace_selected_by":"server-owner","tailscale_access_mode":"$access_mode","tailscale_access_selected_by":"server-owner","tailscale_access_status":"$access_status","multica_invitation_status":"$invitation_status","authentication_mode":"fixed-private-code","fixed_verification_code":"114514","contains_credentials":false,"updated_at":"$updated_at"}
 EOF
 chmod 600 "$tmp"; mv -f "$tmp" "$path"; trap - EXIT HUP INT TERM
 cat "$path"

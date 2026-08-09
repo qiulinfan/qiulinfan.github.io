@@ -6,11 +6,16 @@ param(
     [ValidateSet("same-tailnet", "shared-machine")] [string] $TailscaleAccessMode,
     [ValidateSet("pending", "accepted", "reachable")] [string] $TailscaleAccessStatus = "pending",
     [ValidateSet("pending", "accepted")] [string] $MulticaInvitationStatus = "pending",
+    [string] $TailscaleIdentityEmail = "",
     [string] $Profile = "home"
 )
 
 $ErrorActionPreference = "Stop"
 if ($MemberEmail -notmatch '^[^@\s,]+@[^@\s,]+\.[^@\s,]+$') { throw "Invalid member email." }
+if ($TailscaleIdentityEmail -and
+    $TailscaleIdentityEmail -notmatch '^[^@\s,]+@[^@\s,]+\.[^@\s,]+$') {
+    throw "Invalid Tailscale identity email."
+}
 $Cache = (& (Join-Path $PSScriptRoot "profile-cache.ps1") show -Profile $Profile) | ConvertFrom-Json
 $ServerUrl = [string]$Cache.values.PUBLISHED_URL
 $Workspace = [string]$Cache.values.WORKSPACE_SLUG
@@ -28,7 +33,10 @@ $Receipt = [ordered]@{
     app_url = $ServerUrl
     workspace = $Workspace
     member_email = $MemberEmail.ToLowerInvariant()
+    tailscale_identity_email = $TailscaleIdentityEmail.ToLowerInvariant()
+    workspace_selected_by = "server-owner"
     tailscale_access_mode = $TailscaleAccessMode
+    tailscale_access_selected_by = "server-owner"
     tailscale_access_status = $TailscaleAccessStatus
     multica_invitation_status = $MulticaInvitationStatus
     authentication_mode = "fixed-private-code"
