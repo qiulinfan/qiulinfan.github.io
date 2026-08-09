@@ -1,4 +1,4 @@
 interface:
   display_name: "Multica Runtime Client"
-  short_description: "Guided Multica onboarding over private Tailscale"
-  default_prompt: "Use $multica-runtime-client to guide me from whatever details I have through requesting owner admission and joining this device safely."
+  short_description: "Guided Multica onboarding with VPN diagnostics"
+  default_prompt: "Use $multica-runtime-client to guide me through owner admission, diagnose any VPN conflict, and join this device safely."

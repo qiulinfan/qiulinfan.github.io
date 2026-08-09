@@ -30,12 +30,14 @@ Multica / Tailscale ranges -> direct Tailscale -> /api/config
 Public identity provider  -> existing proxy   -> HTTPS success
 ```
 
-For macOS Clash Verge system-proxy mode, run `scripts/prepare-macos-vpn-routing.sh`. It preserves
-existing entries while adding `*.ts.net`, `100.64.0.0/10`, and `fd7a:115c:a1e0::/48` to Verge and
-matching active macOS services. Do not disable Clash Verge or rely on a temporary browser refresh.
+For macOS Clash Verge system-proxy mode, run `scripts/prepare-macos-vpn-routing.sh`. It persists the
+active profile's direct Rules Enhancement and applies a matching macOS proxy bypass for immediate
+effect. If the profile must be reloaded, return `action=restart_clash_verge` and wait for the member
+to do it; never quit or relaunch the network client. After resume, check the generated rules and
+both direct and forced-proxy paths.
 
-Fail closed for TUN mode, PAC-only routing, unknown VPN clients, or unsafe configuration. On
-Windows/Linux, apply equivalent exclusions in the VPN client and OS routing/proxy layer.
+For all other clients and modes, follow [VPN and proxy troubleshooting](vpn-troubleshooting.md).
+Do not disable the VPN, apply guessed syntax, or confuse a one-time OS edit with persistence.
 
 ## Manual boundary
 

@@ -1,6 +1,6 @@
 ---
 name: multica-runtime-client
-description: Guide a member from zero details, only a Multica Server URL, or a complete owner handoff through joining macOS, Windows/WSL, or native Linux devices over private Tailscale. Tell the member what to send the owner, obtain owner-chosen workspace and Tailscale access details, preflight VPN coexistence, authenticate, verify runtimes, create workspace agents, smoke-test, and optionally configure authorized autostart. Use for onboarding, Web UI access, VPN/proxy conflicts, admission failures, offline runtimes, and lifecycle work. Never inspect provider CLIs, deploy a Server, or change admission policy.
+description: Guide a member from zero details, only a Multica Server URL, or a complete owner handoff through joining macOS, Windows/WSL, or native Linux devices over private Tailscale. Tell the member what to send the owner, obtain owner-chosen workspace and Tailscale access details, diagnose competing VPN/proxy clients, persist and verify supported split routing, authenticate, verify runtimes, create workspace agents, smoke-test, and optionally configure authorized autostart. Use for onboarding, Web UI access, VPN/proxy conflicts, admission failures, offline runtimes, and lifecycle work. Never inspect provider CLIs, deploy a Server, or change admission policy.
 ---
 
 # Multica runtime client
@@ -70,10 +70,18 @@ Server URL, and reachable `/api/config`. If access is absent, guide the member t
 Tailscale or accept the owner-issued invitation/share, then return `manual_action_required`; do not
 call it a Multica 403.
 
-Then inspect VPN/proxy state. On macOS run `prepare-macos-vpn-routing.sh`; it handles Clash Verge
-system-proxy mode. Unknown clients, TUN mode, PAC-only routing, or unsafe updates require
-`manual_action_required`. Windows/Linux need equivalent persistent exclusions. Continue only when
-the private direct probe and public proxy probe both pass while the VPN remains enabled.
+Then classify VPN/proxy ownership and mode before changing it. On macOS,
+`prepare-macos-vpn-routing.sh` is the complete static adapter for Clash Verge system-proxy mode; it
+persists direct routing in the active profile's Rules Enhancement, applies an immediate macOS proxy
+bypass, and verifies the generated rules plus both paths. When the profile must be reloaded, stop at
+the returned manual restart action; the adapter must never quit or relaunch the network client. Do
+not treat it as a generic VPN script.
+
+For every other client or mode, follow [VPN troubleshooting](references/vpn-troubleshooting.md):
+inspect live state, consult current official documentation, configure the authoritative layer when
+safe, or return an evidence-rich `manual_action_required`. Never guess config syntax or claim
+persistence without revalidating relevant profile/node, reconnect, and restart events. Continue only
+when the private direct probe and public proxy probe both pass while the VPN remains enabled.
 
 Follow [Tailscale access](references/tailscale-access.md).
 
@@ -124,7 +132,8 @@ Provider state is never an input or completion condition.
 
 - Windows/WSL: `connect-windows-runtime-client.ps1`, `start-windows-runtime-client.ps1`,
   `install-windows-autostart.ps1`.
-- macOS: `prepare-macos-vpn-routing.sh`, `connect-runtime-client.sh`,
+- macOS Clash Verge reference: `prepare-macos-vpn-routing.sh`; all clients use
+  `connect-runtime-client.sh`,
   `start-runtime-client.sh`, `install-macos-autostart.sh`.
 - Linux: the Unix connect/start scripts and `install-linux-autostart.sh`.
 

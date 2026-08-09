@@ -49,7 +49,7 @@ flowchart LR
     Gate --> Handoff["无凭据 client handoff<br/>URL + workspace + 固定码 + 两层状态"]
     Handoff --> ClientCache["client profile cache<br/>Git ignored / no secrets"]
     ClientCache --> ClientVPN{"客户端打开 Web UI 前<br/>VPN / Tailscale 可共存?"}
-    ClientVPN -->|否| ClientSplit["持久 split routing<br/>私网直连 + 公网代理探测"]
+    ClientVPN -->|否| ClientSplit["识别客户端与模式<br/>适配器或证据化人工排障"]
     ClientSplit --> ClientVPN
     ClientVPN -->|是| Clients["multica-runtime-client<br/>朋友机器第 2/3/N 个 runtime"]
     Clients --> MoreAgents["workspace 可调用 agents<br/>跨机器 smoke task"]
@@ -73,10 +73,14 @@ workspace invite 与 Tailscale access，向服主输出操作清单、可直接�
 handoff。成员无需理解网络结构，邀请/share 链接也不得粘贴给 Agent。
 
 Agent 自动探测拓扑、WSL 和 hostname；在打开任何 Multica Web UI 或浏览器认证前，还必须探测
-VPN、TUN、PAC 与系统代理。仅有 `/api/config` 的 CLI 成功不足以证明浏览器路径可用；存在其他
-网络客户端时，必须同时验证 Multica 经 Tailscale 直连、公共身份站点经原代理可达。macOS Clash
-Verge 系统代理模式自动持久合并 `.ts.net`、Tailscale IPv4 与 IPv6 bypass；未知客户端、PAC-only
-或 TUN 模式无法安全配置时结构化停止，不通过关闭用户 VPN 规避。Multica 自动发现本机全部
+VPN、TUN、PAC、系统代理、路由与配置所有者。仅有 `/api/config` 的 CLI 成功不足以证明浏览器
+路径可用；存在其他网络客户端时，必须同时验证 Multica 经 Tailscale 直连、公共身份站点经原
+代理可达。macOS Clash Verge 系统代理模式有完整静态适配器：在当前订阅 Rules Enhancement
+前置 Tailscale DIRECT 规则，并设置本轮立即生效的 macOS bypass；需要重新加载配置时，脚本在
+人工重启断点停止，绝不自行退出或重启网络客户端。恢复后再验证生成配置以及直连、强制代理和
+公共代理三条路径。其他客户端按 system proxy、PAC、TUN、split tunnel、managed VPN 或 unknown 分类，
+只有验证过生命周期持久性的适配器才自动修改；否则输出观测证据、精确直连目标和人工动作后
+结构化停止。任何路径都不通过关闭用户 VPN 规避，也不把一次性 OS 修改当作持久配置。Multica 自动发现本机全部
 providers，Skill 不询问、
 登录或直接验证 provider CLI，provider 也不是输入、断点或完成条件。结构化脚本结果保持英文
 动作码，Agent 面向用户的解释、提示和交接则跟随用户语言。Agent 先合并 Skill 内
