@@ -17,10 +17,12 @@ workspace=${8:-}
 case "$profile" in *[!A-Za-z0-9._-]*|'') echo "Invalid Multica profile: $profile" >&2; exit 2 ;; esac
 [ -n "$workspace" ] || { echo "Workspace is required." >&2; exit 2; }
 script_dir=$(CDPATH= cd "$(dirname "$0")" && pwd)
-starter="$script_dir/start-runtime-client.sh"
-if [ ! -f "$starter" ]; then echo "Starter not found: $starter" >&2; exit 3; fi
+source_starter="$script_dir/start-runtime-client.sh"
+source_verifier="$script_dir/verify-runtime-client.sh"
+if [ ! -f "$source_starter" ]; then echo "Starter not found: $source_starter" >&2; exit 3; fi
+if [ ! -f "$source_verifier" ]; then echo "Verifier not found: $source_verifier" >&2; exit 3; fi
 
-/bin/sh "$starter" "$server_url" "$profile" "$device_name" "$runtime_name" \
+/bin/sh "$source_starter" "$server_url" "$profile" "$device_name" "$runtime_name" \
   "$max_concurrent_tasks" "$app_url" 120 "$agent_timeout" "$workspace"
 /bin/sh "$script_dir/profile-cache.sh" set "$profile" \
   "PLATFORM=macos" "AUTOSTART_APPROVED=true" >/dev/null
@@ -31,8 +33,14 @@ if [ -z "$runtime_name" ]; then runtime_name="$device_name runtime"; fi
 label="dev.multica.runtime-client.$profile"
 agent_dir="$HOME/Library/LaunchAgents"
 log_dir="$HOME/Library/Logs/Multica"
+runtime_dir="$HOME/.multica/runtime-client/$profile"
 plist="$agent_dir/$label.plist"
-mkdir -p "$agent_dir" "$log_dir"
+mkdir -p "$agent_dir" "$log_dir" "$runtime_dir"
+starter="$runtime_dir/start-runtime-client.sh"
+verifier="$runtime_dir/verify-runtime-client.sh"
+cp "$source_starter" "$starter"
+cp "$source_verifier" "$verifier"
+chmod 700 "$starter" "$verifier"
 
 xml_escape() {
   printf '%s' "$1" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g'

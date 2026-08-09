@@ -105,6 +105,6 @@ case "$action" in
     chmod 600 "$tmp"
     mv -f "$tmp" "$cache_path"
     trap - EXIT HUP INT TERM
-    "$0" show "$profile"
+    /bin/sh "$0" show "$profile"
     ;;
 esac

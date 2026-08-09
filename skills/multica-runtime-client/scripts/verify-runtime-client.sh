@@ -36,8 +36,9 @@ runtime_ids=$(printf '%s\n' "$daemon_json" | awk -v wanted="$workspace_id" '
 [ -n "$runtime_ids" ] || { echo "The local daemon has no runtimes in the target workspace." >&2; exit 6; }
 
 runtime_json=$("$multica_bin" runtime list --profile "$profile" --output json)
-online_ids=$(printf '%s\n' "$runtime_json" | awk -v daemon="$daemon_id" -v workspace="$workspace_id" -v allowed="$runtime_ids" '
-  BEGIN { n=split(allowed, ids, "\n"); for(i=1;i<=n;i++) okid[ids[i]]=1 }
+runtime_ids_csv=$(printf '%s\n' "$runtime_ids" | paste -sd, -)
+online_ids=$(printf '%s\n' "$runtime_json" | awk -v daemon="$daemon_id" -v workspace="$workspace_id" -v allowed="$runtime_ids_csv" '
+  BEGIN { n=split(allowed, ids, ","); for(i=1;i<=n;i++) okid[ids[i]]=1 }
   /^  \{/ { id=""; daemon_id=""; workspace_id=""; status=""; next }
   /^    "id"[[:space:]]*:/ { value=$0; sub(/^[^"]*"id"[[:space:]]*:[[:space:]]*"/, "", value); sub(/".*/, "", value); id=value; next }
   /^    "daemon_id"[[:space:]]*:/ { value=$0; sub(/^[^"]*"daemon_id"[[:space:]]*:[[:space:]]*"/, "", value); sub(/".*/, "", value); daemon_id=value; next }
