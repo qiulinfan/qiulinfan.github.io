@@ -1,3 +1,4 @@
+model_verbosity = "medium"
 [mcp_servers.kgdistiller]
 command = "python3"
 args = ["knowledge/kgd.py", "mcp"]

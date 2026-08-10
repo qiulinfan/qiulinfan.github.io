@@ -61,6 +61,20 @@ Require each writing child to:
 
 Preserve the repository's configured remote and authentication transport. Dreamweaver is a private repository with working SSH credentials; do not rewrite its remote to HTTPS.
 
+## Bind Unity work to the existing canonical Editor
+
+For every child that uses Unity or Unity MCP, require the already-running Unity Editor whose project root exactly equals the canonical worktree. For Dreamweaver, that root is `C:\Users\rynne\Desktop\dreamweaver`. The Unity project root and the file-mutation root must be the same directory.
+
+The producer and every Unity-capable child must enforce these rules:
+
+1. Never launch Unity, Unity Hub, a second Editor, or an MCP server as a task fallback. Never open an isolated Multica `work_dir` as a Unity project.
+2. Before the first Unity operation, enumerate MCP instances, resolve the intended instance, and verify its reported project root against the canonical path. Do not select an instance by display name alone.
+3. Continue only when exactly one healthy matching instance is available. Stop with `UNITY_EDITOR_NOT_RUNNING`, `UNITY_MCP_UNAVAILABLE`, `UNITY_INSTANCE_AMBIGUOUS`, or `UNITY_PROJECT_MISMATCH` as appropriate; include observed instance IDs and roots without mutating the project.
+4. Treat the canonical desktop Editor as the owner of its managed MCP server. If the bridge disappears, hand the failure to operational repair and wait for a new event. Do not repair it by starting an isolated Editor or independent long-lived server.
+5. Re-check the matched instance after an Editor restart, domain reload, branch switch, or bridge reconnect before resuming mutations.
+
+Carry this Editor-binding contract verbatim into programming, art-import, scene-integration, and Editor-based playtest child issues. A standalone player may still be launched for independent acceptance when the issue explicitly identifies that build; this does not authorize a second Unity Editor.
+
 ## Dispatch bounded child issues
 
 Before creating work, inspect live Multica state, resolve exact agent and runtime IDs, and search for an existing active child with the same parent and deliverable. Create each child exactly once.
@@ -76,6 +90,7 @@ Every child issue must include:
 7. Handoff recipient and expected artifact format.
 8. Canonical absolute worktree plus the first-write verification command.
 9. Source-control policy inherited from the parent.
+10. For Unity work, the existing-Editor binding, exact project-root check, and non-launch failure codes.
 
 Assign by exact agent ID, not a display-name guess. Do not retry or duplicate a failed dispatch without first determining whether the original issue or run exists.
 
