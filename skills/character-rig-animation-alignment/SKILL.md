@@ -1,6 +1,6 @@
 ---
 name: character-rig-animation-alignment
-description: Align a sourced or authored humanoid character model with external skeletal animations and deliver a verified engine-ready retargeting integration. Use when Codex must select and license a character for a game, audit FBX/GLB/Blend armatures or Rigify/control rigs, normalize bone mapping, bind/rest pose, axes, scale, root motion, skin weights, or Unity Humanoid Avatars, wire Animator/prefab/validation scenes, or diagnose failures such as valid-but-collapsed Avatars, contaminated bind poses, toe warnings, root drift, or prefab bone overrides.
+description: Align a sourced or authored humanoid character model with external skeletal animations and deliver a verified engine-ready retargeting integration. Use when Codex must select and license a character for a game, audit FBX/GLB/Blend armatures or Rigify/control rigs, normalize bone mapping, bind/rest pose, axes, scale, root motion, skin weights, Unity Humanoid Avatars, renderer/material mapping, or character transparency, wire Animator/prefab/validation scenes, or diagnose failures such as valid-but-collapsed Avatars, contaminated bind poses, root drift, prefab bone overrides, or Blender-correct characters whose faces render black or blurred in Unity.
 ---
 
 # Character Rig & Animation Alignment
@@ -12,7 +12,7 @@ Match user-facing explanations, questions, prompts, and handoffs to the user's l
 ## Establish the Contract
 
 1. Read repository instructions, the worktree, the design-source hierarchy, technical architecture, and existing asset/license conventions.
-2. Record the character's gameplay role, camera visibility, thematic identity, required animation verbs, target engine and render pipeline, format, scale, axes, root-motion owner, performance budget, and completion evidence.
+2. Record the character's gameplay role, camera visibility and distance, thematic identity, required animation verbs, target engine and render pipeline, format, scale, axes, root-motion owner, critical visual regions, alpha surfaces, performance budget, and completion evidence.
 3. Separate confirmed requirements, synthesis, assumptions, and open design questions. Do not turn an asset title, marketplace category, or visual resemblance into canonical character identity.
 4. Use `$search-game-art` when selection or acquisition is still open. Preserve the original page, creator, exact edition, retrieval date, declared license, redistribution boundary, archive name/size/hash, and locally audited contents. Keep declared web claims separate from inspected-file and engine evidence.
 5. Stop before download, import, or redistribution when permission is ambiguous, the page and archive conflict materially, the license cannot satisfy the intended repository or shipping model, or the user has not authorized the required acquisition.
@@ -34,7 +34,7 @@ Do not re-skin a working character merely to make its bone names resemble the so
 
 Hash inputs, inspect archive safety, and inventory each model, rig, and animation source independently:
 
-- meshes, materials, texture dependencies, armatures, deform/control bone counts, skin clusters, actions, NLA tracks, constraints, drivers, and shape keys;
+- meshes, populated material slots, per-polygon material use, shared materials or atlases, texture/alpha dependencies, armatures, deform/control bone counts, skin clusters, actions, NLA tracks, constraints, drivers, and shape keys;
 - unique bone names, hierarchy, deform flags, required bilateral chains, human-slot candidates, bind/rest matrices, pose state, object transforms, units, forward/up axes, and root structure;
 - vertex coverage, normalized weights, maximum influences, zero-weight vertices, non-deform groups, and representative extreme-pose deformation;
 - clip names, action ownership, frame ranges, fps, loop intent, active actions, overlapping NLA tracks, translation/rotation/scale channels, and source root travel.
@@ -74,27 +74,29 @@ Treat this script as a targeted sentinel, not proof of animation quality. Review
 2. Configure `ModelImporter` deterministically: scale, axis conversion, animation import, explicit Humanoid mapping, Avatar source/setup, clip ranges, loop flags, root locks, materials, and optimization policy.
 3. When an FBX skeleton changes under the same path, force a fresh skeleton description before accepting Humanoid state; a Generic-to-Human reimport is a valid cache refresh when verified. Never use `Avatar.isValid && Avatar.isHuman` as the only gate.
 4. Require the intended human mapping, bilateral toes, expected unmapped helpers, plausible mapped segment ratios, and no relevant importer errors or discarded-curve warnings.
-5. Bind real clips to named Animator states, assign the intended Avatar and controller, and make `applyRootMotion` match the root policy. Test state identity and clip semantics rather than relying on Inspector appearance.
-6. Create a reusable prefab without nested model-bone position/rotation/scale overrides. Runtime preview code must not sample and serialize pose changes in Edit mode; restore modified transforms before saving.
-7. Use an isolated validation scene with front/side cameras, neutral light, ground, scale landmarks, and contact props. Keep it out of shipping build settings unless explicitly required. If a builder is authoritative, edit the builder and regenerate instead of hand-editing only its outputs.
-8. Do not replace the canonical player, main scene, character identity, or gameplay state authority unless the contract explicitly requires it.
+5. Inventory each imported mesh's populated `subMeshCount` and each renderer's saved `sharedMaterials` order. Bind project-authored engine materials to the inspected engine submeshes; never assume Blender material-panel indices survive zero-polygon slot stripping or importer reordering.
+6. Reconstruct the target-pipeline material response explicitly. Verify texture identity and shared-atlas consumers, color space, roughness-to-smoothness translation, alpha/culling/depth/render-queue behavior, mip/compression policy, numeric shader properties, local keywords, and global-illumination flags after save and reimport.
+7. Bind real clips to named Animator states, assign the intended Avatar and controller, and make `applyRootMotion` match the root policy. Test state identity and clip semantics rather than relying on Inspector appearance.
+8. Create a reusable prefab without nested model-bone position/rotation/scale overrides. Runtime preview code must not sample and serialize pose changes in Edit mode; restore modified transforms before saving.
+9. Use an isolated validation scene with close-face, front, and side cameras, neutral light, ground, scale landmarks, and contact props. Keep it out of shipping build settings unless explicitly required. If a builder is authoritative, edit the builder and regenerate instead of hand-editing only its outputs.
+10. Do not replace the canonical player, main scene, character identity, or gameplay state authority unless the contract explicitly requires it.
 
 ## Accept With Reproducible Evidence
 
 Validate from a clean state at five layers:
 
-- **Static importer:** exact mapping, clips, avatar, materials, prefab references, no forbidden overrides, build-setting isolation, and clean relevant Console output.
+- **Static importer:** exact mapping, clips, avatar, populated submesh/material order, texture import state, serialized shader properties/keywords, prefab references, no forbidden overrides, build-setting isolation, and clean relevant Console output.
 - **Editor sampling:** sample every state at several normalized times such as `0`, `.25`, `.5`, `.75`, and `.95`; assert finite transforms, plausible scale/landmarks, bilateral foot-toe length, a support foot, and unchanged GameObject/Animator roots for in-place motion.
 - **Source-relative motion:** compare unusual pelvis or limb excursions with the source animation. Do not hide a real retargeting failure behind a wide bound, but do not reject an authored lunge with an arbitrary target-only envelope.
 - **Runtime:** enter Play mode through the player-like path, transition every required state, verify looping and root authority, reset, and repeat enough to expose state leakage.
-- **Visual and reproducible evidence:** inspect front and side captures for each representative state; retain tool/engine versions, commands or menu actions, source/output hashes, test XML or logs, screenshot paths, and the final worktree diff.
+- **Visual and reproducible evidence:** inspect close-face, front, and side captures under neutral and target presentation conditions for representative states; retain tool/engine versions, commands or menu actions, source/output hashes, test XML or logs, screenshot paths, and the final worktree diff.
 
 Run focused tests, then the relevant full Editor and PlayMode suites. Rebuild from the authoritative source and repeat critical checks when generated assets are part of the delivery. A screenshot, successful export command, green Avatar icon, or one passing pose is not a completed retarget.
 
 ## Stop, Roll Back, or Replace
 
 - **Stop** on missing authority, unresolved license/provenance, wrong project or Editor instance, missing only source needed to prove timing/bind state, or an operation that would overwrite the sole authored source.
-- **Roll back the current derivative/import** on bind-pose contamination, unexplained unit or axis conversion, collapsed segment ratios, scale curves, unexpected root drift, asymmetric/missing semantic chains, relevant importer warnings, prefab bone overrides, serialized preview poses, obscured validation cameras, or failed regression. Keep the failing artifact only when useful as labeled evidence.
+- **Roll back the current derivative/import** on bind-pose contamination, unexplained unit or axis conversion, collapsed segment ratios, scale curves, unexpected root drift, asymmetric/missing semantic chains, relevant importer warnings, prefab bone overrides, serialized preview poses, renderer/material order mismatch, opaque alpha cards obscuring critical regions, shader state that changes after reimport, obscured validation cameras, or failed regression. Keep the failing artifact only when useful as labeled evidence.
 - **Replace the asset** when its theme or camera readability fails the contract, redistribution terms conflict with delivery, the necessary human chains or skinning cannot be repaired within scope, or source ambiguity makes a trustworthy result impossible.
 
-Report `validated`, `prototype`, `blocked`, or `failed` honestly. Deliver the source/derivative inventory, mapping and clip tables, provenance and modification notices, hashes, executed gates, screenshots/logs, remaining risks, and exact rebuild entrypoint. Never turn an untested or failed gate into “should work.”
+Report `validated`, `prototype`, `blocked`, or `failed` honestly. Deliver the source/derivative inventory, skeleton and renderer/material maps, clip tables, provenance and modification notices, hashes, executed gates, screenshots/logs, remaining risks, and exact rebuild entrypoint. Never turn an untested or failed gate into “should work.”

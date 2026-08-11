@@ -48,22 +48,33 @@ The Melee clip retained an authored pelvis lunge of about `0.62 m` relative to i
 
 Edit-mode preview evaluation plus baked-mesh inspection serialized four finger Transform overrides into the prefab. The preview was restricted to Play mode, skeleton TRS was restored before save, and tests rejected nested model-bone TRS overrides. A manual visual iteration also caught backdrop geometry in the camera sight line; camera/backdrop placement was corrected and the retained captures supplied visual evidence. The automated lab validator checks camera count and wiring, not geometric occlusion.
 
+### Black face, blurred features, and the wrong material order
+
+The character looked correct in Blender but initially showed a half-black face and blurred facial detail in Unity. A Blender close-up and normal audit found symmetric left/right face normals, so recalculating normals would have been a destructive false fix. Earlier look-development choices also exposed three contributing risks: strong tints affected several body regions through shared atlases, face details lost readability through ordinary mip/compression settings, and alpha-cut hair or eyelash cards could promote low-alpha black RGB into opaque blockers.
+
+The decisive defect was renderer mapping. Blender displayed the face object's slots as `U4`, `U1`, eyelashes, and hair, but Unity exposed the populated face submeshes in polygon-use order as `U1` skin, `U4` facial detail, then eyelashes; Unity stripped the unused fourth hair slot. Assigning project materials by the assumed Blender slot indices swapped the populated surfaces and produced the black face, a white block, and exaggerated mouth/teeth-like artifacts.
+
+The fix bound materials to the inspected Unity renderer order, retained the original FBX and PNG bytes, and kept look-development changes in derived URP materials and texture importer settings. Soft hair and eyelash cards used double-sided alpha blending rather than cutout. Critical face textures received targeted detail-preserving import settings, not a project-wide uncompressed policy. Opaque materials paired numeric specular/reflection properties with Unity 6 local keywords. Texture-preserving weak emission used `RealtimeEmissive`; non-emissive materials used `EmissiveIsBlack`, because URP material postprocessing can recompute `_EMISSION` from global-illumination flags after save or reimport.
+
+This established a required character gate: verify actual imported submesh/material order, shared texture consumers, alpha behavior, texture sampling, shader keywords, and persisted material state before accepting the rigged prefab. A Blender render, correct normals, a green Avatar, or correct setup code is insufficient.
+
 ## Final Derivative and Validation
 
 The deterministic UAL2 derivative was 726,060 bytes with SHA-256 `dfc7c0ff7d73d144d208324aa22a3672bea017ce65dd2f8b957a6696bf99db97`. Its audited proof source hash was `f66c244138b5555f78f3b5fdf9cef8ed6f030df7cb706787e2bb27ceabe2856f`.
 
 Blender gates covered the 65-bone hierarchy, rest matrices, all-frame pose fidelity, semantic channels, loop/root behavior, raw FBX units and scale, and clean round trip. The session recorded two matching export hashes; the repository retains the final hash and deterministic exporter, not two separate derivatives. Maximum sampled source-to-bake and round-trip head-position errors were about `1.38e-6 m` and `3.31e-6 m`. Maximum round-trip rest-head position error was about `1.269e-5 m`, and maximum rest-matrix element delta was about `1.746e-5`. Terminal display-tail differences were recorded but intentionally not gated because FBX does not preserve Blender's arbitrary terminal display length.
 
-Unity gates covered exact 52-slot mappings, bilateral toes, retained unmapped leaf/twist bones, importer diagnostics, clip ranges/loops/root locks, segment ratios, prefab/controller/material wiring, lab isolation, and forbidden bone overrides. All six states were sampled at normalized times `0`, `.25`, `.5`, `.75`, and `.95` for finite transforms, human-space envelopes, pose change, and unchanged GameObject/Animator roots. The three UAL2 states additionally checked a plausible support foot and both Foot–Toes chains; their initial grounding and pelvis envelopes were compared with the UAL2 source where applicable.
+Unity gates covered exact 52-slot mappings, bilateral toes, retained unmapped leaf/twist bones, importer diagnostics, clip ranges/loops/root locks, segment ratios, audited face submesh/material order, persisted URP material and texture-import state, prefab/controller wiring, lab isolation, and forbidden bone overrides. All six states were sampled at normalized times `0`, `.25`, `.5`, `.75`, and `.95` for finite transforms, human-space envelopes, pose change, and unchanged GameObject/Animator roots. The three UAL2 states additionally checked a plausible support foot and both Foot–Toes chains; their initial grounding and pelvis envelopes were compared with the UAL2 source where applicable.
 
 The integration did not include an independent post-import per-vertex weight-normalization audit. Skinning acceptance came from importer limits, multi-action deformation, human envelopes, baked-mesh bounds, and visual captures, so a future weight-editing task must add direct vertex-weight gates.
 
 The final receipt recorded:
 
-- focused EditMode: 5 passed, 0 failed;
-- full EditMode: 16 passed, 0 failed;
+- focused EditMode: 6 passed, 0 failed;
+- full EditMode: 17 passed, 0 failed;
 - full PlayMode: 2 passed, 0 failed;
 - 12 final front/side captures, one pair for each controller state, retained locally under `Temp/DreamTravelerQA_Final_dfc7/*-1.png`;
+- final close-face material capture retained locally at `Temp/DreamTravelerURPFaceQA/final_urp_face_material_fix_1.png`;
 - final Console: 0 errors and 0 warnings.
 
 Implementation and evidence entrypoints:
@@ -75,6 +86,6 @@ Implementation and evidence entrypoints:
 - `Assets/_Project/Prototype/Tests/Editor/DreamTravelerRetargetingTests.cs`
 - `Docs/Art/2026-08-11-dream-traveler-retargeting.md`
 
-The `Temp/` captures and overwritten historical test XML are workstation evidence, not versioned checkout guarantees. The project document is the durable receipt for the focused 5/5, full EditMode 16/16, PlayMode 2/2, and Console results.
+The `Temp/` captures and overwritten historical test XML are workstation evidence, not versioned checkout guarantees. The project document is the durable receipt for the focused 6/6, full EditMode 17/17, PlayMode 2/2, close-face material result, and Console results.
 
 The result remained a reversible presentation candidate. First-person body visibility, canonical identity, prop-contact IK, secondary motion, and official UAL2 timing remained explicit design or source-acquisition questions.

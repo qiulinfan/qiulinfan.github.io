@@ -262,7 +262,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 - [configure-unity-mcp](./gamemaker/configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
 - [discuss-game-design](./gamemaker/discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
 - [play-unity-game](./gamemaker/play-unity-game/)：独立游玩并评估 Unity 游戏或场景，验证有效、无效、恢复与重置路径；有状态目标在重置后还需再次完整通关，相关项目错误会使结果失败。
-- [search-game-art](./gamemaker/search-game-art/)：从策划案提取外观、主题、玩法功能与动画需求，搜索并比较经过来源与许可证核验的资源；获明确授权后还可审计下载文件、筛选最小导入子集并交接 Unity 集成。
+- [search-game-art](./gamemaker/search-game-art/)：从策划案提取外观、主题、玩法功能与动画需求，把风格参考拆成保留/借用/避免特征，并以平台与查询族覆盖记录搜索 Sketchfab、创作者商店、引擎市场和开放资源；角色外观、可编辑源、骨架与内嵌/外部动画分别评分，获明确授权后再审计下载文件、筛选最小导入子集并交接 Unity 集成。
 
 ### kgdistiller 套件
 
@@ -278,8 +278,8 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [auto-ta](./auto-ta/)：把新手的自然语言美术需求转成资产契约，按可用能力路由到 ImageGen、Blender、现有授权资源或 Unity，自动完成建模、UV/PBR、骨骼动画、灯光/Shader/VFX 的可执行部分，并以可视检查、技术审计、格式往返和结构化回执区分 `validated`、`prototype`、`blocked` 与 `failed`。
-- [character-rig-animation-alignment](./character-rig-animation-alignment/)：把主题与授权核验、人物/动作骨架审计、rest/单位/轴/root/蒙皮归一化、Unity Humanoid 与 Animator/Prefab 接线、编辑器和运行时证据收束为一条可回滚的人形角色动画对齐流程，并在有效 Avatar 仍骨段塌缩、bind pose 污染、根漂移或序列化骨骼覆盖时强制失败。
+- [auto-ta](./auto-ta/)：把新手的自然语言美术需求转成资产契约，按可用能力路由到 ImageGen、Blender、经过审计的 skills.sh 方法、现有授权资源或 Unity，完成建模、UV/PBR、骨骼动画、灯光/Shader/VFX，并把 Blender→Unity 的子网格材质顺序、共享贴图、透明、mip、URP 关键词与重导入持久化纳入可视和技术往返回执。
+- [character-rig-animation-alignment](./character-rig-animation-alignment/)：把主题与授权核验、人物/动作骨架审计、rest/单位/轴/root/蒙皮归一化、Unity Humanoid、实际 renderer/material 映射、透明与 URP 状态、Animator/Prefab 接线及运行时证据收束为可回滚的人形角色对齐流程；有效 Avatar 但骨段塌缩、bind pose 污染、根漂移、材质错位、黑脸或序列化骨骼覆盖都会强制失败。
 - [record-windows-playtest](./record-windows-playtest/)：在 Windows 上对指定 Unity 游戏或 Editor 窗口执行有界录屏，以 `ffprobe`、时长、分辨率和 SHA-256 验证 MP4，生成包含 issue、版本与结论的回执，并把两者交付到 Google Drive for Desktop；只提供独立试玩证据，不修改游戏实现。
 - [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run。程序 agent 同时负责实现、测试和玩家路径验证，制作人复核其交付后直接关闭或将缺陷退回，不再创建独立 playtester、录屏或证据修复阶段；Dreamweaver 统一使用绝对工作树和项目根精确匹配的既有桌面 Unity/MCP 会话，并默认允许 commit/push/draft PR（父 issue 可 `no push`）。
 - [write-game-design-brief](./write-game-design-brief/)：把原始点子或 issue 写成可实现、可测试且区分事实、综合、提案与开放问题的策划契约，向美术和程序提供明确需求但不亲自实现。

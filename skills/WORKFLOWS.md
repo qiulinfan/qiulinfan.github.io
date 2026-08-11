@@ -40,8 +40,10 @@ flowchart TD
 ```mermaid
 flowchart LR
     Brief["策划案与技术文档"] --> Matrix["search-game-art<br/>需求矩阵"]
-    Matrix --> Search["按外观、主题、功能与动画动词搜索"]
-    Search --> Evidence["原始来源与许可证核验"]
+    Matrix --> Traits["参考拆解<br/>保留 / 借用 / 避免"]
+    Traits --> Search["按平台与查询族覆盖搜索<br/>含 Sketchfab 与创作者源"]
+    Search --> Coverage["搜索覆盖记录<br/>缺口与扩展动作"]
+    Coverage --> Evidence["原始来源与许可证核验"]
     Evidence --> Choice{"用户是否授权获取或导入?"}
     Choice -->|否| Shortlist["候选清单、推荐与风险"]
     Choice -->|是| Audit["临时下载<br/>哈希、归档与 Blender 审计"]
@@ -51,9 +53,9 @@ flowchart LR
     Validate --> Learn["只把可复用经验回写 Skill"]
 ```
 
-[`search-game-art`](#skill-search-game-art) 先读取项目内的设计来源层级，把模糊的“风格像什么”拆成可核验的资产角色：玩法功能、叙事主题、视觉要求、所需状态或动画动词、技术约束与许可证边界。搜索阶段仍然可以独立结束；只有用户明确要求获取或导入时，才在临时目录下载候选，记录 SHA-256，审计归档的真实文件、许可证和异常内容，并用 Blender 检查实际网格、骨架与动作曲线。网页描述属于声明证据，下载包与引擎结果属于审计证据，两者不混为一谈。
+[`search-game-art`](#skill-search-game-art) 先读取项目内的设计来源层级，把模糊的“风格像什么”拆成必须保留、希望借用、必须避免和允许修改的特征，再形成可核验的资产角色：玩法功能、叙事主题、视觉要求、所需状态或动画动词、技术约束与许可证边界。人物等高差异资源必须留下平台与查询族覆盖记录，默认不会只搜一个引擎市场：Sketchfab 的创作者模型、itch.io/创作者源、开放库与付费可编辑源按需求分层核验；若候选只是勉强可用，先扩展情绪词、轮廓词、作者标签与相邻分类。搜索阶段仍然可以独立结束；只有用户明确要求获取或导入时，才在临时目录下载候选，记录 SHA-256，审计归档的真实文件、许可证和异常内容，并用 Blender 检查实际网格、骨架与动作曲线。网页描述属于声明证据，下载包与引擎结果属于审计证据，两者不混为一谈。
 
-审计通过后只选择当前需求所需的最小子集，再交给 [`build-unity-scene`](#skill-build-unity-scene) 按目标项目已有结构完成 Unity 导入、Importer 设置、材质或 prefab 建立以及 Editor 验证。动画包只有在目标角色的实际重定向测试通过后才算集成；仅有“Humanoid”“Mixamo compatible”或“animated”标签时保留为待验证。真实项目中的具体资源 URL、哈希和导入清单写入目标游戏仓库，Skill 本体只沉淀可复用的判断与审计步骤。面向用户的说明、提示与交接跟随用户语言，命令、标识符、结构化键和原始错误保持不变。
+审计通过后只选择当前需求所需的最小子集，再交给 [`build-unity-scene`](#skill-build-unity-scene) 按目标项目已有结构完成 Unity 导入、Importer 设置、材质或 prefab 建立以及 Editor 验证。人物候选分别评价外观、可编辑源、骨架和动作：已有经过验证的外部动作库时，模型没有内嵌动画不是淘汰条件；但“Humanoid”“Mixamo compatible”或“animated”标签也不能代替目标角色与目标动作的实际重定向。真实项目中的具体资源 URL、哈希和导入清单写入目标游戏仓库，Skill 本体只沉淀可复用的判断与审计步骤。面向用户的说明、提示与交接跟随用户语言，命令、标识符、结构化键和原始错误保持不变。
 
 ## 从自然语言到原创可验证游戏资产
 
@@ -75,12 +77,13 @@ flowchart LR
     Round --> Unity{"已授权 Unity 项目?"}
     Unity -->|是| Import["Unity MCP<br/>Importer / Prefab / 验证场景"]
     Unity -->|否| Receipt["结构化回执"]
-    Import --> Receipt
+    Import --> Lookdev["引擎外观往返门<br/>人物含 submesh / alpha / mip / URP 状态"]
+    Lookdev --> Receipt
 ```
 
-[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证；当任务是“已蒙皮人形角色 + 外部骨骼动作”时，转给 [`character-rig-animation-alignment`](#skill-character-rig-animation-alignment) 负责 deform/control 骨架分离、rest/单位/轴/root/权重归一化、Humanoid 重定向、Animator/Prefab 接线和编辑器/运行时失败门；Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
+[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证；skills.sh 上的 Blender skills 只在仓库、许可证、依赖和实际工具接口核对并隔离试跑后，作为有限执行方法或检查表接入，不取代本地工件验收；当任务是“已蒙皮人形角色 + 外部骨骼动作”时，转给 [`character-rig-animation-alignment`](#skill-character-rig-animation-alignment) 负责 deform/control 骨架分离、rest/单位/轴/root/权重归一化、Humanoid 重定向、Animator/Prefab 接线和编辑器/运行时失败门；Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
 
-每个资产先在隔离副本中完成最小端到端切片，再经过真实保存文件的数据审计、渲染或姿态检查、目标格式导出后清洁导入的往返验证；需要 Unity 交付时，最后再验证目标 Render Pipeline、Importer、材质、Prefab 与最小场景。最终 `auto-ta-receipt.json` 对每项门给出 `pass`、`fail` 或 `not_tested`，整体只能是 `validated`、`prototype`、`blocked` 或 `failed`，不能用“应该可用”的文字代替未执行的验证。当前 `coordinate-game-production` 不会自动派发原创建模；若要把这条能力加入现有生产总线，应由用户明确修改其美术 worker 边界。
+每个资产先在隔离副本中完成最小端到端切片，再经过真实保存文件的数据审计、渲染或姿态检查、目标格式导出后清洁导入的往返验证；需要 Unity 交付时，最后再验证目标 Render Pipeline、Importer、材质、Prefab 与最小场景。人物外观还必须核对 Unity 实际 populated submesh 与 `sharedMaterials` 顺序、共享贴图影响、透明卡片、关键脸部纹理的 mip/压缩以及数值属性、Unity 6 local keywords 和 GI flags 在保存/重导入后的状态；Blender 正确、法线对称或 setup code 执行成功都不能替代引擎近景和目标相机验收。最终 `auto-ta-receipt.json` 对每项门给出 `pass`、`fail` 或 `not_tested`，整体只能是 `validated`、`prototype`、`blocked` 或 `failed`，不能用“应该可用”的文字代替未执行的验证。当前 `coordinate-game-production` 不会自动派发原创建模；若要把这条能力加入现有生产总线，应由用户明确修改其美术 worker 边界。
 
 ## Multica 控制面与执行节点
 

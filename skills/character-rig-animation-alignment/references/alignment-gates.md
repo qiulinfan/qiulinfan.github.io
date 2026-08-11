@@ -69,6 +69,8 @@ Do not “correct” disputed fps or an unusual lunge from memory. Preserve audi
 | Diagnostics | No relevant import errors, “inbetween humanoid transforms,” discarded toe curves, or mapping warnings |
 | Clips | Exact state-to-clip binding, frame ranges, loops, root locks, human motion, audited fps provenance |
 | Controller | All required states reachable; no missing motions; transitions and defaults match the validation contract |
+| Renderer layout | Imported populated submesh count and saved `sharedMaterials` order match an inspected renderer/material map; stripped empty source slots are recorded |
+| Materials | Intended target-pipeline shader, textures, color space, alpha/culling/depth state, and shared-atlas consumers are explicit |
 | Prefab | Intended Avatar/controller/materials; unit scale; no nested model-bone TRS overrides |
 | Preview code | Does not animate in Edit mode or persist a sampled pose; restores any temporary transforms |
 | Validation scene | Character, neutral ground, landmarks/props, visible front/side cameras, light; excluded from shipping build unless requested |
@@ -76,7 +78,24 @@ Do not “correct” disputed fps or an unusual lunge from memory. Preserve audi
 
 If Unity appears to retain stale `HumanDescription.skeleton` data after replacing an FBX, transition the importer through a non-Humanoid state, reimport, then apply the intended Humanoid mapping and reimport again. Accept this only after the rebuilt skeleton passes the same gates.
 
-## 6. Runtime and Visual Acceptance
+## 6. Renderer and Material Round Trip
+
+Require an engine-side table for every critical skinned renderer:
+
+| Field | Evidence |
+| --- | --- |
+| Source use | DCC object, populated material slots, and per-polygon material assignment |
+| Imported use | Mesh `subMeshCount`, renderer `sharedMaterials` count/order, and intended material identity |
+| Shared surfaces | Every mesh or body region using the same material or texture atlas |
+| Transparency | Source alpha distribution and RGB below low alpha; chosen blend/cutout/dither, culling, ZWrite, shadows, and render queue |
+| Texture import | Color space, alpha preservation, mip/filter/bias, compression, maximum size, and representative near/far result |
+| Shader state | Numeric properties plus valid local keywords, tags, queue, and global-illumination flags after save/reimport |
+
+Do not diagnose a dark face as inverted normals until submesh mapping, shared tints, alpha cards, light/shadow, and texture sampling have been isolated. Do not use alpha cutout merely because a texture has alpha; low-alpha black RGB can become an opaque blocker. Do not globally disable mips or compression to repair one face texture. Tune only the critical images and prove both close-up and gameplay-camera readability.
+
+For URP, translate material semantics deliberately: roughness and smoothness are inverse conventions, transparency requires coherent surface/blend/depth/queue state, and Unity 6 shader features may use local keywords. Emission must have both the intended keyword and compatible `MaterialGlobalIlluminationFlags`, then survive material save, asset reimport, prefab rebuild, and scene reload.
+
+## 7. Runtime and Visual Acceptance
 
 For each required state, sample several normalized times across the clip and test:
 
@@ -89,7 +108,7 @@ For each required state, sample several normalized times across the clip and tes
 
 Then enter Play mode, exercise the real state path, reset, and repeat. Retain focused and full-suite results, Console errors/warnings, screenshots, logs, versions, hashes, and rebuild commands. Treat screenshots as visual evidence, never as a substitute for structural or runtime checks.
 
-## 7. Outcome Decision
+## 8. Outcome Decision
 
 | Outcome | Meaning |
 | --- | --- |
@@ -128,6 +147,7 @@ delivery:
 validation:
   dcc_round_trip: <pass | fail | not_tested>
   unity_importer: <pass | fail | not_tested>
+  renderer_material_round_trip: <pass | fail | not_tested>
   editor_sampling: <pass | fail | not_tested>
   runtime: <pass | fail | not_tested>
   visual: <pass | fail | not_tested>

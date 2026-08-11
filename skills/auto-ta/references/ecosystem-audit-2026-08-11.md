@@ -192,3 +192,9 @@ The local ImageGen texture test produced a visually usable wood source twice, bu
 2. **Isolated next tests:** dcc-mcp Blender typed adapter, OIIO/OCIO texture validation, MaterialX/OpenUSD interchange, and a clean-project Unity import round trip.
 3. **Only with explicit authorization:** Meshy/Tripo/Hunyuan, external uploads, paid DCCs, new Unity packages, gateways, and provider keys.
 4. **Reject until fixed:** secret-bearing Skills, missing-license adaptations, missing advertised source paths, hard-coded author paths, incompatible MCP schemas, and image-only “3D model” substitutes.
+
+## Ongoing experience feedback loop
+
+For each real Blender production run, classify the needed capability first, then select at most the smallest relevant external Skill family from this audit or a newly verified upstream source. Re-check its exact repository path, license, dependencies, tool names, and current release; run it on an isolated representative slice before letting it touch the authored scene.
+
+After the run, separate three outputs: project-specific asset decisions stay in the game repository, external-skill compatibility evidence stays in this dated audit or a successor audit, and only generalizable production or acceptance rules enter `auto-ta` or a specialized local Skill. A failure should become a reusable diagnostic order or gate only when the evidence identifies the cause; do not promote a one-off color, shader value, asset name, or workaround into a universal preset.

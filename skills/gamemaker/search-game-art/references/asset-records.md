@@ -22,6 +22,35 @@ assumptions: []
 open_questions: []
 ```
 
+## Search Coverage Record
+
+```yaml
+asset_role: dream_traveler_character_candidate
+searched_at: ""
+query_families:
+  - role_plus_silhouette_plus_emotional_valence
+  - reference_traits_without_literal_costume_motifs
+  - rigged_downloadable_plus_license
+source_classes:
+  sketchfab:
+    status: searched
+    queries: []
+    notable_creators_or_collections: []
+  itch_and_creator_stores:
+    status: searched
+    queries: []
+  engine_marketplaces:
+    status: searched
+    queries: []
+  paid_editable_sources:
+    status: not_needed
+    reason: ""
+coverage_gaps: []
+plateau_action: broadened_traits_and_creator_tags
+```
+
+Use `searched`, `not_relevant`, `blocked`, or `not_needed` for source-class status and explain every value other than `searched`. This is a coverage receipt, not a claim that a dynamic catalog was exhausted.
+
 ## Candidate Record
 
 ```yaml
@@ -40,7 +69,10 @@ license:
   redistribution: unknown
 declared_contents:
   formats: []
+  editable_sources: []
+  rig: unknown
   animation_verbs: []
+  bundled_animation_count: unknown
   root_motion: unknown
   engine_support: []
 fit:
@@ -49,7 +81,12 @@ fit:
   functional: ""
   technical: ""
   license: ""
+  source_editability: ""
   adaptation_cost: ""
+external_retarget_path:
+  animation_source: ""
+  required_verbs_covered: []
+  actual_pair_test: not_tested
 unverified_after_download: []
 ```
 

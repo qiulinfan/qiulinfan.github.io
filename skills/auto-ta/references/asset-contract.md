@@ -44,6 +44,13 @@ Create this contract before tool execution. Store it in `asset-contract.json` fo
     "sets": 1,
     "required_maps": ["base_color", "normal", "metallic_roughness"]
   },
+  "lookdev": {
+    "target_shader": "Universal Render Pipeline/Lit",
+    "critical_regions": [],
+    "shared_atlases": [],
+    "alpha_surfaces": [],
+    "target_camera_distances_m": []
+  },
   "rig": null,
   "animation": [],
   "integration": {
@@ -68,6 +75,8 @@ Create this contract before tool execution. Store it in `asset-contract.json` fo
 Keep semantic width/depth/height separate from the authoring application's XYZ order. Translate the user's dimensions once, record the mapping, and pass the authoring-axis `dimensions_m_xyz` to Blender audit commands. Record the target axes independently; an exporter or engine conversion may intentionally rotate the representation while preserving semantic size and orientation.
 
 Keep `uv_coordinate_preservation_required` true for bitmap-textured, baked, lightmapped, atlas, decal, or hand-painted assets. It may be false only when the contract has no coordinate-dependent appearance and allows the exporter to reparameterize UVs; UV existence, finite values, and nonzero area on every polygon remain mandatory.
+
+For an image-textured character, fill `lookdev.critical_regions` with areas such as face, eyes, mouth, hairline, hands, or costume marks that must remain readable. Inventory shared atlases and alpha surfaces before changing tints or transparency. Record both diagnostic close-up distance and expected gameplay camera distance; passing only one does not prove the other.
 
 ## Prototype defaults
 

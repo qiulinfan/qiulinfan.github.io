@@ -1,6 +1,6 @@
 ---
 name: auto-ta
-description: "Automate novice-friendly technical-art production for game assets: turn a plain-language request into an asset contract, create or adapt 3D geometry, UVs, PBR materials, rigs, animation, lighting, shaders, VFX, exports, and Unity imports, then validate the real artifacts. Use for original models, texture and material work, rigging or retargeting, render setup, DCC-to-engine handoff, and technical-art audits."
+description: "Automate novice-friendly technical-art production for game assets: turn a plain-language request into an asset contract, create or adapt 3D geometry, UVs, PBR materials, rigs, animation, lighting, shaders, VFX, exports, and Unity imports, then validate the real artifacts. Use for original models, texture and material work, rigging or retargeting, render setup, Blender-to-engine character lookdev, DCC handoff, and technical-art audits."
 ---
 
 # Auto TA
@@ -47,7 +47,7 @@ Do not install a DCC, package, add-on, MCP gateway, persistent service, or daemo
 - Work in a new, explicitly named output directory or copy. Never overwrite the only authored `.blend`, `.fbx`, `.gltf`, texture, rig, or engine asset.
 - Record source hashes before adapting third-party or user-authored files.
 - Establish dimensions, origin/pivot, forward/up axes, unit scale, target engine, triangle budget, texture budget, and required clips.
-- For an existing scene, inspect collections, names, linked data, modifiers, armatures, actions, and dependencies before editing.
+- For an existing scene, inspect collections, names, linked data, modifiers, armatures, actions, material slots, per-polygon material use, image dependencies, and alpha behavior before editing.
 
 ### 2. Build an end-to-end slice
 
@@ -64,7 +64,7 @@ Use stable names. Do not join independent parts merely to make the object count 
 
 ### 3. Perform a visual checkpoint
 
-Render or capture enough views to expose silhouette, proportions, intersections, shading, UV/material errors, deformation, and lighting. Inspect those images. For animation, inspect representative poses plus the full clip timing; a still image cannot validate motion.
+Render or capture enough views to expose silhouette, proportions, intersections, shading, UV/material errors, deformation, and lighting. Inspect those images. Use a neutral look-development view to diagnose the asset and the target gameplay camera to accept it. For animation, inspect representative poses plus the full clip timing; a still image cannot validate motion.
 
 If no visual surface is available, label visual quality `not_tested`; do not infer it from mesh statistics.
 
@@ -130,6 +130,8 @@ UV coordinates are strict by default. Add `--allow-uv-reparameterization` only w
 
 For Unity, keep raw source assets separate from prefabs and project-authored materials. Configure importer settings explicitly, instantiate a minimal validation prefab or scene, and verify the target render pipeline. Do not mutate an unrelated open project because its MCP happens to be connected.
 
+For an image-textured character or any Blender-to-Unity look-development job, read [references/blender-unity-character-lookdev.md](references/blender-unity-character-lookdev.md). Treat renderer submesh/material mapping, shared-atlas use, alpha surfaces, texture import, shader properties, local keywords, and serialized reimport state as separate gates. Blender material-slot order is not proof of Unity renderer order.
+
 ## Task-Specific Rules
 
 ### Modeling and UV
@@ -143,6 +145,8 @@ For Unity, keep raw source assets separate from prefabs and project-authored mat
 - Define the target shader and exact channel packing before generating maps.
 - Treat base color/emission as color data and masks, metallic, roughness, normal, height, and ambient occlusion as non-color data unless the target pipeline specifies otherwise.
 - Validate normal-map handedness, bit depth where displacement matters, alpha mode, seams, tiling, and mip behavior. Never relabel a color image as a normal/roughness map just to satisfy a filename contract.
+- Inventory every mesh that shares a material or atlas before applying a tint or shader change; a face-detail texture may also serve teeth, eyes, boots, or another mesh.
+- In the target engine, bind materials to inspected submeshes rather than inferred DCC slot indices. Validate the saved and reimported renderer state, not only the setup code.
 
 ### Rigging and animation
 
@@ -182,3 +186,5 @@ Never replace a failed or untested gate with prose such as “should work.” Re
 ## Maintain Adapter Coverage
 
 When adding, replacing, or recommending third-party Skills, providers, DCC adapters, or engine backends, read [references/ecosystem-audit-2026-08-11.md](references/ecosystem-audit-2026-08-11.md) as a dated research baseline. Re-check the upstream repository, license, tool schema, release, dependencies, and security posture before use; popularity and a skills directory listing are not runtime evidence.
+
+Treat skills.sh Blender entries as bounded execution recipes, knowledge checklists, or validation layers, not as proof that their named tools exist locally. Adopt a useful method only after static audit and an isolated probe, then keep local artifact, round-trip, engine, and visual gates authoritative. Feed back generalizable failures and acceptance gates; keep project-specific colors, slot names, hashes, and asset choices in the project receipt or case study.
