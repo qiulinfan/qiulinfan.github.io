@@ -90,7 +90,6 @@ class MultiSourceExportTest(unittest.TestCase):
                 title="LaTeX Knowledge Fixture",
                 course="Demo",
                 author="Test",
-                sync_graph=False,
             )
             rendered = output.read_text(encoding="utf-8")
 
@@ -164,7 +163,6 @@ class MultiSourceExportTest(unittest.TestCase):
                     title="Unregistered",
                     course=None,
                     author=None,
-                    sync_graph=False,
                 )
 
 

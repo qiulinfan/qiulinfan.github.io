@@ -2,42 +2,42 @@
 
 TYPST := typst
 TOOLCHAIN := ../toolchain
-EXPORT_SKILL := ../../../skills/kgdistiller/extract-and-export-notes
+WEB_CHECK := $(TOOLCHAIN)/scripts/check_web.py
 REPO_ROOT := ../../..
-KGDISTILLER := python3 $(REPO_ROOT)/knowledge/kgd.py
+KGDISTILLER ?= kgdistiller
 BUILD := build/typst
 EXPORTS := exports
 COURSE_SLUG := {{SLUG}}
 
 all: release
 
-release: knowledge-curate web-check
+release: web-check
 
-export: knowledge-curate
+export:
 	@python3 $(TOOLCHAIN)/scripts/export_course.py \
 		--document notes=main.typ \
-		--root ../.. \
+		--root $(REPO_ROOT) \
 		--output $(EXPORTS) \
 		--build $(BUILD)/export
 
 knowledge-sync:
-	@$(KGDISTILLER) sync --course $(COURSE_SLUG)
+	@$(KGDISTILLER) --repo-root $(REPO_ROOT) sync --course $(COURSE_SLUG)
 
 knowledge-curate: knowledge-sync
-	@$(MAKE) -C $(REPO_ROOT) knowledge-workflow-check
+	@$(MAKE) -C $(REPO_ROOT) knowledge-authoring-check
 
 web:
 	@mkdir -p $(BUILD)
-	@$(TYPST) compile --root ../.. --features html --format html \
+	@$(TYPST) compile --root $(REPO_ROOT) --features html --format html \
 		main.typ $(BUILD)/index.html 2>$(BUILD)/index.log || \
 		{ cat $(BUILD)/index.log >&2; exit 1; }
 
 web-check: web
-	@python3 $(EXPORT_SKILL)/scripts/check_web.py $(BUILD)/index.html
+	@python3 $(WEB_CHECK) $(BUILD)/index.html
 
 watch:
 	@mkdir -p $(BUILD)
-	@$(TYPST) watch --root ../.. --features html --format html \
+	@$(TYPST) watch --root $(REPO_ROOT) --features html --format html \
 		main.typ $(BUILD)/index.html
 
 edit:

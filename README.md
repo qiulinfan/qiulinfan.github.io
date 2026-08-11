@@ -1,56 +1,74 @@
 # qiulinfan.github.io
 
-个人知识与内容仓库，按内容类型分为三个顶层目录：
+个人知识、内容、稳定 Skills 与网站仓库：
 
-- [`notes/`](notes/): 只保存 Typst、Markdown、LaTeX 权威源及正文实际引用的轻量资产；知识图谱和网页均由这些源生成，不保存 PDF、课程归档或站点构建物。
-- [`blogs/`](blogs/): 日常的一些知识分享和闲聊. (保证都是碎碎念
-- [`skills/`](skills/)：个人积累和维护的 skills. (也有偷别人开源的, 会标明出处
+- [`notes/`](notes/)：Markdown、Typst、LaTeX 权威源与共享渲染工具链；不提交 PDF、课程归档或构建物。
+- [`blogs/`](blogs/)：日常知识分享和碎碎念。
+- [`skills/`](skills/)：默认的新个人 Skills、稳定工作流与有来源记录的 community Skills。
+- [`knowledge/`](knowledge/)：一个本地 kgdistiller 实例的个人配置、决策、私有图谱和已采用静态导出。
+- [`site/`](site/)：主页、博客、笔记、Skills 与知识图谱的同一个 Astro 前端。
 
-可复用的知识图谱蒸馏引擎通过 Git submodule 接入
-[`vendor/kgdistiller/`](vendor/kgdistiller/)；本仓库只保存个人知识源、图谱配置、
-确定性图谱快照与网站集成。首次克隆后运行：
+## 独立 workflow 产品
 
-```bash
-git submodule update --init vendor/kgdistiller
-```
+高频迭代的 workflow series 不在本仓库镜像：
 
-kgdistiller 是主动跟随 `main` 的高频升级依赖；运行 `make kgdistiller-update` 会
-同时更新引擎及其 query/ingest Skills。每次升级后提交实际解析到的 submodule
-revision，使本地、干净克隆和 Pages 在单次运行中仍然可追溯。开发调试时可用
-`KGDISTILLER_SRC` 显式覆盖。
+- [`gamemaker`](https://github.com/qiulinfan/gamemaker) 自闭合维护游戏制作、Unity、TA Skills、预制 agents、profiles、linker 与测试。
+- [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 自闭合维护知识引擎、CLI/MCP、论文/笔记 Skills、预制 agents、linker 与测试。
 
-个人主页、blog、notes、skills 页面和知识图谱由 [`site/`](site/) 中的同一个 Fuwari/Astro 工程生成。Skills 页面直接读取 [`skills/`](skills/) 下的 `SKILL.md`；其中 query/ingest 是通向 submodule 规范正文的发现入口。全站视觉只在 [`site/src/styles/variables.styl`](site/src/styles/variables.styl) 中维护一次。
+两个产品的开发 checkout 都通过各自 linker，把每个 Skill 直接链接到
+`$CODEX_HOME/skills`。因此产品仓中的本地修改会实时反映到 Codex；qlblog 的 linker
+只管理 qlblog 自有 Skill，并与产品链接共存。产品迭代本身不会改变网站。只有在明确
+采用某个已提交版本时，才由 kgdistiller 重新导出
+[`knowledge/export/site/`](knowledge/export/site/)；bundle manifest 记录实际产品 commit
+和全部 artifact hashes，这就是 qlblog 的版本锁。
 
-## 博客常用命令
+## 网站与部署
 
-```bash
-# 新建 blogs/posts/typeshxt.md
-make blog-new NAME=typeshxt
+开发、检查、构建和 GitHub Pages 只验证并消费已提交静态导出，不 checkout、安装或
+运行 kgdistiller，也不需要 submodule：
 
-# 本地预览，保存 md 文件自动刷新
-make blog-dev
-
-# 检查并构建静态网站
+```sh
+make blog-install
+make knowledge-check
 make blog-check
 make blog-build
 ```
 
-知识图谱也可以只在本地浏览：
+新建博客或本地预览：
 
-```bash
-make knowledge-workflow-check
+```sh
+make blog-new NAME=my-first-post
+make blog-dev
+```
+
+## 显式刷新知识实例
+
+只有知识创作或采用新产品版本时才需要已安装的 kgdistiller CLI：
+
+```sh
+make knowledge-build
+make knowledge-authoring-check
+
+kgdistiller --repo-root . export site \
+  --output knowledge/export/site \
+  --product-commit <full-kgdistiller-commit> \
+  --source-repository https://github.com/qiulinfan/qiulinfan.github.io \
+  --replace
 make knowledge-check
-make knowledge-context QUERY="conditional expectation"
-make knowledge-serve
 ```
 
-笔记提取/入库闭环和论文默认不合并的联邦 GraphRAG 流程见
-[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)；项目现状、仓库提交、缺口和后续
-路线见 [`knowledge/HANDOFF.md`](knowledge/HANDOFF.md)。项目级 `.codex/config.toml`
-已把只读 kgdistiller MCP 接入 Codex；首次调用会从提交的图谱自动生成本地 SQLite 索引。
+采用时先把来源、registry 与私有图谱提交为一个 clean qlblog commit，再运行 export；
+manifest 会锁定这个 source commit 与实际执行导出的 clean kgdistiller commit。验证通过后，
+再用后一个 qlblog commit 提交四文件静态 bundle。dirty checkout 会被拒绝。
 
-首次使用或依赖变化后运行：
+实例 authority、public bundle contract 与完整采用流程见
+[`knowledge/SPEC.md`](knowledge/SPEC.md) 和
+[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。
 
-```bash
-make blog-install
-```
+## Skill 默认规则
+
+普通新个人 Skill 默认创建在本仓库 `skills/` 顶层并运行
+`skills/link-codex-skills.sh`（macOS/Linux/WSL）或
+`skills/link-codex-skills.ps1`（原生 Windows）。只有用户明确指定一组
+Skills/Workflows 为独立产品时，才把其源码、agents、workflows、测试与 linker 一起
+迁入独立仓库，并从 qlblog 删除重复 authority。

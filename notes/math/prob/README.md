@@ -8,7 +8,7 @@ Math 525 概率论课程笔记以课程根目录的 [`main.typ`](main.typ) 与
 make export                 # 按需生成本地 LaTeX / Markdown 快照
 make web-check              # 检查讲义网页的 UTF-8 与基本结构
 make homeworks-web-check    # 检查作业网页
-make                        # 同步图谱并检查网页，不生成快照
+make                        # 从已采用 registry 渲染并检查网页，不生成快照
 ```
 
 可再生导出统一位于忽略的本地目录：

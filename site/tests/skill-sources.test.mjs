@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join, sep } from "node:path";
 import test from "node:test";
 
 import {
@@ -11,7 +12,8 @@ import {
 	loadSkillWorkflowsMarkdown,
 } from "../src/utils/skill-sources.ts";
 
-const repositoryRoot = new URL("../..", import.meta.url).pathname;
+const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
+const communityRoot = `${join(repositoryRoot, "skills", "community")}${sep}`;
 
 function skillAuthorities(directory) {
 	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -25,8 +27,8 @@ function skillAuthorities(directory) {
 test("the public skills list includes personal Skills and excludes community authorities", () => {
 	const skills = loadPublishedSkills();
 	const allAuthorities = skillAuthorities(join(repositoryRoot, "skills"));
-	const communityAuthorities = allAuthorities.filter((path) => path.includes("/skills/community/"));
-	const publishableAuthorities = allAuthorities.filter((path) => !path.includes("/skills/community/"));
+	const communityAuthorities = allAuthorities.filter((path) => path.startsWith(communityRoot));
+	const publishableAuthorities = allAuthorities.filter((path) => !path.startsWith(communityRoot));
 	assert.equal(communityAuthorities.length > 0, true);
 	assert.equal(skills.length, publishableAuthorities.length);
 	assert.equal(new Set(skills.map((skill) => skill.name)).size, skills.length);
@@ -94,40 +96,7 @@ test("the public catalog dynamically groups every owned Skill without a communit
 	);
 });
 
-test("kgdistiller discovery skills delegate to the vendored canonical skills", () => {
-	for (const name of ["query-kgdistiller", "ingest-kgdistiller"]) {
-		const entryPath = join(repositoryRoot, "skills", "kgdistiller", name, "SKILL.md");
-		const canonicalPath = join(repositoryRoot, "vendor", "kgdistiller", "skills", name, "SKILL.md");
-		const entry = readFileSync(entryPath, "utf8");
-		const canonical = readFileSync(canonicalPath, "utf8");
-		assert.match(entry, new RegExp(`vendor/kgdistiller/skills/${name}/SKILL\\.md`));
-		assert.match(canonical, new RegExp(`name: ${name}`));
-		assert.equal(entry.match(/^description: (.+)$/m)?.[1], canonical.match(/^description: (.+)$/m)?.[1]);
-	}
-});
-
-test("knowledge Skills keep extraction, query, and ingestion responsibilities separate", () => {
-	const exportSkill = readFileSync(join(repositoryRoot, "skills/kgdistiller/extract-and-export-notes/SKILL.md"), "utf8");
-	const paperSkill = readFileSync(join(repositoryRoot, "skills/extract-paper-markdown/SKILL.md"), "utf8");
-	const querySkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/query-kgdistiller/SKILL.md"), "utf8");
-	const ingestSkill = readFileSync(join(repositoryRoot, "vendor/kgdistiller/skills/ingest-kgdistiller/SKILL.md"), "utf8");
-
-	assert.match(exportSkill, /\$query-kgdistiller/);
-	assert.match(exportSkill, /\$ingest-kgdistiller/);
-	assert.match(exportSkill, /research-paper/);
-	assert.doesNotMatch(exportSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
-	assert.match(paperSkill, /paper\.md/);
-	assert.doesNotMatch(paperSkill, /\$(?:query|ingest)-kgdistiller/);
-	assert.doesNotMatch(paperSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile|agent)/);
-	assert.match(querySkill, /Keep the boundary read-only/);
-	assert.doesNotMatch(querySkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
-	assert.match(ingestSkill, /kgdistiller ingest plan REQUEST\.json/);
-	assert.match(ingestSkill, /kgdistiller ingest apply REQUEST\.json/);
-	assert.doesNotMatch(ingestSkill, /python3 knowledge\/kgd\.py (?:apply|sync|reconcile)/);
-	assert.equal(existsSync(join(repositoryRoot, "skills/kgdistiller/kgdistiller-distill/SKILL.md")), false);
-});
-
-test("the Markdown-authored workflows reference real Skills and preserve knowledge boundaries", () => {
+test("the Markdown-authored workflows reference real qlblog Skills", () => {
 	const workflows = loadSkillWorkflowsMarkdown();
 	const workflowHrefs = [
 		...workflows.matchAll(/\]\(([^)]+)\)/g),
@@ -149,11 +118,6 @@ test("the Markdown-authored workflows reference real Skills and preserve knowled
 	assert.equal(diagramCount, workflowCount);
 	assert.equal(workflowHrefs.every((href) => href.startsWith("#skill-")), true);
 	assert.equal(skillIds.every((skillId) => publishedSkillNames.has(skillId)), true);
-	for (const status of ["known", "partial", "new", "uncertain", "conflict"]) {
-		assert.match(workflows, new RegExp(status));
-	}
-	assert.match(workflows, /不修改论文 Markdown、个人来源、主图谱或 Web/);
-	assert.match(workflows, /另一条需要重新授权和审查的流程/);
 	assert.equal(
 		existsSync(join(repositoryRoot, "site/src/data/skill-workflows.yaml")),
 		false,

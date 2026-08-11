@@ -22,46 +22,6 @@ LATEX_KN_RE = re.compile(r"\\kn\s*\{")
 LATEX_REF_RE = re.compile(r"\\knref\s*\{")
 
 
-def run_knowledge_command(command: list[str], *, purpose: str) -> None:
-    result = subprocess.run(
-        command,
-        check=False,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-    )
-    if result.returncode:
-        detail = result.stderr.strip() or result.stdout.strip()
-        raise LatexWebError(f"{purpose}:\n{detail}")
-
-
-def sync_knowledge_sources(sources: list[Path], repo_root: Path) -> None:
-    base = [
-        sys.executable,
-        str(repo_root / "knowledge/kgd.py"),
-    ]
-    command = [
-        *base,
-        "sync",
-    ]
-    for source in sources:
-        command.extend(["--file", str(source)])
-    run_knowledge_command(
-        command,
-        purpose="knowledge synchronization failed before LaTeX export",
-    )
-    curation_command = [*base, "curate-check"]
-    for source in sources:
-        curation_command.extend(["--file", str(source)])
-    run_knowledge_command(
-        curation_command,
-        purpose=(
-            "LaTeX knowledge curation is incomplete; use the export skill to write "
-            "source-grounded entries and semantic edges before publishing"
-        ),
-    )
-
-
 def export_latex_web(
     sources: list[Path],
     repo_root: Path,
@@ -71,7 +31,6 @@ def export_latex_web(
     title: str | None,
     course: str | None,
     author: str | None,
-    sync_graph: bool = True,
 ) -> None:
     if shutil.which("pandoc") is None or shutil.which("typst") is None:
         raise LatexWebError("Pandoc and Typst are required for LaTeX web export")
@@ -90,9 +49,6 @@ def export_latex_web(
         except ValueError as error:
             raise LatexWebError(f"LaTeX authority must stay inside repo root: {source}") from error
     project = inspect_project(resolved_sources)
-    sync_sources = list(dict.fromkeys([*project.requested, *project.content_sources]))
-    if sync_graph:
-        sync_knowledge_sources(sync_sources, repo_root)
     expected_kn = sum(len(LATEX_KN_RE.findall(source.read_text(encoding="utf-8"))) for source in project.content_sources)
     expected_refs = sum(len(LATEX_REF_RE.findall(source.read_text(encoding="utf-8"))) for source in project.content_sources)
     wrapper = convert_latex_project(

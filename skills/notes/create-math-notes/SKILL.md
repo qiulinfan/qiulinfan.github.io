@@ -1,6 +1,6 @@
 ---
 name: create-math-notes
-description: Create a new lightweight Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or create math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, optional ignored LaTeX/Markdown snapshots, semantic HTML checks, and knowledge-graph synchronization.
+description: Create a new lightweight Typst-first mathematics subject or course under qlblog/notes/math. Use when the user asks to start, scaffold, initialize, or create math notes that should open directly in VS Code/Tinymist and inherit the shared QLNotes template, optional ignored LaTeX/Markdown snapshots, semantic HTML checks, and synchronization through the installed kgdistiller product.
 ---
 
 # Create Math Notes
@@ -60,10 +60,14 @@ make -C notes/math/<slug>
 Successful commands are sufficient. Do not create PDFs or page images. Confirm
 that HTML and compiler output remain under ignored `build/`. Run `make export`
 only when the user explicitly needs chaptered LaTeX/Markdown snapshots; those
-must appear only under ignored `exports/`. The normal `make` target synchronizes
-the graph and checks HTML without creating snapshots.
+must appear only under ignored `exports/`. The normal `make` target renders
+against the committed knowledge registry and checks HTML without invoking the
+kgdistiller product. Run `make -C notes/math/<slug> knowledge-curate` explicitly
+when the user asks to refresh this local graph instance and has selected an
+installed product revision.
 
-If validation changes deterministic knowledge graph snapshots, keep those
-changes: source registration and scoped synchronization are part of course
-creation. Do not add a GitHub Pages route unless the user also asks to publish
-the new notes.
+Course creation registers the new source as unpublished, but normal validation
+does not synchronize or mutate the private graph. Keep deterministic graph and
+export changes only when the user separately requested the explicit
+`knowledge-curate`/adoption workflow. Do not add a GitHub Pages route unless the
+user also asks to publish the new notes.

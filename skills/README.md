@@ -1,23 +1,25 @@
 # Skills
 
-本目录是个人与社区 Skills 的权威副本，并随 qlblog 提交和同步。普通个人 Skill
-一律先放在本目录顶层；现有套件是 `gamemaker/`、`kgdistiller/` 与 `notes/`，保持其
-当前成员不动。以后只有用户明确指定时，才新建套件或把 Skills 放入套件，不根据主题
-自动归类。从开源网站下载的外部 Skills 统一放在 `community/`，供 Codex 使用但不在
-个人主页发布。目录层级不改变 Skill 名称或 Codex 中的扁平清单。
-`$CODEX_HOME/skills`（默认 `~/.codex/skills`）必须是 Codex 自己管理的真实目录；
-仓库中的每个可见 Skill 分别软链接进去。Codex 生成的 `.system/` 只保留在该真实
-目录中，不复制、不定制、不发布，也不纳入本仓库版本管理。
+本目录是 qlblog 自有个人与社区 Skills 的权威副本。普通个人 Skill 默认直接
+创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前保留的
+本地套件是 `notes/`。从开源网站下载的外部 Skills 统一放在 `community/`，
+供 Codex 使用但不在个人主页发布。
+
+当用户明确把一组高频迭代 Skills/Workflows 提升为独立产品后，产品仓库成为唯一
+源码权威，qlblog 删除对应副本。每个产品用自己的 linker 把开发工作树逐 Skill
+链接到 `$CODEX_HOME/skills`；因此本地修改实时生效，而 qlblog 只保留自己的
+Skills 与网站内容。`$CODEX_HOME/skills` 必须保持为 Codex 管理的真实目录，
+`.system/` 也只留在那里，不复制、不定制、不发布、不纳入本仓库。
 
 个人全局 Codex 约束的权威源文件是
 [`../install/codex/AGENTS.md`](../install/codex/AGENTS.md)。跨设备克隆或移动仓库后，
-务必运行 `./skills/link-codex-skills.sh`，把它导入为 `$CODEX_HOME/AGENTS.md`，同时
+务必运行平台对应的 `./skills/link-codex-skills.sh` 或
+`.\skills\link-codex-skills.ps1`，把它导入为 `$CODEX_HOME/AGENTS.md`，同时
 重建逐 Skill 链接；否则内置 `skill-creator` 不会自动获得本仓库的个人维护协议。
 
-`kgdistiller/` 是知识图谱系统的配套 Skill 套件。其中 `query-kgdistiller` 与
-`ingest-kgdistiller` 是薄入口：本目录只保存供 Codex 和网站发现的元数据与委派说明，
-规范正文随 `vendor/kgdistiller` submodule 维护。更新 kgdistiller 会同时更新这两个
-Skill 的实际行为，入口不得复制或改写其长工作流。
+独立产品仓库当前包括 [`gamemaker`](https://github.com/qiulinfan/gamemaker) 与
+[`kgdistiller`](https://github.com/qiulinfan/kgdistiller)。它们的 Skills、预制 agents、
+工作流、测试与安装脚本都在各自仓库维护，不由 qlblog 镜像或转发。
 
 多个 Skill 的编排关系、流程图和简短说明统一维护在 [WORKFLOWS.md](./WORKFLOWS.md)；
 Skills 页面只读取本 README 的“个人维护”清单与该文件，不发布“社区来源”内容，也
@@ -29,8 +31,8 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
   的主题、名称、依赖或看似所属的系统自动归类。
 - 只有当用户明确指定某个分类时，才新建套件目录，或把一个或多个 Skills 放入、
   移入、移出套件。不得仅凭推断使用已有套件。
-- 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即重新运行
-  `./skills/link-codex-skills.sh`；脚本成功前不得视为重分类完成。
+- 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即重新运行平台对应的
+  qlblog linker；脚本成功前不得视为重分类完成。
 - 从开源网站下载的外部 Skill 放入 `community/`，记录准确来源，并保持网站排除。
 - 本地维护的个人 Skill 使用英文 frontmatter description 与英文 `agents/openai.yaml`
   发现元数据，便于不同语言的用户稳定发现；社区 Skill 默认保留上游元数据。
@@ -52,14 +54,15 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 
 ```text
 <qlblog>/skills/<name>/                 # 普通个人 Skill，默认位置
-<qlblog>/skills/<suite>/<name>/         # 明确定义系统的配套 Skill
+<qlblog>/skills/<suite>/<name>/         # 仅限用户明确指定的本地套件
 <qlblog>/skills/community/<name>/       # 外部下载 Skill，不进入网站
+<product>/skills/<name>/                # 独立产品的唯一开发权威
 <qlblog>/install/codex/AGENTS.md         # 个人全局 Codex 约束，Git 权威副本
 
 <CODEX_HOME>/AGENTS.md            -> <qlblog>/install/codex/AGENTS.md
 <CODEX_HOME>/skills/                  # Codex 拥有的真实目录
 <CODEX_HOME>/skills/.system/          # Codex 自动生成和更新，不进 Git
-<CODEX_HOME>/skills/<name>         -> 上述任一仓库 Skill 目录
+<CODEX_HOME>/skills/<name>         -> qlblog 或独立产品中的唯一 Skill 目录
 ```
 
 `CODEX_HOME` 未设置时，默认使用用户主目录下的 `.codex`。安装或修复后重新打开
@@ -105,136 +108,25 @@ readlink -f ~/.codex/AGENTS.md
 
 ### Windows：原生 PowerShell
 
-先在 Windows 设置中启用开发者模式，或使用管理员 PowerShell；逐 Skill 目录链接
-和全局 `AGENTS.md` 文件链接需要其中一种权限。进入仓库根目录后，先把旧的
-`%USERPROFILE%\.codex\skills` 整目录链接和 `system-skills` 链接移动到备份位置，
-再创建真实的 `skills` 目录、逐项链接和全局约束链接：
+进入仓库根目录后运行原生 linker。它会把旧的 qlblog-owned 失效链接清掉，把每个
+当前 Skill 以 Junction 直接连到工作树，并修复全局 `AGENTS.md` 链接；现有
+`$CODEX_HOME\skills\.system` 与其他产品仓的链接始终原样保留：
 
 ```powershell
-$RepoSkills = (Resolve-Path ".\skills").Path
-$RepoRoot = (Resolve-Path ".").Path
-$GlobalAgentsSource = Join-Path $RepoRoot "install\codex\AGENTS.md"
-$CodexHome = if ($env:CODEX_HOME) {
-    $env:CODEX_HOME
-} else {
-    Join-Path $HOME ".codex"
-}
-
-$Stamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$Backup = Join-Path $CodexHome "skill-layout-backups\$Stamp"
-$CodexSkills = Join-Path $CodexHome "skills"
-$GlobalAgents = Join-Path $CodexHome "AGENTS.md"
-$LegacySystem = Join-Path $CodexHome "system-skills"
-
-function Resolve-SymbolicLinkTarget([System.IO.FileSystemInfo]$Item) {
-    $Target = [string]$Item.Target
-    if (-not [System.IO.Path]::IsPathRooted($Target)) {
-        $Target = Join-Path $Item.DirectoryName $Target
-    }
-    return [System.IO.Path]::GetFullPath($Target)
-}
-
-New-Item -ItemType Directory -Force -Path $CodexHome | Out-Null
-New-Item -ItemType Directory -Force -Path $Backup | Out-Null
-
-$ExistingSkills = Get-Item -LiteralPath $CodexSkills -Force -ErrorAction SilentlyContinue
-if ($ExistingSkills -and $ExistingSkills.LinkType) {
-    if ((Resolve-SymbolicLinkTarget $ExistingSkills) -ne [System.IO.Path]::GetFullPath($RepoSkills)) {
-        throw "Existing skills link points outside this repository: $CodexSkills"
-    }
-    Remove-Item -LiteralPath $CodexSkills
-} elseif ($ExistingSkills -and -not $ExistingSkills.PSIsContainer) {
-    throw "Existing skills path is not a directory: $CodexSkills"
-}
-New-Item -ItemType Directory -Force -Path $CodexSkills | Out-Null
-$RepoSystem = Join-Path $RepoSkills ".system"
-$CodexSystem = Join-Path $CodexSkills ".system"
-if ((Test-Path -LiteralPath $RepoSystem) -and -not (Test-Path -LiteralPath $CodexSystem)) {
-    Copy-Item -Recurse -LiteralPath $RepoSystem -Destination $CodexSystem
-}
-$ExistingLegacySystem = Get-Item -LiteralPath $LegacySystem -Force -ErrorAction SilentlyContinue
-if ($ExistingLegacySystem) {
-    if (-not $ExistingLegacySystem.LinkType) {
-        throw "Legacy system-skills is not a symbolic link: $LegacySystem"
-    }
-    $AllowedSystemTargets = @(
-        [System.IO.Path]::GetFullPath($RepoSystem),
-        [System.IO.Path]::GetFullPath($CodexSystem)
-    )
-    if ((Resolve-SymbolicLinkTarget $ExistingLegacySystem) -notin $AllowedSystemTargets) {
-        throw "Legacy system-skills points to an unknown location: $LegacySystem"
-    }
-    Remove-Item -LiteralPath $LegacySystem
-}
-
-$RepoSkillManifests = @(Get-ChildItem -LiteralPath $RepoSkills -Filter "SKILL.md" -File -Recurse | Where-Object {
-    $RelativeDirectory = [System.IO.Path]::GetRelativePath($RepoSkills, $_.Directory.FullName)
-    -not (($RelativeDirectory -split '[\\/]') | Where-Object { $_.StartsWith('.') })
-})
-$DuplicateNames = @($RepoSkillManifests | Group-Object { $_.Directory.Name } | Where-Object Count -gt 1)
-if ($DuplicateNames) {
-    throw "Duplicate Skill directory names cannot be flattened: $($DuplicateNames.Name -join ', ')"
-}
-$SkillNames = @($RepoSkillManifests | ForEach-Object {
-    $Match = Select-String -LiteralPath $_.FullName -Pattern '^name:\s*(.+)\s*$' | Select-Object -First 1
-    if (-not $Match) {
-        throw "Skill is missing frontmatter name: $($_.FullName)"
-    }
-    $Match.Matches[0].Groups[1].Value.Trim()
-})
-$DuplicateSkillNames = @($SkillNames | Group-Object | Where-Object Count -gt 1)
-if ($DuplicateSkillNames) {
-    throw "Duplicate Skill names are ambiguous: $($DuplicateSkillNames.Name -join ', ')"
-}
-
-$RepoSkillsPrefix = [System.IO.Path]::GetFullPath($RepoSkills) + [System.IO.Path]::DirectorySeparatorChar
-Get-ChildItem -LiteralPath $CodexSkills -Force | Where-Object LinkType | ForEach-Object {
-    $Target = Resolve-SymbolicLinkTarget $_
-    if ($Target.StartsWith($RepoSkillsPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
-        -not (Test-Path -LiteralPath (Join-Path $Target "SKILL.md"))) {
-        Remove-Item -LiteralPath $_.FullName
-    }
-}
-
-$RepoSkillManifests | ForEach-Object {
-    $SourceDirectory = $_.Directory
-    $Destination = Join-Path $CodexSkills $SourceDirectory.Name
-    $Existing = Get-Item -LiteralPath $Destination -Force -ErrorAction SilentlyContinue
-    if (-not $Existing) {
-        New-Item -ItemType SymbolicLink -Path $Destination -Target $SourceDirectory.FullName | Out-Null
-    } elseif (-not $Existing.LinkType -or
-              (Resolve-SymbolicLinkTarget $Existing) -ne [System.IO.Path]::GetFullPath($SourceDirectory.FullName)) {
-        throw "Existing Skill conflicts with repository authority: $Destination"
-    }
-}
-$ExistingGlobalAgents = Get-Item -LiteralPath $GlobalAgents -Force -ErrorAction SilentlyContinue
-if (-not $ExistingGlobalAgents) {
-    New-Item -ItemType SymbolicLink -Path $GlobalAgents -Target $GlobalAgentsSource | Out-Null
-} elseif ($ExistingGlobalAgents.LinkType) {
-    if ((Resolve-SymbolicLinkTarget $ExistingGlobalAgents) -ne
-        [System.IO.Path]::GetFullPath($GlobalAgentsSource)) {
-        throw "Existing global AGENTS.md points elsewhere: $GlobalAgents"
-    }
-} elseif (-not $ExistingGlobalAgents.PSIsContainer -and
-          (Get-FileHash $GlobalAgents).Hash -eq (Get-FileHash $GlobalAgentsSource).Hash) {
-    Move-Item -LiteralPath $GlobalAgents -Destination (Join-Path $Backup "AGENTS.md-before-link")
-    New-Item -ItemType SymbolicLink -Path $GlobalAgents -Target $GlobalAgentsSource | Out-Null
-} else {
-    throw "Existing global AGENTS.md differs: $GlobalAgents"
-}
-
-Get-Item $GlobalAgents, $CodexSkills | Select-Object FullName, LinkType, Target
-Write-Host "Backup: $Backup"
+& .\skills\link-codex-skills.ps1
 ```
 
-PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明见
-[Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-item#example-7-create-a-symbolic-link-to-a-file-or-folder)。
+若已有冲突链接或从旧 POSIX 安装留下 Windows 无法读取的 reparse link，先核对它是
+链接而不是真实文件，再显式运行 `& .\skills\link-codex-skills.ps1 -Force`。`-Force`
+仍拒绝覆盖真实文件、目录或无法证明属于当前 qlblog checkout 的 Skill 链接。仓库被
+移动到新绝对路径后，旧的 broken Junction 已无法自行证明 owner；先人工核对并删除
+那些旧 qlblog Junction，再运行 linker，不能用 `-Force` 越过这个边界。
 
 ### 日常修改与同步
 
 - 修改普通个人 Skill：编辑 `skills/<skill-name>/`；修改套件或社区 Skill：编辑
   `skills/<suite>/<skill-name>/`。按需更新本 README 的一句话说明与第三方出处。
-- 重新分类或移动 Skill 的父目录后，必须运行 `./skills/link-codex-skills.sh`，清理
+- 重新分类或移动 Skill 的父目录后，必须运行平台对应的 qlblog linker，清理
   旧链接并重建 Codex 的扁平 Skill 清单。
 - 不修改或版本管理 system Skill；让 Codex 维护 `$CODEX_HOME/skills/.system`。
 - 修改后校验：
@@ -248,28 +140,21 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
   Windows 如果没有 `python3` 命令，可把它替换为 `py -3`。
 - 换机器或 `git pull` 后，在 macOS/Linux/WSL 重新运行
-  `./skills/link-codex-skills.sh`；Windows 原生重新运行上面的 PowerShell。
+  `./skills/link-codex-skills.sh`；Windows 原生重新运行
+  `.\skills\link-codex-skills.ps1`。
 - macOS/Linux/WSL 的自动备份位于
   `<CODEX_HOME>/skill-layout-backups/<时间戳>/`；Windows 原生使用相同的相对位置。
-- 如果脚本发现未知、内容冲突或指向仓库外部的个人 Skill 或全局 `AGENTS.md`，会
-  拒绝覆盖。Codex 的 `.system` 始终留在 `$CODEX_HOME/skills`，不由仓库接管。
+- 未知、内容冲突或指向仓库外部的 Skill 链接始终拒绝覆盖。全局
+  `AGENTS.md` 是唯一例外：显式 `-Force` 可修复未知的 reparse link，但内容
+  不同的真实文件仍会被拒绝。Codex 的 `.system` 始终留在
+  `$CODEX_HOME/skills`，不由仓库接管。
+
+## 独立产品
+
+- [gamemaker](https://github.com/qiulinfan/gamemaker)：游戏制作、Unity、TA 与验收工作流；仓库内 Skills 和预制 agents 由产品 linker 直接接入本地 Codex。
+- [kgdistiller](https://github.com/qiulinfan/kgdistiller)：知识蒸馏引擎、论文/笔记 Skills、预制 agents 与事务工作流；qlblog 只采用并展示其静态导出。
 
 ## 个人维护
-
-### Gamemaker 套件
-
-- [build-unity-scene](./gamemaker/build-unity-scene/)：读取 Unity 项目架构与关卡需求，先明确可观测的状态转换与权威生成源，再按既有边界创建或修改场景并完成技术验证；独立试玩发现问题后进入修复与干净复验。
-- [configure-unity-mcp](./gamemaker/configure-unity-mcp/)：安装、修复、迁移并完整验证 Codex 与 Unity Editor 的 MCP 集成。
-- [discuss-game-design](./gamemaker/discuss-game-design/)：基于游戏设计文档讨论具体设计决策，并区分事实、综合、提案与开放问题。
-- [play-unity-game](./gamemaker/play-unity-game/)：独立游玩并评估 Unity 游戏或场景，验证有效、无效、恢复与重置路径；有状态目标在重置后还需再次完整通关，相关项目错误会使结果失败。
-- [search-game-art](./gamemaker/search-game-art/)：从策划案提取外观、主题、玩法功能与动画需求，把风格参考拆成保留/借用/避免特征，并以平台与查询族覆盖记录搜索 Sketchfab、创作者商店、引擎市场和开放资源；角色外观、可编辑源、骨架与内嵌/外部动画分别评分，获明确授权后再审计下载文件、筛选最小导入子集并交接 Unity 集成。
-
-### kgdistiller 套件
-
-- [extract-and-export-notes](./kgdistiller/extract-and-export-notes/)：从个人笔记或标准论文 Markdown 包提取候选图；笔记分支查询、入库并发布，论文分支只读连接个人图谱并生成不合并的联邦图。
-- [ingest-kgdistiller](./kgdistiller/ingest-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的写入 Skill，通过 plan/apply 事务、崩溃恢复和 canonical receipt 把已审查知识写入个人图谱；qlblog 只维护发现入口。
-- [query-kgdistiller](./kgdistiller/query-kgdistiller/)：调用 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 随附的只读 Skill，批量查询、消歧、GraphRAG 对齐并返回小型证据包；qlblog 只维护发现入口。
-- [trace-concept-lineage](./kgdistiller/trace-concept-lineage/)：把论文概念批量整理为来源可追溯的概念档案、知识图谱和前置阅读路线。
 
 ### 笔记项目
 
@@ -278,17 +163,9 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
-- [auto-ta](./auto-ta/)：把新手的自然语言美术需求转成资产契约，按可用能力路由到 ImageGen、Blender、经过审计的 skills.sh 方法、现有授权资源或 Unity，完成建模、UV/PBR、骨骼动画、灯光/Shader/VFX，并把 Blender→Unity 的子网格材质顺序、共享贴图、透明、mip、URP 关键词与重导入持久化纳入可视和技术往返回执。
-- [character-rig-animation-alignment](./character-rig-animation-alignment/)：把主题与授权核验、人物/动作骨架审计、rest/单位/轴/root/蒙皮归一化、Unity Humanoid、实际 renderer/material 映射、透明与 URP 状态、Animator/Prefab 接线及运行时证据收束为可回滚的人形角色对齐流程；有效 Avatar 但骨段塌缩、bind pose 污染、根漂移、材质错位、黑脸或序列化骨骼覆盖都会强制失败。
-- [record-windows-playtest](./record-windows-playtest/)：在 Windows 上对指定 Unity 游戏或 Editor 窗口执行有界录屏，以 `ffprobe`、时长、分辨率和 SHA-256 验证 MP4，生成包含 issue、版本与结论的回执，并把两者交付到 Google Drive for Desktop；只提供独立试玩证据，不修改游戏实现。
-- [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run。程序 agent 同时负责实现、测试和玩家路径验证，制作人复核其交付后直接关闭或将缺陷退回，不再创建独立 playtester、录屏或证据修复阶段；Dreamweaver 统一使用绝对工作树和项目根精确匹配的既有桌面 Unity/MCP 会话，并默认允许 commit/push/draft PR（父 issue 可 `no push`）。
-- [write-game-design-brief](./write-game-design-brief/)：把原始点子或 issue 写成可实现、可测试且区分事实、综合、提案与开放问题的策划契约，向美术和程序提供明确需求但不亲自实现。
-- [iterate-unity-level](./iterate-unity-level/)：为已有可玩 Unity 关卡增加与核心规则相关的选择、依赖或状态，通过设计—构建—独立试玩—修复—重置后再次通关完成窄职责闭环。
-- [deliver-unity-feature](./deliver-unity-feature/)：把 Unity module、功能或系统作为最小端到端切片交付，先明确接口、状态与验证面，再实现、集成、回归；只有玩家可见行为才要求试玩。
 - [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、把自然语言访问范围映射为 Tailscale 模式、完成两层准入并生成无需客户端理解网络结构的完整 handoff，同时管理首 runtimes、升级备份和撤销，并让生产宿主机的 daemon、cache 与自启动保持默认并发 `10`。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
 - [multica-client-setup](./multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并以 daemon 全局默认并发 `10` 持久化和核验获授权的自启动；新建 Codex agent 时显式使用无需 Windows sandbox setup 的固定启动参数，不处理日常 issue/task、provider CLI 或第二套 server。
 - [multica-runtime-client](./multica-runtime-client/)：在 CLI、身份、daemon 和本机 runtimes 已配置的前提下，按明确授权防重复地新建 workspace 和 agents，或把自然语言工作转成单个可验收 issue；新建 Codex agent 时强制使用独立 home 可工作的固定 sandbox/approval 参数，随后按完整 ID 入队一次并读取 runs/messages 监控、续接、取消或按授权 rerun，同时检查跨 workspace 的 daemon 全局容量、活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
-- [extract-paper-markdown](./extract-paper-markdown/)：把网页、DOI、标题或 PDF 论文整理为可追溯、无嵌图且无 HTML/Pandoc 转码残留的语义 Markdown 包；只对图表相关页面做定点多模态理解并留下结构化摘要。
 - [codex-subagent-testskill](./codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。
 - [codex-external-agent-testskill](./codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。
 - [codex-subagent-workflow](./codex-subagent-workflow/)：在当前 Codex 会话内用原生 subagents 编排生产任务；优先采用可信项目 `.codex/config.toml` 的标准 `[agents]` 角色，未配置角色时才从任务描述自动拆分，并由主 agent 集成验收。

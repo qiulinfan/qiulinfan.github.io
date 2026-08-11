@@ -2,89 +2,6 @@
 
 单个 Skill 只描述一种可复用能力；这里记录多个 Skill 如何编排成可以交付结果的工具流。流程图和图下文字都是普通 Markdown，可以按需要增删节点、分支和说明，不受页面字段约束。
 
-## 从游戏点子到 Unity 交付
-
-```mermaid
-flowchart TD
-    Idea["用户点子 / 父 issue"] --> Producer["制作人 agent<br/>coordinate-game-production"]
-    Producer --> Classify{"策划探索、关卡、功能/系统、混合?"}
-    Classify -->|行为未确定| Plan["策划 agent<br/>write-game-design-brief"]
-    Plan --> Producer
-    Classify -->|关卡| Level["iterate-unity-level"]
-    Classify -->|功能或系统| Feature["deliver-unity-feature"]
-    Classify -->|混合| Feature
-    Feature --> Level
-    Level --> Gap{"有明确美术缺口?"}
-    Feature --> Gap
-    Gap -->|是| Art["美术 agent<br/>search-game-art + 导入"]
-    Gap -->|否| Code["程序 agent<br/>实现与技术验证"]
-    Art --> Code
-    Code --> Play{"玩家可见行为?"}
-    Play -->|是| Test["程序 agent<br/>play-unity-game 玩家路径验证"]
-    Play -->|否| Verify["程序 agent<br/>对应层级的测试与回归"]
-    Test --> Findings{"制作人复核是否有缺陷?"}
-    Verify --> Findings
-    Findings -->|有| Owner["按策划 / 美术 / 程序归属回流"]
-    Owner --> Code
-    Findings -->|无| Accept["制作人直接验收并关闭父 issue"]
-```
-
-[`coordinate-game-production`](#skill-coordinate-game-production) 是总线而不是全能执行者：它读取父 issue，先判断目标是空间与遭遇主导的关卡、可复用的功能或系统，还是二者混合；再按依赖创建单一职责、写入边界和验收证据明确的子 issue。策划 agent 用 [`write-game-design-brief`](#skill-write-game-design-brief) 把口头点子变成规则、状态、表现需求与可观测验收案例；美术 agent 只搜索、核验、获取、审计和导入外部资源，不自主建模、贴图或编写玩法；程序 agent 负责代码、scene/prefab 接线、测试、玩家路径验证和修复。制作人核对程序交付的真实产物和证据后直接关闭父 issue，或把缺陷退回责任 agent；不再创建独立 playtester、录屏或证据修复阶段。
-
-制作人采用事件驱动的阶段生命周期：每个 Run 只读取一次父 issue、刚完成阶段和必要的仓库状态，验收后只创建当前就绪阶段并立即结束；staged child 发布证据后把自身标为 `done`，该状态只表示专业交付可供验收，并触发下一次制作人 Run。不得同时保留自动唤醒与前台轮询；只有事件缺失或用户明确要求实时观察时，才以至少 120 秒间隔和 `run-messages --since <last_seq>` 增量检查。Git 状态只在 Run 开始、子任务完成和最终验收时读取。Dreamweaver 的写入统一指向 `C:\Users\rynne\Desktop\dreamweaver` 的绝对路径，首次写入后立即验证；任何 Unity/MCP 工作只复用项目根精确匹配的既有桌面 Editor，会话不存在、桥接失效、实例歧义或根目录不匹配时必须停止并报告，不得启动隔离 Unity、第二个 Editor 或持久替代服务器。保留私有仓库 SSH transport。除非父 issue 写明 `no push`，写入 worker 默认可提交自有改动、推送任务分支并创建或更新 draft PR。
-
-关卡走 [`iterate-unity-level`](#skill-iterate-unity-level)：每轮只加入一个与核心规则相连的选择、依赖、状态或恢复关系，先写状态契约，再由程序 agent 通过 `build-unity-scene` 构建并用 `play-unity-game` 验证有效路径、无效反馈、恢复、重置以及重置后的第二次完整通关。module、功能和系统走 [`deliver-unity-feature`](#skill-deliver-unity-feature)：先明确调用者、接口、数据和状态所有权、生命周期与验证面，再交付最小端到端切片；纯逻辑模块不强行伪装成关卡，只有玩家可见行为才要求程序 agent 真实试玩。MP4、回执和 Drive 交付不再是默认验收门槛；只有父 issue 明确要求录屏工件时，才由程序 agent 负责。修复回流给所属 agent，清除旧诊断并从干净状态重跑，随后由制作人直接验收。这个流程只定义按 issue 触发的协作，不自动创建常驻轮询、daemon 或定时 autopilot。
-
-## 从策划案到 Unity 美术资源
-
-```mermaid
-flowchart LR
-    Brief["策划案与技术文档"] --> Matrix["search-game-art<br/>需求矩阵"]
-    Matrix --> Traits["参考拆解<br/>保留 / 借用 / 避免"]
-    Traits --> Search["按平台与查询族覆盖搜索<br/>含 Sketchfab 与创作者源"]
-    Search --> Coverage["搜索覆盖记录<br/>缺口与扩展动作"]
-    Coverage --> Evidence["原始来源与许可证核验"]
-    Evidence --> Choice{"用户是否授权获取或导入?"}
-    Choice -->|否| Shortlist["候选清单、推荐与风险"]
-    Choice -->|是| Audit["临时下载<br/>哈希、归档与 Blender 审计"]
-    Audit --> Subset["筛选最小有用子集<br/>记录来源与修改"]
-    Subset --> Unity["build-unity-scene<br/>项目内导入与配置"]
-    Unity --> Validate["Unity Editor 验证<br/>控制台、视觉与动画兼容性"]
-    Validate --> Learn["只把可复用经验回写 Skill"]
-```
-
-[`search-game-art`](#skill-search-game-art) 先读取项目内的设计来源层级，把模糊的“风格像什么”拆成必须保留、希望借用、必须避免和允许修改的特征，再形成可核验的资产角色：玩法功能、叙事主题、视觉要求、所需状态或动画动词、技术约束与许可证边界。人物等高差异资源必须留下平台与查询族覆盖记录，默认不会只搜一个引擎市场：Sketchfab 的创作者模型、itch.io/创作者源、开放库与付费可编辑源按需求分层核验；若候选只是勉强可用，先扩展情绪词、轮廓词、作者标签与相邻分类。搜索阶段仍然可以独立结束；只有用户明确要求获取或导入时，才在临时目录下载候选，记录 SHA-256，审计归档的真实文件、许可证和异常内容，并用 Blender 检查实际网格、骨架与动作曲线。网页描述属于声明证据，下载包与引擎结果属于审计证据，两者不混为一谈。
-
-审计通过后只选择当前需求所需的最小子集，再交给 [`build-unity-scene`](#skill-build-unity-scene) 按目标项目已有结构完成 Unity 导入、Importer 设置、材质或 prefab 建立以及 Editor 验证。人物候选分别评价外观、可编辑源、骨架和动作：已有经过验证的外部动作库时，模型没有内嵌动画不是淘汰条件；但“Humanoid”“Mixamo compatible”或“animated”标签也不能代替目标角色与目标动作的实际重定向。真实项目中的具体资源 URL、哈希和导入清单写入目标游戏仓库，Skill 本体只沉淀可复用的判断与审计步骤。面向用户的说明、提示与交接跟随用户语言，命令、标识符、结构化键和原始错误保持不变。
-
-## 从自然语言到原创可验证游戏资产
-
-```mermaid
-flowchart LR
-    Need["用户自然语言需求"] --> Contract["auto-ta<br/>资产契约与权限边界"]
-    Contract --> Route{"最小可用生产面"}
-    Route --> Image["ImageGen<br/>概念与纹理源"]
-    Route --> Blender["Blender<br/>建模 / UV / 材质 / 骨骼 / 动画 / 灯光"]
-    Route --> Existing["search-game-art<br/>已授权现有资源"]
-    Image --> Build["隔离工作副本"]
-    Blender --> Build
-    Existing --> Build
-    Build --> Humanoid{"人形角色 + 外部骨骼动作?"}
-    Humanoid -->|是| Align["character-rig-animation-alignment<br/>骨架归一化 / 重定向 / 引擎验收"]
-    Humanoid -->|否| Audit["可视检查 + 技术审计"]
-    Align --> Audit
-    Audit --> Round["GLB / FBX 往返"]
-    Round --> Unity{"已授权 Unity 项目?"}
-    Unity -->|是| Import["Unity MCP<br/>Importer / Prefab / 验证场景"]
-    Unity -->|否| Receipt["结构化回执"]
-    Import --> Lookdev["引擎外观往返门<br/>人物含 submesh / alpha / mip / URP 状态"]
-    Lookdev --> Receipt
-```
-
-[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证；skills.sh 上的 Blender skills 只在仓库、许可证、依赖和实际工具接口核对并隔离试跑后，作为有限执行方法或检查表接入，不取代本地工件验收；当任务是“已蒙皮人形角色 + 外部骨骼动作”时，转给 [`character-rig-animation-alignment`](#skill-character-rig-animation-alignment) 负责 deform/control 骨架分离、rest/单位/轴/root/权重归一化、Humanoid 重定向、Animator/Prefab 接线和编辑器/运行时失败门；Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
-
-每个资产先在隔离副本中完成最小端到端切片，再经过真实保存文件的数据审计、渲染或姿态检查、目标格式导出后清洁导入的往返验证；需要 Unity 交付时，最后再验证目标 Render Pipeline、Importer、材质、Prefab 与最小场景。人物外观还必须核对 Unity 实际 populated submesh 与 `sharedMaterials` 顺序、共享贴图影响、透明卡片、关键脸部纹理的 mip/压缩以及数值属性、Unity 6 local keywords 和 GI flags 在保存/重导入后的状态；Blender 正确、法线对称或 setup code 执行成功都不能替代引擎近景和目标相机验收。最终 `auto-ta-receipt.json` 对每项门给出 `pass`、`fail` 或 `not_tested`，整体只能是 `validated`、`prototype`、`blocked` 或 `failed`，不能用“应该可用”的文字代替未执行的验证。当前 `coordinate-game-production` 不会自动派发原创建模；若要把这条能力加入现有生产总线，应由用户明确修改其美术 worker 边界。
-
 ## Multica 控制面与执行节点
 
 ```mermaid
@@ -257,25 +174,6 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 > 计划应覆盖 workspace membership、allowlist、agents、runtimes 和 Tailscale access，并分别说明
 > 哪些远程删除需要我的确认。
 
-## 笔记进入知识库并发布 Web
-
-```mermaid
-flowchart LR
-    Src["Git 改动<br/>原生 marker"] --> Ext["提取候选图"]
-    Ext --> Ask["查询知识库"]
-    Ask --> Gate{"身份状态"}
-    Gate -->|known| Ref["复用 ref"]
-    Gate -->|new / partial| Add["补充缺失知识"]
-    Gate -->|uncertain / conflict| Stop["人工审查"]
-    Ref --> Put["事务入库"]
-    Add --> Put
-    Put --> Web["发布 Web"]
-```
-
-[`extract-and-export-notes`](#skill-extract-and-export-notes) 只从 Git 改动和作者写下的 marker 构造候选图；[`query-kgdistiller`](#skill-query-kgdistiller) 负责识别已有知识，已知项只写 `ref`；审查通过后由 [`ingest-kgdistiller`](#skill-ingest-kgdistiller) 合入个人知识库，成功回执是 Web 发布的前置条件。
-
-遇到 `uncertain` 或 `conflict` 时，流程停在审查门前，不猜测身份，也不为了自动发布而创建重复词条。
-
 ## Codex 原生 Subagent 生产工作流
 
 ```mermaid
@@ -336,36 +234,3 @@ subagent slots 内有界并发。主 agent 记录每次运行与完整 harness �
 [`codex-external-agent-testskill`](#skill-codex-external-agent-testskill)。它的本机 profile
 只配置这两个外部 evaluator，不包含 Codex target；首次使用或缓存被清理后必须重新
 回答 runtime 与认证问题。
-
-## 论文生成联邦知识快照
-
-```mermaid
-flowchart LR
-    Input["网页 / DOI / PDF"] --> Find["确认规范 PDF"]
-    Find --> Text["提取正文 / 公式"]
-    Find --> Visual["定点理解图表页"]
-    Text --> MD["可追溯 Markdown 包"]
-    Visual --> MD
-    MD --> Ext["research-paper 分支<br/>提取候选图"]
-    Ext --> Ask["只读查询个人图谱"]
-    Ask --> Gate{"身份状态"}
-    Gate -->|known| Bridge["只建立 bridge"]
-    Gate -->|new / partial| Entry["解释缺失知识"]
-    Gate -->|uncertain / conflict| Review["保留证据"]
-    Bridge --> Snap["联邦快照"]
-    Entry --> Snap
-    Review --> Snap
-```
-
-[`extract-paper-markdown`](#skill-extract-paper-markdown) 先从网页、DOI、标题或 PDF
-定位规范全文，保留来源 hash 和页码映射，把正文、公式、结论、限制与附件转成语义
-Markdown。它只渲染 caption、低文本、解析异常或含重要视觉对象的页面；每个图表在
-Markdown 中只留下编号、页码、标题、内容摘要、支撑结论和不确定项，不嵌图、不复刻
-版式，也不经过 TeX 编译；交付前还必须清理 HTML layout 与 Pandoc 数学转码残留。
-
-随后 [`extract-and-export-notes`](#skill-extract-and-export-notes) 选择
-`research-paper` 分支，复用同一套候选图、确定性 snapshot 和
-[`query-kgdistiller`](#skill-query-kgdistiller) 对齐流程。已知概念只建立跨 namespace
-bridge；`new` 与 `partial` 只解释未知或缺失部分；冲突与歧义保留证据。交付物是独立
-论文图及学习顺序，不修改论文 Markdown、个人来源、主图谱或 Web。把论文知识导入
-主图谱是另一条需要重新授权和审查的流程，不属于这里的默认或可选分支。

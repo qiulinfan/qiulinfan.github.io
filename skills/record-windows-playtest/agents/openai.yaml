@@ -1,4 +1,0 @@
-interface:
-  display_name: "Record Windows Playtest"
-  short_description: "Record Unity playtests and publish Drive evidence"
-  default_prompt: "Use $record-windows-playtest to record a Windows Unity playtest and publish verified video evidence to Google Drive."

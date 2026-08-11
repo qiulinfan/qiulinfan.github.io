@@ -1,4 +1,0 @@
-interface:
-  display_name: "Extract Source Knowledge Graph"
-  short_description: "Distill notes or paper Markdown into grounded graphs"
-  default_prompt: "Use $extract-and-export-notes to extract a source-grounded graph from these notes or this paper Markdown package and follow the matching mutation boundary."

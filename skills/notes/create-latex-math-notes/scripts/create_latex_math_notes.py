@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -80,6 +81,72 @@ def default_repo_root() -> Path:
     raise CreateError("cannot locate the qlblog repository root")
 
 
+def canonical_site_root(registry: Path) -> str:
+    data = json.loads(registry.read_text(encoding="utf-8"))
+    for source in data.get("sources", []):
+        web = str(source.get("web", "")).rstrip("/")
+        if "/notes/" in web:
+            return web.split("/notes/", 1)[0]
+    raise CreateError("cannot derive the canonical site root from knowledge/sources.json")
+
+
+def new_source(slug: str, title: str, site_root: str) -> dict[str, object]:
+    return {
+        "id": f"math:{slug}",
+        "title": title,
+        "description": f"LaTeX-authored notes for {title}.",
+        "subject": "math",
+        "course": slug,
+        "knowledge_origin": "personal-note",
+        "fields": [],
+        "root": f"notes/math/{slug}",
+        "files": ["main.tex", "chapters/*.tex"],
+        "publish": False,
+        "listed": False,
+        "web": f"{site_root}/notes/math/{slug}",
+        "topics": [],
+    }
+
+
+def load_registry(
+    path: Path, source: dict[str, object]
+) -> tuple[dict[str, object], str]:
+    text = path.read_text(encoding="utf-8")
+    data = json.loads(text)
+    if data.get("schema") != "qlkg-sources-v2" or not isinstance(
+        data.get("sources"), list
+    ):
+        raise CreateError(f"unsupported knowledge registry: {path}")
+    for existing in data["sources"]:
+        if any(existing.get(key) == source[key] for key in ("id", "course", "root")):
+            raise CreateError(f"knowledge source already exists: {existing.get('id')}")
+    return data, text
+
+
+def append_registry(path: Path, original: str, source: dict[str, object]) -> None:
+    marker = "\n  ]\n}"
+    if not original.endswith(marker + "\n") and not original.endswith(marker):
+        raise CreateError("knowledge/sources.json has an unexpected layout")
+    end_newline = "\n" if original.endswith("\n") else ""
+    body = original[: -len(marker) - len(end_newline)]
+    separator = ",\n" if json.loads(original)["sources"] else "\n"
+    serialized = json.dumps(source, ensure_ascii=False, indent=2)
+    indented = "\n".join("    " + line for line in serialized.splitlines())
+    updated = body + separator + indented + marker + end_newline
+    json.loads(updated)
+
+    descriptor, temporary = tempfile.mkstemp(
+        prefix="sources.", suffix=".json", dir=path.parent
+    )
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(updated)
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
 def create_project(args: argparse.Namespace) -> tuple[Path, Path]:
     if not SLUG_RE.fullmatch(args.slug) or args.slug == "toolchain":
         raise CreateError("slug must be lowercase hyphen-case and cannot be 'toolchain'")
@@ -94,6 +161,11 @@ def create_project(args: argparse.Namespace) -> tuple[Path, Path]:
         raise CreateError(f"destination already exists: {destination}")
 
     title = args.title or args.slug.replace("-", " ").title()
+    registry = repo / "knowledge/sources.json"
+    if not registry.is_file():
+        raise CreateError(f"missing knowledge source registry: {registry}")
+    source = new_source(args.slug, title, canonical_site_root(registry))
+    _, original_registry = load_registry(registry, source)
     subtitle_line = (
         f"\\subtitle{{{latex_text(args.subtitle)}}}"
         if args.subtitle
@@ -112,6 +184,7 @@ def create_project(args: argparse.Namespace) -> tuple[Path, Path]:
     workspace = destination / f"{args.slug}.code-workspace"
     if args.dry_run:
         print(f"would create: {destination}")
+        print(f"would register: {source['id']} (unpublished)")
         return destination, workspace
 
     templates = Path(__file__).resolve().parents[1] / "assets/course"
@@ -136,9 +209,12 @@ def create_project(args: argparse.Namespace) -> tuple[Path, Path]:
             )
         shutil.copy2(class_file, staging / "elegantbook.cls")
         staging.rename(destination)
+        append_registry(registry, original_registry, source)
     except Exception:
         if staging.exists():
             shutil.rmtree(staging)
+        if destination.exists() and registry.read_text(encoding="utf-8") == original_registry:
+            shutil.rmtree(destination)
         raise
 
     return destination, workspace

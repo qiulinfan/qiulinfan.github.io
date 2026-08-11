@@ -128,8 +128,13 @@ def check(args: argparse.Namespace) -> None:
             f"shared QLNotes light/dark theme is incomplete: {missing_theme_markers}"
         )
 
-    id_counts = {identifier: parser.knowledge_ids.count(identifier) for identifier in set(parser.knowledge_ids)}
-    duplicates = sorted(identifier for identifier, count in id_counts.items() if count > 1)
+    id_counts = {
+        identifier: parser.knowledge_ids.count(identifier)
+        for identifier in set(parser.knowledge_ids)
+    }
+    duplicates = sorted(
+        identifier for identifier, count in id_counts.items() if count > 1
+    )
     if duplicates:
         raise CheckError(f"duplicate semantic IDs: {duplicates}")
     invalid = sorted(

@@ -11,12 +11,22 @@ lang: zh_CN
 
 这是一份面向实现的需求文档。它记录为什么要把现有的知识图谱工作流拆成四个职责明确的 Skill，以及 kgdistiller 作为“外接大脑”时必须提供怎样的查询、对齐和入库边界。
 
+> 2026-08-12 架构更新：本文中的 submodule、qlblog-owned kg Skills 与
+> `kgdistiller-update` 是已经被替代的历史设计。现在
+> [kgdistiller](https://github.com/qiulinfan/kgdistiller) 是自闭合产品仓库，独立维护
+> 引擎、论文/笔记 Skills、预制 agents、工作流、测试与 linker；qlblog 只保留个人
+> instance authority、采用后的静态 export、前端与自动部署。产品开发工作树直接链接
+> 到本地 Codex，网站采用版本则记录在 export manifest 中。现行 qlblog 边界见
+> [`knowledge/SPEC.md`](../../../knowledge/SPEC.md) 与
+> [`knowledge/WORKFLOW.md`](../../../knowledge/WORKFLOW.md)。以下正文继续原样保留，
+> 仅作为需求演进记录。
+
 > 2026-08-06 迭代说明：本文以下正文保留 2026-08-05 的原始需求与当时方案，便于追溯。
 > 当前论文链路已经把 `extract-paper-concepts` 替换成
 > `extract-paper-markdown` → `extract-and-export-notes` 的 `research-paper` 分支：前者
 > 生成无嵌图、图表仅含语义摘要的可追溯 Markdown，后者只读查询个人图谱并产出联邦
-> 快照；当前流程没有论文 ingest 分支。现行操作边界以仓库中的
-> `skills/WORKFLOWS.md` 与 `knowledge/WORKFLOW.md` 为准。
+> 快照；当前流程没有论文 ingest 分支。该说明同样属于历史阶段，现行产品工作流以
+> kgdistiller 仓库为准。
 
 ## 用户原始需求（逐字记录）
 

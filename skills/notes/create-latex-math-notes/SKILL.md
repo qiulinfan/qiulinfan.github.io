@@ -8,7 +8,9 @@ description: Create a lightweight LaTeX-authored mathematics notes project under
 Create only mathematics notes. LaTeX remains the authored source and converts
 through the synchronized ElegantBook adapter into a self-contained Typst HTML
 preview. Do not compile LaTeX directly or add a Pages route until the source is
-registered and semantically curated by `extract-and-export-notes`.
+registered here and, when the user explicitly requests a graph refresh,
+semantically curated by the independently linked
+`$curate-kgdistiller-notes` product Skill.
 
 ## Collect names
 

@@ -65,10 +65,10 @@ def validate_repo(repo: Path) -> None:
         repo / "notes/math/toolchain/qlnotes.typ",
         repo / "notes/math/toolchain/math-aliases.typ",
         repo / "notes/math/toolchain/scripts/export_course.py",
-        repo / "skills/kgdistiller/extract-and-export-notes/scripts/check_web.py",
-        repo / "knowledge/kgd.py",
-        repo / "vendor/kgdistiller/src/kgdistiller/cli.py",
+        repo / "notes/math/toolchain/scripts/check_web.py",
         repo / "knowledge/sources.json",
+        repo / "knowledge/graph/manifest.json",
+        repo / "knowledge/export/site/manifest.json",
     )
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
@@ -92,13 +92,24 @@ def default_repo_root() -> Path:
     raise CreateError("cannot locate the qlblog repository root")
 
 
-def new_source(slug: str, site_root: str) -> dict[str, object]:
+def new_source(
+    slug: str,
+    title: str,
+    description: str,
+    site_root: str,
+) -> dict[str, object]:
     return {
         "id": f"math:{slug}",
+        "title": title,
+        "description": description,
         "subject": "math",
         "course": slug,
+        "knowledge_origin": "personal-note",
+        "fields": [],
         "root": f"notes/math/{slug}",
         "files": ["main.typ", "chapters/*.typ"],
+        "publish": False,
+        "listed": False,
         "web": f"{site_root}/notes/math/{slug}",
         "topics": [],
     }
@@ -165,7 +176,12 @@ def create_course(args: argparse.Namespace) -> tuple[Path, Path]:
     }
 
     registry = repo / "knowledge/sources.json"
-    source = new_source(args.slug, canonical_site_root(registry))
+    source = new_source(
+        args.slug,
+        title,
+        description,
+        canonical_site_root(registry),
+    )
     _, original_registry = load_registry(registry, source)
     workspace = destination / f"{args.slug}.code-workspace"
     if args.dry_run:

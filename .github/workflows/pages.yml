@@ -21,7 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          submodules: true
           fetch-depth: 0
 
       - name: Set up Node.js
@@ -40,8 +39,6 @@ jobs:
           typst-version: 0.15.1
 
       - name: Build blog
-        env:
-          QLBLOG_CHANGED_FROM: ${{ github.event.before }}
         run: |
           make knowledge-check
           pnpm --dir site install --frozen-lockfile

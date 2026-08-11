@@ -2,8 +2,10 @@
 
 This is the shared build and presentation layer for Typst-first math notes.
 The repository-wide graph also accepts maintained Markdown and LaTeX authority;
-those format adapters live in the pinned `vendor/kgdistiller` submodule, while
-LaTeX web output reuses this toolchain through an ignored Typst intermediate.
+those format adapters and authoring workflows live in the independent
+[`kgdistiller`](https://github.com/qiulinfan/kgdistiller) product. This repository
+is one local instance: LaTeX web output reuses this toolchain through an ignored
+Typst intermediate, while Pages reads only the committed graph export.
 
 The public site's palette authority is `site/src/styles/variables.styl`.
 `web.css` is its single standalone Notes projection, shared by every Typst
@@ -22,8 +24,9 @@ toolchain/
 ├── scripts/
 │   ├── export.py           # one complete Typst entry -> temporary snapshots
 │   ├── export_course.py    # split entry snapshots into chapter files
+│   ├── check_web.py        # validate committed-site note HTML
 │   ├── convert_latex_project.py # ElegantBook -> previewable Typst project
-│   ├── export_latex_web.py # maintained LaTeX -> synced graph -> Typst HTML
+│   ├── export_latex_web.py # maintained LaTeX -> Typst HTML; no graph mutation
 │   ├── migrate_knowledge_markers.py # one-time metadata migration
 │   └── migrate_latex.py    # legacy migration helper
 ├── filters/qlnotes.lua     # semantic Pandoc mapping
@@ -40,9 +43,10 @@ make doctor
 Daily commands live in each migrated course root:
 
 ```sh
-make export              # scoped graph sync + chapter .tex/.md snapshots
+make export              # chapter .tex/.md snapshots; no graph mutation
 make web-check           # local ignored HTML + basic UTF-8/structure check
-make                     # sync + changed-file curation gate + all web entries
+make                     # render/check all web entries from the adopted registry
+make knowledge-curate   # explicit authoring refresh through kgdistiller
 ```
 
 For a Typst-first course, Typst is its authority. `export_course.py` compiles
@@ -112,30 +116,37 @@ machine IDs are maintained outside the source. Synchronization preserves agent
 entries, plain searchable names, and Typst-compiled inline MathML for the
 knowledge website. Formal statements without `#kn` are not graph nodes.
 
-The changed-file workflow ends with scoped curation validation:
+Install the selected `kgdistiller` product revision before authoring or
+refreshing graph data. The changed-file workflow ends with scoped curation
+validation against this repository as the instance root:
 
 ```sh
-python3 knowledge/kgd.py scan --file path/to/chapter.typ
-python3 knowledge/kgd.py apply knowledge/build/reviewed-delta.json
-python3 knowledge/kgd.py sync --file path/to/chapter.typ
-python3 knowledge/kgd.py curate-check --file path/to/chapter.typ
-python3 knowledge/workflow.py
+kgdistiller --repo-root . scan --file path/to/chapter.typ
+kgdistiller --repo-root . apply knowledge/build/reviewed-delta.json
+kgdistiller --repo-root . sync --file path/to/chapter.typ
+kgdistiller --repo-root . curate-check --file path/to/chapter.typ
+make knowledge-authoring-check
 ```
 
 The repository workflow classifies every supported note as one registered
 authority, one explicit non-authority tool/asset, or frozen legacy backlog. A
-new unregistered file or an edit to legacy backlog fails before export. Course
-`make` targets run this gate after their scoped synchronization.
+new unregistered file or an edit to legacy backlog fails before export. The
+explicit course `make knowledge-curate` target runs this gate after its scoped
+synchronization.
 
-Direct Markdown site publication runs a format-wide version automatically:
+Direct Markdown synchronization is an explicit authoring operation:
 
 ```sh
-python3 knowledge/kgd.py publish --format markdown
+kgdistiller --repo-root . publish --format markdown
 ```
 
 It synchronizes every configured Markdown authority before checking entries and
-required refs. Semantic entries and edges still come only from an agent that has
-read the source and existing graph.
+required refs. The Astro dev/build, Typst release, and Pages jobs never run this
+command: they validate and render the same adopted
+`knowledge/export/site/` bundle. The private instance graph under
+`knowledge/graph/` remains authoring state and is never a website input.
+Semantic entries and edges still come only from an agent that has read the
+source and existing graph.
 
 The graph can also be synchronized at repository, subject, course, or
 individual-file granularity:

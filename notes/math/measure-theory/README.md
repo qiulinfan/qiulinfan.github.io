@@ -9,7 +9,7 @@ and extras remain independently readable `.typ` files.
 make export              # generate local LaTeX / Markdown snapshots on demand
 make web-check           # main HTML UTF-8 and structure check
 make extras-web-check    # supplementary HTML check
-make                     # synchronize the graph and check HTML only
+make                     # render from the adopted registry and check HTML only
 ```
 
 All reproducible local snapshots share one ignored `exports/` directory:

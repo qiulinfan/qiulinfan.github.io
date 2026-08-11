@@ -8,7 +8,6 @@ codex_root=${CODEX_HOME:-"$HOME/.codex"}
 codex_skills_dir="$codex_root/skills"
 codex_agents_file="$codex_root/AGENTS.md"
 global_agents_source="$repo_root/install/codex/AGENTS.md"
-legacy_system_dir="$codex_root/system-skills"
 legacy_lock_bridge="$skills_repo_dir/.skills_store_lock.json"
 backup_stamp=$(date '+%Y%m%d-%H%M%S')
 backup_dir="$codex_root/skill-layout-backups/$backup_stamp"
@@ -59,40 +58,13 @@ ensure_real_codex_skills_dir() {
     printf 'created: %s\n' "$codex_skills_dir"
   fi
 
-  if [ -d "$skills_repo_dir/.system" ] && [ ! -e "$codex_skills_dir/.system" ]; then
-    cp -a "$skills_repo_dir/.system" "$codex_skills_dir/.system"
-    printf 'migrated: generated system Skills -> %s\n' "$codex_skills_dir/.system"
-  fi
 }
 
-remove_legacy_system_bridge() {
-  if [ -L "$legacy_system_dir" ]; then
-    legacy_target=$(realpath "$legacy_system_dir" 2>/dev/null || true)
-    case "$legacy_target" in
-      "$(realpath "$skills_repo_dir/.system" 2>/dev/null || true)"|"$(realpath "$codex_skills_dir/.system" 2>/dev/null || true)")
-        unlink "$legacy_system_dir"
-        printf 'removed legacy link: %s\n' "$legacy_system_dir"
-        ;;
-      *)
-        printf 'conflict: %s points to %s\n' "$legacy_system_dir" "$(readlink "$legacy_system_dir")" >&2
-        exit 1
-        ;;
-    esac
-  elif [ -e "$legacy_system_dir" ]; then
-    [ -d "$legacy_system_dir" ] || {
-      printf 'conflict: %s exists and is not a directory\n' "$legacy_system_dir" >&2
-      exit 1
-    }
-    if [ ! -e "$codex_skills_dir/.system" ]; then
-      mv "$legacy_system_dir" "$codex_skills_dir/.system"
-      printf 'migrated: %s -> %s\n' "$legacy_system_dir" "$codex_skills_dir/.system"
-    elif diff -qr "$legacy_system_dir" "$codex_skills_dir/.system" >/dev/null 2>&1; then
-      backup_entry "$legacy_system_dir" system-skills-legacy
-    else
-      printf 'conflict: legacy system Skills differ from %s\n' "$codex_skills_dir/.system" >&2
-      exit 1
-    fi
-  fi
+reject_repository_system_skills() {
+  { [ ! -L "$skills_repo_dir/.system" ] && [ ! -e "$skills_repo_dir/.system" ]; } || {
+    printf 'conflict: Codex-generated .system must not exist in this repository: %s\n' "$skills_repo_dir/.system" >&2
+    exit 1
+  }
 }
 
 remove_legacy_lock_bridge() {
@@ -198,8 +170,8 @@ link_visible_skills() {
   printf 'ok: linked %s visible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
 }
 
+reject_repository_system_skills
 ensure_real_codex_skills_dir
-remove_legacy_system_bridge
 remove_legacy_lock_bridge
 ensure_global_agents_link
 check_flat_skill_names

@@ -50,15 +50,15 @@
 	}
 
 	interface GraphPayload {
-		manifest: {
-			graph_sha256: string;
-			counts: { nodes: number; edges: number; references: number };
-			node_types: Record<string, number>;
-			relations: Record<string, number>;
-		};
+		schema: "qlkg-site-graph-v1";
+		namespace: "public";
+		source_graph_sha256: string;
+		graph_sha256: string;
+		counts: { nodes: number; edges: number; references: number };
 		diagnostics: {
 			warnings: Diagnostic[];
 			errors: Diagnostic[];
+			info: Diagnostic[];
 		};
 		nodes: GraphNode[];
 		edges: GraphEdge[];
@@ -255,7 +255,7 @@
 	}
 
 	function typeCount(type: NodeType) {
-		return payload?.manifest.node_types[type] ?? 0;
+		return payload?.nodes.filter((node) => node.type === type).length ?? 0;
 	}
 
 	function typeLabel(type: NodeType) {
@@ -569,9 +569,9 @@
 		</div>
 		{#if payload}
 			<div class="stat-grid" aria-label="Graph summary">
-				<div><strong>{payload.manifest.node_types.knowledge ?? 0}</strong><span>知识节点</span></div>
-				<div><strong>{(payload.manifest.node_types.topic ?? 0) + (payload.manifest.node_types.field ?? 0)}</strong><span>领域与主题</span></div>
-				<div><strong>{payload.manifest.counts.edges}</strong><span>关系</span></div>
+				<div><strong>{typeCount("knowledge")}</strong><span>知识节点</span></div>
+				<div><strong>{typeCount("topic") + typeCount("field")}</strong><span>领域与主题</span></div>
+				<div><strong>{payload.counts.edges}</strong><span>关系</span></div>
 				<div class:warning={payload.diagnostics.warnings.length > 0}>
 					<strong>{payload.diagnostics.warnings.length}</strong><span>待整理</span>
 				</div>
@@ -594,7 +594,7 @@
 				{#if query}<button type="button" aria-label="清除搜索" on:click={() => (query = "")}>×</button>{/if}
 			</label>
 			<div class="type-filters" aria-label="Node type filter">
-				<button type="button" class:active={selectedType === "all"} on:click={() => (selectedType = "all")}>全部 <span>{payload.manifest.counts.nodes}</span></button>
+				<button type="button" class:active={selectedType === "all"} on:click={() => (selectedType = "all")}>全部 <span>{payload.counts.nodes}</span></button>
 				{#each typeOrder as type}
 					<button type="button" class:active={selectedType === type} on:click={() => (selectedType = type)}>{typeLabel(type)} <span>{typeCount(type)}</span></button>
 				{/each}
@@ -747,8 +747,8 @@
 		</div>
 
 		<footer class="graph-meta">
-			<span><i></i> Typst / Markdown / LaTeX authority · qlkg-v2</span>
-			<code>{payload.manifest.graph_sha256.slice(0, 12)}</code>
+			<span><i></i> Typst / Markdown / LaTeX authority · {payload.schema}</span>
+			<code>{payload.graph_sha256.slice(0, 12)}</code>
 		</footer>
 	{/if}
 </section>

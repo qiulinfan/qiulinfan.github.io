@@ -35,10 +35,14 @@ updating a personal or community Skill, apply this protocol in addition to the
 active Skill's own instructions:
 
 - Treat the visible `skills/` directory in the qlblog checkout that owns this
-  tracked file as the authoritative personal Skill store. The installed global
-  file should be a link to `<qlblog>/install/codex/AGENTS.md`; resolve that link
-  to locate the checkout. If the checkout moved or cannot be resolved, stop and
-  ask for its new location instead of creating an untracked Skill elsewhere.
+  tracked file as the default authoritative personal Skill store. Locate that
+  checkout from a qlblog-owned Skill link in `$CODEX_HOME/skills` and walk up to
+  its repository `skills/` root; on platforms where `$CODEX_HOME/AGENTS.md` is a
+  symbolic link, its target is an equivalent locator. A Windows linker may use
+  a same-volume hard link for this file when symbolic-link permission is
+  unavailable, so do not infer the checkout from that file alone. If no linked
+  qlblog Skill resolves to one unambiguous checkout, stop and ask for its new
+  location instead of creating an untracked Skill elsewhere.
 - Initialize every new personal Skill at the top level of `<qlblog>/skills`.
   Preserve existing suite directories, but never infer categorization from a
   Skill's topic, name, dependencies, or apparent system membership. Create a
@@ -46,11 +50,18 @@ active Skill's own instructions:
   for that exact classification. Put downloaded open-source Skills under the
   already established `community/` convention, which Codex may discover but
   qlblog must not publish. Then run
-  `<qlblog>/skills/link-codex-skills.sh`; it exposes both top-level and suite
+  `<qlblog>/skills/link-codex-skills.sh` on POSIX/WSL or
+  `<qlblog>/skills/link-codex-skills.ps1` on native Windows; it exposes both top-level and suite
   Skills as a flat set of individually linked entries in Codex's user Skill
   directory.
+- When the user explicitly promotes a Skill/workflow series into an independent
+  product, that product repository becomes its only authority. Keep its Skills,
+  workflows, agents, tests, and linker together there; remove qlblog mirrors.
+  The current promoted products are `gamemaker` and `kgdistiller`. Run each
+  product's own linker so local edits are visible immediately; qlblog's linker
+  must neither manage nor remove links owned by those product checkouts.
 - After every reclassification or other parent-directory move under
-  `<qlblog>/skills`, rerun `<qlblog>/skills/link-codex-skills.sh` immediately so
+  `<qlblog>/skills`, rerun the platform-appropriate qlblog linker immediately so
   stale links are removed and the flat Codex view is rebuilt. Do not report the
   reclassification complete until that command succeeds.
 - Before changing a visible Skill, read `<qlblog>/skills/README.md` and

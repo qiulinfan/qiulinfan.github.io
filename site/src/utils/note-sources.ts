@@ -91,7 +91,10 @@ interface RenderOptions {
 
 const repositoryRoot = resolve(process.cwd(), "..");
 const registryPath = resolve(repositoryRoot, "knowledge/sources.json");
-const graphRoot = resolve(repositoryRoot, "knowledge/graph");
+const publicGraphPath = resolve(
+	repositoryRoot,
+	"knowledge/export/site/graph.json",
+);
 const standalonePresentationPaths = [
 	resolve(repositoryRoot, "notes/math/toolchain/qlnotes.typ"),
 	resolve(repositoryRoot, "notes/math/toolchain/web.css"),
@@ -110,11 +113,24 @@ const codeLanguageAliases = new Map([
 	["tex", "latex"],
 ]);
 
-function readJsonLines<T>(path: string): T[] {
-	return readFileSync(path, "utf-8")
-		.split("\n")
-		.filter(Boolean)
-		.map((line) => JSON.parse(line) as T);
+interface PublicGraph {
+	schema: "qlkg-site-graph-v1";
+	nodes: GraphNode[];
+	references: GraphReference[];
+}
+
+let cachedPublicGraph: PublicGraph | undefined;
+
+function publicGraph(): PublicGraph {
+	if (cachedPublicGraph) return cachedPublicGraph;
+	const payload = JSON.parse(
+		readFileSync(publicGraphPath, "utf-8"),
+	) as PublicGraph;
+	if (payload.schema !== "qlkg-site-graph-v1") {
+		throw new Error(`Unsupported public graph export: ${payload.schema}`);
+	}
+	cachedPublicGraph = payload;
+	return payload;
 }
 
 let cachedRegistry: SourceRegistry | undefined;
@@ -488,8 +504,7 @@ let cachedNotes: MarkdownNote[] | undefined;
 
 export function loadMarkdownNotes(): MarkdownNote[] {
 	if (cachedNotes) return cachedNotes;
-	const nodes = readJsonLines<GraphNode>(resolve(graphRoot, "nodes.jsonl"));
-	const references = readJsonLines<GraphReference>(resolve(graphRoot, "references.jsonl"));
+	const { nodes, references } = publicGraph();
 	const notes: MarkdownNote[] = [];
 	for (const spec of sourceRegistry().sources.filter((source) => source.publish)) {
 		for (const path of markdownFiles(spec)) {

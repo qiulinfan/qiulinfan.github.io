@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -59,6 +60,15 @@ test("the source registry publishes and lists only the selected notes", () => {
 test("the public graph excludes unpublished sources without changing the local graph", async () => {
 	const response = getPublicGraph();
 	const graph = await response.json();
+	const committed = JSON.parse(
+		readFileSync(
+			new URL("../../knowledge/export/site/graph.json", import.meta.url),
+			"utf8",
+		),
+	);
+	assert.deepEqual(graph, committed);
+	assert.equal(graph.schema, "qlkg-site-graph-v1");
+	assert.equal(graph.namespace, "public");
 	const ids = new Set(graph.nodes.map((node) => node.id));
 	assert.equal(ids.has("cpp-programming"), true);
 	assert.equal(ids.has("programming-languages"), true);
@@ -66,11 +76,11 @@ test("the public graph excludes unpublished sources without changing the local g
 	assert.equal(ids.has("data-structures-and-algorithms"), true);
 	assert.equal(ids.has("computer-organization"), false);
 	assert.equal(ids.has("computer-architecture"), false);
-	assert.equal("source_hashes" in graph.manifest, false);
-	assert.equal("entry_store" in graph.manifest, false);
-	assert.equal(graph.manifest.counts.nodes, graph.nodes.length);
-	assert.equal(graph.manifest.counts.edges, graph.edges.length);
-	assert.equal(graph.manifest.counts.references, graph.references.length);
+	assert.equal("source_hashes" in graph, false);
+	assert.equal("entry_store" in graph, false);
+	assert.equal(graph.counts.nodes, graph.nodes.length);
+	assert.equal(graph.counts.edges, graph.edges.length);
+	assert.equal(graph.counts.references, graph.references.length);
 	assert.equal(
 		graph.edges.every((edge) => ids.has(edge.source) && ids.has(edge.target)),
 		true,

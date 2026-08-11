@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const siteRoot = new URL("..", import.meta.url).pathname;
+const siteRoot = fileURLToPath(new URL("..", import.meta.url));
 const sourceRoot = join(siteRoot, "src");
 const authority = "styles/variables.styl";
 const notesThemePath = join(
@@ -69,7 +70,7 @@ test("the shared theme file is the only palette authority", () => {
 	for (const path of sourceFiles(sourceRoot)) {
 		const extension = path.slice(path.lastIndexOf("."));
 		if (!checkedExtensions.has(extension)) continue;
-		const name = relative(sourceRoot, path);
+		const name = relative(sourceRoot, path).replaceAll("\\", "/");
 		if (name === authority) continue;
 		const text = readFileSync(path, "utf8");
 		if (/\bthemeColor\b|--hue\b|var\(--hue\)|oklch\(/.test(text)) {

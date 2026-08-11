@@ -1,7 +1,7 @@
 model_verbosity = "medium"
 [mcp_servers.kgdistiller]
-command = "python3"
-args = ["knowledge/kgd.py", "mcp"]
+command = "kgdistiller"
+args = ["--repo-root", ".", "mcp"]
 cwd = "."
 required = false
 startup_timeout_sec = 20

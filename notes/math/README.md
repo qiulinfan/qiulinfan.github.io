@@ -30,10 +30,12 @@ make web-check
 ```
 
 知识节点在 Typst 中用唯一的 `#kn[名称]` 标记，其他位置用
-`#ref[名称]` 链回原定义。内部稳定 ID 由同步程序在源文件之外维护。全局图谱位于仓库根目录的 `knowledge/`；普通章节、
-例题和未标记陈述不会自动成为节点。可用 `make knowledge-subject SUBJECT=math`、
-`make knowledge-course COURSE=measure-theory` 或 `make knowledge-file FILE=...`
-按不同粒度同步。
+`#ref[名称]` 链回原定义。内部稳定 ID 由同步程序在源文件之外维护。私有实例图位于
+仓库根目录的 `knowledge/graph/`，网站和普通笔记构建只读取已验收的
+`knowledge/export/site/`；普通章节、例题和未标记陈述不会自动成为节点。
+需要刷新图谱时，先安装选定版本的独立 `kgdistiller` 产品，再显式运行
+`make knowledge-subject SUBJECT=math`、`make knowledge-course COURSE=measure-theory`
+或 `make knowledge-file FILE=...`。普通 `make` 不启动知识图谱引擎。
 
 课程本地 HTML、快照与编译中间文件均被忽略；`notes/` 下不允许存在任何 PDF。
 GitHub Actions 从 Typst 源构建 HTML，并只把构建产物发布到 GitHub Pages：
