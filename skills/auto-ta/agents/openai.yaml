@@ -1,0 +1,6 @@
+interface:
+  display_name: "Auto TA"
+  short_description: "Automate novice-friendly game asset production"
+  default_prompt: "Use $auto-ta to turn my asset idea into a validated game-ready 3D asset."
+policy:
+  allow_implicit_invocation: true

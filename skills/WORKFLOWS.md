@@ -20,21 +20,20 @@ flowchart TD
     Gap -->|否| Code["程序 agent<br/>实现与技术验证"]
     Art --> Code
     Code --> Play{"玩家可见行为?"}
-    Play -->|是| Test["playtester agent<br/>play-unity-game"]
-    Play -->|否| Verify["对应层级的测试与回归"]
-    Test --> Findings{"是否有缺陷?"}
+    Play -->|是| Test["程序 agent<br/>play-unity-game 玩家路径验证"]
+    Play -->|否| Verify["程序 agent<br/>对应层级的测试与回归"]
+    Test --> Findings{"制作人复核是否有缺陷?"}
     Verify --> Findings
     Findings -->|有| Owner["按策划 / 美术 / 程序归属回流"]
     Owner --> Code
-    Findings -->|无| Record["record-windows-playtest<br/>录屏、校验与 Drive 交付"]
-    Record --> Accept["制作人集成验收并关闭父 issue"]
+    Findings -->|无| Accept["制作人直接验收并关闭父 issue"]
 ```
 
-[`coordinate-game-production`](#skill-coordinate-game-production) 是总线而不是全能执行者：它读取父 issue，先判断目标是空间与遭遇主导的关卡、可复用的功能或系统，还是二者混合；再按依赖创建单一职责、写入边界和验收证据明确的子 issue。策划 agent 用 [`write-game-design-brief`](#skill-write-game-design-brief) 把口头点子变成规则、状态、表现需求与可观测验收案例；美术 agent 只搜索、核验、获取、审计和导入外部资源，不自主建模、贴图或编写玩法；程序 agent 负责代码、scene/prefab 接线、测试和修复；playtester 负责只读试玩、录屏、回执与 Drive 交付。制作人核对真实产物和证据后才关闭父 issue，不能只相信子任务的完成标签。
+[`coordinate-game-production`](#skill-coordinate-game-production) 是总线而不是全能执行者：它读取父 issue，先判断目标是空间与遭遇主导的关卡、可复用的功能或系统，还是二者混合；再按依赖创建单一职责、写入边界和验收证据明确的子 issue。策划 agent 用 [`write-game-design-brief`](#skill-write-game-design-brief) 把口头点子变成规则、状态、表现需求与可观测验收案例；美术 agent 只搜索、核验、获取、审计和导入外部资源，不自主建模、贴图或编写玩法；程序 agent 负责代码、scene/prefab 接线、测试、玩家路径验证和修复。制作人核对程序交付的真实产物和证据后直接关闭父 issue，或把缺陷退回责任 agent；不再创建独立 playtester、录屏或证据修复阶段。
 
 制作人采用事件驱动的阶段生命周期：每个 Run 只读取一次父 issue、刚完成阶段和必要的仓库状态，验收后只创建当前就绪阶段并立即结束；staged child 发布证据后把自身标为 `done`，该状态只表示专业交付可供验收，并触发下一次制作人 Run。不得同时保留自动唤醒与前台轮询；只有事件缺失或用户明确要求实时观察时，才以至少 120 秒间隔和 `run-messages --since <last_seq>` 增量检查。Git 状态只在 Run 开始、子任务完成和最终验收时读取。Dreamweaver 的写入统一指向 `C:\Users\rynne\Desktop\dreamweaver` 的绝对路径，首次写入后立即验证；任何 Unity/MCP 工作只复用项目根精确匹配的既有桌面 Editor，会话不存在、桥接失效、实例歧义或根目录不匹配时必须停止并报告，不得启动隔离 Unity、第二个 Editor 或持久替代服务器。保留私有仓库 SSH transport。除非父 issue 写明 `no push`，写入 worker 默认可提交自有改动、推送任务分支并创建或更新 draft PR。
 
-关卡走 [`iterate-unity-level`](#skill-iterate-unity-level)：每轮只加入一个与核心规则相连的选择、依赖、状态或恢复关系，先写状态契约，再由 `build-unity-scene` 构建、独立 playtester 用 `play-unity-game` 验证有效路径、无效反馈、恢复、重置以及重置后的第二次完整通关，并用 [`record-windows-playtest`](#skill-record-windows-playtest) 将核验后的 Windows 窗口视频与回执交付到 Google Drive。module、功能和系统走 [`deliver-unity-feature`](#skill-deliver-unity-feature)：先明确调用者、接口、数据和状态所有权、生命周期与验证面，再交付最小端到端切片；纯逻辑模块不强行伪装成关卡，只有玩家可见行为才要求真实试玩和视频证据。playtester 只报告结果和缺陷，不修改项目；任何修复都回流给所属 agent，清除旧诊断并从干净状态重跑。这个流程只定义按 issue 触发的协作，不自动创建常驻轮询、daemon 或定时 autopilot。
+关卡走 [`iterate-unity-level`](#skill-iterate-unity-level)：每轮只加入一个与核心规则相连的选择、依赖、状态或恢复关系，先写状态契约，再由程序 agent 通过 `build-unity-scene` 构建并用 `play-unity-game` 验证有效路径、无效反馈、恢复、重置以及重置后的第二次完整通关。module、功能和系统走 [`deliver-unity-feature`](#skill-deliver-unity-feature)：先明确调用者、接口、数据和状态所有权、生命周期与验证面，再交付最小端到端切片；纯逻辑模块不强行伪装成关卡，只有玩家可见行为才要求程序 agent 真实试玩。MP4、回执和 Drive 交付不再是默认验收门槛；只有父 issue 明确要求录屏工件时，才由程序 agent 负责。修复回流给所属 agent，清除旧诊断并从干净状态重跑，随后由制作人直接验收。这个流程只定义按 issue 触发的协作，不自动创建常驻轮询、daemon 或定时 autopilot。
 
 ## 从策划案到 Unity 美术资源
 
@@ -55,6 +54,30 @@ flowchart LR
 [`search-game-art`](#skill-search-game-art) 先读取项目内的设计来源层级，把模糊的“风格像什么”拆成可核验的资产角色：玩法功能、叙事主题、视觉要求、所需状态或动画动词、技术约束与许可证边界。搜索阶段仍然可以独立结束；只有用户明确要求获取或导入时，才在临时目录下载候选，记录 SHA-256，审计归档的真实文件、许可证和异常内容，并用 Blender 检查实际网格、骨架与动作曲线。网页描述属于声明证据，下载包与引擎结果属于审计证据，两者不混为一谈。
 
 审计通过后只选择当前需求所需的最小子集，再交给 [`build-unity-scene`](#skill-build-unity-scene) 按目标项目已有结构完成 Unity 导入、Importer 设置、材质或 prefab 建立以及 Editor 验证。动画包只有在目标角色的实际重定向测试通过后才算集成；仅有“Humanoid”“Mixamo compatible”或“animated”标签时保留为待验证。真实项目中的具体资源 URL、哈希和导入清单写入目标游戏仓库，Skill 本体只沉淀可复用的判断与审计步骤。面向用户的说明、提示与交接跟随用户语言，命令、标识符、结构化键和原始错误保持不变。
+
+## 从自然语言到原创可验证游戏资产
+
+```mermaid
+flowchart LR
+    Need["用户自然语言需求"] --> Contract["auto-ta<br/>资产契约与权限边界"]
+    Contract --> Route{"最小可用生产面"}
+    Route --> Image["ImageGen<br/>概念与纹理源"]
+    Route --> Blender["Blender<br/>建模 / UV / 材质 / 骨骼 / 动画 / 灯光"]
+    Route --> Existing["search-game-art<br/>已授权现有资源"]
+    Image --> Build["隔离工作副本"]
+    Blender --> Build
+    Existing --> Build
+    Build --> Audit["可视检查 + 技术审计"]
+    Audit --> Round["GLB / FBX 往返"]
+    Round --> Unity{"已授权 Unity 项目?"}
+    Unity -->|是| Import["Unity MCP<br/>Importer / Prefab / 验证场景"]
+    Unity -->|否| Receipt["结构化回执"]
+    Import --> Receipt
+```
+
+[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证，Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
+
+每个资产先在隔离副本中完成最小端到端切片，再经过真实保存文件的数据审计、渲染或姿态检查、目标格式导出后清洁导入的往返验证；需要 Unity 交付时，最后再验证目标 Render Pipeline、Importer、材质、Prefab 与最小场景。最终 `auto-ta-receipt.json` 对每项门给出 `pass`、`fail` 或 `not_tested`，整体只能是 `validated`、`prototype`、`blocked` 或 `failed`，不能用“应该可用”的文字代替未执行的验证。当前 `coordinate-game-production` 不会自动派发原创建模；若要把这条能力加入现有生产总线，应由用户明确修改其美术 worker 边界。
 
 ## Multica 控制面与执行节点
 

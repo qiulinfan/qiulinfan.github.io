@@ -1,6 +1,6 @@
 ---
 name: coordinate-game-production
-description: Coordinate a game idea or production issue across design, Unity programming, sourced-art, and independent playtest workers, then integrate and accept the verified result. Use when a producer agent must classify work as a level, feature, system, or mixed change; create bounded child issues; enforce ownership and dependencies; require reviewable play evidence for player-facing work; and close the production loop without doing every specialty itself.
+description: Coordinate a game idea or production issue across design, Unity programming, and sourced-art workers, then review and accept the programmer's verified delivery. Use when a producer agent must classify work as a level, feature, system, or mixed change; create bounded child issues; enforce ownership and dependencies; require the programmer to provide reviewable play evidence for player-facing work; and close the production loop without a separate playtester stage.
 ---
 
 # Coordinate Game Production
@@ -41,8 +41,7 @@ Use these ownership boundaries:
 
 - The planner owns design briefs, rules, states, content requirements, and testable acceptance criteria. It does not implement.
 - The art worker only discovers, verifies, acquires, audits, and imports external resources. It does not invent gameplay code or autonomously model and texture assets.
-- The programmer owns code, scene wiring, prefabs, tests, technical validation, and fixes.
-- The playtester owns read-only player-like acceptance, defect reproduction, Windows window recording, evidence validation, and Drive delivery. It does not modify the project or repair defects.
+- The programmer owns code, scene wiring, prefabs, tests, technical validation, player-path verification, delivery evidence, and fixes.
 - The producer owns scope, sequencing, conflict resolution, integration review, and final closure.
 
 Dispatch the planner first when behavior is underspecified. Start art discovery only after visual roles, required actions, and technical constraints are stable enough to search. Let independent art and programming work run in parallel only when their write surfaces do not overlap.
@@ -73,7 +72,7 @@ The producer and every Unity-capable child must enforce these rules:
 4. Treat the canonical desktop Editor as the owner of its managed MCP server. If the bridge disappears, hand the failure to operational repair and wait for a new event. Do not repair it by starting an isolated Editor or independent long-lived server.
 5. Re-check the matched instance after an Editor restart, domain reload, branch switch, or bridge reconnect before resuming mutations.
 
-Carry this Editor-binding contract verbatim into programming, art-import, scene-integration, and Editor-based playtest child issues. A standalone player may still be launched for independent acceptance when the issue explicitly identifies that build; this does not authorize a second Unity Editor.
+Carry this Editor-binding contract verbatim into programming, art-import, and scene-integration child issues. The programmer may launch a standalone player when the issue identifies that build; this does not authorize a second Unity Editor.
 
 ## Dispatch bounded child issues
 
@@ -121,7 +120,9 @@ Review outputs against the parent contract rather than accepting child completio
 - licensing, provenance, missing animation, or import defects to art;
 - code, scene, console, test, or gameplay defects to programming.
 
-Require a clean verification run after fixes. For player-facing work, dispatch an independent playtester only after the programmer identifies the exact playable target and revision. Require a written verdict plus a validated Windows MP4 and receipt delivered through the approved evidence location. For stateful or resettable work, require a fresh second completion after reset or reload. Route gameplay defects to programming and recorder or delivery defects to the playtester. Close the parent only when the integrated project, evidence, licenses, and documentation agree.
+Require a clean verification run after fixes. The programmer is the final implementation and player-path verification worker: for player-facing work, it must use `play-unity-game` against the exact playable target and revision, report a written verdict, and provide concise reviewable evidence such as test results, clean Console state, screenshots, or structured observations. For stateful or resettable work, require a fresh second completion after reset or reload.
+
+After the programmer marks its child `done`, the producer reviews the delivered revision, automated tests, gameplay evidence, reset evidence when applicable, licenses, and documentation. If the contract fails, route one bounded defect issue back to the responsible planner, art worker, or programmer. If it passes, close the parent directly. Do not dispatch a separate playtester, recording, or evidence-repair stage, and do not make MP4, receipt, or Drive delivery a default acceptance gate. If the parent explicitly requests a recording artifact, assign that artifact to the programmer without introducing a separate playtester role.
 
 Do not create an autopilot, scheduled poller, daemon, or recurring automation unless the user explicitly requests that persistent behavior.
 

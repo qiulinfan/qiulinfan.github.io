@@ -278,8 +278,9 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 
 ### 全局 Skills
 
+- [auto-ta](./auto-ta/)：把新手的自然语言美术需求转成资产契约，按可用能力路由到 ImageGen、Blender、现有授权资源或 Unity，自动完成建模、UV/PBR、骨骼动画、灯光/Shader/VFX 的可执行部分，并以可视检查、技术审计、格式往返和结构化回执区分 `validated`、`prototype`、`blocked` 与 `failed`。
 - [record-windows-playtest](./record-windows-playtest/)：在 Windows 上对指定 Unity 游戏或 Editor 窗口执行有界录屏，以 `ffprobe`、时长、分辨率和 SHA-256 验证 MP4，生成包含 issue、版本与结论的回执，并把两者交付到 Google Drive for Desktop；只提供独立试玩证据，不修改游戏实现。
-- [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run，并以 Dreamweaver 绝对工作树、仅绑定项目根精确匹配的既有桌面 Unity/MCP 会话、默认 commit/push/draft PR（父 issue 可 `no push`）及集成产物和 Drive 视频证据约束交付。
+- [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run。程序 agent 同时负责实现、测试和玩家路径验证，制作人复核其交付后直接关闭或将缺陷退回，不再创建独立 playtester、录屏或证据修复阶段；Dreamweaver 统一使用绝对工作树和项目根精确匹配的既有桌面 Unity/MCP 会话，并默认允许 commit/push/draft PR（父 issue 可 `no push`）。
 - [write-game-design-brief](./write-game-design-brief/)：把原始点子或 issue 写成可实现、可测试且区分事实、综合、提案与开放问题的策划契约，向美术和程序提供明确需求但不亲自实现。
 - [iterate-unity-level](./iterate-unity-level/)：为已有可玩 Unity 关卡增加与核心规则相关的选择、依赖或状态，通过设计—构建—独立试玩—修复—重置后再次通关完成窄职责闭环。
 - [deliver-unity-feature](./deliver-unity-feature/)：把 Unity module、功能或系统作为最小端到端切片交付，先明确接口、状态与验证面，再实现、集成、回归；只有玩家可见行为才要求试玩。
