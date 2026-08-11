@@ -279,6 +279,7 @@ PowerShell 的 `New-Item -ItemType SymbolicLink` 用法和 Windows 权限说明�
 ### 全局 Skills
 
 - [auto-ta](./auto-ta/)：把新手的自然语言美术需求转成资产契约，按可用能力路由到 ImageGen、Blender、现有授权资源或 Unity，自动完成建模、UV/PBR、骨骼动画、灯光/Shader/VFX 的可执行部分，并以可视检查、技术审计、格式往返和结构化回执区分 `validated`、`prototype`、`blocked` 与 `failed`。
+- [character-rig-animation-alignment](./character-rig-animation-alignment/)：把主题与授权核验、人物/动作骨架审计、rest/单位/轴/root/蒙皮归一化、Unity Humanoid 与 Animator/Prefab 接线、编辑器和运行时证据收束为一条可回滚的人形角色动画对齐流程，并在有效 Avatar 仍骨段塌缩、bind pose 污染、根漂移或序列化骨骼覆盖时强制失败。
 - [record-windows-playtest](./record-windows-playtest/)：在 Windows 上对指定 Unity 游戏或 Editor 窗口执行有界录屏，以 `ffprobe`、时长、分辨率和 SHA-256 验证 MP4，生成包含 issue、版本与结论的回执，并把两者交付到 Google Drive for Desktop；只提供独立试玩证据，不修改游戏实现。
 - [coordinate-game-production](./coordinate-game-production/)：让制作人 agent 接收游戏点子或生产 issue，区分策划探索、关卡、功能、系统与混合任务；每个 Run 只验收刚完成的阶段、派发当前就绪阶段后立即结束，由 staged child 的 `done` 事件唤醒下一 Run。程序 agent 同时负责实现、测试和玩家路径验证，制作人复核其交付后直接关闭或将缺陷退回，不再创建独立 playtester、录屏或证据修复阶段；Dreamweaver 统一使用绝对工作树和项目根精确匹配的既有桌面 Unity/MCP 会话，并默认允许 commit/push/draft PR（父 issue 可 `no push`）。
 - [write-game-design-brief](./write-game-design-brief/)：把原始点子或 issue 写成可实现、可测试且区分事实、综合、提案与开放问题的策划契约，向美术和程序提供明确需求但不亲自实现。

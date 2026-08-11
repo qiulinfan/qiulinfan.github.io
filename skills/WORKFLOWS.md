@@ -67,7 +67,10 @@ flowchart LR
     Image --> Build["隔离工作副本"]
     Blender --> Build
     Existing --> Build
-    Build --> Audit["可视检查 + 技术审计"]
+    Build --> Humanoid{"人形角色 + 外部骨骼动作?"}
+    Humanoid -->|是| Align["character-rig-animation-alignment<br/>骨架归一化 / 重定向 / 引擎验收"]
+    Humanoid -->|否| Audit["可视检查 + 技术审计"]
+    Align --> Audit
     Audit --> Round["GLB / FBX 往返"]
     Round --> Unity{"已授权 Unity 项目?"}
     Unity -->|是| Import["Unity MCP<br/>Importer / Prefab / 验证场景"]
@@ -75,7 +78,7 @@ flowchart LR
     Import --> Receipt
 ```
 
-[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证，Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
+[`auto-ta`](#skill-auto-ta) 面向不懂 TA 术语的用户，先把“想要什么”翻译成尺寸、风格、预算、交付格式与可观察验收条件；缺省时使用公开的 prototype 假设，不把拓扑、贴图色彩空间或蒙皮方法等实现选择推给用户。它优先使用本机可验证的确定性执行面：ImageGen 只生产概念或纹理源，Blender 负责可编辑源资产，已有资源交给 `search-game-art` 核验来源与许可证；当任务是“已蒙皮人形角色 + 外部骨骼动作”时，转给 [`character-rig-animation-alignment`](#skill-character-rig-animation-alignment) 负责 deform/control 骨架分离、rest/单位/轴/root/权重归一化、Humanoid 重定向、Animator/Prefab 接线和编辑器/运行时失败门；Unity MCP 只在连接项目根恰好是用户授权目标时负责导入。任何付费生成服务、外部上传、凭据、安装、项目包变更或持久服务都保持显式授权门。
 
 每个资产先在隔离副本中完成最小端到端切片，再经过真实保存文件的数据审计、渲染或姿态检查、目标格式导出后清洁导入的往返验证；需要 Unity 交付时，最后再验证目标 Render Pipeline、Importer、材质、Prefab 与最小场景。最终 `auto-ta-receipt.json` 对每项门给出 `pass`、`fail` 或 `not_tested`，整体只能是 `validated`、`prototype`、`blocked` 或 `failed`，不能用“应该可用”的文字代替未执行的验证。当前 `coordinate-game-production` 不会自动派发原创建模；若要把这条能力加入现有生产总线，应由用户明确修改其美术 worker 边界。
 

@@ -25,6 +25,8 @@ Distinguish these jobs:
 - `lookdev`: materials, textures, lighting, shader, or VFX work.
 - `audit_or_handoff`: inspect, export, round-trip, or import into an engine.
 
+For a `rig_or_animation` job that aligns a skinned humanoid character with external skeletal clips, invoke `$character-rig-animation-alignment` after establishing this asset contract. Let that Skill own source/license evidence, deform-rig extraction, rest/units/root normalization, Humanoid import, Animator/prefab wiring, and runtime acceptance. Keep `auto-ta` responsible for the broader asset job and final receipt; do not duplicate or weaken the specialized gates.
+
 ## Route to the Smallest Working Surface
 
 Read [references/runtime-routing.md](references/runtime-routing.md), then probe rather than assume.
@@ -32,8 +34,9 @@ Read [references/runtime-routing.md](references/runtime-routing.md), then probe 
 1. Use ImageGen for concept images, texture sources, masks, sprites, or reference sheets. Treat generated maps as source imagery until channel semantics and tiling are validated.
 2. Use Blender Python for deterministic geometry, UV, material, rig, animation, light, render, and export operations. Prefer a healthy live Blender MCP for an already-open authored scene. For a new isolated asset, headless Blender is valid when the live bridge is unavailable.
 3. Use `search-game-art` when an existing licensed asset is preferable to original production. Preserve URL, license, author, file hash, and allowed use.
-4. Use Unity MCP only when it is healthy and its exact project root is the user-authorized target. Reuse the project's render pipeline and conventions.
-5. Use a hosted 3D or texture provider only after the user authorizes that provider, likely cost, upload, and credentials. Never place credentials in prompts, scripts, receipts, repositories, or command output.
+4. Use `character-rig-animation-alignment` when a humanoid character and external animation rig must be normalized, retargeted, wired, and accepted together.
+5. Use Unity MCP only when it is healthy and its exact project root is the user-authorized target. Reuse the project's render pipeline and conventions.
+6. Use a hosted 3D or texture provider only after the user authorizes that provider, likely cost, upload, and credentials. Never place credentials in prompts, scripts, receipts, repositories, or command output.
 
 Do not install a DCC, package, add-on, MCP gateway, persistent service, or daemon merely to make a route available. Report the missing capability and use another authorized route or stop at a useful intermediate artifact.
 
