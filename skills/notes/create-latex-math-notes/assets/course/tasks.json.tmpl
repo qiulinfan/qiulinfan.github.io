@@ -2,23 +2,45 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "LaTeX source: build Typst HTML",
-      "type": "shell",
-      "command": "make web",
+      "label": "LaTeX notes: build PDF",
+      "type": "process",
+      "command": "latexmk",
+      "args": [
+        "-lualatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "-outdir=build/latex",
+        "main.tex"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": []
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
     },
     {
-      "label": "LaTeX source: watch Typst HTML",
-      "type": "shell",
-      "command": "make watch",
-      "isBackground": true,
-      "problemMatcher": [],
+      "label": "LaTeX notes: clean generated files",
+      "type": "process",
+      "command": "latexmk",
+      "args": [
+        "-C",
+        "-outdir=build/latex",
+        "main.tex"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "presentation": {
-        "reveal": "silent",
+        "reveal": "always",
         "panel": "dedicated"
       }
     }

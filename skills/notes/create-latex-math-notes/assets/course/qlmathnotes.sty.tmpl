@@ -1,0 +1,178 @@
+%% qlmathnotes.sty
+%% Copyright 2026 Qiulin Fan
+%%
+%% This replacement package preserves a small authoring compatibility surface
+%% from the retired localLatexenv ElegantBook customization. ElegantBook is
+%% distributed under the LaTeX Project Public License (LPPL), version 1.3c or
+%% later: https://github.com/ElegantLaTeX/ElegantBook
+%%
+%% This work may be distributed and/or modified under the conditions of the
+%% LPPL, version 1.3c or any later version. The current maintainer is Qiulin Fan.
+%% This work has the LPPL maintenance status "maintained".
+%%
+%% No ElegantBook class or external template repository is loaded at runtime.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{qlmathnotes}[2026/08/13 Lightweight mathematics notes]
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathtools}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{geometry}
+\RequirePackage{listings}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+\RequirePackage{hyperref}
+\RequirePackage[nameinlink,noabbrev]{cleveref}
+
+\geometry{margin=30mm,headheight=14pt}
+\allowdisplaybreaks
+\graphicspath{{assets/}}
+
+\definecolor{qlBlue}{HTML}{245B78}
+\definecolor{qlGreen}{HTML}{2F6F5E}
+\definecolor{qlAmber}{HTML}{946200}
+\definecolor{qlPaper}{HTML}{F7F9FA}
+\definecolor{qlCode}{HTML}{F1F4F6}
+\definecolor{qlTerminal}{HTML}{20252B}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=qlBlue,
+  citecolor=qlGreen,
+  urlcolor=qlAmber,
+  pdfencoding=auto
+}
+
+\newtheoremstyle{qlPlain}
+  {0.75\baselineskip}{0.75\baselineskip}{\itshape}{}
+  {\bfseries\color{qlBlue}}{.}{0.5em}{}
+\newtheoremstyle{qlDefinition}
+  {0.75\baselineskip}{0.75\baselineskip}{\normalfont}{}
+  {\bfseries\color{qlGreen}}{.}{0.5em}{}
+\newtheoremstyle{qlRemark}
+  {0.65\baselineskip}{0.65\baselineskip}{\normalfont}{}
+  {\bfseries\color{qlAmber}}{.}{0.5em}{}
+
+\theoremstyle{qlPlain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{qlDefinition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{exercise}[theorem]{Exercise}
+
+\theoremstyle{qlRemark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{note}[theorem]{Note}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\tcbset{
+  qlStatement/.style={
+    enhanced,
+    breakable,
+    colback=#1!4!white,
+    colframe=#1,
+    boxrule=0pt,
+    leftrule=2pt,
+    arc=1pt,
+    left=8pt,
+    right=8pt,
+    top=6pt,
+    bottom=6pt,
+    before skip=10pt,
+    after skip=10pt
+  }
+}
+\tcolorboxenvironment{theorem}{qlStatement=qlBlue}
+\tcolorboxenvironment{lemma}{qlStatement=qlBlue}
+\tcolorboxenvironment{proposition}{qlStatement=qlBlue}
+\tcolorboxenvironment{corollary}{qlStatement=qlBlue}
+\tcolorboxenvironment{definition}{qlStatement=qlGreen}
+\tcolorboxenvironment{example}{qlStatement=qlGreen}
+\tcolorboxenvironment{problem}{qlStatement=qlGreen}
+\tcolorboxenvironment{exercise}{qlStatement=qlGreen}
+\tcolorboxenvironment{remark}{qlStatement=qlAmber}
+\tcolorboxenvironment{note}{qlStatement=qlAmber}
+
+\crefname{theorem}{theorem}{theorems}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{problem}{problem}{problems}
+\crefname{exercise}{exercise}{exercises}
+\crefname{remark}{remark}{remarks}
+\crefname{note}{note}{notes}
+
+\DeclareRobustCommand{\kn}[1]{\textbf{#1}}
+\DeclareRobustCommand{\knref}[1]{#1}
+
+\lstdefinestyle{qlBase}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{qlCode},
+  rulecolor=\color{qlBlue!55},
+  frame=single,
+  framerule=0.4pt,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=4,
+  aboveskip=8pt,
+  belowskip=8pt
+}
+\lstdefinestyle{qlPython}{
+  style=qlBase,
+  language=Python,
+  keywordstyle=\color{qlBlue}\bfseries,
+  commentstyle=\color{qlGreen}\itshape,
+  stringstyle=\color{qlAmber},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt
+}
+\lstdefinestyle{qlCpp}{
+  style=qlBase,
+  language=C++,
+  keywordstyle=\color{qlBlue}\bfseries,
+  commentstyle=\color{qlGreen}\itshape,
+  stringstyle=\color{qlAmber},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt
+}
+\lstdefinestyle{qlText}{
+  style=qlBase,
+  language={}
+}
+\lstdefinestyle{qlTerminalStyle}{
+  style=qlBase,
+  language={},
+  backgroundcolor=\color{qlTerminal},
+  basicstyle=\ttfamily\small\color{white},
+  rulecolor=\color{qlTerminal}
+}
+
+\lstnewenvironment{python}[1][]{\lstset{style=qlPython,#1}}{}
+\lstnewenvironment{cpp}[1][]{\lstset{style=qlCpp,#1}}{}
+\lstnewenvironment{txt}[1][]{\lstset{style=qlText,#1}}{}
+\lstnewenvironment{terminal}[1][]{\lstset{style=qlTerminalStyle,#1}}{}
+\lstnewenvironment{cmd}[1][]{\lstset{style=qlTerminalStyle,#1}}{}
+
+\newcommand{\pythoninline}[1]{\lstinline[style=qlPython]!#1!}
+\newcommand{\cppinline}[1]{\lstinline[style=qlCpp]!#1!}
+
+\newcommand{\figref}[1]{\cref{#1}}
+\newcommand{\tabref}[1]{\cref{#1}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\BR}{\mathbb{R}}

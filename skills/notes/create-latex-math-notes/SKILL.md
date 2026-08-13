@@ -1,39 +1,57 @@
 ---
 name: create-latex-math-notes
-description: Create a lightweight LaTeX-authored mathematics notes project under qlblog/notes/math using the synchronized ElegantBook syntax and the repository's LaTeX-to-Typst adapter. Use when the user asks to start, scaffold, initialize, or create `.tex` math notes that preview only as Typst HTML, retain `\kn`/`\knref` knowledge markers, and never add PDF, latexmk, SyncTeX, MkDocs, or committed build artifacts.
+description: Create self-contained standalone LuaLaTeX mathematics-notes projects and guide local TeX Live, MacTeX, and VS Code environment setup or repair. Use when the user asks to scaffold `.tex` math notes, configure a local LaTeX environment, or compile a local PDF. Generate a project-local style, latexmk build, and editor configuration without qlblog toolchain or vendored runtime dependencies, and never add MkDocs, gh-deploy, PDF iframes, web publishing, or committed build artifacts.
 ---
 
-# Create LaTeX Math Notes
+# Create Standalone LaTeX Math Notes
 
-Create only mathematics notes. LaTeX remains the authored source and converts
-through the synchronized ElegantBook adapter into a self-contained Typst HTML
-preview. Do not compile LaTeX directly or add a Pages route until the source is
-registered here and, when the user explicitly requests a graph refresh,
-semantically curated by the independently linked
-`$curate-kgdistiller-notes` product Skill.
+Use this Skill only for an explicit standalone `.tex` project or local PDF
+workflow. Keep qlblog notes and web publishing Typst-first; use
+`$create-math-notes` for that active path. Do not put a generated PDF project
+under `qlblog/notes/`, where PDFs are forbidden even when ignored.
 
-## Collect names
+Match user-facing explanations, prompts, confirmation requests, and handoffs
+to the user's language unless the user requests another language. Keep
+commands, identifiers, structured keys/action codes, and raw errors unchanged.
 
-Obtain a lowercase hyphenated slug and human-facing title. Optional values are
-subtitle, author, date, and first-chapter title. Never overwrite an existing
-course directory.
+## Prepare the environment only when needed
 
-## Create and open
+If installation, configuration, repair, updating, or machine verification is
+in scope, read
+[references/local-latex-environment.md](references/local-latex-environment.md)
+completely before changing the machine. Run its read-only preflight first.
+Report the detected owner and exact proposed changes, and obtain the required
+confirmation before a multi-gigabyte full-scheme install or any configuration
+mutation. Do not reinstall a healthy toolchain merely to create a project.
 
-From the qlblog repository root, run:
+## Collect the project identity
+
+Obtain an existing destination parent directory and a lowercase hyphenated
+slug. Optional values are title, subtitle, author, date, and first-chapter
+title. Never overwrite an existing destination. Keep standalone projects
+outside qlblog unless the user names another repository that permits local,
+ignored PDF builds.
+
+## Create the project
+
+Resolve this Skill's directory from the loaded `SKILL.md`, then run its bundled
+script by absolute path:
 
 ```sh
-python3 skills/notes/create-latex-math-notes/scripts/create_latex_math_notes.py \
+python3 <skill-directory>/scripts/create_latex_math_notes.py \
   complex-analysis \
+  --destination-root /absolute/path/to/projects \
   --title "Complex Analysis" \
   --subtitle "Course notes" \
   --open
 ```
 
-The script creates:
+Use `py -3` instead of `python3` on native Windows when appropriate. The script
+stages the complete project beside its final destination and renames it into
+place only after every file renders successfully. It creates:
 
 ```text
-notes/math/<slug>/
+<destination-root>/<slug>/
 ├── <slug>.code-workspace
 ├── .vscode/
 │   ├── extensions.json
@@ -42,32 +60,41 @@ notes/math/<slug>/
 ├── main.tex
 ├── chapters/01-introduction.tex
 ├── assets/
-├── elegantbook.cls
+├── qlmathnotes.sty
 ├── reference.bib
-└── Makefile
+├── Makefile
+└── README.md
 ```
 
-The workspace recommends only Ultra Math Preview for formula-at-cursor
-rendering. `make` converts the source through Typst and writes ignored
-`build/typst/index.html`. The starter
-defines `\kn{canonical concept}` and `\knref{canonical concept}` so graph markers
-map to `#kn`/`#ref` in the synchronized Typst projection.
+The output is independent of the Skill after creation: the style, build recipe,
+editor configuration, and instructions are all copied into the project. It
+requires only the declared local executables and TeX Live packages; it does not
+read qlblog, a shared notes toolchain, a template
+repository, or a knowledge registry.
 
-## Validate
+## Validate the result
 
-Run only:
+From the generated project, run the cross-platform build command:
 
 ```sh
-make -C notes/math/<slug> doctor
-make -C notes/math/<slug> web
-make -C . notes-source-check
+latexmk -lualatex -synctex=1 -interaction=nonstopmode -halt-on-error \
+  -file-line-error -outdir=build/latex main.tex
+test -s build/latex/main.pdf
 ```
 
-Successful HTML compilation is sufficient. The adapter creates ignored
-`build/typst/main.typ`, a local toolchain, and `index.html`. Never add a TeX
-engine command, PDF target, MkDocs, `docs/`, deployment command, or committed
-generated Typst/HTML. For continuous terminal compilation, use
-`make -C notes/math/<slug> watch`.
+On native Windows, use `Test-Path build/latex/main.pdf` for the output check.
+The same `latexmk` command is recorded in `.vscode/settings.json` and the
+default VS Code build task; the Makefile is an optional POSIX convenience
+wrapper. Require the environment runbook's read-only verification and strict
+LuaLaTeX build to succeed before reporting completion. Keep PDF, SyncTeX, logs,
+and auxiliary files below ignored `build/latex/` and do not commit them.
 
-Read [references/upstream.md](references/upstream.md) only when refreshing the
-vendored template from localLatexenv.
+Stop at the local project. Never add MkDocs, `gh-deploy`, `docs/`, an iframe,
+an HTML/PDF Pages route, or any deployment command. A request to publish notes
+belongs to the separate Typst-first web workflow and does not authorize
+reviving the retired PDF website pipeline.
+
+When changing the package template or its authoring compatibility surface,
+read [references/legacy-provenance.md](references/legacy-provenance.md)
+completely and retain the embedded LPPL notice. That historical/legal record
+is not an active upstream or runtime dependency.

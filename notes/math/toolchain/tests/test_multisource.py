@@ -38,14 +38,6 @@ class MultiSourceExportTest(unittest.TestCase):
         )
         self.assertEqual(3, changes)
 
-    def test_starter_and_export_elegantbook_surfaces_are_synchronized(self) -> None:
-        export_class = (TOOLCHAIN / "latex/elegantbook.cls").read_text(encoding="utf-8")
-        starter_class = (
-            REPO_ROOT / "skills/notes/create-latex-math-notes/assets/course/elegantbook.cls"
-        ).read_text(encoding="utf-8")
-
-        self.assertEqual("".join(export_class.split()), "".join(starter_class.split()))
-
     def test_latex_markers_are_rewritten_without_losing_nested_markup(self) -> None:
         source = r"\kn{$L^p$ \textbf{space}} and \knref{$L^p$ \textbf{space}}"
         rewritten, count = migrate_latex.rewrite_knowledge_macros(source)

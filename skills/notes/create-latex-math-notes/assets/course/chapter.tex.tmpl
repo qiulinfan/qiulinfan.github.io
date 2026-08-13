@@ -1,7 +1,26 @@
+% !TeX root = ../main.tex
 \chapter{{{FIRST_CHAPTER}}}
 
-Start writing here.
+Start writing here. Inline mathematics such as $e^{i\pi}+1=0$ is previewable in
+the editor, while the complete document is built by LuaLaTeX.
 
-% \begin{definition}[Concept name]
-% Definition text.
-% \end{definition}
+\begin{definition}[Example concept]
+The command \kn{example concept} marks the main occurrence of a concept, and
+\knref{example concept} refers to it again as ordinary printable text.
+\end{definition}
+
+\begin{theorem}[A small starter statement]
+For every real number $x$, one has $x^2\geq 0$.
+\end{theorem}
+
+\begin{proof}
+If $x\geq 0$, then $x^2\geq 0$. If $x<0$, then $-x>0$ and
+$x^2=(-x)^2\geq 0$.
+\end{proof}
+
+% Put image files in assets/ and use ordinary figure/includegraphics commands.
+
+% \begin{python}[caption={A short listing}]
+% def square(x):
+%     return x * x
+% \end{python}

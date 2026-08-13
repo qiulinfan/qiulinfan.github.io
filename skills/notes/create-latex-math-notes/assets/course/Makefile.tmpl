@@ -1,33 +1,25 @@
-.PHONY: all typst web preview watch edit doctor source-check
+SHELL := /bin/sh
 
 MAIN := main.tex
-BUILD := build
-REPO_ROOT := $(abspath ../../..)
-TYPST_BUILD := $(BUILD)/typst
+OUT_DIR := build/latex
+PDF := $(OUT_DIR)/main.pdf
+LATEXMK := latexmk
 
-all: web
+.PHONY: all build clean edit
 
-typst:
-	@python3 $(REPO_ROOT)/notes/math/toolchain/scripts/convert_latex_project.py \
-		$(MAIN) --build $(TYPST_BUILD)
+all: build
 
-web: typst
-	@$(MAKE) -C $(TYPST_BUILD) preview
-	@$(MAKE) -C $(REPO_ROOT) notes-source-check
+build:
+	@mkdir -p "$(OUT_DIR)"
+	$(LATEXMK) -lualatex -synctex=1 -interaction=nonstopmode \
+		-halt-on-error -file-line-error -outdir="$(OUT_DIR)" "$(MAIN)"
+	@test -f "$(PDF)"
+	@echo "PDF: $(PDF)"
 
-preview: web
-
-watch: typst
-	@$(MAKE) -C $(TYPST_BUILD) watch
+clean:
+	$(LATEXMK) -C -outdir="$(OUT_DIR)" "$(MAIN)"
+	@rmdir "$(OUT_DIR)" 2>/dev/null || true
+	@rmdir build 2>/dev/null || true
 
 edit:
-	@code -r {{SLUG}}.code-workspace main.tex
-
-doctor:
-	@command -v pandoc >/dev/null
-	@command -v typst >/dev/null
-	@command -v code >/dev/null
-	@echo "LaTeX source -> Typst HTML toolchain is ready."
-
-source-check:
-	@$(MAKE) -C $(REPO_ROOT) notes-source-check
+	@code -r "{{SLUG}}.code-workspace" "$(MAIN)"

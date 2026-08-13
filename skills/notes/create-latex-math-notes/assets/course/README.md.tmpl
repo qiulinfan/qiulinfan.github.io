@@ -1,20 +1,56 @@
 # {{TITLE_TEXT}}
 
-This is a lightweight LaTeX-authored mathematics notebook using the synchronized
-ElegantBook syntax. `main.tex` and `chapters/*.tex` are the authority; preview
-always goes through Typst HTML.
+This is a standalone mathematics-notes project built with LuaLaTeX. Its source,
+style, editor configuration, and build commands all live in this directory.
+
+## Local setup
+
+Install a current TeX Live distribution that includes LuaLaTeX, `latexmk`, the
+Chinese-language collection, and the common/extra LaTeX package collections.
+Verify that the three required commands and core files resolve:
 
 ```sh
-make edit    # open the configured VS Code workspace
-make         # convert main.tex and chapters, then compile index.html
-make watch   # continuously preview the generated Typst HTML
+command -v lualatex latexmk kpsewhich
+kpsewhich ctexbook.cls
+kpsewhich qlmathnotes.sty
 ```
 
-Ultra Math Preview may render only the formula at the cursor. The synchronized
-ElegantBook adapter writes a
-self-contained projection under ignored `build/typst/`.
-Use `\kn{canonical concept}` for the one authoritative graph occurrence and
-`\knref{canonical concept}` elsewhere; both convert to Typst graph markers.
-The scaffolder registers this source as unpublished. Publishing and graph
-ingestion are explicit later operations through the independently linked
-kgdistiller product Skills. Never generate a PDF below `notes/`.
+In native PowerShell, replace the first line with
+`Get-Command lualatex,latexmk,kpsewhich`.
+
+`qlmathnotes.sty` should resolve to the copy in this project. These checks are
+read-only. Install VS Code plus the recommended `james-yu.latex-workshop` and
+`yfzhao.ultra-math-preview` extensions for build-on-save, PDF viewing, SyncTeX,
+and cursor-local formula previews.
+
+## Work locally
+
+```sh
+latexmk -lualatex -synctex=1 -interaction=nonstopmode -halt-on-error \
+  -file-line-error -outdir=build/latex main.tex
+latexmk -C -outdir=build/latex main.tex
+```
+
+These commands and the included VS Code tasks work in macOS, Linux, WSL, and
+native Windows terminals. On POSIX systems, `make build`, `make clean`, and
+`make edit` are optional convenience wrappers; GNU Make and Python are not
+project requirements.
+
+The only document output is `build/latex/main.pdf`; `build/` is ignored by Git.
+Compilation errors and warnings remain visible in both the terminal and LaTeX
+Workshop. `main.tex`, `chapters/*.tex`, `qlmathnotes.sty`, and `reference.bib`
+are the editable project authority.
+
+## Authoring helpers
+
+- Statements: `definition`, `theorem`, `lemma`, `proposition`, `corollary`,
+  `example`, `problem`, `exercise`, `remark`, `note`, `proof`, and `solution`.
+- Listings: `python`, `cpp`, `terminal`/`cmd`, and `txt`; inline Python and C++
+  use `\pythoninline{...}` and `\cppinline{...}`.
+- Images: put files in `assets/`, then use the standard `figure`,
+  `\includegraphics`, `\caption`, and `\label` commands.
+- Semantic text markers: `\kn{concept}` and `\knref{concept}` remain ordinary
+  printable LaTeX commands.
+
+To enable the bibliography, uncomment the BibLaTeX lines in `main.tex`, cite
+entries from `reference.bib`, and uncomment `\printbibliography`.

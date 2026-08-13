@@ -158,7 +158,7 @@ readlink -f ~/.codex/AGENTS.md
 
 ### 笔记项目
 
-- [create-latex-math-notes](./notes/create-latex-math-notes/)：新建使用 ElegantBook 语法和 LaTeX-to-Typst 适配器的轻量数学笔记项目。
+- [create-latex-math-notes](./notes/create-latex-math-notes/)：检查或配置本地 TeX 环境，并新建不依赖 qlblog shared toolchain 或第三方 vendored class 的自包含 LuaLaTeX 数学笔记项目；PDF 只作 ignored local build，网页发布仍走 Typst。
 - [create-math-notes](./notes/create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
 
 ### 全局 Skills

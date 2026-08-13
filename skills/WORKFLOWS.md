@@ -2,6 +2,20 @@
 
 单个 Skill 只描述一种可复用能力；这里记录多个 Skill 如何编排成可以交付结果的工具流。流程图和图下文字都是普通 Markdown，可以按需要增删节点、分支和说明，不受页面字段约束。
 
+## 数学笔记创作路由
+
+```mermaid
+flowchart LR
+    Req["数学笔记请求"] --> Route{"目标交付"}
+    Route -->|"独立本地 .tex / PDF<br/>或本地 LaTeX 安装配置"| LaTeX["create-latex-math-notes"]
+    Route -->|"qlblog notes<br/>或 Web 发布"| Typst["create-math-notes<br/>Typst-first"]
+```
+
+独立本地 `.tex` 项目、PDF 编译以及本机 LaTeX 安装、配置或修复使用
+[`create-latex-math-notes`](#skill-create-latex-math-notes)；qlblog 内的数学笔记与 Web 发布继续使用
+[`create-math-notes`](#skill-create-math-notes) 的 Typst-first 路径。两条路径都不得引入或恢复
+MkDocs、`gh-deploy` 或 PDF iframe；独立 PDF 项目不得放入 `qlblog/notes/`。
+
 ## Multica 控制面与执行节点
 
 ```mermaid

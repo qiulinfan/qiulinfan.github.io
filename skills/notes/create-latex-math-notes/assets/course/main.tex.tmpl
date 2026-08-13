@@ -1,29 +1,25 @@
-% !TeX encoding = UTF-8
-\documentclass[lang=cn,11pt,chinesefont=nofont]{elegantbook}
+% !TeX program = lualatex
+% !TeX root = main.tex
+\documentclass[UTF8,11pt,openany,fontset=fandol]{ctexbook}
 
-\usepackage[UTF8,scheme=plain]{ctex}
+\usepackage{qlmathnotes}
 
-% Graph-facing semantic markers preserved by the LaTeX -> Typst adapter.
-\providecommand{\kn}[1]{\textbf{#1}}
-\providecommand{\knref}[1]{#1}
+% Optional bibliography support:
+% \usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+% \addbibresource{reference.bib}
 
-\title{{{TITLE}}}
-{{SUBTITLE_LINE}}
+\title{{{TITLE}}{{TITLE_SUFFIX}}}
 \author{{{AUTHOR}}}
 \date{{{DATE}}}
 
-\definecolor{customcolor}{RGB}{32,178,170}
-\colorlet{coverlinecolor}{customcolor}
-
 \begin{document}
-\maketitle
 \frontmatter
+\maketitle
 \tableofcontents
-\mainmatter
 
+\mainmatter
 \input{chapters/01-introduction}
 
-% Uncomment after adding bibliography entries and citations.
 % \printbibliography
 
 \end{document}

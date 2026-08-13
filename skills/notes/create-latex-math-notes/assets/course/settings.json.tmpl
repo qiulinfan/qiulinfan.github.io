@@ -1,12 +1,46 @@
 {
+  "latex-workshop.latex.outDir": "build/latex",
+  "latex-workshop.latex.auxDir": "%OUTDIR%",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+  "latex-workshop.latex.autoClean.run": "never",
+  "latex-workshop.latex.recipe.default": "qlmathnotes: latexmk (LuaLaTeX)",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "qlmathnotes: latexmk (LuaLaTeX)",
+      "tools": [
+        "qlmathnotes_lualatexmk"
+      ]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "qlmathnotes_lualatexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "-lualatex",
+        "-outdir=%OUTDIR%",
+        "-auxdir=%AUXDIR%",
+        "%DOC%"
+      ]
+    }
+  ],
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.message.warning.show": true,
+  "latex-workshop.message.error.show": true,
+  "latex-workshop.message.log.show": true,
   "umath.preview.enableMathPreview": true,
   "umath.preview.renderer": "mathjax",
   "[latex]": {
     "editor.wordBasedSuggestions": "off",
     "editor.quickSuggestions": {
-      "other": true,
-      "comments": false,
-      "strings": false
+      "other": "on",
+      "comments": "off",
+      "strings": "off"
     }
   },
   "search.exclude": {
