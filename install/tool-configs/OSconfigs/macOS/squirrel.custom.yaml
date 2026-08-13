@@ -1,0 +1,3 @@
+patch:
+  "style/candidate_list_layout": linear
+  "style/text_orientation": horizontal

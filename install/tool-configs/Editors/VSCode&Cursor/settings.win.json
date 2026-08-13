@@ -1,0 +1,281 @@
+{
+    // ============================================================
+    // Files & Workspace
+    // ============================================================
+    "files.exclude": {
+        "**/*.meta": true,
+        "**/*.log": true,
+        "**/*.o": true
+    },
+    "files.autoSave": "afterDelay",
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "git.openRepositoryInParentFolders": "never",
+    "git.autofetch": true,
+    "extensions.ignoreRecommendations": true,
+    // ============================================================
+    // Theme & UI
+    // ============================================================
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    // ============================================================
+    // Editor - General
+    // ============================================================
+    "editor.fontSize": 14,
+    "editor.accessibilitySupport": "on",
+    "editor.accessibilityPageSize": 12,
+    "editor.autoIndent": "advanced",
+    "editor.indentSize": "tabSize",
+    "editor.stickyTabStops": true,
+    "editor.formatOnSave": true,
+    // ============================================================
+    // Editor - Cursor
+    // ============================================================
+    "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    // ============================================================
+    // Editor - Token Color Customization
+    // ============================================================
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "comment",
+                    "comment.block.documentation",
+                    "comment.block",
+                    "comment.line.double-slash"
+                ],
+                "settings": {
+                    "foreground": "#319131",
+                    "fontStyle": ""
+                }
+            }
+        ]
+    },
+    // ============================================================
+    // Language Specific
+    // ============================================================
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    // ============================================================
+    // C / C++ (Windows specific)
+    // ============================================================
+    "C_Cpp.default.cppStandard": "c++23",
+    "C_Cpp.default.cStandard": "c23",
+    "C_Cpp.autocompleteAddParentheses": true,
+    "C_Cpp.default.intelliSenseMode": "windows-msvc-x64",
+    // 下面是给 wsl 用的.
+    //"C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/include/**",
+        "${workspaceFolder}/**",
+        "/usr/include/**",
+        "/usr/local/include/**"
+    ],
+    // ============================================================
+    // Diff & Notebook
+    // ============================================================
+    "diffEditor.maxComputationTime": 0,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "notebook.output.textLineLimit": 20,
+    // ============================================================
+    // LaTeX
+    // ============================================================
+    "latex-workshop.latex.tools": [
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        }
+    ],
+    // ============================================================
+    // Terminal (Windows specific)
+    // ============================================================
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.inheritEnv": false,
+    // ============================================================
+    // Debug
+    // ============================================================
+    "lldb.showDisassembly": "never",
+    // ============================================================
+    // GitHub Copilot
+    // ============================================================
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "cpp": true
+    },
+    // ============================================================
+    // Remote
+    // ============================================================
+    "remote.autoForwardPortsSource": "hybrid",
+    "remote.SSH.remotePlatform": {
+        "ssh-host.example": "linux"
+    },
+    // ============================================================
+    // Background (Windows specific)
+    // ============================================================
+    "background.editor": {
+        "useFront": true,
+        "style": {
+            "pointer-events": "none",
+            "background-size": "cover",
+            "background-repeat": "no-repeat",
+            "background-position": "center",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///C:/Users/qiulin/Documents/Github/qiulinfan.github.io/install/tool-configs/wallpapers/miku3.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    "background.panel": {
+        "useFront": true,
+        "style": {
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+            "background-size": "auto",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///C:/Users/qiulin/Documents/Github/qiulinfan.github.io/install/tool-configs/wallpapers/02_6.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    "background.sidebar": {
+        "useFront": true,
+        "style": {
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+            "background-size": "auto",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///C:/Users/qiulin/Documents/Github/qiulinfan.github.io/install/tool-configs/wallpapers/rukia.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    // ============================================================
+    // Accessibility - Disable Signals (Fully Muted)
+    // ============================================================
+    "accessibility.signals.clear": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.chatResponseReceived": {
+        "sound": "off"
+    },
+    "accessibility.signals.chatRequestSent": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.chatEditModifiedFile": {
+        "sound": "off"
+    },
+    "accessibility.signals.chatUserActionRequired": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.codeActionApplied": {
+        "sound": "off"
+    },
+    "accessibility.signals.codeActionTriggered": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineDeleted": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineInserted": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineModified": {
+        "sound": "off"
+    },
+    "accessibility.signals.editsKept": {
+        "sound": "off"
+    },
+    "accessibility.signals.editsUndone": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasBreakpoint": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasError": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasFoldedArea": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasInlineSuggestion": {
+        "sound": "off"
+    },
+    "accessibility.signals.lineHasWarning": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.nextEditSuggestion": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.notebookCellFailed": {
+        "sound": "off"
+    },
+    "accessibility.signals.onDebugBreak": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.positionHasError": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.positionHasWarning": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.progress": {
+        "sound": "off"
+    },
+    "accessibility.signals.taskCompleted": {
+        "sound": "off"
+    },
+    "accessibility.signals.taskFailed": {
+        "sound": "on"
+    },
+    "accessibility.signals.terminalBell": {
+        "sound": "off"
+    },
+    "accessibility.signals.terminalCommandSucceeded": {
+        "sound": "off"
+    },
+    "accessibility.signals.terminalQuickFix": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    // ============================================================
+    // Extensions - Visual Effects
+    // ============================================================
+    "background.enabled": true,
+    // ============================================================
+    // Misc
+    // ============================================================
+    "indentRainbow.errorColor": "rgba(0,0,0,0)",
+    "workbench.activityBar.orientation": "vertical"
+}

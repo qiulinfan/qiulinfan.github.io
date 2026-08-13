@@ -1,0 +1,38 @@
+patch:
+  menu:
+    page_size: 6
+
+  punctuator:
+    full_shape: false
+
+  engine/filters:
+    - simplifier
+    - simplifier@emoji_suggestion
+
+  simplifier:
+    opencc_config: t2s.json
+    tips: none
+
+  emoji_suggestion:
+    opencc_config: emoji.json
+    option_name: emoji_suggestion
+    tips: none
+
+  switches:
+    - name: emoji_suggestion
+      reset: 1
+      states: [ Off, Emoji ]
+    - name: simplification
+      reset: 1
+      states: [汉字, 漢字]
+
+
+  key_binder/bindings:
+    - { when: always, accept: Control+Shift+4, send: noop }
+    - { when: always, accept: Control+Shift+dollar, send: noop }
+
+  reverse_lookup:
+    enable: false
+
+  recognizer/patterns:
+    reverse_lookup: "a^"

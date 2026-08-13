@@ -1,0 +1,38 @@
+# sublime text
+export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/fanqiulin/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/fanqiulin/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/fanqiulin/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/fanqiulin/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+alias ls='ls -G'
+setopt PROMPT_SUBST
+
+# emoji shell
+emoji(){
+    if [ "$?" != "0" ];then
+        emoji="\U0001F972"
+    else
+        emoji="\U0001F600"
+   fi
+        echo "$emoji"
+}
+
+export PROMPT="\$(emoji)%F{green}[%n] %F{blue}%~%f %B%F{blue}$%f%b "
+
+# emacs shortcut
+e ()
+{
+    emacs "$@" &
+}
