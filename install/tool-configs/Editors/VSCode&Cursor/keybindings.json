@@ -1,0 +1,36 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "f11",
+    "command": "workbench.action.navigateBack",
+    "when": "canNavigateBack"
+  },
+  {
+    "key": "alt+left",
+    "command": "-workbench.action.navigateBack",
+    "when": "canNavigateBack"
+  },
+  {
+    "key": "f1 f2",
+    "command": "workbench.action.toggleFullScreen",
+    "when": "!isIOS"
+  },
+  {
+    "key": "f11",
+    "command": "-workbench.action.toggleFullScreen",
+    "when": "!isIOS"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "editor.action.insertSnippet",
+    "when": "editorTextFocus && editorLangId == latex",
+    "args": {
+      "snippet": "\\textbf{${TM_SELECTED_TEXT:$1}}"
+    }
+  },
+  {
+    "key": "ctrl+k",
+    "command": "inlineChat.start",
+    "when": "editorFocus && !editorReadonly"
+  }
+]

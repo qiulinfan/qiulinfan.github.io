@@ -2,6 +2,7 @@
 
 个人知识、内容、稳定 Skills 与网站仓库：
 
+- [`install/`](install/)：可移植的个人工具配置、全局 agent guidance 与安全安装说明。
 - [`notes/`](notes/)：Markdown、Typst、LaTeX 权威源与共享渲染工具链；不提交 PDF、课程归档或构建物。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
 - [`skills/`](skills/)：默认的新个人 Skills、稳定工作流与有来源记录的 community Skills。

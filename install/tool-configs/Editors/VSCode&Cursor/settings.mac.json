@@ -1,0 +1,287 @@
+{
+    // ============================================================
+    // Files & Workspace
+    // ============================================================
+    "files.exclude": {
+        "**/*.meta": true,
+        "**/*.log": true
+    },
+    "files.autoSave": "afterDelay",
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "git.openRepositoryInParentFolders": "never",
+    "git.autofetch": true,
+    "extensions.ignoreRecommendations": true,
+    // ============================================================
+    // Theme & UI
+    // ============================================================
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    // ============================================================
+    // Editor - General
+    // ============================================================
+    "editor.fontSize": 14,
+    "editor.accessibilitySupport": "on",
+    "editor.accessibilityPageSize": 12,
+    "editor.autoIndent": "advanced",
+    "editor.indentSize": "tabSize",
+    "editor.stickyTabStops": true,
+    "editor.formatOnSave": true,
+    // ============================================================
+    // Editor - Cursor
+    // ============================================================
+    "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    // ============================================================
+    // Editor - Token Color Customization
+    // ============================================================
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "comment",
+                    "comment.block.documentation",
+                    "comment.block",
+                    "comment.line.double-slash"
+                ],
+                "settings": {
+                    "foreground": "#319131",
+                    "fontStyle": ""
+                }
+            }
+        ]
+    },
+    // ============================================================
+    // Language Specific
+    // ============================================================
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    // ============================================================
+    // C / C++ (macOS specific)
+    // ============================================================
+    "C_Cpp.default.cppStandard": "c++23",
+    "C_Cpp.default.cStandard": "c23",
+    "C_Cpp.autocompleteAddParentheses": true,
+    "C_Cpp.default.compilerPath": "/opt/homebrew/bin/g++-13",
+    "C_Cpp.default.intelliSenseMode": "macos-gcc-arm64",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/include/**",
+        "${workspaceFolder}/**",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.0/include",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+    ],
+    // ============================================================
+    // Diff & Notebook
+    // ============================================================
+    "diffEditor.maxComputationTime": 0,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "notebook.output.textLineLimit": 20,
+    // ============================================================
+    // LaTeX
+    // ============================================================
+    "latex-workshop.latex.tools": [
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        }
+    ],
+    // ============================================================
+    // Terminal (macOS specific)
+    // ============================================================
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.defaultProfile.osx": "fish",
+    "terminal.integrated.profiles.osx": {
+        "fish": {
+            "path": "/usr/bin/fish"
+        }
+    },
+    // ============================================================
+    // Debug
+    // ============================================================
+    "lldb.showDisassembly": "never",
+    // ============================================================
+    // GitHub Copilot
+    // ============================================================
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "cpp": true
+    },
+    // ============================================================
+    // Remote
+    // ============================================================
+    "remote.autoForwardPortsSource": "hybrid",
+    "remote.SSH.remotePlatform": {
+        "ssh-host.example": "linux"
+    },
+    // ============================================================
+    // Background (macOS specific)
+    // ============================================================
+    "background.editor": {
+        "useFront": true,
+        "style": {
+            "pointer-events": "none",
+            "background-size": "cover",
+            "background-repeat": "no-repeat",
+            "background-position": "center",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///Users/fanqiulin/Documents/Photos/miku3.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    "background.panel": {
+        "useFront": true,
+        "style": {
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+            "background-size": "auto",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///Users/fanqiulin/Documents/Photos/02_6.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    "background.sidebar": {
+        "useFront": true,
+        "style": {
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+            "background-size": "auto",
+            "opacity": 0.05
+        },
+        "images": [
+            "file:///Users/fanqiulin/Documents/Photos/rukia.jpg"
+        ],
+        "interval": 0,
+        "random": false
+    },
+    // ============================================================
+    // Accessibility - Disable Signals (Fully Muted)
+    // ============================================================
+    "accessibility.signals.clear": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.chatResponseReceived": {
+        "sound": "off"
+    },
+    "accessibility.signals.chatRequestSent": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.chatEditModifiedFile": {
+        "sound": "off"
+    },
+    "accessibility.signals.chatUserActionRequired": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.codeActionApplied": {
+        "sound": "off"
+    },
+    "accessibility.signals.codeActionTriggered": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineDeleted": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineInserted": {
+        "sound": "off"
+    },
+    "accessibility.signals.diffLineModified": {
+        "sound": "off"
+    },
+    "accessibility.signals.editsKept": {
+        "sound": "off"
+    },
+    "accessibility.signals.editsUndone": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasBreakpoint": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasError": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasFoldedArea": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.lineHasInlineSuggestion": {
+        "sound": "off"
+    },
+    "accessibility.signals.lineHasWarning": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.nextEditSuggestion": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.notebookCellFailed": {
+        "sound": "off"
+    },
+    "accessibility.signals.onDebugBreak": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.positionHasError": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.positionHasWarning": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    "accessibility.signals.progress": {
+        "sound": "off"
+    },
+    "accessibility.signals.taskCompleted": {
+        "sound": "off"
+    },
+    "accessibility.signals.taskFailed": {
+        "sound": "on"
+    },
+    "accessibility.signals.terminalBell": {
+        "sound": "off"
+    },
+    "accessibility.signals.terminalCommandSucceeded": {
+        "sound": "off"
+    },
+    "accessibility.signals.terminalQuickFix": {
+        "sound": "off",
+        "announcement": "off"
+    },
+    // ============================================================
+    // Extensions - Visual Effects
+    // ============================================================
+    "background.enabled": true,
+    // ============================================================
+    // Misc
+    // ============================================================
+    "indentRainbow.errorColor": "rgba(0,0,0,0)",
+    "workbench.activityBar.orientation": "vertical"
+}

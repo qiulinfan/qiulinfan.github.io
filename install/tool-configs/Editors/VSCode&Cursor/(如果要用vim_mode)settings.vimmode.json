@@ -1,0 +1,102 @@
+//vim settings: 如果要开 vim 模式就把这一段贴上去.
+
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["<Shift>", "x"],
+            "after": ["<Esc>"]
+        },
+        {
+           "before": ["<S-x>", "<S-c>"], // <shift-x>+<shift-c> 进入 normal mode
+            "after": ["<Esc>"]
+        }
+    ],
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<Space>"],  // <Space> 进入 insert mode
+            "after": ["i"]
+        },
+        {
+            "before": ["<S-v>"],  // <Shift+v> 进入 visual mode
+            "after": ["v"]
+        },
+        {
+            "before": ["v"],
+            "after": []  //禁用v
+        },
+        {
+            "before": ["i"],
+            "after": []  // 禁用i
+        },
+        {
+           "before": ["a"],
+            "after": ["b"]
+        },
+        {
+           "before": ["d"],
+            "after": ["w"]
+        },
+        {
+           "before": ["w"],
+            "after": ["k"]
+        },
+        {
+           "before": ["s"],
+            "after": ["j"]
+        },
+        {
+            "before": ["l", "l"],  // 按下 'l' 两次
+            "after": ["d", "d"]    // 映射到 'dd' 命令
+        },
+        {
+        "key": "ctrl+c",
+        "command": "editor.action.clipboardCopyAction",
+        "when": "editorTextFocus && vim.active && !inDebugRepl"
+        },
+        {
+        "key": "ctrl+v",
+        "command": "editor.action.clipboardPasteAction",
+        "when": "editorTextFocus && vim.active && !inDebugRepl"
+        },
+        {
+        "key": "ctrl+c",
+        "command": "extension.vim_ctrl+c",
+        "when": "!editorTextFocus"
+        },
+        {
+        "key": "ctrl+v",
+        "command": "extension.vim_ctrl+v",
+        "when": "!editorTextFocus"
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<S-x>", "<S-c>"],  //<shift-x>+<shift-c> 进入normal mode
+            "after": ["<Esc>"]
+        },
+        {
+            "before": ["<backspace>"], // <backspace> 表示整段删除, 原本c的作用
+            "after": ["c"]
+        },
+        {
+            "before": ["c"], // 禁用 c
+            "after": []
+        },
+        {
+            "before": ["<Space>"], // <Space 进入 insert mode
+            "after": ["I"]
+        }
+    ],
+    "vim.handleKeys": {
+
+
+            "<C-a>": false,
+            "<C-f>": false
+    },
+    "vim.commandLineModeKeyBindingsNonRecursive": [
+    ]
