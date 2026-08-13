@@ -1,0 +1,102 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+export PATH="$HOME/.local/kitty.app/bin:$PATH"
+
+set fish_greeting
+echo "🐟 Welcome back, QL! Hail to the Elden Lord! "
+
+function fish_prompt
+    echo -n (prompt_pwd) ' ▶ '
+end
+
+if test -n "$WSL_DISTRO_NAME"
+    echo "Running in WSL: $WSL_DISTRO_NAME"
+end
+
+
+
+
+
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+
+
+function accept_or_expand --description "Smart Tab: expand on first, accept on second"
+    set cursor_pos (commandline -C)
+    set current_buffer (commandline)
+    set before_cursor (string sub -l $cursor_pos -- $current_buffer)
+
+    if test "$before_cursor" = "$__last_tab_buffer"
+        # 第二次 Tab，直接接受补全建议
+        commandline -f accept-autosuggestion
+    else
+        # 第一次 Tab，显示候选项
+        set -g __last_tab_buffer $before_cursor
+        commandline -f complete
+    end
+end
+
+# 强制 Tab 只接受自动补全，不循环候选项
+bind \t accept_or_expand
+
+# control+c -> undo
+bind \cz undo
+
+# ===============================
+# Conda 初始化（fish 版本）
+# ===============================
+
+# ===============================
+# alias
+# ===============================
+alias ls='ls -G'
+
+# ===============================
+# Emacs 快捷函数
+# ===============================
+function e
+    command emacs $argv &
+end
+
+
+
+function emoji
+    if test $status -ne 0
+        printf "\U0001F972\n"
+    else
+        printf "\U0001F600\n"
+    end
+end
+
+function fish_prompt
+    set emoji_output (emoji)
+    set_color green
+    echo -n "$emoji_output" "[$USER] "
+    set_color blue
+    echo -n (prompt_pwd)
+    set_color normal
+    echo -n " \$ "
+end
+
+set -gx CXX /usr/bin/g++-13
+set -gx CC /usr/bin/gcc-13
+function g++ --wraps g++-13
+    command g++-13 $argv
+end
+
+function gcc --wraps gcc-13
+    command gcc-13 $argv
+end
+
+# =============================== boost library ===============================
+# Boost + GCC 正确 include path
+#set -Ux CPLUS_INCLUDE_PATH \
+#    /usr/lib/gcc/x86_64-linux-gnu/13/include \
+#    /usr/include/x86_64-linux-gnu \
+#    /usr/include
+
+#set -Ux LIBRARY_PATH /lib/x86_64-linux-gnu $LIBRARY_PATH
+#set -Ux LD_LIBRARY_PATH /lib/x86_64-linux-gnu $LD_LIBRARY_PATH
+# =============================== end boost library ===============================
