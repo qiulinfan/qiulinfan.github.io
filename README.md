@@ -7,7 +7,7 @@
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
 - [`skills/`](skills/)：默认的新个人 Skills、稳定工作流与有来源记录的 community Skills。
 - [`knowledge/`](knowledge/)：一个本地 kgdistiller 实例的个人配置、决策、私有图谱和已采用静态导出。
-- [`site/`](site/)：主页、博客、笔记、Skills 与知识图谱的同一个 Astro 前端。
+- [`site/`](site/)：主页、博客、笔记与 Skills 的 Astro 前端。
 
 ## Obsidian Vault
 
@@ -46,7 +46,7 @@ cd qiulinfan.github.io
 
 ## 网站与部署
 
-开发、检查、构建和 GitHub Pages 只验证并消费已提交静态导出，不 checkout、安装或
+开发、检查、构建和 GitHub Pages 只验证已提交静态导出，不 checkout、安装或
 运行 kgdistiller，也不需要 submodule：
 
 ```sh

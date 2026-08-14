@@ -53,10 +53,6 @@ export const navBarConfig: NavBarConfig = {
 			name: "Skills",
 			url: "/skills/",
 		},
-		{
-			name: "知识图谱",
-			url: "/knowledge/",
-		},
 		LinkPreset.About,
 		{
 			name: "GitHub",

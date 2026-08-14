@@ -67,6 +67,7 @@ editing kgdistiller never moves qlblog automatically.
 ## Deployment
 
 GitHub Pages verifies `knowledge/export/site`, builds notes and Astro, and
-deploys the result. It never checks out, installs, or executes kgdistiller. The
-knowledge endpoint returns the committed public `graph.json`, and the Typst
+deploys the result. It never checks out, installs, or executes kgdistiller.
+There is no public knowledge-graph page or JSON endpoint. The committed
+`graph.json` remains an internal verified adoption record, while the Typst
 toolchain consumes the committed public registry.

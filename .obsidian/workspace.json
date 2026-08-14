@@ -11,14 +11,10 @@
             "id": "ef0e3a1698add71a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "测试文档.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "测试文档"
+              "title": "新标签页"
             }
           }
         ]
@@ -201,17 +197,31 @@
   },
   "active": "ef0e3a1698add71a",
   "lastOpenFiles": [
+    "site/dist/pagefind/pagefind-modular-ui.css",
+    "site/dist/pagefind/wasm.unknown.pagefind",
+    "site/dist/pagefind/pagefind-ui.js",
+    "site/dist/pagefind/pagefind-entry.json",
+    "site/dist/pagefind/pagefind-ui.css",
+    "site/dist/pagefind/pagefind-highlight.js",
+    "site/dist/pagefind/pagefind-modular-ui.js",
+    "site/dist/pagefind/pagefind.js",
+    "site/dist/pagefind/index/zh-cn_f947129.pf_index",
+    "site/dist/pagefind/index/zh-cn_e520ba5.pf_index",
+    "site/dist/pagefind/index/zh-cn_d690d64.pf_index",
+    "site/dist/_astro/demo-banner.WD4SMgz_.png",
+    "site/dist/_astro/demo-avatar.CxcI0ivM.png",
+    "site/dist/favicon/favicon-light-32.png",
+    "site/dist/favicon/favicon-light-192.png",
+    "site/dist/favicon/favicon-light-180.png",
+    "site/dist/favicon/favicon-light-128.png",
+    "site/dist/favicon/favicon-dark-32.png",
+    "site/dist/favicon/favicon-dark-192.png",
+    "site/dist/favicon/favicon-dark-180.png",
+    "site/dist/favicon/favicon-dark-128.png",
     "测试文档.md",
     "未命名 1.canvas",
     "2026-08-14.md",
     "未命名.canvas",
-    "未命名.base",
-    "YOLO/data/chats",
-    "YOLO/data/module-settings/learning.json",
-    "YOLO/data/module-settings",
-    "YOLO/data",
-    "YOLO",
-    "Untitled.base",
     "测试文件.md",
     "posts.md",
     "blogs/README.md",

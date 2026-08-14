@@ -3,7 +3,6 @@ import Markdown from "@components/misc/Markdown.astro";
 import NoteNavigation from "@components/notes/NoteNavigation.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { loadMarkdownNotes, type MarkdownNote } from "@utils/note-sources";
-import { url } from "@utils/url-utils";
 
 export function getStaticPaths() {
 	return loadMarkdownNotes().map((note) => ({
@@ -25,7 +24,6 @@ const { note } = Astro.props as { note: MarkdownNote };
 				<h1>{note.title}</h1>
 			</div>
 			<nav aria-label="Note source actions">
-				<a href={url("/knowledge/")}>知识图谱</a>
 				<a href={`https://github.com/qiulinfan/qiulinfan.github.io/blob/main/${note.authority}`} target="_blank" rel="noreferrer">源文件 ↗</a>
 			</nav>
 		</header>

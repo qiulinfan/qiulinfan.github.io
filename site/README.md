@@ -1,6 +1,6 @@
 # Personal Site
 
-这里是基于 [Fuwari](https://github.com/saicaca/fuwari) 的 Astro 个人网站工程。主页、博客、笔记和知识图谱共用同一个布局系统与视觉契约。
+这里是基于 [Fuwari](https://github.com/saicaca/fuwari) 的 Astro 个人网站工程。主页、博客和笔记共用同一个布局系统与视觉契约；知识图谱浏览已迁回 kgdistiller 自带的本地前端。
 
 日常写作请使用仓库根目录的 `blogs/posts/`，并通过根目录 `Makefile` 运行命令。只有在修改主题、导航、部署方式或网站功能时才需要进入本目录。
 
@@ -34,8 +34,9 @@ QL_SITE_BASE=/qlblog/ corepack pnpm build
 
 `/notes/` 与主页的公开笔记入口也只读取这份 registry。每个 source 必须显式设置
 `publish` 和 `listed`：前者控制网页是否产出，后者控制是否出现在公开目录；
-`listed: true` 必须同时满足 `publish: true`。这些开关不影响本地知识图谱摄取，
-但公开知识图谱只投影 `publish: true` 的 sources。Typst 等由 Astro 之外编译的页面通过 source 的 `web_artifacts` 声明部署产物，CI
+`listed: true` 必须同时满足 `publish: true`。这些开关不影响本地知识图谱摄取。
+站点不再发布知识图谱页面或 JSON endpoint；adopted bundle 中的 `graph.json`
+只作为可验证的内部构建记录。Typst 等由 Astro 之外编译的页面通过 source 的 `web_artifacts` 声明部署产物，CI
 只会安装 `publish: true` 的产物。
 
 Fuwari 的 MIT 许可证保存在 `FUWARI-LICENSE`。

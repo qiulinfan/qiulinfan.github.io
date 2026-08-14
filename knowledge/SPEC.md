@@ -2,7 +2,8 @@
 
 qlblog is one personal kgdistiller instance. It owns personal inputs,
 reviewed identity decisions, durable private graph state, an adopted static
-site export, and the frontend that renders that export. It does not own the
+site export, and the note/Typst build that consumes selected export artifacts.
+It does not own or render a public graph frontend. It also does not own the
 kgdistiller engine, product Skills, agents, workflow implementation, or tests.
 
 ## Authorities
@@ -17,8 +18,9 @@ kgdistiller engine, product Skills, agents, workflow implementation, or tests.
   from note markers alone.
 - `notes/` contains the authored Markdown, Typst, and LaTeX source material.
 
-Runtime indexes, candidates, reviews, and temporary receipts belong under the
-ignored `knowledge/build/` directory. They are not authorities.
+Candidates, reviews, temporary receipts, and other disposable local build
+artifacts belong under the ignored `knowledge/build/` directory. There is no
+qlblog runtime/search index. These files are not authorities.
 
 ## Adopted site export
 
@@ -58,4 +60,5 @@ refresh the private graph or generate public artifacts.
 
 Private source hashes are checked during explicit authoring/adoption. Public
 site code must never expose the private source inventory or unlisted graph
-content.
+content. It publishes no graph page or graph JSON endpoint; the verified
+`graph.json` stays an internal adoption/build record.

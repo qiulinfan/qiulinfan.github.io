@@ -58,7 +58,7 @@ dist/
 .astro/
 site/public/_notes-assets/
 
-# Local knowledge search index and agent deltas
+# Disposable local knowledge builds, candidate reviews, deltas, and receipts
 knowledge/build/
 
 # Codex-managed state must remain outside the repository
