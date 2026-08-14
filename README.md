@@ -9,6 +9,27 @@
 - [`knowledge/`](knowledge/)：一个本地 kgdistiller 实例的个人配置、决策、私有图谱和已采用静态导出。
 - [`site/`](site/)：主页、博客、笔记、Skills 与知识图谱的同一个 Astro 前端。
 
+## Obsidian Vault
+
+仓库根目录本身就是可跨 macOS、Windows 与 Linux 打开的 Obsidian Vault。
+`.obsidian/` 中提交应用设置、快捷键、启用的插件列表和不含凭据的插件设置，
+因此 clone 后用 Obsidian 的 **Open folder as vault** 选择仓库根目录即可复用配置。
+首次打开时仍需由用户确认信任 Vault 并允许 community plugins；这是 Obsidian 的本机安全边界。
+
+Windows 上的基本流程：
+
+```powershell
+git clone https://github.com/qiulinfan/qiulinfan.github.io.git
+cd qiulinfan.github.io
+```
+
+随后在 Windows 版 Obsidian 中打开这个目录，并在官方 community plugin browser 安装、启用
+`Completr`、`Quick Latex` 和 `YOLO`。插件程序由官方市场按机器安装，不在本仓库重复发布；
+安装完成后，仓库中的 Completr、Quick Latex 设置和全局快捷键会直接生效。YOLO 的
+`data.json`、OAuth token 与 `YOLO/` 运行状态被 `.gitignore` 明确排除，所以每台机器必须
+单独填写 API key 或重新 OAuth 登录。普通 Vault 内容与可移植设置继续通过
+`git pull` / `git push` 同步，不要把任何机器上的 YOLO 凭据强制加入 Git。
+
 ## 独立 workflow 产品
 
 高频迭代的 workflow series 不在本仓库镜像：

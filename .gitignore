@@ -65,7 +65,13 @@ knowledge/build/
 /skills/.system/
 /skills/.skills_store_lock.json
 
-# Obsidian YOLO is machine-local and may contain API/OAuth credentials
+# Obsidian community plugins are installed from the official marketplace on each
+# machine. Keep reusable plugin data in Git without republishing bundled code.
+/.obsidian/plugins/*/main.js
+/.obsidian/plugins/*/manifest.json
+/.obsidian/plugins/*/styles.css
+
+# Obsidian YOLO contains credentials, OAuth tokens and generated runtimes
 /.obsidian/plugins/yolo/
 /YOLO/
 
