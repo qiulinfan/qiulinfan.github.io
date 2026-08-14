@@ -65,5 +65,9 @@ knowledge/build/
 /skills/.system/
 /skills/.skills_store_lock.json
 
+# Obsidian YOLO is machine-local and may contain API/OAuth credentials
+/.obsidian/plugins/yolo/
+/YOLO/
+
 # Machine-local external-agent selection and credential-file pointers
 /skills/.agent-runtime-profile.local.json
