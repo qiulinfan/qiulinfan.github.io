@@ -67,6 +67,8 @@ knowledge/build/
 
 # Obsidian community plugins are installed from the official marketplace on each
 # machine. Keep reusable plugin data in Git without republishing bundled code.
+/.obsidian/workspace.json
+/.obsidian/workspace-mobile.json
 /.obsidian/plugins/*/main.js
 /.obsidian/plugins/*/manifest.json
 /.obsidian/plugins/*/styles.css
