@@ -1,12 +1,13 @@
 # Mathematics notes
 
-数学笔记按课程独立维护。当前图谱中的 Probability 与 Measure Theory 使用
-Typst 权威源；零散的旧 Markdown 笔记可在整理后单独注册。历史 LaTeX-first
-课程、PDF、MkDocs 页面和课程归档均不再保留。
+数学笔记按课程独立维护，并可用只含组合逻辑的 Typst 入口汇成公开阅读合集。
+Probability 与 Measure Theory 继续独立发布；新迁入的六门课程保留各自的来源
+清单与权威目录，同时组合为三个公开页面。零散的旧 Markdown 笔记可在整理后
+单独注册。历史 PDF、MkDocs 页面和课程归档均不再保留。
 
-## Typst-first 课程
+## Typst-first 课程与公开合集
 
-Probability 与 Measure Theory 的课程根目录就是可直接编辑的 Typst 工程：
+每个课程根目录都是可直接编辑的 Typst 工程：
 
 ```text
 course/
@@ -21,8 +22,9 @@ course/
 ```
 
 模板、数学 alias、网页样式和导出程序只维护一份，位于
-[`toolchain/`](toolchain/README.md)。对这两门现役课程，Typst 是唯一权威源；需要时可以在本地
-生成 LaTeX/Markdown 快照，但这些可再生产物不进入 Git。
+[`toolchain/`](toolchain/README.md)。Typst 是现役课程的权威源；需要时可以在本地
+生成 LaTeX/Markdown 快照，但这些可再生产物不进入 Git。三个合集入口只
+`include` 原课程文件，不复制正文，也不取代各课程的 `SOURCE-MANIFEST.md`。
 
 ```sh
 make export
@@ -42,6 +44,9 @@ GitHub Actions 从 Typst 源构建 HTML，并只把构建产物发布到 GitHub 
 
 - Probability: <https://qiulinfan.github.io/notes/math/probability/>
 - Measure Theory: <https://qiulinfan.github.io/notes/math/measure-theory/>
+- Everything About Linear Algebra: <https://qiulinfan.github.io/notes/math/everything-about-linear-algebra/>
+- Single and Multivariate Mathematical Analysis: <https://qiulinfan.github.io/notes/math/single-and-multivariate-mathematical-analysis/>
+- (A Bit of) Abstract Algebra: <https://qiulinfan.github.io/notes/math/a-bit-of-abstract-algebra/>
 
 未来确有必要时仍可维护 `.tex` 权威源，但唯一预览路径是
 `LaTeX -> Typst -> HTML`。根目录的 `make notes-source-check` 会阻止任何 PDF

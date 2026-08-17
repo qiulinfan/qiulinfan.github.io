@@ -10,27 +10,36 @@ import {
 test("the source registry publishes and lists only the selected notes", () => {
 	const listed = loadListedNoteSources();
 	assert.deepEqual(listed.map((source) => source.id), [
+		"math:a-bit-of-abstract-algebra",
 		"cs:cpp-programming",
 		"cs:data-structures-algorithms",
+		"math:everything-about-linear-algebra",
 		"math:measure-theory",
 		"math:probability",
+		"math:single-and-multivariate-mathematical-analysis",
 	]);
 	assert.deepEqual(listed.map((source) => source.href), [
+		"/notes/math/a-bit-of-abstract-algebra/",
 		"/notes/cs/cpp-programming/",
 		"/notes/cs/data-structures-algorithms/",
+		"/notes/math/everything-about-linear-algebra/",
 		"/notes/math/measure-theory/",
 		"/notes/math/probability/",
+		"/notes/math/single-and-multivariate-mathematical-analysis/",
 	]);
 	assert.deepEqual(
 		listed.map((source) => source.navigationHref.replace(/[a-f0-9]{12}$/, "VERSION")),
 		[
+			"/notes/math/a-bit-of-abstract-algebra/?v=VERSION",
 			"/notes/cs/cpp-programming/",
 			"/notes/cs/data-structures-algorithms/",
+			"/notes/math/everything-about-linear-algebra/?v=VERSION",
 			"/notes/math/measure-theory/?v=VERSION",
 			"/notes/math/probability/?v=VERSION",
+			"/notes/math/single-and-multivariate-mathematical-analysis/?v=VERSION",
 		],
 	);
-	assert.deepEqual(listed.map((source) => source.standalone), [false, false, true, true]);
+	assert.deepEqual(listed.map((source) => source.standalone), [true, false, false, true, true, true, true]);
 	assert.equal(
 		loadMarkdownNotes().some((note) => note.sourceId === "cs:computer-organization"),
 		false,

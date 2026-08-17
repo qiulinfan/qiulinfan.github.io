@@ -1,8 +1,6 @@
 #import "../../toolchain/qlnotes.typ": *
 #import "../../toolchain/math-aliases.typ": *
 
-#set page(margin: (top: 22mm, bottom: 20mm, x: 22mm))
-
 // Source: Homework/395-hw-03.pdf pp.1-3 (personal work).
 = HW 3
 

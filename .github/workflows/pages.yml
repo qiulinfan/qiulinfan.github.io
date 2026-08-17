@@ -48,6 +48,9 @@ jobs:
         run: |
           make -C notes/math/prob web-check homeworks-web-check
           make -C notes/math/measure-theory web-check extras-web-check
+          make -C notes/math/everything-about-linear-algebra web-check
+          make -C notes/math/single-and-multivariate-mathematical-analysis web-check
+          make -C notes/math/a-bit-of-abstract-algebra web-check
 
       - name: Add math notes to Pages artifact
         run: node site/scripts/install-note-artifacts.mjs
