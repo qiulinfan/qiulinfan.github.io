@@ -89,10 +89,16 @@ addition to the active Skill's own instructions:
   The current promoted products are `gamemaker` and `kgdistiller`. Run each
   product's own linker so local edits are visible immediately; qlblog's linkers
   must neither manage nor remove links owned by those product checkouts. Each
-  product's Codex integration is complete; its Claude Code integration is
-  currently skills-only through the product's `scripts/link-claude-skills.*`,
-  and porting product agents or workflow manifests to Claude Code is a
-  per-product project that needs the user's explicit request.
+  product's Codex integration is complete. kgdistiller's Claude Code
+  integration is also complete: its transactional `kgdistiller claude link` /
+  `kgdistiller claude doctor` installer, driven by
+  `workflows/claude-manifest.json`, installs Skills, Claude Code agent
+  presets, and the canonical product root, and its
+  `scripts/link-claude-skills.*` remain a skills-only development shortcut.
+  gamemaker's Claude Code integration is currently skills-only through its
+  `scripts/link-claude-skills.*`, and porting its agents or workflow manifests
+  to Claude Code is a per-product project that needs the user's explicit
+  request.
 - After every reclassification or other parent-directory move under
   `<qlblog>/skills`, immediately rerun the platform-appropriate qlblog linker
   for every installed runtime so stale links are removed and each flat view is

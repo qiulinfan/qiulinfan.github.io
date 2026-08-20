@@ -25,6 +25,7 @@ __pycache__/
 core
 core.*
 *.core
+!install/agents/core.md
 
 # Native build outputs and debug metadata
 *.o
