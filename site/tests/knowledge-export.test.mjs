@@ -112,6 +112,27 @@ test("the private graph and current sources still match the adopted export input
 				readFileSync(resolveInside(privateGraphRoot, shardPath), "utf8"),
 			);
 	}
+
+	// kgdistiller 0.4 binds the entry Markdown inventory into the graph digest:
+	// entry_authorities first, then entry_sources, each contributing path+digest
+	// rather than file content. Both are repository-relative authorities.
+	for (const section of [
+		graphManifest.entry_authorities,
+		graphManifest.entry_sources,
+	]) {
+		const paths = section.entries.map((entry) => entry.path);
+		assert.deepEqual(paths, [...paths].sort());
+		for (const entry of section.entries) {
+			const path = resolveInside(repositoryRoot, entry.path);
+			assert.equal(existsSync(path), true, `missing entry authority: ${entry.path}`);
+			assert.equal(
+				sha256(canonicalTextBytes(path)),
+				entry.sha256,
+				`stale entry authority: ${entry.path}`,
+			);
+			digestInput += entry.path + entry.sha256;
+		}
+	}
 	assert.equal(sha256(digestInput), graphManifest.graph_sha256);
 
 	for (const [authority, expected] of Object.entries(graphManifest.source_hashes)) {
