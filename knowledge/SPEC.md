@@ -35,7 +35,7 @@ knowledge/export/site/
 └── verify_export.py
 ```
 
-The manifest uses `qlkg-static-export-v1` and binds the producer repository,
+The manifest uses `kgdistiller-static-export-v1` and binds the producer repository,
 version and full commit, source repository revision and digest, private graph
 digest, public graph digest, counts, and every artifact's byte length and
 SHA-256. `graph.json` is already hydrated and privacy-filtered to sources with

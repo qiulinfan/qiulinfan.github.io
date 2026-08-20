@@ -114,7 +114,7 @@ const codeLanguageAliases = new Map([
 ]);
 
 interface PublicGraph {
-	schema: "qlkg-site-graph-v1";
+	schema: "kgdistiller-site-graph-v1";
 	nodes: GraphNode[];
 	references: GraphReference[];
 }
@@ -126,7 +126,7 @@ function publicGraph(): PublicGraph {
 	const payload = JSON.parse(
 		readFileSync(publicGraphPath, "utf-8"),
 	) as PublicGraph;
-	if (payload.schema !== "qlkg-site-graph-v1") {
+	if (payload.schema !== "kgdistiller-site-graph-v1") {
 		throw new Error(`Unsupported public graph export: ${payload.schema}`);
 	}
 	cachedPublicGraph = payload;

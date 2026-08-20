@@ -48,7 +48,7 @@ function resolveInside(root, relativePath) {
 
 test("the committed site bundle records one selected kgdistiller product revision", () => {
 	const manifest = readJson(resolve(exportRoot, "manifest.json"));
-	assert.equal(manifest.schema, "qlkg-static-export-v1");
+	assert.equal(manifest.schema, "kgdistiller-static-export-v1");
 	assert.equal(manifest.producer.name, "kgdistiller");
 	assert.equal(
 		manifest.producer.repository,
@@ -124,7 +124,7 @@ test("the private graph and current sources still match the adopted export input
 test("the public graph is self-contained and contains only published sources", () => {
 	const manifest = readJson(resolve(exportRoot, "manifest.json"));
 	const graph = readJson(resolve(exportRoot, "graph.json"));
-	assert.equal(graph.schema, "qlkg-site-graph-v1");
+	assert.equal(graph.schema, "kgdistiller-site-graph-v1");
 	assert.equal(graph.namespace, "public");
 	assert.equal(graph.source_graph_sha256, manifest.graph.private_sha256);
 	assert.equal(graph.graph_sha256, manifest.graph.public_sha256);

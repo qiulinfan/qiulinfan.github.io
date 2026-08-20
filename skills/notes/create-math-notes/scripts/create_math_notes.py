@@ -118,7 +118,7 @@ def new_source(
 def load_registry(path: Path, source: dict[str, object]) -> tuple[dict[str, object], str]:
     text = path.read_text(encoding="utf-8")
     data = json.loads(text)
-    if data.get("schema") != "qlkg-sources-v2" or not isinstance(data.get("sources"), list):
+    if data.get("schema") != "kgdistiller-sources-v1" or not isinstance(data.get("sources"), list):
         raise CreateError(f"unsupported knowledge registry: {path}")
     for existing in data["sources"]:
         if any(existing.get(key) == source[key] for key in ("id", "course", "root")):
