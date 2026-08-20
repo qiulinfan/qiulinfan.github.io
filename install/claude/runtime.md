@@ -9,12 +9,14 @@
   `<qlblog>/install/claude/CLAUDE.md`.
 - Linker: `<qlblog>/skills/link-claude-skills.sh` on POSIX/WSL, or
   `<qlblog>/skills/link-claude-skills.ps1` on native Windows.
-- Scope filter: the Claude linker skips every Skill whose path under
-  `<qlblog>/skills` contains `codex` in any path segment, because those Skills
-  drive Codex-native subagents or Codex-selected external runtimes and cannot be
-  executed here. They stay linked into Codex only. Do not hand-link one, and do
-  not widen the filter; if a workflow must run under both runtimes, give it a
-  runtime-neutral implementation and a name without `codex`, and only when the
+- Scope filter: the Claude linker skips every Skill under
+  `<qlblog>/skills/codex-only`, because those Skills drive Codex-native
+  subagents or Codex-selected external runtimes and cannot be executed here.
+  They stay linked into Codex only. Skills under `<qlblog>/skills/claude-only`
+  are exclusive to this runtime and are linked here only. A Skill's name never
+  affects scope. Do not hand-link a skipped Skill, and do not widen the filter;
+  if a Skill must run under both runtimes, give it a runtime-neutral
+  implementation and move it out of the scope directory, and only when the
   user asks for that.
 - Claude Code has no generated `.system` Skill directory. Never create,
   simulate, or version-control one for this runtime.

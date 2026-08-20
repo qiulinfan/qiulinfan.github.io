@@ -10,8 +10,10 @@ instead of editing the generated file.
 
 Personal Skills reach Claude Code through `skills/link-claude-skills.sh` on
 POSIX/WSL or `skills\link-claude-skills.ps1` on native Windows, which links each
-eligible Skill under `skills/` into `~/.claude/skills`. The linker skips every
-Skill whose path contains `codex`; those run under Codex only.
+eligible Skill under `skills/` into `~/.claude/skills`. Runtime scope is
+declared by directory: the linker skips every Skill under `skills/codex-only/`
+(those run under Codex only), while `skills/claude-only/` links into Claude
+Code only.
 
 For AI-agent installation or updates, read `install/agent-stack.md` completely before
 proposing or running commands. Obtain separate explicit confirmation before installing

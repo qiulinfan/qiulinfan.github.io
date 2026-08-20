@@ -85,12 +85,12 @@ ensure_global_guidance_link() {
   printf 'ok: %s -> %s\n' "$claude_guidance_file" "$global_guidance_source"
 }
 
-# Claude Code cannot execute the Codex-native subagent and external-runtime
-# Skills, so every Skill whose path under skills/ contains "codex" stays linked
-# into Codex only.
+# Runtime scope is declared by directory, not by name: Skills under
+# skills/codex-only/ depend on Codex-only capabilities (Codex-native subagents
+# or Codex-selected external runtimes) and stay linked into Codex only.
 is_codex_only_relative_dir() {
-  case "$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')" in
-    *codex*) return 0 ;;
+  case "$1" in
+    codex-only/*) return 0 ;;
   esac
   return 1
 }

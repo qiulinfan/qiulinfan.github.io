@@ -166,13 +166,13 @@ $allManifests = @(
         Sort-Object FullName
 )
 
-# Claude Code cannot execute the Codex-native subagent and external-runtime
-# Skills, so every Skill whose path under skills\ contains "codex" stays linked
-# into Codex only.
+# Runtime scope is declared by directory, not by name: Skills under
+# skills\codex-only\ depend on Codex-only capabilities (Codex-native subagents
+# or Codex-selected external runtimes) and stay linked into Codex only.
 function Test-CodexOnlyManifest {
     param([Parameter(Mandatory = $true)][System.IO.FileInfo]$Manifest)
     $relativeDirectory = [System.IO.Path]::GetRelativePath($repositorySkills, $Manifest.Directory.FullName)
-    return $relativeDirectory.ToLowerInvariant().Contains('codex')
+    return ($relativeDirectory -split '[\\/]')[0] -eq 'codex-only'
 }
 
 $skillManifests = @($allManifests | Where-Object { -not (Test-CodexOnlyManifest -Manifest $_) })

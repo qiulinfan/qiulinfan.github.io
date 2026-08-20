@@ -103,9 +103,36 @@ skill_manifests() {
   )
 }
 
+# Runtime scope is declared by directory, not by name: Skills under
+# skills/claude-only/ depend on Claude Code-only capabilities and stay linked
+# into Claude Code only.
+is_claude_only_relative_manifest() {
+  case "${1#./}" in
+    claude-only/*) return 0 ;;
+  esac
+  return 1
+}
+
+eligible_manifests() {
+  skill_manifests | while IFS= read -r relative_manifest; do
+    if is_claude_only_relative_manifest "$relative_manifest"; then
+      continue
+    fi
+    printf '%s\n' "$relative_manifest"
+  done
+}
+
+skipped_manifests() {
+  skill_manifests | while IFS= read -r relative_manifest; do
+    if is_claude_only_relative_manifest "$relative_manifest"; then
+      printf '%s\n' "$relative_manifest"
+    fi
+  done
+}
+
 check_flat_skill_names() {
   duplicate_names=$(
-    skill_manifests |
+    eligible_manifests |
       awk -F/ '{ print $(NF - 1) }' |
       LC_ALL=C sort |
       uniq -d
@@ -116,7 +143,7 @@ check_flat_skill_names() {
   }
 
   duplicate_metadata_names=$(
-    skill_manifests | while IFS= read -r relative_manifest; do
+    eligible_manifests | while IFS= read -r relative_manifest; do
       sed -n 's/^name:[[:space:]]*//p' "$skills_repo_dir/${relative_manifest#./}" | head -n 1
     done | LC_ALL=C sort | uniq -d
   )
@@ -132,7 +159,9 @@ remove_stale_repository_skill_links() {
     link_target=$(readlink "$existing")
     case "$link_target" in
       "$skills_repo_dir"/*)
-        if [ ! -f "$link_target/SKILL.md" ]; then
+        relative_target=${link_target#"$skills_repo_dir"/}
+        if [ ! -f "$link_target/SKILL.md" ] ||
+          is_claude_only_relative_manifest "$relative_target/SKILL.md"; then
           unlink "$existing"
           printf 'removed stale repository Skill link: %s\n' "$existing"
         fi
@@ -142,8 +171,8 @@ remove_stale_repository_skill_links() {
 }
 
 link_visible_skills() {
-  linked_count=$(skill_manifests | wc -l | tr -d ' ')
-  skill_manifests | while IFS= read -r relative_manifest; do
+  linked_count=$(eligible_manifests | wc -l | tr -d ' ')
+  eligible_manifests | while IFS= read -r relative_manifest; do
     [ -n "$relative_manifest" ] || continue
     manifest="$skills_repo_dir/${relative_manifest#./}"
     source_dir=${manifest%/SKILL.md}
@@ -167,7 +196,15 @@ link_visible_skills() {
     fi
   done
 
-  printf 'ok: linked %s visible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
+  printf 'ok: linked %s eligible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
+}
+
+report_skipped_skills() {
+  skipped_list=$(skipped_manifests)
+  [ -n "$skipped_list" ] || return 0
+  skipped_count=$(printf '%s\n' "$skipped_list" | wc -l | tr -d ' ')
+  printf 'skipped %s Claude Code-only Skill(s), linked into Claude Code only:\n' "$skipped_count"
+  printf '%s\n' "$skipped_list" | sed -e 's|^\./||' -e 's|/SKILL.md$||' -e 's|^|  |'
 }
 
 reject_repository_system_skills
@@ -177,3 +214,4 @@ ensure_global_agents_link
 check_flat_skill_names
 remove_stale_repository_skill_links
 link_visible_skills
+report_skipped_skills

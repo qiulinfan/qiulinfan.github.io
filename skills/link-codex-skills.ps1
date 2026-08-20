@@ -154,7 +154,7 @@ if ($null -ne $existingSkillsRoot -and -not $existingSkillsRoot.PSIsContainer) {
 }
 [System.IO.Directory]::CreateDirectory($codexSkills) | Out-Null
 
-$skillManifests = @(
+$allManifests = @(
     Get-ChildItem -LiteralPath $repositorySkills -Filter 'SKILL.md' -File -Recurse |
         Where-Object {
             $relativeDirectory = [System.IO.Path]::GetRelativePath(
@@ -165,6 +165,18 @@ $skillManifests = @(
         } |
         Sort-Object FullName
 )
+
+# Runtime scope is declared by directory, not by name: Skills under
+# skills\claude-only\ depend on Claude Code-only capabilities and stay linked
+# into Claude Code only.
+function Test-ClaudeOnlyManifest {
+    param([Parameter(Mandatory = $true)][System.IO.FileInfo]$Manifest)
+    $relativeDirectory = [System.IO.Path]::GetRelativePath($repositorySkills, $Manifest.Directory.FullName)
+    return ($relativeDirectory -split '[\\/]')[0] -eq 'claude-only'
+}
+
+$skillManifests = @($allManifests | Where-Object { -not (Test-ClaudeOnlyManifest -Manifest $_) })
+$skippedManifests = @($allManifests | Where-Object { Test-ClaudeOnlyManifest -Manifest $_ })
 
 $duplicateDirectories = @($skillManifests | Group-Object { $_.Directory.Name } | Where-Object Count -gt 1)
 if ($duplicateDirectories.Count -gt 0) {
@@ -188,10 +200,14 @@ Get-ChildItem -Force -LiteralPath $codexSkills | ForEach-Object {
     $ownedTargets = @($targets | Where-Object {
         $_.StartsWith($repositoryPrefix, [System.StringComparison]::OrdinalIgnoreCase)
     })
-    if ($ownedTargets.Count -gt 0 -and
-        -not (Test-Path -LiteralPath (Join-Path $ownedTargets[0] 'SKILL.md') -PathType Leaf)) {
-        Remove-Item -LiteralPath $_.FullName
-        Write-Host "REMOVED stale qlblog Skill link: $($_.FullName)"
+    if ($ownedTargets.Count -gt 0) {
+        $ownedRelative = [System.IO.Path]::GetRelativePath($repositorySkills, $ownedTargets[0])
+        $ownedClaudeOnly = ($ownedRelative -split '[\\/]')[0] -eq 'claude-only'
+        if ($ownedClaudeOnly -or
+            -not (Test-Path -LiteralPath (Join-Path $ownedTargets[0] 'SKILL.md') -PathType Leaf)) {
+            Remove-Item -LiteralPath $_.FullName
+            Write-Host "REMOVED stale qlblog Skill link: $($_.FullName)"
+        }
     }
 }
 
@@ -226,4 +242,10 @@ New-DirectWorkingTreeLink `
     -OwnedSourceRoot $repositoryRoot `
     -AllowUnknownLinkReplacement
 
+if ($skippedManifests.Count -gt 0) {
+    Write-Host "SKIPPED $($skippedManifests.Count) Claude Code-only Skill(s), linked into Claude Code only:"
+    foreach ($manifest in $skippedManifests) {
+        Write-Host "  $([System.IO.Path]::GetRelativePath($repositorySkills, $manifest.Directory.FullName))"
+    }
+}
 Write-Host "QLBLOG_LINKS_OK ($($skillManifests.Count) Skills; Codex .system and external product links preserved)"

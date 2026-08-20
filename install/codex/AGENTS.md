@@ -67,17 +67,32 @@ addition to the active Skill's own instructions:
   script named in each runtime's `Runtime specifics` section; each linker
   exposes the eligible top-level and suite Skills as a flat set of individually
   linked entries in that runtime's user Skill directory.
-- Each runtime may exclude part of the collection through its own scope filter.
-  A Skill that a runtime's linker skips is intentionally unavailable there.
-  Never hand-link an excluded Skill, and never widen a scope filter to make one
-  reachable; rename or restructure the Skill instead, and only when the user
-  asks for that.
+- Author cross-runtime Skills runtime-neutral regardless of which runtime you
+  are running in: do not depend on `$CODEX_HOME`-specific paths, Codex-native
+  subagents, Codex-selected external runtimes, or Claude Code-only tools. When
+  a Skill must depend on one runtime's exclusive capability, create it inside
+  that runtime's scope directory instead.
+- Cross-runtime availability is the default. Runtime-exclusive Skills live in
+  the scope directories `<qlblog>/skills/codex-only` and
+  `<qlblog>/skills/claude-only`; each linker skips the other runtime's scope
+  directory and links everything else. Scope directories are the only scope
+  mechanism and are orthogonal to semantic suites — a Skill's name never
+  affects scope. Place a Skill in a scope directory only when it genuinely
+  depends on that runtime's exclusive capabilities or the user explicitly asks
+  for that placement. Never hand-link a skipped Skill into the other runtime,
+  and never widen a linker's filter; to make a runtime-exclusive Skill
+  cross-runtime, give it a runtime-neutral implementation and move it out of
+  the scope directory, and only when the user asks for that.
 - When the user explicitly promotes a Skill/workflow series into an independent
   product, that product repository becomes its only authority. Keep its Skills,
   workflows, agents, tests, and linker together there; remove qlblog mirrors.
   The current promoted products are `gamemaker` and `kgdistiller`. Run each
   product's own linker so local edits are visible immediately; qlblog's linkers
-  must neither manage nor remove links owned by those product checkouts.
+  must neither manage nor remove links owned by those product checkouts. Each
+  product's Codex integration is complete; its Claude Code integration is
+  currently skills-only through the product's `scripts/link-claude-skills.*`,
+  and porting product agents or workflow manifests to Claude Code is a
+  per-product project that needs the user's explicit request.
 - After every reclassification or other parent-directory move under
   `<qlblog>/skills`, immediately rerun the platform-appropriate qlblog linker
   for every installed runtime so stale links are removed and each flat view is
@@ -106,6 +121,24 @@ addition to the active Skill's own instructions:
   in `Runtime specifics`, run `git diff --check`, and inspect the qlblog Git
   diff before reporting success.
 
+## Personal agent and workflow maintenance
+
+- Agent definitions are runtime-specific: Codex agents are TOML files and
+  Claude Code agents are Markdown files with frontmatter, so one definition
+  cannot serve both runtimes. When creating or materially updating an agent or
+  a multi-Skill workflow for one runtime, assess whether the other installed
+  runtime needs a counterpart, and either provide it or record why it is
+  runtime-exclusive.
+- qlblog currently owns no agents. When the first qlblog-owned agent is
+  created, place it under `<qlblog>/agents/codex/` or
+  `<qlblog>/agents/claude/` and extend the qlblog linkers to install those
+  directories in the same change; do not create the directories or linker
+  support before that.
+- Keep multi-Skill workflow documentation explicit about runtime
+  applicability: a workflow that orchestrates runtime-exclusive Skills is
+  itself runtime-exclusive, and a cross-runtime workflow must not silently
+  depend on runtime-exclusive Skills or agents.
+
 ## Runtime specifics: Codex
 
 - Home directory: `$CODEX_HOME`, default `~/.codex`.
@@ -115,8 +148,12 @@ addition to the active Skill's own instructions:
   `<qlblog>/install/codex/AGENTS.md`.
 - Linker: `<qlblog>/skills/link-codex-skills.sh` on POSIX/WSL, or
   `<qlblog>/skills/link-codex-skills.ps1` on native Windows.
-- Scope filter: none. The Codex linker links every Skill under
-  `<qlblog>/skills`, including the Codex-native subagent and test Skills.
+- Scope filter: the Codex linker skips every Skill under
+  `<qlblog>/skills/claude-only`, because those Skills depend on Claude
+  Code-only capabilities. They stay linked into Claude Code only. Skills under
+  `<qlblog>/skills/codex-only` (the Codex-native subagent and test Skills) are
+  exclusive to this runtime and are linked here only. A Skill's name never
+  affects scope.
 - Treat `$CODEX_HOME/skills/.system` as Codex-generated state. Never copy, link,
   customize, publish, or version-control it in qlblog, and never create a
   `.system` directory inside `<qlblog>/skills`.

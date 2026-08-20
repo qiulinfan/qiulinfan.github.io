@@ -7,8 +7,12 @@
   `<qlblog>/install/codex/AGENTS.md`.
 - Linker: `<qlblog>/skills/link-codex-skills.sh` on POSIX/WSL, or
   `<qlblog>/skills/link-codex-skills.ps1` on native Windows.
-- Scope filter: none. The Codex linker links every Skill under
-  `<qlblog>/skills`, including the Codex-native subagent and test Skills.
+- Scope filter: the Codex linker skips every Skill under
+  `<qlblog>/skills/claude-only`, because those Skills depend on Claude
+  Code-only capabilities. They stay linked into Claude Code only. Skills under
+  `<qlblog>/skills/codex-only` (the Codex-native subagent and test Skills) are
+  exclusive to this runtime and are linked here only. A Skill's name never
+  affects scope.
 - Treat `$CODEX_HOME/skills/.system` as Codex-generated state. Never copy, link,
   customize, publish, or version-control it in qlblog, and never create a
   `.system` directory inside `<qlblog>/skills`.
