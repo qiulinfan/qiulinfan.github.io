@@ -65,7 +65,7 @@ $P$ 把 vectors 沿着 $S_1$ 投影到 $S_2$;
 $I - P$ 把 vectors 沿着 $S_2$ 投影到 $S_1$.
 ]
 
-#definition(title: [orthogonal projector])[
+#definition(title: [#kn[Orthogonal projector]])[
 我们称一个 projector 是 orthogonal projector，如果 $"ker"(P) perp "im"(P)$.
 ]
 

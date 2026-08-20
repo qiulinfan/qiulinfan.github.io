@@ -203,7 +203,7 @@ $kappa_"inverse"(b) = norm(A^dagger) norm(b) / norm(x) <= norm(A) norm(A^dagger)
 
 因而我们把 $norm(A) norm(A^(-1))$ 称为 *一个 matrix 的 condition number.*
 
-#definition(title: [condition number of a matrix])[
+#definition(title: [#kn[Condition number] of a matrix])[
 我们定义 condition number of a matrix:
 
 $kappa(A) := norm(A) norm(A^dagger)$

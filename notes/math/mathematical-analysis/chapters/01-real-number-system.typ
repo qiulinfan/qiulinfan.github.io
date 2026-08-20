@@ -85,7 +85,7 @@ $bR$ 的 subset 在 $bR$ 中都有 supremum。这是 $bR$ 的 ``geometric'' clos
 
 // Source: lectures/L02-Real-Num-System-II.pdf p.1.
 
-#theorem(title: [The unique complete ordered field])[
+#theorem(title: [The unique #kn[Complete ordered field]])[
   $bR$ is the unique complete ordered field.  Also,
   $bN$ is the intersection of all inductive subsets of $bR$.
 ]

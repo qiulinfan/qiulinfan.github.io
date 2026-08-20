@@ -128,7 +128,7 @@ does not supply a completed personal answer.
 == Jordan measure and Riemann integrability
 
 // Source: ibl.tex lines 240–336.
-#definition(title: [Jordan inner and outer measure])[
+#definition(title: [#kn[Jordan measure] inner and outer measure])[
   For bounded $E subset.eq bR^d$,
   $attach(limits(m), b: macron)_J(E)=sup_(A subset.eq E, A upright(" elementary"))m(A)$ and
   $accent(m, macron)_J(E)=inf_(B supset.eq E, B upright(" elementary"))m(B)$.

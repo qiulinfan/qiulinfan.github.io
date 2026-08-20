@@ -4,7 +4,7 @@
 // Complete manual Typst migration of IBL-source/ibl.tex, lines 337–490.
 = IBL: Lebesgue outer measure
 
-#definition(title: [Lebesgue outer measure])[
+#definition(title: [#kn[Lebesgue outer measure]])[
   For $E subset.eq bR^d$,
   $m^*(E)=inf_(E subset.eq union.big_(j=1)^infinity B_j) sum_(j=1)^infinity abs(B_j)$,
   where the cover is by boxes. This replaces the finite covers in Jordan outer

@@ -91,7 +91,7 @@
   若想让 convergence 更好地保留整体性质，就需要更强的定义。
 ]
 
-#definition(title: [Uniform convergence])[
+#definition(title: [#kn[Uniform convergence]])[
   令 $(f_n:A -> bR)_(n in bN)$ 是一个 seq. of functions。称 $(f_n)$ 在 $A$
   上 uniformly converges to $f:A -> bR$，if
   $

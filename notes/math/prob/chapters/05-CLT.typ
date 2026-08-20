@@ -9,7 +9,7 @@
 #definition(
   title: [#kn[convergence in distribution]],
 )[
-我们称一个 seq of random variables ${ X_n }$
+这里的分布采用 #ref[probability distribution] 的定义。我们称一个 seq of random variables ${ X_n }$
 converge in distribution to a random variable $X$,
 写作 $X_n arrow.r^d X$,
 如果 $X$ 的
@@ -71,6 +71,9 @@ $ bb(E)\[X^n\]= M_X^(\(n\))\(0\) $
 <characteristic-function>
 == Central Limit Theorem
 <central-limit-theorem-1>
+#remark[
+#ref[De Moivre–Laplace theorem] 给出了二项分布到正态分布的先导特例。
+]
 #theorem(
   title: [#kn[Lindeberg-Levy Central Limit Theorem]],
 )[

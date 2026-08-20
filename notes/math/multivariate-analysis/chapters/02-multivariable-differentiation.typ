@@ -37,7 +37,7 @@
   and a minimum.  The example $f(x)=x^2:bR->bR$ is not uniformly continuous.
 ]
 
-#definition(title: [Differentiability])[
+#definition(title: [#kn[Differentiability]])[
   Let $A subset.eq bR^n$ be open and $f:A->bR^m$.  The map $f$ is
   differentiable at $x_0 in A$ if there is a linear map
   $A_0:bR^n->bR^m$ such that

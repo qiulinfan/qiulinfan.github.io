@@ -186,7 +186,7 @@ Recall we have proved
 #theorem(
   title: [#kn[Generalized DCT]],
 )[
-Let $\(X\,cal(A)\,mu\)$ be a measure space, and $f_n\,g_n\,f\,g in L^1$, $n in bb(N)$. Suppose that
+Let $\(X\,cal(A)\,mu\)$ be a measure space, and $f_n\,g_n\,f\,g in L^1$, $n in bb(N)$. This is the varying-dominator extension of #ref[dominated-convergence-theorem]. \ Suppose that
 
 - $lim_(n arrow.r oo) f_n\(x\)= f\(x\)$ and $lim_(n arrow.r oo) g_n\(x\)= g\(x\)$ for a.e. $x$\;
 

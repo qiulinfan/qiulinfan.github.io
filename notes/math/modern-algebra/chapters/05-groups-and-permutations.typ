@@ -67,7 +67,7 @@ permutation on $n$ points to one fixing $n$.
 
 == Permutation matrices
 
-*Source transcription — WS18, pp. 1--2, G.* A permutation matrix has one $1$
+*Source transcription — WS18, pp. 1--2, G.* A #kn[Permutation matrix] has one $1$
 in each row and each column and zeros elsewhere. The source describes its
 columns: for
 

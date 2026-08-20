@@ -4,7 +4,7 @@
 // Visual transcription: L15-Numerical-Series.pdf pp.1-4.
 = Numerical series
 
-#definition(title: [Series])[
+#definition(title: [#kn[Series]])[
   若 $(a_k)_(k in bN)$ 是 $bR$ 中的一个 sequence，记
   $
     s_n=sum_(k=1)^n a_k

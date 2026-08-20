@@ -4,7 +4,7 @@
 
 = Gram--Schmidt and QR factorization
 
-== WS 17, p. 1: proof of QR factorization
+== WS 17, p. 1: proof of QR factorization #kn[QR factorization]
 
 Let $M=mat( m_1,dots, m_d)$ be $n times d$. Gram--Schmidt produces
 $Q=mat( q_1,dots, q_d)$:

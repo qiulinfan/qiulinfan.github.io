@@ -238,7 +238,7 @@
   $
 ]
 
-#theorem(title: [Change-of-variables theorem])[
+#theorem(title: [#kn[Change-of-variables theorem]])[
   Let $A,B subset bR^n$ be open, let $g:A -> B$ be a $C^1$
   diffeomorphism, and let $f:B -> bR$ be continuous.  Then
   $

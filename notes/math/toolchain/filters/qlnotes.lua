@@ -229,7 +229,15 @@ local function markdown_inlines(text)
   if #document.blocks == 0 then
     return pandoc.List()
   end
-  return document.blocks[1].content or pandoc.List()
+  local first = document.blocks[1]
+  if first.t == "Para" or first.t == "Plain" or first.t == "Header" then
+    return first.content
+  end
+  local rendered = pandoc.utils.stringify(document)
+  if rendered == "" then
+    return pandoc.List()
+  end
+  return pandoc.List({ pandoc.Str(rendered) })
 end
 
 local function markdown_wikilink(inlines, authoritative)

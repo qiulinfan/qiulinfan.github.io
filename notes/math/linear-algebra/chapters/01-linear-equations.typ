@@ -18,7 +18,7 @@ $
 place numbers in the columns of the augmented matrix
 $mat(3,21,-3,0; -6,-2,-1,62; 2,-3,8,32)$.
 
-#definition(title: [Vectors and vector spaces])[
+#definition(title: [#kn[Vector space]])[
 A matrix with only one column is called a column vector, or simply a vector.
 The entries of a vector are called its components. The set of all column
 vectors with $n$ components is denoted by $bR^n$. We will refer to $bR^n$ as
@@ -109,7 +109,7 @@ The reduced row-echelon form (行阶梯矩阵 or Rref) satisfies:
 3. 若一 row 中有 pivot，则它后每个 row 必须有 pivot 在它右边（and rows of
    $0$s must be at the bottom of matrix）.
 
-#definition(title: [Elementary row operations])[
+#definition(title: [#kn[Elementary row operation]])[
 之前我们对 linear system 中 equations 的三种 operations 用在 matrix 上，这三种
 operation 统称 elementary row operations:
 

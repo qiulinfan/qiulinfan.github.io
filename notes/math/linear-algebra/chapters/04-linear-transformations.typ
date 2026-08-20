@@ -20,7 +20,7 @@ $(y_1,y_2)$ 坐标后仍是 $(0,1)$；但 $(y_1,y_2)$ 下的 $(3,5)$ 同样在
 $(x_1,x_2)$ 下为 $(3,5)$，而 $(y_1,y_2)$ 下的 $(5,42)$ 在 $(x_1,x_2)$ 下为
 $(131,220)$。The source sketch marks these corresponding points and axes.
 
-#definition(title: [Linear transformations])[
+#definition(title: [#kn[Linear transformation]])[
 A function $T:bR^m arrow.r bR^n$ is called a linear transformation if for
 every $ x in bR^m$ there is an $n times m$ matrix $A$ such that
 $T( x)=A  x$.

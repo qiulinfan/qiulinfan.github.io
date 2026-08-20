@@ -2,7 +2,7 @@
 
 个人知识、内容、稳定 Skills 与网站仓库：
 
-- [`install/`](install/)：可移植的个人工具配置、全局 agent guidance 与安全安装说明。
+- [`install/`](install/)：可移植的个人工具配置、Codex 与 Claude Code 的全局 agent guidance 与安全安装说明。
 - [`notes/`](notes/)：Markdown、Typst、LaTeX 权威源与共享渲染工具链；不提交 PDF、课程归档或构建物。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
 - [`skills/`](skills/)：默认的新个人 Skills、稳定工作流与有来源记录的 community Skills。
@@ -50,6 +50,7 @@ cd qiulinfan.github.io
 运行 kgdistiller，也不需要 submodule：
 
 ```sh
+make agents-check
 make blog-install
 make knowledge-check
 make blog-check
@@ -89,8 +90,24 @@ manifest 会锁定这个 source commit 与实际执行导出的 clean kgdistille
 
 ## Skill 默认规则
 
-普通新个人 Skill 默认创建在本仓库 `skills/` 顶层并运行
-`skills/link-codex-skills.sh`（macOS/Linux/WSL）或
-`skills/link-codex-skills.ps1`（原生 Windows）。只有用户明确指定一组
-Skills/Workflows 为独立产品时，才把其源码、agents、workflows、测试与 linker 一起
-迁入独立仓库，并从 qlblog 删除重复 authority。
+普通新个人 Skill 默认创建在本仓库 `skills/` 顶层，然后为本机装了的每个运行时运行
+对应 linker。只有用户明确指定一组 Skills/Workflows 为独立产品时，才把其源码、
+agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog 删除重复 authority。
+
+| 运行时 | 全局 guidance | Skill 目录 | macOS/Linux/WSL | 原生 Windows |
+| --- | --- | --- | --- | --- |
+| Codex | `$CODEX_HOME/AGENTS.md` | `$CODEX_HOME/skills` | `skills/link-codex-skills.sh` | `skills\link-codex-skills.ps1` |
+| Claude Code | `~/.claude/CLAUDE.md` | `~/.claude/skills` | `skills/link-claude-skills.sh` | `skills\link-claude-skills.ps1` |
+
+两个 linker 都只逐 Skill 链接到目标运行时自己拥有的真实目录，互不干扰，也不动
+`gamemaker`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
+`CLAUDE_CONFIG_DIR` 覆盖，Codex 的用 `CODEX_HOME`。
+
+Claude Code 侧有一条额外的作用域规则：路径中带 `codex` 的 Skill（`codex-subagent-workflow`、
+`codex-subagent-testskill`、`codex-external-agent-testskill`）驱动的是 Codex 原生
+subagent 与 Codex 选择的外部运行时，在 Claude Code 里跑不了，所以只链接进 Codex。
+不要手工补链，也不要放宽过滤器。
+
+两个运行时的全局 guidance 共享同一份权威 `install/agents/core.md`，各自只维护一份
+运行时增量；改完任意一份都要运行 `make agents-guidance` 重新生成
+`install/codex/AGENTS.md` 与 `install/claude/CLAUDE.md`，`make agents-check` 校验是否已同步。

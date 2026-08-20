@@ -108,7 +108,7 @@ In md.
 *Notice that this matrix is rank 1.*
 ]
 
-#definition(title: [unitrary matrix])[
+#definition(title: [#kn[Unitary matrix]])[
 一个 square matrix $Q in bC^(m times m)$ 被称为 unitrary 的，if $Q^* = Q^(-1)$。
 ]
 

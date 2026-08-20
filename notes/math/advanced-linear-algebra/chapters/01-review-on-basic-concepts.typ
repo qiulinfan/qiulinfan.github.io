@@ -7,7 +7,7 @@
 
 == Subspace and direct sum
 
-#definition(title: [subsapce], id: "subspace")[
+#definition(title: [#kn[Subspace]], id: "subspace")[
 vector space 的 subset $U subset V$ 为一个 subspace，if 它满足条件：
 
 + 包含 0
@@ -29,7 +29,7 @@ $
 
 显然可以随便和。同一个 $U$ 自己和自己的和就是自己。所以 subspace sum 这个概念比较大，没什么用。我们需要用 direct sum 来作为一个小一点但是更有用的概念，表达出一种垂直的 subspace 的直观.
 
-#definition(title: [direct sum], id: "direct sum")[
+#definition(title: [#kn[Direct sum]], id: "direct sum")[
 如果 $U_1 + U_2 + dots + U_m$ 中的任意元素 $v$，都存在唯一的 $v_k in U_k$ for each $k$ 使得 $v = sum_k v_k$，就称 $U_1 + dots + U_m = ⊕_(i = 1)^m U_i$ 为一个 direct sum.
 ]
 

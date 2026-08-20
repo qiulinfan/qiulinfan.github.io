@@ -74,7 +74,7 @@ $(a+b)^2<=a^2+2abs(a)abs(b)+b^2=(abs(a)+abs(b))^2$.
 The extended form is
 $abs(sum_(i=1)^n a_i)<=sum_(i=1)^n abs(a_i)$.
 
-#definition(title: [Metric and metric space])[
+#definition(title: [Metric and #kn[Metric space]])[
   A metric on $X$ is a map $d:X times X -> bR$ such that, for all
   $a,b,c in X$:
 

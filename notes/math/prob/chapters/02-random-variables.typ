@@ -11,7 +11,7 @@
 #definition(
   title: [#kn[random variable]],
 )[
-对于 probability space $\(Omega\,cal(F)\,bb(P)\)$, 一个 random variable 是一个 #strong[Borel measurable function] $X : Omega arrow.r bb(R)$.
+对于 #ref[probability space] $\(Omega\,cal(F)\,bb(P)\)$, 一个 random variable 是一个 #strong[#ref[$\(cal(M)\,cal(N)\)$-measurable function]（Borel measurable function）] $X : Omega arrow.r bb(R)$.
 
 ]
 #remark[

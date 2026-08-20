@@ -113,7 +113,7 @@ Proof 见 Folland 5.4.
 #theorem(
   title: [#kn[对于互为 conjugate exponent 的 $p\,q$, $L^p$ 是 $L^q$ 的 dual space]],
 )[
-For $1 < p\,q < oo$ with $1 / p + 1 / q = 1$, we have: $ \(L^p\)^(*)= L^q $
+#ref[l-p-spaces] 给出这里的 $L^p$ 与 $L^q$ 空间。 \ For $1 < p\,q < oo$ with $1 / p + 1 / q = 1$, we have: $ \(L^p\)^(*)= L^q $
 In particular the Hilbert space: $ \(L^2\)^(*)= L^2 $
 
 ]

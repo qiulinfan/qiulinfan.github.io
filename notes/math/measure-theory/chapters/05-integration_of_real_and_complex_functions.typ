@@ -171,7 +171,7 @@ Claim: $f in L^1\(mu\)$ 并且 $ integral f = lim_n integral f_n $
 
 ]
 #proof[
-首先由于 $f_n arrow.r f$ a.e., by lemma 可以得到 $f$ 是 measurable 的. \ 并且 $ \|f_n\|lt.eq\|g\|upright(" a.e. ") arrow.r.double.long\|f\|lt.eq\|g\|upright(" a.e.") $ 于是 $ integral\|f\|lt.eq integral\|g\|< oo $ 即 $f in L^1$. (从而 $\|f\|$ 至多在一个 measure zero set 上无穷). \ 并且 $g\(x\)plus.minus f_n\(x\)gt.eq 0$ a.e. 这一点很重要, 因为从而我们可以对 $g + f_n$, $g - f_n$ 使用 Fatou's Lemma:
+首先由于 $f_n arrow.r f$ a.e., by lemma 可以得到 $f$ 是 measurable 的. \ 并且 $ \|f_n\|lt.eq\|g\|upright(" a.e. ") arrow.r.double.long\|f\|lt.eq\|g\|upright(" a.e.") $ 于是 $ integral\|f\|lt.eq integral\|g\|< oo $ 即 $f in L^1$. (从而 $\|f\|$ 至多在一个 measure zero set 上无穷). \ 并且 $g\(x\)plus.minus f_n\(x\)gt.eq 0$ a.e. 这一点很重要, 因为从而我们可以对 $g + f_n$, $g - f_n$ 使用 #ref[fatou-lemma]:
 $ integral g + integral f = integral\(g + f\) & = integral\(g + lim_(n arrow.r oo) f_n\)\
  & = integral lim_(n arrow.r oo)\(g + f_n\)\
  & lt.eq^(upright("by Fatou")) liminf_n integral\(g + f_n\)\

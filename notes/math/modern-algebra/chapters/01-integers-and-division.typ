@@ -27,7 +27,7 @@ It also records the divisibility calculation: if $a,b,c in bZ$, $a | b$, and
 $b | c$, write $b=a s$ and $c=b t$. Then
 $c=(s t)a$, with $s,t in bZ$, hence $s t in bZ$ and $a | c$.
 
-#theorem(title: [Division algorithm])[
+#theorem(title: [#kn[Division algorithm]])[
 For $n,d in bZ$ with $d>0$, there are unique $q,r in bZ$ such that
 
 $ n = q d + r quad text(and) quad 0 <= r < d. $

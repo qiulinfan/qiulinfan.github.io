@@ -43,7 +43,7 @@ $a b^(-1) in K$, then $f(a b^(-1))=e_H$ and, using
 $f(a)=f(b)$ (the page annotates the equivalence with the reverse-multiplying
 calculation).
 
-#theorem(title: [First isomorphism theorem])[
+#theorem(title: [#kn[First isomorphism theorem]])[
 If $f:G->H$ is a surjective group homomorphism, then
 
 $ G/ker f ~= H. $

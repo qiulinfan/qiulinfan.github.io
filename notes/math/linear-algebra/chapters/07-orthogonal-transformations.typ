@@ -8,7 +8,7 @@
 
 == WS 18, p. 1: definition and matrix criteria
 
-#definition(title: [Orthogonal transformation])[
+#definition(title: [#kn[Orthogonal transformation]])[
 $T:bR^n arrow.r bR^n$ is orthogonal (正交变换) if it preserves dot products:
 $forall  x, y in bR^n$, $ x dot  y=T( x) dot T( y)$.
 ]

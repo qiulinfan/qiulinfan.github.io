@@ -47,7 +47,7 @@ $mat(0,dots,0,|,c)$ with $c != 0$).
 If consistent, either infinitely many sols (at least one free variable) or
 exactly one sol (if all variables are leading).
 
-#definition(title: [The rank of a matrix])[
+#definition(title: [#kn[Matrix rank]])[
 The number of leading $1$'s in $"rref"(A)$ is denoted $"rank"(A)$. For
 $A=mat(1,2,3;4,5,6;7,8,9)$,
 $"rref"(A)=mat(1,0,-1;0,1,2;0,0,0)$, so $"rank"(A)=2$.
@@ -112,7 +112,7 @@ Let the columns of $A$ be $ v_1,dots, v_m$. Then
 $A  x=x_1  v_1+x_2  v_2+dots+x_m  v_m$.
 ]
 
-#definition(title: [Linear combination])[
+#definition(title: [#kn[Linear combination]])[
 A vector $ b in bR^n$ is called a linear combination of vectors
 $ v_1,dots, v_m in bR^n$ if there are scalars $x_1,dots,x_m$ such
 that $ b=x_1  v_1+dots+x_m  v_m$.

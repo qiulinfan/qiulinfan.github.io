@@ -79,6 +79,8 @@ $ gcd(a,b)=product_(i=1)^n p_i^(min(a_i,b_i)). $
 *Source transcription — WS4, p. 1.* ``Congruence 的概念是对 equality
 relation 的 generalization.'' For $a,b in bZ$,
 
+The #kn[Congruence modulo N] relation is defined by
+
 $ a=b text("if and only if") a-b=0, quad
   a equiv b (mod N) text("if and only if") a-b=N k text("for some") k in bZ, $
 

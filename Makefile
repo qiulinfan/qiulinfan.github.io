@@ -1,4 +1,10 @@
-.PHONY: blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check knowledge-export-check knowledge-authoring-check knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search knowledge-context knowledge-agent-status knowledge-candidate knowledge-align knowledge-compare knowledge-propose knowledge-ingest-plan knowledge-ingest-apply knowledge-serve
+.PHONY: agents-guidance agents-check blog-install blog-new blog-dev blog-build blog-preview blog-check notes-source-check knowledge-export-check knowledge-authoring-check knowledge-build knowledge-subject knowledge-course knowledge-file knowledge-check knowledge-search knowledge-context knowledge-agent-status knowledge-candidate knowledge-align knowledge-compare knowledge-propose knowledge-ingest-plan knowledge-ingest-apply knowledge-serve
+
+agents-guidance:
+	@install/agents/build-guidance.sh
+
+agents-check:
+	@install/agents/build-guidance.sh --check
 
 KGDISTILLER ?= kgdistiller
 KGDISTILLER_INSTANCE := $(KGDISTILLER) --repo-root .

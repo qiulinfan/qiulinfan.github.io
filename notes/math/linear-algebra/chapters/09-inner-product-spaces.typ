@@ -8,7 +8,7 @@
 
 == WS 20, p. 1: examples and generalized Gram--Schmidt
 
-For the inner product space $V$ of functions on $[-pi,pi]$,
+For the #kn[Inner product space] $V$ of functions on $[-pi,pi]$,
 $<f,g>=1/pi integral_(-pi)^pi f(t)g(t) dif t$:
 
 1. $<f,g>=<g,f>$.

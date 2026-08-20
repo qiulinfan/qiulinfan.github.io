@@ -94,7 +94,7 @@
   ).
 ]
 
-#definition(title: [Riemann integrability])[
+#definition(title: [#kn[Riemann integrability]])[
   称 $f$ 在 $[a,b]$ 上 Riemann Integrable，若存在 $L in bR$，使对任意
   $epsilon>0$，存在 $delta>0$ 满足
   $

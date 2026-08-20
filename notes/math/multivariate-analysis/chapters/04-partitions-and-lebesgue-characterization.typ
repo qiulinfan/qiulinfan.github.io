@@ -49,7 +49,7 @@
   $-f$ for upper sums, and use a common refinement.
 ]
 
-#definition(title: [Lower/upper integrals and Riemann integrability])[
+#definition(title: [Lower/upper integrals and #kn[Riemann integrability in R^n]])[
   Define
   $integral_B f dif x = sup_(P) L(f,P)$ and
   $overline(integral)_B f dif x = inf_(P) U(f,P)$.

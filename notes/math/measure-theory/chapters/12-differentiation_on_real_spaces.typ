@@ -29,7 +29,7 @@ regular 和 inner regularity $arrow.r.double.long$ outer regularity: 这个简�
 #example(
 )[
 任何 LS measure on $bb(R)$ (restrict to Borel sets) 都是 regular measure.
-Lebesgue measure $m$ on $bb(R)^n$ (restrict to Borel sets) 是 regular measure.
+#ref[lebesgue-measure] $m$ on $bb(R)^n$ (restrict to Borel sets) 是 regular measure.
 
 ]
 当然, 这个概念也可以推广至 signed/coplex measure 上.

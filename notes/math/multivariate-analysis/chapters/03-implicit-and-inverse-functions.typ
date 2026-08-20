@@ -60,7 +60,7 @@
   $alpha=1/(2norm(E^(-1)))$.
 ]
 
-#theorem(title: [Inverse function theorem])[
+#theorem(title: [#kn[Inverse function theorem]])[
   Let $f:A subset.eq bR^n->bR^n$ be $C^r$ ($r>=1$), with $A$ open and
   $x_0 in A$.  If $D f(x_0)$ is nonsingular, then some open neighborhoods
   $U$ of $x_0$ and $V$ of $f(x_0)$ satisfy: $f:U->V$ is bijective, its inverse

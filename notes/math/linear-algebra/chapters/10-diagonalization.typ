@@ -4,7 +4,7 @@
 
 #let bR = math.bb("R")
 
-= Diagonalization and eigenspaces
+= #kn[Diagonalization] and eigenspaces
 
 == WS 23, p. 1: four theorems
 
@@ -30,7 +30,7 @@ $A in bR^(n times n)$ is diagonalizable iff $A$ is similar to some diagonal
 $D$.
 ]
 
-#theorem(title: [Eigenspace])[
+#theorem(title: [#kn[Eigenspace]])[
 $E_lambda="ker"(T-lambda I_n)$, so
 $"dim"(E_lambda)="dim"("ker"(T-lambda I_n))
 =n-"rank"(T-lambda I_n)$.

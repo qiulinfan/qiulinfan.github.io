@@ -32,7 +32,7 @@ $F_k=E_k union.big_(i=1)^(k-1)E_i$ and applying countable additivity.
   from an elementary set by a set of arbitrarily small outer measure.
 ]
 
-#theorem(title: [Carathéodory's criterion — elementary test sets])[
+#theorem(title: [#kn[Caratheodory's criterion] — elementary test sets])[
   A set $E subset.eq bR^n$ is measurable if and only if for every elementary
   set $A$,
   $m(A)=m^*(A inter E)+m^*(A\E)$.

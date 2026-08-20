@@ -79,3 +79,4 @@ knowledge/build/
 
 # Machine-local external-agent selection and credential-file pointers
 /skills/.agent-runtime-profile.local.json
+.obsidian/graph.json

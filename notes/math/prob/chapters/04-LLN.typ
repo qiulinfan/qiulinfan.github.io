@@ -15,7 +15,7 @@
 #theorem(
   title: [#kn[Markov's inequality]],
 )[
-对于一个 non-negative random variable $X$ (即 $X gt.eq 0$ a.s.),
+下文的 expectation 与 variance 采用 #ref[expectation and variance of random variable] 的定义。对于一个 non-negative random variable $X$ (即 $X gt.eq 0$ a.s.),
 任取 $t > 0$, 都有
 $ bb(P)\(X gt.eq t\)lt.eq frac(bb(E)\[X\], t) $
 

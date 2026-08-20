@@ -47,7 +47,7 @@ We know: 所有的 $m times n$ matrix, every entry in $bF$ 也是一个 vector s
 matrix 代表一个 linear transformation，所以 norm 的意义实际上是它 stretch vector 的程度的一种评估。
 
 #example[
-#definition(title: [operator norm])[
+#definition(title: [#kn[Operator norm]])[
 $norm(A)_(m, n) = sup_(z in bC^m, norm(z)_n = 1) norm(A x)_m$
 
 induced by vector norm. 表示它* stretch vector 的最大程度*。其中, source 和 image vector 分别用 norm n,m 来判定。

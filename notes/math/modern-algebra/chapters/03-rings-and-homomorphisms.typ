@@ -65,7 +65,7 @@ status:
 7. $phi:M_2(bZ)->bR$, $A mapsto det(A)$, is not a hom, as a displayed pair
    of matrices shows $det(A+B)!=det(A)+det(B)$.
 
-#definition(title: [Ring homomorphism])[
+#definition(title: [#kn[Ring homomorphism]])[
 A map $phi:R->S$ is a ring homomorphism when
 $phi(x+y)=phi(x)+phi(y)$ and $phi(x y)=phi(x)phi(y)$.
 ]

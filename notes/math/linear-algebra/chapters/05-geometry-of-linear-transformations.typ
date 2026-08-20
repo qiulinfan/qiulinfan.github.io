@@ -30,7 +30,7 @@ $mat(k,0;0,k)$ defines a scaling by $k$, since
 $mat(k,0;0,k)mat(x_1;x_2)=mat(k x_1;k x_2)=k mat(x_1;x_2)=k  x$.
 ]
 
-#definition(title: [Orthogonal projection])[
+#definition(title: [#kn[Orthogonal projection]])[
 Consider a line $L$ in coordinate plane, 经过 $(0,0)$. 任何
 $ x in bR^2$ 都可以写成 $ x= x^parallel+ x^perp$, where
 $ x^parallel || L$ and $ x^perp perp L$. The transformation

@@ -245,7 +245,7 @@ Further source examples retain their proof choices:
 
 // Source: lectures/L11(2)-Uniform-Continuity.pdf p.1.
 
-#definition(title: [Uniform continuity])[
+#definition(title: [#kn[Uniform continuity]])[
   Let $B subset.eq A subset.eq bR$ and $f:A->bR$.  Then $f$ is uniformly
   continuous on $B$ if, for every $epsilon>0$, there is $delta>0$ such that
   for all $x,y in B$,

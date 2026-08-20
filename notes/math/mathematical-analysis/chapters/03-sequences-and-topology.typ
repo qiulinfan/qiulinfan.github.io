@@ -203,7 +203,7 @@ for positive $a_n$, if $lim(a_(n+1)/a_n)=l<1$, then $a_n->0$.
 
 // Source: lectures/L07-Cauchy-seq.pdf pp.1–3.
 
-#definition(title: [Cauchy sequence])[
+#definition(title: [#kn[Cauchy sequence]])[
   A real sequence $(a_n)$ is Cauchy if for every $epsilon>0$ there is
   $N in bN$ such that $abs(a_m-a_n)<epsilon$ whenever $m,n>=N$.
 ]

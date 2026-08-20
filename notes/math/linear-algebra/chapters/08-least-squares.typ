@@ -8,7 +8,7 @@
 
 == WS 19, p. 1: projection and image/kernel theorem
 
-#theorem(title: [Projection and least squares])[
+#theorem(title: [Projection and #kn[Least squares method]])[
 对于任意 subspace $V subset.eq bR^n$, $forall  x in bR^n$,
 $"proj"_V( x)$ is $V$ 中离 $ x$ 最近的 vector, i.e.
 $ v in V$, $norm( x-"proj"_V( x))<=norm( x- v)$.

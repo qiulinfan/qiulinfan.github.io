@@ -3,19 +3,29 @@
 本目录是 qlblog 自有个人与社区 Skills 的权威副本。普通个人 Skill 默认直接
 创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前保留的
 本地套件是 `notes/`。从开源网站下载的外部 Skills 统一放在 `community/`，
-供 Codex 使用但不在个人主页发布。
+供本机 agent 运行时使用但不在个人主页发布。
+
+本目录同时服务两个运行时：Codex 与 Claude Code。两者各有一个 linker，把同一份工作树
+逐 Skill 链接到各自拥有的真实 Skill 目录，因此本地修改对两边都实时生效。Claude Code
+额外应用一条作用域规则：路径中带 `codex` 的 Skill 只链接进 Codex，见下文“运行时与作用域”。
 
 当用户明确把一组高频迭代 Skills/Workflows 提升为独立产品后，产品仓库成为唯一
 源码权威，qlblog 删除对应副本。每个产品用自己的 linker 把开发工作树逐 Skill
 链接到 `$CODEX_HOME/skills`；因此本地修改实时生效，而 qlblog 只保留自己的
-Skills 与网站内容。`$CODEX_HOME/skills` 必须保持为 Codex 管理的真实目录，
-`.system/` 也只留在那里，不复制、不定制、不发布、不纳入本仓库。
+Skills 与网站内容。`$CODEX_HOME/skills` 与 `~/.claude/skills` 都必须保持为对应运行时
+管理的真实目录，Codex 的 `.system/` 也只留在 `$CODEX_HOME/skills`，不复制、不定制、
+不发布、不纳入本仓库。Claude Code 没有对应的生成目录，也不要伪造一个。
 
-个人全局 Codex 约束的权威源文件是
-[`../install/codex/AGENTS.md`](../install/codex/AGENTS.md)。跨设备克隆或移动仓库后，
-务必运行平台对应的 `./skills/link-codex-skills.sh` 或
-`.\skills\link-codex-skills.ps1`，把它导入为 `$CODEX_HOME/AGENTS.md`，同时
-重建逐 Skill 链接；否则内置 `skill-creator` 不会自动获得本仓库的个人维护协议。
+个人全局约束的权威源文件是与运行时无关的
+[`../install/agents/core.md`](../install/agents/core.md)，加上各运行时增量
+[`../install/codex/runtime.md`](../install/codex/runtime.md) 与
+[`../install/claude/runtime.md`](../install/claude/runtime.md)。安装用的
+[`../install/codex/AGENTS.md`](../install/codex/AGENTS.md) 与
+[`../install/claude/CLAUDE.md`](../install/claude/CLAUDE.md) 由
+`make agents-guidance` 生成并提交，不要手改。跨设备克隆或移动仓库后，务必为本机装了的
+每个运行时运行平台对应的 linker，把生成文件导入为 `$CODEX_HOME/AGENTS.md` 与
+`~/.claude/CLAUDE.md`，同时重建逐 Skill 链接；否则 `skill-creator` 之类的 Skill
+创作流程不会自动获得本仓库的个人维护协议。
 
 独立产品仓库当前包括 [`gamemaker`](https://github.com/qiulinfan/gamemaker) 与
 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller)。它们的 Skills、预制 agents、
@@ -25,17 +35,35 @@ Skills 与网站内容。`$CODEX_HOME/skills` 必须保持为 Codex 管理的真
 Skills 页面只读取本 README 的“个人维护”清单与该文件，不发布“社区来源”内容，也
 不另外维护一份页面数据。
 
+## 运行时与作用域
+
+| 运行时 | home | 全局 guidance | Skill 目录 | POSIX/WSL linker | 原生 Windows linker |
+| --- | --- | --- | --- | --- | --- |
+| Codex | `$CODEX_HOME`，默认 `~/.codex` | `<home>/AGENTS.md` | `<home>/skills` | `link-codex-skills.sh` | `link-codex-skills.ps1` |
+| Claude Code | `$CLAUDE_CONFIG_DIR`，默认 `~/.claude` | `<home>/CLAUDE.md` | `<home>/skills` | `link-claude-skills.sh` | `link-claude-skills.ps1` |
+
+- Codex linker 链接本目录下全部 Skill。
+- Claude Code linker 跳过路径中任意一段含 `codex` 的 Skill，当前是
+  `codex-subagent-workflow`、`codex-subagent-testskill`、`codex-external-agent-testskill`。
+  它们编排的是 Codex 原生 subagent 或由 Codex 选择的外部运行时，在 Claude Code 里没有
+  对应能力，只链接进 Codex。脚本会打印被跳过的清单。
+- 不要手工把被跳过的 Skill 补链进 `~/.claude/skills`，也不要放宽过滤器。确实需要两个
+  运行时都能用时，改成运行时无关的实现并取一个不含 `codex` 的名字，且仅在用户明确要求时这么做。
+- 两个 linker 互不干扰，也都不动 `gamemaker`、`kgdistiller` 等独立产品自己建立的链接。
+
 ## 仓库协议
 
 - 新建个人 Skill 时一律先直接创建在本目录顶层。保留已有套件，但不要根据 Skill
   的主题、名称、依赖或看似所属的系统自动归类。
 - 只有当用户明确指定某个分类时，才新建套件目录，或把一个或多个 Skills 放入、
   移入、移出套件。不得仅凭推断使用已有套件。
-- 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即重新运行平台对应的
-  qlblog linker；脚本成功前不得视为重分类完成。
+- 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即为本机装了的每个运行时
+  重新运行平台对应的 qlblog linker；脚本成功前不得视为重分类完成。
 - 从开源网站下载的外部 Skill 放入 `community/`，记录准确来源，并保持网站排除。
 - 本地维护的个人 Skill 使用英文 frontmatter description 与英文 `agents/openai.yaml`
   发现元数据，便于不同语言的用户稳定发现；社区 Skill 默认保留上游元数据。
+- frontmatter `name` 与末级目录名保持一致：Claude Code 用目录名作为调用名，
+  frontmatter `name` 只是显示标签，两者不一致会让调用名与文档对不上。
 - 每个新建或实质更新的个人 Skill 都要明确要求 Agent 的用户可见解释、提示与交接跟随
   用户语言，除非用户指定其他语言；命令、标识符、结构化键/动作码与原始错误保持原样。
 - 每次创建或实质更新 skill，都要更新本 README 中对应的一句话用途说明。
@@ -57,16 +85,24 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 <qlblog>/skills/<suite>/<name>/         # 仅限用户明确指定的本地套件
 <qlblog>/skills/community/<name>/       # 外部下载 Skill，不进入网站
 <product>/skills/<name>/                # 独立产品的唯一开发权威
-<qlblog>/install/codex/AGENTS.md         # 个人全局 Codex 约束，Git 权威副本
+<qlblog>/install/agents/core.md         # 运行时无关的全局约束，Git 权威源
+<qlblog>/install/codex/runtime.md       # Codex 增量，Git 权威源
+<qlblog>/install/claude/runtime.md      # Claude Code 增量，Git 权威源
+<qlblog>/install/codex/AGENTS.md        # 生成并提交的 Codex 安装文件
+<qlblog>/install/claude/CLAUDE.md       # 生成并提交的 Claude Code 安装文件
 
 <CODEX_HOME>/AGENTS.md            -> <qlblog>/install/codex/AGENTS.md
 <CODEX_HOME>/skills/                  # Codex 拥有的真实目录
 <CODEX_HOME>/skills/.system/          # Codex 自动生成和更新，不进 Git
 <CODEX_HOME>/skills/<name>         -> qlblog 或独立产品中的唯一 Skill 目录
+
+<CLAUDE_HOME>/CLAUDE.md           -> <qlblog>/install/claude/CLAUDE.md
+<CLAUDE_HOME>/skills/                 # Claude Code 拥有的真实目录
+<CLAUDE_HOME>/skills/<name>        -> qlblog 中未被 codex 过滤器排除的 Skill 目录
 ```
 
-`CODEX_HOME` 未设置时，默认使用用户主目录下的 `.codex`。安装或修复后重新打开
-Codex task，让 skill 清单重新加载。
+`CODEX_HOME` 未设置时默认 `~/.codex`，`CLAUDE_CONFIG_DIR` 未设置时默认 `~/.claude`。
+安装或修复后重新打开 Codex task 或重启 Claude Code 会话，让 skill 清单重新加载。
 
 ### macOS
 
@@ -74,16 +110,20 @@ Codex task，让 skill 清单重新加载。
 git clone git@github.com:qiulinfan/qiulinfan.github.io.git qlblog
 cd qlblog
 ./skills/link-codex-skills.sh
+./skills/link-claude-skills.sh
 
 ls -ld ~/.codex/AGENTS.md ~/.codex/skills ~/.codex/skills/.system
+ls -ld ~/.claude/CLAUDE.md ~/.claude/skills
 test ! -L ~/.codex/skills
-realpath ~/.codex/AGENTS.md
+test ! -L ~/.claude/skills
+realpath ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 ```
 
-自定义过 `CODEX_HOME` 时：
+只装了其中一个运行时，就只运行对应的那一个脚本。自定义过 home 时：
 
 ```sh
 CODEX_HOME=/absolute/path/to/codex-home ./skills/link-codex-skills.sh
+CLAUDE_CONFIG_DIR=/absolute/path/to/claude-home ./skills/link-claude-skills.sh
 ```
 
 ### Linux
@@ -94,17 +134,20 @@ Linux 与 macOS 使用同一个脚本：
 git clone git@github.com:qiulinfan/qiulinfan.github.io.git qlblog
 cd qlblog
 ./skills/link-codex-skills.sh
+./skills/link-claude-skills.sh
 
 ls -ld ~/.codex/AGENTS.md ~/.codex/skills ~/.codex/skills/.system
+ls -ld ~/.claude/CLAUDE.md ~/.claude/skills
 test ! -L ~/.codex/skills
-readlink -f ~/.codex/AGENTS.md
+test ! -L ~/.claude/skills
+readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 ```
 
 ### Windows：优先使用 WSL
 
-若 Codex 和仓库都在 WSL 中运行，把仓库克隆到 WSL 自己的 Linux 文件系统，
-然后直接执行上面的 Linux 步骤。不要把 WSL 的 `~/.codex` 与 Windows 原生的
-`%USERPROFILE%\.codex` 当成同一个目录。
+若 agent 和仓库都在 WSL 中运行，把仓库克隆到 WSL 自己的 Linux 文件系统，
+然后直接执行上面的 Linux 步骤。不要把 WSL 的 `~/.codex`、`~/.claude` 与 Windows 原生的
+`%USERPROFILE%\.codex`、`%USERPROFILE%\.claude` 当成同一个目录。
 
 ### Windows：原生 PowerShell
 
@@ -114,10 +157,13 @@ readlink -f ~/.codex/AGENTS.md
 
 ```powershell
 & .\skills\link-codex-skills.ps1
+& .\skills\link-claude-skills.ps1
 ```
 
+两个脚本的安全边界一致，`link-claude-skills.ps1` 用 `-ClaudeHome` 或
+`CLAUDE_CONFIG_DIR` 指定非默认 home。
 若已有冲突链接或从旧 POSIX 安装留下 Windows 无法读取的 reparse link，先核对它是
-链接而不是真实文件，再显式运行 `& .\skills\link-codex-skills.ps1 -Force`。`-Force`
+链接而不是真实文件，再对相应脚本显式加 `-Force` 重跑。`-Force`
 仍拒绝覆盖真实文件、目录或无法证明属于当前 qlblog checkout 的 Skill 链接。仓库被
 移动到新绝对路径后，旧的 broken Junction 已无法自行证明 owner；先人工核对并删除
 那些旧 qlblog Junction，再运行 linker，不能用 `-Force` 越过这个边界。
@@ -126,9 +172,12 @@ readlink -f ~/.codex/AGENTS.md
 
 - 修改普通个人 Skill：编辑 `skills/<skill-name>/`；修改套件或社区 Skill：编辑
   `skills/<suite>/<skill-name>/`。按需更新本 README 的一句话说明与第三方出处。
-- 重新分类或移动 Skill 的父目录后，必须运行平台对应的 qlblog linker，清理
-  旧链接并重建 Codex 的扁平 Skill 清单。
+- 重新分类或移动 Skill 的父目录后，必须为每个运行时运行平台对应的 qlblog linker，
+  清理旧链接并重建该运行时的扁平 Skill 清单。把 Skill 改名成含 `codex` 之后，
+  `link-claude-skills` 会自动移除它在 Claude Code 侧留下的旧链接。
 - 不修改或版本管理 system Skill；让 Codex 维护 `$CODEX_HOME/skills/.system`。
+- 改了 `install/agents/core.md` 或任一 `install/*/runtime.md` 后运行
+  `make agents-guidance`，并用 `make agents-check` 确认生成文件已同步。
 - 修改后校验：
 
   ```sh
@@ -140,12 +189,12 @@ readlink -f ~/.codex/AGENTS.md
 
   Windows 如果没有 `python3` 命令，可把它替换为 `py -3`。
 - 换机器或 `git pull` 后，在 macOS/Linux/WSL 重新运行
-  `./skills/link-codex-skills.sh`；Windows 原生重新运行
-  `.\skills\link-codex-skills.ps1`。
-- macOS/Linux/WSL 的自动备份位于
-  `<CODEX_HOME>/skill-layout-backups/<时间戳>/`；Windows 原生使用相同的相对位置。
+  `./skills/link-codex-skills.sh` 与 `./skills/link-claude-skills.sh`；Windows 原生
+  重新运行 `.\skills\link-codex-skills.ps1` 与 `.\skills\link-claude-skills.ps1`。
+- macOS/Linux/WSL 的自动备份位于各运行时 home 下的
+  `skill-layout-backups/<时间戳>/`；Windows 原生使用相同的相对位置。
 - 未知、内容冲突或指向仓库外部的 Skill 链接始终拒绝覆盖。全局
-  `AGENTS.md` 是唯一例外：显式 `-Force` 可修复未知的 reparse link，但内容
+  `AGENTS.md` / `CLAUDE.md` 是唯一例外：显式 `-Force` 可修复未知的 reparse link，但内容
   不同的真实文件仍会被拒绝。Codex 的 `.system` 始终留在
   `$CODEX_HOME/skills`，不由仓库接管。
 

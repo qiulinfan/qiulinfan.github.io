@@ -28,7 +28,7 @@ division 有 well-definedness.'' It then records the failure over $bZ[X]$:
 when $deg f<deg g$, a putative quotient can be $q(X)=1/2 X+1/2$, which is
 not in $bZ[X]$, so the source's division-algorithm hypothesis fails.
 
-#theorem(title: [Polynomial division])[
+#theorem(title: [#kn[Polynomial division]])[
 For $f,g in F[X]$ with $g!=0$, there are unique $q,r in F[X]$ such that
 
 $ f=q g+r quad text(and) quad (r=0 text(or) deg r<deg g). $

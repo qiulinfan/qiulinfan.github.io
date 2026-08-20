@@ -1,0 +1,29 @@
+## Runtime specifics: Claude Code
+
+- Home directory: `~/.claude`. When `CLAUDE_CONFIG_DIR` is set, it replaces
+  `~/.claude` for every path below.
+- User Skill directory: `<claude-home>/skills`. Claude Code owns it as a real
+  directory; qlblog links each eligible Skill into it individually, and Claude
+  Code follows those links when it reads `SKILL.md`.
+- Global guidance file: `<claude-home>/CLAUDE.md`, installed as a link to
+  `<qlblog>/install/claude/CLAUDE.md`.
+- Linker: `<qlblog>/skills/link-claude-skills.sh` on POSIX/WSL, or
+  `<qlblog>/skills/link-claude-skills.ps1` on native Windows.
+- Scope filter: the Claude linker skips every Skill whose path under
+  `<qlblog>/skills` contains `codex` in any path segment, because those Skills
+  drive Codex-native subagents or Codex-selected external runtimes and cannot be
+  executed here. They stay linked into Codex only. Do not hand-link one, and do
+  not widen the filter; if a workflow must run under both runtimes, give it a
+  runtime-neutral implementation and a name without `codex`, and only when the
+  user asks for that.
+- Claude Code has no generated `.system` Skill directory. Never create,
+  simulate, or version-control one for this runtime.
+- A personal Skill is invoked by its directory name; frontmatter `name` is only
+  the display label. Keep the two identical for every locally maintained Skill.
+- Skill precedence is enterprise over personal over project, and plugin Skills
+  are namespaced `plugin:skill`, so these links never silently shadow a project
+  Skill of a different name.
+- Validator: run the Codex `quick_validate.py` named in the Codex runtime
+  section when this machine also has Codex installed; otherwise check the
+  Skill against the frontmatter and layout contract in
+  `<qlblog>/skills/README.md` by hand before reporting success.

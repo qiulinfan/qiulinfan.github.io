@@ -61,7 +61,7 @@ complements into almost-disjoint closed cubes.
 
 == Approximation and regularity
 
-#definition(title: [Symmetric difference])[
+#definition(title: [#kn[Symmetric difference]])[
   $A triangle B=(A\B) union (B\A)$. The source notes
   $A triangle B subset.eq (A triangle C) union (C triangle B)$.
 ]

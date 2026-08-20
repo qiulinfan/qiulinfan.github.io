@@ -82,7 +82,7 @@
 
 == Compactness in $bR^n$
 
-#definition(title: [Open cover and compactness])[
+#definition(title: [Open cover and #kn[Compactness]])[
   An open cover of $E subset.eq X$ is a family ${U_alpha}_alpha in I$ of open
   sets such that $E subset.eq union_(alpha in I) U_alpha$.  The set $E$ is
   compact if every open cover has a finite subcover.  A set is bounded when it

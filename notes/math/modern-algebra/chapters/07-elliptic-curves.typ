@@ -10,7 +10,7 @@ omission is retained rather than supplied from another source.
 
 == Affine curve, reflection, and identity
 
-*Source transcription — WS25, p. 1.* A (real, affine) elliptic curve is the
+*Source transcription — WS25, p. 1.* A (real, affine) #kn[Elliptic curve] is the
 solution set in $bR^2$ of
 
 $ y^2=x^3+a x+b, quad a,b in bR, quad 4a^3+27b^2!=0. $

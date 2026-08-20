@@ -10,7 +10,7 @@
 
 == WS 27, p. 1: theorem and first two claims
 
-#theorem(title: [Spectral theorem])[
+#theorem(title: [#kn[Spectral theorem]])[
 $A$ is orthogonally diagonalizable iff $A$ is symmetric:
 $exists S in bR^(n times n)$ such that $S^(-1)=S^t$ and $S^t A S$ is diagonal
 iff $A$ is symmetric.

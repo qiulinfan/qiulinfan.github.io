@@ -6,7 +6,7 @@
 
 == Derivatives and rules (L13)
 
-#definition(title: [Derivative])[
+#definition(title: [#kn[Derivative]])[
   Let $A subset bR$, $f: A -> bR$, and $a in A ∩ A^prime$ (此处 $a$ 是
   accumulation point，所以 $a$ lies in the domain of $f^prime$). Define the derivative of $f$
   at $a$ by

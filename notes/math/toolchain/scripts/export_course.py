@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import sys
@@ -19,6 +20,7 @@ MARKDOWN_HEADING_RE = re.compile(r"^#\s+(.+?)(?:\s+\{#[^}]+\})?\s*$", re.MULTILI
 LATEX_CHAPTER_RE = re.compile(r"^\\chapter(?:\[[^\]]*\])?\{", re.MULTILINE)
 KN_SOURCE_RE = re.compile(r"#kn\s*\[")
 SEMANTIC_COUNT_RE = re.compile(r"^semantic-node-count:\s*\d+\s*$", re.MULTILINE)
+SOURCE_RE = re.compile(r"^source:\s*.*$", re.MULTILINE)
 TYPST_CHAPTER_RE = re.compile(
     r"^(?:=\s+(.+?)\s*|#heading\(level:\s*1[^)]*\)\[(.+?)\])$",
     re.MULTILINE,
@@ -101,16 +103,18 @@ def source_chapters(source: Path) -> list[Chapter]:
     return chapters
 
 
-def reset_output(output: Path) -> tuple[Path, Path]:
+def reset_output(output: Path, *, markdown_only: bool) -> tuple[Path, Path | None]:
     resolved = output.resolve()
     if resolved == resolved.parent or resolved == Path.cwd().resolve():
         raise ExportError(f"refusing unsafe export directory: {resolved}")
     if output.exists():
         shutil.rmtree(output)
     markdown = output / "markdown"
-    latex = output / "latex"
     (markdown / ".assets").mkdir(parents=True)
-    (latex / "assets").mkdir(parents=True)
+    latex = None
+    if not markdown_only:
+        latex = output / "latex"
+        (latex / "assets").mkdir(parents=True)
     return markdown, latex
 
 
@@ -143,6 +147,21 @@ def replace_paths(text: str, replacements: dict[str, str], prefix: str) -> str:
     for source, target in replacements.items():
         text = text.replace(source, f"{prefix}/{target}")
     return text
+
+
+def authority_path(source: Path, root: Path) -> str:
+    resolved = source.resolve()
+    try:
+        return resolved.relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def replace_markdown_source(text: str, source: str) -> str:
+    rendered = json.dumps(source, ensure_ascii=False)
+    if not SOURCE_RE.search(text):
+        raise ExportError("Markdown export has no source field in YAML front matter")
+    return SOURCE_RE.sub(f"source: {rendered}", text, count=1)
 
 
 def markdown_chapter_positions(text: str) -> list[int]:
@@ -220,8 +239,13 @@ def export_course(
     root: Path,
     output: Path,
     build: Path,
+    *,
+    markdown_only: bool = False,
+    whole_document: bool = False,
 ) -> None:
-    markdown, latex = reset_output(output)
+    if whole_document and not markdown_only:
+        raise ExportError("--whole-document requires --markdown-only")
+    markdown, latex = reset_output(output, markdown_only=markdown_only)
     pages: list[Page] = []
     seen_stems: set[str] = set()
 
@@ -229,32 +253,59 @@ def export_course(
         source = document.source.resolve()
         if not source.is_file():
             raise ExportError(f"Typst entry does not exist: {source}")
-        chapters = source_chapters(source)
         snapshot = build / "snapshots" / document.name
         intermediate = build / "intermediate" / document.name
         export_authority(source, root, snapshot, intermediate, verbose=False)
 
         markdown_text = (snapshot / "markdown" / "main.md").read_text(encoding="utf-8")
-        latex_text = (snapshot / "latex" / "main.tex").read_text(encoding="utf-8")
+        if whole_document:
+            page_stem = f"{document.name}--main"
+            authority = authority_path(source, root)
+            markdown_text = replace_markdown_source(markdown_text, authority)
+            markdown_assets = copy_assets(
+                snapshot / "markdown" / "main.assets",
+                markdown / ".assets",
+                document.name,
+                "main.assets",
+            )
+            markdown_text = replace_paths(markdown_text, markdown_assets, ".assets")
+            (markdown / f"{page_stem}.md").write_text(
+                markdown_text, encoding="utf-8"
+            )
+            label_match = MARKDOWN_HEADING_RE.search(markdown_text)
+            label = label_match.group(1).strip() if label_match else document.name
+            pages.append(Page(document.name, authority, page_stem, label))
+            copy_shared(snapshot / "markdown" / "reference.bib", markdown)
+            continue
+
+        chapters = source_chapters(source)
         markdown_frontmatter, markdown_pages = markdown_chunks(
             markdown_text, len(chapters), source
         )
-        latex_preamble, latex_pages = latex_chunks(latex_text, len(chapters), source)
+        latex_preamble = ""
+        latex_pages: list[str] = []
+        if latex is not None:
+            latex_text = (snapshot / "latex" / "main.tex").read_text(encoding="utf-8")
+            latex_preamble, latex_pages = latex_chunks(
+                latex_text, len(chapters), source
+            )
         markdown_assets = copy_assets(
             snapshot / "markdown" / "main.assets",
             markdown / ".assets",
             document.name,
             "main.assets",
         )
-        latex_assets = copy_assets(
-            snapshot / "latex" / "assets",
-            latex / "assets",
-            document.name,
-            "assets",
-        )
+        latex_assets: dict[str, str] = {}
+        if latex is not None:
+            latex_assets = copy_assets(
+                snapshot / "latex" / "assets",
+                latex / "assets",
+                document.name,
+                "assets",
+            )
 
-        for chapter, markdown_page, latex_page in zip(
-            chapters, markdown_pages, latex_pages
+        for index, (chapter, markdown_page) in enumerate(
+            zip(chapters, markdown_pages, strict=True)
         ):
             page_stem = f"{document.name}--{chapter.stem}"
             if page_stem in seen_stems:
@@ -264,6 +315,8 @@ def export_course(
                 f"semantic-node-count: {chapter.knowledge_count}",
                 markdown_frontmatter,
             )
+            authority = authority_path(source.parent / chapter.authority, root)
+            page_frontmatter = replace_markdown_source(page_frontmatter, authority)
             markdown_page = replace_paths(markdown_page, markdown_assets, ".assets")
             markdown_output = page_frontmatter + markdown_page.lstrip("\n")
             (markdown / f"{page_stem}.md").write_text(
@@ -272,23 +325,28 @@ def export_course(
             label_match = MARKDOWN_HEADING_RE.search(markdown_page)
             label = label_match.group(1).strip() if label_match else page_stem
 
-            latex_page = replace_paths(latex_page, latex_assets, "assets")
-            latex_output = (
-                latex_preamble.rstrip()
-                + "\n\\mainmatter\n"
-                + latex_page.strip()
-                + "\n\\end{document}\n"
-            )
-            (latex / f"{page_stem}.tex").write_text(latex_output, encoding="utf-8")
-            pages.append(Page(document.name, chapter.authority, page_stem, label))
+            if latex is not None:
+                latex_page = replace_paths(latex_pages[index], latex_assets, "assets")
+                latex_output = (
+                    latex_preamble.rstrip()
+                    + "\n\\mainmatter\n"
+                    + latex_page.strip()
+                    + "\n\\end{document}\n"
+                )
+                (latex / f"{page_stem}.tex").write_text(
+                    latex_output, encoding="utf-8"
+                )
+            pages.append(Page(document.name, authority, page_stem, label))
 
         copy_shared(snapshot / "markdown" / "reference.bib", markdown)
-        for name in ("reference.bib", "qlnotes-export.cls", "elegantbook.cls"):
-            copy_shared(snapshot / "latex" / name, latex)
+        if latex is not None:
+            for name in ("reference.bib", "qlnotes-export.cls", "elegantbook.cls"):
+                copy_shared(snapshot / "latex" / name, latex)
 
     write_index(markdown, pages)
     print(f"Chapter exports: {len(pages)}")
-    print(f"LaTeX directory: {latex.resolve()}")
+    if latex is not None:
+        print(f"LaTeX directory: {latex.resolve()}")
     print(f"Markdown directory: {markdown.resolve()}")
 
 
@@ -304,6 +362,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--root", type=Path, required=True, help="Typst project root")
     parser.add_argument("--output", type=Path, required=True, help="versioned exports directory")
     parser.add_argument("--build", type=Path, required=True, help="ignored work directory")
+    parser.add_argument(
+        "--markdown-only",
+        action="store_true",
+        help="write Markdown chapter snapshots without requiring LaTeX chapter parity",
+    )
+    parser.add_argument(
+        "--whole-document",
+        action="store_true",
+        help="write one Markdown snapshot per entry point instead of splitting chapters",
+    )
     return parser.parse_args()
 
 
@@ -315,6 +383,8 @@ def main() -> int:
             args.root,
             args.output,
             args.build,
+            markdown_only=args.markdown_only,
+            whole_document=args.whole_document,
         )
     except (ExportError, OSError) as error:
         print(f"course export failed: {error}", file=sys.stderr)

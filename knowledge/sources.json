@@ -1,5 +1,5 @@
 {
-  "schema": "qlkg-sources-v2",
+  "schema": "kgdistiller-sources-v1",
   "fields": [
     {
       "id": "analysis",
@@ -55,7 +55,10 @@
       "subject": "math",
       "course": "measure-theory",
       "knowledge_origin": "personal-note",
-      "fields": ["analysis", "measure-theory"],
+      "fields": [
+        "analysis",
+        "measure-theory"
+      ],
       "root": "notes/math/measure-theory",
       "files": [
         "main.typ",
@@ -68,23 +71,81 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/measure-theory",
       "web_artifacts": [
-        {"source": "build/typst/index.html", "route": ""},
-        {"source": "build/typst/extras.html", "route": "extras"}
+        {
+          "source": "build/typst/index.html",
+          "route": ""
+        },
+        {
+          "source": "build/typst/extras.html",
+          "route": "extras"
+        }
       ],
       "topics": [
-        {"glob": "chapters/01-*.typ", "id": "measurable-spaces-and-measures", "label": "Measurable Spaces and Measures"},
-        {"glob": "chapters/02-*.typ", "id": "outer-measure-and-extension", "label": "Outer Measure and Measure Extension"},
-        {"glob": "chapters/03-*.typ", "id": "lebesgue-stieltjes-measures", "label": "Lebesgue–Stieltjes Measures"},
-        {"glob": "chapters/04-*.typ", "id": "measurable-functions-and-nonnegative-integration", "label": "Measurable Functions and Nonnegative Integration"},
-        {"glob": "chapters/05-*.typ", "id": "lebesgue-integration-and-convergence", "label": "Lebesgue Integration and Convergence"},
-        {"glob": "chapters/06-*.typ", "id": "product-measures-and-fubini-tonelli", "label": "Product Measures and Fubini–Tonelli"},
-        {"glob": "chapters/07-*.typ", "id": "lebesgue-measure-on-euclidean-space", "label": "Lebesgue Measure on Euclidean Space"},
-        {"glob": "chapters/08-*.typ", "id": "differentiation-of-integrals", "label": "Differentiation of Integrals"},
-        {"glob": "chapters/09-*.typ", "id": "lp-spaces-and-inequalities", "label": "Lp Spaces and Inequalities"},
-        {"glob": "chapters/10-*.typ", "id": "signed-measures", "label": "Signed Measures"},
-        {"glob": "chapters/11-*.typ", "id": "radon-nikodym-theory", "label": "Radon–Nikodym Theory"},
-        {"glob": "chapters/12-*.typ", "id": "functions-of-bounded-variation", "label": "Differentiation and Functions of Bounded Variation"},
-        {"glob": "chapters/13-*.typ", "id": "duality-of-lp-spaces", "label": "Duality of Lp Spaces"}
+        {
+          "glob": "chapters/01-*.typ",
+          "id": "measurable-spaces-and-measures",
+          "label": "Measurable Spaces and Measures"
+        },
+        {
+          "glob": "chapters/02-*.typ",
+          "id": "outer-measure-and-extension",
+          "label": "Outer Measure and Measure Extension"
+        },
+        {
+          "glob": "chapters/03-*.typ",
+          "id": "lebesgue-stieltjes-measures",
+          "label": "Lebesgue–Stieltjes Measures"
+        },
+        {
+          "glob": "chapters/04-*.typ",
+          "id": "measurable-functions-and-nonnegative-integration",
+          "label": "Measurable Functions and Nonnegative Integration"
+        },
+        {
+          "glob": "chapters/05-*.typ",
+          "id": "lebesgue-integration-and-convergence",
+          "label": "Lebesgue Integration and Convergence"
+        },
+        {
+          "glob": "chapters/06-*.typ",
+          "id": "product-measures-and-fubini-tonelli",
+          "label": "Product Measures and Fubini–Tonelli"
+        },
+        {
+          "glob": "chapters/07-*.typ",
+          "id": "lebesgue-measure-on-euclidean-space",
+          "label": "Lebesgue Measure on Euclidean Space"
+        },
+        {
+          "glob": "chapters/08-*.typ",
+          "id": "differentiation-of-integrals",
+          "label": "Differentiation of Integrals"
+        },
+        {
+          "glob": "chapters/09-*.typ",
+          "id": "lp-spaces-and-inequalities",
+          "label": "Lp Spaces and Inequalities"
+        },
+        {
+          "glob": "chapters/10-*.typ",
+          "id": "signed-measures",
+          "label": "Signed Measures"
+        },
+        {
+          "glob": "chapters/11-*.typ",
+          "id": "radon-nikodym-theory",
+          "label": "Radon–Nikodym Theory"
+        },
+        {
+          "glob": "chapters/12-*.typ",
+          "id": "functions-of-bounded-variation",
+          "label": "Differentiation and Functions of Bounded Variation"
+        },
+        {
+          "glob": "chapters/13-*.typ",
+          "id": "duality-of-lp-spaces",
+          "label": "Duality of Lp Spaces"
+        }
       ]
     },
     {
@@ -94,7 +155,9 @@
       "subject": "math",
       "course": "probability",
       "knowledge_origin": "personal-note",
-      "fields": ["probability-theory"],
+      "fields": [
+        "probability-theory"
+      ],
       "root": "notes/math/prob",
       "files": [
         "main.typ",
@@ -106,15 +169,57 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/probability",
       "web_artifacts": [
-        {"source": "build/typst/index.html", "route": ""},
-        {"source": "build/typst/homeworks.html", "route": "homeworks"}
+        {
+          "source": "build/typst/index.html",
+          "route": ""
+        },
+        {
+          "source": "build/typst/homeworks.html",
+          "route": "homeworks"
+        }
       ],
       "topics": [
-        {"glob": "chapters/01-*.typ", "id": "probability-spaces-and-combinatorics", "label": "Probability Spaces and Combinatorics", "fields": ["combinatorics"]},
-        {"glob": "chapters/02-*.typ", "id": "random-variables-and-distributions", "label": "Random Variables and Distributions", "fields": ["measure-theory"]},
-        {"glob": "chapters/03-*.typ", "id": "joint-and-conditional-distributions", "label": "Joint and Conditional Distributions", "fields": ["analysis", "measure-theory"]},
-        {"glob": "chapters/04-*.typ", "id": "laws-of-large-numbers", "label": "Laws of Large Numbers", "fields": ["analysis"]},
-        {"glob": "chapters/05-*.typ", "id": "central-limit-theorems", "label": "Central Limit Theorems", "fields": ["analysis"]}
+        {
+          "glob": "chapters/01-*.typ",
+          "id": "probability-spaces-and-combinatorics",
+          "label": "Probability Spaces and Combinatorics",
+          "fields": [
+            "combinatorics"
+          ]
+        },
+        {
+          "glob": "chapters/02-*.typ",
+          "id": "random-variables-and-distributions",
+          "label": "Random Variables and Distributions",
+          "fields": [
+            "measure-theory"
+          ]
+        },
+        {
+          "glob": "chapters/03-*.typ",
+          "id": "joint-and-conditional-distributions",
+          "label": "Joint and Conditional Distributions",
+          "fields": [
+            "analysis",
+            "measure-theory"
+          ]
+        },
+        {
+          "glob": "chapters/04-*.typ",
+          "id": "laws-of-large-numbers",
+          "label": "Laws of Large Numbers",
+          "fields": [
+            "analysis"
+          ]
+        },
+        {
+          "glob": "chapters/05-*.typ",
+          "id": "central-limit-theorems",
+          "label": "Central Limit Theorems",
+          "fields": [
+            "analysis"
+          ]
+        }
       ]
     },
     {
@@ -124,7 +229,9 @@
       "subject": "math",
       "course": "advanced-linear-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["linear-algebra"],
+      "fields": [
+        "linear-algebra"
+      ],
       "root": "notes/math/advanced-linear-algebra",
       "files": [
         "main.typ",
@@ -142,7 +249,9 @@
       "subject": "math",
       "course": "linear-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["linear-algebra"],
+      "fields": [
+        "linear-algebra"
+      ],
       "root": "notes/math/linear-algebra",
       "files": [
         "main.typ",
@@ -161,7 +270,9 @@
       "subject": "math",
       "course": "mathematical-analysis",
       "knowledge_origin": "personal-note",
-      "fields": ["analysis"],
+      "fields": [
+        "analysis"
+      ],
       "root": "notes/math/mathematical-analysis",
       "files": [
         "main.typ",
@@ -181,7 +292,9 @@
       "subject": "math",
       "course": "modern-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["abstract-algebra"],
+      "fields": [
+        "abstract-algebra"
+      ],
       "root": "notes/math/modern-algebra",
       "files": [
         "main.typ",
@@ -200,7 +313,9 @@
       "subject": "math",
       "course": "multivariate-analysis",
       "knowledge_origin": "personal-note",
-      "fields": ["analysis"],
+      "fields": [
+        "analysis"
+      ],
       "root": "notes/math/multivariate-analysis",
       "files": [
         "main.typ",
@@ -220,7 +335,9 @@
       "subject": "math",
       "course": "numerical-linear-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["linear-algebra"],
+      "fields": [
+        "linear-algebra"
+      ],
       "root": "notes/math/numerical-linear-algebra",
       "files": [
         "main.typ",
@@ -238,7 +355,9 @@
       "subject": "cs",
       "course": "computer-organization",
       "knowledge_origin": "personal-note",
-      "fields": ["computer-architecture"],
+      "fields": [
+        "computer-architecture"
+      ],
       "root": "notes/cs/computer-organization",
       "files": [
         "*.md"
@@ -247,7 +366,11 @@
       "listed": false,
       "web": "https://qiulinfan.github.io/notes/cs/computer-organization",
       "topics": [
-        {"glob": "*.md", "id": "computer-organization", "label": "Computer Organization"}
+        {
+          "glob": "*.md",
+          "id": "computer-organization",
+          "label": "Computer Organization"
+        }
       ]
     },
     {
@@ -257,7 +380,9 @@
       "subject": "cs",
       "course": "cpp-programming",
       "knowledge_origin": "personal-note",
-      "fields": ["programming-languages"],
+      "fields": [
+        "programming-languages"
+      ],
       "root": "notes/cs/cpp-programming/docs",
       "files": [
         "index.md",
@@ -275,7 +400,11 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/cs/cpp-programming",
       "topics": [
-        {"glob": "*.md", "id": "cpp-programming", "label": "C++ Programming"}
+        {
+          "glob": "*.md",
+          "id": "cpp-programming",
+          "label": "C++ Programming"
+        }
       ]
     },
     {
@@ -285,7 +414,9 @@
       "subject": "cs",
       "course": "data-structures-algorithms",
       "knowledge_origin": "personal-note",
-      "fields": ["data-structures-and-algorithms"],
+      "fields": [
+        "data-structures-and-algorithms"
+      ],
       "root": "notes/cs/data-structures-algorithms/docs",
       "files": [
         "index.md",
@@ -295,7 +426,11 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/cs/data-structures-algorithms",
       "topics": [
-        {"glob": "*.md", "id": "data-structures-algorithms", "label": "Data Structures and Algorithms"}
+        {
+          "glob": "*.md",
+          "id": "data-structures-algorithms",
+          "label": "Data Structures and Algorithms"
+        }
       ]
     },
     {
@@ -305,7 +440,9 @@
       "subject": "math",
       "course": "everything-about-linear-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["linear-algebra"],
+      "fields": [
+        "linear-algebra"
+      ],
       "root": "notes/math/everything-about-linear-algebra",
       "files": [
         "main.typ",
@@ -315,7 +452,10 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/everything-about-linear-algebra",
       "web_artifacts": [
-        {"source": "build/typst/index.html", "route": ""}
+        {
+          "source": "build/typst/index.html",
+          "route": ""
+        }
       ],
       "topics": []
     },
@@ -326,7 +466,9 @@
       "subject": "math",
       "course": "single-and-multivariate-mathematical-analysis",
       "knowledge_origin": "personal-note",
-      "fields": ["analysis"],
+      "fields": [
+        "analysis"
+      ],
       "root": "notes/math/single-and-multivariate-mathematical-analysis",
       "files": [
         "main.typ",
@@ -336,7 +478,10 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/single-and-multivariate-mathematical-analysis",
       "web_artifacts": [
-        {"source": "build/typst/index.html", "route": ""}
+        {
+          "source": "build/typst/index.html",
+          "route": ""
+        }
       ],
       "topics": []
     },
@@ -347,7 +492,9 @@
       "subject": "math",
       "course": "a-bit-of-abstract-algebra",
       "knowledge_origin": "personal-note",
-      "fields": ["abstract-algebra"],
+      "fields": [
+        "abstract-algebra"
+      ],
       "root": "notes/math/a-bit-of-abstract-algebra",
       "files": [
         "main.typ",
@@ -357,7 +504,10 @@
       "listed": true,
       "web": "https://qiulinfan.github.io/notes/math/a-bit-of-abstract-algebra",
       "web_artifacts": [
-        {"source": "build/typst/index.html", "route": ""}
+        {
+          "source": "build/typst/index.html",
+          "route": ""
+        }
       ],
       "topics": []
     }

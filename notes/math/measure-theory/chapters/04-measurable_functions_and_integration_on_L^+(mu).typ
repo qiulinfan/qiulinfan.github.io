@@ -10,7 +10,7 @@
 #definition(
   title: [#kn[$\(cal(M)\,cal(N)\)$-measurable function]],
 )[
-Let $\(X\,cal(M)\)$, $\(Y\,cal(N)\)$ be measurable spaces, 如果 $f : X arrow.r Y$ 满足: $ B in cal(N) arrow.r.double.long f^(- 1)\(B\)in cal(M) $, 则称 $f$ 为一个 $\(cal(M)\,cal(N)\)$-measurable function.
+Let #ref[measurable-space-and-measure-space] $\(X\,cal(M)\)$, $\(Y\,cal(N)\)$ be measurable spaces, 如果 $f : X arrow.r Y$ 满足: $ B in cal(N) arrow.r.double.long f^(- 1)\(B\)in cal(M) $, 则称 $f$ 为一个 $\(cal(M)\,cal(N)\)$-measurable function.
 
 ]
 从一个 measurable space 到另一个 measurable space 的 function 被称为 measurable 的条件是: 被映射到可测集的集合只能是可测集.
@@ -558,7 +558,7 @@ $f_n$ 逐渐变成一根针.
 #lemma(
   title: [#kn[Chebyshev's inequality]],
 )[
-对于 measure space $\(X\,cal(M)\,mu\)$, 如果 $f in L^(+)\(mu\)$ 并且 $c > 0$, 那么
+对于 measure space $\(X\,cal(M)\,mu\)$, #ref[markov-inequality] 在本处以非负函数的 measure-space 形式使用：如果 $f in L^(+)\(mu\)$ 并且 $c > 0$, 那么
 $ mu { f gt.eq c } lt.eq 1 / c integral f $
 
 ]
