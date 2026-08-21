@@ -34,7 +34,7 @@ cd qiulinfan.github.io
 
 高频迭代的 workflow series 不在本仓库镜像：
 
-- [`gamemaker`](https://github.com/qiulinfan/gamemaker) 自闭合维护游戏制作、Unity、TA Skills、预制 agents、profiles、linker 与测试。
+- [`autoTA`](https://github.com/qiulinfan/autoTA) 自闭合维护技术美术(TA)管线:素材搜索/2D/3D/托管生成/绑定对齐 Skills、预制 agents、profile、linker 与测试(2026-08 由 gamemaker 改名并专精)。
 - [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 自闭合维护知识引擎、CLI/MCP、论文/笔记 Skills、预制 agents、linker 与测试。
 
 两个产品的开发 checkout 都通过各自 linker，把每个 Skill 直接链接到
@@ -100,7 +100,7 @@ agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog �
 | Claude Code | `~/.claude/CLAUDE.md` | `~/.claude/skills` | `skills/link-claude-skills.sh` | `skills\link-claude-skills.ps1` |
 
 两个 linker 都只逐 Skill 链接到目标运行时自己拥有的真实目录，互不干扰，也不动
-`gamemaker`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
+`autoTA`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
 `CLAUDE_CONFIG_DIR` 覆盖，Codex 的用 `CODEX_HOME`。
 
 Claude Code 侧有一条额外的作用域规则：路径中带 `codex` 的 Skill（`codex-subagent-workflow`、

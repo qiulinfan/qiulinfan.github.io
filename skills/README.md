@@ -28,7 +28,7 @@ Skills 与网站内容。`$CODEX_HOME/skills` 与 `~/.claude/skills` 都必须�
 `~/.claude/CLAUDE.md`，同时重建逐 Skill 链接；否则 `skill-creator` 之类的 Skill
 创作流程不会自动获得本仓库的个人维护协议。
 
-独立产品仓库当前包括 [`gamemaker`](https://github.com/qiulinfan/gamemaker) 与
+独立产品仓库当前包括 [`autoTA`](https://github.com/qiulinfan/autoTA) 与
 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller)。它们的 Skills、预制 agents、
 工作流、测试与安装脚本都在各自仓库维护，不由 qlblog 镜像或转发。
 
@@ -54,7 +54,7 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 - 只有当 Skill 确实依赖某个运行时的专属能力、或用户明确要求时，才把它放入作用域目录。
   不要手工把被跳过的 Skill 补链进另一个运行时的 Skill 目录，也不要放宽过滤器。确实需要
   两个运行时都能用时，改成运行时无关的实现并移出作用域目录，且仅在用户明确要求时这么做。
-- 两个 linker 互不干扰，也都不动 `gamemaker`、`kgdistiller` 等独立产品自己建立的链接。
+- 两个 linker 互不干扰，也都不动 `autoTA`、`kgdistiller` 等独立产品自己建立的链接。
 
 ## 仓库协议
 
@@ -210,7 +210,7 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 
 ## 独立产品
 
-- [gamemaker](https://github.com/qiulinfan/gamemaker)：游戏制作、Unity、TA 与验收工作流；仓库内 Skills 和预制 agents 由产品 linker 直接接入本地 Codex。
+- [autoTA](https://github.com/qiulinfan/autoTA)：技术美术管线(素材搜索、2D/3D 生产、托管生成、绑定对齐)与交接回执契约；仓库内 Skills 和预制 agents 由产品 linker 直接接入本地 Codex。(前身 gamemaker)
 - [kgdistiller](https://github.com/qiulinfan/kgdistiller)：知识蒸馏引擎、论文/笔记 Skills、预制 agents 与事务工作流；qlblog 只采用并展示其静态导出。
 
 ## 个人维护
