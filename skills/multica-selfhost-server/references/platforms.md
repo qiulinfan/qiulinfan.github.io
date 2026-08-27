@@ -8,16 +8,28 @@ order: Tailscale readiness -> `bootstrap-windows-wsl-server.ps1` ->
 controller only as a compatibility recovery entry point. It must read the same readiness phase and
 must not clone, install, or start an unauthorized new server.
 
+Run stop/export/restore through `invoke-windows-wsl-environment.ps1`; it translates only explicit
+Windows paths and forwards arguments to the shared Unix lifecycle scripts inside the selected WSL
+distribution. Environment export/restore is not supported by the native-Windows compatibility
+controller.
+
 ## macOS
 
 Use `start-macos-server.sh` and `publish-unix-tailscale.sh`, then use a LaunchAgent only after
 authorization. When Docker Desktop first requires visible system interaction, stop and ask the user
 to invoke the Skill again afterward.
 
+Use `stop-unix-server.sh`, `export-unix-server-environment.sh`, and
+`restore-unix-server-environment.sh` for cold stop/migration. Require `age` to be installed before
+export or restore; do not install it or create identity material automatically.
+
 ## Native Linux
 
 Use `start-linux-server.sh` and `publish-unix-tailscale.sh`, then use a systemd user service only
 after authorization. Do not enable linger automatically. Make WSL detection fail closed.
+
+Use the same three Unix lifecycle scripts. They operate on the native Docker Engine and leave the
+restored stack stopped until `start-linux-server.sh` and `publish-unix-tailscale.sh` revalidate it.
 
 ## Port invariant
 

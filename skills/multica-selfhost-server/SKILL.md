@@ -1,6 +1,6 @@
 ---
 name: multica-selfhost-server
-description: Detect Windows with WSL, macOS, or native Linux and use a resumable state machine to deploy, operate, upgrade, back up, publish, inspect, and revoke one Multica self-host control plane. Manage PostgreSQL, the loopback-only backend, frontend and gateway, Tailscale Serve, fixed-code authentication, exact-email and workspace admission, owner-led member intake, Tailscale access decisions, credential-free handoffs, autostart, host runtimes, agents, and smoke tasks. Use when a trusted group needs one private Server; when the owner needs help answering any client onboarding question, deciding workspace or network scope, or preparing a complete handoff; or when troubleshooting authentication, admission, CORS, WebSockets, upgrades, and recovery. Use multica-client-setup only after an owner handoff exists, then use multica-runtime-client for ordinary work. Multica detects providers automatically; this Skill never asks about, signs in to, or verifies provider CLIs.
+description: Detect Windows with WSL, macOS, or native Linux and use a resumable state machine to deploy, stop, export, restore, upgrade, publish, inspect, and revoke one Multica self-host control plane. Manage age-encrypted server environments, PostgreSQL, loopback-only services, Tailscale Serve, fixed-code authentication, exact-email and workspace admission, owner-led member onboarding, credential-free handoffs, autostart, host runtimes, agents, and smoke tasks. Use when a trusted group needs one private Server, the owner needs to onboard members, the only Server must move between hosts, or authentication, admission, networking, upgrade, and recovery need troubleshooting. Compose multica-client-setup for nodes and multica-runtime-client for ordinary work. Multica detects providers automatically; never ask about, sign in to, or verify provider CLIs.
 ---
 
 # Multica self-host server
@@ -31,8 +31,10 @@ system authorization interactions. Never deploy a second server.
   public instance configuration rather than a credential and must be included in member handoffs.
 - Do not use Funnel or expose a public entrypoint. Bind the backend, frontend, and gateway only to
   loopback, and do not host-publish PostgreSQL. Stop on `0.0.0.0`, `::`, or any database host binding.
-- Require explicit authorization for autostart, upgrades, recovery, remote revocation, and data
-  deletion. Require separate confirmation before deleting a data volume.
+- Require explicit authorization for server downtime, autostart changes, upgrades, recovery, remote
+  revocation, and data deletion. Require separate confirmation before deleting a data volume.
+- Never export a plaintext environment. Require a user-controlled `age` recipient, keep the identity
+  file outside the Skill cache, and do not install or generate encryption keys automatically.
 
 ## Cache and phases
 
@@ -52,6 +54,8 @@ write.
 
 Every manual boundary must return `manual_action_required`, the phase, one action,
 `background_work=false`, and a `resume_hint`. Never infer the phase from free-form logs.
+Lifecycle stop/export/restore receipts do not replace or rewind `ONBOARDING_PHASE`; always combine
+them with live container, volume, Tailscale, owner/workspace, and runtime state.
 
 ## Deployment state machine
 
@@ -153,13 +157,43 @@ value as evidence for daemon capacity.
 Provider login, type, availability, and version are not inputs, manual boundaries, or completion
 conditions.
 
-## Upgrade, back up, restore, and revoke
+## Stop, export, and restore the server environment
 
-Follow [references/lifecycle.md](references/lifecycle.md) for upgrades and backups named in the
-description. Pin versions and back up before upgrading; verify migrations, health, and smoke after
-upgrading; stop and roll back on failure. A backup must contain a consistent PostgreSQL dump, an
-encrypted `.env`, and a restore drill. Produce a revoke plan by default, and confirm remote deletion
-and volume deletion separately.
+Read [references/lifecycle.md](references/lifecycle.md) before any of these operations. These are
+single-authority migration and recovery actions, never a way to run two writable Servers.
+
+- **Stop:** after explicit downtime authorization, stop host runtimes or confirm they have no active
+  work, then run `stop-unix-server.sh` on macOS/native Linux or
+  `invoke-windows-wsl-environment.ps1 stop` for Windows+WSL. Preserve containers, volumes,
+  Tailscale Serve, and autostart definitions. Report when an authorized autostart item could start
+  the Server again at the next login or boot.
+- **Export:** require a stopped application, an absolute destination outside the checkout, an
+  existing `age` binary, and a user-selected public recipient. Run
+  `export-unix-server-environment.sh` or the Windows+WSL wrapper. It may start only PostgreSQL long
+  enough for a consistent logical dump, then must leave every Server container stopped. The single
+  encrypted archive contains the database dump, uploads, `.env`, admission cache evidence,
+  state/connection evidence, Compose file, source revision, image digests, and checksums. An export
+  receipt is not a verified backup until an isolated restore drill succeeds.
+- **Restore:** require explicit recovery authorization, the local identity-file path, a confirmed
+  Multica checkout, completed target Tailscale readiness, no target `.env`, no target Compose or
+  gateway containers, and no `multica_pgdata` or `multica_backend_uploads` volume. Never delete or
+  overwrite those targets to make restore proceed. Run `restore-unix-server-environment.sh` with
+  `RESTORE_EMPTY_TARGET` or the Windows+WSL wrapper with `-ConfirmRestore`. Verify archive safety and
+  checksums before mutation, restore the database/uploads/admission environment, and leave the
+  Server stopped in `cluster-finalizing`.
+
+After restore, use the ordinary platform start and publish path, verify all loopback/database
+binding invariants and both `/api/config` layers, verify the restored owner/workspace, then compose
+`multica-client-setup` for the new host runtime and smoke. Mark the environment restore verified
+only after that chain passes. Keep the old Server stopped until the new host is verified; if
+verification fails, stop the new host and return to the old authority rather than running both.
+
+## Upgrade, back up, and revoke
+
+Follow [references/lifecycle.md](references/lifecycle.md). Pin versions and export a verified Server
+environment before upgrading; verify migrations, health, and smoke after upgrading; stop and roll
+back on failure. Produce a revoke plan by default, and confirm remote deletion and volume deletion
+separately.
 
 ## Troubleshooting order
 

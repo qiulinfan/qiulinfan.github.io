@@ -52,6 +52,10 @@ flowchart LR
     Provision["明确授权的新 workspace / agent"] --> RuntimeClient["multica-runtime-client<br/>workspace / agent / issue / task"]
     Work["成员自然语言工作"] --> RuntimeClient
     RuntimeClient --> Pool
+    Lifecycle["明确授权的停止 / 迁移"] --> StopEnv["停止唯一 Server<br/>保留容器 / 卷 / Serve"]
+    StopEnv --> ExportEnv["一致性 dump + uploads + env<br/>整包 age 加密"]
+    ExportEnv --> RestoreEnv["空目标 restore<br/>保持停止"]
+    RestoreEnv --> Host
 ```
 
 [`multica-selfhost-server`](#skill-multica-selfhost-server) 建立唯一控制面和共享 workspace，
@@ -61,6 +65,13 @@ flowchart LR
 WSL 始终归入 Windows 路径，不注册成 Linux runtime。它把不含凭据的地址写入
 `connection.json`，再委派 [`multica-client-setup`](#skill-multica-client-setup) 配置
 宿主机执行面。
+
+Server 生命周期迁移严格保持单主：明确停机后保留容器、卷、Tailscale Serve 与自启动定义，
+再从停止态临时只启动 PostgreSQL 做一致性逻辑导出，把数据库、uploads、`.env`、版本/镜像与
+状态证据整包加密成 `.tar.age`。恢复只接受已经通过 Tailscale 门槛、没有 `.env`、容器或目标
+数据卷的空机器；解密、校验、恢复后仍保持停止并回到 `cluster-finalizing`，必须复用正常
+start/publish、owner/workspace、runtime/agent 和 smoke 验证链后才成为新权威。旧 Server 在验收前
+保持停止，不能与恢复出的副本同时可写；archive 与 age identity 也不能放在同一处。
 
 服主使用 `multica-selfhost-server` 承接成员提出的任何接入问题。Skill 向服主收集成员的
 Multica email、必要时的 Tailscale identity，以及服主希望开放的自然语言范围；workspace、
@@ -135,6 +146,18 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 
 > 继续使用 `$multica-selfhost-server` 完成上次的 `trusted-team` 部署。先读取 profile cache 和真实
 > 状态，只执行当前 phase，不要重新创建已经完成的 server、workspace、runtime 或 agent。
+
+停止并导出唯一服务器：
+
+> 使用 `$multica-selfhost-server` 先确认当前 runtime 没有活动任务，再停止唯一 Server，但保留
+> 容器、数据卷、Tailscale Serve 与自启动定义。使用我指定的 age recipient，把一致性数据库、
+> uploads、环境、版本和校验信息导出到仓库外目录；导出后保持 Server 停止，不要删除任何卷。
+
+从环境包冷迁移：
+
+> 使用 `$multica-selfhost-server` 把我指定的 `.tar.age` 恢复到这台已经通过 Tailscale 就绪门槛的
+> 空机器。我明确授权 recovery，但不授权删除或覆盖任何现存 `.env`、容器或数据卷；遇到冲突就
+> 停止。恢复后保持停止，随后走正常 start/publish、owner/workspace、runtime/agent 和 smoke 验证。
 
 邀请一位成员：
 

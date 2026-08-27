@@ -35,7 +35,7 @@ for required_command in scutil networksetup curl awk grep paste pgrep ruby sed; 
     exit 3
   }
 done
-[ -x "$clash_helper" ] || { echo "Clash Verge routing helper is not executable." >&2; exit 3; }
+[ -f "$clash_helper" ] || { echo "Clash Verge routing helper is missing." >&2; exit 3; }
 
 clash_root=${CLASH_VERGE_CONFIG_ROOT:-$HOME/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev}
 verge_yaml="$clash_root/verge.yaml"
@@ -99,11 +99,11 @@ case "$proxy_host" in ''|*'/'*|*'@'*|*[[:space:]]*) manual invalid_system_proxy_
 case "$proxy_port" in ''|*[!0-9]*) manual invalid_system_proxy_port clash-verge system-proxy ;; esac
 
 helper_status=0
-"$clash_helper" check "$clash_root" >/dev/null 2>&1 || helper_status=$?
+ruby "$clash_helper" check "$clash_root" >/dev/null 2>&1 || helper_status=$?
 case "$helper_status" in
   0) config_changed=false ;;
   10)
-    "$clash_helper" apply "$clash_root" >/dev/null 2>&1 || manual clash_verge_rules_config_failed clash-verge system-proxy
+    ruby "$clash_helper" apply "$clash_root" >/dev/null 2>&1 || manual clash_verge_rules_config_failed clash-verge system-proxy
     config_changed=true
     ;;
   *) manual clash_verge_config_not_safely_editable clash-verge system-proxy ;;
