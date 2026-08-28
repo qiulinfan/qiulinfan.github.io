@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "diaryRepoRoot": "/Users/qiulinfan/Desktop/Diarys",
+  "requiredMarkers": [
+    "AGENTS.md",
+    "Meta/待办机器人/config.json",
+    "Meta/待办机器人/协议.md"
+  ],
+  "paths": {
+    "config": "Meta/待办机器人/config.json",
+    "todo": "AboveAll等待干的事情.md",
+    "protocol": "Meta/待办机器人/协议.md",
+    "state": "Meta/待办机器人/state.json",
+    "persona": "Meta/人格记录.md",
+    "validator": "Meta/待办机器人/validate.py",
+    "monthlyDiaryPattern": "^[0-9]{2}-[0-9]{2}\\.md$"
+  },
+  "lastVerifiedOn": "2026-08-26"
+}
