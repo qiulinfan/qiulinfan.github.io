@@ -81,3 +81,5 @@ knowledge/build/
 # Machine-local external-agent selection and credential-file pointers
 /skills/.agent-runtime-profile.local.json
 .obsidian/graph.json
+skills/multica-client-setup/.cache/gamemaker/profile.env
+skills/multica-selfhost-server/.cache/local/profile.env
