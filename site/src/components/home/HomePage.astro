@@ -59,8 +59,6 @@ const copy = zh
 	description={zh ? "Qiulin 的个人主页与笔记。" : "Qiulin's portfolio and notes."}
 >
 	<div class="homepage">
-		<img class="page-background" src={url("/assets/backgrounds/one-dark-sakura-right-v3.webp")} alt="" aria-hidden="true" />
-		<div class="page-wash" aria-hidden="true"></div>
 		<section class="hero card" aria-labelledby="hero-title">
 			<div class="hero-copy">
 				<div class="identity"><img src={profileConfig.avatar} alt={profileConfig.name} /><span class="eyebrow">{copy.eyebrow}</span></div>
@@ -122,12 +120,9 @@ const copy = zh
 </LandingPageLayout>
 
 <style>
-	.homepage { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; }
-	.homepage > :not(.page-background):not(.page-wash) { position: relative; z-index: 2; }
-	.page-background, .page-wash { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-	.page-background { z-index: 0; object-fit: cover; object-position: right top; }
-	.page-wash { z-index: 1; background: color-mix(in srgb, var(--page-bg) 60%, transparent); backdrop-filter: saturate(.86) contrast(.96); }
-	:global(html.dark) .page-wash { background: color-mix(in srgb, var(--page-bg) 10%, transparent); }
+	:global(body:has(.homepage)) { background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 60%, transparent), color-mix(in srgb, var(--page-bg) 60%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp"); background-position: center, right top; background-size: cover; background-attachment: fixed; background-repeat: no-repeat; }
+	:global(html.dark body:has(.homepage)) { background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 10%, transparent), color-mix(in srgb, var(--page-bg) 10%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp"); }
+	.homepage { position: relative; display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; }
 	.card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 	.button { min-height: 2.8rem; padding: 0 1rem; display: inline-flex; align-items: center; justify-content: space-between; gap: .9rem; border: 1px solid var(--border); border-radius: var(--radius-small); color: var(--text-strong); background: color-mix(in srgb, var(--card-bg) 78%, transparent); font-size: .75rem; font-weight: 650; text-decoration: none; backdrop-filter: blur(12px); }
 	.button:hover { border-color: color-mix(in srgb, var(--primary) 46%, var(--border)); transform: translateY(-2px); }
