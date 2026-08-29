@@ -1,8 +1,8 @@
 # Skills
 
 本目录是 qlblog 自有公开个人 Skills 的权威副本。普通公开 Skill 默认直接
-创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前没有本仓库内的
-语义套件。不公开的个人 Skills 与从开源网站下载的第三方 Skills 统一放在
+创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前保留的本地语义套件是
+`multica-collaboration/`。不公开的个人 Skills 与从开源网站下载的第三方 Skills 统一放在
 `linked-skill-repositories.tsv` 登记的外部 repositories 中，只供本机运行时使用；自有公开
 repositories 通过 `published-skill-repositories.tsv` 加入个人主页。
 
@@ -265,11 +265,11 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 
 ## 个人维护
 
-### 全局 Skills
+### Multica collaboration
 
-- [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、完成两层准入和 client handoff，管理首 runtimes、默认并发 `10`、自启动、升级与撤销，并以不删除的 stop、整包 `age` 加密 export、空目标 restore 和完整 smoke 复验完成单主冷迁移。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
-- [multica-client-setup](./multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并以 daemon 全局默认并发 `10` 持久化和核验获授权的自启动；新建 Codex agent 时显式使用无需 Windows sandbox setup 的固定启动参数，不处理日常 issue/task、provider CLI 或第二套 server。
-- [multica-runtime-client](./multica-runtime-client/)：在 CLI、身份、daemon 和本机 runtimes 已配置的前提下，按明确授权防重复地新建 workspace 和 agents，或把自然语言工作转成单个可验收 issue；新建 Codex agent 时强制使用独立 home 可工作的固定 sandbox/approval 参数，随后按完整 ID 入队一次并读取 runs/messages 监控、续接、取消或按授权 rerun，同时检查跨 workspace 的 daemon 全局容量、活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
+- [multica-selfhost-server](./multica-collaboration/multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、完成两层准入和 client handoff，管理首 runtimes、默认并发 `10`、自启动、升级与撤销，并以不删除的 stop、整包 `age` 加密 export、空目标 restore 和完整 smoke 复验完成单主冷迁移。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
+- [multica-client-setup](./multica-collaboration/multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并以 daemon 全局默认并发 `10` 持久化和核验获授权的自启动；新建 Codex agent 时显式使用无需 Windows sandbox setup 的固定启动参数，不处理日常 issue/task、provider CLI 或第二套 server。
+- [multica-runtime-client](./multica-collaboration/multica-runtime-client/)：在 CLI、身份、daemon 和本机 runtimes 已配置的前提下，按明确授权防重复地新建 workspace 和 agents，或把自然语言工作转成单个可验收 issue；新建 Codex agent 时强制使用独立 home 可工作的固定 sandbox/approval 参数，随后按完整 ID 入队一次并读取 runs/messages 监控、续接、取消或按授权 rerun，同时检查跨 workspace 的 daemon 全局容量、活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
 
 ## 私有与第三方来源
 

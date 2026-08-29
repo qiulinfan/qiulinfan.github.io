@@ -5,6 +5,7 @@ import {
 	loadPublishedRepositoryGroups,
 	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
+	orderSkillGroupsForDisplay,
 } from "@utils/skill-sources";
 import MarkdownIt from "markdown-it";
 
@@ -14,16 +15,17 @@ const markdown = new MarkdownIt({
 	typographer: false,
 });
 const publishedSkills = loadPublishedSkills();
-const skillGroups = [
+const skillGroups = orderSkillGroupsForDisplay([
 	...loadSkillDirectoryGroups(),
 	...loadPublishedRepositoryGroups(),
-].map((group) => ({
-	...group,
-	skills: group.skills.map((skill) => ({
-		...skill,
-		summaryHtml: markdown.renderInline(skill.summary),
-	})),
-}));
+])
+	.map((group) => ({
+		...group,
+		skills: group.skills.map((skill) => ({
+			...skill,
+			summaryHtml: markdown.renderInline(skill.summary),
+		})),
+	}));
 const groupedSkills = skillGroups.flatMap((group) => group.skills);
 const skillOrdinal = new Map(
 	groupedSkills.map((skill, index) => [skill.name, index + 1]),
@@ -36,7 +38,7 @@ const groupLabel = (group: (typeof skillGroups)[number]) =>
 		? `${group.directory} repository`
 		: group.directory
 			? `${group.directory}/`
-			: "顶层 Skills";
+			: "Other Skills";
 
 const workflowSource = loadSkillWorkflowsMarkdown();
 const workflowTokens = markdown.parse(workflowSource, {});
@@ -109,7 +111,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-index" class="index-section" data-pagefind-body>
 			<header class="section-header">
 				<div><span>01 / DIRECTORY</span><h2>Skill 导航</h2></div>
-				<p>qlblog Skills 按真实目录分组，自有公开仓库按 repository 分组。私有仓库与第三方公开仓库属于 linked-only authority，不进入网站构建。</p>
+				<p>qlblog Skills 按语义套件分组，自有公开仓库按 repository 分组；未分类的根目录内容统一归入最下方的 <code>Other Skills</code>。私有仓库与第三方公开仓库属于 linked-only authority，不进入网站构建。</p>
 			</header>
 			<div class="folder-tree" aria-label="Skills grouped by repository directory">
 				{skillGroups.map((group, index) => (

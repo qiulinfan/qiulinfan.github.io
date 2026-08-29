@@ -11,6 +11,7 @@ import {
 	loadSkillCatalogMarkdown,
 	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
+	orderSkillGroupsForDisplay,
 } from "../src/utils/skill-sources.ts";
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
@@ -101,6 +102,18 @@ test("owned public repository groups are displayed while linked-only repositorie
 	assert.equal(groups.some((group) => group.directory === "community-skills"), false);
 });
 
+test("repository groups lead, semantic suites follow, and Other Skills stay last", () => {
+	const [repository] = loadPublishedRepositoryGroups();
+	const [suite] = loadSkillDirectoryGroups();
+	const other = { ...suite, directory: "", path: "skills/", skills: [] };
+	assert.deepEqual(
+		orderSkillGroupsForDisplay([other, suite, repository]).map((group) =>
+			group.kind === "repository" ? `repo:${group.directory}` : `dir:${group.directory || "other"}`,
+		),
+		[`repo:${repository.directory}`, "dir:multica-collaboration", "dir:other"],
+	);
+});
+
 test("the public catalog dynamically groups every owned Skill without a community group", () => {
 	const groups = loadSkillDirectoryGroups();
 	const expectedMembership = loadOwnedSkills()
@@ -124,6 +137,10 @@ test("the public catalog dynamically groups every owned Skill without a communit
 	assert.deepEqual(actualMembership, expectedMembership);
 	assert.equal(groups.every((group) => group.skills.length > 0), true);
 	assert.equal(groups.some((group) => group.directory === "community"), false);
+	assert.deepEqual(
+		groups.map((group) => [group.directory, group.skills.length]),
+		[["multica-collaboration", 3]],
+	);
 	assert.equal(
 		groups
 			.flatMap((group) => group.skills)

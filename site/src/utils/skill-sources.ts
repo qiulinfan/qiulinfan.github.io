@@ -246,8 +246,8 @@ export function loadSkillDirectoryGroups(): SkillDirectoryGroup[] {
 
 	return [...groups.entries()]
 		.sort(([left], [right]) => {
-			if (!left) return -1;
-			if (!right) return 1;
+			if (!left) return 1;
+			if (!right) return -1;
 			return left.localeCompare(right);
 		})
 		.map(([directory, skills]) => ({
@@ -274,6 +274,17 @@ export function loadPublishedRepositoryGroups(): SkillDirectoryGroup[] {
 			skills: skills.sort((left, right) => left.name.localeCompare(right.name)),
 			kind: "repository" as const,
 		}));
+}
+
+export function orderSkillGroupsForDisplay(
+	groups: SkillDirectoryGroup[],
+): SkillDirectoryGroup[] {
+	const rank = (group: SkillDirectoryGroup) => {
+		if (group.kind === "repository") return 0;
+		if (group.directory) return 1;
+		return 2;
+	};
+	return [...groups].sort((left, right) => rank(left) - rank(right));
 }
 
 export function loadSkillWorkflowsMarkdown(): string {
