@@ -1,26 +1,38 @@
 ---
 import WidePageLayout from "@layouts/WidePageLayout.astro";
+import { noteSubjectLabels, pendingNotes } from "@/data/notes";
 import { loadListedNoteSources } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
 
 const sources = loadListedNoteSources();
-const groups = Map.groupBy(sources, (source) => source.subject);
+const groups = Object.entries(noteSubjectLabels).map(([subject, title]) => ({
+	subject: subject as keyof typeof noteSubjectLabels,
+	title,
+	published: sources.filter((source) => source.subject === subject),
+	pending: pendingNotes[subject as keyof typeof noteSubjectLabels],
+}));
 ---
 
-<WidePageLayout title="Notes" description="Source-backed notes">
+<WidePageLayout title="Notes" description="Notes">
 	<section class="notes-index card-base">
-		<header><span>KNOWLEDGE SOURCES</span><h1>Notes</h1><p>公开笔记由统一 source registry 生成目录，并与全局知识图谱共享身份。</p></header>
+		<header><h1>Notes</h1></header>
 		<div class="groups">
-			{Array.from(groups.entries()).map(([name, entries]) => (
+			{groups.map((group) => (
 				<section>
-					<h2>{name}</h2>
+					<h2>{group.title}</h2>
 					<div class="note-list">
-						{entries.map((source) => (
+						{group.published.map((source) => (
 							<a href={url(source.navigationHref)} data-no-swup={source.standalone || undefined}>
 								<span><strong>{source.title}</strong><small>{source.fields.join(" · ")}</small></span>
 								<p>{source.description}</p>
-								<small>{source.authority}</small>
+								<small>OPEN ↗</small>
 							</a>
+						))}
+						{group.pending.map((note) => (
+							<article class="pending-note">
+								<strong>{note.title}</strong>
+								<p>// 待整理</p>
+							</article>
 						))}
 					</div>
 				</section>
@@ -31,15 +43,15 @@ const groups = Map.groupBy(sources, (source) => source.subject);
 
 <style>
 	.notes-index { padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius-large); }
-	header span { font: 650 .68rem/1 "JetBrains Mono Variable", monospace; letter-spacing: .16em; }
-	header h1 { margin: .55rem 0; font-size: clamp(2.2rem, 6vw, 4.5rem); }
-	header p { margin: 0; color: color-mix(in oklch, currentColor 55%, transparent); }
+	header h1 { margin: 0; font-size: clamp(2.2rem, 6vw, 4.5rem); }
 	.groups { display: grid; gap: 2rem; margin-top: 2.5rem; }
-	h2 { margin-bottom: .8rem; font-size: 1rem; font-family: "JetBrains Mono Variable", monospace; }
+	h2 { margin-bottom: .8rem; font-size: 1rem; font-family: var(--font-mono); }
 	.note-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .7rem; }
-	.note-list a { display: flex; min-height: 9rem; flex-direction: column; justify-content: space-between; gap: .8rem; padding: 1rem; border: 1px solid var(--line-divider); border-radius: .8rem; color: inherit; text-decoration: none; }
+	.note-list a, .pending-note { display: flex; min-height: 9rem; flex-direction: column; justify-content: space-between; gap: .8rem; padding: 1rem; border: 1px solid var(--line-divider); border-radius: .8rem; color: inherit; text-decoration: none; }
 	.note-list a:hover { border-color: color-mix(in oklch, var(--primary) 55%, var(--line-divider)); transform: translateY(-1px); }
-	.note-list a span { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+	.note-list span { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 	.note-list p { margin: 0; color: color-mix(in oklch, currentColor 62%, transparent); font-size: .88rem; line-height: 1.5; }
 	.note-list small { overflow-wrap: anywhere; color: color-mix(in oklch, currentColor 44%, transparent); }
+	.pending-note { opacity: .66; }
+	.pending-note p { font-family: var(--font-mono); }
 </style>

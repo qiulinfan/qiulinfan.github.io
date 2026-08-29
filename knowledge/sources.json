@@ -510,6 +510,143 @@
         }
       ],
       "topics": []
+    },
+    {
+      "id": "math:point-set-topology",
+      "title": "Point-Set Topology",
+      "description": "Typst-first notes for Point-Set Topology.",
+      "subject": "math",
+      "course": "point-set-topology",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/math/point-set-topology",
+      "files": [
+        "main.typ",
+        "chapters/*.typ"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/math/point-set-topology",
+      "topics": []
+    },
+    {
+      "id": "cs:operating-systems",
+      "title": "Operating Systems",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "operating-systems",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/operating-systems",
+      "files": [
+        "**/*.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/operating-systems",
+      "topics": []
+    },
+    {
+      "id": "cs:machine-learning",
+      "title": "Machine Learning",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "machine-learning",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/machine-learning",
+      "files": [
+        "**/*.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/machine-learning",
+      "topics": []
+    },
+    {
+      "id": "cs:optimization",
+      "title": "Optimization Methods for SIPML",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "optimization",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/optimization",
+      "files": [
+        "**/*.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/optimization",
+      "topics": []
+    },
+    {
+      "id": "cs:computer-networks",
+      "title": "Computer Networks",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "computer-networks",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/computer-networks",
+      "files": [
+        "README.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/computer-networks",
+      "topics": []
+    },
+    {
+      "id": "cs:computer-vision",
+      "title": "Computer Vision",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "computer-vision",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/computer-vision",
+      "files": [
+        "README.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/computer-vision",
+      "topics": []
+    },
+    {
+      "id": "cs:natural-language-processing",
+      "title": "Natural Language Processing",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "natural-language-processing",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/natural-language-processing",
+      "files": [
+        "README.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/natural-language-processing",
+      "topics": []
+    },
+    {
+      "id": "cs:computer-graphics",
+      "title": "Computer Graphics",
+      "description": "// 待整理",
+      "subject": "cs",
+      "course": "computer-graphics",
+      "knowledge_origin": "personal-note",
+      "fields": [],
+      "root": "notes/cs/computer-graphics",
+      "files": [
+        "README.md"
+      ],
+      "publish": false,
+      "listed": false,
+      "web": "https://qiulinfan.github.io/notes/cs/computer-graphics",
+      "topics": []
     }
   ]
 }

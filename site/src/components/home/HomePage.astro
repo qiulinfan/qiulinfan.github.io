@@ -1,5 +1,5 @@
 ---
-import { homepageLinks, projects } from "@/data/home";
+import { projectGroups } from "@/data/home";
 import { profileConfig } from "@/config";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import { loadListedNoteSources } from "@utils/note-sources";
@@ -76,28 +76,26 @@ const copy = zh
 				<div><span>{copy.workKicker}</span><h2>{copy.workTitle}</h2></div>
 				<div class="section-link"><a href={url(zh ? "/zh/projects/" : "/projects/")}>{copy.allProjects} ↗</a></div>
 			</header>
-			<div class="project-grid">
-				{projects.map((project) => (
-					<a class="project-card card" href={project.href} target="_blank" rel="noreferrer">
-						<div class="project-image"><img src={url(project.image)} alt={`${project.title} screenshot`} loading="lazy" /></div>
-						<div class="project-copy">
-							<span>{project.tags.join(" · ")}</span>
-							<h3>{project.title}</h3>
-							<strong>OPEN PROJECT ↗</strong>
+			<div class="project-groups">
+				{projectGroups.map((group) => (
+					<section class="project-group">
+						<h3>{zh ? group.titleZh : group.title}</h3>
+						<div class="project-grid">
+							{group.projects.map((project) => (
+								<a class="project-card card" href={project.href} target="_blank" rel="noreferrer">
+									<div class="project-image"><img src={project.image.startsWith("/") ? url(project.image) : project.image} alt={`${project.title} preview`} loading="lazy" /></div>
+									<div class="project-copy">
+										<span>{project.tags.join(" · ")}</span>
+										<h4>{project.title}</h4>
+										<p>{zh ? project.descriptionZh : project.description}</p>
+										<strong>{project.linkLabel.toUpperCase()} ↗</strong>
+									</div>
+								</a>
+							))}
 						</div>
-					</a>
+					</section>
 				))}
 			</div>
-			<article class="engine-card card">
-				<div class="engine-copy">
-					<span>C++17 · SDL2 · LUA · BOX2D · IMGUI</span><h3>PocketEngine</h3>
-					<div>
-						<a class="button primary" href={homepageLinks.pocketEngine}>{copy.page} ↗</a>
-						<a class="button" href={homepageLinks.pocketEngineRepository}>{copy.repo} ↗</a>
-					</div>
-				</div>
-				<a class="engine-media" href={homepageLinks.pocketEngine}><img src={`${homepageLinks.pocketEngine}show.gif`} alt="PocketEngine editor preview" loading="lazy" /></a>
-			</article>
 		</section>
 
 		<section class="section" id="notes">
@@ -133,7 +131,7 @@ const copy = zh
 	.hero-copy { width: min(100%, 56rem); }
 	.identity { display: flex; align-items: center; gap: .85rem; }
 	.identity img { width: 3.25rem; height: 3.25rem; border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; object-fit: cover; }
-	.eyebrow, .section-heading span, .project-copy > span, .engine-copy > span { color: var(--primary); font: 700 .66rem/1.2 var(--font-mono); letter-spacing: .16em; }
+	.eyebrow, .section-heading span, .project-copy > span { color: var(--primary); font: 700 .66rem/1.2 var(--font-mono); letter-spacing: .16em; }
 	h1 { max-width: 8ch; margin: .8rem 0 0; color: var(--text-strong); font-size: clamp(3.2rem, 8vw, 7.8rem); font-weight: 700; line-height: .89; letter-spacing: -.025em; }
 	.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 2rem; }
 	.section { scroll-margin-top: 6rem; }
@@ -142,21 +140,18 @@ const copy = zh
 	.section-heading > .section-link { justify-self: end; max-width: 28rem; }
 	.section-heading p { margin: 0; color: var(--text-muted); line-height: 1.65; }
 	.section-heading a { display: inline-block; margin-top: .65rem; color: var(--primary); font: 650 .7rem/1 var(--font-mono); text-decoration: none; }
+	.project-groups { display: grid; gap: 2.4rem; }
+	.project-group > h3 { margin: 0 0 .8rem .15rem; color: var(--text-muted); font: 650 .72rem/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 	.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 	.project-card { min-width: 0; color: inherit; text-decoration: none; overflow: hidden; }
 	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
-	.project-image { aspect-ratio: 16 / 11; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
-	.project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+	.project-image { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
+	.project-image img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transition: transform .5s ease; }
 	.project-card:hover img { transform: scale(1.025); }
-	.project-copy { min-height: 10rem; padding: 1.3rem; display: flex; flex-direction: column; }
-	.project-copy h3, .engine-copy h3, .note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
+	.project-copy { min-height: 13rem; padding: 1.3rem; display: flex; flex-direction: column; }
+	.project-copy h4, .note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
+	.project-copy p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.55; }
 	.project-copy > strong { margin-top: auto; padding-top: 1.4rem; color: var(--primary); font: 650 .6rem/1 var(--font-mono); letter-spacing: .1em; }
-	.engine-card { margin-top: 1rem; padding: 1rem; display: grid; grid-template-columns: minmax(0, .8fr) minmax(22rem, 1.2fr); gap: 1rem; }
-	.engine-copy { padding: clamp(1rem, 3vw, 2.4rem); display: flex; flex-direction: column; justify-content: center; }
-	.engine-copy h3 { font-size: clamp(2rem, 4vw, 3.4rem); }
-	.engine-copy > div { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
-	.engine-media { min-height: 23rem; border-radius: var(--radius-medium); overflow: hidden; background: var(--surface-deep); }
-	.engine-media img { width: 100%; height: 100%; object-fit: cover; }
 	.note-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 	.note-card { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
 	.note-card > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-mono); text-transform: uppercase; }
@@ -167,7 +162,6 @@ const copy = zh
 		.section-heading { grid-template-columns: 1fr; }
 		.section-heading > .section-link { justify-self: start; }
 		.project-grid { grid-template-columns: 1fr 1fr; }
-		.engine-card { grid-template-columns: 1fr; }
 		.note-grid { grid-template-columns: 1fr 1fr; }
 	}
 	@media (max-width: 600px) {
@@ -176,8 +170,6 @@ const copy = zh
 		h1 { font-size: clamp(3rem, 16vw, 5rem); }
 		.button.language { margin-left: 0; }
 		.project-grid, .note-grid { grid-template-columns: 1fr; }
-		.engine-card { padding: .7rem; }
-		.engine-media { min-height: 15rem; }
 	}
 	@media (prefers-reduced-motion: reduce) {
 		*, *::before, *::after { transition-duration: .01ms !important; }

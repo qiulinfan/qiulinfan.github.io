@@ -1,33 +1,3 @@
-export const homepageLinks = {
-	pocketEngine: "https://qiulinfan.github.io/pocketEngine/",
-	pocketEngineRepository: "https://github.com/qiulinfan/pocketEngine",
-} as const;
-
-export const projects = [
-	{
-		id: "village-rim",
-		title: "Village Rim",
-		image: "/assets/village-rim.webp",
-		href: "https://bluesamoyed.itch.io/village-rim",
-		tags: ["Unity", "Combat AI", "Level Design"],
-		description:
-			"A compact 2D adventure built with a four-person team. I owned combat, enemy behavior, animation integration, spawning, and level design.",
-		descriptionZh:
-			"四人合作完成的 2D 冒险游戏；我负责战斗、敌人行为、动画集成、生成系统与关卡设计。",
-	},
-	{
-		id: "zelda-1986",
-		title: "Zelda 1986 · Level 1",
-		image: "/assets/zelda-1986.webp",
-		href: "https://bluesamoyed.itch.io/zelda1986-level1",
-		tags: ["Gameplay Systems", "Enemy AI", "Tools"],
-		description:
-			"A recreation of the original dungeon with enemy AI, room control, weapons, health systems, custom shadows, and animation work.",
-		descriptionZh:
-			"对初代地牢的重制；包含敌人 AI、房间控制、武器、生命系统、自定义阴影与动画。",
-	},
-] as const;
-
 export const projectGroups = [
 	{
 		title: "Games & In-house Engine",
@@ -35,6 +5,7 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "Village Rim",
+				image: "/assets/village-rim.webp",
 				href: "https://bluesamoyed.itch.io/village-rim",
 				linkLabel: "Play",
 				tags: ["Unity", "Combat AI", "Level Design"],
@@ -45,6 +16,7 @@ export const projectGroups = [
 			},
 			{
 				title: "PocketEngine",
+				image: "/assets/projects/pocket-engine.gif",
 				href: "https://github.com/qiulinfan/pocketEngine",
 				linkLabel: "GitHub",
 				tags: ["C++17", "SDL2", "Lua", "Box2D", "ImGui"],
@@ -61,6 +33,7 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "Discrete Sprite Lab",
+				image: "/assets/projects/discrete-sprite-lab.png",
 				href: "https://github.com/qiulinfan/discrete-sprite-lab",
 				linkLabel: "GitHub",
 				tags: ["Pixel Art", "Discrete Grid", "Agent Skills"],
@@ -71,6 +44,7 @@ export const projectGroups = [
 			},
 			{
 				title: "AutoTA",
+				image: "/assets/projects/autota.png",
 				href: "https://github.com/qiulinfan/autoTA",
 				linkLabel: "GitHub",
 				tags: ["Technical Art", "2D / 3D", "Asset Audit"],
@@ -87,6 +61,7 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "kgdistiller",
+				image: "https://opengraph.githubassets.com/qlblog-home/qiulinfan/kgdistiller",
 				href: "https://github.com/qiulinfan/kgdistiller",
 				linkLabel: "GitHub",
 				tags: ["Knowledge Graph", "Markdown", "Typst", "LaTeX"],
@@ -103,6 +78,7 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "sessionmgr",
+				image: "/assets/projects/sessionmgr.png",
 				href: "https://github.com/qiulinfan/sessionmgr",
 				linkLabel: "GitHub",
 				tags: ["Go", "CLI", "Local UI"],
@@ -113,6 +89,7 @@ export const projectGroups = [
 			},
 			{
 				title: "obsidian-tinymist",
+				image: "https://opengraph.githubassets.com/qlblog-home/qiulinfan/obsidian-tinymist",
 				href: "https://github.com/qiulinfan/obsidian-tinymist",
 				linkLabel: "GitHub",
 				tags: ["Obsidian", "Typst", "Tinymist"],
