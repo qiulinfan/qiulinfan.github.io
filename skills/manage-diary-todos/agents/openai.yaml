@@ -1,4 +1,0 @@
-interface:
-  display_name: "Manage Diary Todos"
-  short_description: "Maintain Diary todos and completion journal"
-  default_prompt: "Use $manage-diary-todos to add this task to my Diary todo list."

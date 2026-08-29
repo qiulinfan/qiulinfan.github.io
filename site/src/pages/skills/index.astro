@@ -2,6 +2,7 @@
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import {
 	loadPublishedSkills,
+	loadPublishedRepositoryGroups,
 	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
 } from "@utils/skill-sources";
@@ -13,7 +14,10 @@ const markdown = new MarkdownIt({
 	typographer: false,
 });
 const publishedSkills = loadPublishedSkills();
-const skillGroups = loadSkillDirectoryGroups().map((group) => ({
+const skillGroups = [
+	...loadSkillDirectoryGroups(),
+	...loadPublishedRepositoryGroups(),
+].map((group) => ({
 	...group,
 	skills: group.skills.map((skill) => ({
 		...skill,
@@ -25,8 +29,14 @@ const skillOrdinal = new Map(
 	groupedSkills.map((skill, index) => [skill.name, index + 1]),
 );
 const skillAnchor = (name: string) => `skill-${name.replace(/[^a-z0-9]+/gi, "-")}`;
-const directoryAnchor = (directory: string) =>
-	`skill-directory-${directory || "root"}`;
+const groupAnchor = (group: (typeof skillGroups)[number]) =>
+	`skill-group-${group.kind}-${group.directory || "root"}`;
+const groupLabel = (group: (typeof skillGroups)[number]) =>
+	group.kind === "repository"
+		? `${group.directory} repository`
+		: group.directory
+			? `${group.directory}/`
+			: "顶层 Skills";
 
 const workflowSource = loadSkillWorkflowsMarkdown();
 const workflowTokens = markdown.parse(workflowSource, {});
@@ -82,7 +92,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 			<div class="hero-grid">
 				<h1>Skills<br /><em>&amp; Flows</em></h1>
 				<div class="hero-copy" data-pagefind-body>
-					<p>Skill 是能力单元，Workflow 决定它们如何协作。目录与流程都直接来自仓库里的 Markdown。</p>
+					<p>Skill 是能力单元，Workflow 决定它们如何协作。本站展示 qlblog 与已登记的自有公开仓库；私有和第三方 linked-only Skills 保持隐藏。</p>
 					<nav aria-label="Page sections">
 						<a href="#skill-index">Skill 导航 ↓</a>
 						<a href="#workflows">工具流 ↓</a>
@@ -99,7 +109,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-index" class="index-section" data-pagefind-body>
 			<header class="section-header">
 				<div><span>01 / DIRECTORY</span><h2>Skill 导航</h2></div>
-				<p>按仓库中的真实目录分组；展开文件夹查看 README 维护的简短说明。顶层 Skill 保持在 <code>skills/</code>，外部下载的 <code>community/</code> 完全不发布。</p>
+				<p>qlblog Skills 按真实目录分组，自有公开仓库按 repository 分组。私有仓库与第三方公开仓库属于 linked-only authority，不进入网站构建。</p>
 			</header>
 			<div class="folder-tree" aria-label="Skills grouped by repository directory">
 				{skillGroups.map((group, index) => (
@@ -107,7 +117,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 						<summary>
 							<span class="folder-icon" aria-hidden="true"></span>
 							<span class="folder-heading">
-								<strong>{group.directory ? `${group.directory}/` : "顶层 Skills"}</strong>
+								<strong>{groupLabel(group)}</strong>
 								<code>{group.path}</code>
 							</span>
 							<span class="folder-count">{String(group.skills.length).padStart(2, "0")}</span>
@@ -148,16 +158,16 @@ const renderedWorkflows = workflows.map((workflow) => ({
 
 		<section id="skill-details" class="details-section">
 			<header class="section-header">
-				<div><span>03 / OWNED SKILLS</span><h2>自有 Skill 详情</h2></div>
-				<p>详情继续按实际目录分类，但保持展开的内容分组，不重复使用文件夹折叠交互。</p>
+				<div><span>03 / OWNED PUBLIC SKILLS</span><h2>公开 Skill 详情</h2></div>
+				<p>qlblog 与已登记的自有公开仓库共享一套详情卡片；每张卡片链接回对应 repository 的权威 SKILL.md。</p>
 			</header>
 			<div class="skill-detail-groups" data-pagefind-body aria-label="Personally maintained Agent Skills grouped by directory">
 				{skillGroups.map((group) => (
-					<section class="skill-detail-group" aria-labelledby={directoryAnchor(group.directory)}>
+					<section class="skill-detail-group" aria-labelledby={groupAnchor(group)}>
 						<header class="detail-group-heading">
 							<div>
-								<span>{group.directory ? "SUITE" : "ROOT"}</span>
-								<h3 id={directoryAnchor(group.directory)}>{group.directory ? `${group.directory}/` : "顶层 Skills"}</h3>
+								<span>{group.kind === "repository" ? "PUBLIC REPOSITORY" : group.directory ? "SUITE" : "ROOT"}</span>
+								<h3 id={groupAnchor(group)}>{groupLabel(group)}</h3>
 							</div>
 							<code>{group.path} · {String(group.skills.length).padStart(2, "0")}</code>
 						</header>

@@ -16,6 +16,27 @@ flowchart LR
 [`create-math-notes`](#skill-create-math-notes) 的 Typst-first 路径。两条路径都不得引入或恢复
 MkDocs、`gh-deploy` 或 PDF iframe；独立 PDF 项目不得放入 `qlblog/notes/`。
 
+## 固定方向动作与八方向传播
+
+```mermaid
+flowchart LR
+    Req["角色动作请求"] --> Contract["动作契约<br/>一个方向 × 一个动作 × N 相位"]
+    Contract --> Action["create-fixed-direction-action-sprites<br/>separate high-detail frames<br/>magnified local reasoning + exact pixel algebra"]
+    Action --> Gate{"fixed-direction<br/>temporal gold?"}
+    Gate -->|否| Repair["只修复失败相位<br/>不传播方向"]
+    Repair --> Action
+    Gate -->|是| Phases["N 个已批准相位<br/>高精细 + 伪像素 + 锚点 + hashes"]
+    Phases --> Turn["每个相位调用<br/>create-topdown-8dir-sprites"]
+    Turn --> Spatial{"每个相位<br/>八方向通过?"}
+    Spatial -->|否| TurnRepair["只修复失败方向/相位"]
+    TurnRepair --> Turn
+    Spatial -->|是| Assemble["组装 directions × phases<br/>双轴审计"]
+```
+
+[`create-fixed-direction-action-sprites`](#skill-create-fixed-direction-action-sprites) 只拥有时间轴：一个固定方向里的动作相位、植足/摆足、身体起伏、事件帧、帧间差异与循环闭合。每个相位先生成完整高精细人物，并分别在高精细原图、伪像素大图和最终逻辑像素的最近邻放大图中检查；Agent 像阅读文字片段一样在局部窗口中判断语义、相位、锚点、遮挡和连接，并先区分稳定身份块（如同一朝向的完整头部、五官、刚性标志）与相位块（如裙摆、袖口、手、腿和鞋）。脚本只做无失真的裁剪、放大、精确集合差分、透明擦除、整数变换、逐点 RGBA 写回与哈希校验。恢复优先共用一个伪像素网格；若独立生成源需要不同整数 refined grids，则逐帧记录并依靠统一 64×64 画布、身体轴、1:1 放置、局部身份块和放大循环审查保证连贯性，禁止用连续缩放或恢复后重采样强求网格一致。尺寸、Alpha、哈希、越界写入、禁用重采样与显式提升的 contract gate 属于不可豁免硬检查；左右动作距离和节奏比默认是诊断，超限时必须由正常速与慢速循环、理由及用户或 Agent 视觉权威显式确认，不能自动判好或判坏。技术检查通过而缺少完整视觉审查时只能停在 `awaiting-visual-review`；固定方向循环未通过时不得生成其他方向。
+
+[`create-topdown-8dir-sprites`](#skill-create-topdown-8dir-sprites) 仍保持原子化，只拥有空间方向轴：对一个已经批准的相位维护身份、相机、调色板、方向语义、脚轴和环形转向连续性；伪像素转换重新引入画布占比漂移时，只在 Perfect Pixel 前对透明高分辨率源做统一最近邻归一化，恢复后的逻辑像素仍禁止缩放。新 Skill 通过显式 handoff 引用它，但不修改、复制或扩张它。最终动作表只有在每个方向的时间循环和每个相位的八方向转向都通过后才可组装或导入引擎。
+
 ## Multica 控制面与执行节点
 
 ```mermaid
@@ -210,64 +231,3 @@ Skill 固定码 `114514` 是公开实例配置，不属于这个限制。
 > 使用 `$multica-selfhost-server` 先生成撤销 `friend@example.com` 访问权的计划，不要立即 apply。
 > 计划应覆盖 workspace membership、allowlist、agents、runtimes 和 Tailscale access，并分别说明
 > 哪些远程删除需要我的确认。
-
-## Codex 原生 Subagent 生产工作流
-
-```mermaid
-flowchart LR
-    Req["用户任务"] --> Contract["产物 / 权限 / 完成条件"]
-    Contract --> Pick["选择最小 Agent Skill 集"]
-    Pick --> Config{"可信 .codex/config.toml<br/>存在 agents roles?"}
-    Config -->|是| Roles["选择标准配置角色<br/>读取 config_file"]
-    Config -->|否| Shape{"按描述生成任务拓扑"}
-    Roles --> Lead["Codex Coordinator"]
-    Shape -->|单一边界| One["Fresh Codex Subagent"]
-    Shape -->|独立或分阶段| Lead
-    Lead --> A["Worker A<br/>专属 Skill / 写入边界"]
-    Lead --> B["Worker B<br/>专属 Skill / 写入边界"]
-    One --> Check["主 Agent 集成与独立验收"]
-    A --> Lead
-    B --> Lead
-    Lead --> Check
-```
-
-[`codex-subagent-workflow`](#skill-codex-subagent-workflow) 只使用当前 Codex 会话的
-原生 subagents，不通过 shell 或 API 再启动 Codex、Claude Code 或 OpenCode。
-主 agent 先固定交付物、权限和完成条件，再检查可信主项目的 `.codex/config.toml`：
-若 `[agents.<role>]` 已声明角色，就按标准描述、`config_file`、默认模型/推理强度和并发
-限制选择最小角色集；只有没有自定义角色时才根据任务描述自动编排。配置损坏或当前
-surface 无法选择已配置角色时明确失败，不悄悄退化。每个 worker 仍需指定最小 Skill、
-上下文、写入所有权和依赖关系；独立任务可以有界并发，依赖任务顺序交接。Subagents
-共享当前 runtime 与工作区，因此它们是新工作上下文而不是独立安全主体；最终 diff、
-产物和 validators 始终由主 agent 集成并验收。这个流程只处理真实生产交付物。
-
-## 单 Skill 原子与压力测试
-
-```mermaid
-flowchart LR
-    Skill["一个目标 Skill"] --> Contract["固定 fixture / prompt / invariants"]
-    Contract --> Count["运行次数：默认 1<br/>或用户指定 N"]
-    Count --> Runtime{"明确要求外部进程 / 登录 / runtime?"}
-    Runtime -->|否，默认| Copies["新 fixture + 新上下文"]
-    Runtime -->|是| External["Claude Code / OpenCode<br/>隔离进程 run"]
-    Copies --> T1["Native Codex Subagent 1"]
-    Copies --> T2["Native Codex Subagent N"]
-    T1 --> Evidence["逐 run 产物 / diff / 行为证据 / 耗时"]
-    T2 --> Evidence
-    External --> Evidence
-    Evidence --> Verdict["主 Agent 独立判定"]
-```
-
-[`codex-subagent-testskill`](#skill-codex-subagent-testskill) 每个 contract 只测试一个
-Skill，是单 Skill 测试默认入口，不承接生产交付。每个 run 使用新的 fixture copy 和
-不继承对话历史的原生 Codex subagent；未指定次数时只运行一次，用户可指定正整数次数
-重复同一 contract。重复测试默认串行以保持耗时可比，只有用户明确要求时才在可用
-subagent slots 内有界并发。主 agent 记录每次运行与完整 harness 的 wall-clock 时间，
-独立检查产物、workspace diff 和 validators，并区分 harness、behavior、artifact、safety
-与 orchestration 失败。它提供行为与上下文隔离，不声称全新进程、登录、provider 或
-文件系统隔离。
-
-只有用户明确要求 Claude Code、OpenCode、跨 runtime 对比或全新进程/认证时，才改用
-[`codex-external-agent-testskill`](#skill-codex-external-agent-testskill)。它的本机 profile
-只配置这两个外部 evaluator，不包含 Codex target；首次使用或缓存被清理后必须重新
-回答 runtime 与认证问题。

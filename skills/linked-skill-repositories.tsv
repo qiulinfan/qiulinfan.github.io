@@ -1,0 +1,7 @@
+# Link-only Skill repositories. Their contents are never published by qlblog.
+# repository<TAB>clone-url<TAB>checkout-relative-to-qlblog<TAB>skill-root-relative-to-checkout
+# Repositories may be private or public and may be owned by anyone.
+# Example third-party public repo: upstream-skills<TAB>https://github.com/other/upstream-skills.git<TAB>../qlblog-linked/upstream-skills<TAB>skills
+community-skills	git@github.com:qiulinfan/community-skills.git	../qlblog-private/community-skills	skills
+discrete-sprite-lab	https://github.com/qiulinfan/discrete-sprite-lab.git	../discrete-sprite-lab	skills
+myprivateskills	git@github.com:qiulinfan/myprivateskills.git	../qlblog-private/myprivateskills	skills

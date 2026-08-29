@@ -1,4 +1,0 @@
-interface:
-  display_name: "Codex Subagent Test Skill"
-  short_description: "Timed repeatable single-Skill tests with Codex subagents"
-  default_prompt: "Use $codex-subagent-testskill to test this one Skill once by default, or repeat it the number of times I specify, and report per-run runtime and evidence."

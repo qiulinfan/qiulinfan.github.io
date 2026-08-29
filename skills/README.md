@@ -1,9 +1,10 @@
 # Skills
 
-本目录是 qlblog 自有个人与社区 Skills 的权威副本。普通个人 Skill 默认直接
+本目录是 qlblog 自有公开个人 Skills 的权威副本。普通公开 Skill 默认直接
 创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前保留的
-本地套件是 `notes/`。从开源网站下载的外部 Skills 统一放在 `community/`，
-供本机 agent 运行时使用但不在个人主页发布。
+本地套件是 `notes/`。不公开的个人 Skills 与从开源网站下载的第三方 Skills 统一放在
+`linked-skill-repositories.tsv` 登记的外部 repositories 中，只供本机运行时使用；自有公开
+repositories 通过 `published-skill-repositories.tsv` 加入个人主页。
 
 本目录同时服务两个运行时：Codex 与 Claude Code。两者各有一个 linker，把同一份工作树
 逐 Skill 链接到各自拥有的真实 Skill 目录，因此本地修改对两边都实时生效。跨运行时可用是
@@ -31,10 +32,27 @@ Skills 与网站内容。`$CODEX_HOME/skills` 与 `~/.claude/skills` 都必须�
 独立产品仓库当前包括 [`autoTA`](https://github.com/qiulinfan/autoTA) 与
 [`kgdistiller`](https://github.com/qiulinfan/kgdistiller)。它们的 Skills、预制 agents、
 工作流、测试与安装脚本都在各自仓库维护，不由 qlblog 镜像或转发。
+[`discrete-sprite-lab`](https://github.com/qiulinfan/discrete-sprite-lab) 是两个离散像素动画
+Skills 的公开权威，同时登记为 published 与 linked-only，由 qlblog 展示并管理链接。
+`myprivateskills` 是 Diary 与 Codex subagent Skills/Workflows 的私有 linked-only 权威。
+
+展示与 linking 使用两份互不推断的 registry：
+
+- [`published-skill-repositories.tsv`](./published-skill-repositories.tsv) 只登记本人拥有、希望在主页
+  展示的公开 repositories。网站读取这些 checkout 的 `SKILL.md`，CI 用公开 HTTPS 地址浅克隆；
+  产品自己的 linker 仍拥有安装责任。
+- [`linked-skill-repositories.tsv`](./linked-skill-repositories.tsv) 登记只供本机 linking 的 authorities，
+  包括本人的 private repositories 和别人的 public repositories。它们永不被网站读取。
+
+两份 registry 的仓库名、无凭据 clone URL、跨机器 checkout 位置和 Skill 根目录都可以公开，
+但 token、deploy key、cookie 与私有 Skill 内容不得进入本仓库。四个 linker 只读取 linked-only
+registry，递归发现 checkout，并与 qlblog Skills 一起做扁平名称冲突和运行时作用域检查；checkout
+缺失时先停止并给出 clone 目标，不静默 clone 或触发认证。一个自有公开 repository 若没有自己的
+installer 且需要 qlblog 同时管理链接，可显式登记在两份 registry；公开本身绝不自动代表展示。
 
 多个 Skill 的编排关系、流程图和简短说明统一维护在 [WORKFLOWS.md](./WORKFLOWS.md)；
-Skills 页面只读取本 README 的“个人维护”清单与该文件，不发布“社区来源”内容，也
-不另外维护一份页面数据。
+Skills 页面读取本 README 的“个人维护”清单、published registry 与该文件；它不读取 linked-only
+repositories，也不另外维护一份页面数据。
 
 ## 运行时与作用域
 
@@ -45,9 +63,9 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 
 - 作用域只由目录决定，名称不参与：`codex-only/` 与 `claude-only/` 是运行时作用域目录，
   与 `notes/` 这类语义套件正交。作用域目录之外的所有 Skill 链接进两个运行时。
-- Claude Code linker 跳过 `codex-only/` 下的 Skill，当前是
-  `codex-only/codex-subagent-workflow`、`codex-only/codex-subagent-testskill`、
-  `codex-only/codex-external-agent-testskill`。它们编排的是 Codex 原生 subagent 或由
+- Claude Code linker 跳过任一 authority Skill root 直属 `codex-only/` 下的 Skill，当前是
+  `myprivateskills:codex-only/codex-subagent-workflow`、`myprivateskills:codex-only/codex-subagent-testskill`、
+  `myprivateskills:codex-only/codex-external-agent-testskill`。它们编排的是 Codex 原生 subagent 或由
   Codex 选择的外部运行时，在 Claude Code 里没有对应能力，只链接进 Codex。
 - Codex linker 跳过 `claude-only/` 下的 Skill（依赖 Claude Code 专属能力时使用；当前为空，
   目录在第一个此类 Skill 出现时才创建）。两个脚本都会打印被跳过的清单。
@@ -58,7 +76,7 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 
 ## 仓库协议
 
-- 新建个人 Skill 时一律先直接创建在本目录顶层。保留已有套件，但不要根据 Skill
+- 新建公开个人 Skill 时一律先直接创建在本目录顶层。保留已有套件，但不要根据 Skill
   的主题、名称、依赖或看似所属的系统自动归类。
 - 无论在哪个运行时里创作，跨运行时 Skill 都保持运行时无关：不依赖 `$CODEX_HOME`
   专属路径、Codex 原生 subagent、Codex 选择的外部运行时或 Claude Code 专属工具。
@@ -67,9 +85,9 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
   移入、移出套件。不得仅凭推断使用已有套件。
 - 每次重新分类或改变 Skill 在 `skills/` 下的父目录后，立即为本机装了的每个运行时
   重新运行平台对应的 qlblog linker；脚本成功前不得视为重分类完成。
-- 从开源网站下载的外部 Skill 放入 `community/`，记录准确来源，并保持网站排除。
+- 从开源网站下载的外部 Skill 放入 linked-only registry 登记的 repository，记录准确来源并保持网站隔离。
 - 本地维护的个人 Skill 使用英文 frontmatter description 与英文 `agents/openai.yaml`
-  发现元数据，便于不同语言的用户稳定发现；社区 Skill 默认保留上游元数据。
+  发现元数据，便于不同语言的用户稳定发现；第三方 Skill 默认保留上游元数据。
 - frontmatter `name` 与末级目录名保持一致：Claude Code 用目录名作为调用名，
   frontmatter `name` 只是显示标签，两者不一致会让调用名与文档对不上。
 - 每个新建或实质更新的个人 Skill 都要明确要求 Agent 的用户可见解释、提示与交接跟随
@@ -93,8 +111,10 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 <qlblog>/skills/<suite>/<name>/         # 仅限用户明确指定的本地套件
 <qlblog>/skills/codex-only/<name>/      # Codex 专属作用域目录，只链接进 Codex
 <qlblog>/skills/claude-only/<name>/     # Claude Code 专属作用域目录，只链接进 Claude Code
-<qlblog>/skills/community/<name>/       # 外部下载 Skill，不进入网站
+<qlblog>/skills/published-skill-repositories.tsv # 自有公开仓库展示 registry
+<qlblog>/skills/linked-skill-repositories.tsv    # 私有/第三方 linked-only registry
 <product>/skills/<name>/                # 独立产品的唯一开发权威
+<qlblog>/../qlblog-private/<repo>/       # 推荐的 private checkout，不进入 qlblog
 <qlblog>/install/agents/core.md         # 运行时无关的全局约束，Git 权威源
 <qlblog>/install/codex/runtime.md       # Codex 增量，Git 权威源
 <qlblog>/install/claude/runtime.md      # Claude Code 增量，Git 权威源
@@ -113,6 +133,32 @@ Skills 页面只读取本 README 的“个人维护”清单与该文件，不�
 
 `CODEX_HOME` 未设置时默认 `~/.codex`，`CLAUDE_CONFIG_DIR` 未设置时默认 `~/.claude`。
 安装或修复后重新打开 Codex task 或重启 Claude Code 会话，让 skill 清单重新加载。
+
+### 外部 Skill 仓库 registry
+
+linked-only registry 每个有效行固定使用四个以 Tab 分隔的字段：
+
+```text
+repository-name<TAB>clone-url<TAB>checkout-relative-to-qlblog<TAB>skill-root-relative-to-checkout
+```
+
+推荐把私有仓库放在 qlblog 的固定同级目录，例如 registry 中写：
+
+```text
+community-skills<TAB>git@github.com:qiulinfan/community-skills.git<TAB>../qlblog-private/community-skills<TAB>skills
+```
+
+新机器先按这一行把仓库 clone 到 `<qlblog>/../qlblog-private/community-skills`，再运行 Codex 和/或
+Claude Code linker。相对路径由 qlblog 根目录解析，因此不同操作系统不提交各自的绝对路径。
+一个 linked-only repository 可以直接以仓库根作为单 Skill 根，也可以让 `skills/` 下递归包含多个
+Skills；其中的 `codex-only/` 与 `claude-only/` 仍按相同规则过滤。registry 删除仓库或 linked-only Skill
+改名后，linker 根据各运行时 home 下的 `.qlblog-linked-skill-targets` 状态只清理自己曾建立的
+旧链接；未知链接、独立产品链接和真实目录保持不动。
+
+published registry 使用六个 Tab 分隔字段：repository、公开 HTTPS clone URL、公开 source URL、
+相对 checkout、Skill root 与 Git ref。它只控制展示；CI 执行
+`make skills-published-bootstrap` 获取缺失的公开 checkout。本地新机器在第一次检查或构建网站前
+也运行同一命令；linker 不读取这份 registry，也不会接管产品自己的安装责任。
 
 ### macOS
 
@@ -180,8 +226,11 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 
 ### 日常修改与同步
 
-- 修改普通个人 Skill：编辑 `skills/<skill-name>/`；修改套件或社区 Skill：编辑
-  `skills/<suite>/<skill-name>/`。按需更新本 README 的一句话说明与第三方出处。
+- 修改普通公开 Skill：编辑 `skills/<skill-name>/`；修改套件 Skill：编辑
+  `skills/<suite>/<skill-name>/`。按需更新本 README 的一句话说明。
+- 用户明确要求不公开时，在 linked-only registry 已登记的 private repository 中创建或修改 Skill；不得先
+  把内容放进 qlblog 再依赖网站过滤。新增、移动或删除 private repository/Skill 后，为每个已安装
+  运行时重跑 qlblog linker。registry 可提交仓库名和 clone URL，但不得包含任何认证材料。
 - 重新分类或移动 Skill 的父目录后，必须为每个运行时运行平台对应的 qlblog linker，
   清理旧链接并重建该运行时的扁平 Skill 清单。把 Skill 移入 `codex-only/` 或
   `claude-only/` 之后，另一侧的 linker 会自动移除它留下的旧链接；改名不影响作用域。
@@ -203,7 +252,7 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
   重新运行 `.\skills\link-codex-skills.ps1` 与 `.\skills\link-claude-skills.ps1`。
 - macOS/Linux/WSL 的自动备份位于各运行时 home 下的
   `skill-layout-backups/<时间戳>/`；Windows 原生使用相同的相对位置。
-- 未知、内容冲突或指向仓库外部的 Skill 链接始终拒绝覆盖。全局
+- 未知、内容冲突或未被 linked-only registry/managed state 证明归属的仓库外 Skill 链接始终拒绝覆盖。全局
   `AGENTS.md` / `CLAUDE.md` 是唯一例外：显式 `-Force` 可修复未知的 reparse link，但内容
   不同的真实文件仍会被拒绝。Codex 的 `.system` 始终留在
   `$CODEX_HOME/skills`，不由仓库接管。
@@ -222,20 +271,12 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 
 ### 全局 Skills
 
-- [create-topdown-8dir-sprites](./create-topdown-8dir-sprites/)：分别生成并审核俯视角色的八个方向，以方向专属整数网格完成 Perfect Pixel majority recovery，恢复后只做 1:1 透明裁切与整数对齐，再统一调色板、二值 Alpha、64×64 画布、预览、元数据和审计证据；不以二次缩放牺牲面部与轮廓细节。
-- [manage-diary-todos](./manage-diary-todos/)：从任意对话定位缓存的 Diary 仓库，以最小 diff 更新 T0/T1/T2、把明确完成事项移入“已完成”，并按内置协议写入当天日记与去重状态；不代发邮件、不修改人格快照、不执行 Git 同步。
 - [multica-selfhost-server](./multica-selfhost-server/)：以可恢复 phase cache 部署唯一 Multica 控制面、loopback-only 内部栈、Tailscale 私网 HTTPS 和固定码 `114514`；由服主侧 Skill 收集成员身份、选择 workspace、完成两层准入和 client handoff，管理首 runtimes、默认并发 `10`、自启动、升级与撤销，并以不删除的 stop、整包 `age` 加密 export、空目标 restore 和完整 smoke 复验完成单主冷迁移。Multica 自动发现全部 providers，本 Skill 不登录或直接验证 provider CLI。最初的本地完整栈能力由用户提供的 `/Users/qiulinfan/Desktop/multica-local-dev` 演化而来。
 - [multica-client-setup](./multica-client-setup/)：从零输入、仅 Server URL 或完整 handoff 开始分阶段完成客户端接入，把成员邮箱和准入请求交给服主，由服主决定 workspace 与 Tailscale access mode；随后安装并配置 CLI，按客户端与模式排查 VPN/代理，以 Rules Enhancement 完整适配 macOS Clash Verge 系统代理，并在必要时停于用户重载断点，其余客户端经证据化人工边界处理，再验证身份、membership 和全部本机 online runtimes、创建 agents、运行 smoke，并以 daemon 全局默认并发 `10` 持久化和核验获授权的自启动；新建 Codex agent 时显式使用无需 Windows sandbox setup 的固定启动参数，不处理日常 issue/task、provider CLI 或第二套 server。
 - [multica-runtime-client](./multica-runtime-client/)：在 CLI、身份、daemon 和本机 runtimes 已配置的前提下，按明确授权防重复地新建 workspace 和 agents，或把自然语言工作转成单个可验收 issue；新建 Codex agent 时强制使用独立 home 可工作的固定 sandbox/approval 参数，随后按完整 ID 入队一次并读取 runs/messages 监控、续接、取消或按授权 rerun，同时检查跨 workspace 的 daemon 全局容量、活动、用量和日志，缺失接入前提时交回 `multica-client-setup`。
-- [codex-subagent-testskill](./codex-only/codex-subagent-testskill/)：单 Skill 测试的默认入口；默认运行一次，也可按用户指定次数用 fresh 原生 subagents 做重复稳定性与压力测试，并记录逐次及总 wall-clock 时间，不冒充进程或认证级隔离。
-- [codex-external-agent-testskill](./codex-only/codex-external-agent-testskill/)：仅在明确需要外部进程、登录或跨 runtime 行为时，由 Codex 通过本机缓存配置启动 Claude Code 或 OpenCode 测试一个 Skill；不再配置或启动 Codex target。
-- [codex-subagent-workflow](./codex-only/codex-subagent-workflow/)：在当前 Codex 会话内用原生 subagents 编排生产任务；优先采用可信项目 `.codex/config.toml` 的标准 `[agents]` 角色，未配置角色时才从任务描述自动拆分，并由主 agent 集成验收。
 
-## 社区来源
+## 私有与第三方来源
 
-本节记录外部下载 Skill 的来源与用途，仅供仓库维护和 Codex 发现；网站构建明确排除
-整个 `community/` 目录。
-
-- [find-skill-skillhub-1.0.2](./community/find-skill-skillhub-1.0.2/)：在 SkillHub 按关键词和分类发现、筛选并推荐 skills。
-- [mainpdf](./community/mainpdf/)：编辑、转换、OCR、拆分、合并并提取 PDF 的文字、表格和图片。
-- [mermaid-diagram-1.0.0](./community/mermaid-diagram-1.0.0/)：把需求或文字描述转换为 Mermaid 流程图、架构图、时序图或思维导图。
+实际内容由 `linked-skill-repositories.tsv` 登记的外部 repositories 维护。qlblog 只保存
+可公开的 bootstrap 元数据，不镜像私有或第三方 Skill 文件；第三方来源、版本和许可证记录跟随
+各 authority repository 中的原始快照维护。

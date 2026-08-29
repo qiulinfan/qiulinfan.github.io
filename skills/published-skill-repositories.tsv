@@ -1,0 +1,5 @@
+# Public Skill repositories owned by qiulinfan and displayed on the qlblog Skills page.
+# repository<TAB>clone-url<TAB>source-url<TAB>checkout-relative-to-qlblog<TAB>skill-root-relative-to-checkout<TAB>ref
+autoTA	https://github.com/qiulinfan/autoTA.git	https://github.com/qiulinfan/autoTA	../autoTA	skills	main
+discrete-sprite-lab	https://github.com/qiulinfan/discrete-sprite-lab.git	https://github.com/qiulinfan/discrete-sprite-lab	../discrete-sprite-lab	skills	main
+kgdistiller	https://github.com/qiulinfan/kgdistiller.git	https://github.com/qiulinfan/kgdistiller	../kgdistiller	skills	main

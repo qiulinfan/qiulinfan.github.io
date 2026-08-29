@@ -42,7 +42,7 @@ do not specify otherwise:
 
 ## Personal Skill maintenance
 
-When creating or materially updating a personal or community Skill, or when
+When creating or materially updating a personal or imported third-party Skill, or when
 using a Skill-authoring Skill such as `skill-creator`, apply this protocol in
 addition to the active Skill's own instructions:
 
@@ -56,25 +56,51 @@ addition to the active Skill's own instructions:
   that file alone. If no linked qlblog Skill resolves to one unambiguous
   checkout, stop and ask for its new location instead of creating an untracked
   Skill elsewhere.
-- Initialize every new personal Skill at the top level of `<qlblog>/skills`.
+- Initialize every new public personal Skill at the top level of `<qlblog>/skills`.
   Preserve existing suite directories, but never infer categorization from a
   Skill's topic, name, dependencies, or apparent system membership. Create a
   suite or move/place Skills into any suite only when the user explicitly asks
-  for that exact classification. Put downloaded open-source Skills under the
-  already established `community/` convention, which agent runtimes may
-  discover but qlblog must not publish. Then run the qlblog linker of every
+  for that exact classification. Put downloaded open-source Skills in a
+  linked-only Skill repository outside qlblog, preserving their exact
+  upstream provenance and metadata; qlblog must not publish their contents.
+  Then run the qlblog linker of every
   agent runtime installed on this machine, using the platform-appropriate
   script named in each runtime's `Runtime specifics` section; each linker
   exposes the eligible top-level and suite Skills as a flat set of individually
   linked entries in that runtime's user Skill directory.
+- Keep publication and linking as separate explicit registries. A Skill or
+  collection that the user requires to stay private must live only in a private
+  repository outside qlblog. A third-party public repository that should be
+  usable but not presented as the user's work follows the same linked-only
+  boundary. Register both cases in tracked
+  `<qlblog>/skills/linked-skill-repositories.tsv`; its repository names,
+  credential-free clone URLs, portable checkout locations, and Skill roots may
+  be public, but private contents and credentials must never enter qlblog. Each
+  row has four tab-separated fields: repository name, clone URL, checkout path
+  relative to qlblog, and Skill root relative to that checkout. The qlblog
+  linkers discover these checkouts recursively, apply the same runtime scope
+  directories, reject flat-name conflicts across qlblog and linked-only
+  authorities, and remove only stale links recorded as theirs. They stop with
+  bootstrap instructions when a registered checkout is missing; they do not
+  clone or authenticate implicitly.
+- Register public repositories owned by the user that should appear on the
+  personal Skills page in tracked
+  `<qlblog>/skills/published-skill-repositories.tsv`. That registry is display
+  authority only and must use public HTTPS clone/source URLs; it does not make
+  qlblog own product installation. A repository with its own linker remains
+  installed by that product. If a public repository has no installer and the
+  user explicitly wants qlblog to manage its links too, register it separately
+  in both published and linked-only registries. Never publish a repository
+  merely because it is public. After either registry or a registered Skill set
+  changes, rerun the relevant qlblog checks and every affected runtime linker.
 - Author cross-runtime Skills runtime-neutral regardless of which runtime you
   are running in: do not depend on `$CODEX_HOME`-specific paths, Codex-native
   subagents, Codex-selected external runtimes, or Claude Code-only tools. When
   a Skill must depend on one runtime's exclusive capability, create it inside
   that runtime's scope directory instead.
 - Cross-runtime availability is the default. Runtime-exclusive Skills live in
-  the scope directories `<qlblog>/skills/codex-only` and
-  `<qlblog>/skills/claude-only`; each linker skips the other runtime's scope
+  `codex-only` and `claude-only` scope directories directly under any qlblog or
+  registered linked-only Skill root; each linker skips the other runtime's scope
   directory and links everything else. Scope directories are the only scope
   mechanism and are orthogonal to semantic suites — a Skill's name never
   affects scope. Place a Skill in a scope directory only when it genuinely
@@ -99,6 +125,12 @@ addition to the active Skill's own instructions:
   `scripts/link-claude-skills.*`; its Skills resolve bundled scripts from
   either runtime home, and porting its Codex agents to Claude Code is a
   per-product project that needs the user's explicit request.
+- `discrete-sprite-lab` is the public authority for the fixed-direction and
+  eight-direction sprite Skills. It is registered for both publication and
+  qlblog-managed linking because it does not have an independent installer.
+  `myprivateskills` is the private linked-only authority for Diary maintenance
+  and the Codex subagent production/testing Skills and their private workflows.
+  Never recreate mirrors of either authority under qlblog `skills/`.
 - After every reclassification or other parent-directory move under
   `<qlblog>/skills`, immediately rerun the platform-appropriate qlblog linker
   for every installed runtime so stale links are removed and each flat view is
@@ -108,7 +140,7 @@ addition to the active Skill's own instructions:
   `<qlblog>/skills/WORKFLOWS.md` when present.
 - Write frontmatter descriptions and `agents/openai.yaml` discovery metadata
   for locally maintained personal Skills in English so the collection remains
-  portable across users. Preserve upstream metadata for downloaded community
+  portable across users. Preserve upstream metadata for downloaded third-party
   Skills unless the user explicitly requests a local adaptation.
 - Include an explicit language-alignment rule in every new or materially
   updated personal Skill: user-facing explanations, prompts, and handoffs must

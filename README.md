@@ -5,7 +5,8 @@
 - [`install/`](install/)：可移植的个人工具配置、Codex 与 Claude Code 的全局 agent guidance 与安全安装说明。
 - [`notes/`](notes/)：Markdown、Typst、LaTeX 权威源与共享渲染工具链；不提交 PDF、课程归档或构建物。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
-- [`skills/`](skills/)：默认的新个人 Skills、稳定工作流与有来源记录的 community Skills。
+- [`skills/`](skills/)：默认的新公开个人 Skills 与稳定工作流；两份 registry 分别声明站点展示的
+  自有公开仓库，以及只供本地 linking 的私有/第三方仓库，外部 Skill 内容都留在各自 authority。
 - [`knowledge/`](knowledge/)：一个本地 kgdistiller 实例的个人配置、决策、私有图谱和已采用静态导出。
 - [`site/`](site/)：主页、博客、笔记与 Skills 的 Astro 前端。
 
@@ -90,7 +91,7 @@ manifest 会锁定这个 source commit 与实际执行导出的 clean kgdistille
 
 ## Skill 默认规则
 
-普通新个人 Skill 默认创建在本仓库 `skills/` 顶层，然后为本机装了的每个运行时运行
+普通新公开个人 Skill 默认创建在本仓库 `skills/` 顶层，然后为本机装了的每个运行时运行
 对应 linker。只有用户明确指定一组 Skills/Workflows 为独立产品时，才把其源码、
 agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog 删除重复 authority。
 
@@ -103,8 +104,9 @@ agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog �
 `autoTA`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
 `CLAUDE_CONFIG_DIR` 覆盖，Codex 的用 `CODEX_HOME`。
 
-Claude Code 侧有一条额外的作用域规则：路径中带 `codex` 的 Skill（`codex-subagent-workflow`、
-`codex-subagent-testskill`、`codex-external-agent-testskill`）驱动的是 Codex 原生
+Claude Code 侧有一条额外的作用域规则：任何 authority 的 `codex-only/` 目录都会被跳过；当前
+`myprivateskills` 中的 `codex-subagent-workflow`、`codex-subagent-testskill`、
+`codex-external-agent-testskill` 驱动的是 Codex 原生
 subagent 与 Codex 选择的外部运行时，在 Claude Code 里跑不了，所以只链接进 Codex。
 不要手工补链，也不要放宽过滤器。
 

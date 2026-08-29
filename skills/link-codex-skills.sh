@@ -9,6 +9,9 @@ codex_skills_dir="$codex_root/skills"
 codex_agents_file="$codex_root/AGENTS.md"
 global_agents_source="$repo_root/install/codex/AGENTS.md"
 legacy_lock_bridge="$skills_repo_dir/.skills_store_lock.json"
+linked_repositories_file=${QLBLOG_LINKED_SKILL_REPOSITORIES_FILE:-"$skills_repo_dir/linked-skill-repositories.tsv"}
+linked_state_file="$codex_root/.qlblog-linked-skill-targets"
+legacy_private_state_file="$codex_root/.qlblog-private-skill-targets"
 backup_stamp=$(date '+%Y%m%d-%H%M%S')
 backup_dir="$codex_root/skill-layout-backups/$backup_stamp"
 backup_ready=false
@@ -122,6 +125,75 @@ eligible_manifests() {
   done
 }
 
+linked_skill_roots() {
+  [ -f "$linked_repositories_file" ] || {
+    printf 'missing linked-only Skill repository registry: %s\n' "$linked_repositories_file" >&2
+    exit 1
+  }
+
+  tab=$(printf '\t')
+  while IFS="$tab" read -r repository_name clone_url checkout_path skill_root extra ||
+    [ -n "$repository_name$clone_url$checkout_path$skill_root$extra" ]; do
+    repository_name=$(printf '%s' "$repository_name" | sed -e 's/\r$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+    case "$repository_name" in
+      ''|'#'*) continue ;;
+    esac
+    [ -n "$clone_url" ] && [ -n "$checkout_path" ] && [ -n "$skill_root" ] && [ -z "$extra" ] || {
+      printf 'invalid linked-only Skill registry row for %s: expected four tab-separated fields\n' "$repository_name" >&2
+      exit 1
+    }
+    case "$checkout_path" in
+      /*|'~'|'~/'*)
+        printf 'linked-only Skill checkout must be relative to qlblog: %s\n' "$checkout_path" >&2
+        exit 1
+        ;;
+    esac
+    checkout_root="$repo_root/$checkout_path"
+    candidate_root="$checkout_root/$skill_root"
+    [ -d "$candidate_root" ] || {
+      printf 'linked-only Skill repository is not checked out: %s\n' "$repository_name" >&2
+      printf 'clone %s into %s, then rerun this linker\n' "$clone_url" "$checkout_root" >&2
+      exit 1
+    }
+    resolved_root=$(CDPATH= cd -- "$candidate_root" && pwd -P)
+    case "$resolved_root" in
+      "$skills_repo_dir"|"$skills_repo_dir"/*)
+        printf 'linked-only Skill root must be outside qlblog skills/: %s\n' "$resolved_root" >&2
+        exit 1
+        ;;
+    esac
+    printf '%s\n' "$resolved_root"
+  done < "$linked_repositories_file"
+}
+
+linked_eligible_targets() {
+  linked_skill_roots | while IFS= read -r linked_root; do
+    [ -n "$linked_root" ] || continue
+    (
+      cd "$linked_root"
+      find . -type f -name SKILL.md ! -path '*/.*/*' -print | LC_ALL=C sort
+    ) | while IFS= read -r relative_manifest; do
+      relative_dir=${relative_manifest#./}
+      relative_dir=${relative_dir%/SKILL.md}
+      case "$relative_dir" in
+        claude-only/*) continue ;;
+      esac
+      if [ -n "$relative_dir" ]; then
+        printf '%s/%s\n' "$linked_root" "$relative_dir"
+      else
+        printf '%s\n' "$linked_root"
+      fi
+    done
+  done
+}
+
+all_eligible_targets() {
+  eligible_manifests | while IFS= read -r relative_manifest; do
+    printf '%s/%s\n' "$skills_repo_dir" "${relative_manifest#./}" | sed 's|/SKILL.md$||'
+  done
+  linked_eligible_targets
+}
+
 skipped_manifests() {
   skill_manifests | while IFS= read -r relative_manifest; do
     if is_claude_only_relative_manifest "$relative_manifest"; then
@@ -132,8 +204,8 @@ skipped_manifests() {
 
 check_flat_skill_names() {
   duplicate_names=$(
-    eligible_manifests |
-      awk -F/ '{ print $(NF - 1) }' |
+    all_eligible_targets |
+      awk -F/ '{ print $NF }' |
       LC_ALL=C sort |
       uniq -d
   )
@@ -143,14 +215,44 @@ check_flat_skill_names() {
   }
 
   duplicate_metadata_names=$(
-    eligible_manifests | while IFS= read -r relative_manifest; do
-      sed -n 's/^name:[[:space:]]*//p' "$skills_repo_dir/${relative_manifest#./}" | head -n 1
+    all_eligible_targets | while IFS= read -r source_dir; do
+      metadata_name=$(sed -n 's/^name:[[:space:]]*//p' "$source_dir/SKILL.md" | head -n 1)
+      [ -n "$metadata_name" ] || {
+        printf 'conflict: Skill is missing frontmatter name: %s\n' "$source_dir/SKILL.md" >&2
+        exit 1
+      }
+      printf '%s\n' "$metadata_name"
     done | LC_ALL=C sort | uniq -d
   )
   [ -z "$duplicate_metadata_names" ] || {
     printf 'conflict: duplicate Skill names are ambiguous:\n%s\n' "$duplicate_metadata_names" >&2
     exit 1
   }
+}
+
+remove_stale_linked_skill_links() {
+  [ -f "$linked_state_file" ] || return 0
+  current_targets=$(linked_eligible_targets)
+  while IFS= read -r old_target || [ -n "$old_target" ]; do
+    [ -n "$old_target" ] || continue
+    if printf '%s\n' "$current_targets" | grep -qxF -- "$old_target"; then
+      continue
+    fi
+    destination="$codex_skills_dir/$(basename "$old_target")"
+    [ -L "$destination" ] || continue
+    raw_target=$(readlink "$destination")
+    if [ "$raw_target" = "$old_target" ]; then
+      unlink "$destination"
+      printf 'removed stale registered linked-only Skill link: %s\n' "$destination"
+    fi
+  done < "$linked_state_file"
+}
+
+migrate_legacy_private_state() {
+  if [ ! -e "$linked_state_file" ] && [ -f "$legacy_private_state_file" ]; then
+    mv "$legacy_private_state_file" "$linked_state_file"
+    printf 'migrated legacy private Skill link state: %s\n' "$linked_state_file"
+  fi
 }
 
 remove_stale_repository_skill_links() {
@@ -171,11 +273,9 @@ remove_stale_repository_skill_links() {
 }
 
 link_visible_skills() {
-  linked_count=$(eligible_manifests | wc -l | tr -d ' ')
-  eligible_manifests | while IFS= read -r relative_manifest; do
-    [ -n "$relative_manifest" ] || continue
-    manifest="$skills_repo_dir/${relative_manifest#./}"
-    source_dir=${manifest%/SKILL.md}
+  linked_count=$(all_eligible_targets | wc -l | tr -d ' ')
+  all_eligible_targets | while IFS= read -r source_dir; do
+    [ -n "$source_dir" ] || continue
     entry_name=$(basename "$source_dir")
     destination="$codex_skills_dir/$entry_name"
 
@@ -199,6 +299,12 @@ link_visible_skills() {
   printf 'ok: linked %s eligible repository Skills into %s\n' "$linked_count" "$codex_skills_dir"
 }
 
+write_linked_skill_state() {
+  temporary_state="$linked_state_file.tmp.$$"
+  linked_eligible_targets > "$temporary_state"
+  mv "$temporary_state" "$linked_state_file"
+}
+
 report_skipped_skills() {
   skipped_list=$(skipped_manifests)
   [ -n "$skipped_list" ] || return 0
@@ -207,11 +313,15 @@ report_skipped_skills() {
   printf '%s\n' "$skipped_list" | sed -e 's|^\./||' -e 's|/SKILL.md$||' -e 's|^|  |'
 }
 
+linked_skill_roots >/dev/null
 reject_repository_system_skills
 ensure_real_codex_skills_dir
 remove_legacy_lock_bridge
 ensure_global_agents_link
 check_flat_skill_names
 remove_stale_repository_skill_links
+migrate_legacy_private_state
+remove_stale_linked_skill_links
 link_visible_skills
+write_linked_skill_state
 report_skipped_skills

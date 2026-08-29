@@ -1,19 +1,22 @@
 import assert from "node:assert/strict";
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { join, sep } from "node:path";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
 	loadOwnedSkills,
 	loadPublishedSkills,
+	loadPublishedRepositoryGroups,
 	loadSkillCatalogMarkdown,
 	loadSkillDirectoryGroups,
 	loadSkillWorkflowsMarkdown,
 } from "../src/utils/skill-sources.ts";
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
-const communityRoot = `${join(repositoryRoot, "skills", "community")}${sep}`;
+const communityRoot = join(repositoryRoot, "skills", "community");
+const linkedRegistry = join(repositoryRoot, "skills", "linked-skill-repositories.tsv");
+const publishedRegistry = join(repositoryRoot, "skills", "published-skill-repositories.tsv");
 
 function skillAuthorities(directory) {
 	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -24,31 +27,44 @@ function skillAuthorities(directory) {
 	});
 }
 
-test("the public skills list includes personal Skills and excludes community authorities", () => {
+test("the public skills list combines qlblog with owned published repositories only", () => {
 	const skills = loadPublishedSkills();
 	const allAuthorities = skillAuthorities(join(repositoryRoot, "skills"));
-	const communityAuthorities = allAuthorities.filter((path) => path.startsWith(communityRoot));
-	const publishableAuthorities = allAuthorities.filter((path) => !path.startsWith(communityRoot));
-	assert.equal(communityAuthorities.length > 0, true);
-	assert.equal(skills.length, publishableAuthorities.length);
+	const qlblogSkills = skills.filter(
+		(skill) => skill.repository === "qiulinfan.github.io",
+	);
+	assert.equal(existsSync(communityRoot), false);
+	assert.equal(existsSync(linkedRegistry), true);
+	assert.equal(existsSync(publishedRegistry), true);
+	assert.match(readFileSync(linkedRegistry, "utf8"), /community-skills/);
+	assert.doesNotMatch(readFileSync(publishedRegistry, "utf8"), /community-skills/);
+	assert.equal(qlblogSkills.length, allAuthorities.length);
 	assert.equal(new Set(skills.map((skill) => skill.name)).size, skills.length);
 	assert.equal(skills.every((skill) => skill.description.length > 0), true);
-	assert.equal(skills.every((skill) => skill.authority.startsWith("skills/") && skill.authority.endsWith("/SKILL.md")), true);
+	assert.equal(qlblogSkills.every((skill) => skill.authority.startsWith("skills/") && skill.authority.endsWith("/SKILL.md")), true);
 	assert.equal(skills.every((skill) => !skill.authority.includes("/.system/")), true);
-	assert.equal(skills.every((skill) => !skill.authority.startsWith("skills/community/")), true);
-	assert.equal(skills.every((skill) => skill.sourceHref.includes(`/blob/main/${skill.authority}`)), true);
+	assert.equal(qlblogSkills.every((skill) => !skill.authority.startsWith("skills/community/")), true);
+	assert.equal(qlblogSkills.every((skill) => skill.sourceHref.includes(`/blob/main/${skill.authority}`)), true);
+	assert.equal(skills.some((skill) => skill.repository === "autoTA"), true);
+	assert.equal(skills.some((skill) => skill.repository === "discrete-sprite-lab"), true);
+	assert.equal(skills.some((skill) => skill.repository === "kgdistiller"), true);
+	assert.equal(skills.some((skill) => skill.repository === "community-skills"), false);
+	assert.equal(skills.some((skill) => skill.repository === "myprivateskills"), false);
 });
 
 test("the README catalog lists every visible Skill and owns the detail-page boundary", () => {
 	const skills = loadPublishedSkills();
 	const ownedSkills = loadOwnedSkills();
 	const catalog = loadSkillCatalogMarkdown();
+	const qlblogSkills = skills.filter(
+		(skill) => skill.repository === "qiulinfan.github.io",
+	);
 
-	for (const skill of skills) {
+	for (const skill of qlblogSkills) {
 		assert.match(catalog, new RegExp(`\\./${skill.id.replaceAll("/", "\\/")}/`));
 	}
-	assert.equal(skills.length, ownedSkills.length);
-	assert.doesNotMatch(catalog, /## 社区来源/);
+	assert.equal(qlblogSkills.length, ownedSkills.length);
+	assert.doesNotMatch(catalog, /## 私有与第三方来源/);
 	assert.equal(ownedSkills.length > 0, true);
 	assert.equal(
 		ownedSkills.every((skill) => catalog.includes(`- [${skill.name}]`)),
@@ -63,6 +79,26 @@ test("the README catalog lists every visible Skill and owns the detail-page boun
 		ownedSkills.some((skill) => skill.name === "mermaid-diagram"),
 		false,
 	);
+});
+
+test("owned public repository groups are displayed while linked-only repositories stay hidden", () => {
+	const groups = loadPublishedRepositoryGroups();
+	assert.deepEqual(
+		groups.map((group) => [group.directory, group.skills.length]),
+		[
+			["autoTA", 5],
+			["discrete-sprite-lab", 2],
+			["kgdistiller", 8],
+		],
+	);
+	assert.equal(groups.every((group) => group.kind === "repository"), true);
+	assert.equal(
+		groups
+			.flatMap((group) => group.skills)
+			.every((skill) => skill.sourceHref.startsWith("https://github.com/qiulinfan/")),
+		true,
+	);
+	assert.equal(groups.some((group) => group.directory === "community-skills"), false);
 });
 
 test("the public catalog dynamically groups every owned Skill without a community group", () => {
@@ -96,7 +132,7 @@ test("the public catalog dynamically groups every owned Skill without a communit
 	);
 });
 
-test("the Markdown-authored workflows reference real qlblog Skills", () => {
+test("the Markdown-authored public workflows reference real published Skills", () => {
 	const workflows = loadSkillWorkflowsMarkdown();
 	const workflowHrefs = [
 		...workflows.matchAll(/\]\(([^)]+)\)/g),

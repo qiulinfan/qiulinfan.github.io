@@ -18,9 +18,15 @@
 - `public/`：favicon 等原样发布的静态资源；
 - `src/assets/`：由 Astro 处理的图片资源；
 - `../skills/README.md`：Skills 页面顶部能力简介的权威来源；
+- `../skills/published-skill-repositories.tsv`：Skills 页面展示的自有公开 repository 清单；
+- `../skills/linked-skill-repositories.tsv`：仅供本机 linking、网站绝不读取的私有与第三方 repository 清单；
 - `../skills/WORKFLOWS.md`：Skills 页面工具流与 Mermaid 图的可编辑内容源；
 - `src/styles/variables.styl`：全站唯一的视觉 token 源；
 - `src/components/home/`：个人主页与项目页面。
+
+第一次在新 checkout 构建包含外部公开 Skills 的页面前，先在仓库根目录运行
+`make skills-published-bootstrap`。它只会浅克隆 `published-skill-repositories.tsv` 中登记的公开
+仓库；私有和第三方 linked-only registry 不属于网站输入。
 
 ## 根域部署
 

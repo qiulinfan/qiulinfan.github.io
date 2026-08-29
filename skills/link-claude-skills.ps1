@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$ClaudeHome,
+    [string]$LinkedSkillRepositoriesFile,
     [switch]$Force
 )
 
@@ -129,6 +130,19 @@ if ([string]::IsNullOrWhiteSpace($ClaudeHome)) {
 $resolvedClaudeHome = Resolve-NormalizedPath -Path $ClaudeHome
 $claudeSkills = Join-Path $resolvedClaudeHome 'skills'
 $claudeGuidance = Join-Path $resolvedClaudeHome 'CLAUDE.md'
+$linkedStateFile = Join-Path $resolvedClaudeHome '.qlblog-linked-skill-targets'
+$legacyPrivateStateFile = Join-Path $resolvedClaudeHome '.qlblog-private-skill-targets'
+
+if ([string]::IsNullOrWhiteSpace($LinkedSkillRepositoriesFile)) {
+    $LinkedSkillRepositoriesFile = $env:QLBLOG_LINKED_SKILL_REPOSITORIES_FILE
+}
+$defaultLinkedSkillRepositoriesFile = Join-Path $repositorySkills 'linked-skill-repositories.tsv'
+if ([string]::IsNullOrWhiteSpace($LinkedSkillRepositoriesFile)) {
+    $LinkedSkillRepositoriesFile = $defaultLinkedSkillRepositoriesFile
+}
+else {
+    $LinkedSkillRepositoriesFile = Resolve-NormalizedPath -Path $LinkedSkillRepositoriesFile -RelativeTo $repositoryRoot
+}
 
 [System.IO.Directory]::CreateDirectory($resolvedClaudeHome) | Out-Null
 
@@ -166,6 +180,38 @@ $allManifests = @(
         Sort-Object FullName
 )
 
+$linkedSkillRoots = @()
+if (-not (Test-Path -LiteralPath $LinkedSkillRepositoriesFile -PathType Leaf)) {
+    throw "Missing linked-only Skill repository registry: $LinkedSkillRepositoriesFile"
+}
+$linkedSkillRoots = @(
+    Get-Content -LiteralPath $LinkedSkillRepositoriesFile |
+        ForEach-Object { ([string]$_).TrimEnd("`r") } |
+        Where-Object { $_.Trim() -and -not $_.TrimStart().StartsWith('#') } |
+        ForEach-Object {
+            $fields = @($_ -split "`t")
+            if ($fields.Count -ne 4 -or @($fields | Where-Object { [string]::IsNullOrWhiteSpace($_) }).Count -gt 0) {
+                throw 'Invalid linked-only Skill registry row: expected four non-empty tab-separated fields'
+            }
+            $repositoryName, $cloneUrl, $checkoutPath, $skillRoot = $fields
+            if ([System.IO.Path]::IsPathRooted($checkoutPath) -or $checkoutPath.StartsWith('~')) {
+                throw "Linked-only Skill checkout must be relative to qlblog: $checkoutPath"
+            }
+            $checkoutRoot = Resolve-NormalizedPath -Path $checkoutPath -RelativeTo $repositoryRoot
+            $resolvedRoot = Resolve-NormalizedPath -Path (Join-Path $checkoutRoot $skillRoot)
+            if (-not (Test-Path -LiteralPath $resolvedRoot -PathType Container)) {
+                throw "Linked-only Skill repository is not checked out: $repositoryName. Clone $cloneUrl into $checkoutRoot, then rerun this linker."
+            }
+                $repositoryPrefixForCheck = $repositorySkills + [System.IO.Path]::DirectorySeparatorChar
+                if ($resolvedRoot.Equals($repositorySkills, [System.StringComparison]::OrdinalIgnoreCase) -or
+                    $resolvedRoot.StartsWith($repositoryPrefixForCheck, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    throw "Linked-only Skill root must be outside qlblog skills/: $resolvedRoot"
+                }
+                $resolvedRoot
+        } |
+        Sort-Object -Unique
+)
+
 # Runtime scope is declared by directory, not by name: Skills under
 # skills\codex-only\ depend on Codex-only capabilities (Codex-native subagents
 # or Codex-selected external runtimes) and stay linked into Codex only.
@@ -175,8 +221,20 @@ function Test-CodexOnlyManifest {
     return ($relativeDirectory -split '[\\/]')[0] -eq 'codex-only'
 }
 
-$skillManifests = @($allManifests | Where-Object { -not (Test-CodexOnlyManifest -Manifest $_) })
+$repositoryManifests = @($allManifests | Where-Object { -not (Test-CodexOnlyManifest -Manifest $_) })
 $skippedManifests = @($allManifests | Where-Object { Test-CodexOnlyManifest -Manifest $_ })
+$linkedSkillManifests = @(
+    foreach ($linkedRoot in $linkedSkillRoots) {
+        Get-ChildItem -LiteralPath $linkedRoot -Filter 'SKILL.md' -File -Recurse |
+            Where-Object {
+                $relativeDirectory = [System.IO.Path]::GetRelativePath($linkedRoot, $_.Directory.FullName)
+                $segments = @($relativeDirectory -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })
+                -not ($segments | Where-Object { $_.StartsWith('.') }) -and
+                    ($segments.Count -eq 0 -or $segments[0] -ne 'codex-only')
+            }
+    }
+)
+$skillManifests = @($repositoryManifests + $linkedSkillManifests | Sort-Object FullName -Unique)
 
 $duplicateDirectories = @($skillManifests | Group-Object { $_.Directory.Name } | Where-Object Count -gt 1)
 if ($duplicateDirectories.Count -gt 0) {
@@ -225,6 +283,32 @@ Get-ChildItem -Force -LiteralPath $claudeSkills | ForEach-Object {
     }
 }
 
+$linkedTargets = @($linkedSkillManifests | ForEach-Object {
+    Resolve-NormalizedPath -Path $_.Directory.FullName
+})
+if (-not (Test-Path -LiteralPath $linkedStateFile) -and (Test-Path -LiteralPath $legacyPrivateStateFile -PathType Leaf)) {
+    Move-Item -LiteralPath $legacyPrivateStateFile -Destination $linkedStateFile
+    Write-Host "MIGRATED legacy private Skill link state: $linkedStateFile"
+}
+if (Test-Path -LiteralPath $linkedStateFile -PathType Leaf) {
+    foreach ($oldTarget in @(Get-Content -LiteralPath $linkedStateFile | Where-Object { $_ })) {
+        $stillManaged = @($linkedTargets | Where-Object {
+            $_.Equals($oldTarget, [System.StringComparison]::OrdinalIgnoreCase)
+        }).Count -gt 0
+        if ($stillManaged) { continue }
+        $destination = Join-Path $claudeSkills (Split-Path -Leaf $oldTarget)
+        $existing = Get-Item -Force -LiteralPath $destination -ErrorAction SilentlyContinue
+        if ($null -eq $existing -or -not (Test-ReparsePoint -Item $existing)) { continue }
+        $targets = @(Get-DirectLinkTargets -Destination $destination)
+        if (@($targets | Where-Object {
+            $_.Equals($oldTarget, [System.StringComparison]::OrdinalIgnoreCase)
+        }).Count -gt 0) {
+            Remove-Item -LiteralPath $destination
+            Write-Host "REMOVED stale registered linked-only Skill link: $destination"
+        }
+    }
+}
+
 foreach ($manifest in $skillManifests) {
     New-DirectWorkingTreeLink `
         -Source $manifest.Directory.FullName `
@@ -232,6 +316,8 @@ foreach ($manifest in $skillManifests) {
         -Kind Directory `
         -OwnedSourceRoot $repositorySkills
 }
+
+Set-Content -LiteralPath $linkedStateFile -Value $linkedTargets -Encoding utf8
 
 $existingGlobalGuidance = Get-Item -Force -LiteralPath $claudeGuidance -ErrorAction SilentlyContinue
 if ($null -ne $existingGlobalGuidance -and
@@ -263,4 +349,4 @@ if ($skippedManifests.Count -gt 0) {
     }
 }
 
-Write-Host "QLBLOG_CLAUDE_LINKS_OK ($($skillManifests.Count) Skills; external product links preserved)"
+Write-Host "QLBLOG_CLAUDE_LINKS_OK ($($repositoryManifests.Count) qlblog Skills + $($linkedSkillManifests.Count) registered linked-only Skills; unrelated external links preserved)"
