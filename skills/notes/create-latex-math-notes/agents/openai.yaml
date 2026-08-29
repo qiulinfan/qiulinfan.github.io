@@ -1,4 +1,0 @@
-interface:
-  display_name: "Create Local LaTeX Math Notes"
-  short_description: "Scaffold self-contained LuaLaTeX PDF notes"
-  default_prompt: "Use $create-latex-math-notes to prepare my local LaTeX environment when needed and create a self-contained standalone mathematics-notes project with a strict LuaLaTeX PDF build."

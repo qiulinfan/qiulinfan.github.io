@@ -1,8 +1,8 @@
 # Skills
 
 本目录是 qlblog 自有公开个人 Skills 的权威副本。普通公开 Skill 默认直接
-创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前保留的
-本地套件是 `notes/`。不公开的个人 Skills 与从开源网站下载的第三方 Skills 统一放在
+创建在本目录顶层；只有用户明确指定分类时才新建套件或移动 Skill，当前没有本仓库内的
+语义套件。不公开的个人 Skills 与从开源网站下载的第三方 Skills 统一放在
 `linked-skill-repositories.tsv` 登记的外部 repositories 中，只供本机运行时使用；自有公开
 repositories 通过 `published-skill-repositories.tsv` 加入个人主页。
 
@@ -34,7 +34,8 @@ Skills 与网站内容。`$CODEX_HOME/skills` 与 `~/.claude/skills` 都必须�
 工作流、测试与安装脚本都在各自仓库维护，不由 qlblog 镜像或转发。
 [`discrete-sprite-lab`](https://github.com/qiulinfan/discrete-sprite-lab) 是两个离散像素动画
 Skills 的公开权威，同时登记为 published 与 linked-only，由 qlblog 展示并管理链接。
-`myprivateskills` 是 Diary 与 Codex subagent Skills/Workflows 的私有 linked-only 权威。
+`myprivateskills` 是数学笔记创作、Diary 与 Codex subagent Skills/Workflows 的私有
+linked-only 权威。
 
 展示与 linking 使用两份互不推断的 registry：
 
@@ -263,11 +264,6 @@ readlink -f ~/.codex/AGENTS.md ~/.claude/CLAUDE.md
 - [kgdistiller](https://github.com/qiulinfan/kgdistiller)：知识蒸馏引擎、论文/笔记 Skills、预制 agents 与事务工作流；qlblog 只采用并展示其静态导出。
 
 ## 个人维护
-
-### 笔记项目
-
-- [create-latex-math-notes](./notes/create-latex-math-notes/)：检查或配置本地 TeX 环境，并新建不依赖 qlblog shared toolchain 或第三方 vendored class 的自包含 LuaLaTeX 数学笔记项目；PDF 只作 ignored local build，网页发布仍走 Typst。
-- [create-math-notes](./notes/create-math-notes/)：新建可直接由 VS Code/Tinymist 编辑的 Typst-first 数学课程或专题。
 
 ### 全局 Skills
 
