@@ -33,7 +33,20 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "Discrete Sprite Lab",
-				image: "/assets/projects/discrete-sprite-lab.png",
+				images: [
+					{
+						src: "/assets/projects/discrete-player-rotation.gif",
+						alt: "Player eight-direction rotation",
+					},
+					{
+						src: "/assets/projects/discrete-goblin-archer-rotation.gif",
+						alt: "Goblin archer eight-direction rotation",
+					},
+					{
+						src: "/assets/projects/discrete-player-walk.gif",
+						alt: "Player south walk cycle",
+					},
+				],
 				href: "https://github.com/qiulinfan/discrete-sprite-lab",
 				linkLabel: "GitHub",
 				tags: ["Pixel Art", "Discrete Grid", "Agent Skills"],

@@ -1,0 +1,90 @@
+---
+import { projectGroups } from "@/data/home";
+import { url } from "@utils/url-utils";
+
+interface Props {
+	lang?: "en" | "zh";
+}
+
+const { lang = "en" } = Astro.props;
+const zh = lang === "zh";
+---
+
+<div class="project-groups">
+	{projectGroups.map((group, groupIndex) => (
+		<section class="project-group">
+			<header class="project-group-caption">
+				<span>{String(groupIndex + 1).padStart(2, "0")}</span>
+				<h3>{zh ? group.titleZh : group.title}</h3>
+			</header>
+			<div class="project-grid">
+				{group.projects.map((project) => {
+					const images = "images" in project
+						? project.images
+						: [{ src: project.image, alt: `${project.title} preview` }];
+					return <a class="project-card" href={project.href} target="_blank" rel="noreferrer">
+						<div class:list={["project-image", { slideshow: images.length > 1 }]}>
+							{images.map((image, index) => (
+								<img
+									src={image.src.startsWith("/") ? url(image.src) : image.src}
+									alt={image.alt}
+									loading="lazy"
+									style={`--slide-index: ${index}`}
+								/>
+							))}
+						</div>
+						<div class="project-copy">
+							<span>{project.tags.join(" · ")}</span>
+							<h4>{project.title}</h4>
+							<p>{zh ? project.descriptionZh : project.description}</p>
+							<strong>{project.linkLabel.toUpperCase()} ↗</strong>
+						</div>
+					</a>;
+				})}
+			</div>
+		</section>
+	))}
+</div>
+
+<style>
+	.project-groups { display: grid; gap: clamp(4rem, 8vw, 7rem); font-family: var(--font-editorial); }
+	.project-group { display: grid; grid-template-columns: minmax(18rem, 2fr) minmax(10rem, .75fr); grid-template-areas: "cards caption"; align-items: center; gap: clamp(1.5rem, 5vw, 4.5rem); }
+	.project-group:nth-child(even) { grid-template-columns: minmax(10rem, .75fr) minmax(18rem, 2fr); grid-template-areas: "caption cards"; }
+	.project-group-caption { grid-area: caption; align-self: center; }
+	.project-group-caption > span { color: var(--primary); font-size: .62rem; font-weight: 650; letter-spacing: .14em; }
+	.project-group-caption h3 { max-width: 8ch; margin: .7rem 0 0; color: var(--text-strong); font-size: clamp(2.2rem, 5vw, 4.8rem); font-style: italic; font-weight: 500; line-height: .86; letter-spacing: -.055em; }
+	.project-grid { grid-area: cards; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 22rem)); justify-content: start; gap: 1rem; }
+	.project-grid:has(.project-card:only-child) { grid-template-columns: minmax(0, 22rem); }
+	.project-card { width: 100%; max-width: 22rem; min-width: 0; justify-self: start; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); color: inherit; text-decoration: none; backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
+	.project-image { width: 100%; aspect-ratio: 1; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
+	.project-image img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transition: transform .5s ease; }
+	.project-image.slideshow { position: relative; }
+	.project-image.slideshow img { position: absolute; inset: 0; object-fit: contain; object-position: left center; image-rendering: pixelated; opacity: 0; animation: project-slide 12s infinite; animation-delay: calc(var(--slide-index) * 4s); }
+	.project-card:hover img { transform: scale(1.025); }
+	.project-copy { padding: 1.3rem; display: flex; flex: 1; flex-direction: column; }
+	.project-copy > span { color: var(--primary); font-size: .66rem; font-weight: 700; line-height: 1.2; letter-spacing: .16em; }
+	.project-copy h4 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
+	.project-copy p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.55; }
+	.project-copy > strong { margin-top: 1.3rem; color: var(--primary); font-size: .6rem; font-weight: 650; line-height: 1; letter-spacing: .1em; }
+	@keyframes project-slide {
+		0%, 29% { opacity: 1; }
+		34%, 96% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+	@media (max-width: 900px) {
+		.project-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 22rem)); }
+	}
+	@media (max-width: 600px) {
+		.project-grid { grid-template-columns: minmax(0, 22rem); }
+	}
+	@media (max-width: 480px) {
+		.project-group, .project-group:nth-child(even) { grid-template-columns: 1fr; grid-template-areas: "caption" "cards"; gap: 1.2rem; }
+		.project-group-caption h3 { max-width: none; font-size: 2.5rem; }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.project-card, .project-card img { transition-duration: .01ms !important; }
+		.project-image.slideshow img { display: none; opacity: 1; animation: none; }
+		.project-image.slideshow img:first-child { display: block; }
+	}
+</style>

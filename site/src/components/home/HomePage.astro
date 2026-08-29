@@ -1,6 +1,6 @@
 ---
-import { projectGroups } from "@/data/home";
 import { profileConfig } from "@/config";
+import ProjectShowcase from "@components/home/ProjectShowcase.astro";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import { loadListedNoteSources } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
@@ -27,7 +27,7 @@ const copy = zh
 			workCta: "查看项目",
 			language: "English",
 			workKicker: "01 / SELECTED WORK",
-			workTitle: "游戏项目",
+			workTitle: "项目",
 			allProjects: "项目详情",
 			page: "项目页面",
 			repo: "源代码",
@@ -43,7 +43,7 @@ const copy = zh
 			workCta: "See selected work",
 			language: "中文",
 			workKicker: "01 / SELECTED WORK",
-			workTitle: "Game projects",
+			workTitle: "Projects",
 			allProjects: "Project details",
 			page: "Project page",
 			repo: "Repository",
@@ -76,26 +76,7 @@ const copy = zh
 				<div><span>{copy.workKicker}</span><h2>{copy.workTitle}</h2></div>
 				<div class="section-link"><a href={url(zh ? "/zh/projects/" : "/projects/")}>{copy.allProjects} ↗</a></div>
 			</header>
-			<div class="project-groups">
-				{projectGroups.map((group) => (
-					<section class="project-group">
-						<h3>{zh ? group.titleZh : group.title}</h3>
-						<div class="project-grid">
-							{group.projects.map((project) => (
-								<a class="project-card card" href={project.href} target="_blank" rel="noreferrer">
-									<div class="project-image"><img src={project.image.startsWith("/") ? url(project.image) : project.image} alt={`${project.title} preview`} loading="lazy" /></div>
-									<div class="project-copy">
-										<span>{project.tags.join(" · ")}</span>
-										<h4>{project.title}</h4>
-										<p>{zh ? project.descriptionZh : project.description}</p>
-										<strong>{project.linkLabel.toUpperCase()} ↗</strong>
-									</div>
-								</a>
-							))}
-						</div>
-					</section>
-				))}
-			</div>
+			<ProjectShowcase lang={lang} />
 		</section>
 
 		<section class="section" id="notes">
@@ -118,9 +99,7 @@ const copy = zh
 </LandingPageLayout>
 
 <style>
-	:global(body:has(.homepage)) { background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 60%, transparent), color-mix(in srgb, var(--page-bg) 60%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp"); background-position: center, right top; background-size: cover; background-attachment: fixed; background-repeat: no-repeat; }
-	:global(html.dark body:has(.homepage)) { background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 10%, transparent), color-mix(in srgb, var(--page-bg) 10%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp"); }
-	.homepage { position: relative; display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; }
+	.homepage { --font-mono: var(--font-editorial); position: relative; display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; font-family: var(--font-editorial); }
 	.card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 	.button { min-height: 2.8rem; padding: 0 1rem; display: inline-flex; align-items: center; justify-content: space-between; gap: .9rem; border: 1px solid var(--border); border-radius: var(--radius-small); color: var(--text-strong); background: color-mix(in srgb, var(--card-bg) 78%, transparent); font-size: .75rem; font-weight: 650; text-decoration: none; backdrop-filter: blur(12px); }
 	.button:hover { border-color: color-mix(in srgb, var(--primary) 46%, var(--border)); transform: translateY(-2px); }
@@ -131,27 +110,17 @@ const copy = zh
 	.hero-copy { width: min(100%, 56rem); }
 	.identity { display: flex; align-items: center; gap: .85rem; }
 	.identity img { width: 3.25rem; height: 3.25rem; border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; object-fit: cover; }
-	.eyebrow, .section-heading span, .project-copy > span { color: var(--primary); font: 700 .66rem/1.2 var(--font-mono); letter-spacing: .16em; }
+	.eyebrow, .section-heading span { color: var(--primary); font: 700 .66rem/1.2 var(--font-mono); letter-spacing: .16em; }
 	h1 { max-width: 8ch; margin: .8rem 0 0; color: var(--text-strong); font-size: clamp(3.2rem, 8vw, 7.8rem); font-weight: 700; line-height: .89; letter-spacing: -.025em; }
 	.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 2rem; }
 	.section { scroll-margin-top: 6rem; }
 	.section-heading { display: grid; grid-template-columns: 1fr minmax(18rem, .7fr); align-items: end; gap: 2rem; margin-bottom: 1.5rem; }
 	.section-heading h2 { margin: .45rem 0 0; color: var(--text-strong); font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 720; line-height: .95; letter-spacing: -.058em; }
+	#work .section-heading h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -.035em; }
 	.section-heading > .section-link { justify-self: end; max-width: 28rem; }
 	.section-heading p { margin: 0; color: var(--text-muted); line-height: 1.65; }
 	.section-heading a { display: inline-block; margin-top: .65rem; color: var(--primary); font: 650 .7rem/1 var(--font-mono); text-decoration: none; }
-	.project-groups { display: grid; gap: 2.4rem; }
-	.project-group > h3 { margin: 0 0 .8rem .15rem; color: var(--text-muted); font: 650 .72rem/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-	.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-	.project-card { min-width: 0; color: inherit; text-decoration: none; overflow: hidden; }
-	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
-	.project-image { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
-	.project-image img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transition: transform .5s ease; }
-	.project-card:hover img { transform: scale(1.025); }
-	.project-copy { min-height: 13rem; padding: 1.3rem; display: flex; flex-direction: column; }
-	.project-copy h4, .note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
-	.project-copy p { margin: 0; color: var(--text-muted); font-size: .82rem; line-height: 1.55; }
-	.project-copy > strong { margin-top: auto; padding-top: 1.4rem; color: var(--primary); font: 650 .6rem/1 var(--font-mono); letter-spacing: .1em; }
+	.note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
 	.note-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 	.note-card { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
 	.note-card > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-mono); text-transform: uppercase; }
@@ -161,7 +130,6 @@ const copy = zh
 	@media (max-width: 900px) {
 		.section-heading { grid-template-columns: 1fr; }
 		.section-heading > .section-link { justify-self: start; }
-		.project-grid { grid-template-columns: 1fr 1fr; }
 		.note-grid { grid-template-columns: 1fr 1fr; }
 	}
 	@media (max-width: 600px) {
@@ -169,7 +137,7 @@ const copy = zh
 		.hero { min-height: calc(100vh - 6rem); border-radius: .65rem; padding: 1.3rem; }
 		h1 { font-size: clamp(3rem, 16vw, 5rem); }
 		.button.language { margin-left: 0; }
-		.project-grid, .note-grid { grid-template-columns: 1fr; }
+		.note-grid { grid-template-columns: 1fr; }
 	}
 	@media (prefers-reduced-motion: reduce) {
 		*, *::before, *::after { transition-duration: .01ms !important; }

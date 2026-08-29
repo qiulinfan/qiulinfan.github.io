@@ -9,7 +9,16 @@ html {
 body {
     min-width: 320px;
     min-height: 100vh;
-    background: var(--page-bg);
+    background-color: var(--page-bg);
+    background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 60%, transparent), color-mix(in srgb, var(--page-bg) 60%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp");
+    background-position: center, right top;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+html.dark body {
+    background-image: linear-gradient(color-mix(in srgb, var(--page-bg) 10%, transparent), color-mix(in srgb, var(--page-bg) 10%, transparent)), url("/assets/backgrounds/one-dark-sakura-right-v3.webp");
 }
 
 .site-backdrop {
