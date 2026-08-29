@@ -93,17 +93,12 @@ const renderedWorkflows = workflows.map((workflow) => ({
 			</div>
 			<div class="hero-grid">
 				<h1>Skills<br /><em>&amp; Flows</em></h1>
-				<div class="hero-copy" data-pagefind-body>
-					<p>Skill 是能力单元，Workflow 决定它们如何协作。本站展示 qlblog 与已登记的自有公开仓库；私有和第三方 linked-only Skills 保持隐藏。</p>
+				<div class="hero-copy">
 					<nav aria-label="Page sections">
 						<a href="#skill-index">Skill 导航 ↓</a>
 						<a href="#workflows">工具流 ↓</a>
 						<a href="#skill-details">自有 Skills ↓</a>
 					</nav>
-					<aside>
-						<span>AGENTS / NEXT</span>
-						<p>未来的 Agent 会有独立页面；这里保留能力、编排关系与实现详情三层信息。</p>
-					</aside>
 				</div>
 			</div>
 		</header>
@@ -111,7 +106,6 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-index" class="index-section" data-pagefind-body>
 			<header class="section-header">
 				<div><span>01 / DIRECTORY</span><h2>Skill 导航</h2></div>
-				<p>qlblog Skills 按语义套件分组，自有公开仓库按 repository 分组；未分类的根目录内容统一归入最下方的 <code>Other Skills</code>。私有仓库与第三方公开仓库属于 linked-only authority，不进入网站构建。</p>
 			</header>
 			<div class="folder-tree" aria-label="Skills grouped by repository directory">
 				{skillGroups.map((group, index) => (
@@ -140,7 +134,7 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="workflows" class="workflow-section" data-pagefind-body>
 			<header class="section-header">
 				<div><span>02 / WORKFLOWS.MD</span><h2>{workflowTitle}</h2></div>
-				<div class="workflow-intro" set:html={workflowIntroHtml} />
+				{workflowIntroHtml && <div class="workflow-intro" set:html={workflowIntroHtml} />}
 			</header>
 			<div class="workflow-list">
 				{renderedWorkflows.map((workflow, index) => (
@@ -161,7 +155,6 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		<section id="skill-details" class="details-section">
 			<header class="section-header">
 				<div><span>03 / OWNED PUBLIC SKILLS</span><h2>公开 Skill 详情</h2></div>
-				<p>qlblog 与已登记的自有公开仓库共享一套详情卡片；每张卡片链接回对应 repository 的权威 SKILL.md。</p>
 			</header>
 			<div class="skill-detail-groups" data-pagefind-body aria-label="Personally maintained Agent Skills grouped by directory">
 				{skillGroups.map((group) => (
@@ -199,21 +192,18 @@ const renderedWorkflows = workflows.map((workflow) => ({
 <style>
 	.skills-page { padding: clamp(2rem, 6vw, 6rem) 0 3rem; }
 	.skills-hero { margin-bottom: clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--border); padding: 0 .25rem clamp(2rem, 5vw, 4rem); }
-	.hero-meta, .skills-hero aside span, .section-header span, .workflow-heading span, .skill-card header, .skill-card footer { font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
+	.hero-meta, .section-header span, .workflow-heading span, .skill-card header, .skill-card footer { font: 650 .62rem/1.4 var(--font-mono); letter-spacing: .1em; }
 	.hero-meta { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); }
 	.hero-meta span:first-child, .section-header span, .workflow-heading span { color: var(--primary); }
 	.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); align-items: end; gap: clamp(2rem, 6vw, 7rem); margin-top: clamp(3rem, 8vw, 7rem); }
-	.skills-hero h1 { margin: 0; color: var(--text-strong); font-size: clamp(4rem, 11vw, 9.5rem); font-weight: 760; line-height: .72; letter-spacing: -.085em; }
-	.skills-hero h1 em { color: var(--primary); font-size: .66em; font-style: normal; }
-	.hero-copy > p { max-width: 31rem; margin: 0; color: var(--text-strong); font-size: clamp(1.25rem, 2.5vw, 2rem); font-weight: 610; line-height: 1.25; letter-spacing: -.035em; }
-	.hero-copy nav { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.6rem; }
+	.skills-hero h1 { margin: 0; color: var(--text-strong); font-family: var(--font-sans); font-size: clamp(4rem, 11vw, 9.5rem); font-weight: 700; line-height: .82; letter-spacing: -.025em; font-feature-settings: "kern" 1; }
+	.skills-hero h1 em { color: var(--primary); font-size: .66em; font-style: normal; letter-spacing: -.018em; }
+	.hero-copy { align-self: end; }
+	.hero-copy nav { display: flex; flex-wrap: wrap; gap: .65rem; }
 	.hero-copy nav a { border: 1px solid var(--border); border-radius: var(--radius-small); padding: .75rem .9rem; background: var(--card-bg); color: var(--primary); font: 650 .68rem/1 var(--font-mono); text-decoration: none; }
-	.skills-hero aside { display: grid; grid-template-columns: auto 1fr; gap: 1rem; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem; }
-	.skills-hero aside span { color: var(--violet); white-space: nowrap; }
-	.skills-hero aside p { margin: 0; color: var(--text-muted); font-size: .78rem; line-height: 1.6; }
 	.index-section, .workflow-section, .details-section { scroll-margin-top: 6rem; }
 	.workflow-section, .details-section { margin-top: clamp(5rem, 10vw, 9rem); }
-	.section-header { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); align-items: end; gap: clamp(2rem, 6vw, 7rem); margin-bottom: 1.5rem; padding: 0 .25rem; }
+	.section-header { margin-bottom: 1.5rem; padding: 0 .25rem; }
 	.section-header h2 { margin: .5rem 0 0; color: var(--text-strong); font-size: clamp(2.4rem, 6vw, 5.5rem); font-weight: 730; line-height: .9; letter-spacing: -.065em; }
 	.section-header > p { max-width: 34rem; margin: 0; color: var(--text-muted); font-size: .86rem; line-height: 1.7; }
 	.section-header code { color: var(--text-strong); font-family: var(--font-mono); }
@@ -284,7 +274,6 @@ const renderedWorkflows = workflows.map((workflow) => ({
 		.hero-meta { align-items: start; flex-direction: column; }
 		.hero-grid { margin-top: 3.5rem; }
 		.skills-hero h1 { font-size: clamp(3.5rem, 20vw, 6rem); }
-		.skills-hero aside { grid-template-columns: 1fr; }
 		.section-header { gap: 1rem; }
 		.workflow-number { font-size: 2.6rem; }
 		.workflow-heading { grid-template-columns: 1fr; align-items: start; }

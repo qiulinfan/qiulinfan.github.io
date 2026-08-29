@@ -5,7 +5,6 @@ import type {
 	ProfileConfig,
 	SiteConfig,
 } from "./types/config";
-import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
 	title: "Qiulin Fan",
@@ -53,7 +52,6 @@ export const navBarConfig: NavBarConfig = {
 			name: "Skills",
 			url: "/skills/",
 		},
-		LinkPreset.About,
 		{
 			name: "GitHub",
 			url: "https://github.com/qiulinfan/qiulinfan.github.io", // Internal links should not include the base path, as it is automatically added
