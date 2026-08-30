@@ -57,7 +57,8 @@ export const projectGroups = [
 			},
 			{
 				title: "AutoTA",
-				image: "/assets/projects/autota.png",
+				image: "/assets/projects/autota-dreamtraveler-runtime-walk.gif",
+				imageFit: "contain",
 				href: "https://github.com/qiulinfan/autoTA",
 				linkLabel: "GitHub",
 				tags: ["Technical Art", "2D / 3D", "Asset Audit"],
@@ -74,7 +75,8 @@ export const projectGroups = [
 		projects: [
 			{
 				title: "kgdistiller",
-				image: "https://opengraph.githubassets.com/qlblog-home/qiulinfan/kgdistiller",
+				image: "/assets/projects/kgdistiller-obsidian-graph.jpg",
+				imageFit: "contain",
 				href: "https://github.com/qiulinfan/kgdistiller",
 				linkLabel: "GitHub",
 				tags: ["Knowledge Graph", "Markdown", "Typst", "LaTeX"],
@@ -102,10 +104,19 @@ export const projectGroups = [
 			},
 			{
 				title: "obsidian-tinymist",
-				image: "https://opengraph.githubassets.com/qlblog-home/qiulinfan/obsidian-tinymist",
+				images: [
+					{
+						src: "/assets/projects/obsidian-tinymist-editor.jpg",
+						alt: "Tinymist Typst editor running inside Obsidian",
+					},
+					{
+						src: "/assets/projects/obsidian-tinymist-render.jpg",
+						alt: "Rendered Typst mathematics notes",
+					},
+				],
 				href: "https://github.com/qiulinfan/obsidian-tinymist",
 				linkLabel: "GitHub",
-				tags: ["Obsidian", "Typst", "Tinymist"],
+				tags: ["Obsidian", "Typst", "Tinymist", "YOLO Completion"],
 				description:
 					"Tinymist-grade Typst editing in Obsidian, including diagnostics, completion, hover, and live preview.",
 				descriptionZh:
