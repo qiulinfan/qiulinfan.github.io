@@ -49,7 +49,7 @@ const groups = Object.entries(noteSubjectLabels).map(([subject, title]) => ({
 	.notes-index { padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius-large); }
 	header h1 { margin: 0; font-size: clamp(2.2rem, 6vw, 4.5rem); }
 	.groups { display: grid; gap: 2rem; margin-top: 2.5rem; }
-	h2 { margin-bottom: .8rem; font-size: 1rem; font-family: var(--font-mono); }
+	h2 { margin-bottom: .8rem; font-size: 1rem; font-family: var(--font-sans); }
 	.note-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .7rem; }
 	.note-list a, .pending-note { display: flex; min-height: 9rem; flex-direction: column; justify-content: space-between; gap: .8rem; padding: 1rem; border: 1px solid var(--line-divider); border-radius: .8rem; color: inherit; text-decoration: none; }
 	.note-list a:hover { border-color: color-mix(in oklch, var(--primary) 55%, var(--line-divider)); transform: translateY(-1px); }
@@ -57,5 +57,5 @@ const groups = Object.entries(noteSubjectLabels).map(([subject, title]) => ({
 	.note-list p { margin: 0; color: color-mix(in oklch, currentColor 62%, transparent); font-size: .88rem; line-height: 1.5; }
 	.note-list small { overflow-wrap: anywhere; color: color-mix(in oklch, currentColor 44%, transparent); }
 	.pending-note { opacity: .66; }
-	.pending-note p { font-family: var(--font-mono); }
+	.pending-note p { font-family: var(--font-sans); }
 </style>

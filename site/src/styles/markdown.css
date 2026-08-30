@@ -37,7 +37,7 @@
     code {
         @apply bg-[var(--inline-code-bg)] text-[var(--inline-code-color)] px-1 py-0.5 rounded-md overflow-hidden;
 
-        font-family: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+        font-family: var(--font-sans);
         &:before {
             content:none;
         }
@@ -117,7 +117,7 @@
         padding: .65rem 1rem .5rem;
         border-bottom: 1px solid var(--line-divider);
         color: var(--text-muted);
-        font: 650 .62rem/1 var(--font-mono);
+        font: 650 .62rem/1 var(--font-sans);
         letter-spacing: .08em;
         text-transform: uppercase;
     }
@@ -128,7 +128,7 @@
         overflow: auto;
         border-radius: 0;
         background: transparent !important;
-        font: 500 .82rem/1.65 var(--font-mono);
+        font: 500 .82rem/1.65 var(--font-sans);
     }
 
     .ql-code-block pre.shiki code {

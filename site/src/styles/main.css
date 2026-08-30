@@ -6,6 +6,10 @@ html {
     font-family: var(--font-sans);
 }
 
+code, pre, kbd, samp {
+    font-family: var(--font-sans);
+}
+
 body {
     min-width: 320px;
     min-height: 100vh;

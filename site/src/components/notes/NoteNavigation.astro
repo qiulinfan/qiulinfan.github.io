@@ -31,7 +31,7 @@ const { note } = Astro.props;
 <style>
 	.note-navigation { position: sticky; top: 1rem; display: block; max-height: calc(100vh - 2rem); overflow: hidden; border-left: 1px solid var(--line-divider); }
 	header { display: grid; gap: .35rem; padding: .65rem .8rem 1rem; }
-	header span { color: var(--text-muted); font: 650 .62rem/1 var(--font-mono); letter-spacing: .14em; }
+	header span { color: var(--text-muted); font: 650 .62rem/1 var(--font-sans); letter-spacing: .14em; }
 	header strong { color: var(--text-strong); font-size: .92rem; }
 	nav { max-height: calc(100vh - 7rem); overflow: auto; padding: 0 .35rem 2rem 0; scrollbar-width: thin; }
 	a { display: block; margin-left: var(--outline-indent); padding: .36rem .55rem; border-left: 2px solid transparent; border-radius: 0 .45rem .45rem 0; color: var(--text-muted); font-size: .74rem; line-height: 1.35; text-decoration: none; overflow-wrap: anywhere; transition: color .15s ease, border-color .15s ease, background .15s ease; }

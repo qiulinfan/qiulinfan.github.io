@@ -51,10 +51,10 @@ const zh = lang === "zh";
 </div>
 
 <style>
-	.project-groups { display: grid; gap: clamp(4rem, 8vw, 7rem); font-family: var(--font-editorial); }
+	.project-groups { display: grid; gap: clamp(4rem, 8vw, 7rem); font-family: var(--font-sans); }
 	.project-group { display: grid; grid-template-columns: minmax(18rem, 2fr) minmax(10rem, .75fr); grid-template-areas: "cards caption"; align-items: center; gap: clamp(1.5rem, 5vw, 4.5rem); }
 	.project-group:nth-child(even) { grid-template-columns: minmax(10rem, .75fr) minmax(18rem, 2fr); grid-template-areas: "caption cards"; }
-	.project-group-caption { grid-area: caption; align-self: center; }
+	.project-group-caption { grid-area: caption; align-self: center; font-family: var(--font-editorial); }
 	.project-group-caption > span { color: var(--primary); font-size: .62rem; font-weight: 650; letter-spacing: .14em; }
 	.project-group-caption h3 { max-width: 8ch; margin: .7rem 0 0; color: var(--text-strong); font-size: clamp(2.2rem, 5vw, 4.8rem); font-style: italic; font-weight: 500; line-height: .86; letter-spacing: -.055em; }
 	.project-grid { grid-area: cards; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 22rem)); justify-content: start; gap: 1rem; }

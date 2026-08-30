@@ -20,7 +20,7 @@ const zh = lang === "zh";
 		<header class="projects-hero">
 			<div class="hero-meta">
 				<span>PROJECTS / 2024—2026</span>
-				<nav><a href={url(zh ? "/zh/" : "/")}>← {zh ? "主页" : "Home"}</a><a href={url(zh ? "/projects/" : "/zh/projects/")}>{zh ? "English" : "中文"} ↗</a></nav>
+				<nav><a href={url(zh ? "/zh/" : "/")}>← {zh ? "主页" : "Home"}</a></nav>
 			</div>
 			<h1>{zh ? "项目" : "Projects"}</h1>
 		</header>
@@ -30,9 +30,9 @@ const zh = lang === "zh";
 </LandingPageLayout>
 
 <style>
-	.projects-page { padding: clamp(2rem, 6vw, 6rem) 0 4rem; font-family: var(--font-editorial); }
+	.projects-page { padding: clamp(2rem, 6vw, 6rem) 0 4rem; font-family: var(--font-sans); }
 	.projects-hero { margin-bottom: clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--border); padding: 0 .25rem clamp(2.5rem, 6vw, 5rem); }
-	.hero-meta { display: flex; justify-content: space-between; gap: 1rem; align-items: center; color: var(--primary); font: 700 .64rem/1.2 var(--font-mono); letter-spacing: .14em; }
+	.hero-meta { display: flex; justify-content: space-between; gap: 1rem; align-items: center; color: var(--primary); font: 700 .64rem/1.2 var(--font-sans); letter-spacing: .14em; }
 	.hero-meta nav { display: flex; gap: 1.2rem; }
 	.hero-meta a { color: var(--primary); text-decoration: none; }
 	.projects-hero h1 { max-width: 10ch; margin: clamp(3rem, 8vw, 7rem) 0 0; color: var(--text-strong); font-size: clamp(4rem, 11vw, 9.5rem); font-weight: 700; line-height: .82; letter-spacing: -.025em; }
