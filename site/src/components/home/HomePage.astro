@@ -60,7 +60,7 @@ const copy = zh
 	<div class="homepage">
 		<section class="hero card" aria-labelledby="hero-title">
 			<div class="hero-copy">
-				<div class="identity"><img src={profileConfig.avatar} alt={profileConfig.name} /><span class="eyebrow">{copy.eyebrow}</span></div>
+				<div class="identity"><img src={profileConfig.avatar} alt={profileConfig.name} width="256" height="256" loading="eager" decoding="async" fetchpriority="high" /><span class="eyebrow">{copy.eyebrow}</span></div>
 				<h1 id="hero-title">{copy.headline}</h1>
 				<div class="hero-actions">
 					<a class="button primary" href={url("/notes/")}>{copy.notesCta}<span>→</span></a>

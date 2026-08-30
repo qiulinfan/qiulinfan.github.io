@@ -61,7 +61,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "https://github.com/qiulinfan.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: "/assets/avatar/qiulin-avatar-256.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "Qiulin",
 	links: [
 		{

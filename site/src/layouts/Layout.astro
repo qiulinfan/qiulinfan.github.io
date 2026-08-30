@@ -49,6 +49,7 @@ if (title) {
 
 const favicons: Favicon[] =
 	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
+const appleTouchIcon = favicons.find((favicon) => favicon.sizes === "180x180");
 
 // const siteLang = siteConfig.lang.replace('_', '-')
 if (!lang) {
@@ -102,6 +103,12 @@ const bannerOffset =
 				  media={favicon.theme && `(prefers-color-scheme: ${favicon.theme})`}
 			/>
 		))}
+		{appleTouchIcon && (
+			<link rel="apple-touch-icon"
+				href={appleTouchIcon.src.startsWith('/') ? url(appleTouchIcon.src) : appleTouchIcon.src}
+				sizes={appleTouchIcon.sizes}
+			/>
+		)}
 
 		<!-- Set the theme before the page is rendered to avoid a flash -->
 		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH}}>
