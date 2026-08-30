@@ -57,8 +57,7 @@ export const projectGroups = [
 			},
 			{
 				title: "AutoTA",
-				image: "/assets/projects/autota-dreamtraveler-runtime-walk.gif",
-				imageFit: "contain",
+				image: "/assets/projects/classroom-writing-loop.gif",
 				href: "https://github.com/qiulinfan/autoTA",
 				linkLabel: "GitHub",
 				tags: ["Technical Art", "2D / 3D", "Asset Audit"],
@@ -104,16 +103,7 @@ export const projectGroups = [
 			},
 			{
 				title: "obsidian-tinymist",
-				images: [
-					{
-						src: "/assets/projects/obsidian-tinymist-editor.jpg",
-						alt: "Tinymist Typst editor running inside Obsidian",
-					},
-					{
-						src: "/assets/projects/obsidian-tinymist-render.jpg",
-						alt: "Rendered Typst mathematics notes",
-					},
-				],
+				image: "/assets/projects/obsidian-tinymist-demo.gif",
 				href: "https://github.com/qiulinfan/obsidian-tinymist",
 				linkLabel: "GitHub",
 				tags: ["Obsidian", "Typst", "Tinymist", "YOLO Completion"],

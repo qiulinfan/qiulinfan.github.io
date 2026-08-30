@@ -57,6 +57,8 @@ test("the source registry publishes and lists only the selected notes", () => {
 	const debuggerNote = loadMarkdownNotes().find((note) => note.authority.endsWith("04-Debuggers.md"));
 	assert.match(debuggerNote?.html ?? "", /\/_notes-assets\/cs-cpp-programming\/Assets\/image-20231223020225955\.png/);
 	const cppHome = cppNotes.find((note) => note.slug === "cs/cpp-programming");
+	assert.doesNotMatch(cppHome?.html ?? "", /<h1\b/);
+	assert.equal(cppHome?.headings.every((heading) => heading.depth > 1), true);
 	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("01-Command-Line Interface-(CLI)")), true);
 	assert.equal(cppHome?.navigation.some((heading) => heading.documentSlug.endsWith("280-midterm-cheatsheet")), true);
 	const dataStructuresHome = dataStructuresNotes.find((note) => note.slug === "cs/data-structures-algorithms");

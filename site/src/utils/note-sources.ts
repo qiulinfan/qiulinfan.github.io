@@ -85,6 +85,10 @@ export interface NoteSource {
 	standalone: boolean;
 }
 
+interface LoadListedNoteSourcesOptions {
+	usePublishedStandalone?: boolean;
+}
+
 interface RenderOptions {
 	resolveTarget?: (target: string, kind: "image" | "link") => string;
 }
@@ -168,7 +172,7 @@ function standalonePresentationVersion(): string {
 	return cachedStandalonePresentationVersion;
 }
 
-export function loadListedNoteSources(): NoteSource[] {
+export function loadListedNoteSources(options: LoadListedNoteSourcesOptions = {}): NoteSource[] {
 	const registry = sourceRegistry();
 	const fieldLabels = new Map(registry.fields.map((field) => [field.id, field.label]));
 	return registry.sources
@@ -176,6 +180,7 @@ export function loadListedNoteSources(): NoteSource[] {
 		.map((spec) => {
 			const href = sourceWebPath(spec);
 			const standalone = Boolean(spec.web_artifacts?.length);
+			const standaloneHref = options.usePublishedStandalone ? `${spec.web.replace(/\/+$/, "")}/` : href;
 			return {
 				id: spec.id,
 				title: spec.title,
@@ -184,7 +189,7 @@ export function loadListedNoteSources(): NoteSource[] {
 				course: spec.course,
 				authority: spec.root,
 				href,
-				navigationHref: standalone ? `${href}?v=${standalonePresentationVersion()}` : href,
+				navigationHref: standalone ? `${standaloneHref}?v=${standalonePresentationVersion()}` : href,
 				fields: spec.fields.map((field) => fieldLabels.get(field) ?? field),
 				standalone,
 			};
@@ -500,6 +505,10 @@ function titleFrom(source: string, metadata: Record<string, string>, path: strin
 	return match?.[1].replace(/--?\[\[|\]\]--?/g, "").trim() || basename(path, extname(path));
 }
 
+function stripDocumentTitleHeading(html: string): string {
+	return html.replace(/<h1\b[^>]*>[\s\S]*?<\/h1>\s*/i, "");
+}
+
 let cachedNotes: MarkdownNote[] | undefined;
 
 export function loadMarkdownNotes(): MarkdownNote[] {
@@ -524,8 +533,8 @@ export function loadMarkdownNotes(): MarkdownNote[] {
 				sourceTitle: spec.title,
 				sourceId: spec.id,
 				authority: fileAuthority,
-				html: rendered.html,
-				headings: rendered.headings,
+				html: stripDocumentTitleHeading(rendered.html),
+				headings: rendered.headings.filter((heading) => heading.depth > 1),
 				heroImage: presentationImage(spec, path, metadata.hero_image, markdownNoteConfig.defaultHeroImage),
 				backgroundImage: presentationImage(spec, path, metadata.background_image, markdownNoteConfig.defaultBackgroundImage),
 				navigation: [],

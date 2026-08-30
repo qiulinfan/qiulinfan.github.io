@@ -12,13 +12,14 @@ interface Props {
 const { lang = "en" } = Astro.props;
 const zh = lang === "zh";
 const featuredNotes = [
-	...loadListedNoteSources().map((source) => ({
+	...loadListedNoteSources({ usePublishedStandalone: import.meta.env.DEV }).map((source) => ({
 		title: source.title,
 		field: source.fields[0] ?? source.subject,
 		href: source.navigationHref,
 		standalone: source.standalone,
 	})),
 ];
+const resolvedHref = (href: string) => (href.startsWith("http") ? href : url(href));
 const copy = zh
 	? {
 			eyebrow: "QIULIN FAN",
@@ -85,7 +86,7 @@ const copy = zh
 			</header>
 			<div class="note-grid">
 				{featuredNotes.map((note, index) => (
-					<a class="note-card card" href={url(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
+					<a class="note-card card" href={resolvedHref(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
 				))}
 			</div>
 		</section>

@@ -4,7 +4,11 @@ import { noteSubjectLabels, pendingNotes } from "@/data/notes";
 import { loadListedNoteSources } from "@utils/note-sources";
 import { url } from "@utils/url-utils";
 
-const sources = loadListedNoteSources();
+const sources = loadListedNoteSources({
+	usePublishedStandalone: import.meta.env.DEV,
+});
+const resolvedHref = (href: string) =>
+	href.startsWith("http") ? href : url(href);
 const groups = Object.entries(noteSubjectLabels).map(([subject, title]) => ({
 	subject: subject as keyof typeof noteSubjectLabels,
 	title,
@@ -22,7 +26,7 @@ const groups = Object.entries(noteSubjectLabels).map(([subject, title]) => ({
 					<h2>{group.title}</h2>
 					<div class="note-list">
 						{group.published.map((source) => (
-							<a href={url(source.navigationHref)} data-no-swup={source.standalone || undefined}>
+							<a href={resolvedHref(source.navigationHref)} data-no-swup={source.standalone || undefined}>
 								<span><strong>{source.title}</strong><small>{source.fields.join(" · ")}</small></span>
 								<p>{source.description}</p>
 								<small>OPEN ↗</small>
