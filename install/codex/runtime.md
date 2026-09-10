@@ -10,7 +10,7 @@
 - Scope filter: the Codex linker skips every Skill under
   `<qlblog>/skills/claude-only`, because those Skills depend on Claude
   Code-only capabilities. They stay linked into Claude Code only. Skills under
-  `<qlblog>/skills/codex-only` (the Codex-native subagent and test Skills) are
+  `<qlblog>/skills/codex-only` are
   exclusive to this runtime and are linked here only. A Skill's name never
   affects scope.
 - Treat `$CODEX_HOME/skills/.system` as Codex-generated state. Never copy, link,

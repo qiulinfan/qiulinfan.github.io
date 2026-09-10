@@ -104,10 +104,8 @@ agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog �
 `autoTA`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
 `CLAUDE_CONFIG_DIR` 覆盖，Codex 的用 `CODEX_HOME`。
 
-Claude Code 侧有一条额外的作用域规则：任何 authority 的 `codex-only/` 目录都会被跳过；当前
-`myprivateskills` 中的 `codex-subagent-workflow`、`codex-subagent-testskill`、
-`codex-external-agent-testskill` 驱动的是 Codex 原生
-subagent 与 Codex 选择的外部运行时，在 Claude Code 里跑不了，所以只链接进 Codex。
+Claude Code 侧有一条额外的作用域规则：任何 authority 的 `codex-only/` 目录都会被跳过；
+该作用域用于依赖 Codex 专属能力的 Skill，只链接进 Codex。
 不要手工补链，也不要放宽过滤器。
 
 两个运行时的全局 guidance 共享同一份权威 `install/agents/core.md`，各自只维护一份

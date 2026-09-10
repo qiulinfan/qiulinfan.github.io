@@ -34,7 +34,7 @@ Skills 与网站内容。`$CODEX_HOME/skills` 与 `~/.claude/skills` 都必须�
 工作流、测试与安装脚本都在各自仓库维护，不由 qlblog 镜像或转发。
 [`discrete-sprite-lab`](https://github.com/qiulinfan/discrete-sprite-lab) 是两个离散像素动画
 Skills 的公开权威，同时登记为 published 与 linked-only，由 qlblog 展示并管理链接。
-`myprivateskills` 是数学笔记创作、Diary 与 Codex subagent Skills/Workflows 的私有
+`myprivateskills` 是数学笔记创作、Diary 及相关工作流的私有
 linked-only 权威。
 
 展示与 linking 使用两份互不推断的 registry：
@@ -64,10 +64,8 @@ repositories，也不另外维护一份页面数据。
 
 - 作用域只由目录决定，名称不参与：`codex-only/` 与 `claude-only/` 是运行时作用域目录，
   与 `notes/` 这类语义套件正交。作用域目录之外的所有 Skill 链接进两个运行时。
-- Claude Code linker 跳过任一 authority Skill root 直属 `codex-only/` 下的 Skill，当前是
-  `myprivateskills:codex-only/codex-subagent-workflow`、`myprivateskills:codex-only/codex-subagent-testskill`、
-  `myprivateskills:codex-only/codex-external-agent-testskill`。它们编排的是 Codex 原生 subagent 或由
-  Codex 选择的外部运行时，在 Claude Code 里没有对应能力，只链接进 Codex。
+- Claude Code linker 跳过任一 authority Skill root 直属 `codex-only/` 下的 Skill；
+  该作用域用于依赖 Codex 专属能力的 Skill，只链接进 Codex。
 - Codex linker 跳过 `claude-only/` 下的 Skill（依赖 Claude Code 专属能力时使用；当前为空，
   目录在第一个此类 Skill 出现时才创建）。两个脚本都会打印被跳过的清单。
 - 只有当 Skill 确实依赖某个运行时的专属能力、或用户明确要求时，才把它放入作用域目录。

@@ -129,8 +129,7 @@ addition to the active Skill's own instructions:
   eight-direction sprite Skills. It is registered for both publication and
   qlblog-managed linking because it does not have an independent installer.
   `myprivateskills` is the private linked-only authority for the mathematics-note
-  project creators, Diary maintenance, and the Codex subagent production/testing
-  Skills together with all of their private workflows.
+  project creators, Diary maintenance, and their private workflows.
   Never recreate mirrors of either authority under qlblog `skills/`.
 - After every reclassification or other parent-directory move under
   `<qlblog>/skills`, immediately rerun the platform-appropriate qlblog linker
