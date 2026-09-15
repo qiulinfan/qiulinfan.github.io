@@ -85,6 +85,12 @@ make knowledge-check
 manifest 会锁定这个 source commit 与实际执行导出的 clean kgdistiller commit。验证通过后，
 再用后一个 qlblog commit 提交四文件静态 bundle。dirty checkout 会被拒绝。
 
+本机可运行一次 `scripts/install-git-hooks.sh`，启用仓库内的 pre-push hook。它会在 push
+前检查已登记来源；发现遗漏时，对配置好的 source registry 执行确定性同步，再依次创建
+private graph 与 static export 提交，然后停止本次 push。再次运行 `git push` 即会包含新提交。
+dirty worktree、需要人工 review 的同步结果以及超出预期生成目录的修改都会 fail closed；
+source registry 之外的文件不会被发现或摄入。
+
 实例 authority、public bundle contract 与完整采用流程见
 [`knowledge/SPEC.md`](knowledge/SPEC.md) 和
 [`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。

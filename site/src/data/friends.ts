@@ -31,4 +31,10 @@ export const friendLinks: FriendLink[] = [
 		description: "Distributed Systems & ML Systems Engineer",
 		descriptionZh: "分布式系统与机器学习系统工程师",
 	},
+	{
+		name: "Gigi Pan",
+		href: "https://dmuoio.github.io/",
+		description: "fullstack engineer",
+		descriptionZh: "全栈工程师",
+	},
 ];

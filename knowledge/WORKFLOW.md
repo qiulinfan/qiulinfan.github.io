@@ -68,6 +68,22 @@ editing kgdistiller never moves qlblog automatically.
 
 GitHub Pages verifies `knowledge/export/site`, builds notes and Astro, and
 deploys the result. It never checks out, installs, or executes kgdistiller.
+
+For a local clone with Python 3 and the selected kgdistiller revision installed,
+enable the repository-owned pre-push hook once:
+
+```sh
+scripts/install-git-hooks.sh
+```
+
+Before each push, the hook checks the registered source generation. If it is
+stale, it runs a full deterministic sync of the configured source registry,
+checks and commits that private graph generation, refreshes and commits the
+static export, and stops the original push. Run `git push` once more so Git can
+include the newly created commits. The hook refuses to mutate a dirty worktree,
+missing sources, review-requiring syncs, or changes outside the expected
+generated paths. New files outside the configured source registry are never
+discovered or ingested.
 There is no public knowledge-graph page or JSON endpoint. The committed
 `graph.json` remains an internal verified adoption record, while the Typst
 toolchain consumes the committed public registry.
