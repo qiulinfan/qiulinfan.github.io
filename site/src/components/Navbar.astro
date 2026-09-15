@@ -28,6 +28,8 @@ const languageHref = (() => {
 	if (pathname.startsWith("/projects/")) return "/zh/projects/";
 	if (pathname.startsWith("/zh/game-projects/")) return "/game-projects/";
 	if (pathname.startsWith("/game-projects/")) return "/zh/game-projects/";
+	if (pathname.startsWith("/zh/friends/")) return "/friends/";
+	if (pathname.startsWith("/friends/")) return "/zh/friends/";
 	return isZh ? "/" : "/zh/";
 })();
 ---

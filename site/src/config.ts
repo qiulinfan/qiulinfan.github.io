@@ -53,6 +53,10 @@ export const navBarConfig: NavBarConfig = {
 			url: "/skills/",
 		},
 		{
+			name: "Friends",
+			url: "/friends/",
+		},
+		{
 			name: "GitHub",
 			url: "https://github.com/qiulinfan/qiulinfan.github.io", // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab

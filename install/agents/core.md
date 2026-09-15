@@ -36,6 +36,14 @@ do not specify otherwise:
   constraints require compatibility; never remove or break them without clear
   scope and authorization.
 
+## Email sending boundary
+
+- Never send, reply to, or forward an email on the user's behalf. When the user
+  asks to communicate by email, prepare or update an unsent draft and tell the
+  user to review and send it themselves. Final sending is always a user-only
+  action, regardless of the recipient, urgency, or wording such as “handle,”
+  “reply,” “report,” or “send.”
+
 ## Personal Skill maintenance
 
 When creating or materially updating a personal or imported third-party Skill, or when
