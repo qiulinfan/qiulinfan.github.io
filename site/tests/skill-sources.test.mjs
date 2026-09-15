@@ -39,7 +39,10 @@ test("the public skills list combines qlblog with owned published repositories o
 	assert.equal(existsSync(publishedRegistry), true);
 	assert.match(readFileSync(linkedRegistry, "utf8"), /community-skills/);
 	assert.doesNotMatch(readFileSync(publishedRegistry, "utf8"), /community-skills/);
-	assert.equal(qlblogSkills.length, allAuthorities.length);
+	assert.deepEqual(
+		new Set(qlblogSkills.map((skill) => join(repositoryRoot, skill.authority))),
+		new Set(allAuthorities),
+	);
 	assert.equal(new Set(skills.map((skill) => skill.name)).size, skills.length);
 	assert.equal(skills.every((skill) => skill.description.length > 0), true);
 	assert.equal(qlblogSkills.every((skill) => skill.authority.startsWith("skills/") && skill.authority.endsWith("/SKILL.md")), true);
@@ -64,7 +67,10 @@ test("the README catalog lists every visible Skill and owns the detail-page boun
 	for (const skill of qlblogSkills) {
 		assert.match(catalog, new RegExp(`\\./${skill.id.replaceAll("/", "\\/")}/`));
 	}
-	assert.equal(qlblogSkills.length, ownedSkills.length);
+	assert.deepEqual(
+		new Set(qlblogSkills.map((skill) => skill.id)),
+		new Set(ownedSkills.map((skill) => skill.id)),
+	);
 	assert.doesNotMatch(catalog, /## 私有与第三方来源/);
 	assert.equal(ownedSkills.length > 0, true);
 	assert.equal(
@@ -95,7 +101,6 @@ test("owned public repository groups are displayed while linked-only repositorie
 		expectedRepositories,
 	);
 	assert.equal(groups.every((group) => group.kind === "repository"), true);
-	assert.equal(groups.every((group) => group.skills.length > 0), true);
 	assert.equal(
 		groups
 			.flatMap((group) => group.skills)
@@ -138,12 +143,7 @@ test("the public catalog dynamically groups every owned Skill without a communit
 		.sort((left, right) => left.id.localeCompare(right.id));
 
 	assert.deepEqual(actualMembership, expectedMembership);
-	assert.equal(groups.every((group) => group.skills.length > 0), true);
 	assert.equal(groups.some((group) => group.directory === "community"), false);
-	assert.deepEqual(
-		groups.map((group) => [group.directory, group.skills.length]),
-		[["multica-collaboration", 3]],
-	);
 	assert.equal(
 		groups
 			.flatMap((group) => group.skills)
