@@ -1,10 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
-import { type NavBarLink } from "../../types/config";
+import { type NavBarGroup, type NavBarLink } from "../../types/config";
 import { url } from "../../utils/url-utils";
 
 interface Props {
-	links: NavBarLink[];
+	links: (NavBarLink | NavBarGroup)[];
 	languageHref: string;
 	languageLabel: string;
 }
@@ -12,25 +12,38 @@ interface Props {
 const { links, languageHref, languageLabel } = Astro.props;
 ---
 <div id="nav-menu-panel" class:list={["float-panel float-panel-closed absolute transition-all fixed right-4 px-2 py-2"]}>
-    {links.map((link) => (
-        <a href={link.external ? link.url : url(link.url)} class="group flex justify-between items-center py-2 pl-3 pr-1 rounded-lg gap-8
-            hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)] transition
-        "
-           target={link.external ? "_blank" : null}
-        >
-            <div class="transition text-black/75 dark:text-white/75 font-bold group-hover:text-[var(--primary)] group-active:text-[var(--primary)]">
-                {link.name}
-            </div>
-            {!link.external && <Icon name="material-symbols:chevron-right-rounded"
-                  class="transition text-[1.25rem] text-[var(--primary)]"
-            >
-            </Icon>}
-            {link.external && <Icon name="fa6-solid:arrow-up-right-from-square"
-                  class="transition text-[0.75rem] text-black/25 dark:text-white/25 -translate-x-1"
-            >
-            </Icon>}
-        </a>
-    ))}
+	{links.map((link) => {
+		if ("children" in link) {
+			return <div class="py-1">
+				<div class="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-[.14em] text-black/35 dark:text-white/35">{link.name}</div>
+				{link.children.map((child) => (
+					<a href={child.external ? child.url : url(child.url)} class="group flex items-center justify-between gap-8 rounded-lg py-2 pl-5 pr-1 transition hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]" target={child.external ? "_blank" : null} rel={child.external ? "noopener noreferrer" : null}>
+						<div class="font-bold text-black/75 transition group-hover:text-[var(--primary)] group-active:text-[var(--primary)] dark:text-white/75">{child.name}</div>
+						{child.external
+							? <Icon name="fa6-solid:arrow-up-right-from-square" class="-translate-x-1 text-[.75rem] text-black/25 transition dark:text-white/25" />
+							: <Icon name="material-symbols:chevron-right-rounded" class="text-[1.25rem] text-[var(--primary)] transition" />}
+					</a>
+				))}
+			</div>;
+		}
+		return <a href={link.external ? link.url : url(link.url)} class="group flex justify-between items-center py-2 pl-3 pr-1 rounded-lg gap-8
+			hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)] transition
+		"
+		   target={link.external ? "_blank" : null}
+		>
+			<div class="transition text-black/75 dark:text-white/75 font-bold group-hover:text-[var(--primary)] group-active:text-[var(--primary)]">
+				{link.name}
+			</div>
+			{!link.external && <Icon name="material-symbols:chevron-right-rounded"
+				  class="transition text-[1.25rem] text-[var(--primary)]"
+			>
+			</Icon>}
+			{link.external && <Icon name="fa6-solid:arrow-up-right-from-square"
+				  class="transition text-[0.75rem] text-black/25 dark:text-white/25 -translate-x-1"
+			>
+			</Icon>}
+		</a>;
+	})}
 	<a href={url(languageHref)} data-no-swup class="group flex justify-between items-center py-2 pl-3 pr-1 rounded-lg gap-8 hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)] transition">
 		<div class="transition text-black/75 dark:text-white/75 font-bold group-hover:text-[var(--primary)] group-active:text-[var(--primary)]">
 			{languageLabel}

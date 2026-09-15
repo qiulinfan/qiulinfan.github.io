@@ -10,6 +10,11 @@ interface Props {
 const { lang = "en" } = Astro.props;
 const zh = lang === "zh";
 const title = zh ? "朋友们" : "Friends";
+const displayName = (friend: (typeof friendLinks)[number]) =>
+	friend.name ??
+	new URL(friend.href).hostname
+		.replace(/^www\./, "")
+		.replace(/\.github\.io$/, "");
 ---
 
 <LandingPageLayout
@@ -23,7 +28,9 @@ const title = zh ? "朋友们" : "Friends";
 		</header>
 
 		<section class="friends-grid" aria-label={title}>
-			{friendLinks.map((friend) => (
+			{friendLinks.map((friend) => {
+				const name = displayName(friend);
+				return (
 				<a
 					class="friend-card"
 					href={friend.href}
@@ -33,15 +40,16 @@ const title = zh ? "朋友们" : "Friends";
 					<div class="avatar" aria-hidden="true">
 						{friend.avatar
 							? <img src={friend.avatar} alt="" loading="lazy" decoding="async" />
-							: <span>{friend.name.slice(0, 1)}</span>}
+							: <span>{name.slice(0, 1)}</span>}
 					</div>
 					<div class="friend-copy">
-						<h2>{friend.name}</h2>
+						<h2>{name}</h2>
 						<p>{zh ? friend.descriptionZh : friend.description}</p>
 					</div>
 					<Icon class="external-icon" name="fa6-solid:arrow-up-right-from-square" />
 				</a>
-			))}
+				);
+			})}
 		</section>
 	</div>
 </LandingPageLayout>

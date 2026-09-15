@@ -52,8 +52,13 @@ export type NavBarLink = {
 	external?: boolean;
 };
 
+export type NavBarGroup = {
+	name: string;
+	children: NavBarLink[];
+};
+
 export type NavBarConfig = {
-	links: (NavBarLink | LinkPreset)[];
+	links: (NavBarLink | NavBarGroup | LinkPreset)[];
 };
 
 export type ProfileConfig = {

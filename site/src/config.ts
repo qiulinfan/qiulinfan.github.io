@@ -53,13 +53,33 @@ export const navBarConfig: NavBarConfig = {
 			url: "/skills/",
 		},
 		{
-			name: "Friends",
-			url: "/friends/",
-		},
-		{
-			name: "GitHub",
-			url: "https://github.com/qiulinfan/qiulinfan.github.io", // Internal links should not include the base path, as it is automatically added
-			external: true, // Show an external link icon and will open in a new tab
+			name: "About",
+			children: [
+				{
+					name: "GitHub",
+					url: "https://github.com/qiulinfan",
+					external: true,
+				},
+				{
+					name: "itch.io",
+					url: "https://bluesamoyed77.itch.io/",
+					external: true,
+				},
+				{
+					name: "Instagram",
+					url: "https://www.instagram.com/bluesamoyed77/",
+					external: true,
+				},
+				{
+					name: "Discord",
+					url: "https://discord.com/app",
+					external: true,
+				},
+				{
+					name: "Friends",
+					url: "/friends/",
+				},
+			],
 		},
 	],
 };
