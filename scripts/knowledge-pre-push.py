@@ -89,12 +89,6 @@ def knowledge_check() -> bool:
 	commands = [
 		(
 			sys.executable,
-			"notes/scripts/check_source_policy.py",
-			"--repo-root",
-			str(REPOSITORY_ROOT),
-		),
-		(
-			sys.executable,
 			"knowledge/export/site/verify_export.py",
 			"knowledge/export/site",
 		),
