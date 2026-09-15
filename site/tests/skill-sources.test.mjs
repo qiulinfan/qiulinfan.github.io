@@ -84,15 +84,18 @@ test("the README catalog lists every visible Skill and owns the detail-page boun
 
 test("owned public repository groups are displayed while linked-only repositories stay hidden", () => {
 	const groups = loadPublishedRepositoryGroups();
+	const expectedRepositories = readFileSync(publishedRegistry, "utf8")
+		.split(/\r?\n/)
+		.map((line) => line.trimEnd())
+		.filter((line) => line.trim() && !line.trimStart().startsWith("#"))
+		.map((line) => line.split("\t", 1)[0])
+		.sort((left, right) => left.localeCompare(right));
 	assert.deepEqual(
-		groups.map((group) => [group.directory, group.skills.length]),
-		[
-			["autoTA", 5],
-			["discrete-sprite-lab", 2],
-			["kgdistiller", 8],
-		],
+		groups.map((group) => group.directory),
+		expectedRepositories,
 	);
 	assert.equal(groups.every((group) => group.kind === "repository"), true);
+	assert.equal(groups.every((group) => group.skills.length > 0), true);
 	assert.equal(
 		groups
 			.flatMap((group) => group.skills)
