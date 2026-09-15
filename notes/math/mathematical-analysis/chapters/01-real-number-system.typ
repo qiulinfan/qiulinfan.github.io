@@ -1,10 +1,10 @@
 #import "../../toolchain/qlnotes.typ": *
 #import "../../toolchain/math-aliases.typ": *
-
 #let bC = math.bb("C")
 
 // Source: lectures/L01-Real-Num-System-I.pdf p.1.
 = The real-number system
+
 
 == Set notation and the construction of $bN$
 

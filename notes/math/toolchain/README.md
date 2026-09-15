@@ -16,6 +16,19 @@ Published standalone pages expose the same Light, Dark, and Auto preference as
 the Astro shell; `site/scripts/install-note-artifacts.mjs` installs that runtime
 and its back/forward style-recovery guard.
 
+## Chapter previews in Obsidian
+
+`notes/math/.tinymist-preview.typ` is the Obsidian Tinymist preview entry.
+The plugin passes the selected file as the `preview-source` input, with a
+Typst absolute path rooted at the vault. Files inside `chapters/` use the
+shared `paged-layout(frontmatter: false)` so fonts, headings, statements,
+and page furniture match the book without a cover or table of contents.
+Numbering starts locally at 1 in a standalone chapter. References whose labels
+are absent from the chapter display an explicit external-reference marker
+with the original target, rather than an invented book-wide number. Other files, including
+`main.typ`, are included without another layout. Chapter sources are unchanged;
+normal book compilation and HTML export do not use this preview entry.
+
 ```text
 toolchain/
 ├── qlnotes.typ             # HTML presentation

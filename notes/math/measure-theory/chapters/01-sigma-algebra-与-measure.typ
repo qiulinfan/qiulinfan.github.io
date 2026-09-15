@@ -3,8 +3,10 @@
 
 = sigma-algebra 与 measure
 <sigma-algebra-与-measure>
+
 == $sigma$-algebra \[Fol 1.2\]
 <sigma-algebra-fol-1.2>
+
 我们 (见 my Math 395 notes) 已经证明: 在 $bb(R)$ 上不存在一个 measure function $mu : cal(P)\(bb(R)\)arrow.r\[0\,oo\]$ satisfying:
 
 + $mu\(nothing\)= 0$\;

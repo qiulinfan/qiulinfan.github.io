@@ -547,13 +547,14 @@
   author: none,
   date: none,
   cover: none,
+  frontmatter: true,
   body,
 ) = {
   set page(
     paper: "a4",
     margin: (top: 22mm, bottom: 20mm, x: 22mm),
     header: context {
-      if counter(page).get().first() > 1 {
+      if not frontmatter or counter(page).get().first() > 1 {
         set text(font: fonts.sans, size: 8.5pt, fill: palette.muted)
         grid(
           columns: (1fr, auto),
@@ -564,7 +565,7 @@
       }
     },
     footer: context {
-      if counter(page).get().first() > 1 {
+      if not frontmatter or counter(page).get().first() > 1 {
         align(center)[
           #text(font: fonts.sans, size: 8.5pt, fill: palette.blue)[
             #counter(page).display()
@@ -625,16 +626,18 @@
   )
   show bibliography: set heading(numbering: none)
 
-  cover-page(
-    title: title,
-    subtitle: subtitle,
-    course: course,
-    author: author,
-    date: date,
-    cover: cover,
-  )
-  outline(title: [Contents], depth: 2)
-  pagebreak()
+  if frontmatter {
+    cover-page(
+      title: title,
+      subtitle: subtitle,
+      course: course,
+      author: author,
+      date: date,
+      cover: cover,
+    )
+    outline(title: [Contents], depth: 2)
+    pagebreak()
+  }
   body
 }
 

@@ -124,6 +124,21 @@ function loadButtonScript() {
             }
         };
     }
+
+	document.querySelectorAll(".nav-group-menu a").forEach((link) => {
+		if (link instanceof HTMLAnchorElement) {
+			link.onclick = () => {
+				link.blur();
+				link.closest(".nav-group")?.classList.add("nav-group-dismissed");
+			};
+		}
+	});
+
+	document.querySelectorAll(".nav-group").forEach((group) => {
+		if (group instanceof HTMLElement) {
+			group.onmouseleave = () => group.classList.remove("nav-group-dismissed");
+		}
+	});
 }
 
 loadButtonScript();
@@ -137,16 +152,16 @@ loadButtonScript();
 		transition: opacity .15s ease, transform .15s ease;
 	}
 
-	.nav-group:hover .nav-group-menu,
-	.nav-group:focus-within .nav-group-menu {
+	.nav-group:not(.nav-group-dismissed):hover .nav-group-menu,
+	.nav-group:not(.nav-group-dismissed):focus-within .nav-group-menu {
 		opacity: 1;
 		pointer-events: auto;
 		transform: translateY(0);
 	}
 
 	.nav-group-chevron { transition: transform .15s ease; }
-	.nav-group:hover .nav-group-chevron,
-	.nav-group:focus-within .nav-group-chevron { transform: rotate(180deg); }
+	.nav-group:not(.nav-group-dismissed):hover .nav-group-chevron,
+	.nav-group:not(.nav-group-dismissed):focus-within .nav-group-chevron { transform: rotate(180deg); }
 </style>
 
 {import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: url('/pagefind/pagefind.js')}}>
