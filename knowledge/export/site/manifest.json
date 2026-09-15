@@ -4,7 +4,7 @@
       "bytes": 818833,
       "kind": "site-graph",
       "path": "graph.json",
-      "sha256": "d366fd0caee37cf700a26031a26bd1c8abe6eebe102745b687fa4b7177797268"
+      "sha256": "1440cba4d5a7fbcf2e6981a299aec1dbe77c2e5522459ab59bdef2fd682832ed"
     },
     {
       "bytes": 85977,
@@ -19,7 +19,7 @@
       "sha256": "b00a561f929ce8e6ca9c3ba8407a9a8db4ac627b97cbb8a46e198b34a46ae0bd"
     }
   ],
-  "export_sha256": "b8f223e780bd21c860cbb8b78e5438423b361041fc36ec5ae62cf1dea19f8957",
+  "export_sha256": "c1568014dc4fb3391035855be680e0e2fe79731868cccd01949fb800b370892e",
   "graph": {
     "private_counts": {
       "edges": 577,
@@ -27,14 +27,14 @@
       "references": 58
     },
     "private_schema": "kgdistiller-graph-v1",
-    "private_sha256": "989016a9b6d4c05078998ef57440096c86faeaaa0610cc146799e31149471370",
+    "private_sha256": "512c884db08c4c39f2f0b27bfaf33906ba9236106f00e6092fb43e176889e32b",
     "public_counts": {
       "edges": 530,
       "nodes": 299,
       "references": 58
     },
     "public_schema": "kgdistiller-site-graph-v1",
-    "public_sha256": "7c0b3a6ecf101fbd964568d9c8e929ed9ffebdb3b6ff4990ef14afce46ecda59"
+    "public_sha256": "36654b24b50dfb2c8609fc1fa157a5a3317011bd2dab0e5e3dc12abb11db9f08"
   },
   "producer": {
     "commit": "6f590783ceffbe3d571607c01e2d4660b5a39b25",
@@ -42,11 +42,12 @@
     "repository": "https://github.com/qiulinfan/kgdistiller",
     "version": "0.4.0"
   },
+  "replaces_export_sha256": "b8f223e780bd21c860cbb8b78e5438423b361041fc36ec5ae62cf1dea19f8957",
   "schema": "kgdistiller-static-export-v1",
   "source": {
-    "digest": "825bd4a02f9089ea7ebb8358cd7cefe9ae26b621c946da42121c160d5b4e0ce5",
-    "files": 187,
-    "published_digest": "50e72131bfacd8e79c32b2610c87c1cec93186bc8beb9813eb0aec917d0f8b33",
+    "digest": "8c14dc8268c2ca644820469cd8cf338533b62d6e7fec0f573e78c6470b0dc1eb",
+    "files": 259,
+    "published_digest": "4ff85c384d5a071f636234d5bdd7ab5d5016caa487812aa8ee4cba4d780e4e36",
     "published_files": 82,
     "published_hashes": {
       "notes/cs/cpp-programming/docs/01-Command-Line Interface-(CLI).md": "b390652af49325cf80e3112e9c36d87aaebb2170215d3bce275256db7065641a",
@@ -84,7 +85,7 @@
       "notes/math/a-bit-of-abstract-algebra/main.typ": "96b9e6fbe4dba13e9721526b78219f5686dcaa42d4d24fa92675566e8f5acbac",
       "notes/math/everything-about-linear-algebra/chapters/01-introduction.typ": "444210e8025470497ddc00b50f591f35f2e1aa8c18809f76aa0fd01f41878c4d",
       "notes/math/everything-about-linear-algebra/main.typ": "af6f5be32489d439452c7350754a9c94ae5f3c557c03d36e5404d4ce7a358062",
-      "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "ffa24a29a32bce31387e4b0f8053fb78e36e9b83494fb713b275476565ea5383",
+      "notes/math/measure-theory/chapters/01-sigma-algebra-与-measure.typ": "dbc1c8de21145ebddce0818f8e62800e9e5bcf1fd118ff8c937d0f7c1abd4bdb",
       "notes/math/measure-theory/chapters/02-outer-measure-与-completion-of-a-measurable-space.typ": "8a3f8aa8efd167455ee91f76b928ffc881fdd1b3c1d5eb60cd96eb0bfdf78a8e",
       "notes/math/measure-theory/chapters/03-distribution-function-与-lebesgue-stieltjes-measures.typ": "30558efcc4e880fc58a37e4b09170511ae0067592bb7aceb7ee8d6befa0e330a",
       "notes/math/measure-theory/chapters/04-measurable_functions_and_integration_on_L^+(mu).typ": "640edfbf1b2098d138640c1efc89c8ecfe64fa9441a7dacb359790a3eb78ba9f",
@@ -133,11 +134,11 @@
       "notes/math/single-and-multivariate-mathematical-analysis/main.typ": "357f9977546df26f565af8d2ae52c0f84cd4eececbd8dab2c39176b9067884ab"
     },
     "repository": "https://github.com/qiulinfan/qiulinfan.github.io",
-    "revision": "ef167ed0b5adf0fc7c7b8b1ac53d9e74c9fdb152"
+    "revision": "cdc0b468636d8a2fb4fdb31369739d307c5d0a17"
   },
   "status": "exported",
   "visibility": {
-    "excluded_sources": 7,
+    "excluded_sources": 15,
     "policy": "explicit-publish",
     "published_sources": [
       "cs:cpp-programming",
