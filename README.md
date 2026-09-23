@@ -1,14 +1,16 @@
 # qiulinfan.github.io
 
-个人知识、内容、稳定 Skills 与网站仓库：
+个人主页、博客、稳定 Skills 与网站仓库：
 
 - [`install/`](install/)：可移植的个人工具配置、Codex 与 Claude Code 的全局 agent guidance 与安全安装说明。
-- [`notes/`](notes/)：Markdown、Typst、LaTeX 权威源与共享渲染工具链；不提交 PDF、课程归档或构建物。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
 - [`skills/`](skills/)：默认的新公开个人 Skills 与稳定工作流；两份 registry 分别声明站点展示的
   自有公开仓库，以及只供本地 linking 的私有/第三方仓库，外部 Skill 内容都留在各自 authority。
-- [`knowledge/`](knowledge/)：一个本地 kgdistiller 实例的个人配置、决策、私有图谱和已采用静态导出。
-- [`site/`](site/)：主页、博客、笔记与 Skills 的 Astro 前端。
+- [`docks.json`](docks.json)：网站挂载的外部仓库（dock）登记表。
+- [`site/`](site/)：主页、博客、Works、Playground、Skills 与各 dock 栏目的 Astro 前端。
+
+笔记与知识图谱在独立仓库 [`notes`](https://github.com/qiulinfan/notes)，作为 `notes` dock
+发布在 `/notes/`。
 
 ## Obsidian Vault
 
@@ -40,20 +42,35 @@ cd qiulinfan.github.io
 
 两个产品的开发 checkout 都通过各自 linker，把每个 Skill 直接链接到
 `$CODEX_HOME/skills`。因此产品仓中的本地修改会实时反映到 Codex；qlblog 的 linker
-只管理 qlblog 自有 Skill，并与产品链接共存。产品迭代本身不会改变网站。只有在明确
-采用某个已提交版本时，才由 kgdistiller 重新导出
-[`knowledge/export/site/`](knowledge/export/site/)；bundle manifest 记录实际产品 commit
-和全部 artifact hashes，这就是 qlblog 的版本锁。
+只管理 qlblog 自有 Skill，并与产品链接共存。产品迭代本身不会改变网站。只有在 notes
+仓库明确采用某个已提交版本时，才由 kgdistiller 重新导出它的 `knowledge/export/site/`；
+bundle manifest 记录实际产品 commit 和全部 artifact hashes，这就是知识图谱的版本锁。
+
+## Docks
+
+主页之外的栏目来自其他仓库。[`docks.json`](docks.json) 登记每个 dock 的公开仓库、分支和
+本地 checkout 位置；`site/src/docks/<id>/` 是它的 adapter，包含页面、构建步骤和测试，
+由 `site/src/docks/integration.ts` 注入路由。当前只有 `notes` dock。
+
+- 本地开发直接读取 checkout 位置上的工作副本（`../notes`），改完不用 push 就能预览。
+  缺失的 checkout 由 `make docks-bootstrap` 浅克隆，连同递归的 submodule。
+- `astro build` 运行各 adapter 的构建步骤；notes adapter 会调用 notes 仓库的 `make web`
+  生成独立 Typst 页面，因此本机需要 notes `Makefile` 中固定版本的 Typst。
+- 每次构建把各 dock 的 commit 写入站点根目录的 `docks.json`，可以核对线上版本。
+- notes 仓库 push 到 `main` 并通过自身检查后，触发本仓库的 Pages workflow 重新部署。
+
+新增栏目：仓库公开后在 `docks.json` 加一行，在 `site/src/docks/<id>/` 写 adapter，
+在 `site/src/config.ts` 加导航项。
 
 ## 网站与部署
 
-开发、检查、构建和 GitHub Pages 只验证已提交静态导出，不 checkout、安装或
-运行 kgdistiller，也不需要 submodule：
+开发、检查、构建和 GitHub Pages 只读取 dock 中已提交的内容，不 checkout、安装或
+运行 kgdistiller：
 
 ```sh
 make agents-check
+make docks-bootstrap
 make blog-install
-make knowledge-check
 make blog-check
 make blog-build
 ```
@@ -64,36 +81,6 @@ make blog-build
 make blog-new NAME=my-first-post
 make blog-dev
 ```
-
-## 显式刷新知识实例
-
-只有知识创作或采用新产品版本时才需要已安装的 kgdistiller CLI：
-
-```sh
-make knowledge-build
-make knowledge-authoring-check
-
-kgdistiller --repo-root . export site \
-  --output knowledge/export/site \
-  --product-commit <full-kgdistiller-commit> \
-  --source-repository https://github.com/qiulinfan/qiulinfan.github.io \
-  --replace
-make knowledge-check
-```
-
-采用时先把来源、registry 与私有图谱提交为一个 clean qlblog commit，再运行 export；
-manifest 会锁定这个 source commit 与实际执行导出的 clean kgdistiller commit。验证通过后，
-再用后一个 qlblog commit 提交四文件静态 bundle。dirty checkout 会被拒绝。
-
-本机可运行一次 `scripts/install-git-hooks.sh`，启用仓库内的 pre-push hook。它会在 push
-前检查已登记来源；发现遗漏时，对配置好的 source registry 执行确定性同步，再依次创建
-private graph 与 static export 提交，然后停止本次 push。再次运行 `git push` 即会包含新提交。
-dirty worktree、需要人工 review 的同步结果以及超出预期生成目录的修改都会 fail closed；
-source registry 之外的文件不会被发现或摄入。
-
-实例 authority、public bundle contract 与完整采用流程见
-[`knowledge/SPEC.md`](knowledge/SPEC.md) 和
-[`knowledge/WORKFLOW.md`](knowledge/WORKFLOW.md)。
 
 ## Skill 默认规则
 

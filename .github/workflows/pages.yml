@@ -1,5 +1,6 @@
-name: Deploy blog and math notes to GitHub Pages
+name: Deploy the homepage to GitHub Pages
 
+# The notes repository triggers workflow_dispatch after its own checks pass.
 on:
   push:
     branches: [main]
@@ -20,8 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
       - name: Check generated agent guidance
         run: make agents-check
@@ -39,27 +38,22 @@ jobs:
       - name: Checkout published Skill repositories
         run: make skills-published-bootstrap
 
+      - name: Checkout docks
+        run: make docks-bootstrap
+
+      - name: Read the notes Typst pin
+        id: typst
+        run: echo "version=$(make -s -C ../notes typst-version)" >> "$GITHUB_OUTPUT"
+
       - name: Set up Typst
         uses: typst-community/setup-typst@v5
         with:
-          typst-version: 0.15.1
+          typst-version: ${{ steps.typst.outputs.version }}
 
-      - name: Build blog
+      - name: Build the site
         run: |
-          make knowledge-check
           pnpm --dir site install --frozen-lockfile
           pnpm --dir site build
-
-      - name: Export and check math-note HTML
-        run: |
-          make -C notes/math/prob web-check homeworks-web-check
-          make -C notes/math/measure-theory web-check extras-web-check
-          make -C notes/math/everything-about-linear-algebra web-check
-          make -C notes/math/single-and-multivariate-mathematical-analysis web-check
-          make -C notes/math/a-bit-of-abstract-algebra web-check
-
-      - name: Add math notes to Pages artifact
-        run: node site/scripts/install-note-artifacts.mjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

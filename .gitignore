@@ -4,8 +4,6 @@ Thumbs.db
 
 # Editor and temporary files
 .vscode/
-!notes/math/**/.vscode/
-!notes/math/**/.vscode/**
 *~
 *.swp
 *.swo
@@ -36,20 +34,6 @@ core.*
 *.exe
 *.dSYM/
 
-# LaTeX intermediates
-*.aux
-*.bbl
-*.blg
-*.fdb_latexmk
-*.fls
-*.out
-*.synctex.gz
-*.toc
-
-# Notes are source-first and published as web pages. PDF artifacts never belong
-# anywhere below notes/, including ignored local preview builds.
-/notes/**/*.[pP][dD][fF]
-
 # JavaScript dependencies
 node_modules/
 
@@ -58,9 +42,6 @@ _site/
 dist/
 .astro/
 site/public/_notes-assets/
-
-# Disposable local knowledge builds, candidate reviews, deltas, and receipts
-knowledge/build/
 
 # Codex-managed state must remain outside the repository
 /skills/.system/

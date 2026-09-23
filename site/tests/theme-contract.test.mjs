@@ -3,13 +3,13 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { dockRoot } from "../src/docks/registry.ts";
 
 const siteRoot = fileURLToPath(new URL("..", import.meta.url));
 const sourceRoot = join(siteRoot, "src");
 const authority = "styles/variables.styl";
 const notesThemePath = join(
-	siteRoot,
-	"..",
+	dockRoot(join(siteRoot, ".."), "notes"),
 	"notes",
 	"math",
 	"toolchain",

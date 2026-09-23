@@ -1,0 +1,10 @@
+{
+	"docks": [
+		{
+			"id": "notes",
+			"repository": "https://github.com/qiulinfan/notes",
+			"ref": "main",
+			"checkout": "../notes"
+		}
+	]
+}
