@@ -24,10 +24,10 @@ const isZh = pathname === "/zh/" || pathname.startsWith("/zh/");
 const languageLabel = isZh ? "English" : "中文";
 const languageAriaLabel = isZh ? "Switch to English" : "切换到中文";
 const languageHref = (() => {
-	if (pathname.startsWith("/zh/projects/")) return "/projects/";
-	if (pathname.startsWith("/projects/")) return "/zh/projects/";
-	if (pathname.startsWith("/zh/game-projects/")) return "/game-projects/";
-	if (pathname.startsWith("/game-projects/")) return "/zh/game-projects/";
+	if (pathname.startsWith("/zh/works/")) return "/works/";
+	if (pathname.startsWith("/works/")) return "/zh/works/";
+	if (pathname.startsWith("/zh/playground/")) return "/playground/";
+	if (pathname.startsWith("/playground/")) return "/zh/playground/";
 	if (pathname.startsWith("/zh/friends/")) return "/friends/";
 	if (pathname.startsWith("/friends/")) return "/zh/friends/";
 	return isZh ? "/" : "/zh/";
@@ -44,11 +44,11 @@ const languageHref = (() => {
                 {siteConfig.title}
             </div>
         </a>
-        <div class="hidden md:flex">
+        <div class="hidden lg:flex">
             {links.map((l) => {
 				if ("children" in l) {
 					return <div class="nav-group relative flex items-center">
-						<button aria-haspopup="true" class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95">
+						<button aria-haspopup="true" class="btn-plain scale-animation rounded-lg h-11 font-bold px-3 xl:px-5 active:scale-95">
 							{l.name}
 							<Icon name="material-symbols:keyboard-arrow-down-rounded" class="nav-group-chevron ml-1 text-[1.1rem]" />
 						</button>
@@ -71,7 +71,7 @@ const languageHref = (() => {
 					</div>;
 				}
 				return <a aria-label={l.name} href={l.external ? l.url : url(l.url)} target={l.external ? "_blank" : null}
-						  class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95"
+						  class="btn-plain scale-animation rounded-lg h-11 font-bold px-3 xl:px-5 active:scale-95"
 				>
 					<div class="flex items-center">
 						{l.name}
@@ -81,14 +81,14 @@ const languageHref = (() => {
             })}
         </div>
         <div class="flex">
-			<a aria-label={languageAriaLabel} href={url(languageHref)} data-no-swup class="btn-plain scale-animation !hidden md:!flex rounded-lg h-11 px-3 font-bold active:scale-95">
+			<a aria-label={languageAriaLabel} href={url(languageHref)} data-no-swup class="btn-plain scale-animation !hidden lg:!flex rounded-lg h-11 px-3 font-bold active:scale-95">
 				<Icon name="material-symbols:translate-rounded" class="text-[1.2rem] mr-1.5" />
 				{languageLabel}
 			</a>
             <!--<SearchPanel client:load>-->
             <Search client:only="svelte"></Search>
             <LightDarkSwitch hydrate client:load></LightDarkSwitch>
-            <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
+            <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 lg:!hidden" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
             </button>
         </div>

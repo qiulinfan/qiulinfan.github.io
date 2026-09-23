@@ -1,17 +1,19 @@
 ---
-import { projectGroups } from "@/data/home";
+import { type ShowcaseId, showcases } from "@/data/home";
 import { url } from "@utils/url-utils";
 
 interface Props {
 	lang?: "en" | "zh";
+	showcase: ShowcaseId;
 }
 
-const { lang = "en" } = Astro.props;
+const { lang = "en", showcase } = Astro.props;
 const zh = lang === "zh";
+const groups = showcases[showcase].groups;
 ---
 
 <div class="project-groups">
-	{projectGroups.map((group, groupIndex) => (
+	{groups.map((group, groupIndex) => (
 		<section class="project-group">
 			<header class="project-group-caption">
 				<span>{String(groupIndex + 1).padStart(2, "0")}</span>

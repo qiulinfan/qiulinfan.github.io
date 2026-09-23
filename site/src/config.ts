@@ -41,8 +41,8 @@ export const navBarConfig: NavBarConfig = {
 			url: "/blog/",
 		},
 		{
-			name: "Projects",
-			url: "/projects/",
+			name: "Works",
+			url: "/works/",
 		},
 		{
 			name: "Notes",
@@ -51,6 +51,10 @@ export const navBarConfig: NavBarConfig = {
 		{
 			name: "Skills",
 			url: "/skills/",
+		},
+		{
+			name: "Playground",
+			url: "/playground/",
 		},
 		{
 			name: "About",

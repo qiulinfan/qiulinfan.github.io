@@ -1,0 +1,48 @@
+---
+import { type ShowcaseId, showcases } from "@/data/home";
+import ProjectShowcase from "@components/home/ProjectShowcase.astro";
+import LandingPageLayout from "@layouts/LandingPageLayout.astro";
+import { url } from "@utils/url-utils";
+
+interface Props {
+	lang?: "en" | "zh";
+	showcase: ShowcaseId;
+}
+
+const { lang = "en", showcase } = Astro.props;
+const zh = lang === "zh";
+const page = showcases[showcase];
+const title = zh ? page.titleZh : page.title;
+---
+
+<LandingPageLayout
+	title={title}
+	lang={zh ? "zh-CN" : "en"}
+	description={zh ? page.descriptionZh : page.description}
+>
+	<div class="showcase-page">
+		<header class="showcase-hero">
+			<div class="hero-meta">
+				<span>{page.title.toUpperCase()} / 2024—2026</span>
+				<nav><a href={url(zh ? "/zh/" : "/")}>← {zh ? "主页" : "Home"}</a></nav>
+			</div>
+			<h1>{title}</h1>
+		</header>
+
+		<ProjectShowcase lang={lang} showcase={showcase} />
+	</div>
+</LandingPageLayout>
+
+<style>
+	.showcase-page { padding: clamp(2rem, 6vw, 6rem) 0 4rem; font-family: var(--font-sans); }
+	.showcase-hero { margin-bottom: clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--border); padding: 0 .25rem clamp(2.5rem, 6vw, 5rem); }
+	.hero-meta { display: flex; justify-content: space-between; gap: 1rem; align-items: center; color: var(--primary); font: 700 .64rem/1.2 var(--font-sans); letter-spacing: .14em; }
+	.hero-meta nav { display: flex; gap: 1.2rem; }
+	.hero-meta a { color: var(--primary); text-decoration: none; }
+	.showcase-hero h1 { max-width: 10ch; margin: clamp(3rem, 8vw, 7rem) 0 0; color: var(--text-strong); font-size: clamp(4rem, 11vw, 9.5rem); font-weight: 700; line-height: .82; letter-spacing: -.025em; }
+	@media (max-width: 760px) {
+		.showcase-page { padding-top: 2rem; }
+		.hero-meta { align-items: flex-start; flex-direction: column; }
+		.showcase-hero h1 { margin-top: 3rem; }
+	}
+</style>

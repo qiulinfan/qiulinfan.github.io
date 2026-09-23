@@ -1,5 +1,6 @@
 ---
 import { profileConfig } from "@/config";
+import { showcases } from "@/data/home";
 import ProjectShowcase from "@components/home/ProjectShowcase.astro";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import { loadListedNoteSources } from "@utils/note-sources";
@@ -20,36 +21,45 @@ const featuredNotes = [
 	})),
 ];
 const resolvedHref = (href: string) => (href.startsWith("http") ? href : url(href));
+const playgroundProjects = showcases.playground.groups.flatMap((group) =>
+	group.projects.map((project) => ({
+		group: zh ? group.titleZh : group.title,
+		title: project.title,
+		href: project.href,
+	})),
+);
 const copy = zh
 	? {
 			eyebrow: "QIULIN FAN",
 			headline: "Game & AI Engineer",
 			notesCta: "阅读笔记",
-			workCta: "查看项目",
-			workKicker: "01 / SELECTED WORK",
-			workTitle: "项目",
-			allProjects: "项目详情",
+			workCta: "查看作品",
+			workKicker: "01 / WORKS",
+			workTitle: "作品",
+			allWorks: "作品详情",
 			page: "项目页面",
 			repo: "源代码",
 			notesKicker: "02 / NOTES",
 			notesTitle: "笔记",
-			researchKicker: "03 / RESEARCH",
-			researchTitle: "TODO",
+			playgroundKicker: "03 / PLAYGROUND",
+			playgroundTitle: "游乐场",
+			allPlayground: "进入游乐场",
 		}
 	: {
 			eyebrow: "QIULIN FAN",
 			headline: "Game & AI Engineer",
 			notesCta: "Read the notes",
-			workCta: "See selected work",
-			workKicker: "01 / SELECTED WORK",
-			workTitle: "Projects",
-			allProjects: "Project details",
+			workCta: "See works",
+			workKicker: "01 / WORKS",
+			workTitle: "Works",
+			allWorks: "Work details",
 			page: "Project page",
 			repo: "Repository",
 			notesKicker: "02 / NOTES",
 			notesTitle: "Notes",
-			researchKicker: "03 / RESEARCH",
-			researchTitle: "TODO",
+			playgroundKicker: "03 / PLAYGROUND",
+			playgroundTitle: "Playground",
+			allPlayground: "Open the playground",
 		};
 ---
 
@@ -72,9 +82,9 @@ const copy = zh
 		<section class="section" id="work">
 			<header class="section-heading">
 				<div><span>{copy.workKicker}</span><h2>{copy.workTitle}</h2></div>
-				<div class="section-link"><a href={url(zh ? "/zh/projects/" : "/projects/")}>{copy.allProjects} ↗</a></div>
+				<div class="section-link"><a href={url(zh ? "/zh/works/" : "/works/")}>{copy.allWorks} ↗</a></div>
 			</header>
-			<ProjectShowcase lang={lang} />
+			<ProjectShowcase lang={lang} showcase="works" />
 		</section>
 
 		<section class="section" id="notes">
@@ -83,15 +93,21 @@ const copy = zh
 			</header>
 			<div class="note-grid">
 				{featuredNotes.map((note, index) => (
-					<a class="note-card card" href={resolvedHref(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
+					<a class="tile card" href={resolvedHref(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
 				))}
 			</div>
 		</section>
 
-		<section class="section" id="research">
+		<section class="section" id="playground">
 			<header class="section-heading">
-				<div><span>{copy.researchKicker}</span><h2>{copy.researchTitle}</h2></div>
+				<div><span>{copy.playgroundKicker}</span><h2>{copy.playgroundTitle}</h2></div>
+				<div class="section-link"><a href={url(zh ? "/zh/playground/" : "/playground/")}>{copy.allPlayground} ↗</a></div>
 			</header>
+			<div class="playground-grid">
+				{playgroundProjects.map((project) => (
+					<a class="tile card" href={project.href} target="_blank" rel="noreferrer"><span>{project.group}</span><h3>{project.title}</h3><strong>↗</strong></a>
+				))}
+			</div>
 		</section>
 	</div>
 </LandingPageLayout>
@@ -113,17 +129,18 @@ const copy = zh
 	.section { scroll-margin-top: 6rem; }
 	.section-heading { display: grid; grid-template-columns: 1fr minmax(18rem, .7fr); align-items: end; gap: 2rem; margin-bottom: 1.5rem; }
 	.section-heading h2 { margin: .45rem 0 0; color: var(--text-strong); font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 720; line-height: .95; letter-spacing: -.058em; }
-	#work .section-heading h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -.035em; }
+	#work .section-heading h2, #playground .section-heading h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -.035em; }
 	.section-heading > .section-link { justify-self: end; max-width: 28rem; }
 	.section-heading p { margin: 0; color: var(--text-muted); line-height: 1.65; }
 	.section-heading a { display: inline-block; margin-top: .65rem; color: var(--primary); font: 650 .7rem/1 var(--font-sans); text-decoration: none; }
-	.note-card h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
+	.tile h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
 	.note-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-	.note-card { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
-	.note-card > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-sans); text-transform: uppercase; }
-	.note-card h3 { margin-top: auto; }
-	.note-card > strong { position: absolute; right: 1.2rem; bottom: 1.2rem; color: var(--primary); }
-	.note-card:hover { background: var(--surface-hover); transform: translateY(-3px); }
+	.playground-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
+	.tile { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
+	.tile > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-sans); text-transform: uppercase; }
+	.tile h3 { margin-top: auto; }
+	.tile > strong { position: absolute; right: 1.2rem; bottom: 1.2rem; color: var(--primary); }
+	.tile:hover { background: var(--surface-hover); transform: translateY(-3px); }
 	@media (max-width: 900px) {
 		.section-heading { grid-template-columns: 1fr; }
 		.section-heading > .section-link { justify-self: start; }
