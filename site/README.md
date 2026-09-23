@@ -31,11 +31,7 @@
 
 ## 根域部署
 
-权威仓库是 `qiulinfan/qiulinfan.github.io`，默认以 `/` 构建并发布到用户根站点。若需复现迁移前的项目站点路径，可显式运行：
-
-```bash
-QL_SITE_BASE=/qlblog/ corepack pnpm build
-```
+权威仓库是 `qiulinfan/qiulinfan.github.io`，构建并发布到用户根站点 `https://qiulinfan.github.io/`。
 
 ## Docks
 

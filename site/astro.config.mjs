@@ -25,15 +25,9 @@ import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 
-const requestedBase = process.env.QL_SITE_BASE?.trim() || "/";
-const siteBase = requestedBase === "/" ? "/" : `/${requestedBase.replace(/^\/+|\/+$/g, "")}/`;
-const siteOrigin = process.env.QL_SITE_ORIGIN?.trim() || "https://qiulinfan.github.io";
-const canonicalSite = new URL(siteBase, `${siteOrigin.replace(/\/$/, "")}/`).toString();
-
 // https://astro.build/config
 export default defineConfig({
-	site: canonicalSite,
-	base: siteBase,
+	site: "https://qiulinfan.github.io",
 	trailingSlash: "always",
 	integrations: [
 		tailwind({
