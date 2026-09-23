@@ -37,8 +37,6 @@
 QL_SITE_BASE=/qlblog/ corepack pnpm build
 ```
 
-根域构建同时保留旧 `/qlblog/*` 兼容跳转。
-
 ## Docks
 
 其他仓库的内容通过仓库根目录的 `docks.json` 挂载，`src/docks/<id>/` 是各自的 adapter，
