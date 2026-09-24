@@ -2,7 +2,6 @@
 
 个人主页、博客与网站仓库：
 
-- [`install/`](install/)：可移植的个人工具配置、Codex 与 Claude Code 的全局 agent guidance 与安全安装说明。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
 - [`docks.json`](docks.json)：网站挂载的外部仓库（dock）登记表。
 - [`site/`](site/)：主页、博客、Works、Playground 与各 dock 栏目的 Astro 前端。
@@ -65,7 +64,6 @@ bundle manifest 记录实际产品 commit 和全部 artifact hashes，这就是�
 运行 kgdistiller：
 
 ```sh
-make agents-check
 make docks-bootstrap
 make blog-install
 make blog-check
@@ -85,9 +83,6 @@ make blog-dev
 并由它的 linker 链接进 Codex 与 Claude Code；产品的 Skills 由各产品仓库维护和安装。
 网站不展示 Skills。
 
-## 全局 agent guidance
+## 个人配置
 
-两个运行时的全局 guidance 共享同一份权威 `install/agents/core.md`，各自只维护一份
-运行时增量；改完任意一份都要运行 `make agents-guidance` 重新生成
-`install/codex/AGENTS.md` 与 `install/claude/CLAUDE.md`，`make agents-check` 校验是否已同步。
-把生成文件链接到各运行时 home 的命令见 [`install/README.md`](install/README.md)。
+工具配置、AI agent 安装流程和全局 agent guidance 都在私有仓库 `myrunbook`，不在本仓库。

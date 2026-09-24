@@ -22,9 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Check generated agent guidance
-        run: make agents-check
-
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
