@@ -1,12 +1,10 @@
 # Personal agent guidance
 
 This file is the runtime-neutral core of the personal global guidance maintained
-in qlblog (`install/agents/core.md`). Every supported coding-agent runtime
-installs it together with one runtime-specific section. Read the
-`Runtime specifics` section appended below for the home directory, Skill
-directory, linker, scope filter, and validator that apply to the runtime that is
-reading this file, and prefer that section whenever it constrains a rule stated
-here.
+in qlblog. Every supported coding-agent runtime installs it together with the
+runtime-specific section appended below. To change it, edit
+`install/agents/core.md` or `install/<runtime>/runtime.md` in qlblog and run
+`make agents-guidance`; never edit the generated files.
 
 ## General engineering defaults
 
@@ -44,139 +42,9 @@ do not specify otherwise:
   action, regardless of the recipient, urgency, or wording such as “handle,”
   “reply,” “report,” or “send.”
 
-## Personal Skill maintenance
+## Personal Skills
 
-When creating or materially updating a personal or imported third-party Skill, or when
-using a Skill-authoring Skill such as `skill-creator`, apply this protocol in
-addition to the active Skill's own instructions:
-
-- Treat the visible `skills/` directory in the qlblog checkout that owns this
-  tracked file as the default authoritative personal Skill store. Locate that
-  checkout from a qlblog-owned Skill link in this runtime's user Skill
-  directory and walk up to its repository `skills/` root; when this runtime's
-  global guidance file is a symbolic link, its target is an equivalent locator.
-  A Windows linker may use a same-volume hard link for that file when
-  symbolic-link permission is unavailable, so do not infer the checkout from
-  that file alone. If no linked qlblog Skill resolves to one unambiguous
-  checkout, stop and ask for its new location instead of creating an untracked
-  Skill elsewhere.
-- Initialize every new public personal Skill at the top level of `<qlblog>/skills`.
-  Preserve existing suite directories, but never infer categorization from a
-  Skill's topic, name, dependencies, or apparent system membership. Create a
-  suite or move/place Skills into any suite only when the user explicitly asks
-  for that exact classification. Put downloaded open-source Skills in a
-  linked-only Skill repository outside qlblog, preserving their exact
-  upstream provenance and metadata; qlblog must not publish their contents.
-  Then run the qlblog linker of every
-  agent runtime installed on this machine, using the platform-appropriate
-  script named in each runtime's `Runtime specifics` section; each linker
-  exposes the eligible top-level and suite Skills as a flat set of individually
-  linked entries in that runtime's user Skill directory.
-- Keep publication and linking as separate explicit registries. A Skill or
-  collection that the user requires to stay private must live only in a private
-  repository outside qlblog. A third-party public repository that should be
-  usable but not presented as the user's work follows the same linked-only
-  boundary. Register both cases in tracked
-  `<qlblog>/skills/linked-skill-repositories.tsv`; its repository names,
-  credential-free clone URLs, portable checkout locations, and Skill roots may
-  be public, but private contents and credentials must never enter qlblog. Each
-  row has four tab-separated fields: repository name, clone URL, checkout path
-  relative to qlblog, and Skill root relative to that checkout. The qlblog
-  linkers discover these checkouts recursively, apply the same runtime scope
-  directories, reject flat-name conflicts across qlblog and linked-only
-  authorities, and remove only stale links recorded as theirs. They stop with
-  bootstrap instructions when a registered checkout is missing; they do not
-  clone or authenticate implicitly.
-- Register public repositories owned by the user that should appear on the
-  personal Skills page in tracked
-  `<qlblog>/skills/published-skill-repositories.tsv`. That registry is display
-  authority only and must use public HTTPS clone/source URLs; it does not make
-  qlblog own product installation. A repository with its own linker remains
-  installed by that product. If a public repository has no installer and the
-  user explicitly wants qlblog to manage its links too, register it separately
-  in both published and linked-only registries. Never publish a repository
-  merely because it is public. After either registry or a registered Skill set
-  changes, rerun the relevant qlblog checks and every affected runtime linker.
-- Author cross-runtime Skills runtime-neutral regardless of which runtime you
-  are running in: do not depend on `$CODEX_HOME`-specific paths, Codex-native
-  subagents, Codex-selected external runtimes, or Claude Code-only tools. When
-  a Skill must depend on one runtime's exclusive capability, create it inside
-  that runtime's scope directory instead.
-- Cross-runtime availability is the default. Runtime-exclusive Skills live in
-  `codex-only` and `claude-only` scope directories directly under any qlblog or
-  registered linked-only Skill root; each linker skips the other runtime's scope
-  directory and links everything else. Scope directories are the only scope
-  mechanism and are orthogonal to semantic suites — a Skill's name never
-  affects scope. Place a Skill in a scope directory only when it genuinely
-  depends on that runtime's exclusive capabilities or the user explicitly asks
-  for that placement. Never hand-link a skipped Skill into the other runtime,
-  and never widen a linker's filter; to make a runtime-exclusive Skill
-  cross-runtime, give it a runtime-neutral implementation and move it out of
-  the scope directory, and only when the user asks for that.
-- When the user explicitly promotes a Skill/workflow series into an independent
-  product, that product repository becomes its only authority. Keep its Skills,
-  workflows, agents, tests, and linker together there; remove qlblog mirrors.
-  The current promoted products are `autoTA` and `kgdistiller`. Run each
-  product's own linker so local edits are visible immediately; qlblog's linkers
-  must neither manage nor remove links owned by those product checkouts. Each
-  product's Codex integration is complete. kgdistiller's Claude Code
-  integration is also complete: its transactional `kgdistiller claude link` /
-  `kgdistiller claude doctor` installer, driven by
-  `workflows/claude-manifest.json`, installs Skills, Claude Code agent
-  presets, and the canonical product root, and its
-  `scripts/link-claude-skills.*` remain a skills-only development shortcut.
-  autoTA's Claude Code integration is skills-only through its
-  `scripts/link-claude-skills.*`; its Skills resolve bundled scripts from
-  either runtime home, and porting its Codex agents to Claude Code is a
-  per-product project that needs the user's explicit request.
-- `discrete-sprite-lab` is the public authority for the fixed-direction and
-  eight-direction sprite Skills. It is registered for both publication and
-  qlblog-managed linking because it does not have an independent installer.
-  `myprivateskills` is the private linked-only authority for the mathematics-note
-  project creators, Diary maintenance, and their private workflows.
-  Never recreate mirrors of either authority under qlblog `skills/`.
-- After every reclassification or other parent-directory move under
-  `<qlblog>/skills`, immediately rerun the platform-appropriate qlblog linker
-  for every installed runtime so stale links are removed and each flat view is
-  rebuilt. Do not report the reclassification complete until those commands
-  succeed.
-- Before changing a visible Skill, read `<qlblog>/skills/README.md` and
-  `<qlblog>/skills/WORKFLOWS.md` when present.
-- Write frontmatter descriptions and `agents/openai.yaml` discovery metadata
-  for locally maintained personal Skills in English so the collection remains
-  portable across users. Preserve upstream metadata for downloaded third-party
-  Skills unless the user explicitly requests a local adaptation.
-- Include an explicit language-alignment rule in every new or materially
-  updated personal Skill: user-facing explanations, prompts, and handoffs must
-  match the user's language unless the user requests another language. Keep
-  commands, identifiers, structured keys/action codes, and raw errors unchanged.
-- Keep the collection catalog accurate. Update a Skill's README entry only
-  when its purpose, triggers, scope, name, provenance, or other user-visible
-  behavior changed; do not create churn. For imported, installed, or adapted
-  Skills, record a precise upstream source and distinguish local modifications.
-- Keep workflow documentation accurate when a Skill's role, inputs, outputs,
-  ordering, boundaries, failure behavior, or links change. Do not edit an
-  already accurate workflow merely to create churn.
-- Honor catalog exclusions and the rule against auxiliary README files inside
-  individual Skill directories.
-- Validate every created or materially changed Skill with the validator named
-  in `Runtime specifics`, run `git diff --check`, and inspect the qlblog Git
-  diff before reporting success.
-
-## Personal agent and workflow maintenance
-
-- Agent definitions are runtime-specific: Codex agents are TOML files and
-  Claude Code agents are Markdown files with frontmatter, so one definition
-  cannot serve both runtimes. When creating or materially updating an agent or
-  a multi-Skill workflow for one runtime, assess whether the other installed
-  runtime needs a counterpart, and either provide it or record why it is
-  runtime-exclusive.
-- qlblog currently owns no agents. When the first qlblog-owned agent is
-  created, place it under `<qlblog>/agents/codex/` or
-  `<qlblog>/agents/claude/` and extend the qlblog linkers to install those
-  directories in the same change; do not create the directories or linker
-  support before that.
-- Keep multi-Skill workflow documentation explicit about runtime
-  applicability: a workflow that orchestrates runtime-exclusive Skills is
-  itself runtime-exclusive, and a cross-runtime workflow must not silently
-  depend on runtime-exclusive Skills or agents.
+- Before creating, updating, moving, renaming, or removing a personal Skill,
+  agent, or multi-Skill workflow, before installing or updating a third-party
+  Skill, and whenever a Skill-authoring Skill such as `skill-creator` is used,
+  load the `manage-skills` Skill and follow it.

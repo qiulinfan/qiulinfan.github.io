@@ -1,4 +1,0 @@
-interface:
-  display_name: "Multica Self-host Server"
-  short_description: "Deploy, migrate, restore, and operate one private Multica Server"
-  default_prompt: "Use $multica-selfhost-server to deploy or operate my only private control plane, stop or migrate it through an encrypted environment when requested, decide each member's workspace and Tailscale access with me, perform owner-side admission, and produce complete client handoffs."

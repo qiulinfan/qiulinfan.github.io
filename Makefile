@@ -1,13 +1,10 @@
-.PHONY: agents-guidance agents-check skills-published-bootstrap docks-bootstrap blog-install blog-new blog-dev blog-build blog-preview blog-check
+.PHONY: agents-guidance agents-check docks-bootstrap blog-install blog-new blog-dev blog-build blog-preview blog-check
 
 agents-guidance:
 	@install/agents/build-guidance.sh
 
 agents-check:
 	@install/agents/build-guidance.sh --check
-
-skills-published-bootstrap:
-	@node site/scripts/bootstrap-published-skill-repositories.mjs
 
 docks-bootstrap:
 	@node site/scripts/bootstrap-docks.mjs

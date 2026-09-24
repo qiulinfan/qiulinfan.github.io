@@ -1,13 +1,11 @@
 # qiulinfan.github.io
 
-个人主页、博客、稳定 Skills 与网站仓库：
+个人主页、博客与网站仓库：
 
 - [`install/`](install/)：可移植的个人工具配置、Codex 与 Claude Code 的全局 agent guidance 与安全安装说明。
 - [`blogs/`](blogs/)：日常知识分享和碎碎念。
-- [`skills/`](skills/)：默认的新公开个人 Skills 与稳定工作流；两份 registry 分别声明站点展示的
-  自有公开仓库，以及只供本地 linking 的私有/第三方仓库，外部 Skill 内容都留在各自 authority。
 - [`docks.json`](docks.json)：网站挂载的外部仓库（dock）登记表。
-- [`site/`](site/)：主页、博客、Works、Playground、Skills 与各 dock 栏目的 Astro 前端。
+- [`site/`](site/)：主页、博客、Works、Playground 与各 dock 栏目的 Astro 前端。
 
 笔记与知识图谱在独立仓库 [`notes`](https://github.com/qiulinfan/notes)，作为 `notes` dock
 发布在 `/notes/`。
@@ -40,9 +38,8 @@ cd qiulinfan.github.io
 - [`autoTA`](https://github.com/qiulinfan/autoTA) 自闭合维护技术美术(TA)管线:素材搜索/2D/3D/托管生成/绑定对齐 Skills、预制 agents、profile、linker 与测试(2026-08 由 gamemaker 改名并专精)。
 - [`kgdistiller`](https://github.com/qiulinfan/kgdistiller) 自闭合维护知识引擎、CLI/MCP、论文/笔记 Skills、预制 agents、linker 与测试。
 
-两个产品的开发 checkout 都通过各自 linker，把每个 Skill 直接链接到
-`$CODEX_HOME/skills`。因此产品仓中的本地修改会实时反映到 Codex；qlblog 的 linker
-只管理 qlblog 自有 Skill，并与产品链接共存。产品迭代本身不会改变网站。只有在 notes
+两个产品的开发 checkout 都通过各自 linker，把每个 Skill 直接链接到 Codex 与 Claude Code
+的 Skill 目录，因此产品仓中的本地修改会实时生效。产品迭代本身不会改变网站。只有在 notes
 仓库明确采用某个已提交版本时，才由 kgdistiller 重新导出它的 `knowledge/export/site/`；
 bundle manifest 记录实际产品 commit 和全部 artifact hashes，这就是知识图谱的版本锁。
 
@@ -82,25 +79,15 @@ make blog-new NAME=my-first-post
 make blog-dev
 ```
 
-## Skill 默认规则
+## Skills
 
-普通新公开个人 Skill 默认创建在本仓库 `skills/` 顶层，然后为本机装了的每个运行时运行
-对应 linker。只有用户明确指定一组 Skills/Workflows 为独立产品时，才把其源码、
-agents、workflows、测试与 linker 一起迁入独立仓库，并从 qlblog 删除重复 authority。
+个人 Skills 不在本仓库：自有 Skills 与登记的第三方 Skills 由私有仓库 `myskills` 维护，
+并由它的 linker 链接进 Codex 与 Claude Code；产品的 Skills 由各产品仓库维护和安装。
+网站不展示 Skills。
 
-| 运行时 | 全局 guidance | Skill 目录 | macOS/Linux/WSL | 原生 Windows |
-| --- | --- | --- | --- | --- |
-| Codex | `$CODEX_HOME/AGENTS.md` | `$CODEX_HOME/skills` | `skills/link-codex-skills.sh` | `skills\link-codex-skills.ps1` |
-| Claude Code | `~/.claude/CLAUDE.md` | `~/.claude/skills` | `skills/link-claude-skills.sh` | `skills\link-claude-skills.ps1` |
-
-两个 linker 都只逐 Skill 链接到目标运行时自己拥有的真实目录，互不干扰，也不动
-`autoTA`、`kgdistiller` 等独立产品自己建立的链接。Claude Code 的 home 可以用
-`CLAUDE_CONFIG_DIR` 覆盖，Codex 的用 `CODEX_HOME`。
-
-Claude Code 侧有一条额外的作用域规则：任何 authority 的 `codex-only/` 目录都会被跳过；
-该作用域用于依赖 Codex 专属能力的 Skill，只链接进 Codex。
-不要手工补链，也不要放宽过滤器。
+## 全局 agent guidance
 
 两个运行时的全局 guidance 共享同一份权威 `install/agents/core.md`，各自只维护一份
 运行时增量；改完任意一份都要运行 `make agents-guidance` 重新生成
 `install/codex/AGENTS.md` 与 `install/claude/CLAUDE.md`，`make agents-check` 校验是否已同步。
+把生成文件链接到各运行时 home 的命令见 [`install/README.md`](install/README.md)。

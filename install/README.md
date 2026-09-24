@@ -16,5 +16,23 @@
 `make agents-guidance`。`make agents-check` 会在 CI 与本地检查两个生成文件是否已同步。
 Codex 的 `AGENTS.md` 不支持任何 include 语法，所以共享内容只能在生成时内联，而不是引用。
 
+生成文件要链接到各运行时的 home 才会生效。每台机器在仓库根目录运行一次；目标位置已有文件时，
+先确认内容再替换：
+
+```sh
+ln -s "$PWD/install/claude/CLAUDE.md" "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/CLAUDE.md"
+ln -s "$PWD/install/codex/AGENTS.md" "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"
+```
+
+原生 Windows 使用 PowerShell 7。没有开启开发者模式时把 `SymbolicLink` 换成 `HardLink`；
+硬链接会在 `git pull` 改动这两个文件后失效，需要重新创建：
+
+```powershell
+New-Item -ItemType SymbolicLink -Path "$HOME\.claude\CLAUDE.md" -Target "$PWD\install\claude\CLAUDE.md"
+New-Item -ItemType SymbolicLink -Path "$HOME\.codex\AGENTS.md" -Target "$PWD\install\codex\AGENTS.md"
+```
+
+这组手动命令是临时方案，个人 runbook 仓库建立后由它接管。
+
 这个目录随公开仓库发布。真实凭据、私有 IP 和机器局部覆盖必须留在仓库外；示例主机使用
 `.example` 域名或显式占位符。
