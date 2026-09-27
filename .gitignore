@@ -56,3 +56,6 @@ site/public/_notes-assets/
 
 .obsidian/graph.json
 .obsidian/plugins/obsidian-tinymist/data.json
+
+# The website is no longer an Obsidian vault.
+/.obsidian/

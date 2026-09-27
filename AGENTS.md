@@ -126,12 +126,10 @@ changes only when the notes repository adopts a committed kgdistiller version
 and re-exports `knowledge/export/site/`, whose bundle manifest pins the product
 commit and every artifact hash.
 
-## Obsidian vault
+## Obsidian vaults
 
-The repository root is an Obsidian vault usable on macOS, Windows, and Linux.
-`.obsidian/` commits app settings, hotkeys, the enabled plugin list, and
-credential-free plugin settings; open the root with **Open folder as vault**.
-Each machine must trust the vault and allow community plugins, then install
-`Completr`, `Quick Latex`, and `YOLO` from the official community plugin
-browser; plugin code is not committed. YOLO's `data.json`, OAuth tokens, and
-`YOLO/` state are git-ignored and hold credentials: never force them into Git.
+This website repository is no longer an Obsidian vault. Keep `.obsidian/`
+and `YOLO/` out of this repository. The personal notes vault and kgdistiller
+instance live in the sibling `notes` repository; `courses`, `paper-reading`,
+and `diary` are separate vaults with their own settings and private local
+plugin state.
