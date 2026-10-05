@@ -10,15 +10,15 @@ export const showcases = {
 				titleZh: "工程",
 				projects: [
 					{
-						title: "PocketEngine",
+						title: "pocket2d",
 						image: "/assets/projects/pocket-engine.gif",
-						href: "https://github.com/qiulinfan/pocketEngine",
-						linkLabel: "GitHub",
+						href: "https://qiulinfan.github.io/pocket2d/",
+						linkLabel: "Website",
 						tags: ["C++17", "SDL2", "Lua", "Box2D", "ImGui"],
 						description:
-							"A cross-platform 2D runtime and editor with Lua game scripting and JSON scene assets.",
+							"A lightweight, cross-platform 2D runtime and editor built with C++17 and Lua, with JSON scene assets.",
 						descriptionZh:
-							"跨平台 2D runtime 与编辑器，支持 Lua 游戏逻辑和 JSON 场景资源。",
+							"轻量的 C++17 + Lua 跨平台 2D runtime 与编辑器，支持 JSON 场景资源。",
 					},
 					{
 						title: "kgdistiller",
