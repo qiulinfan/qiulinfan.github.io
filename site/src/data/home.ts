@@ -10,6 +10,17 @@ export const showcases = {
 				titleZh: "工程",
 				projects: [
 					{
+						title: "Amoris Engine",
+						image: "https://qiulinfan.github.io/amoris/media/scene-poster.jpg",
+						href: "https://qiulinfan.github.io/amoris/",
+						linkLabel: "Website",
+						tags: ["Rust", "TypeScript", "wgpu", "WebGPU", "Agent-native"],
+						description:
+							"An agent-native 3D game engine with a Rust host, TypeScript gameplay, and shared editor, CLI, and MCP commands.",
+						descriptionZh:
+							"Rust + TypeScript 的 agent-native 3D 游戏引擎，编辑器、CLI 与 MCP 共用一套命令接口。",
+					},
+					{
 						title: "pocket2d",
 						image: "/assets/projects/pocket-engine.gif",
 						href: "https://qiulinfan.github.io/pocket2d/",
