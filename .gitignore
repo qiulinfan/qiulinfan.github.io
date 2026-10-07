@@ -42,20 +42,26 @@ dist/
 .astro/
 site/public/_notes-assets/
 
-# Obsidian community plugins are installed from the official marketplace on each
-# machine. Keep reusable plugin data in Git without republishing bundled code.
-/.obsidian/workspace.json
-/.obsidian/workspace-mobile.json
-/.obsidian/plugins/*/main.js
-/.obsidian/plugins/*/manifest.json
-/.obsidian/plugins/*/styles.css
-
-# Obsidian YOLO contains credentials, OAuth tokens and generated runtimes
-/.obsidian/plugins/yolo/
-/YOLO/
-
-.obsidian/graph.json
-.obsidian/plugins/obsidian-tinymist/data.json
-
-# The website is no longer an Obsidian vault.
-/.obsidian/
+# Personal editor, vault and agent environment stays local, at every depth.
+.obsidian/
+.vscode/
+.idea/
+.vs/
+.fleet/
+.zed/
+.history/
+.cursor/
+.windsurf/
+.codex/
+.claude/
+.opencode/
+.pi/
+.omp/
+*.code-workspace
+.ipynb_checkpoints/
+YOLO/
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
