@@ -89,16 +89,21 @@ build. Only the `notes` dock exists today.
   the deployed version can be checked.
 - When the notes repository's `main` passes its own checks, its CI triggers
   this repository's Pages workflow.
-- `.knowledge/sources.json` in the notes repository is the authority for the
-  `web` address of every note and knowledge node; `/notes/` and the homepage's
-  note entries read only that registry. Each source sets `publish` (whether its
-  page is built) and `listed` (whether it appears in public listings), and
-  `listed: true` requires `publish: true`; neither affects local knowledge
-  ingestion. Pages compiled outside Astro, such as Typst, declare their outputs
-  in `web_artifacts`: `astro build` first runs the notes `make web`, then
-  installs only the artifacts of `publish: true` sources. The site publishes no
-  knowledge-graph pages or JSON endpoints; the adopted bundle's `graph.json` is
-  only an internal build record.
+- `courses.json` in the notes repository is the authority for the `web`
+  address of every note; `/notes/` and the homepage's note entries read only
+  that registry. Each course sets `publish` (whether its page is built) and
+  `listed` (whether it appears in public listings), and `listed: true` requires
+  `publish: true`. Pages compiled outside Astro, such as Typst, declare their
+  outputs in `web_artifacts`: `astro build` first runs the notes `make web`,
+  then installs only the artifacts of `publish: true` courses. The site
+  publishes no knowledge-graph pages or JSON endpoints.
+- Markdown knowledge markers (`--[[X]]--` definitions, `[[X]]` references) are
+  a notes authoring convention. Definitions anchor only from the published
+  notes Markdown. A reference resolves to a Markdown definition or to a
+  Typst/LaTeX-defined anchor listed in the notes repository's generated
+  `notes/math/toolchain/generated/knowledge-registry.json`, by exact spelling
+  or else by the notes identity key (`knowledge_registry.identity_key`); a
+  reference without a match, or whose key is ambiguous, renders unresolved.
 - To add a section: once its repository is public, add a row to `docks.json`,
   write the adapter in `site/src/docks/<id>/`, and add a navigation entry in
   `site/src/config.ts`.
@@ -121,10 +126,7 @@ A push to `main` deploys through `.github/workflows/pages.yml`.
 
 `autoTA` and `kgdistiller` are independent product repositories with their own
 Skills, agents, workflows, installers, and tests; nothing of theirs is mirrored
-here. Product changes never change the site by themselves: the knowledge graph
-changes only when the notes repository adopts a committed kgdistiller version
-and re-exports `.knowledge/export/site/`, whose bundle manifest pins the product
-commit and every artifact hash.
+here. Product changes never affect the site.
 
 ## Obsidian vaults
 

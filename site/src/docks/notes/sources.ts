@@ -8,7 +8,7 @@ import type { MarkdownHeading } from "astro";
 import { dockRoot, dockSourceHref, findDock } from "../registry.ts";
 import { markdownNoteConfig } from "./presentation.ts";
 
-interface SourceSpec {
+interface CourseSpec {
 	id: string;
 	title: string;
 	description: string;
@@ -28,28 +28,37 @@ interface FieldSpec {
 	label: string;
 }
 
-interface SourceRegistry {
+interface CourseRegistry {
+	schema: "notes-courses-v1";
 	fields: FieldSpec[];
-	sources: SourceSpec[];
+	courses: CourseSpec[];
 }
 
-interface GraphNode {
+export interface KnowledgeTarget {
 	id: string;
-	label: string;
-	properties?: Record<string, unknown>;
-	provenance?: {
-		authority?: string;
-		line?: number;
-		web?: string;
-	};
+	href: string;
 }
 
-interface GraphReference {
-	target: string;
-	authority: string;
-	line: number;
-	source_name?: string;
-	display_markup?: string;
+// One published Typst knowledge anchor in the notes knowledge registry, with
+// the spellings (its definition and Typst references) that name it.
+export interface KnowledgeRegistryEntry {
+	names: string[];
+	id: string;
+	url: string;
+}
+
+interface KnowledgeRegistry {
+	schema: "notes-knowledge-registry-v1";
+	entries: KnowledgeRegistryEntry[];
+}
+
+export interface KnowledgeIndex {
+	// Markdown `--[[X]]--` definitions by exact spelling; only these become anchors here.
+	definitions: Map<string, KnowledgeTarget>;
+	// Every spelling a reference may use: Markdown definitions and registry names.
+	names: Map<string, KnowledgeTarget>;
+	// Identity key of every spelling; null when the key names different targets.
+	keys: Map<string, KnowledgeTarget | null>;
 }
 
 export interface MarkdownNote {
@@ -99,12 +108,8 @@ interface RenderOptions {
 const homepageRoot = resolve(process.cwd(), "..");
 const notesDock = findDock(homepageRoot, "notes");
 const notesRoot = dockRoot(homepageRoot, "notes");
-const knowledgeRoot = resolve(notesRoot, ".knowledge");
-const registryPath = resolve(knowledgeRoot, "sources.json");
-const publicGraphPath = resolve(
-	knowledgeRoot,
-	"export/site/graph.json",
-);
+const registryPath = resolve(notesRoot, "courses.json");
+const knowledgeRegistryPath = resolve(notesRoot, "notes/math/toolchain/generated/knowledge-registry.json");
 const standalonePresentationPaths = [
 	resolve(notesRoot, "notes/math/toolchain/qlnotes.typ"),
 	resolve(notesRoot, "notes/math/toolchain/web.css"),
@@ -123,47 +128,30 @@ const codeLanguageAliases = new Map([
 	["tex", "latex"],
 ]);
 
-interface PublicGraph {
-	schema: "kgdistiller-site-graph-v1";
-	nodes: GraphNode[];
-	references: GraphReference[];
-}
+let cachedRegistry: CourseRegistry | undefined;
 
-let cachedPublicGraph: PublicGraph | undefined;
-
-function publicGraph(): PublicGraph {
-	if (cachedPublicGraph) return cachedPublicGraph;
-	const payload = JSON.parse(
-		readFileSync(publicGraphPath, "utf-8"),
-	) as PublicGraph;
-	if (payload.schema !== "kgdistiller-site-graph-v1") {
-		throw new Error(`Unsupported public graph export: ${payload.schema}`);
-	}
-	cachedPublicGraph = payload;
-	return payload;
-}
-
-let cachedRegistry: SourceRegistry | undefined;
-
-function sourceRegistry(): SourceRegistry {
+function courseRegistry(): CourseRegistry {
 	if (cachedRegistry) return cachedRegistry;
-	const payload = JSON.parse(readFileSync(registryPath, "utf-8")) as SourceRegistry;
-	for (const spec of payload.sources) {
+	const payload = JSON.parse(readFileSync(registryPath, "utf-8")) as CourseRegistry;
+	if (payload.schema !== "notes-courses-v1") {
+		throw new Error(`Unsupported notes course registry: ${payload.schema}`);
+	}
+	for (const spec of payload.courses) {
 		if (typeof spec.publish !== "boolean" || typeof spec.listed !== "boolean") {
-			throw new Error(`Source ${spec.id} must explicitly declare boolean publish and listed values.`);
+			throw new Error(`Course ${spec.id} must explicitly declare boolean publish and listed values.`);
 		}
 		if (spec.listed && !spec.publish) {
-			throw new Error(`Source ${spec.id} cannot be listed when publish is false.`);
+			throw new Error(`Course ${spec.id} cannot be listed when publish is false.`);
 		}
 		if (!spec.title.trim() || !spec.description.trim()) {
-			throw new Error(`Source ${spec.id} must declare a title and description for site publication.`);
+			throw new Error(`Course ${spec.id} must declare a title and description for site publication.`);
 		}
 	}
 	cachedRegistry = payload;
 	return cachedRegistry;
 }
 
-function sourceWebPath(spec: SourceSpec): string {
+function sourceWebPath(spec: CourseSpec): string {
 	const pathname = new URL(spec.web).pathname.replace(/\/+$/, "");
 	return `${pathname || "/"}${pathname ? "/" : ""}`;
 }
@@ -179,9 +167,9 @@ function standalonePresentationVersion(): string {
 }
 
 export function loadListedNoteSources(options: LoadListedNoteSourcesOptions = {}): NoteSource[] {
-	const registry = sourceRegistry();
+	const registry = courseRegistry();
 	const fieldLabels = new Map(registry.fields.map((field) => [field.id, field.label]));
-	return registry.sources
+	return registry.courses
 		.filter((spec) => spec.publish && spec.listed)
 		.map((spec) => {
 			const href = sourceWebPath(spec);
@@ -234,7 +222,7 @@ function matchesPattern(path: string, pattern: string): boolean {
 	return new RegExp(`${expression}$`).test(path);
 }
 
-function markdownFiles(spec: SourceSpec): string[] {
+function markdownFiles(spec: CourseSpec): string[] {
 	if (!spec.files.some((pattern) => pattern.toLowerCase().includes(".md"))) return [];
 	const root = resolve(notesRoot, spec.root);
 	return walk(root)
@@ -246,12 +234,26 @@ function markdownFiles(spec: SourceSpec): string[] {
 		.sort();
 }
 
-function noteSlug(spec: SourceSpec, path: string): string {
+function notePathParts(spec: CourseSpec, path: string): string[] {
 	const root = resolve(notesRoot, spec.root);
 	const parts = relative(root, path).split(sep);
 	parts[parts.length - 1] = basename(parts[parts.length - 1], extname(path));
 	if (["index", "readme"].includes(parts.at(-1)?.toLowerCase() ?? "")) parts.pop();
-	return [spec.subject, spec.course, ...parts].join("/");
+	return parts;
+}
+
+function noteSlug(spec: CourseSpec, path: string): string {
+	return [spec.subject, spec.course, ...notePathParts(spec, path)].join("/");
+}
+
+// The public page address of one Markdown note: the course's `web` address plus
+// its percent-encoded path, which knowledge-marker links point at.
+function noteWebAddress(spec: CourseSpec, path: string): string {
+	const encode = (part: string) =>
+		encodeURIComponent(part).replace(/[!'()*]/g, (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
+	const base = spec.web.replace(/\/+$/, "");
+	const suffix = notePathParts(spec, path).map(encode).join("/");
+	return suffix ? `${base}/${suffix}` : base;
 }
 
 function sitePath(path: string): string {
@@ -259,7 +261,7 @@ function sitePath(path: string): string {
 	return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 }
 
-function localSourceTarget(spec: SourceSpec, sourcePath: string, rawTarget: string): string | undefined {
+function localSourceTarget(spec: CourseSpec, sourcePath: string, rawTarget: string): string | undefined {
 	const decoded = (() => {
 		try { return decodeURIComponent(rawTarget); } catch { return rawTarget; }
 	})().replaceAll("\\", "/").trim();
@@ -282,7 +284,7 @@ function localSourceTarget(spec: SourceSpec, sourcePath: string, rawTarget: stri
 	return relocated.length === 1 ? relocated[0] : undefined;
 }
 
-function publishedTarget(spec: SourceSpec, sourcePath: string, rawTarget: string): string {
+function publishedTarget(spec: CourseSpec, sourcePath: string, rawTarget: string): string {
 	const target = localSourceTarget(spec, sourcePath, rawTarget);
 	if (!target) return rawTarget;
 	if (extname(target).toLowerCase() === ".md") {
@@ -295,7 +297,7 @@ function publishedTarget(spec: SourceSpec, sourcePath: string, rawTarget: string
 }
 
 function presentationImage(
-	spec: SourceSpec,
+	spec: CourseSpec,
 	sourcePath: string,
 	rawValue: string | undefined,
 	defaultValue: string | undefined,
@@ -307,7 +309,7 @@ function presentationImage(
 	return resolved;
 }
 
-function rewriteRawHtmlTargets(source: string, spec: SourceSpec, sourcePath: string): string {
+function rewriteRawHtmlTargets(source: string, spec: CourseSpec, sourcePath: string): string {
 	return source.replace(/\b(src|href)\s*=\s*(["'])(.*?)\2/gi, (_whole, attribute: string, quote: string, target: string) => {
 		const rewritten = publishedTarget(spec, sourcePath, target);
 		return `${attribute}=${quote}${rewritten}${quote}`;
@@ -435,11 +437,98 @@ function wikilinkParts(body: string): { target: string; display: string } {
 	return { target, display: display || target };
 }
 
+// Knowledge markers are a notes authoring convention: `--[[X]]--` defines X on
+// its page and `[[X]]` (or `[[X|label]]`) links to that definition.
+const markerPattern = /(?<definition>(?<![!\\])--\[\[(?<definitionBody>[^\]\n]+)\]\]--)|(?<reference>(?<![!\-\\])\[\[(?<referenceBody>[^\]\n]+)\]\](?!--))/g;
+
+// Python's str.casefold after NFKC, as the notes knowledge registry applies it.
+function caseFold(value: string): string {
+	return value.normalize("NFKC").toLowerCase().replaceAll("ς", "σ").replaceAll("ß", "ss");
+}
+
+// Anchor ids share the notes marker-id rule: NFKC, case folding, Greek letters
+// spelled out, and runs outside [a-z0-9] collapsed to "-", capped at 120.
+function knowledgeId(target: string): string {
+	return caseFold(target)
+		.replaceAll("σ", " sigma ")
+		.replaceAll("π", " pi ")
+		.replaceAll("λ", " lambda ")
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-+|-+$/g, "")
+		.slice(0, 120)
+		.replace(/-+$/, "");
+}
+
+const greekNames: Array<[string, string]> = [
+	["σ", " sigma "], ["π", " pi "], ["λ", " lambda "], ["μ", " mu "], ["ρ", " rho "], ["ω", " omega "],
+];
+
+// The notes identity key (knowledge_registry.identity_key): spellings compare
+// up to Unicode compatibility, case, spelled-out Greek letters and whitespace.
+function identityKey(value: string): string {
+	let key = caseFold(value);
+	for (const [symbol, name] of greekNames) key = key.replaceAll(symbol, name);
+	return key.replace(/\s+/g, " ").trim();
+}
+
+function loadKnowledgeRegistry(): KnowledgeRegistryEntry[] {
+	const payload = JSON.parse(readFileSync(knowledgeRegistryPath, "utf-8")) as KnowledgeRegistry;
+	if (payload.schema !== "notes-knowledge-registry-v1") {
+		throw new Error(`Unsupported notes knowledge registry: ${payload.schema}`);
+	}
+	return payload.entries;
+}
+
+// Index every definition marker in the given Markdown pages, plus the notes
+// registry's Typst/LaTeX-defined anchors that Markdown references may reach.
+// `address` is the public page address a Markdown definition anchor lives on.
+export function buildKnowledgeIndex(
+	pages: Iterable<{ source: string; address: string }>,
+	registry: Iterable<KnowledgeRegistryEntry> = [],
+): KnowledgeIndex {
+	const definitions = new Map<string, KnowledgeTarget>();
+	const owners = new Map<string, string>();
+	for (const { source, address } of pages) {
+		for (const match of source.matchAll(markerPattern)) {
+			const body = match.groups?.definitionBody;
+			if (body === undefined) continue;
+			const { target } = wikilinkParts(body);
+			const id = knowledgeId(target);
+			if (!id) throw new Error(`Knowledge definition "${target}" in ${address} has no usable id.`);
+			const previous = definitions.get(target);
+			if (previous) throw new Error(`Knowledge definition "${target}" is defined more than once (${previous.href}, ${address}).`);
+			const owner = owners.get(id);
+			if (owner) throw new Error(`Knowledge definitions "${owner}" and "${target}" share the id ${id}.`);
+			owners.set(id, target);
+			definitions.set(target, { id, href: `${address}/#kn-${id}` });
+		}
+	}
+	const names = new Map(definitions);
+	for (const entry of registry) {
+		const target = { id: entry.id, href: entry.url };
+		for (const name of entry.names) {
+			const previous = names.get(name);
+			if (previous) throw new Error(`Knowledge definition "${name}" is defined more than once (${previous.href}, ${target.href}).`);
+			names.set(name, target);
+		}
+	}
+	const keys = new Map<string, KnowledgeTarget | null>();
+	for (const [name, target] of names) {
+		const key = identityKey(name);
+		const previous = keys.get(key);
+		keys.set(key, previous === undefined || previous?.href === target.href ? target : null);
+	}
+	return { definitions, names, keys };
+}
+
+// A reference resolves by exact spelling, otherwise by an unambiguous identity key.
+function resolveReference(index: KnowledgeIndex, target: string): KnowledgeTarget | undefined {
+	return index.names.get(target) ?? index.keys.get(identityKey(target)) ?? undefined;
+}
+
 export function renderKnowledgeMarkdown(
 	source: string,
-	fileAuthority: string,
-	nodes: GraphNode[],
-	references: GraphReference[],
+	index: KnowledgeIndex,
 	options: RenderOptions = {},
 ): { html: string; headings: MarkdownHeading[] } {
 	const headings: MarkdownHeading[] = [];
@@ -462,39 +551,21 @@ export function renderKnowledgeMarkdown(
 			return defaultLink ? defaultLink(tokens, index, renderOptions, environment, self) : self.renderToken(tokens, index, renderOptions);
 		};
 	}
-	const nodesById = new Map(nodes.map((node) => [node.id, node]));
 	const markers: string[] = [];
-	const markerPattern = /(?<definition>(?<![!\\])--\[\[(?<definitionBody>[^\]\n]+)\]\]--)|(?<reference>(?<![!\-\\])\[\[(?<referenceBody>[^\]\n]+)\]\](?!--))/g;
 	const transformed = source.replace(markerPattern, (...arguments_: unknown[]) => {
-		const offset = Number(arguments_[arguments_.length - 3]);
 		const groups = arguments_.at(-1) as Record<string, string | undefined>;
 		const isDefinition = Boolean(groups.definition);
 		const body = groups.definitionBody ?? groups.referenceBody ?? "";
 		const { target, display } = wikilinkParts(body);
 		markerLabels.push(display);
-		const line = source.slice(0, offset).split("\n").length;
-		let node: GraphNode | undefined;
-		if (isDefinition) {
-			node = nodes.find((candidate) =>
-				candidate.provenance?.authority === fileAuthority &&
-				candidate.provenance?.line === line &&
-				String(candidate.properties?.source_name ?? "") === target
-			);
-		} else {
-			const reference = references.find((candidate) =>
-				candidate.authority === fileAuthority &&
-				candidate.line === line &&
-				(candidate.source_name ?? "") === target
-			);
-			node = reference ? nodesById.get(reference.target) : undefined;
-		}
+		const entry = isDefinition ? index.definitions.get(target) : resolveReference(index, target);
 		const label = renderer.renderInline(display);
-		if (isDefinition && node) {
-			markers.push(`<strong id="kn-${escapeHtml(node.id)}" class="ql-kn" data-ql-kn="${escapeHtml(node.id)}">${label}</strong>`);
-		} else if (!isDefinition && node?.provenance?.web) {
-			markers.push(`<a class="ql-ref" data-ql-ref="${escapeHtml(node.id)}" href="${escapeHtml(node.provenance.web)}">${label}</a>`);
+		if (isDefinition && entry) {
+			markers.push(`<strong id="kn-${escapeHtml(entry.id)}" class="ql-kn" data-ql-kn="${escapeHtml(entry.id)}">${label}</strong>`);
+		} else if (!isDefinition && entry) {
+			markers.push(`<a class="ql-ref" data-ql-ref="${escapeHtml(entry.id)}" href="${escapeHtml(entry.href)}">${label}</a>`);
 		} else {
-			markers.push(`<span class="ql-${isDefinition ? "kn" : "ref"} ql-unresolved" title="图谱尚未同步">${label}</span>`);
+			markers.push(`<span class="ql-${isDefinition ? "kn" : "ref"} ql-unresolved" title="未找到对应定义">${label}</span>`);
 		}
 		return `QLKGMARKER${markers.length - 1}END`;
 	});
@@ -519,34 +590,38 @@ let cachedNotes: MarkdownNote[] | undefined;
 
 export function loadMarkdownNotes(): MarkdownNote[] {
 	if (cachedNotes) return cachedNotes;
-	const { nodes, references } = publicGraph();
+	const pages = courseRegistry().courses
+		.filter((course) => course.publish)
+		.flatMap((spec) => markdownFiles(spec).map((path) => {
+			const { body, metadata } = splitFrontmatter(readFileSync(path, "utf-8"));
+			return { spec, path, body, metadata, prepared: rewriteRawHtmlTargets(body, spec, path) };
+		}));
+	const index = buildKnowledgeIndex(
+		pages.map(({ spec, path, prepared }) => ({ source: prepared, address: noteWebAddress(spec, path) })),
+		loadKnowledgeRegistry(),
+	);
 	const notes: MarkdownNote[] = [];
-	for (const spec of sourceRegistry().sources.filter((source) => source.publish)) {
-		for (const path of markdownFiles(spec)) {
-			const raw = readFileSync(path, "utf-8");
-			const { body, metadata } = splitFrontmatter(raw);
-			const fileAuthority = authority(path);
-			const prepared = rewriteRawHtmlTargets(body, spec, path);
-			const rendered = renderKnowledgeMarkdown(prepared, fileAuthority, nodes, references, {
-				resolveTarget: (target) => publishedTarget(spec, path, target),
-			});
-			notes.push({
-				slug: noteSlug(spec, path),
-				title: titleFrom(body, metadata, path),
-				description: metadata.description ?? `${spec.course} · ${fileAuthority}`,
-				subject: spec.subject,
-				course: spec.course,
-				sourceTitle: spec.title,
-				sourceId: spec.id,
-				authority: fileAuthority,
-				sourceHref: dockSourceHref(notesDock, fileAuthority),
-				html: stripDocumentTitleHeading(rendered.html),
-				headings: rendered.headings.filter((heading) => heading.depth > 1),
-				heroImage: presentationImage(spec, path, metadata.hero_image, markdownNoteConfig.defaultHeroImage),
-				backgroundImage: presentationImage(spec, path, metadata.background_image, markdownNoteConfig.defaultBackgroundImage),
-				navigation: [],
-			});
-		}
+	for (const { spec, path, body, metadata, prepared } of pages) {
+		const fileAuthority = authority(path);
+		const rendered = renderKnowledgeMarkdown(prepared, index, {
+			resolveTarget: (target) => publishedTarget(spec, path, target),
+		});
+		notes.push({
+			slug: noteSlug(spec, path),
+			title: titleFrom(body, metadata, path),
+			description: metadata.description ?? `${spec.course} · ${fileAuthority}`,
+			subject: spec.subject,
+			course: spec.course,
+			sourceTitle: spec.title,
+			sourceId: spec.id,
+			authority: fileAuthority,
+			sourceHref: dockSourceHref(notesDock, fileAuthority),
+			html: stripDocumentTitleHeading(rendered.html),
+			headings: rendered.headings.filter((heading) => heading.depth > 1),
+			heroImage: presentationImage(spec, path, metadata.hero_image, markdownNoteConfig.defaultHeroImage),
+			backgroundImage: presentationImage(spec, path, metadata.background_image, markdownNoteConfig.defaultBackgroundImage),
+			navigation: [],
+		});
 	}
 	cachedNotes = notes.sort((left, right) => left.slug.localeCompare(right.slug));
 	for (const note of cachedNotes) {

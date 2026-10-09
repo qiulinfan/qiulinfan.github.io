@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 
-interface SourceSpec {
+interface CourseSpec {
 	id: string;
 	root: string;
 	publish: boolean;
@@ -46,18 +46,18 @@ export function prepareStandaloneHtml(source: string, sourceId: string): string 
 // built site, adding the shared theme switcher and its runtime.
 export function installNoteArtifacts(notesRoot: string, outputRoot: string): number {
 	const registry = JSON.parse(
-		readFileSync(resolve(notesRoot, ".knowledge/sources.json"), "utf-8"),
-	) as { sources: SourceSpec[] };
+		readFileSync(resolve(notesRoot, "courses.json"), "utf-8"),
+	) as { courses: CourseSpec[] };
 	let installed = 0;
-	for (const spec of registry.sources) {
+	for (const spec of registry.courses) {
 		if (typeof spec.publish !== "boolean" || typeof spec.listed !== "boolean") {
 			throw new Error(
-				`Source ${spec.id} must explicitly declare boolean publish and listed values.`,
+				`Course ${spec.id} must explicitly declare boolean publish and listed values.`,
 			);
 		}
 		if (spec.listed && !spec.publish) {
 			throw new Error(
-				`Source ${spec.id} cannot be listed when publish is false.`,
+				`Course ${spec.id} cannot be listed when publish is false.`,
 			);
 		}
 		if (!spec.publish) continue;

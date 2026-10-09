@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+	buildKnowledgeIndex,
 	loadListedNoteSources,
 	loadMarkdownNotes,
 	renderKnowledgeMarkdown,
@@ -66,8 +67,7 @@ test("the source registry publishes and lists only the selected notes", () => {
 	assert.equal(dataStructuresHome?.navigation.some((heading) => heading.documentSlug === dataStructuresHome.slug), false);
 });
 
-test("Markdown authority markers are anchors and ordinary wikilinks are backlinks", () => {
-	const authority = "notes/cs/demo/cache.md";
+test("Markdown knowledge markers are anchors and ordinary wikilinks are backlinks", () => {
 	const source = [
 		"> **Definition: --[[cache line]]--**",
 		">",
@@ -80,31 +80,67 @@ test("Markdown authority markers are anchors and ordinary wikilinks are backlink
 		"```cpp",
 		"int main() { return 0; }",
 		"```",
+		"",
+		"See [[write buffer]].",
 	].join("\n");
-	const nodes = [{
-		id: "cache-line",
-		label: "cache line",
-		properties: { source_name: "cache line" },
-		provenance: {
-			authority,
-			line: 1,
-			web: "https://example.test/notes/cache/#kn-cache-line",
-		},
-	}];
-	const references = [{
-		target: "cache-line",
-		authority,
-		line: 3,
-		source_name: "cache line",
-		display_markup: "line",
-	}];
+	const index = buildKnowledgeIndex([{ source, address: "https://example.test/notes/cache" }]);
 
-	const rendered = renderKnowledgeMarkdown(source, authority, nodes, references);
+	assert.deepEqual([...index.definitions], [["cache line", { id: "cache-line", href: "https://example.test/notes/cache/#kn-cache-line" }]]);
+
+	const rendered = renderKnowledgeMarkdown(source, index);
 
 	assert.match(rendered.html, /<strong id="kn-cache-line"[^>]*>cache line<\/strong>/);
 	assert.doesNotMatch(rendered.html, /<a[^>]+id="kn-cache-line"/);
 	assert.match(rendered.html, /<a class="ql-ref"[^>]+href="https:\/\/example\.test\/notes\/cache\/#kn-cache-line">line<\/a>/);
+	assert.match(rendered.html, /<span class="ql-ref ql-unresolved" title="未找到对应定义">write buffer<\/span>/);
 	assert.match(rendered.html, /class="katex-display"/);
 	assert.match(rendered.html, /class="ql-code-block" data-language="cpp"/);
 	assert.match(rendered.html, /--shiki-dark:/);
+});
+
+test("Markdown references resolve to the notes registry's Typst and LaTeX anchors by identity key", () => {
+	const measure = "https://example.test/notes/math/measure/#kn-";
+	const registry = [
+		{ names: ["measure space"], id: "measure-space", url: `${measure}measure-space` },
+		{ names: ["$σ$-finite measure", "σ-finite measure"], id: "sigma-finite-measure", url: `${measure}sigma-finite-measure` },
+		{ names: ["Measure"], id: "measure-a", url: `${measure}measure-a` },
+		{ names: ["MEASURE"], id: "measure-b", url: `${measure}measure-b` },
+	];
+	const source = [
+		"A [[measure space]] is a [[Measure  Space|triple]]; see [[Σ-FINITE measure]].",
+		"",
+		"Unknown: [[outer measure]], [[measure-space]], [[measure]].",
+	].join("\n");
+	const index = buildKnowledgeIndex([{ source, address: "https://example.test/notes/cs/demo" }], registry);
+	const { html } = renderKnowledgeMarkdown(source, index);
+
+	assert.equal(index.definitions.size, 0);
+	assert.match(html, /<a class="ql-ref" data-ql-ref="measure-space" href="https:\/\/example\.test\/notes\/math\/measure\/#kn-measure-space">measure space<\/a>/);
+	assert.match(html, /<a class="ql-ref" data-ql-ref="measure-space" href="[^"]+#kn-measure-space">triple<\/a>/);
+	assert.match(html, /<a class="ql-ref" data-ql-ref="sigma-finite-measure" href="[^"]+#kn-sigma-finite-measure">Σ-FINITE measure<\/a>/);
+	for (const unresolved of ["outer measure", "measure-space", "measure"]) {
+		assert.match(html, new RegExp(`<span class="ql-ref ql-unresolved" title="未找到对应定义">${unresolved}</span>`));
+	}
+	assert.doesNotMatch(html, /id="kn-/);
+});
+
+test("knowledge definitions must be unique and produce an anchor id", () => {
+	assert.throws(
+		() => buildKnowledgeIndex([
+			{ source: "--[[cache line]]--", address: "https://example.test/notes/a" },
+			{ source: "--[[cache line]]--", address: "https://example.test/notes/b" },
+		]),
+		/defined more than once/,
+	);
+	assert.throws(
+		() => buildKnowledgeIndex(
+			[{ source: "--[[measure space]]--", address: "https://example.test/notes/a" }],
+			[{ names: ["measure space"], id: "measure-space", url: "https://example.test/notes/math/measure/#kn-measure-space" }],
+		),
+		/defined more than once/,
+	);
+	assert.throws(
+		() => buildKnowledgeIndex([{ source: "--[[缓存]]--", address: "https://example.test/notes/a" }]),
+		/no usable id/,
+	);
 });
