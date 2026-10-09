@@ -1,4 +1,3 @@
-import { notesKnowledgeRoot } from "./knowledge-paths.ts";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, extname, relative, resolve, sep } from "node:path";
@@ -100,7 +99,7 @@ interface RenderOptions {
 const homepageRoot = resolve(process.cwd(), "..");
 const notesDock = findDock(homepageRoot, "notes");
 const notesRoot = dockRoot(homepageRoot, "notes");
-const knowledgeRoot = notesKnowledgeRoot(notesRoot);
+const knowledgeRoot = resolve(notesRoot, ".knowledge");
 const registryPath = resolve(knowledgeRoot, "sources.json");
 const publicGraphPath = resolve(
 	knowledgeRoot,
