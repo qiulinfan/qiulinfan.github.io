@@ -1,3 +1,4 @@
+import { notesKnowledgeRoot } from "../knowledge-paths.ts";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 
@@ -46,7 +47,7 @@ export function prepareStandaloneHtml(source: string, sourceId: string): string 
 // built site, adding the shared theme switcher and its runtime.
 export function installNoteArtifacts(notesRoot: string, outputRoot: string): number {
 	const registry = JSON.parse(
-		readFileSync(resolve(notesRoot, "knowledge/sources.json"), "utf-8"),
+		readFileSync(resolve(notesKnowledgeRoot(notesRoot), "sources.json"), "utf-8"),
 	) as { sources: SourceSpec[] };
 	let installed = 0;
 	for (const spec of registry.sources) {

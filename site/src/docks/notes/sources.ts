@@ -1,3 +1,4 @@
+import { notesKnowledgeRoot } from "./knowledge-paths.ts";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, extname, relative, resolve, sep } from "node:path";
@@ -99,10 +100,11 @@ interface RenderOptions {
 const homepageRoot = resolve(process.cwd(), "..");
 const notesDock = findDock(homepageRoot, "notes");
 const notesRoot = dockRoot(homepageRoot, "notes");
-const registryPath = resolve(notesRoot, "knowledge/sources.json");
+const knowledgeRoot = notesKnowledgeRoot(notesRoot);
+const registryPath = resolve(knowledgeRoot, "sources.json");
 const publicGraphPath = resolve(
-	notesRoot,
-	"knowledge/export/site/graph.json",
+	knowledgeRoot,
+	"export/site/graph.json",
 );
 const standalonePresentationPaths = [
 	resolve(notesRoot, "notes/math/toolchain/qlnotes.typ"),

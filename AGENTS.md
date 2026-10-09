@@ -89,7 +89,8 @@ build. Only the `notes` dock exists today.
   the deployed version can be checked.
 - When the notes repository's `main` passes its own checks, its CI triggers
   this repository's Pages workflow.
-- `knowledge/sources.json` in the notes repository is the authority for the
+- `sources.json` in the notes repository's selected knowledge tree (`.knowledge/`
+  or `knowledge/`) is the authority for the
   `web` address of every note and knowledge node; `/notes/` and the homepage's
   note entries read only that registry. Each source sets `publish` (whether its
   page is built) and `listed` (whether it appears in public listings), and
@@ -123,7 +124,7 @@ A push to `main` deploys through `.github/workflows/pages.yml`.
 Skills, agents, workflows, installers, and tests; nothing of theirs is mirrored
 here. Product changes never change the site by themselves: the knowledge graph
 changes only when the notes repository adopts a committed kgdistiller version
-and re-exports `knowledge/export/site/`, whose bundle manifest pins the product
+  and re-exports `export/site/` inside its selected knowledge tree, whose bundle manifest pins the product
 commit and every artifact hash.
 
 ## Obsidian vaults

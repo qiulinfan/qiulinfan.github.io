@@ -1,3 +1,4 @@
+import { notesKnowledgeRoot } from "../knowledge-paths.ts";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
 import { dirname, extname, relative, resolve, sep } from "node:path";
 
@@ -64,7 +65,7 @@ function targets(source: string): string[] {
 // Copy the images and files that published Markdown notes reference into the
 // site's public directory, where the rendered notes link to them.
 export function syncNoteAssets(notesRoot: string, outputRoot: string): number {
-	const registry = JSON.parse(readFileSync(resolve(notesRoot, "knowledge/sources.json"), "utf-8")) as { sources: SourceSpec[] };
+	const registry = JSON.parse(readFileSync(resolve(notesKnowledgeRoot(notesRoot), "sources.json"), "utf-8")) as { sources: SourceSpec[] };
 	rmSync(outputRoot, { recursive: true, force: true });
 	let copied = 0;
 	for (const spec of registry.sources) {
