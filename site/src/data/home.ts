@@ -37,11 +37,11 @@ export const showcases = {
 						imageFit: "contain",
 						href: "https://github.com/qiulinfan/kgdistiller",
 						linkLabel: "GitHub",
-						tags: ["Knowledge Graph", "Markdown", "Typst", "LaTeX"],
+						tags: ["Knowledge Base", "Obsidian", "SQLite", "Agent Skills"],
 						description:
-							"A deterministic, source-backed knowledge graph compiled from registered Markdown, Typst, and LaTeX authorities.",
+							"A local-first research knowledge base: source-backed records and role-bound relations in Obsidian vaults, indexed in one SQLite file.",
 						descriptionZh:
-							"从已登记的 Markdown、Typst 与 LaTeX 权威源生成确定性、可追溯的知识图谱。",
+							"本地优先的研究知识库：在 Obsidian 仓库中保存有原文出处的记录与按角色绑定的关系，并由单个 SQLite 文件建立索引。",
 					},
 				],
 			},
