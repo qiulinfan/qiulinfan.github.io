@@ -98,7 +98,7 @@ test("Markdown knowledge markers are anchors and ordinary wikilinks are backlink
 	assert.match(rendered.html, /--shiki-dark:/);
 });
 
-test("Markdown references resolve to the notes registry's Typst and LaTeX anchors by identity key", () => {
+test("Markdown references resolve to the notes registry's LaTeX anchors by identity key", () => {
 	const measure = "https://example.test/notes/math/measure/#kn-";
 	const registry = [
 		{ names: ["measure space"], id: "measure-space", url: `${measure}measure-space` },

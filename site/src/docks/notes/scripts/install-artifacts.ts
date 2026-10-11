@@ -42,7 +42,7 @@ export function prepareStandaloneHtml(source: string, sourceId: string): string 
 	return withHeadStyle;
 }
 
-// Install the Typst web pages built by the notes repository (`make web`) into the
+// Install the LaTeX web pages built by the notes repository (`make web`) into the
 // built site, adding the shared theme switcher and its runtime.
 export function installNoteArtifacts(notesRoot: string, outputRoot: string): number {
 	const registry = JSON.parse(
@@ -66,7 +66,7 @@ export function installNoteArtifacts(notesRoot: string, outputRoot: string): num
 		const publicRoot = new URL(spec.web).pathname.replace(/^\/+|\/+$/g, "");
 		for (const artifact of spec.web_artifacts ?? []) {
 			const source = resolve(sourceRoot, artifact.source);
-			assertContained(sourceRoot, source, `Artifact source for ${spec.id}`);
+			assertContained(notesRoot, source, `Artifact source for ${spec.id}`);
 			if (!existsSync(source))
 				throw new Error(
 					`Missing built note artifact for ${spec.id}: ${source}`,

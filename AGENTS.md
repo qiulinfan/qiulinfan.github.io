@@ -83,8 +83,9 @@ build. Only the `notes` dock exists today.
   so changes preview without a push. `make docks-bootstrap` shallow-clones a
   missing checkout together with its submodules.
 - `astro build` runs each adapter's build steps. The notes adapter runs
-  `make web` in the notes repository to build its standalone Typst pages, so
-  the machine needs the Typst version pinned in the notes `Makefile`.
+  `make web` in the notes repository to build its standalone LaTeX pages. The machine needs TeX and the
+  obsidian-latex-live direct HTML converter. Both repositories use the pinned
+  notes `setup_latex_web_ci.sh` on disposable CI runners.
 - Every build writes each dock's commit to `docks.json` at the site root, so
   the deployed version can be checked.
 - When the notes repository's `main` passes its own checks, its CI triggers
@@ -93,14 +94,14 @@ build. Only the `notes` dock exists today.
   address of every note; `/notes/` and the homepage's note entries read only
   that registry. Each course sets `publish` (whether its page is built) and
   `listed` (whether it appears in public listings), and `listed: true` requires
-  `publish: true`. Pages compiled outside Astro, such as Typst, declare their
+  `publish: true`. LaTeX pages compiled outside Astro declare their
   outputs in `web_artifacts`: `astro build` first runs the notes `make web`,
   then installs only the artifacts of `publish: true` courses. The site
   publishes no knowledge-graph pages or JSON endpoints.
 - Markdown knowledge markers (`--[[X]]--` definitions, `[[X]]` references) are
   a notes authoring convention. Definitions anchor only from the published
   notes Markdown. A reference resolves to a Markdown definition or to a
-  Typst/LaTeX-defined anchor listed in the notes repository's generated
+  LaTeX-defined anchor listed in the notes repository's generated
   `notes/math/toolchain/generated/knowledge-registry.json`, by exact spelling
   or else by the notes identity key (`knowledge_registry.identity_key`); a
   reference without a match, or whose key is ambiguous, renders unresolved.

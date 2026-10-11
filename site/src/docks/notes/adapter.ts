@@ -12,7 +12,7 @@ export const notesAdapter: DockAdapter = {
 	prepare({ root, siteRoot, command, logger }) {
 		const synced = syncNoteAssets(root, resolve(siteRoot, "public/_notes-assets"));
 		logger.info(`Synced ${synced} note asset(s).`);
-		// Standalone Typst pages are built by the notes repository itself.
+		// Standalone LaTeX pages are built by the notes repository itself.
 		if (command === "build") execFileSync("make", ["-C", root, "web"], { stdio: "inherit" });
 	},
 	finish({ root, outDir, logger }) {

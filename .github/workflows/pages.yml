@@ -35,14 +35,8 @@ jobs:
       - name: Checkout docks
         run: make docks-bootstrap
 
-      - name: Read the notes Typst pin
-        id: typst
-        run: echo "version=$(make -s -C ../notes typst-version)" >> "$GITHUB_OUTPUT"
-
-      - name: Set up Typst
-        uses: typst-community/setup-typst@v5
-        with:
-          typst-version: ${{ steps.typst.outputs.version }}
+      - name: Set up direct LaTeX web export
+        run: sh ../notes/notes/math/toolchain/scripts/setup_latex_web_ci.sh
 
       - name: Build the site
         run: |

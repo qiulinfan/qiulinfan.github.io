@@ -39,8 +39,8 @@ export interface KnowledgeTarget {
 	href: string;
 }
 
-// One published Typst knowledge anchor in the notes knowledge registry, with
-// the spellings (its definition and Typst references) that name it.
+// One published LaTeX knowledge anchor in the notes knowledge registry, with
+// the spellings (its definition and explicit aliases) that name it.
 export interface KnowledgeRegistryEntry {
 	names: string[];
 	id: string;
@@ -111,13 +111,14 @@ const notesRoot = dockRoot(homepageRoot, "notes");
 const registryPath = resolve(notesRoot, "courses.json");
 const knowledgeRegistryPath = resolve(notesRoot, "notes/math/toolchain/generated/knowledge-registry.json");
 const standalonePresentationPaths = [
-	resolve(notesRoot, "notes/math/toolchain/qlnotes.typ"),
+	resolve(notesRoot, "notes/math/toolchain/latex/qlnotes-native.cls"),
+	resolve(notesRoot, "notes/math/toolchain/scripts/export_latex_web.py"),
 	resolve(notesRoot, "notes/math/toolchain/web.css"),
 	resolve(homepageRoot, "site/src/docks/notes/scripts/install-artifacts.ts"),
 ];
 const codeHighlighter = await createHighlighter({
 	themes: [markdownNoteConfig.codeThemes.light, markdownNoteConfig.codeThemes.dark],
-	langs: ["plaintext", "cpp", "bash", "bat", "makefile", "json", "powershell", "latex", "typst"],
+	langs: ["plaintext", "cpp", "bash", "bat", "makefile", "json", "powershell", "latex"],
 });
 const codeLanguageAliases = new Map([
 	["c++", "cpp"],
@@ -480,7 +481,7 @@ function loadKnowledgeRegistry(): KnowledgeRegistryEntry[] {
 }
 
 // Index every definition marker in the given Markdown pages, plus the notes
-// registry's Typst/LaTeX-defined anchors that Markdown references may reach.
+// registry's LaTeX-defined anchors that Markdown references may reach.
 // `address` is the public page address a Markdown definition anchor lives on.
 export function buildKnowledgeIndex(
 	pages: Iterable<{ source: string; address: string }>,
