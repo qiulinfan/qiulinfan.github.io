@@ -21,7 +21,8 @@ const groups = showcases[showcase].groups;
 			</header>
 			<div class="project-grid">
 				{group.projects.map((project) => {
-					const images = "images" in project
+					const video = "video" in project ? project.video : undefined;
+					const images = "video" in project ? [] : "images" in project
 						? project.images
 						: [{ src: project.image, alt: `${project.title} preview` }];
 					return <a class="project-card" href={project.href} target="_blank" rel="noreferrer">
@@ -29,7 +30,20 @@ const groups = showcases[showcase].groups;
 							slideshow: images.length > 1,
 							"two-slides": images.length === 2,
 							contain: "imageFit" in project && project.imageFit === "contain",
+							wide: "video" in project || ("wide" in project && project.wide),
 						}]}>
+							{video && (
+								<video
+									src={url(video.src)}
+									poster={url(video.poster)}
+									aria-label={`${project.title} gameplay`}
+									muted
+									loop
+									playsinline
+									preload="none"
+									data-autoplay
+								/>
+							)}
 							{images.map((image, index) => (
 								<img
 									src={image.src.startsWith("/") ? url(image.src) : image.src}
@@ -52,6 +66,27 @@ const groups = showcases[showcase].groups;
 	))}
 </div>
 
+<script>
+	// Gameplay clips play while their card is on screen, unless motion is reduced.
+	// swup swaps pages without reloading, so this runs again on every page view.
+	function setupClips() {
+		const clips = document.querySelectorAll<HTMLVideoElement>(".project-image video[data-autoplay]");
+		if (!clips.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		const observer = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				const clip = entry.target as HTMLVideoElement;
+				if (entry.isIntersecting) clip.play().catch(() => {});
+				else clip.pause();
+			}
+		}, { threshold: 0.35 });
+		clips.forEach((clip) => observer.observe(clip));
+	}
+	setupClips();
+	const swupHooks = (window as unknown as { swup?: { hooks: { on: (name: string, fn: () => void) => void } } }).swup?.hooks;
+	if (swupHooks) swupHooks.on("page:view", setupClips);
+	else document.addEventListener("swup:enable", () => (window as any).swup?.hooks.on("page:view", setupClips));
+</script>
+
 <style>
 	.project-groups { display: grid; gap: clamp(4rem, 8vw, 7rem); font-family: var(--font-sans); }
 	.project-group { display: grid; grid-template-columns: minmax(18rem, 2fr) minmax(10rem, .75fr); grid-template-areas: "cards caption"; align-items: center; gap: clamp(1.5rem, 5vw, 4.5rem); }
@@ -64,12 +99,15 @@ const groups = showcases[showcase].groups;
 	.project-card { width: 100%; max-width: 22rem; min-width: 0; justify-self: start; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); color: inherit; text-decoration: none; backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
 	.project-image { width: 100%; aspect-ratio: 1; overflow: hidden; border-bottom: 1px solid var(--border); background: var(--surface-deep); }
-	.project-image img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transition: transform .5s ease; }
+	.project-image img, .project-image video { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transition: transform .5s ease; }
+	.project-image video { display: block; }
 	.project-image.contain img { object-fit: contain; }
+	.project-image.wide { aspect-ratio: 16 / 9; }
+	.project-image.wide.slideshow img { object-fit: cover; object-position: center; image-rendering: auto; }
 	.project-image.slideshow { position: relative; }
 	.project-image.slideshow img { position: absolute; inset: 0; object-fit: contain; object-position: left center; image-rendering: pixelated; opacity: 0; animation: project-slide 12s infinite; animation-delay: calc(var(--slide-index) * 4s); }
 	.project-image.two-slides img { animation-name: project-slide-two; animation-duration: 8s; image-rendering: auto; }
-	.project-card:hover img { transform: scale(1.025); }
+	.project-card:hover img, .project-card:hover video { transform: scale(1.025); }
 	.project-copy { padding: 1.3rem; display: flex; flex: 1; flex-direction: column; }
 	.project-copy > span { color: var(--primary); font-size: .66rem; font-weight: 700; line-height: 1.2; letter-spacing: .16em; }
 	.project-copy h4 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
