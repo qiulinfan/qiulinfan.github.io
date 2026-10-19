@@ -110,7 +110,7 @@ export const showcases = {
 					{
 						title: "死神VS火影 Pocket",
 						video: { src: "/assets/projects/bvn-pocket.mp4", poster: "/assets/projects/bvn-pocket.jpg" },
-						href: "https://bluesamoyed.itch.io/bleach-vs-naruto-pocket",
+						href: "https://bluesamoyed77.itch.io/bleach-vs-naruto-pocket2d-remaster",
 						linkLabel: "Play",
 						tags: ["pocket2d", "Fighting", "Rollback Netplay", "Fan Remake"],
 						description:
@@ -121,13 +121,13 @@ export const showcases = {
 					{
 						title: "Village Rim",
 						video: { src: "/assets/projects/village-rim-pocket2d.mp4", poster: "/assets/projects/village-rim-pocket2d.jpg" },
-						href: "https://bluesamoyed.itch.io/village-rim",
+						href: "https://bluesamoyed77.itch.io/village-rim",
 						linkLabel: "Play",
 						tags: ["pocket2d", "Unity Migration", "Adventure"],
 						description:
-							"Our four-person Unity adventure, migrated onto pocket2d: its tilemaps and sprites imported, the gameplay rewritten in Lua, and the whole route played end to end by agent playtests.",
+							"Our four-person Unity adventure, migrated onto pocket2d: its tilemaps and sprites imported, the gameplay rewritten in Lua, and the whole route played end to end by agent playtests. The itch.io page has the original Unity build.",
 						descriptionZh:
-							"我们四人合作的 Unity 冒险游戏迁移到 pocket2d：导入地图与精灵，玩法用 Lua 重写，整条流程由 agent 自动试玩从头打到尾。",
+							"我们四人合作的 Unity 冒险游戏迁移到 pocket2d：导入地图与精灵，玩法用 Lua 重写，整条流程由 agent 自动试玩从头打到尾。itch.io 页面提供的是 Unity 原版。",
 					},
 					{
 						title: "Blockcraft",
@@ -137,8 +137,8 @@ export const showcases = {
 							{ src: "/assets/projects/blockcraft-w5-over.webp", alt: "The whole Blockcraft island from above" },
 							{ src: "/assets/projects/blockcraft-w3-flow.webp", alt: "Water poured from placed blocks" },
 						],
-						href: "https://github.com/qiulinfan/amoris-samples/tree/main/blockcraft",
-						linkLabel: "GitHub",
+						href: "https://bluesamoyed77.itch.io/blockcraft",
+						linkLabel: "Play",
 						tags: ["Amoris", "Voxels", "Shallow Water"],
 						description:
 							"A voxel sandbox island on Amoris: break and build blocks while the engine's shallow water floods broken banks, pours from placed blocks and drains into holes. Original pixel-art textures.",
