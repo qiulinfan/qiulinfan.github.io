@@ -1,6 +1,12 @@
 {
 	"docks": [
 		{
+			"id": "blogs",
+			"repository": "https://github.com/qiulinfan/blogs",
+			"ref": "main",
+			"checkout": "../blogs"
+		},
+		{
 			"id": "notes",
 			"repository": "https://github.com/qiulinfan/notes",
 			"ref": "main",

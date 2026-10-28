@@ -1,14 +1,10 @@
-.PHONY: docks-bootstrap blog-install blog-new blog-dev blog-build blog-preview blog-check
+.PHONY: docks-bootstrap blog-install blog-dev blog-build blog-preview blog-check
 
 docks-bootstrap:
 	@node site/scripts/bootstrap-docks.mjs
 
 blog-install:
 	cd site && corepack pnpm install --frozen-lockfile
-
-blog-new:
-	@test -n "$(NAME)" || (echo "用法: make blog-new NAME=my-first-post" && exit 1)
-	cd site && corepack pnpm new-post "$(NAME)"
 
 blog-dev:
 	cd site && corepack pnpm dev

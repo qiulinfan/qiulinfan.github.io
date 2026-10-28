@@ -6,18 +6,21 @@ the owner asks, and keep development documentation here.
 
 ## Rules
 
-- Preserve the `blogs/` and `site/` separation documented in `README.md`.
+- This repository chooses content sources and owns the website's rendering,
+  layout, navigation and deployment. Blog content belongs to `qiulinfan/blogs`.
 - Content from other repositories reaches the site only as docks: `docks.json` registers each dock's public repository, ref, and checkout path, and `site/src/docks/<id>/` holds its adapter (pages, build steps, tests). Never copy dock content into this repository. The `notes` dock (`qiulinfan/notes`) is the authority for notes and holds the kgdistiller base `notes` (`.knowledge/`); never run kgdistiller during a site or Pages build.
 - Machine setup (tool configs, the AI agent stack) and the personal global agent guidance live in the private `myrunbook` repository, not here.
 - Personal Skills are not maintained here. The private `myskills` repository is their authority and links them into Codex and Claude Code; its `manage-skills` Skill holds the maintenance protocol. Products such as `autoTA`, `kgdistiller`, and `discrete-sprite-lab` present their own Skills, and the site does not list Skills.
-- Blog source lives in `site/src/content/posts/` and is exposed through `blogs/posts/`.
+- Blog source lives in the sibling `blogs` repository's `posts/` directory.
+  The blogs dock mounts it at the Git-ignored `site/src/content/posts/` path;
+  never add that mount or copies of its content to this repository.
 - Validate blog changes with `make blog-check` and `make blog-build`.
 - Never place credentials in the repository or command output.
 
 ## Layout
 
-- `blogs/posts/`: blog posts in Markdown or MDX; the directory maps to Fuwari's
-  post source directory.
+- `../blogs/posts/`: Markdown articles and their images, owned by the separate
+  public `qiulinfan/blogs` repository.
 - `site/`: the Astro site built on [Fuwari](https://github.com/saicaca/fuwari):
   homepage, blog, Works, Playground, and dock sections. Fuwari's MIT license is
   kept in `site/FUWARI-LICENSE`.
@@ -25,33 +28,19 @@ the owner asks, and keep development documentation here.
 - This repository (`qiulinfan/qiulinfan.github.io`) deploys the user root site
   `https://qiulinfan.github.io/`.
 
-## Writing a blog post
+## Blog content and preview
 
-From the repository root:
+Create and edit articles in `blogs/posts/` within the separate blogs checkout,
+following its `AGENTS.md`. The user chooses their own editor (currently Obsidian);
+this website does not own article-creation scripts or editor configuration.
 
-```sh
-make blog-new NAME=my-first-post
-make blog-dev
-```
+Run `make docks-bootstrap` when a dock checkout is missing, then `make blog-dev`
+here to preview at <http://localhost:4321/>. Editing the blogs working copy updates
+the local preview. Drafts appear in development and are excluded from production.
 
-Edit `blogs/posts/my-first-post.md` and preview at <http://localhost:4321/>.
-Front matter:
-
-```yaml
----
-title: 文章标题
-published: 2026-07-13
-description: 一句话摘要
-image: ""
-tags: [标签]
-category: 分类
-draft: false
-lang: zh_CN
----
-```
-
-Then run `make blog-check` and `make blog-build`; the static output lands in
-`site/dist/`.
+After changing the website's blog adapter, run `make blog-check` and
+`make blog-build`; static output lands in `site/dist/`. Existing post paths under
+`/posts/`, the blog listing, archive and RSS stay stable across the repository split.
 
 ## Site
 
@@ -77,9 +66,9 @@ Sections beyond the homepage come from other repositories. `docks.json`
 registers each dock's public repository, ref, and local checkout;
 `site/src/docks/<id>/` is its adapter (pages, build steps, tests), and
 `site/src/docks/integration.ts` injects its routes and runs its steps around the
-build. Only the `notes` dock exists today.
+build. The current docks are `blogs` and `notes`.
 
-- Local development reads the working copy at the checkout path (`../notes`),
+- Local development reads the working copy at the checkout path (`../blogs`, `../notes`),
   so changes preview without a push. `make docks-bootstrap` shallow-clones a
   missing checkout together with its submodules.
 - `astro build` runs each adapter's build steps. The notes adapter runs
@@ -89,7 +78,8 @@ build. Only the `notes` dock exists today.
 - Every build writes each dock's commit to `docks.json` at the site root, so
   the deployed version can be checked.
 - When the notes repository's `main` passes its own checks, its CI triggers
-  this repository's Pages workflow.
+  this repository's Pages workflow. Blogs content is read at the revision checked
+  out for each website build; run the Pages workflow to deploy an updated blogs ref.
 - `courses.json` in the notes repository is the authority for the `web`
   address of every note; `/notes/` and the homepage's note entries read only
   that registry. Each course sets `publish` (whether its page is built) and

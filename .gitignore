@@ -41,6 +41,8 @@ _site/
 dist/
 .astro/
 site/public/_notes-assets/
+site/src/content/posts
+site/frontmatter.json
 
 # Personal editor, vault and agent environment stays local, at every depth.
 .obsidian/

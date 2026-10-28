@@ -3,6 +3,7 @@ import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration, AstroIntegrationLogger, InjectedRoute } from "astro";
+import { blogsAdapter } from "./blogs/adapter.ts";
 import { notesAdapter } from "./notes/adapter.ts";
 import { dockRoot, loadDocks } from "./registry.ts";
 
@@ -10,6 +11,8 @@ import { dockRoot, loadDocks } from "./registry.ts";
 // turn the dock checkout at `root` into site content.
 export interface DockAdapter {
 	routes: InjectedRoute[];
+	// Runs during every config setup, including content sync and type checking.
+	setup?(context: { root: string; siteRoot: string; logger: AstroIntegrationLogger }): void;
 	// Runs before `astro dev` and `astro build`.
 	prepare?(context: { root: string; siteRoot: string; command: "dev" | "build"; logger: AstroIntegrationLogger }): void;
 	// Runs after `astro build` has written the static site to `outDir`.
@@ -17,6 +20,7 @@ export interface DockAdapter {
 }
 
 const adapters: Record<string, DockAdapter> = {
+	blogs: blogsAdapter,
 	notes: notesAdapter,
 };
 
@@ -32,6 +36,7 @@ export function docks(): AstroIntegration {
 					const adapter = adapters[dock.id];
 					if (!adapter) throw new Error(`The ${dock.id} dock has no adapter in site/src/docks/.`);
 					const root = dockRoot(homepageRoot, dock.id);
+					adapter.setup?.({ root, siteRoot, logger });
 					for (const route of adapter.routes) injectRoute(route);
 					if (command === "dev" || command === "build") {
 						adapter.prepare?.({ root, siteRoot, command, logger });
