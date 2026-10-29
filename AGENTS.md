@@ -44,6 +44,20 @@ After changing the website's blog adapter, run `make blog-check` and
 
 ## Site
 
+- `make blog-dev` enables `astro-dev-edit` for local page text and image editing.
+  Use **Edit page** in the page's admin bar; supported edits write directly to
+  website source files. The Astro dev toolbar must stay enabled for source
+  annotations. The integration registers no editor scripts or endpoints in
+  production builds or previews.
+- The image picker uses the website's own asset directories; uploads land in
+  `site/public/assets/`. Generated dock assets are not an authoring source.
+  Template expressions (including the homepage's computed title) may offer
+  **Open source** instead of inline editing; do not flatten or duplicate the
+  site's data model to bypass the tool's limits.
+- The visual editor's collection and schema editors are disabled. Blog writing
+  stays in the independent blogs repository, and the editor's default resolved
+  content roots exclude the external blogs mount. Personal visual-editor
+  preferences in `site/.astro-dev-edit.json` stay Git-ignored.
 - `site/src/styles/variables.styl` is the only source of visual tokens: colors,
   text levels, radii, shadows, and surface semantics. Components consume its
   CSS variables and never define another light/dark palette.

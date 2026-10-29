@@ -5,6 +5,7 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
 import expressiveCode from "astro-expressive-code";
+import devEdit from "astro-dev-edit";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -29,7 +30,14 @@ import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-cop
 export default defineConfig({
 	site: "https://qiulinfan.github.io",
 	trailingSlash: "always",
+	devToolbar: { enabled: true },
 	integrations: [
+		devEdit({
+			assetDirs: ["src/assets", "public/assets", "public/favicon"],
+			uploadDir: "public/assets",
+			entryEditor: false,
+			schemaEditor: false,
+		}),
 		tailwind({
 			nesting: true,
 		}),
