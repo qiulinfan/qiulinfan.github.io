@@ -4,6 +4,7 @@ html {
     background: var(--page-bg);
     color: var(--text);
     font-family: var(--font-sans);
+    font-weight: 500;
 }
 
 code, pre, kbd, samp {
@@ -119,19 +120,19 @@ html.dark body {
     }
 
     .text-90 {
-        @apply text-black/90 dark:text-white/90
+        color: color-mix(in srgb, var(--text-strong) 90%, transparent);
     }
     .text-75 {
-        @apply text-black/75 dark:text-white/75
+        color: color-mix(in srgb, var(--text-strong) 75%, transparent);
     }
     .text-50 {
-        @apply text-black/50 dark:text-white/50
+        color: color-mix(in srgb, var(--text-strong) 50%, transparent);
     }
     .text-30 {
-        @apply text-black/30 dark:text-white/30
+        color: color-mix(in srgb, var(--text-strong) 30%, transparent);
     }
     .text-25 {
-        @apply text-black/25 dark:text-white/25
+        color: color-mix(in srgb, var(--text-strong) 25%, transparent);
     }
 
     .meta-icon {

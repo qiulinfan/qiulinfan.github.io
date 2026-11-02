@@ -1,3 +1,24 @@
+/* Typography plugin colours follow the site's text tokens in both themes;
+   the doubled class outranks the plugin's own .prose defaults. */
+.prose.custom-md {
+    --tw-prose-body: var(--text);
+    --tw-prose-headings: var(--text-strong);
+    --tw-prose-lead: var(--text);
+    --tw-prose-bold: var(--text-strong);
+    --tw-prose-counters: var(--text-muted);
+    --tw-prose-bullets: var(--text-muted);
+    --tw-prose-quotes: var(--text);
+    --tw-prose-captions: var(--text-muted);
+    --tw-prose-invert-body: var(--text);
+    --tw-prose-invert-headings: var(--text-strong);
+    --tw-prose-invert-lead: var(--text);
+    --tw-prose-invert-bold: var(--text-strong);
+    --tw-prose-invert-counters: var(--text-muted);
+    --tw-prose-invert-bullets: var(--text-muted);
+    --tw-prose-invert-quotes: var(--text);
+    --tw-prose-invert-captions: var(--text-muted);
+}
+
 .custom-md {
     h1 {
         @apply text-3xl;

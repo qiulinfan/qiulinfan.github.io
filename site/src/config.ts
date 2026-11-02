@@ -45,10 +45,6 @@ export const navBarConfig: NavBarConfig = {
 			url: "/notes/",
 		},
 		{
-			name: "Playground",
-			url: "/playground/",
-		},
-		{
 			name: "About",
 			children: [
 				{
@@ -64,6 +60,11 @@ export const navBarConfig: NavBarConfig = {
 				{
 					name: "Instagram",
 					url: "https://www.instagram.com/bluesamoyed77/",
+					external: true,
+				},
+				{
+					name: "Xiaohongshu",
+					url: "https://www.xiaohongshu.com/user/profile/62e50683000000001f004bc3",
 					external: true,
 				},
 				{
