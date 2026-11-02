@@ -4,12 +4,6 @@ import { Icon } from "astro-icon/components";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import { url } from "@utils/url-utils";
 
-interface Props {
-	lang?: "en" | "zh";
-}
-
-const { lang = "en" } = Astro.props;
-const zh = lang === "zh";
 const github = profileConfig.links.find((link) => link.name === "GitHub");
 const bio = [
 	"This is Qiulin Fan, from Shanghai and currently based in Ann Arbor. I'm completing my B.S. in Honors Mathematics and Computer Science at the University of Michigan (2023–2026).",
@@ -162,8 +156,8 @@ const avatarCredit = {
 ---
 
 <LandingPageLayout
-	lang={zh ? "zh-CN" : "en"}
-	description={zh ? "Qiulin 的个人主页与笔记。" : "Qiulin's portfolio and notes."}
+	lang="en"
+	description="Qiulin's portfolio and notes."
 >
 	<div class="homepage">
 		<section class="hero card" aria-labelledby="hero-title">

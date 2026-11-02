@@ -3,13 +3,7 @@ import LandingPageLayout from "@layouts/LandingPageLayout.astro";
 import { Icon } from "astro-icon/components";
 import { friendLinks } from "@/data/friends";
 
-interface Props {
-	lang?: "en" | "zh";
-}
-
-const { lang = "en" } = Astro.props;
-const zh = lang === "zh";
-const title = zh ? "朋友们" : "Friends";
+const title = "Friends";
 const displayName = (friend: (typeof friendLinks)[number]) =>
 	friend.name ??
 	new URL(friend.href).hostname
@@ -19,7 +13,7 @@ const displayName = (friend: (typeof friendLinks)[number]) =>
 
 <LandingPageLayout
 	title={title}
-	lang={zh ? "zh-CN" : "en"}
+	lang="en"
 	description={title}
 >
 	<div class="friends-page">
@@ -44,7 +38,7 @@ const displayName = (friend: (typeof friendLinks)[number]) =>
 					</div>
 					<div class="friend-copy">
 						<h2>{name}</h2>
-						<p>{zh ? friend.descriptionZh : friend.description}</p>
+						<p>{friend.description}</p>
 					</div>
 					<Icon class="external-icon" name="fa6-solid:arrow-up-right-from-square" />
 				</a>

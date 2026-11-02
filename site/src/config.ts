@@ -9,7 +9,7 @@ import type {
 export const siteConfig: SiteConfig = {
 	title: "Qiulin Fan",
 	subtitle: "Mathematics, systems, research, and games",
-	lang: "zh_CN", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
+	lang: "en", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	banner: {
 		enable: false,
 		src: "assets/images/demo-banner.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
