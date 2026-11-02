@@ -11,9 +11,9 @@ const resolvedHref = (href: string) =>
 	href.startsWith("http") ? href : url(href);
 
 // Tree geometry, in SVG units; the drawing scales with its container.
-const colWidth = 265;
+const colWidth = 290;
 const rowHeight = 74;
-const nodeWidth = 220;
+const nodeWidth = 245;
 const nodeHeight = 46;
 const pad = 8;
 const nodes = noteTree.map((node) => {
@@ -54,6 +54,7 @@ const published = nodes.filter((node) => node.source);
 			<p class="legend">
 				<span><i class="dot math"></i>{noteSubjectLabels.math}</span>
 				<span><i class="dot cs"></i>{noteSubjectLabels.cs}</span>
+				<span><i class="dot philosophy"></i>{noteSubjectLabels.philosophy}</span>
 			</p>
 		</header>
 
@@ -102,8 +103,9 @@ const published = nodes.filter((node) => node.source);
 	i.dot { display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; }
 	i.dot.math, circle.dot.math { background: var(--sakura); fill: var(--sakura); }
 	i.dot.cs, circle.dot.cs { background: var(--primary); fill: var(--primary); }
+	i.dot.philosophy, circle.dot.philosophy { background: var(--violet); fill: var(--violet); }
 	.tree-scroll { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); overflow-x: auto; }
-	.tree { display: block; width: 100%; min-width: 56rem; height: auto; }
+	.tree { display: block; width: 100%; min-width: 60rem; height: auto; }
 	.edge { fill: none; stroke: color-mix(in srgb, var(--text-strong) 32%, transparent); stroke-width: 1.5; }
 	.edge.pending { stroke-dasharray: 4 5; stroke: color-mix(in srgb, var(--text-strong) 20%, transparent); }
 	.node rect { fill: color-mix(in srgb, var(--card-bg) 85%, transparent); stroke: color-mix(in srgb, var(--text-strong) 45%, transparent); stroke-width: 1.2; transition: stroke .18s ease, fill .18s ease; }

@@ -7,8 +7,7 @@ import type {
 } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "Qiulin Fan",
-	subtitle: "Mathematics, systems, research, and games",
+	title: "Stuff about Qiulin",
 	lang: "en", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	banner: {
 		enable: false,

@@ -13,18 +13,28 @@ test("the source registry publishes and lists only the selected notes", () => {
 	assert.deepEqual(listed.map((source) => source.id), [
 		"math:a-bit-of-abstract-algebra",
 		"cs:cpp-programming",
+		"cs:computer-networks",
+		"cs:computer-organization",
+		"cs:computer-vision",
 		"cs:data-structures-algorithms",
 		"math:everything-about-linear-algebra",
+		"cs:machine-learning",
 		"math:measure-theory",
+		"cs:operating-systems",
 		"math:probability",
 		"math:single-and-multivariate-mathematical-analysis",
 	]);
 	assert.deepEqual(listed.map((source) => source.href), [
 		"/notes/math/a-bit-of-abstract-algebra/",
 		"/notes/cs/cpp-programming/",
+		"/notes/cs/computer-networks/",
+		"/notes/cs/computer-organization/",
+		"/notes/cs/computer-vision/",
 		"/notes/cs/data-structures-algorithms/",
 		"/notes/math/everything-about-linear-algebra/",
+		"/notes/cs/machine-learning/",
 		"/notes/math/measure-theory/",
+		"/notes/cs/operating-systems/",
 		"/notes/math/probability/",
 		"/notes/math/single-and-multivariate-mathematical-analysis/",
 	]);
@@ -33,17 +43,22 @@ test("the source registry publishes and lists only the selected notes", () => {
 		[
 			"/notes/math/a-bit-of-abstract-algebra/?v=VERSION",
 			"/notes/cs/cpp-programming/",
+			"/notes/cs/computer-networks/",
+			"/notes/cs/computer-organization/",
+			"/notes/cs/computer-vision/",
 			"/notes/cs/data-structures-algorithms/",
 			"/notes/math/everything-about-linear-algebra/?v=VERSION",
+			"/notes/cs/machine-learning/",
 			"/notes/math/measure-theory/?v=VERSION",
+			"/notes/cs/operating-systems/",
 			"/notes/math/probability/?v=VERSION",
 			"/notes/math/single-and-multivariate-mathematical-analysis/?v=VERSION",
 		],
 	);
-	assert.deepEqual(listed.map((source) => source.standalone), [true, false, false, true, true, true, true]);
+	assert.deepEqual(listed.map((source) => source.standalone), [true, false, false, false, false, false, true, false, true, false, true, true]);
 	assert.equal(
 		loadMarkdownNotes().some((note) => note.sourceId === "cs:computer-organization"),
-		false,
+		true,
 	);
 	const markdownNotes = loadMarkdownNotes();
 	const cppNotes = markdownNotes.filter((note) => note.sourceId === "cs:cpp-programming");
@@ -52,7 +67,10 @@ test("the source registry publishes and lists only the selected notes", () => {
 	assert.equal(dataStructuresNotes.length, 4);
 	assert.equal(cppNotes.some((note) => note.authority.endsWith("280-midterm-cheatsheet.md")), true);
 	assert.equal(dataStructuresNotes.every((note) => note.authority.includes("/docs/")), true);
-	assert.equal(markdownNotes.some((note) => /FinalReview|notes-project-optimization|\/README\.md$/.test(note.authority)), false);
+	assert.equal(markdownNotes.some((note) => /\/optimization\//.test(note.authority)), false);
+	for (const course of ["computer-networks", "computer-organization", "computer-vision", "machine-learning", "operating-systems"]) {
+		assert.equal(markdownNotes.some((note) => note.slug === `cs/${course}`), true, `${course} has a course page`);
+	}
 	assert.equal(markdownNotes.every((note) => note.heroImage === "/assets/backgrounds/one-dark-sakura-right-v3.webp"), true);
 	assert.equal(markdownNotes.every((note) => note.backgroundImage === undefined), true);
 	const debuggerNote = loadMarkdownNotes().find((note) => note.authority.endsWith("04-Debuggers.md"));

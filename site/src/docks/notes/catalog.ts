@@ -1,6 +1,7 @@
 export const noteSubjectLabels = {
 	math: "Math",
 	cs: "EECS",
+	philosophy: "Philosophy",
 } as const;
 
 export type NoteSubject = keyof typeof noteSubjectLabels;
@@ -26,13 +27,14 @@ export const noteTree: NoteTreeNode[] = [
 	{ id: "topology", label: "Point-Set Topology", subject: "math", col: 1, row: 2, prerequisites: ["analysis"] },
 	{ id: "measure-theory", label: "Measure Theory", subject: "math", col: 1, row: 3, source: "math:measure-theory", prerequisites: ["analysis"] },
 	{ id: "dsa", label: "Data Structures & Algorithms", subject: "cs", col: 1, row: 5, source: "cs:data-structures-algorithms", prerequisites: ["cpp"] },
-	{ id: "computer-organization", label: "Computer Organization", subject: "cs", col: 1, row: 6, prerequisites: ["cpp"] },
+	{ id: "computer-organization", label: "Computer Organization", subject: "cs", col: 1, row: 6, source: "cs:computer-organization", prerequisites: ["cpp"] },
 	{ id: "optimization", label: "Optimization (SIPML)", subject: "cs", col: 2, row: 1, prerequisites: ["linear-algebra", "analysis"] },
 	{ id: "probability", label: "Probability Theory", subject: "math", col: 2, row: 3, source: "math:probability", prerequisites: ["measure-theory"] },
 	{ id: "graphics", label: "Computer Graphics", subject: "cs", col: 2, row: 4, prerequisites: ["linear-algebra", "cpp"] },
-	{ id: "operating-systems", label: "Operating Systems", subject: "cs", col: 2, row: 6, prerequisites: ["computer-organization", "dsa"] },
-	{ id: "machine-learning", label: "Machine Learning", subject: "cs", col: 3, row: 2, prerequisites: ["optimization", "probability"] },
-	{ id: "computer-networks", label: "Computer Networks", subject: "cs", col: 3, row: 6, prerequisites: ["operating-systems"] },
-	{ id: "computer-vision", label: "Computer Vision", subject: "cs", col: 4, row: 2, prerequisites: ["machine-learning", "graphics"] },
+	{ id: "operating-systems", label: "Operating Systems", subject: "cs", col: 2, row: 6, source: "cs:operating-systems", prerequisites: ["computer-organization", "dsa"] },
+	{ id: "machine-learning", label: "Machine Learning", subject: "cs", col: 3, row: 2, source: "cs:machine-learning", prerequisites: ["optimization", "probability"] },
+	{ id: "computer-networks", label: "Computer Networks", subject: "cs", col: 3, row: 6, source: "cs:computer-networks", prerequisites: ["operating-systems"] },
+	{ id: "computer-vision", label: "Computer Vision", subject: "cs", col: 4, row: 2, source: "cs:computer-vision", prerequisites: ["machine-learning", "graphics"] },
 	{ id: "nlp", label: "Natural Language Processing", subject: "cs", col: 4, row: 3, prerequisites: ["machine-learning"] },
+	{ id: "philosophy", label: "Philosophy", subject: "philosophy", col: 0, row: 7, prerequisites: [] },
 ];
