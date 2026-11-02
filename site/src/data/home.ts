@@ -23,34 +23,6 @@ const pocket2d = {
 };
 
 export const showcases = {
-	works: {
-		title: "Works",
-		titleZh: "作品",
-		description: "Qiulin's engineering and research work.",
-		descriptionZh: "Qiulin 的工程与研究作品。",
-		groups: [
-			{
-				title: "Engineering",
-				titleZh: "工程",
-				projects: [
-					amoris,
-					pocket2d,
-					{
-						title: "kgdistiller",
-						image: "/assets/projects/kgdistiller-obsidian-graph.jpg",
-						imageFit: "contain",
-						href: "https://github.com/qiulinfan/kgdistiller",
-						linkLabel: "GitHub",
-						tags: ["Knowledge Base", "Obsidian", "SQLite", "Agent Skills"],
-						description:
-							"A local-first research knowledge base: source-backed records and role-bound relations in Obsidian vaults, indexed in one SQLite file.",
-						descriptionZh:
-							"本地优先的研究知识库：在 Obsidian 仓库中保存有原文出处的记录与按角色绑定的关系，并由单个 SQLite 文件建立索引。",
-					},
-				],
-			},
-		],
-	},
 	playground: {
 		title: "Playground",
 		titleZh: "游乐场",

@@ -22,7 +22,7 @@ the owner asks, and keep development documentation here.
 - `../blogs/posts/`: Markdown articles and their images, owned by the separate
   public `qiulinfan/blogs` repository.
 - `site/`: the Astro site built on [Fuwari](https://github.com/saicaca/fuwari):
-  homepage, blog, Works, Playground, and dock sections. Fuwari's MIT license is
+  homepage, blog, Playground, and dock sections. Fuwari's MIT license is
   kept in `site/FUWARI-LICENSE`.
 - `docks.json`: the dock registry.
 - This repository (`qiulinfan/qiulinfan.github.io`) deploys the user root site
@@ -69,10 +69,9 @@ After changing the website's blog adapter, run `make blog-check` and
   - `site/src/content/spec/about.md`: the About page.
   - `site/public/`: files published as-is, such as the favicon.
   - `site/src/assets/`: images processed by Astro.
-  - `site/src/components/home/`: the homepage and the Works and Playground
-    pages.
-  - `site/src/data/home.ts`: Works entries (serious work, later research) and
-    Playground entries (games and small tools).
+  - `site/src/components/home/`: the homepage and the Playground page.
+  - `site/src/data/home.ts`: Playground entries (engines, art pipelines, games
+    and small tools).
 
 ## Docks
 

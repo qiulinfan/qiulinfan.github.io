@@ -41,10 +41,6 @@ export const navBarConfig: NavBarConfig = {
 			url: "/blog/",
 		},
 		{
-			name: "Works",
-			url: "/works/",
-		},
-		{
 			name: "Notes",
 			url: "/notes/",
 		},
@@ -85,7 +81,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "/assets/avatar/qiulin-avatar-256.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: "/assets/avatar/qiulin-github-avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "Qiulin",
 	links: [
 		{

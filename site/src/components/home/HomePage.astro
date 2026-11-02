@@ -1,10 +1,7 @@
 ---
 import { profileConfig } from "@/config";
-import { showcases } from "@/data/home";
-import ProjectShowcase from "@components/home/ProjectShowcase.astro";
+import { Icon } from "astro-icon/components";
 import LandingPageLayout from "@layouts/LandingPageLayout.astro";
-import { loadListedNoteSources } from "@/docks/notes/sources";
-import { url } from "@utils/url-utils";
 
 interface Props {
 	lang?: "en" | "zh";
@@ -12,55 +9,23 @@ interface Props {
 
 const { lang = "en" } = Astro.props;
 const zh = lang === "zh";
-const featuredNotes = [
-	...loadListedNoteSources({ usePublishedStandalone: import.meta.env.DEV }).map((source) => ({
-		title: source.title,
-		field: source.fields[0] ?? source.subject,
-		href: source.navigationHref,
-		standalone: source.standalone,
-	})),
+const github = profileConfig.links.find((link) => link.name === "GitHub");
+const bio = [
+	"This is Qiulin Fan, from Shanghai and currently based in Ann Arbor. I'm completing my B.S. in Honors Mathematics and Computer Science at the University of Michigan (2023–2026).",
+	"Over the past few years I have worked on game engine physics and particle systems, gameplay engineering, and agentic knowledge systems for games. I previously worked at Unity China and NetEase Games.",
+	"I am currently seeking out of engineering and looking for research opportunities in generative world models, 3D vision, and robot learning.",
 ];
-const resolvedHref = (href: string) => (href.startsWith("http") ? href : url(href));
-const playgroundProjects = showcases.playground.groups.flatMap((group) =>
-	group.projects.map((project) => ({
-		group: zh ? group.titleZh : group.title,
-		title: project.title,
-		href: project.href,
-	})),
-);
-const copy = zh
-	? {
-			eyebrow: "QIULIN FAN",
-			headline: "Game & AI Engineer",
-			notesCta: "阅读笔记",
-			workCta: "查看作品",
-			workKicker: "01 / WORKS",
-			workTitle: "作品",
-			allWorks: "作品详情",
-			page: "项目页面",
-			repo: "源代码",
-			notesKicker: "02 / NOTES",
-			notesTitle: "笔记",
-			playgroundKicker: "03 / PLAYGROUND",
-			playgroundTitle: "游乐场",
-			allPlayground: "进入游乐场",
-		}
-	: {
-			eyebrow: "QIULIN FAN",
-			headline: "Game & AI Engineer",
-			notesCta: "Read the notes",
-			workCta: "See works",
-			workKicker: "01 / WORKS",
-			workTitle: "Works",
-			allWorks: "Work details",
-			page: "Project page",
-			repo: "Repository",
-			notesKicker: "02 / NOTES",
-			notesTitle: "Notes",
-			playgroundKicker: "03 / PLAYGROUND",
-			playgroundTitle: "Playground",
-			allPlayground: "Open the playground",
-		};
+const favoriteCharacters = [
+	{ name: "Yatogami Tohka", href: "https://date-a-live.fandom.com/wiki/Tohka_Yatogami" },
+	{ name: "Kuchiki Rukia", href: "https://bleach.fandom.com/wiki/Rukia_Kuchiki" },
+];
+const name = "bluesamoyed77";
+// The avatar is a crop of this fan drawing; keep the credit beside it.
+const avatarCredit = {
+	work: "https://www.pixiv.net/en/artworks/138386116",
+	artist: "hyojennn",
+	artistUrl: "https://www.pixiv.net/en/users/119647895",
+};
 ---
 
 <LandingPageLayout
@@ -70,87 +35,46 @@ const copy = zh
 	<div class="homepage">
 		<section class="hero card" aria-labelledby="hero-title">
 			<div class="hero-copy">
-				<div class="identity"><img src={profileConfig.avatar} alt={profileConfig.name} width="256" height="256" loading="eager" decoding="async" fetchpriority="high" /><span class="eyebrow">{copy.eyebrow}</span></div>
-				<h1 id="hero-title">{copy.headline}</h1>
-				<div class="hero-actions">
-					<a class="button primary" href={url("/notes/")}>{copy.notesCta}<span>→</span></a>
-					<a class="button" href="#work">{copy.workCta}<span>↓</span></a>
+				<div class="hero-grid">
+					<div class="identity"><img src={profileConfig.avatar} alt="" width="347" height="347" loading="eager" decoding="async" fetchpriority="high" /><div class="identity-text"><h1 id="hero-title">{name}</h1>{github && <a class="profile-link" href={github.url} target="_blank" rel="noreferrer"><Icon name={github.icon} />{github.url.replace(/^https:\/\//, "")}</a>}</div></div>
+					<div class="bio">{bio.map((paragraph) => <p>{paragraph}</p>)}<p>My favorite animation characters are <a href={favoriteCharacters[0].href} target="_blank" rel="noreferrer">{favoriteCharacters[0].name}</a> and <a href={favoriteCharacters[1].href} target="_blank" rel="noreferrer">{favoriteCharacters[1].name}</a>.</p></div>
 				</div>
-			</div>
-		</section>
-
-		<section class="section" id="work">
-			<header class="section-heading">
-				<div><span>{copy.workKicker}</span><h2>{copy.workTitle}</h2></div>
-				<div class="section-link"><a href={url(zh ? "/zh/works/" : "/works/")}>{copy.allWorks} ↗</a></div>
-			</header>
-			<ProjectShowcase lang={lang} showcase="works" />
-		</section>
-
-		<section class="section" id="notes">
-			<header class="section-heading">
-				<div><span>{copy.notesKicker}</span><h2>{copy.notesTitle}</h2></div>
-			</header>
-			<div class="note-grid">
-				{featuredNotes.map((note, index) => (
-					<a class="tile card" href={resolvedHref(note.href)} data-no-swup={note.standalone || undefined}><span>{String(index + 1).padStart(2, "0")} / {note.field}</span><h3>{note.title}</h3><strong>→</strong></a>
-				))}
-			</div>
-		</section>
-
-		<section class="section" id="playground">
-			<header class="section-heading">
-				<div><span>{copy.playgroundKicker}</span><h2>{copy.playgroundTitle}</h2></div>
-				<div class="section-link"><a href={url(zh ? "/zh/playground/" : "/playground/")}>{copy.allPlayground} ↗</a></div>
-			</header>
-			<div class="playground-grid">
-				{playgroundProjects.map((project) => (
-					<a class="tile card" href={project.href} target="_blank" rel="noreferrer"><span>{project.group}</span><h3>{project.title}</h3><strong>↗</strong></a>
-				))}
+				<p class="avatar-credit">Avatar: <a href={avatarCredit.work} target="_blank" rel="noreferrer">Rukia</a> by <a href={avatarCredit.artistUrl} target="_blank" rel="noreferrer">{avatarCredit.artist}</a> on pixiv</p>
 			</div>
 		</section>
 	</div>
 </LandingPageLayout>
 
 <style>
+	.card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px) saturate(1.08); }
 	.homepage { position: relative; display: flex; flex-direction: column; gap: clamp(5rem, 10vw, 9rem); padding-top: 1rem; font-family: var(--font-sans); }
-	.card { border: 1px solid var(--border); border-radius: var(--radius-large); background: var(--card-bg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px) saturate(1.08); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
-	.button { min-height: 2.8rem; padding: 0 1rem; display: inline-flex; align-items: center; justify-content: space-between; gap: .9rem; border: 1px solid var(--border); border-radius: var(--radius-small); color: var(--text-strong); background: color-mix(in srgb, var(--card-bg) 78%, transparent); font-size: .75rem; font-weight: 650; text-decoration: none; backdrop-filter: blur(12px); }
-	.button:hover { border-color: color-mix(in srgb, var(--primary) 46%, var(--border)); transform: translateY(-2px); }
-	.button.primary { border-color: transparent; background: var(--primary); color: var(--primary-contrast); }
 	.hero { min-height: calc(74vh - 7rem); padding: clamp(1.5rem, 5vw, 4.5rem); display: flex; align-items: end; overflow: hidden; background: color-mix(in srgb, var(--card-bg) 46%, transparent); backdrop-filter: saturate(1.02); }
 	:global(html.dark) .hero { background: color-mix(in srgb, var(--card-bg) 16%, transparent); }
-	.hero-copy { width: min(100%, 56rem); }
-	.identity { display: flex; align-items: center; gap: .85rem; }
-	.identity img { width: 3.25rem; height: 3.25rem; border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; object-fit: cover; }
-	.eyebrow, .section-heading span { color: var(--primary); font: 700 .66rem/1.2 var(--font-sans); letter-spacing: .16em; }
-	h1 { max-width: 8ch; margin: .8rem 0 0; color: var(--text-strong); font-size: clamp(3.2rem, 8vw, 7.8rem); font-weight: 700; line-height: .89; letter-spacing: -.025em; }
-	.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 2rem; }
-	.section { scroll-margin-top: 6rem; }
-	.section-heading { display: grid; grid-template-columns: 1fr minmax(18rem, .7fr); align-items: end; gap: 2rem; margin-bottom: 1.5rem; }
-	.section-heading h2 { margin: .45rem 0 0; color: var(--text-strong); font-size: clamp(2rem, 5vw, 4.2rem); font-weight: 720; line-height: .95; letter-spacing: -.058em; }
-	#work .section-heading h2, #playground .section-heading h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -.035em; }
-	.section-heading > .section-link { justify-self: end; max-width: 28rem; }
-	.section-heading p { margin: 0; color: var(--text-muted); line-height: 1.65; }
-	.section-heading a { display: inline-block; margin-top: .65rem; color: var(--primary); font: 650 .7rem/1 var(--font-sans); text-decoration: none; }
-	.tile h3 { margin: .65rem 0; color: var(--text-strong); font-size: 1.55rem; font-weight: 700; letter-spacing: -.035em; }
-	.note-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-	.playground-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
-	.tile { position: relative; min-height: 12rem; padding: 1.2rem; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
-	.tile > span { color: var(--muted); font: 600 .58rem/1.4 var(--font-sans); text-transform: uppercase; }
-	.tile h3 { margin-top: auto; }
-	.tile > strong { position: absolute; right: 1.2rem; bottom: 1.2rem; color: var(--primary); }
-	.tile:hover { background: var(--surface-hover); transform: translateY(-3px); }
+	.hero-copy { width: min(100%, 70rem); }
+	.hero-grid { display: grid; grid-template-columns: auto minmax(0, 34rem); align-items: center; justify-content: start; gap: clamp(2rem, 6vw, 6rem); }
+	.identity { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+	.identity img { width: clamp(6rem, 11vw, 9rem); height: clamp(6rem, 11vw, 9rem); border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; object-fit: cover; }
+	.identity-text { display: flex; flex-direction: column; gap: .9rem; min-width: 0; }
+	.profile-link { display: inline-flex; align-items: center; gap: .5rem; width: fit-content; padding: .5rem .85rem; border: 1px solid var(--border); border-radius: var(--radius-small); background: color-mix(in srgb, var(--card-bg) 70%, transparent); color: var(--text-warm); font: 600 .85rem/1 var(--font-sans); text-decoration: none; backdrop-filter: blur(10px); transition: border-color .18s ease, color .18s ease; }
+	.profile-link :global(svg) { width: 1.05rem; height: 1.05rem; }
+	.profile-link:hover { border-color: color-mix(in srgb, var(--sakura) 55%, var(--border)); color: var(--sakura); }
+	.profile-link:focus-visible { outline: 2px solid var(--sakura); outline-offset: 2px; }
+	h1 { margin: 0; color: var(--text-warm); font-size: clamp(2.2rem, 4.2vw, 3.6rem); font-weight: 700; line-height: 1; letter-spacing: -.025em; }
+	.bio { color: var(--text-warm); font-family: var(--font-sans); font-size: clamp(1.02rem, 1.35vw, 1.16rem); font-weight: 500; line-height: 1.7; letter-spacing: .005em; }
+	.bio p { margin: 0; text-wrap: pretty; }
+	.bio a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--sakura) 60%, transparent); text-underline-offset: .22em; }
+	.bio a:hover { color: var(--sakura); }
+	.avatar-credit { margin: clamp(2rem, 4vw, 3rem) 0 0; color: var(--text-muted); font-size: .75rem; }
+	.avatar-credit a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+	.avatar-credit a:hover { color: var(--sakura); }
+	.bio p + p { margin-top: .85rem; }
 	@media (max-width: 900px) {
-		.section-heading { grid-template-columns: 1fr; }
-		.section-heading > .section-link { justify-self: start; }
-		.note-grid { grid-template-columns: 1fr 1fr; }
+		.hero-grid { grid-template-columns: 1fr; align-items: start; }
 	}
 	@media (max-width: 600px) {
 		.homepage { padding-top: .4rem; gap: 5rem; }
 		.hero { min-height: calc(100vh - 6rem); border-radius: .65rem; padding: 1.3rem; }
-		h1 { font-size: clamp(3rem, 16vw, 5rem); }
-		.note-grid { grid-template-columns: 1fr; }
+		h1 { font-size: clamp(1.8rem, 8.5vw, 3.4rem); }
 	}
 	@media (prefers-reduced-motion: reduce) {
 		*, *::before, *::after { transition-duration: .01ms !important; }

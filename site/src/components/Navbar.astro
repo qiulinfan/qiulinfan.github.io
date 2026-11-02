@@ -24,8 +24,6 @@ const isZh = pathname === "/zh/" || pathname.startsWith("/zh/");
 const languageLabel = isZh ? "English" : "中文";
 const languageAriaLabel = isZh ? "Switch to English" : "切换到中文";
 const languageHref = (() => {
-	if (pathname.startsWith("/zh/works/")) return "/works/";
-	if (pathname.startsWith("/works/")) return "/zh/works/";
 	if (pathname.startsWith("/zh/playground/")) return "/playground/";
 	if (pathname.startsWith("/playground/")) return "/zh/playground/";
 	if (pathname.startsWith("/zh/friends/")) return "/friends/";
